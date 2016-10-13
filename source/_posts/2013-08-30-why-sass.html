@@ -1,0 +1,49 @@
+---
+layout: post
+title: Sass 基礎教學-為何要學Sass
+category: sass
+tagline: 因為學了就回不去了
+thumbnail: 
+cssdemo: 2013-summer
+tags: [sass, css]
+---
+<p><a href="http://sass-lang.com/">Sass官網</a></p>
+<iframe src="http://www.slideshare.net/slideshow/embed_code/11639772" width="427" height="356" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen="" webkitallowfullscreen="" mozallowfullscreen=""> </iframe>
+<p>看不到簡報請點此連結<a href="http://www.slideshare.net/slideshow/embed_code/11639772">http://www.slideshare.net/slideshow/embed_code/11639772</a></p>
+<p>上面這個簡報介紹了的很清楚，在經過一段時間的使用，發現已經回不去了(相信用過的都有這種感覺!)。為何要用Sass ?這用說的都是說不清楚，看範例比較清楚~。</p>
+<!-- more -->
+<h3>Demo</h3>
+<div class="demo d0825">
+	<div class="timing1">
+		B
+	</div>
+</div>
+<p>像是這前幾天做的效果，sass的code如下。</p>
+<pre>
+@mixin longShadow($lenght: 20,$rgb: #000)
+$all: ()
+@for $i from 1 through $lenght
+	$all: append($all, append(#{$i}px #{$i}px 0 ,rgba($rgb,0.9/$i + 0.05)),comma)	
+text-shadow: $all
+</pre>
+<p>這是一個<code>text-shadow</code>的@mixin，換句話說是一個樣式模組，可以將它匯入至樣式表內，讓這一個text-shadow編譯成CSS。</p>
+<pre>text-shadow: 1px 1px 0 #b3b3b3, 2px 2px 0 rgba(179, 179, 179, 0.5), 3px 3px 0 rgba(179, 179, 179, 0.33333), 4px 4px 0 rgba(179, 179, 179, 0.25), 5px 5px 0 rgba(179, 179, 179, 0.2), 6px 6px 0 rgba(179, 179, 179, 0.16667), 7px 7px 0 rgba(179, 179, 179, 0.14286), 8px 8px 0 rgba(179, 179, 179, 0.125), 9px 9px 0 rgba(179, 179, 179, 0.11111), 10px 10px 0 rgba(179, 179, 179, 0.1), 11px 11px 0 rgba(179, 179, 179, 0.09091), 12px 12px 0 rgba(179, 179, 179, 0.08333), 13px 13px 0 rgba(179, 179, 179, 0.07692), 14px 14px 0 rgba(179, 179, 179, 0.07143), 15px 15px 0 rgba(179, 179, 179, 0.06667), 16px 16px 0 rgba(179, 179, 179, 0.0625), 17px 17px 0 rgba(179, 179, 179, 0.05882), 18px 18px 0 rgba(179, 179, 179, 0.05556), 19px 19px 0 rgba(179, 179, 179, 0.05263), 20px 20px 0 rgba(179, 179, 179, 0.05), 21px 21px 0 rgba(179, 179, 179, 0.04762), 22px 22px 0 rgba(179, 179, 179, 0.04545), 23px 23px 0 rgba(179, 179, 179, 0.04348), 24px 24px 0 rgba(179, 179, 179, 0.04167), 25px 25px 0 rgba(179, 179, 179, 0.04), 26px 26px 0 rgba(179, 179, 179, 0.03846), 27px 27px 0 rgba(179, 179, 179, 0.03704), 28px 28px 0 rgba(179, 179, 179, 0.03571), 29px 29px 0 rgba(179, 179, 179, 0.03448), 30px 30px 0 rgba(179, 179, 179, 0.03333), 31px 31px 0 rgba(179, 179, 179, 0.03226), 32px 32px 0 rgba(179, 179, 179, 0.03125), 33px 33px 0 rgba(179, 179, 179, 0.0303), 34px 34px 0 rgba(179, 179, 179, 0.02941), 35px 35px 0 rgba(179, 179, 179, 0.02857), 36px 36px 0 rgba(179, 179, 179, 0.02778), 37px 37px 0 rgba(179, 179, 179, 0.02703), 38px 38px 0 rgba(179, 179, 179, 0.02632), 39px 39px 0 rgba(179, 179, 179, 0.02564), 40px 40px 0 rgba(179, 179, 179, 0.025);</pre>
+<p>這個陰影在匯入後，可以轉成這麼長的CSS，而且透過變數的修改，可以另外再調整陰影長度及陰影顏色，如果這樣的陰影，如果客戶說太短，想要在加長50%，就可以感覺到CSS與SASS效率上的差異了。</p>
+<h3>Sass 與 Compass</h3>
+<p><a href="http://compass-style.org/">Compass 官方網站</a></p>
+<p>Compass是基於sass的擴充函式庫，最常用到的就是CSS3 @mixin (又是@mixin!?)，還是用範例來解釋吧。</p>
+<div class="d0830">
+	<div class="box">
+	</div>
+</div>
+<p>上面這段陰影的CSS code大家應該都很熟悉，目前的版本要這樣打...</p>
+<pre>
+-webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+-moz-box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);	
+</pre>
+<p>但是如果是sass with compass，就只要如下方式輸入...</p>
+<pre>
+@include box-shadow(0 0 10px rgba(00,00,00,.6))
+</pre>
+<p>只要匯入Css3 @mixin後，他就會幫你自動加入CSS個瀏覽器的hack，很棒吧~，在接下來的分享如何開始使用Sass與compass。</p>

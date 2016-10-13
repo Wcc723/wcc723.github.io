@@ -1,0 +1,42 @@
+---
+layout: post
+title: jQuery Mobile 載入google map顯示不完全的問題
+category: jquery
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [jquery, mobile, javascript]
+---
+<p>Jquery Mobile的頁面載入google map會有一個bug(如第一個Go map button)，這一個bug會造成map只有顯示一小塊(如果螢幕大一點的裝置，就真的是很小一塊了)。</p>
+<iframe src="http://jsbin.com/ECEDOhI/2" frameborder="0" width="320" height="480"></iframe>
+<!-- more -->
+<h2>問題</h2>
+<p>會這樣的原因是jquery mobile在未載入的頁面會是display: none，所以在載入google map時就會有空間不夠大的問題，這邊有兩種解決方式提供給大家參考。</p>
+<pre>
+initialize()
+//這是載入地圖的function
+</pre>
+<em>google map api參考：<a href="https://developers.google.com/maps/documentation/javascript/examples/map-simple">https://developers.google.com/maps/documentation/javascript/examples/map-simple</a></em>
+
+<h2>關閉轉場動畫</h2>
+<p>效果參考Go Map2 (no transition)的按鈕。</p>
+<pre>
+$('#Map2').on('click',function(){    
+  $.mobile.changePage( "#map", { transition: "none", changeHash: true });
+  //把換頁的動畫設成none
+  initialize();
+});
+</pre>
+
+<h2>延遲執行</h2>
+<p>效果參考Go Map3 (time out function)的按鈕。</p>
+<pre>
+var mytimeout;
+
+$('#delayMap').on('click',function(){    
+  mytimeout = window.setTimeout(initialize, 500);
+  //延遲載入地圖的時間
+});
+</pre>
+
+<a class="jsbin-embed" href="http://jsbin.com/ECEDOhI/2/embed?html,js">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>

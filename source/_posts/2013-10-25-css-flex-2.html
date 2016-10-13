@@ -1,0 +1,152 @@
+---
+layout: post
+title: CSS3 Flex的排版方式
+category: css
+tagline: 
+thumbnail: 
+cssdemo: 2013-winter
+tags: [sass, css]
+---
+
+<p>flex是用來排版的CSS屬性，在本章就用所了解的flex來排版看看，並且在介紹幾個flex屬性。</p>
+<!-- more -->
+
+<h2>flex-wrap: wrap</h2>
+<p>Flex-wrap的功能其實就是把超過100%的元素換行，這邊就直接來做個實驗就可以了解。</p>
+<pre>
+//以下兩個html範例結構如下
+&lt;div class=&quot;container&quot;&gt;
+  &nbsp; &nbsp; &lt;menu&gt;Menu&lt;/menu&gt;    
+  &nbsp; &nbsp; &lt;nav&gt;Nav&lt;/nav&gt;    
+  &nbsp; &nbsp; &lt;article&gt;Article&lt;/article&gt;   
+  &nbsp; &nbsp; &lt;footer&gt;Footer&lt;/footer&gt;
+&lt;/div&gt;
+</pre>
+<pre>
+//sass code
+header,menu,footer
+  width: 100%
+nav
+  width: 120px
+article
+  flex: 1
+</pre>
+
+<div class="demo d1026">
+  <div class="flex">
+    <header>Header</header>
+    <menu>Menu</menu>
+    <nav>Nav</nav>
+    <article>Article</article>
+    <footer>Footer</footer>
+  </div>
+</div>
+<p>如果沒有加上flex-wrap: wrap，以上的元素就會像是車禍一樣撞在一起，原因就是所有元素都被排成一排；只要加上了flex-wrap: wrap，超過100%的元素將會被換行。</p>
+<pre>
+.container
+  display: flex
+  flex-wrap: wrap
+</pre>
+<div class="demo d1026">
+  <div class="container">
+    <header>Header</header>
+    <menu>Menu</menu>
+    <nav>Nav</nav>
+    <article>Article</article>
+    <footer>Footer</footer>
+  </div>
+</div>
+
+
+
+<p>接下來也可以是著加上一些內容看看。</p>
+<div class="demo d1026">
+  <div class="container">
+    <header>Header</header>
+     <menu>Menu</menu>
+    <nav>
+      <ul>
+        <li>為什麼</li>
+        <li>這邊</li>
+        <li>也會</li>
+        <li>有選單</li>
+        <li>?</li>
+      </ul>
+    </nav>
+
+    <article class="content1">
+      <h1>內容標題</h1>
+      <section><p>「圓仔」喝媽媽的乳汁越長越大，「圓圓」呵護備至，常常攬在懷裡，但「圓仔」也有回饋，因為牠的便便可說是「圓圓」的營養劑。</p>
+      <p>台北市立動物園今天說，「圓仔」一百零九日齡大，體重已經突破七千兩百四十六公克。目前「圓仔」唯一的食物就是媽媽「圓圓」的乳汁，儘管觀察到「圓圓」一天只有哺乳一至兩次，但「圓仔」的體重穩定上升。</p>
+      </section>     
+    </article>
+    <footer>Footer</footer>
+  </div>
+</div>
+
+<h2>Order</h2>
+<p>這是定義元素的排列位置，下面有一個簡單的範例，只要點選的元素，該元素的order會被定義成-1，這樣他就會被排到最前面。</p>
+<pre>
+//sass code
+//這是用純css製作的範例，可以參考之前的Checkbox的妙用
+input:checked
+  & + label
+    order: -1
+    background: #375F99
+</pre>
+<div class="demo d1026">
+  <div class="order">
+    <input type="radio" name="order" id="a1"><label for="a1">1</label>
+    <input type="radio" name="order" id="a2"><label for="a2">2</label>
+    <input type="radio" name="order" id="a3"><label for="a3">3</label>
+    <input type="radio" name="order" id="a4"><label for="a4">4</label>
+  </div>
+</div>
+
+<h2>垂直水平置中</h2>
+<p>在過去的CSS都要用盡各種奇怪的方式才能垂直水平置中(table、light-height等等)，現在可以容易達到垂直水平置中(還不只一種方式噢～)</p>
+<h4>Margin 置中</h4>
+<p>方法和以前差不多，只要設定margin: auto即可。</p>
+<pre>
+div
+  margin: auto
+</pre>
+<div class="demo d1026">
+  <div class="container center">
+      <div>this is away center.</div>
+  </div>
+</div>
+
+<h4>Align-items & justify-content</h4>
+<p>簡單來說，就是從外層去設定內層物件的置中，在flex外層的對齊設定相當多樣，下一章會繼續介紹。</p>
+<pre>
+.container
+  align-items: center
+  justify-content: center
+</pre>
+<h4></h4>
+<div class="demo d1026">
+  <div class="container center2">
+      <div>this is away center.</div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

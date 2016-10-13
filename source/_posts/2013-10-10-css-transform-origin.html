@@ -1,0 +1,128 @@
+---
+layout: post
+title: CSS沒有極限 - CSS transform-origin 
+category: css
+tagline: transform 起始點
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+<p>本篇介紹transform的起始點，一般來說變形的起始點都在物件的中心點，但如果需要像時鐘的分秒針一樣，中心點並不再物件的中心，就需要靠transform-origin去設定物件變形的起始點。</p>
+<!-- more -->
+
+
+<div class="demo d1010">
+  <div class="relative">
+  <div class="topLine"></div>
+  <div class="bottomLine"></div>
+  <div class="middleLine"></div>
+    <div class="box"><div class="dot"></div>x-50px<br>y-100px</div>
+  </div>
+</div>
+<p>在html裡的基準點都是從左上開始，從水平開始往右稱為<code>x</code>軸，垂直往下稱為<code>y</code>軸，CSS在編寫習慣上也是先寫x軸再寫y軸，如<code>50px 100px</code>，結果會是x軸向右50px，y軸垂直向下100px。而tranaform的屬性中，坐標將是相當重要的關鍵。</p>
+<h2>Rotate</h2>
+<div class="demo d1010" data-demo="hover me!">
+<div class="relative">
+<div class="topLine"></div>
+  <div class="bottomLine"></div>
+  <div class="middleLine"></div>
+  <div class="rotate"><div class="dot"></div></div>
+  </div>
+</div>
+<pre>
+.rotate   
+  +transform(rotate(30deg)) 
+</pre>
+<p>在這一個demo中，只有設定rotate旋轉50度，並沒有設定起始點。因為此時的物件預設值坐標是50% 50%，</p>
+<div class="demo d1010" data-demo="hover me!">
+<div class="relative">
+<div class="topLine"></div>
+  <div class="bottomLine"></div>
+  <div class="middleLine"></div>
+  <div class="rotate2"><div class="dot"></div></div>
+  </div>
+</div>
+<pre>
+.rotate2
+  +transform(rotate(30deg))
+  +transform-origin(0,0)
+</pre>
+<p>在設定玩起始點後，2D變形物件會依起始點開始作變形，如範例中就是從x-0 y-0，左上角開始跑，所以在設定transform必須要清楚瞭解到要變型物件的起始點。</p>
+
+<h2>Scale</h2>
+<p>Scale是屬於transform2D的縮放變形效果，值為x軸及y軸倍率，而他一樣會受物件起始點的影響。</p>
+<div class="demo d1010" data-demo="hover me!">
+<div class="relative">
+<div class="topLine"></div>
+  <div class="bottomLine"></div>
+  <div class="middleLine"></div>
+  <div class="scale"><div class="dot"></div></div>
+  </div>
+</div>
+<pre>
+.scale
+  +transform(scale(1.5, 1.5))
+</pre>
+
+<div class="demo d1010" data-demo="hover me!">
+<div class="relative">
+<div class="topLine"></div>
+  <div class="bottomLine"></div>
+  <div class="middleLine"></div>
+  <div class="scale2"><div class="dot"></div></div>
+  </div>
+</div>
+<pre>
+.scale2
+  +transform(scale(1.5, 1.5))
+  +transform-origin(0,0)
+</pre>
+<p>由上面兩個scale範例中可以瞭解到基準點對於變形的重要性，而這將會影響版面的規劃以及其他物件之相對關係。</p>
+
+
+
+
+
+
+<h2>Rotate 3D</h2>
+
+<div class="demo d1010" data-demo="hover me!">
+<div class="perspective">
+  <div class="relative">
+  <div class="topLine"></div>
+    <div class="bottomLine"></div>
+    <div class="middleLine"></div>
+    <div class="rotate3"><div class="dot"></div></div>
+    <div class="rotate4"><div class="dot"></div></div>
+    </div>
+</div>
+</div>
+<pre>
+.rotate3
+  @extend .box
+  +transform-style(preserve-3d)
+  +transform(rotateY(0deg))
+  +transform-origin(0,0)
+  &:hover
+    +transform(rotateY(90deg))
+
+.rotate4
+  @extend .box
+  +transform-style(preserve-3d)
+  +transform(rotateY(0deg))
+  +transform-origin(100%,0)
+  &:hover
+    +transform(rotateY(-90deg))
+</pre>
+<p>當然3D也不例外，如果設定好基準點，物件才能依設定的軸心旋轉，如果把軸心放在最左邊及最右邊，就可以向上方這開門的效果。</p>
+
+<h3>旋轉吧 時鐘</h3>
+<div class="demo clocks">
+  <div class="clock">
+    <div class="hours"></div>
+    <div class="minutes"></div>
+    <div class="seconds"></div>
+  </div>
+</div>
+<p>就如同最開始所說的，如果設定好起始點，畫一個時鐘也不是問題。</p>

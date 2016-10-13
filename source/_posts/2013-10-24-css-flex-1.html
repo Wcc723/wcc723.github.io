@@ -1,0 +1,114 @@
+---
+layout: post
+title: CSS3 display:flex
+category: css
+tagline: 
+thumbnail: 
+cssdemo: 2013-winter
+tags: [sass, css]
+---
+
+<p>display: box及display: flex，兩者是類似的伸縮排版語法但現在已經改成display: flex。</p>
+<pre>
+display: box; is a version of 2009.
+display: flexbox; is a version of 2011.
+display: flex; is the actual version.
+</pre>
+<p>display: box是存在的版本，但是它是過去的，現在使用的是display: flex。</p>
+<p><em>目前compass的核心也還是使用display: box</em></p>
+<!-- more -->
+<h2>display: flex</h2>
+<p>這是相當正式的版本，以我目前手上的firefox及chrome都是不需要前輟詞就可以運作。</p>
+<pre>
+//sass code
+.display-box
+  display: flex   
+  width: 100%
+</pre>
+<p>和display: box設定其實差不多，外層設定只是把box換成了flex，且不需要前輟詞(目前我測試chrome & Firefox是可以正常顯示，IE10不行，safari不行)。</p>
+<pre>
+//sass code
+.flex3    
+  flex: 3
+.flex5    
+  flex: 5
+</pre>  
+<p>內層只要設定flex加上值就可以，下面的結果就是左邊的1加上右邊的3得到4，左邊就會顯示1/4的黃色，右邊則是3/4的深藍色。</p>
+<div class="demo d1024">
+  <div class="display-box1">
+    <div class="flex1">flex: 1</div>
+    <div class="flex3">flex: 3</div>
+  </div>
+</div>
+
+<p>一樣可以插入更多的flex，如以下範例就是被分成九等份，再由三個flex去分配。</p>
+<div class="demo d1024">
+  <div class="display-box1">
+    <div class="flex1">flex: 1</div>
+    <div class="flex3">flex: 3</div>
+    <div class="flex5">flex: 5</div>
+  </div>
+</div>
+<h2>與固定值共用</h2>
+<p>接下來，我們插入一個固定值200px，那麼空間會保留200px的大小，剩於的再由flex去分攤，flex依然會在剩下的空間分為四等分(如下範例)。</p>
+<div class="demo d1024">
+  <div class="display-box1">
+    <div class="n200px">200px</div>
+    <div class="flex1">flex: 1</div>
+    <div class="flex3">flex: 3</div>
+  </div>
+</div>
+<h2>混合使用</h2> 
+<p>在過去這樣的問題相當難解決，透過CSS3我們可以將許多種單位混用，如下範例，可以先切200px，在切20%，剩餘的區域在分為1/4與3/4。</p>
+<div class="demo d1024">
+  <div class="display-box1">
+    <div class="n20p">20%</div>
+    <div class="flex1">flex: 1</div>
+    <div class="flex3">flex: 3</div>
+    <div class="n200px">200px</div>
+  </div>
+</div>
+
+
+<h2>flex-direction</h2>
+<p>flex-direction等於box-direction的強化版，可以決定垂直排列及反轉排列。</p>
+<pre>
+名稱： flex-direction
+值：   row | row-reverse | column | column-reverse
+</pre>
+<h3>正常版</h3>
+<p>預設值就是flex-direction: row，水平由左至右排列。</p>
+<div class="demo d1024">
+  <div class="display-box1">
+    <div class="flex3">flex: 3</div>
+    <div class="flex1">flex: 1</div>
+    <div class="flex5">flex: 5</div>
+  </div>
+</div>
+<h3>水平反轉</h3>
+<p>flex-direction: row-reverse，就可以水平反轉排列。</p>
+<div class="demo d1024">
+  <div class="display-box2">
+    <div class="flex3">flex: 3</div>
+    <div class="flex1">flex: 1</div>
+    <div class="flex5">flex: 5</div>
+  </div>
+</div>
+
+<h3>垂直柱狀</h3>
+<p>而將值設定為column，就可以垂直排列(如果換成column-reverse就可以垂直反轉噢～)。</p>
+<div class="demo d1024">
+  <div class="display-box3">
+    <div class="flex3">flex: 3</div>
+    <div class="flex1">flex: 1</div>
+    <div class="flex5">flex: 5</div>
+  </div>
+</div>
+<p>在柱狀排列下，也可以設定百分比排列(box-flex的情況，firefox不支援垂直百分比。)</p>
+<div class="demo d1024">
+  <div class="display-box3">
+    <div class="flex3">flex: 3</div>
+    <div class="flex1">flex: 1</div>
+    <div class="h50">height: 50%</div>
+  </div>
+</div>

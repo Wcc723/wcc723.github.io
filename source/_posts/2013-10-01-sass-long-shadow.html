@@ -1,0 +1,94 @@
+---
+layout: post
+title: 用sass 做long shadow
+category: Sass
+tagline: 
+thumbnail: 2013-12-11_194845.png
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+<p>網頁設計的趨勢從擬物轉換為扁平化，而扁平化顧名思義就是較扁、較平，去除了真實化實體，扁平化也延伸出許多的視覺風格，而long shadow就是其中一種，讓扁平的世界裡，增添一些的立體感。</p>
+
+<!-- more -->
+<div class="demo d1001">
+	<div class="test">
+		B
+	</div>
+</div>
+
+
+<h3>先了解基本的原理</h3>
+<div class="demo d1001">
+	<div class="test1">
+		B
+	</div>
+</div>
+<pre>
+  text-shadow: 1px 1px 0 rgba(239, 89, 54, 0.95), 2px 2px 0 rgba(239, 89, 54, 0.5), 3px 3px 0 rgba(239, 89, 54, 0.35), 4px 4px 0 rgba(239, 89, 54, 0.275), 5px 5px 0 rgba(239, 89, 54, 0.23), 6px 6px 0 rgba(239, 89, 54, 0.2), 7px 7px 0 rgba(239, 89, 54, 0.17857), 8px 8px 0 rgba(239, 89, 54, 0.1625), 9px 9px 0 rgba(239, 89, 54, 0.15), 10px 10px 0 rgba(239, 89, 54, 0.14), 11px 11px 0 rgba(239, 89, 54, 0.13182), 12px 12px 0 rgba(239, 89, 54, 0.125), 13px 13px 0 rgba(239, 89, 54, 0.11923), 14px 14px 0 rgba(239, 89, 54, 0.11429), 15px 15px 0 rgba(239, 89, 54, 0.11), 16px 16px 0 rgba(239, 89, 54, 0.10625), 17px 17px 0 rgba(239, 89, 54, 0.10294), 18px 18px 0 rgba(239, 89, 54, 0.1), 19px 19px 0 rgba(239, 89, 54, 0.09737), 20px 20px 0 rgba(239, 89, 54, 0.095), 21px 21px 0 rgba(239, 89, 54, 0.09286), 22px 22px 0 rgba(239, 89, 54, 0.09091), 23px 23px 0 rgba(239, 89, 54, 0.08913), 24px 24px 0 rgba(239, 89, 54, 0.0875), 25px 25px 0 rgba(239, 89, 54, 0.086), 26px 26px 0 rgba(239, 89, 54, 0.08462), 27px 27px 0 rgba(239, 89, 54, 0.08333), 28px 28px 0 rgba(239, 89, 54, 0.08214), 29px 29px 0 rgba(239, 89, 54, 0.08103), 30px 30px 0 rgba(239, 89, 54, 0.08), 31px 31px 0 rgba(239, 89, 54, 0.07903), 32px 32px 0 rgba(239, 89, 54, 0.07813), 33px 33px 0 rgba(239, 89, 54, 0.07727), 34px 34px 0 rgba(239, 89, 54, 0.07647), 35px 35px 0 rgba(239, 89, 54, 0.07571), 36px 36px 0 rgba(239, 89, 54, 0.075), 37px 37px 0 rgba(239, 89, 54, 0.07432), 38px 38px 0 rgba(239, 89, 54, 0.07368), 39px 39px 0 rgba(239, 89, 54, 0.07308), 40px 40px 0 rgba(239, 89, 54, 0.0725);
+
+</pre>
+<p>CSS製作的long shadow是利用CSS的box-shadow，然後不斷的重複，每一個像素都產生一個新的陰影，產生出延長的視覺效果，所以如果用CSS寫會非常的壟長，且每個階段的透明度也不同，如果20階會有點想哭哭，如上範例。</p>
+
+
+
+<h3>box-shadow</h3>
+<div class="demo d1001">
+	<div class="test2">
+		B
+	</div>
+</div>
+<pre>
+//新增一個mixin，名稱為box-longShadow，並且新增兩個變數。
+@mixin box-longShadow($lenght: 20,$rgb: #000)
+	$all: ()
+	//先準備一個空的變數
+	@for $i from 1 through $lenght
+	//利用for 迴圈決定長度
+		$all: append($all, append(#{$i}px #{$i}px 0 ,rgba(darken($rgb,10%),1/$i)),comma)	
+		//將陰影的效果利用迴圈的方式不斷的增加到$all
+	+box-shadow($all)	
+	//將$all的變數增加到box-shadow裡
+</pre>
+<p>這是box部分的<code>mixin</code>，其中可以注意的就是我把長度($lenght)和顏色($rgb)提出來，讓每次使用都可以重新調整色彩。</p>
+<pre>
+.test
+	+box-longShadow($lenght: 80,$rgb: #ef5936)
+	//增加到sass樣式
+	margin: 25px auto 
+	background: #25aae2
+	width: 1em
+	height: 1em
+	padding: 0.1em
+	text-align: center
+	+border-radius(5px)
+	overflow: hidden
+</pre>
+<p>box-longShadow增加到CSS裡。</p>
+
+
+<h3>text-shadow</h3>
+<div class="demo d1001">
+	<div class="test3">
+		B
+	</div>
+</div>
+<pre>
+//這部分和box幾乎相同，只有在最後一行改成text-shadow
+@mixin text-longShadow($lenght: 20,$rgb: #000)
+	$all: ()
+	@for $i from 1 through $lenght
+		$all: append($all, append(#{$i}px #{$i}px 0 ,rgba($rgb,0.9/$i + 0.05)),comma)	
+	text-shadow: $all
+</pre>
+<pre>
+.test
+	+text-longShadow($lenght: 40,$rgb: #578199)
+</pre>
+<p>text-shadow和box上較為接近，只是在使用時要特別注意文字，如果較細的字體，效果沒那麼好，所以使用的時候可以試試看許多不同的字體。</p>
+<h3>Finish(動畫版)</h3>
+<div class="demo d1001" >
+	<div class="test4"> 
+		B
+	</div>
+</div>
+<p>而這只是靠兩種CSS3語法就能達到的效果，再結合更多的語法，也會有更豐富的變化，所以CSS是沒有極限的!!</p>

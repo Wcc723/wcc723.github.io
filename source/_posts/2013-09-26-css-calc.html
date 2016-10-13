@@ -1,0 +1,112 @@
+---
+layout: post
+title: CSS的運算
+category: css
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+<p>今天來介紹CSS最犯規的function <code>calc</code>，通常會用來做數值的運算，尤其是針對於長寬等等，而他最特別的是運算的數值"不需要"相同單位。</p>
+
+<!-- more -->
+<h3>基本運算</h3>
+<p>簡單來說就是css具有運算的功能，包含了基本的加減陳除。<a href="http://devdocs.io/css/calc">詳細介紹</a></p>
+<div class="d0926 demo">
+	<div class="test2">這是一段範例，這段寬100% - 80px。</div>
+</div>
+<pre>
+//html的code
+&lt;p class=&quot;test2&quot; &gt; 這是一段範例，這段寬100% - 80px。&lt;/p&gt;
+
+//sass的重點code
+.test2
+	width: calc(100% - 80px)
+</pre>
+<p>由這範例可得知，他的運算方式是不需要相同的"單位"，在這樣的情況下可以有相當多的變化。</p>
+
+<div class="d0926 demo">
+	<div class="test3">這是一段範例，這段寬100% / 6。</div>
+</div>
+<pre>
+.class
+	width: calc(100% / 6)
+</pre>
+<p>有了基本的運算，100%/6就會出現六分之一的結果。</p>
+
+<div class="d0926 demo">
+	<div class="test4"><span>這是一段範例，這段left: calc(10% + 20px)。</span></div>
+</div>
+<p>這個運算方式就是這麼豐富，但是殘酷的來了...，<code>calc</code>須ie9以上。</p>
+
+
+<h3>排版</h3>
+<div class="d0926 demo">
+	<div class="test6">
+		<div class="all1">width: calc(100% - 200px - 1em)
+		</div><div class="w200">width: 200px</div>
+	</div>
+</div>
+<em>稍微拉動視窗看看</em>
+<pre>
+&lt;div class=&quot;test6&quot;&gt;
+	&lt;div class=&quot;all1&quot;&gt;width: calc(100% - 200px - 1em)&lt;/div&gt;
+	&lt;div class=&quot;w300&quot;&gt;width: 200px&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+<pre>
+//sass
+.w200
+	width: 200px
+	float: right
+.all1
+	width: calc(100% - 200px - 1em) //1em是間距的距離
+</pre>
+
+
+
+
+<div class="d0926 demo">
+	<div class="test6">
+		<div class="wl100">100px</div><div class="all2">width: calc(100% - 200px)</div><div class="wr100">100px</div>
+		
+	</div>
+</div>
+<pre>
+&lt;div class=&quot;test6&quot;&gt;
+	&lt;div class=&quot;wl100&quot;&gt;100px&lt;/div&gt;
+	&lt;div class=&quot;all2&quot;&gt;width: calc(100% - 200px - 2em)&lt;/div&gt;
+	&lt;div class=&quot;wr100&quot;&gt;100px&lt;/div&gt;
+&lt;/div&gt;
+</pre>
+<pre>
+//sass
+.wr100
+	float: right
+	width: 100px
+.wl100
+	float: left
+	width: 100px
+.all2
+	width: calc(100% - 200px - 2em) //間距的距離
+	margin: 0 1em //間距的距離
+</pre>
+<p>Calc的好處就是彈性很大，所以再版型的規劃上，不再限定那麼多，所以在範例上可以了解，這樣的方式兩欄或是三欄都是難不倒它的，相信這屬性，在未來的RWD(自適應網頁)是有很多的幫助。</p>
+
+
+
+<h3>Toy</h3>
+<p>來源：<a href="http://codepen.io/th61855/pen/tAzBC">http://codepen.io/th61855/pen/tAzBC</a></p>
+<div class="d0926 demo">
+	<div class="test5">
+		<div><div><div><div></div></div></div></div>			
+	</div>
+</div>
+<pre>
+.demo
+	div
+		width: calc(100% - 4em) 
+		height: calc(100% - 4em)
+		+border-radius(50%)
+</pre>
+<p>而這是一個等距離的圓圈，利用的就是calc(100% - 4em)，做出的等距離效果，而他的動畫，根本次要說明的範例毫無關係><，只是個噱頭。</p>

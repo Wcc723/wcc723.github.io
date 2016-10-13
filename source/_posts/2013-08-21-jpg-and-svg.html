@@ -1,0 +1,49 @@
+---
+layout: post
+title: image 與 SVG
+category: html
+tagline: 
+thumbnail: 20130821.png
+cssdemo: 
+tags: [html, svg]
+---
+<p><code>image</code>與<code>SVG</code>的運用</p>
+<!-- more -->
+<p>來源 : <a href="http://lynn.ru/examples/svg/en.html">http://lynn.ru/examples/svg/en.html</a></p>
+<h2>image</h2>
+<p><code>image</code>和<code>img</code>是非常相似的，大部分瀏覽器都可以用<code>image</code>取代<code>img</code> <a href="http://www.whatwg.org/specs/web-apps/current-work/multipage/tree-construction.html#parsing-main-inbody">replace</a></p>
+<div class="demo">
+	<svg  width="75" height="75">
+	<image xlink:href="/images/20130821.svg" src="/images/20130821.png" width="75" height="75"/>
+</svg>
+</div>
+<p>以上的原始碼</p>
+<pre>
+&lt;svg&gt;
+&lt;image xlink:href=&quot;images/20130821.svg&quot; src=&quot;images/20130821.png&quot; width=&quot;75&quot; height=&quot;75&quot;/&gt;
+&lt;/svg&gt;
+</pre>
+<p>如果在支持SVG的瀏覽器會看到這樣</p>
+<pre>&lt;image xlink:href=&quot;images/20130821.svg&quot; width=&quot;75&quot; height=&quot;75&quot;/&gt;</pre>
+<p>如果是不支持SVG的瀏覽器會顯示如下</p>
+<pre>&lt;image src=&quot;images/20130821.png&quot; width=&quot;75&quot; height=&quot;75&quot;/&gt;</pre>
+<p>對於有些很簡單的圖像，她可能不需要獨立的SVG檔案，可以寫成這樣。</p>
+<div class="demo">
+<svg height="16" width="16">
+    <path d="M5 1v14l9-7">
+    <image src="/next.png">
+</svg>
+</div>
+<pre>
+&lt;svg height=&quot;16&quot; width=&quot;16&quot;&gt;
+&lt;path d=&quot;M5 1v14l9-7&quot;&gt; //SVG code
+&lt;image src=&quot;next.png&quot;&gt; //替代PNG
+&lt;/svg&gt;
+</pre>
+<hr>
+<h2>如果用<code>img</code>會得到以下結果...</h2>
+<div class="demo">
+<svg width="75" height="75">
+	<img xlink:href="/images/20130821.svg" src="/images/20130821.png" width="75" height="75"/></svg>
+</div>
+<p>好像不可以啊?</p>

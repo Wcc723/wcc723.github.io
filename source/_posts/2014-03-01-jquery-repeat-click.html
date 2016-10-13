@@ -1,0 +1,30 @@
+---
+layout: post
+title: Jquery 重複click判斷
+category: jquery
+tagline: 
+thumbnail: 
+cssdemo: 2013-summer
+tags: [javascript, jquery]
+---
+
+<p>今天要分享的是Jquery 重複click判斷。</p>
+<p>來源參考<a href="http://jsfiddle.net/visualidiot/WJEBr/" target="_blank">http://jsfiddle.net/visualidiot/WJEBr/</a></p>
+<!-- more -->
+<script type="text/javascript">
+$('.d0818click').click(function(evt) {
+	evt.preventDefault();
+    $('.old').animate({left: '+=10'});
+    $('.new').is(':animated') || $('.new').animate({left: '+=10'});
+});	
+</script>
+<div class="d0818 demo">
+	<a href="#" class="d0818click">點我</a>
+	<span class="old"></span>
+	<span class="new"></span>
+</div>
+<pre>$('.d0818').click(function() {
+    $('.old').animate({left: '+=10'});
+    $('.new').is(':animated') || $('.new').animate({left: '+=10'});
+});	
+</pre>

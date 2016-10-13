@@ -1,0 +1,92 @@
+---
+layout: post
+title: 利用json取得公開資料(3) 並繪製圖表
+category: jquery
+tagline: 
+thumbnail: 
+cssdemo: visualize.jQuery
+jsdemo: [visualize.jQuery]
+tags: [jquery, javascript]
+---
+
+
+<p>上次已經把資料放進表格內，接下來我們可以透過一些圖表功能來視覺化這些資料，這邊可以透過一些線上資源來繪製圖表。</p>
+<p>圖表plugin：<a href="http://www.open-open.com/ajax/ajax20090708091447.htm">http://www.open-open.com/ajax/ajax20090708091447.htm</a></p>
+<!-- more -->
+<h2>圖表</h2>
+<p>上面有我找到的一個圖表插件，就來試試看吧。不過在做之前要先注意到，json在取得之後並且放入表格是需要時間的，而圖表匯製的function也必須要在表格完成後執行，所以繪製的function必須放在json載入並寫入表格後執行。</p>
+<em>上一次的資料不適合繪製圖表，所以換成"空氣汙染"的。</em>
+<script>
+(function() {
+  var epaAPI = "http://opendata.epa.gov.tw/ws/Data/AQX/?$orderby=SiteName&$skip=0&$top=1000&format=json&callback=?";
+  var list = ''
+  _DefaultContry = '台南市'  
+  $.getJSON( epaAPI, function(){
+    format: "json"
+  }).done(function(data) {
+      $.each( data, function( i, item ) {
+      	console.log(item);
+      	if(item.County == _DefaultContry){
+       		list = '<tr><th>'+ item.SiteName+'</th><td>'+ item.PSI+'</td><td>'+ item.SO2+'</td><td>'+ item.NO2+'</td><td>'+ item.O3+'</td></tr>';				
+			$('.itemlist').append(list);     
+		};	    
+      });
+      //$('#chartData').visualize({type: 'pie', pieMargin: 10, title: '2013 台南區 PSI圓餅'});  
+      $('#chartData').visualize({type: 'line'});
+      //$('#chartData').visualize({type: 'area'});
+    });
+})();
+</script>
+<pre>
+//記得先載入以下的js 及 CSS
+//visualize.jQuery.js
+//visualize.jQuery.css
+
+
+(function() {
+  var epaAPI = "http://opendata.epa.gov.tw/ws/Data/AQX/?$orderby=SiteName&$skip=0&$top=1000&format=json&callback=?";
+  var list = ''
+  _DefaultContry = '台南市'
+  //地點換成台南市
+
+  $.getJSON( epaAPI, function(){
+    format: "json"
+  }).done(function(data) {
+      $.each( data, function( i, item ) {
+        console.log(item);
+        if(item.County == _DefaultContry){
+          list = '&lt;tr&gt;&lt;th&gt;'+ item.SiteName+'&lt;/th&gt;&lt;td&gt;'+ item.PSI+'&lt;/td&gt;&lt;td&gt;'+ item.SO2+'&lt;/td&gt;&lt;td&gt;'+ item.NO2+'&lt;/td&gt;&lt;td&gt;'+ item.O3+'&lt;/td&gt;&lt;/tr&gt;';     
+          //表格列結構及資料
+
+        $('.itemlist').append(list); 
+        //將表格列插入table    
+      };      
+    });  
+    $('#chartData').visualize({type: 'line'});
+    //繪製圖表的function
+
+    });
+})();
+</pre>
+<table id="chartData" class="atableLight itemlist">
+	<tr>
+		<td></td>
+		<th>二氧化硫濃度</th>
+    <th>一氧化碳</th>
+    <th>二氧化氮</th>
+    <th>臭氧濃度</th>
+	</tr>
+</table>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>

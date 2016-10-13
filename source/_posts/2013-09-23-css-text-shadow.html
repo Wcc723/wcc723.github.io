@@ -1,0 +1,108 @@
+---
+layout: post
+title: CSS沒有極限 - text-shadow初試身手
+category: CSS
+tagline: 
+thumbnail: 2013-09-23_103135.png
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+
+<p>text-shadow算是CSS3中較早出現的語法，而且不需要打前輟詞就能夠執行。</p>
+<!-- more -->
+<h3>text-shadow的原理</h3>
+<div class="demo d0923">
+	<div class="text1">入陣曲</div>
+</div>
+<pre>
+&lt;div class=&quot;text1&quot;&gt;入陣曲&lt;/div&gt;
+</pre>
+<pre>
+.text1 {
+  color: red;
+  text-shadow: 4em 0 0 gray;
+}
+</pre>
+<p>由上範例可得知，紅色的文字是html的純文字，另外灰色的文字就是<code>text-shadow</code>所產生的新元素。</p>
+<p>所以探究<code>text-shadow</code>的原理，其實他是從原本的文字衍伸出相同的元素，並且額外調整其衍伸出的外觀屬性，調整位置、透明度以及調整模糊的程度。而他的語法結構<code>text-shadow: X值  Y值  blur值  色彩</code>。</p>
+
+<h3>text-shadow的範例</h3>
+<p>來源參考：<a href="http://www.w3cplus.com/blog/52.html" target="_blank">http://www.w3cplus.com/blog/52.html</a></p>
+<div class="demo d0923">
+	<div class="text">當一座城牆 只為了阻擋 所有自由渴望</div>
+</div>
+<em>文字來源 五月天 入陣曲</em>
+<pre>
+//html
+&lt;div class=&quot;text&quot;&gt;當一座城牆 只為了阻擋 所有自由渴望&lt;/div&gt;
+</pre>
+<p>這一部分都是用同一段文字作為範例。</p>
+
+<h3>一般模式</h3>
+<div class="demo d0923">
+	<div class="text normal">當一座城牆 只為了阻擋 所有自由渴望</div>
+</div>
+<pre>
+/*CSS*/
+text-shadow: 1px 1px 5px gray;	
+</pre>
+<p>這是最正常的版本，就只是當作一般的陰影在使用，但是這種版本其實會影響閱讀，所以建議不使用。</p>
+
+<h3>小陰影</h3>
+<div class="demo d0923 gray">
+	<div class="text text-shadow1">當一座城牆 只為了阻擋 所有自由渴望</div>
+	<div class="text text-shadow2">當一座城牆 只為了阻擋 所有自由渴望</div>
+</div>
+<pre>
+/*CSS*/
+text-shadow: 1px 1px 0 white;
+text-shadow: -1px -1px 0 white;
+</pre>
+<p>在陰影的blur值設定為0，和底色的顏色只要做一點點的落差，就能適度的提升閱讀性。而這樣的效果，也會有凹陷的視覺感。</p>
+
+<h3>立體字</h3>
+<div class="demo d0923 ">
+	<div class="text text-shadow11">當一座城牆 只為了阻擋 所有自由渴望</div>
+</div>
+<pre>
+/*CSS*/
+color: #ccc;
+text-shadow: -1px -1px 0 white, 1px 1px 0 #333,1px 1px 0 #444;
+</pre>
+<p><code>text-shadow</code>不只可以使用一次，可以利用逗點分隔，不斷地增加新的陰影屬性，而立體字就是這樣的效果。</p>
+
+<h3>光暈</h3>
+<div class="demo d0923 ">
+	<div class="text text-shadow3">當一座城牆 只為了阻擋 所有自由渴望</div>
+</div>
+<pre>
+/*CSS*/
+text-shadow: 0 0 20px orange
+color: white 
+</pre>
+<p>也可以將文字做成白色，然後將陰影的模糊程度調高，製造類似光暈的效果。</p>
+
+<h3>霓虹燈</h3>
+<div class="demo d0923 ">
+	<div class="text text-shadow4">當一座城牆 只為了阻擋 所有自由渴望</div>
+</div>
+<pre>
+/*CSS*/
+color: white 
+text-shadow: 0 0 5px white,0 0 10px white,0 0 15px white,0 0 40px #ff00de,0 0 70px #ff00de
+</pre>
+<p>同上效果，但是不斷的堆疊層次，內層先使用白色，外層堆疊高彩度的色彩，製造出類似霓虹燈的效果。</p>
+
+<h3>復古字</h3>
+<div class="demo d0923 dark">
+	<div class="text text-shadow9">當一座城牆 只為了阻擋 <br>所有自由渴望</div>
+</div>
+<pre>
+/*CSS*/
+text-shadow: 3px 3px 0 #555, 5px 5px 0 white
+color: white
+</pre>
+<p>是利用兩個陰影堆疊出來的，可惜的是第一個陰影必須與背景相同顏色。</p>
+<br>
+<p>而其實text-shadow是一個很簡單的效果，但是可以有非常多的變化，以上範例只是一小部分，而說不定現在正在看的各位，已經有新的想法，可以做出新的效果，有機會就分享來給大家知道喔~!</p>

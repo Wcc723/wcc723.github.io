@@ -1,0 +1,110 @@
+---
+layout: post
+title: CSS transition 各種速率
+category: CSS
+tagline: 
+thumbnail: 
+cssdemo: 2013-summer
+tags: [sass, css]
+---
+<div class="note">
+
+<p>今天要介紹的是CSS transition中的<code>timing-function</code>，<code>transition</code>語法在CSS3動態中是相當容易被使用，如果再改變他的<code>timing-function</code>，可以獲得更豐富的效果。</p>
+</div>
+<!-- more -->
+<p>
+	參考 : <a href="http://www.w3schools.com/cssref/css3_pr_transition-timing-function.asp">http://www.w3schools.com/cssref/css3_pr_transition-timing-function.asp</a><br>
+	<a href="http://devdocs.io/css/transition-timing-function">http://devdocs.io/css/transition-timing-function</a>
+</p>
+
+<div class="demo d0824" data-demo="Hover me!!">
+	<div></div>
+</div>
+<p>Demo中的共通sass</p>
+<pre>
+div
+	width: 50px
+	height: 50px
+	background: red
+	+transition-property(margin-left)
+	+transition-duration(5s)
+
+.demo:hover > div
+	margin-left: calc(100% - 50px)
+</pre>
+<h3>DEMO開始</h3>
+<p>各種<code>transition-timing-function</code>的效果(安安，你們會卡嗎?我好卡)，主要有以下幾種屬性。</p>
+<pre>
++transition-timing-function(ease) 
+//緩慢的開始，中間變快，又變慢慢結束。相當於cubic-bezier(0.25,0.1,0.25,1)。
+</pre>
+<div class="demo d0824" data-demo="ease">
+	<div class="timing1"></div>
+</div>
+<pre>
++transition-timing-function(ease-in)
+//ease-in：緩慢的開始。相當於cubic-bezier(0.42,0,1,1)。	
+</pre>
+<div class="demo d0824" data-demo="ease-in">
+	<div class="timing2"></div>
+</div>
+<pre>
++transition-timing-function(ease-out)
+//ease-out：緩慢的結束。相當於cubic-bezier(0,0,0.58,1)。	
+</pre>
+<div class="demo d0824" data-demo="ease-out">
+	<div class="timing3"></div>
+</div>
+<pre>
++transition-timing-function(ease-in-out)
+//ease-in-out：緩慢的開始和結束。相當於cubic-bezier(0.42,0,0.58,1)。	
+</pre>
+<div class="demo d0824" data-demo="ease-in-out">
+	<div class="timing4"></div>
+</div>
+<pre>
++transition-timing-function(linear)
+linear：表示從開始到結束的速度一致。相當於cubic-bezier(0,0,1,1)。
+</pre>
+<div class="demo d0824" data-demo="linear">
+	<div class="timing5"></div>
+</div>
+<pre>
++transition-timing-function(cubic-bezier(0.1, 0.7, 1.0, 0.1))
+cubic-bezier(n,n,n,n)：自由定義cubic-bezier函數，每個值為0到1之間的數字。
+<a href="http://devdocs.io/css/timing-function#The_cubic-bezier()_class_of_timing-functions">cubic-bezier</a>
+</pre>
+<div class="demo d0824" data-demo="cubic-bezier(0.1, 0.7, 1.0, 0.1)">
+	<div class="timing6"></div>
+</div>
+<pre>
++transition-timing-function(step-start)	
++transition-timing-function(step-end)
+//這兩個....是來鬧得?
+</pre>
+<div class="demo d0824" data-demo="step-start">
+	<div class="timing7"></div>
+</div>
+<div class="demo d0824" data-demo="step-end">
+	<div class="timing8"></div>
+</div>
+<pre>
++transition-timing-function(steps(4, end))
+//分為4個階段
+</pre>
+<div class="demo d0824" data-demo="steps(4, end)">
+	<div class="timing9"></div>
+</div>
+
+<h3>Togather!</h3>
+<div class="demo d0824" data-demo="安安，你們會卡嗎?我好卡">
+<div class="timing1">ease</div>
+<div class="timing2">ease-in</div>
+<div class="timing3">ease-out</div>
+<div class="timing4">ease-in-out</div>
+<div class="timing5">linear</div>
+<div class="timing6">cubic-bezier</div>
+<div class="timing7">step-start</div>
+<div class="timing8">step-end</div>
+<div class="timing9">steps(4, end)</div>
+</div>

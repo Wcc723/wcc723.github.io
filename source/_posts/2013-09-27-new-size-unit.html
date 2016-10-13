@@ -1,0 +1,132 @@
+---
+layout: post
+title: CSS沒有極限 - CSS的新"文字"及"尺寸"單位
+category: CSS
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+
+
+<h2>CSS3 新的文字單位</h2>
+<p>大多數網站在文字的單位都是使用<code>px</code>，尤其在台灣多數使用者都是用windows系統，不管是什麼瀏覽器，在windows下都是以單數px是較為清楚的，如13xp．15px等，而px在建立網站時也是較為方便及準確的，但他的彈性是比較差的。</p>
+<!-- more -->
+<div class="demo d0927">
+	<div class="f12px">font-size:12px</div>
+	<div class="f13px">font-size:13px</div>
+	<div class="f14px">font-size:14px</div>		
+	<div class="f15px">font-size:15px</div>		
+</div>
+<p>彈性差的部分就來做一個實驗，就是將他們的外層在增加一個放大的文字屬性。</p>
+<div class="demo d0927">
+<div class="fLarge">font-size: large
+	<div class="f12px">font-size:12px</div>
+	<div class="f13px">font-size:13px</div>
+	<div class="f14px">font-size:14px</div>		
+	<div class="f15px">font-size:15px</div>	</div>	
+</div>
+<h3>EM</h3>
+<p>而用另一個文字單位<code>em</code>，em隨著外圍的文字大小調整，當然這是他的優點，也是他的缺點。</p>
+<em>本站預設為13px。</em>
+<div class="demo d0927">
+	<div class="f1em">font-size:1.1em</div>
+	<div class="f2em">font-size:1.2em</div>
+	<div class="f3em">font-size:1.3em</div>		
+	<div class="f4em">font-size:1.4em</div>		
+</div>
+<p>我們可以調整外圍的<code>font-size</code>，就可以影響到內部的文字大小，但是要注意，如果外層也有設定<code>em</code>他也會繼承下去(GG)。</p>
+<div class="demo d0927">
+	<div class="f15px">font-size: 15px
+	<div class="f1em">font-size:1.1em</div>
+	<div class="f2em">font-size:1.2em</div>
+	<div class="f3em">font-size:1.3em</div>		
+	<div class="f4em">font-size:1.4em</div>
+	</div>	
+	<div class="f4em">font-size: 1.4em
+	<div class="f1em">font-size:1.1em</div>
+	<div class="f2em">font-size:1.2em</div>
+	<div class="f3em">font-size:1.3em</div>		
+	<div class="f4em">font-size:1.4em</div>
+	<div class="f4em">font-size: 1.4em
+	<div class="f1em">font-size:1.1em</div>
+	<div class="f2em">font-size:1.2em</div>
+	<div class="f3em">font-size:1.3em</div>		
+	<div class="f4em">font-size:1.4em</div>
+	</div>	
+	</div>				
+</div>
+
+<p>由上面的範例可得知，一不小心還是會失控的。</p>
+<h3>REM</h3>
+<p><code>rem</code>是新的文字單位，他和em用法類似，但是他不會繼承，只會受最根部的單位影響，html的font-size(優點是ie需要9以上才支援)。</p>
+<div class="demo d0927">
+<div class="f4em">font-size: 1.4em
+	<div class="f1rem">font-size:1.1rem</div>
+	<div class="f2rem">font-size:1.2rem</div>
+	<div class="f3rem">font-size:1.3rem</div>		
+	<div class="f4rem">font-size:1.4rem</div></div>
+	<div><div class="f1em">font-size:1.1em</div>
+	<div class="f2em">font-size:1.2em</div>
+	<div class="f3em">font-size:1.3em</div>		
+	<div class="f4em">font-size:1.4em</div>	</div>		
+</div>
+<pre>
+html
+	font-size: 13px
+.f2rem
+	font-size: 1.2rem
+.f3rem
+	font-size: 1.3rem
+.f4rem
+	font-size: 1.4rem	
+</pre>
+<p>注意在使用時，它只會受html的font-size影響，body以下的都不會影響。</p>
+
+
+
+
+
+
+
+<h2>CSS3 新的尺寸單位</h2>
+<p>不久前我有一個問題，就是在自適應的情況下，正方形的CSS語法該如何寫。直接寫px然後配合media query似乎是一個辦法，但如果我的水平都要保持三個等"百分比"的正方形，似乎就不太可能了。</p>
+<div class="demo d0927">
+	<section class="px"></section>
+	<section class="px"></section>
+	<section class="px"></section>
+</div>
+<h2>vh vw</h2>
+<p>vh vm是CSS3新單位，是指裝置的畫面高度及畫面的寬度百分比。</p>
+<div class="demo d0927">
+	<section class="vw"></section>
+	<section class="vw"></section>
+	<section class="vw"></section>
+</div>
+<pre>
+.vw
+	width: 10vw
+	height: 10vw
+	margin: 0 8px	
+</pre>
+<p>這個部分我就單只用<code>vw</code>做範例，建議大家也可以調整瀏覽器大小並重新整理看看，下方是比較小畫面的螢幕截圖，這時的正方形其實和上方的<code>100px</code>大小差不多。</p>
+<div class="d0927">
+<img src="/images/2013091201.png" alt="">
+</div>
+<hr>
+<p>這時我把視窗拉滿了16:9的寬度，正方形明顯大很多。</p>
+<div class="d0927">
+<img src="/images/2013091202.png" alt="">
+</div>
+<hr>
+<p>我又繼續拉滿兩個16:9的螢幕，正方形已經突破天際了。</p>
+<div class="d0927">
+<img src="/images/2013091203.png" alt="">
+</div>
+<h2>vmin</h2>
+<p>除此之外，還有一個單位稱為vmin，是裝置中寬度or高度較小的那個值，如果使用者裝置轉來轉去就很有效果!?</p>
+<p>以上是不錯的新單位，但在目前還有許多瀏覽器不支援(android內建browser不支援)，使用前請先注意，</p>
+
+
+

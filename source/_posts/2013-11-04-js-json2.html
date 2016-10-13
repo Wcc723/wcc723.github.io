@@ -1,0 +1,76 @@
+---
+layout: post
+title: 利用json取得公開資料
+category: jquery
+tagline: 
+thumbnail: 
+cssdemo: 
+tags: [jquery, javascript]
+---
+
+<p>之前寫了很久的CSS，很久都沒機會碰js，原本就沒多厲害的js又變得更生疏了...，最近正在學json就來稍微介紹一下吧。</p>
+<p>今天就來試試看抓政府的公開資料吧。</p>
+<!-- more -->
+<h2>找一個公開的json資料</h2>
+<p>政府現在有許多公開資料，是使用json格式，而最近工作的關係，剛好知道環保署有提供公開資料。</p>
+<p>環境資源資料開放平台：<a href="http://opendata.epa.gov.tw/">http://opendata.epa.gov.tw/</a></p>
+<p>紫外線即時監測資料<a href="http://opendata.epa.gov.tw/Data/Contents/UV/">http://opendata.epa.gov.tw/Data/Contents/UV/</a></p>
+<p>資料非常多，就找一個較短的來做測試，所以就用紫外線資料來做測試吧。</p>
+
+
+<h2>取得資料</h2>
+<p>我們把jquery官網上所提供的API拿過來改看看，看看能不能得到我們想要的資料。</p>
+<script>
+(function() {
+  var epaAPI = "http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&$skip=0&$top=1000&format=json&callback=?";
+  $.getJSON( epaAPI, function(){
+    format: "json"
+  }).done(function(data) {
+    	console.log(data);
+      //$.each( data.items, function( i, item ) {
+      //  console.log(item)
+      //});
+    });
+})();
+</script>
+<pre>
+(function() {
+  var epaAPI = "http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&$skip=0&$top=1000&format=json";
+  $.getJSON( epaAPI, function(){
+    format: "json"
+  }).done(function(data) {
+    	console.log(data);
+    });
+})();
+</pre>
+<p>把上面的code改完以後，看一下console的結果，會發現下面的回應。而主要原因是javascript不能夠跨網域，所以必須做一些調整。</p>
+<pre>
+XMLHttpRequest cannot load http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&$skip=0&$top=1000&format=json. Origin http://127.0.0.1:24681 is not allowed by Access-Control-Allow-Origin. 
+</pre>
+<br>
+<p>在網址的後方加上&callback=?，這樣js就可以進行跨網域的請求。</p>
+<p>參考：<br><a href="http://blog.johnsonlu.org/javascript%E9%80%8F%E9%81%8Ejsonp%E5%AE%8C%E6%88%90%E8%B7%A8%E7%AB%99%E8%AB%8B%E6%B1%82/">http://blog.johnsonlu.org/javascript%E9%80%8F%E9%81%8Ejsonp%E5%AE%8C%E6%88%90%E8%B7%A8%E7%AB%99%E8%AB%8B%E6%B1%82/</a></p>
+<pre>
+(function() {
+  var epaAPI = "http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&$skip=0&$top=1000&format=json&callback=?";
+  //加上&callback=?
+  $.getJSON( epaAPI, function(){
+    format: "json"
+  }).done(function(data) {
+    	console.log(data);
+    });
+})();
+</pre>
+<p>如果可以傳回像下面這些物件資料，就已經算是取得資料了，而把物件點打開，就可以得到各縣市的空氣品質資料，再配合環保局所提供的API，可以了解個欄位所代表的意義。</p>
+<pre>
+[Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object, Object]
+</pre>
+<pre>
+County: "嘉義市"
+PublishAgency: "中央氣象局"
+PublishTime: "2013-11-04 08:00"
+SiteName: "嘉義"
+TWD97Lat: "23,29,52"
+TWD97Lon: "120,25,28"
+UVI: "0"
+</pre>

@@ -1,0 +1,176 @@
+---
+layout: post
+title: CSS沒有極限 - Web-font & icons
+category: css
+tagline: 
+thumbnail: 2013-10-04_091059.png
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+
+<p>本篇所用的範例是Ligature Symbols，它所提供的的icons非常多，而且簡單易用。</p>
+<!-- more -->
+<style>
+  @font-face {
+  font-family: "LigatureSymbols";
+  src: url('/demoFile/css/fonts/normal');
+  src: url('/demoFile/css/fonts/normal?#iefix') format('eot'), url('/demoFile/css/fonts/LigatureSymbols-2.05.eot') format('embedded-opentype'), url('/demoFile/css/fonts/LigatureSymbols-2.05.ttf') format('truetype'), url('/demoFile/css/fonts/LigatureSymbols-2.05.woff') format('woff'), url('/demoFile/css/fonts/LigatureSymbols-2.05.svg#LigatureSymbols') format('svg');
+  font-weight: normal;
+}
+.lsf {
+  font-family: "LigatureSymbols";
+  font-size: 300%;
+  -webkit-text-rendering: optimizeLegibility;
+  -moz-text-rendering: optimizeLegibility;
+  -ms-text-rendering: optimizeLegibility;
+  -o-text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -ms-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  -webkit-font-feature-settings: "liga" 1, "dlig" 1;
+  -moz-font-feature-settings: "liga=1, dlig=1";
+  -ms-font-feature-settings: "liga" 1, "dlig" 1;
+  -o-font-feature-settings: "liga" 1, "dlig" 1;
+  font-feature-settings: "liga" 1, "dlig" 1;
+}
+</style>
+<h2>Ligature Symbols</h2>
+<p>本篇所用的範例是Ligature Symbols，它所提供的的icons非常多，而且簡單易用。</p>
+<p><a href="http://kudakurage.com/ligature_symbols/" target="_blank">http://kudakurage.com/ligature_symbols/</a></p>
+<img src="/images/2013-10-04_091059.png" alt="">
+<p>首先當然是先下載他們所提供的檔案，解壓縮後有完整的html以及CSS範例，先找到<code>LigatureSymbols-2.05.ttf</code>的字型檔，將字型檔放在本地端的資料夾，本範例會放在sylesheets的fonts資料夾內。</p>
+
+<p>在他們的網頁下方有提供完整的CSS，包含<code>@font-face</code>以及<code>.class</code>的設定，基本上直接拷貝即可；這邊將會用sass作範例。</p>
+<pre>
+//sass code
+//compass 的font-face@include，而其中的format在compass是不需要設定的
++font-face("LigatureSymbols",font-files("LigatureSymbols-2.05.eot","LigatureSymbols-2.05.ttf","LigatureSymbols-2.05.woff","LigatureSymbols-2.05.svg#LigatureSymbols"),normal,normal)
+.lsf
+  font-family: 'LigatureSymbols'
+  font-size: 300%
+  -webkit-text-rendering: optimizeLegibility
+  -moz-text-rendering: optimizeLegibility
+  -ms-text-rendering: optimizeLegibility
+  -o-text-rendering: optimizeLegibility
+  text-rendering: optimizeLegibility
+  //文字的渲染方式
+  -webkit-font-smoothing: antialiased
+  -moz-font-smoothing: antialiased
+  -ms-font-smoothing: antialiased
+  -o-font-smoothing: antialiased
+  font-smoothing: antialiased
+  //文字的平滑模式
+  -webkit-font-feature-settings: "liga" 1, "dlig" 1
+  -moz-font-feature-settings: "liga=1, dlig=1"
+  -ms-font-feature-settings: "liga" 1, "dlig" 1
+  -o-font-feature-settings: "liga" 1, "dlig" 1
+  font-feature-settings: "liga" 1, "dlig" 1
+  //在OpenType 有更進階的設定，但這邊沒有特別研究
+</pre>
+<pre>
+//html
+&lt;div class=&quot;lsf&quot;&gt;twitter&lt;/div&gt;
+</pre>
+<p>查詢一樣在這邊：<a href="http://kudakurage.com/ligature_symbols/" target="_blank">http://kudakurage.com/ligature_symbols/</a></p>
+<p>接下來只要輸入對應的class，然後再到該頁面查詢對應的單字就可以套用，如範例我只要輸入class，在class內在填入twitter就可以獲得twitter的icon。</p>
+<h2>Web font icon有什麼優點?</h2>
+
+<h3>1.可以被搜尋</h3>
+<p>如以下範例，使用者可以在瀏覽器(Ctrl+f)搜尋<code>twitter</code>，然後選取到以下圖形。</p>
+<div class="demo">
+  <div class="lsf">twitter</div>
+</div>
+
+<h3>2.可以改變大小不失真</h3>
+<p>他是個文字，只要調整font-size，就可以改變其大小。</p>
+<pre>
+  font-size: 50px
+</pre>
+<div class="demo d1004">
+  <div class="text-center demo1" >
+    <div class="lsf">twitter</div>
+  </div>  
+</div>
+
+
+
+<h3>3.可以改變顏色(單色為主)</h3>
+<p>同上，它是個文字，只要改變color就可以改變顏色。</p>
+<pre>
+color: #00ACEE
+</pre>
+<div class="demo d1004">
+  <div class="text-center demo2" >
+    <div class="lsf">twitter</div>
+  </div>  
+</div>
+
+<h3>3.各種CSS文字屬性</h3>
+<p>當然它可以套用任何文字效果，如<code>italic</code>。</p>
+<pre>
+  font-style: italic
+</pre>
+<div class="demo d1004">
+  <div class="text-center demo3" >
+    <div class="lsf">twitter</div>
+  </div>  
+</div>
+
+<h3>4.陰影</h3>
+<p>在web-font icon下，text-shadow會更適合。</p>
+<pre>
+text-shadow: 1px 1px 5px rgba(black,.5)
+</pre>
+<div class="demo d1004">
+  <div class="text-center demo4" >
+    <div class="lsf">twitter</div>
+  </div>  
+</div>
+
+<h3>5.動態效果不失真</h3>
+<p>由於它不是點陣圖形，再放大縮小等動態效果，並不會有模糊及解析度不夠的問題。</p>
+<pre>
+.demo6
+  font-size: 40px
+  +transition(all .5s)
+  ...
+  &:hover
+    font-size: 50px
+</pre>
+<div class="demo d1004">
+  <div class="text-center demo6" >
+    <div class="lsf">twitter</div>
+  </div>  
+</div>
+
+
+
+<h3>6.各種文字的效果混合使用</h3>
+<p>這是我之前做的立體文字效果，當然它也能夠套用在web-font icon上。</p>
+<pre>
+//立體文字的mixin
+@mixin text-cubicStyle($lenght: 15,$rgb: #dfdfdf)
+  $all: ()
+  @for $i from 1 through $lenght
+    $all: append($all, append(#{$i}px #{$i}px 0 ,darken($rgb,$i/1.6)),comma)  
+  text-shadow: $all,$lenght+1px $lenght+1px 1px rgba(0,0,0,.3),$lenght+2px $lenght+2px 10px rgba(0,0,0,.6)
+
+//@include 上面的立體效果
+.demo5
+    +text-cubicStyle
+    ...
+</pre>
+<div class="demo d1004">
+  <div class="text-center demo5" >
+    <div class="lsf">twitter</div>
+  </div>  
+</div>
+
+<h2>缺點</h2>
+<p>注意，這會有支援性的問題。</p>
+
+<p>明天將會介紹怎麼做web-font icon，敬請期待!!</p>

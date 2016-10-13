@@ -1,0 +1,164 @@
+---
+layout: post
+title: Web Font的基本設定
+category: CSS
+tagline: 
+thumbnail: 2013-08-23-web-font.png
+cssdemo: [2013-summer]
+jsdemo: [20130823]
+tags: [sass, css]
+---
+
+<p>Web Font的基本用法不會很難，如果是要用本機的方式，首先就是要先找個資料夾放字型檔，接下來參考<code>@font-face</code>的作法即可。</p>
+<!-- more -->
+<h2>@font-face </h2>
+<p>參考 : <a href="http://devdocs.io/css/@font-face">http://devdocs.io/css/@font-face</a><br>
+<a href="http://compass-style.org/reference/compass/css3/font_face/">http://compass-style.org/reference/compass/css3/font_face/</a></p>
+<pre>
+CSS3的設定
+@font-face {
+[font-family: &lt;family-name&gt;;]?
+[src: [ &lt;uri&gt; [format(&lt;string&gt;#)]? | &lt;font-face-name&gt; ]#;]?
+[unicode-range: &lt;urange&gt;#;]?
+[font-variant: &lt;font-variant&gt;;]?
+[font-feature-settings: normal|&lt;feature-tag-value&gt;#;]?
+[font-stretch: &lt;font-stretch&gt;;]?
+[font-weight: &lt;weight&gt;];
+[font-style: &lt;style&gt;];
+}
+</pre>
+<pre>
+sass 的設定
++font-face($name, $font-files, $eot, $weight, $style)
+//font-face(自訂義名稱，檔案路徑，IE專用!?，文字粗，樣式(might be also italic))
+</pre>
+<div class="demo d0823">
+	<div class="webfont1">This is Kavoon-Regular.</div>	
+</div>
+<div class="js" style="display: none">20130823</div>
+<h2>google Web fonts</h2>
+<p>Google 有提供線上的版本，按照他們的方式操作並不會很難，只要先搜尋到想要的字體就可以開始了~</p>
+<p>參考 : <a href="http://www.google.com/fonts/">http://www.google.com/fonts/</a></p>
+<h5>CSS版</h5>
+<pre>
+//插入 link
+&lt;link href='http://fonts.googleapis.com/css?family=The+Girl+Next+Door' rel='stylesheet' type='text/css'&gt;
+//或是import
+@import url(&quot;http://fonts.googleapis.com/css?family=The+Girl+Next+Door&quot;)
+
+//本地CSS設定
+font-family: 'The Girl Next Door', cursive;
+</pre>
+<div class="demo d0823">
+	<div class="webfont2">This is The Girl Next Door.</div>	
+</div>
+<h5>javascript版</h5>
+<p>google會提供，只要插入在網頁裡即可，font-family也是依提供的設定即可。</p>
+<div class="demo d0823">
+	<div class="webfont3">This is Frijole.</div>	
+</div>
+<hr>
+<h2>現實的來了</h2>
+<h3>捉雞</h3>
+<table class="atableLight">
+<thead>
+<tr>
+<th>Feature</th>
+        <th>Firefox (Gecko)</th>
+        <th>Chrome</th>
+        <th>Internet Explorer</th>
+        <th>Opera</th>
+        <th>Safari</th>
+      </tr>
+<tr>
+</thead>
+<tbody>
+<td>Basic support</td>
+        <td>3.5 (1.9.1)</td>
+        <td>4.0</td>
+        <td>4.0</td>
+        <td>10.0</td>
+        <td>3.1</td>
+      </tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/WOFF" title="About_WOFF">WOFF</a></td>
+        <td>3.5 (1.9.1)</td>
+        <td>6.0</td>
+        <td>9.0</td>
+        <td>11.10</td>
+        <td>5.1</td>
+      </tr>
+<tr>
+<td>SVG Font</td>
+        <td>
+<span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span><br><span class="inlineIndicator unimplemented unimplementedInline">Unimplemented (see <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=119490" rel="external" title="">bug&nbsp;119490</a>)</span>
+</td>
+        <td>yes</td>
+        <td><span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span></td>
+        <td>yes</td>
+        <td>yes</td>
+      </tr>
+<tr>
+<td><code>unicode-range</code></td>
+        <td>
+          <p>yes&nbsp;<span style="line-height: 1.572;">(<a href="https://bugzilla.mozilla.org/show_bug.cgi?id=443976" rel="external" title="">bug&nbsp;443976</a>)</span></p>
+        </td>
+        <td>yes</td>
+        <td>9.0</td>
+        <td><span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
+        <td><span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
+      </tr>
+</tbody></table>
+<h3>手機</h3>
+<table class="atableLight">
+<thead>
+<tr>
+<th>Feature</th>
+        <th>Android</th>
+        <th>Firefox Mobile (Gecko)</th>
+        <th>IE Mobile</th>
+        <th>Opera Mini</th>
+        <th>Opera Mobile</th>
+        <th>Safari Mobile</th>
+      </tr>
+      </thead>
+      <tbody>
+<tr>
+<td>Basic support</td>
+        <td><span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
+        <td>1.0 (1.9.1)</td>
+        <td><span style="color: rgb(255, 153, 0);" title="Compatibility unknown; please update this.">?</span></td>
+        <td><span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span></td>
+        <td>10.0</td>
+        <td><span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
+      </tr>
+<tr>
+<td>WOFF</td>
+        <td><span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span></td>
+        <td>5.0 (5.0)</td>
+        <td><span style="color: rgb(255, 153, 0);" title="Compatibility unknown; please update this.">?</span></td>
+        <td><span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span></td>
+        <td>11.0</td>
+        <td><span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span></td>
+      </tr>
+<tr>
+<td>SVG fonts</td>
+        <td><span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span></td>
+        <td>
+<span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span><br><span class="inlineIndicator unimplemented unimplementedInline">Unimplemented (see <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=119490" rel="external" title="">bug&nbsp;119490</a>)</span>
+</td>
+        <td><span style="color: rgb(255, 153, 0);" title="Compatibility unknown; please update this.">?</span></td>
+        <td><span style="color: #f00;" title="Not&nbsp;supported"> Not&nbsp;supported </span></td>
+        <td>10.0</td>
+        <td><span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
+      </tr>
+<tr>
+<td><code>unicode-range</code></td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td><span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
+      </tr>
+</tbody></table>

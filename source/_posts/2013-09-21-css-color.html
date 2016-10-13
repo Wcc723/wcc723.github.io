@@ -1,0 +1,140 @@
+---
+layout: post
+title: CSS沒有極限 - CSS3的色彩
+category: CSS
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+
+
+<p>在過去我們只要使用色碼來表示顏色，色碼是用三組十六進制數位表示，每位元組從00到FF，相當十進位數位從0到255...，而現在我們有了新的屬性alpha(透明度)。</p>
+<!-- more -->
+<h3>RGBA</h3>
+<p>RGB在色彩學上定義為色光三原色，分為紅、綠、藍三色，而其混色模式為加法混色，在三種顏色相加後會變成白色；而另一種混色模式為印刷色料，是屬於減法混色，由CMYK四色組成，顏色在混和後會變成黑色。三原色的呈現主要適用於電視及電腦的顯示器，因此網頁也是利用RGB三原色。</p>
+<img src="/images/200px-AdditiveColorMixiing.svg.png" alt="">
+<p><em>圖片來源 <a href="http://zh.wikipedia.org/wiki/RGB_%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4">http://zh.wikipedia.org/wiki/RGB_%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4</a></em></p>
+
+<p>RGB相信對於一般視覺設計師來說非常的熟悉，是開啟繪圖軟體後經常會使用的色彩模式之一，其數值為0~255之間，三種數值如果都為255會顯示白色；如果三種顏色都為0則會是黑色。</p>
+<img src="/images/2013-09-20_174951.jpg" alt="">
+<p>圖片來源 Illustrator</p>
+<p>在CSS3中新增了一個新的屬性<code>alpha</code>，alpha一般用作不透明度參數，數值從0~1之間，0是透明，而1代表不透明。</p>
+<div class="demo d0921">
+	<div class="rgba1"></div>
+	<div class="rgba2"></div>
+	<div class="rgba3"></div>
+	<div class="rgba4"></div>
+	<div class="rgba5"></div>
+</div>
+<pre>
+/css
+.rgba1 {
+  background: rgba(232, 12, 122, 0.2);
+}
+.rgba2 {
+  background: rgba(232, 12, 122, 0.4);
+}
+.rgba3 {
+  background: rgba(232, 12, 122, 0.6);
+}
+.rgba4 {
+  background: rgba(232, 12, 122, 0.8);
+}
+.rgba5 {
+  background: #e80c7a;
+}
+</pre>
+<p>編寫方式為<code>屬性：rgba(R值,G值,B值,alpha值)。</code></p>
+
+
+
+
+<h3>HSLA</h3>
+<p>HSL是由色相(H)、飽和度(S)、亮度(L)組成，飽和度以及明度的值為0~100%，而色相是利用色彩學的色相環概念(如下圖的H)，所以值是由0~360，他所表現的也是一個圓環上的各個顏色。</p>
+<img src="/images/Triangulo_HSV.png" alt="">
+<img src="/images/HSL_HSV_cylinder_color_solid_comparison.png" alt="">
+<p><em>圖片來源 <a href="http://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4">http://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4</a></em></p>
+
+<p>如上圖，和HSL類似的色彩模式為HSV，主要差異為明度(V)換成了亮度(L)，而CSS3所採用的色彩模式為HSL，兩者比較可以參考 <a href="http://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4">http://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4</a>。</p>
+<div class="demo d0921">
+	<p class="text-center">僅調整色相(H)的效果</p>
+	<div class="h1"></div>
+	<div class="h2"></div>
+	<div class="h3"></div>
+	<div class="h4"></div>
+	<div class="h5"></div>
+	<div class="h6"></div>
+</div>
+<pre>
+//利用sass調整其色相(H)的數值
+@for $i from 1 through 6 //分為6階
+	.h#{$i} //class h1~h6
+		background: hsla(60 * $i,100%,50%,1) 
+		//色相(H)60為1階，乘以6階，飽和度100，明度50，alpha為1(不透明)
+</pre>
+<div class="demo d0921">
+	<p class="text-center">僅調整飽和度(S)的效果</p>
+	<div class="s1"></div>
+	<div class="s2"></div>
+	<div class="s3"></div>
+	<div class="s4"></div>
+	<div class="s5"></div>
+	<div class="s6"></div>
+</div>
+<pre>
+//利用sass調整其飽和度(S)的數值
+@for $i from 1 through 6
+	.s#{$i}
+		background: hsla(120,(20% * $i - 20),50%,1)
+		//色相(H)為120，飽和度20為1階分為6階，明度50，alpha為1(不透明)
+</pre>
+<div class="demo d0921">
+	<p class="text-center">僅調整明度(L)的效果</p>
+	<div class="l1"></div>
+	<div class="l2"></div>
+	<div class="l3"></div>
+	<div class="l4"></div>
+	<div class="l5"></div>
+	<div class="l6"></div>
+</div>
+<pre>
+//利用sass調整其飽和度(S)的數值
+@for $i from 1 through 6
+	.l#{$i}
+		background: hsla(120,100%,(20% * $i - 20),1)
+		//色相(H)為120，飽和度100，明度20為1階分為6階，alpha為1(不透明)
+</pre>
+<p>Hsla編寫方式為<code>屬性：hsla(h值,s值,l值,alpha值)。</code></p>
+
+<h3>Kuler</h3>
+<p><a href="https://kuler.adobe.com">https://kuler.adobe.com</a></p>
+<p>這是Adobe公司所出的顏色工具，不管事RGB或是色碼都可方便轉換及調整。</p>
+
+
+
+<h3>支援程度</h3>
+<p>主要會有支援問題的是alpha屬性，所以在使用時須考慮替代方案，如先設定好沒有alpha的色彩，在設定有alpha屬性的色彩。</p>
+<table class="atableLight"><tbody>
+<tr>
+<th>Feature</th> <th>Chrome</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari (WebKit)</th> </tr>
+<tr>
+<td>keywords colors</td> <td>1.0</td> <td>1.0 (1.0)</td> <td>3.0 <sup><a href="#1">[*]</a></sup>
+</td> <td>3.5</td> <td>1.0 (85)</td> </tr>
+<tr>
+<td><code>#RRGGBB | #RGB</code></td> <td>1.0</td> <td>1.0 (1.0)</td> <td>3.0</td> <td>3.5</td> <td>1.0 (85)</td> </tr>
+<tr>
+<td><code>rgb()</code></td> <td>1.0</td> <td>1.0 (1.0)</td> <td>4.0</td> <td>3.5</td> <td>1.0 (85)</td> </tr>
+<tr>
+<td><code>hsl()</code></td> <td>1.0</td> <td>1.0 (1.5)</td> <td>9.0</td> <td>9.5</td> <td>3.1 (525)</td> </tr>
+<tr>
+<td><code>rgba()</code></td> <td>1.0</td> <td>3.0 (1.9)</td> <td>9.0</td> <td>10.0</td> <td>3.1 (525)</td> </tr>
+<tr>
+<td><code>hsla()</code></td> <td>1.0</td> <td>3.0 (1.9)</td> <td>9.0</td> <td>10.0</td> <td>3.1 (525)</td> </tr>
+<tr>
+<td><code>currentColor</code></td> <td>1.0</td> <td>1.5 (1.8)</td> <td>9.0</td> <td>9.5</td> <td>4.0 (528)</td> </tr>
+<tr>
+<td><code>transparent</code></td> <td>1.0</td> <td>3.0 (1.9)</td> <td>9.0 <sup><a href="#2">[**]</a></sup>
+</td> <td>10.0</td> <td>3.1 (525)</td> </tr>
+</tbody></table>

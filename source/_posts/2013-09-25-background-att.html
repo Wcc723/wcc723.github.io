@@ -1,0 +1,124 @@
+---
+layout: post
+title: CSS沒有極限 - 意想不到的background-attachment
+category: CSS
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+
+
+<p><code>background-attachment</code>是背景固定模式的屬性，而不同的固定方式就能夠有不同的視覺效果，而人類的視覺是很容易欺騙的，適當的利用可以有意想不到的效果。</p>
+
+<!-- more -->
+<h3>scroll</h3>
+<div class="demo d0925">
+	<div class="frame pic scroll" data-title="background-attachment: scroll">	
+	</div>
+</div>
+<pre>
+	background-attachment: scroll
+</pre>
+<p>scroll模式也是預設值，背景圖會隨著外圍頁面滾動而移動。</p>
+<h3>fixed</h3>
+<div class="demo d0925">
+	<div class="frame pic fixed" data-title="background-attachment: fixed">
+	</div>
+</div>
+<pre>
+	background-attachment: fixed
+</pre>
+<p>fixed模式，不管外面、裡面怎麼滾，他都是不會動的。</p>
+<h3>local <small>(new)</small></h3>
+<div class="demo d0925">
+	<div class="frame pic local" data-title="background-attachment: local">
+	</div>
+</div>
+<pre>
+	background-attachment: local
+</pre>
+<p>local模式，主要的特色就是，自己的區塊內如果滾動時，背景圖也會跟著移動。</p>
+
+<h3>利用local + scroll做出的效果 <small>(想不出名字...)</small></h3>
+<p>參考來源：<a href="http://lea.verou.me/more-css-secrets/#background-attachment">http://lea.verou.me/more-css-secrets/#background-attachment</a></p>
+<em>請滾動畫面中卷軸、請滾動畫面中卷軸</em>
+<div class="demo d0925">
+	<div class="frame local new" >
+	麻煩<br>
+	請<br>
+	捲動<br>
+	旁邊<br>
+	的卷軸<br>
+	謝謝。	<br><br>
+	麻煩<br>
+	請<br>
+	捲動<br>
+	旁邊<br>
+	的卷軸<br>
+	謝謝。	
+	</div>
+</div>
+<pre>
+//css
+.class{
+	background:
+	  linear-gradient(white 30%, hsla(0,0%,100%,0)),
+	  linear-gradient(hsla(0,0%,100%,0), white 70%) bottom,
+	  radial-gradient(at top, rgba(0,0,0,.2), transparent 70%),
+	  radial-gradient(at bottom, rgba(0,0,0,.2), transparent 70%) bottom;
+	background-repeat: no-repeat;
+	background-size: 100% 40px, 100% 40px, 100% 14px, 100% 14px;
+	background-attachment: local, local, scroll, scroll;
+	}
+</pre>
+<p>在這效果下，我們可以做出向上或是向下未讀完錯覺(請滾動畫面中卷軸)，而簡單來說他利用了兩種模式的交叉運用，做出的視覺效果。</p>
+
+
+
+
+<h4>Scroll 層</h4>
+<div class="demo d0925">
+	<div class="frame local new2" data-title="background-attachment: local + scroll">
+	</div>
+</div>
+<pre>
+	background: radial-gradient(at top, rgba(0,0,0,.2), transparent 70%), radial-gradient(at bottom, rgba(0,0,0,.2), transparent 70%) bottom
+	background-repeat: no-repeat
+	background-size: 100% 18px, 100% 18px
+	background-attachment: scroll, scroll
+</pre>
+<p>我們先看scroll層，上下都有著固定的陰影，在那邊不會移動，就算到了最上層及最底層也不會有變化。</p>
+
+<h4>Local 層</h4>
+<div class="demo d0925">
+	<div class="frame local new1" data-title="background-attachment: local + scroll">
+	</div>
+</div>
+<pre>
+	background: linear-gradient(black 30%, rgba(black,0)), linear-gradient(rgba(black,0), black 70%) bottom
+	background-repeat: no-repeat
+	background-size: 100% 40px, 100% 40px
+	background-attachment: local, local
+</pre>
+<p>這一段把local層改成了黑色，可以看得比較清楚，可以發現local層是到了最上層及最底層後才會出現，利用這個方式蓋住上一層。當然到時候要記得改回白色。</p>
+
+<h4>在完成一次的demo</h4>
+<div class="demo d0925">
+	<div class="frame local new" >
+	麻煩<br>
+	請<br>
+	捲動<br>
+	旁邊<br>
+	的卷軸<br>
+	謝謝。	<br><br>
+	麻煩<br>
+	請<br>
+	捲動<br>
+	旁邊<br>
+	的卷軸<br>
+	謝謝。	
+	</div>
+</div>
+<p>參考來源：<a href="http://lea.verou.me/more-css-secrets/#background-attachment">http://lea.verou.me/more-css-secrets/#background-attachment</a></p>

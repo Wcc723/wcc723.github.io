@@ -1,0 +1,68 @@
+---
+layout: post
+title: Transform3D 翻牌效果
+category: css
+tagline: 
+thumbnail: 
+cssdemo: 2013-winter
+tags: [sass, css]
+---
+
+
+<p>再經過一連串的CSS3苦練之後...，發現我對CSS transform3D挺有興趣的，但是一個3D的Demo都要花很多的時間才做得出來...，如果不嫌棄就先看一些以前做的吧~。</p>
+<!-- more -->
+<h2>翻牌效果</h2>
+<div class="demo d1031" demo-data="Hover Me!">
+	<div class="turn180" style="width:300px;height: 300px;">
+		<div class="flipper">
+			<div><img src="/images/2013-winter/cd1.jpg"></div>
+			<div><img src="/images/2013-winter/cd2.jpg"></div>
+		</div>				
+	</div>
+</div>
+<p>翻牌效果是CSS3中算比較容易的，但是在定位就比較麻煩一些，由於要先將兩張圖重疊，所以用的是position: absolute，剩下的部分就直接在sass code中介紹吧。</p>
+<pre>
+//sass code
+@mixin turn180($zIndex: 10)
+	position: relative //因為要用 absolute定位，所以外圍當然要用relative囉~
+	+perspective(1000)	//透視
+
+
+	.flipper
+		+transform-style(preserve-3d) //transform3D必要
+		+transition(all 0.8s) //動畫轉換效果
+		&:hover  
+			+transform(rotateY(180deg))  //滑入之後，整體旋轉180度
+			&:first-child  //這邊是要將兩張圖的前後位置對調
+				z-index: $zIndex + 1 
+				& + * //相鄰的第二張圖要放在前方
+					z-index: $zIndex + 2
+
+		& > * //這邊用全域選取器，也可以換成其他的~
+			position: absolute
+			top: 0 			
+			+transform-style(preserve-3d)
+			&:first-child //這邊就是先將第一張圖放在前方
+				z-index: $zIndex + 2
+				left: 0
+				+backface-visibility(hidden) //CSS3D 不顯示背面的圖
+				& + * //相鄰的第二個元素
+					z-index: $zIndex + 1
+					right: 0
+					+transform(rotateY(180deg)) //第二張圖先反轉到背面
+					+backface-visibility(hidden)
+
+.turn180
+	+turn180  //include上面那個@mixin
+</pre>
+
+
+<h2>backface-visibility</h2>
+<p>backface-visibility是用來決定transform3D的元素背面是否顯示，預設值是顯示。沒有將背面隱藏，會類似下面的效果(下方範例只有一張圖)。</p>
+<div class="demo d1031" demo-data="Hover Me!">
+	<div class="turn180 visible" style="width:300px;height: 300px;">
+		<div class="flipper">
+			<div><img src="/images/2013-winter/cd1.jpg"></div>
+		</div>				
+	</div>
+</div>

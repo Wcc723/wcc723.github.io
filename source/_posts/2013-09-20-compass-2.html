@@ -1,0 +1,225 @@
+---
+layout: post
+title: CSS沒有極限 - Sass 與 Compass(2)
+category: CSS
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+<p>承上篇，上一篇主要是介紹Sass和Compass是什麼，而本篇會介紹Sass和Compass究竟對CSS的撰寫有什麼樣的影響，讓許多工程師及設計師都說已經回不去了(回不去CSS)，現在就讓大家瞧瞧，它是多麼的強大吧(本篇介紹主要語法將會以Sass為主，並非使用Scss)。</p>
+<!-- more -->
+
+<h3>小試牛刀 - 巢狀</h3>
+<div class="demo d0920">
+	<div class="nest">
+		<ul>
+			<li>我最愛</li>
+			<li>在單槓上</li>
+			<li>練劈腿</li>
+		</ul>
+	</div>
+</div>
+<pre>
+/*CSS*/
+ul {
+  color: #e80c7a;
+}
+ul li {
+  border-bottom: #cccccc solid 1px;
+}
+</pre>
+<pre>
+/*sass*/
+ul
+	color: #E80C7A
+	li				
+		border-bottom: #ccc solid 1px
+</pre>
+<p>向這樣的巢狀寫法，父層的selector只需要寫一次，子層的只要縮排依序寫下去，在編譯後就會編譯成如上方的CSS，這樣的功能尤其是在<code>menu</code>及<code>Table</code>特別有感...。且在父層Selector需要改變時，也只要改變一次父層Selector。</p>
+
+
+<h3>小試牛刀 - 變數</h3>
+<pre>
+/*sass*/
+$color: #E80C7A
+ul
+	color: $color
+	li				
+		border-bottom: #ccc solid 1px
+</pre>
+<img src="/images/2013-09-20_134935.jpg" alt="">
+<p>變數在sass使用頻率相當高，對於設計師來說，可以將變數設想為Illustrator的色票，可以不斷地重複使用。而在往後如果變數需要修改，所有引用此參數的屬性也可套用新的變數，可有效減少修改的時間。</p>
+
+
+
+<h3>來點厲害的 - 數學運算</h3>
+<div class="demo d0920">
+	<div class="math">
+		<div class="box1">150 + 10 + 10 = 170px <br>太寬了~</div>
+		<div class="box2">150 - 10 * 2 = 120px <br>這才是想要的</div>
+	</div>
+</div>
+<p>這邊以box來作範例，假設我們需要150px X 150px的div，但一般來說border會增加在所設定的寬度外圍，所以box的寬高會如上圖左，在sass中我們可以如下編寫方式得到我們想要的寬高，而優點當然是不用每次修改都手動重新計算數值。</p>
+<pre>
+$boxSize: 150px
+$boxBorder: 10px
+.box2
+	border: $color solid $boxBorder //border寬度
+	width: $boxSize - $boxBorder*2  //div的寬度減掉左右邊的border寬
+	height: $boxSize - $boxBorder*2	//記得 先乘除後加減...
+	...
+</pre>
+
+
+
+
+
+<h3>來點厲害的 - 色彩運算</h3>
+<div class="demo d0920">
+	<div class="color">
+		<div class="box1">background: #E80C7A</div>
+		<div class="box2">background: #b80961</div>
+	</div>
+</div>
+<p>設計師應該會都聽過一句話：顏色在深一點點，而顏色在深一點點，在繪圖軟體上好辦事，但是這六個號碼的色碼，就好像是馬賽克一樣，怎麼樣都令人摸不清。而sass的色彩運算可以將顏色加深、調淡，甚至是旋轉色相、調整飽和度等功能。</p>
+<pre>
+$color: #E80C7A
+.box
+	background: darken($color,10%)
+</pre>
+
+<h3>來點厲害的 - Mixin</h3>
+<div class="demo d0920">
+	<div class="mixin">
+		<table class="table1">
+			<tr>
+				<th>標題</th>
+				<th>標題</th>
+				<th>標題</th>
+			</tr>
+			<tr>
+				<td>內容</td>
+				<td>內容</td>
+				<td>內容</td>
+
+			</tr>
+		</table>
+
+		<table class="table2">
+			<tr>
+				<th>標題</th>
+				<th>標題</th>
+				<th>標題</th>
+			</tr>
+			<tr>
+				<td>內容</td>
+				<td>內容</td>
+				<td>內容</td>
+
+			</tr>
+		</table>
+	</div>
+</div>
+<p><code>mixin</code>在sass是相當重要的功能，其功能是將CSS模組化，並且可將變數另外設定，讓引用<code>mixin</code>時去做變數的調整。而對於設計師來說，可以將<code>mixin</code>設想為Flash的元件或是Illustrator的圖樣功能，只要設定一次，在後面可以重複性的使用。
+</p>
+<pre>
+//設定mixin，並且將背景色設定為變數
+@mixin table-base($color: #E80C7A)
+	border-collapse: collapse
+	width: 100%
+	th
+		text-align: center
+		background: $color
+		color: white
+	td,th
+		padding: 6px
+		border: 1px solid #ccc
+</pre>
+<pre>
+
+table.table1
+	+table-base
+	//mixin匯入，只需要輸入<code>@include mixin名稱</code>
+	//或者在.sass可以輸入<code>+mixin名稱</code>
+
+table.table2
+	+table-base($color: #9d6bda)
+	//mixin匯入後，重新設定變數
+</pre>
+
+
+
+
+<h3>Compass 一起來吧</h3>
+<div class="demo d0920">
+	<div class="compass">		
+	</div>
+</div>
+<p>Compass內建CSS3的mixin，所以在導入CSS3是相當方便的。</p>
+<pre>
+/sass
+$color: #E80C7A	
+.box
+	+background-image(linear-gradient($color,darken($color,20%)))
+	//漸層色效果
+	...
+</pre>
+<pre>
+//CSS
+.box{
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #e80c7a), color-stop(100%, #870747));
+  background-image: -webkit-linear-gradient(#e80c7a, #870747);
+  background-image: -moz-linear-gradient(#e80c7a, #870747);
+  background-image: -o-linear-gradient(#e80c7a, #870747);
+  background-image: linear-gradient(#e80c7a, #870747);
+  ...
+}
+
+</pre>
+
+
+
+<h3>Sass + Compass</h3>
+<div class="demo d0920">
+	<div class="sass">
+		<table class="table3">
+			<tr>
+				<th>標題</th>
+				<th>標題</th>
+				<th>標題</th>
+			</tr>
+			<tr>
+				<td>內容</td>
+				<td>內容</td>
+				<td>內容</td>
+
+			</tr>
+		</table>
+	</div>
+</div>
+<p>而在sass及compass合體後，就能明顯增加工作效率，而多餘的時間將能夠開發更多的CSS效果，以提升專案的品質。</p>
+<pre>
+//將mixin 導入CSS3
+@mixin table-base2($color: #E80C7A)
+	border-collapse: collapse
+	width: 100%
+	th
+		text-align: center
+		background: $color
+		+background-image(linear-gradient($color,darken($color,20%)))
+		color: white
+	td,th
+		padding: 6px
+		border: 1px solid #ccc
+</pre>
+<pre>
+table.table3
+	+table-base2
+	//在引用後，會自動計算漸層色彩
+</pre>
+
+
+
+<p>本篇所介紹的Sass和Compass的功能只是其中一部份，但其實在使用上已經很充足，畢竟Sass也是屬於一種工具，與其學的精，不如先發揮其所能，希望有興趣的朋友們，來一起嘗試看看吧。</p>

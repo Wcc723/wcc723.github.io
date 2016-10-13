@@ -1,0 +1,115 @@
+---
+layout: post
+title: Animation 和 keyframe
+category: css
+tagline: 
+thumbnail: 
+cssdemo: 2013-winter
+tags: [sass, css]
+---
+
+<p>CSS的Animation分為兩個部分，一個是決定動畫該如何跑的Keyframe，另一個是將動畫載入元素的Animation。簡單來說，就是先製作一個keyframe來決定動畫的影格動作，在將動作載入元素，而這兩個都是必要的。</p>
+<!-- more -->
+<h2>Sass中 Keyframe , Animation的@mixin</h2> 
+<p>Compass目前版本似乎沒有支援animation，首先要先準備兩個<code>mixin</code>，一個是keyframe，另一個是animation。</p>
+<p>參考：<a href="https://gist.github.com/ericam/1607696">https://gist.github.com/ericam/1607696</a></p>
+<pre>
+//@mixin for keyframe
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+
+//@mixin for animation
+=animation($content)
+  -webkit-animation: $content
+  -moz-animation: $content
+  -o-animation: $content
+  animation: $content
+</pre>
+
+
+
+<p>如果沒有意外，這些sass就可以對應各種瀏覽器的前輟詞，現在就立馬做一個簡單的demo吧！</p>
+
+
+<h2>Demo</h2>
+<div class="demo d1016">
+  <div></div>
+</div>
+<pre>
+%box
+  height: 100px
+  width: 100px
+  margin: 0 auto
+  background: orange
+
++keyframes(ifinityCircles)
+  from
+    +transform(rotate(0))
+  to
+    +transform(rotate(360deg))
+
+div
+    @extend %box
+    +animation(ifinityCircles 3s infinite linear)
+</pre>
+
+<p>就這樣馬上就能完成animation，輕鬆愜意～</p>
+
+
+
+<h2>Keyframe</h2> 
+<p>Keyframe在設定上也很容易，我們直接看下面的demo就可以了。</p>
+<h3>keyframe設定</h3>
+<pre>
+//sass code
+//我們製作兩款keyframe樣式，一款是from to，另一款就是百分比。
+//這一款from to 其實就是0%~100%的意思
++keyframes(ifinityCircles)
+  from
+    +transform(rotate(0))
+    //不管事百分比或是from to，都可以直接在這邊設定每個階段的動作
+  to
+    +transform(rotate(360deg))
+
+//如果另外設定百分比，就可以設定更細節的設定
++keyframes(ifinityCircles2)
+  0%
+    +transform(rotate(0))
+  50%
+    +transform(translateX(-100%) rotate(180deg))
+  100%
+    +transform(translateX(100%) rotate(360deg))
+</pre>
+<h3>元素的animation設定</h3>
+<pre>
+.box
+  +animation(ifinityCircles 3s infinite linear)
+  //這邊可以就可以直接引用剛剛的keyframe
+  //ifinityCircles : keyframe自訂義名稱
+  //3s : 持續時間
+  //infinite : 反覆次數(無限)
+  //linear : 動畫曲線(速率一致就對了)
+</pre>
+<div class="d1017 demo">
+  <div class="box"></div>
+</div>
+<pre>
+.box1
+  +animation(ifinityCircles2 3s infinite linear alternate)
+  //alternate : 動畫在結束時，會反轉回去
+</pre>
+
+<div class="d1017 demo">
+  <div class="box1"></div>
+</div>
+
+
+
+

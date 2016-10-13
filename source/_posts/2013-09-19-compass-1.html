@@ -1,0 +1,113 @@
+---
+layout: post
+title: CSS沒有極限 - Sass 與 Compass(1)
+category: CSS
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+<p>在先前的幾篇，有提過好幾次的Sass以及Compass、Fire.app等工具，在這邊就來釐清這些是什麼樣的工具。</p>
+<p>Sass官方網站：<a href="http://sass-lang.com/" target="_blank">http://sass-lang.com/</a></p>
+<!-- more -->
+<h3>Q1:他是類似Dreamweaver或是什麼樣的軟體嗎?</h3>
+<img src="/images/2013-09-19_142701.jpg" alt="">
+<p>為何有這樣的問題呢?因為一開始我真的這麼認為。我以為它是XX軟體或是XX軟體的外掛元件，只要下載安裝就可以了，而到了Sass官網，我找不到Download或是我能理解的安裝方法，發現我真的無法理解...。</p>
+<p>以上是題外話，Sass並不是一套軟體，它算是CSS的進階語言，透過Ruby環境編譯成一般CSS，而在編寫的過程中Dreamweaver、Sublime text、Visual Studio、記事本只是編寫的工具，並不會影響到編譯後的結果。</p>
+<p>建議對Sass有興趣的設計師或工程師，請繼續看下去，Sass是非常優秀的CSS進階語言，而入門並沒有想像中的困難。</p>
+
+<h3>Q2:Ruby又是什麼?</h3>
+<img src="/images/2013-09-19_142741.jpg" alt="">
+<p>是一種程式語言，而Sass就是用Ruby所編寫，所以在Sass編譯時需要有Ruby的編譯能力。</p>
+<p><a href="https://www.ruby-lang.org/zh_tw/" target="_blank">Ruby繁體中文</a></p>
+
+<h3>Q3:Sass，為何又有人說scss?</h3>
+<p>兩者都屬於sass，而差在附檔名以及編寫方式的不同。</p>
+<p><code>.sass</code>是屬於原生的sass語法，明顯的特徵是利用縮排取代大括號。<code>.scss</code>後來衍生出來的語法，為了讓新一代的設計師可以承受較少的痛學習sass，所以在結構上相當類似CSS。</p>
+<pre>
+/*CSS Code*/
+.error {
+  border: 1px #f00;
+  background: #fdd;
+}
+</pre>
+<pre>
+/*SCSS Code*/
+.error {
+  border: 1px #f00;
+  background: #fdd;
+}
+</pre>
+<pre>
+/*Sass Code*/
+.error
+  border: 1px #f00
+  background: #fdd
+</pre>
+
+<p>由以上範例可以看出SCSS其實和CSS幾乎是一樣的，而Sass就少了大括號以及分號。而我喜歡sass的簡潔，尤其是少了大括號可以增加CSS的閱讀性，但如果在專案進行時，建議與同伴們討論好要以哪一種語法執行，避免造成日後維護的困擾。</p>
+
+<h3>Q4:Less 又是什麼?</h3>
+<p>他也是類似sass的CSS擴充語言，不同的是sass是在Ruby環境下，而less是Javascript library。本篇不太會介紹到Less，如知詳情請參考此比較網站(<a href="http://www.hongkiat.com/blog/sass-vs-less/">http://www.hongkiat.com/blog/sass-vs-less/</a>)。</p>
+
+
+<h3>Q5:sass 可以運用在現在的專案嗎?</h3>
+<p>由於前方有介紹到Scss的語法結構與CSS類似，只要有編譯環境後，將CSS的副檔名修改成.scss就可以開始嘗試了，而從現有的專案開始練習，也可以快速了解其優點。</p>
+
+
+<h3>Q6:Compass又是什麼?</h3>
+<img src="/images/2013-09-19_142821.jpg" alt="">
+<p>Compass是sass的擴充語言，而其中最常使用的就是CSS3的<code>mixin</code>(在下一篇會介紹mixin)。</p>
+<pre>
+/*SCSS Code*/
+.demo{
+	@include border-radius(5px);
+	...
+}
+</pre>
+<pre>
+/*Sass Code*/
+.demo
+	+border-radius(5px)
+	...
+</pre>
+<pre>
+/*CSS code*/
+.demo{
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-ms-border-radius: 5px;
+	-o-border-radius: 5px;
+	border-radius: 5px;
+	...
+}	
+</pre>
+<div class="demo d0919">
+	<div class="test">
+	</div>
+</div>
+<p>由以上範例可得知，寫一行抵別人寫5行，怎麼可能會輸?</p>
+
+
+<h3>Q7:該怎麼開始?</h3>
+<img src="/images/20130917fireapp.jpg" alt="">
+<p>以正常流程來說，首先需要有Ruby環境，然後安裝Sass、Compass等等，而在這邊我推薦使用Fire.app (<a href="http://fireapp.handlino.com/" target="_blank">http://fireapp.handlino.com/</a>)，可以讓使用者快速進入Sass。當然，Sass在學習時需要許多的耐心與愛心，需要慢慢地去理解，接著去尋找其他人所了解的答案，最後在自己的能力範圍內去教導其他人使用。</p>
+
+<p>以下為相關入門文章(網路文章非常非常的多，請選擇自己容易理解的去閱讀)</p>
+
+	環境建立------<br>
+	安裝ruby及sass環境 <a href="http://ashareaday.wcc.tw/#2013-09-02">http://ashareaday.wcc.tw/#2013-09-02</a> <br>
+	使用Fire.app <a href="http://ashareaday.wcc.tw/#2013-09-03">http://ashareaday.wcc.tw/#2013-09-03</a><br>
+	使用Fire.app <a href="http://demo.tc/Post/757" target="_blank">http://demo.tc/Post/757</a>
+	<br><br>
+
+	語法教學------<br>
+	30天挑戰Sass <a href="http://ithelp.ithome.com.tw/profile?id=20040221" target="_blank">http://ithelp.ithome.com.tw/profile?id=20040221</a> <br>
+	ashareaday天天都分享<a href="http://ashareaday.wcc.tw/index.html">ashareaday</a><br>
+	<br>
+
+	其他相關文章------<br>
+	利用 Compass / Sass 快速開發版型 <a href="http://www.slideshare.net/kurotanshi/compass-sass?ref=http://127.0.0.1:24681/" target="_blank">http://www.slideshare.net/kurotanshi/compass-sass?ref=http://127.0.0.1:24681/</a>
+	
+

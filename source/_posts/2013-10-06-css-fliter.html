@@ -1,0 +1,89 @@
+---
+layout: post
+title: CSS沒有極限 - CSS3 Fliter 效果
+category: css
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+
+<p>假日都來介紹些單篇的主題吧~，今天要介紹的是filter。</p>
+
+<!-- more -->
+<h3>box-shadow</h3>
+<div class="demo d1006"> 
+  <div class="demo1">
+    <img src="/images/narutoL.png" alt="">
+  </div>   
+</div>
+<em>圖片來源：火影忍者</em>
+<p>box-shadow在先前介紹過，他是"盒狀"元素的陰影，所以稱作為"box" shadow，所以應用在圖片上，它自然就是以整個圖片的外框做陰影，這固然是正確的，但不一定是我們所想要的；上面這一張是png圖片，如果想要只在人物外框增加陰影，勢必要另外做一張圖了。</p>
+
+<h2>Filter</h2>
+<p>filter是一種濾鏡效果，就像是繪圖軟體的濾鏡，他會以目前畫面上的圖形來套用效果，因此透明的區域就不會有效果。</p>
+<p>參考：<a href="http://devdocs.io/css/filter">http://devdocs.io/css/filter</a></p>
+<h3>drop-shadow</h3>
+<div class="demo d1006"> 
+  <div class="demo2">
+    <img src="/images/narutoL.png" alt="">
+  </div>   
+</div>
+<pre>
+//sass code
+img
+  +filter(drop-shadow(5px 5px 5px rgba(black,.5)))
+</pre>
+<p>我們把類似box-shadow效果的drop-shadow同樣套用在這張圖上，它不再是以圖片外框來做陰影，而是以圖片的內容套用濾鏡陰影效果。</p>
+
+
+
+<h3>contrast</h3>
+<div class="demo d1006"> 
+  <div class="demo3">
+    <img src="/images/narutoL.png" alt="">
+  </div>   
+</div>
+<pre>
+img
+  +filter(contrast(300%))
+</pre>
+<p>目前他提供約10種的濾鏡，像這就是提高對比。</p>
+
+
+<h3>grayscale</h3>
+<div class="demo d1006" data-demo="hover me!"> 
+  <div class="demo4">
+    <img src="/images/narutoL.png" alt="">
+  </div>   
+</div>
+<pre>
+img
+  +filter(grayscale(100%))
+</pre>
+<p>很多圖片預覽也可以像這樣做成灰色的，然後在滑鼠hover時在轉換為彩色，在過去須配合js或是兩張的圖片，如果使用filter也可以達到這樣的效果。</p>
+
+<h3>hue-rotate</h3>
+<div class="demo d1006"> 
+  <div class="demo5">
+    <img src="/images/narutoL.png" alt="">
+  </div>   
+</div>
+<pre>
+img
+  +filter(hue-rotate(180deg))
+</pre>
+<p>這簡直就像簡易版的photoshop，旋轉色相這效果也有!</p>
+
+<h3>blur</h3>
+<div class="demo d1006" data-demo="hover me!"> 
+  <div class="demo6">
+    <img src="/images/narutoL.png" alt="">
+  </div>   
+</div>
+<pre>
+img
+  +filter(blur(10px))
+</pre>
+<p>如果大家是用-webkit-瀏覽器，應該就能感受到這些豐富的效果，如果是firefox、IE10等等瀏覽器，如果沒看到以上效果應該就能了解到了吧，這些效果固然非常有趣，但目前只有-webkit-有支援，相信firefox等瀏覽器在不久的未來都會支援這些效果。</p>

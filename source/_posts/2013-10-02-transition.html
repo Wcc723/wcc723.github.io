@@ -1,0 +1,153 @@
+---
+layout: post
+title: CSS沒有極限 - Transition 實作波動拳動圖
+category: Sass
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+<p>CSS3除了有更多的樣式外，其中一個重點就是動態，而transition是動態效果最容易達成的；所以本篇主要要介紹的是transition，以及transition的timing-function。</p>
+<!-- more -->
+<h3>小範例</h3>
+<div class="demo d1002">
+	<section class="demo1"></section>
+</div>
+<pre>
+.demo{
+	background: red;
+	-webkit-transition: background 1s;
+	-moz-transition: background 1s;
+	-o-transition: background 1s;
+	transition: background 1s;
+	...
+}
+.demo:hover {
+	background: blue;
+}
+</pre>
+<p>如果要做一個<code>hover</code>的動態效果，只要在原物件上新增<code>transition</code>語法，並且在隨後的hover新增改變後的效果即可(如上範例)，而其中必填的參數為1.運動屬性 及 2.運動秒數。</p>
+
+
+<p>而在本篇另外介紹<code>timing-function</code>，此屬性是改變動態效果的時間曲線(參考<a href="http://devdocs.io/css/timing-function">http://devdocs.io/css/timing-function</a>)，善用<code>timing-function</code>，可以獲得更豐富的效果。</p>
+<p>
+	參考 : <a href="http://www.w3schools.com/cssref/css3_pr_transition-timing-function.asp">http://www.w3schools.com/cssref/css3_pr_transition-timing-function.asp</a><br>
+	<a href="http://devdocs.io/css/transition-timing-function">http://devdocs.io/css/transition-timing-function</a>
+</p>
+<div class="demo d1002" data-demo="Hover me!!">
+	<div></div>
+</div>
+<p>Demo中的共通sass</p>
+<pre>
+div
+	width: 50px
+	height: 50px
+	background: red
+	+transition-property(margin-left)
+	+transition-duration(5s)
+
+.demo:hover > div
+	margin-left: calc(100% - 50px)
+</pre>
+<h3>timing-function</h3>
+<p>各種<code>transition-timing-function</code>的效果，主要有以下幾種屬性。</p>
+<pre>
++transition-timing-function(ease) 
+//緩慢的開始，中間變快，又變慢慢結束。相當於cubic-bezier(0.25,0.1,0.25,1)。
+</pre>
+<div class="demo d1002" data-demo="ease">
+	<div class="timing1"></div>
+</div>
+<pre>
++transition-timing-function(ease-in)
+//ease-in：緩慢的開始。相當於cubic-bezier(0.42,0,1,1)。	
+</pre>
+<div class="demo d1002" data-demo="ease-in">
+	<div class="timing2"></div>
+</div>
+<pre>
++transition-timing-function(ease-out)
+//ease-out：緩慢的結束。相當於cubic-bezier(0,0,0.58,1)。	
+</pre>
+<div class="demo d1002" data-demo="ease-out">
+	<div class="timing3"></div>
+</div>
+<pre>
++transition-timing-function(ease-in-out)
+//ease-in-out：緩慢的開始和結束。相當於cubic-bezier(0.42,0,0.58,1)。	
+</pre>
+<div class="demo d1002" data-demo="ease-in-out">
+	<div class="timing4"></div>
+</div>
+<pre>
++transition-timing-function(linear)
+linear：表示從開始到結束的速度一致。相當於cubic-bezier(0,0,1,1)。
+</pre>
+<div class="demo d1002" data-demo="linear">
+	<div class="timing5"></div>
+</div>
+<pre>
++transition-timing-function(cubic-bezier(0.1, 0.7, 1.0, 0.1))
+cubic-bezier(n,n,n,n)：自由定義cubic-bezier函數，每個值為0到1之間的數字。
+<a href="http://devdocs.io/css/timing-function#The_cubic-bezier()_class_of_timing-functions">cubic-bezier</a>
+</pre>
+<div class="demo d1002" data-demo="cubic-bezier(0.1, 0.7, 1.0, 0.1)">
+	<div class="timing6"></div>
+</div>
+<pre>
++transition-timing-function(step-start)	
++transition-timing-function(step-end)
+//這兩個....是來鬧得?
+</pre>
+<div class="demo d1002" data-demo="step-start">
+	<div class="timing7"></div>
+</div>
+<div class="demo d1002" data-demo="step-end">
+	<div class="timing8"></div>
+</div>
+<pre>
++transition-timing-function(steps(4, end))
+//分為4個階段
+</pre>
+<div class="demo d1002" data-demo="steps(4, end)">
+	<div class="timing9"></div>
+</div>
+
+<h3>Togather!</h3>
+<div class="demo d1002" data-demo="">
+<div class="timing1">ease</div>
+<div class="timing2">ease-in</div>
+<div class="timing3">ease-out</div>
+<div class="timing4">ease-in-out</div>
+<div class="timing5">linear</div>
+<div class="timing6">cubic-bezier</div>
+<div class="timing7">step-start</div>
+<div class="timing8">step-end</div>
+<div class="timing9">steps(4, end)</div>
+</div>
+
+<h3>波動拳動圖</h3>
+<div class="demo d1002">
+	<img src="/images/20131002.png" alt="">
+</div>
+<p>這邊先準備快打旋風的圖，裡面有14張的龍發動波動拳的姿勢，而這不是一張Gif，而是一連串動作組成的png。</p>
+<div class="demo d1002" data-demo="hover me">
+	<section class="ryu"></section>
+</div>
+<pre>
+.ryu	
+	+transition(background 1s)
+	+transition-timing-function(steps(13, end))
+	background: url("images/20131002.png") left bottom no-repeat	
+	...
+	&:hover
+		background-position: right bottom
+</pre>
+<p>然後利用階段性的function來實作動圖的效果，把背景圖設定transition動態，並且設定13階段的timing-function，最後只要將hover的結果設定在最後一張動作位置就完成囉。</p>
+
+<h3>如果用animation做更棒喔!</h3>
+<div class="demo d1002">
+	<section class="ryu2"></section>
+</div>
+<p>不過這似乎不是本篇重點...，在後面的文章會再另外介紹animation~，本篇就先到此為止。</p>

@@ -1,0 +1,90 @@
+---
+layout: post
+title: 試試看Json
+category: jquery
+tagline: 
+thumbnail: 
+cssdemo: 
+tags: [jquery, javascript]
+---
+
+
+<p>之前寫了很久的CSS，很久都沒機會碰js，原本就沒多厲害的js又變得更生疏了...，最近正在學json就來稍微介紹一下吧。</p>
+
+<!-- more -->
+
+<h2>Json</h2>
+<p><a href="http://zh.wikipedia.org/zh-tw/JSON">http://zh.wikipedia.org/zh-tw/JSON</a></p>
+<p>如果需要看簡介，可以看wiki的介紹，不過要特別注意的就是他的結構。</p>
+<pre>
+//物件 （object）
+//利用{}所包起來的
+{name:value}
+</pre>
+<pre>
+//陣列 Array
+//利用[]所包起來的
+[collection, collection]
+</pre>
+<p>如果對js有一咪咪概念的話，相信會對後面的介紹很容易了解。</p>
+
+<h2>Jquery</h2>
+<p>小朋友都愛寫jQuery，因為比較簡單，所以在這就用jQuery介紹json。</p>
+<p><a href="http://api.jquery.com/jQuery.getJSON/">http://api.jquery.com/jQuery.getJSON/</a></p>
+
+<p>如果打開jQuery介紹json的網頁，可以會得到向下面的code，只要把下面的code貼到網頁的<code>script</code>內，再新增一個id="images"的容器，就可以看到載入幾張flicker的圖片。</p>
+<pre>
+(function() {
+  var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON( flickerAPI, {
+    tags: "mount rainier",
+    tagmode: "any",
+    format: "json"
+  })
+    .done(function( data ) {
+      $.each( data.items, function( i, item ) {
+        $( "&lt;img&gt;" ).attr( "src", item.media.m ).appendTo( "#images" );
+        if ( i === 3 ) {
+          return false;
+        }
+      });
+    });
+})();
+
+&lt;div id=&quot;images&quot;&gt;&lt;/div&gt;
+</pre>
+<script>
+(function() {
+  var flickerAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON( flickerAPI, {
+    tags: "mount rainier",
+    tagmode: "any",
+    format: "json"
+  })
+    .done(function( data ) {
+
+      $.each( data.items, function( i, item ) {
+        console.log(item)
+        $( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+        if ( i === 3 ) {
+          return false;
+        }
+      });
+    });
+})();
+</script>
+<div id="images"></div>
+
+<h2>Console.log</h2>
+<p>利用console.log()可以將javascript的值輸出到browser的開發者工具，藉此來偵錯或是了解值的結構。</p>
+<p>如以下範例，在剛剛的script中插入console.log(item)，就可以看到範例所抓取的json有什麼樣的資料，藉此能夠了解如何運用這些資料。</p>
+<pre>
+$.each( data.items, function( i, item ) {
+  console.log(item)
+  $( "&lt;img&gt;" ).attr( "src", item.media.m ).appendTo( "#images" );
+  if ( i === 3 ) {
+    return false;
+}
+</pre>
+<img src="/images/2013-11-01_151843.png" alt="">
+<p>從他所產生的結果，其實可以了解這範例僅有取用media的圖檔位置而已，其實還有許多值還沒有用到，有興趣的人可以把它其他的值抓出來玩玩看，或許可以讓內容豐富更多~。</p>

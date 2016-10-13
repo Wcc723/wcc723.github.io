@@ -1,0 +1,71 @@
+---
+layout: post
+title: CSS沒有極限 - CSS藏頭詩 Selection
+category: CSS
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+
+<p>這是一個很簡單的技術，就是可以改變文字反選後的樣式，而支援的樣式並不多，目前僅有<code>Color</code>、<code>background</code>、<code>background-color</code>、<code>text-shadow</code>在內。</p>
+<!-- more -->
+<div class="demo d0928" data-demo="請反選這段文字">
+	<div>這是一段文章，知情人士已透露，除了價格的競爭，蘋果將推出低價iPhone，以及iPhone 5升級版。</div>
+	
+</div>
+<p>上面這一段，是正常版本的，只是做個陰影，沒有任何效果，只是要做個對照。</p>
+
+<h2>正式開始</h2>
+
+<div class="demo d0928" data-demo="請反選這段文字">
+	<div class="test1">這是一段文章，知情人士已透露，除了價格的競爭，蘋果將推出低價iPhone，以及iPhone 5升級版。</div>	
+</div>
+<p>上面這一段讓底色可以變黑，文字變成白色，但是我們可以注意到陰影在反白後，會影響閱讀。</p>
+<pre>
+div
+	&::-moz-selection
+		background: black 
+		color: white
+	&::selection  
+		background: black 
+		color: white
+</pre>
+<h3>建議移除text-shadow效果</h3>
+<div class="demo d0928" data-demo="請反選這段文字">
+	<div class="test2">這是一段文章，知情人士已透露，除了價格的競爭，蘋果將推出低價iPhone，以及iPhone 5升級版。</div>	
+</div>
+<p>像是這一段，另外再把text-shadow移除，是不是更好閱讀呢?</p>
+<pre>
+div
+	&::-moz-selection
+		background: red 
+		color: white
+		text-shadow: none
+	&::selection  
+		background: red 
+		color: white
+		text-shadow: none
+</pre>
+
+<h3>::selection可以玩什麼</h3>
+<p>來源<a href="https://54.sp88.tw/poetry_list.php?page=1&so=1&keyname=po_ti&keyword=%E9%99%B3%E8%88%8A%E4%BD%A0%E6%88%91">https://54.sp88.tw/poetry_list.php?page=1&so=1&keyname=po_ti&keyword=%E9%99%B3%E8%88%8A%E4%BD%A0%E6%88%91</a></p>
+<div class="demo d0928" data-demo="請反選這段文字">
+	<div class="test3">
+<span>英</span>式濃茶的濃郁芬芳 <br>
+經<span>久</span>不息的牽連妳我 <br>
+那時<span>妳</span>同我烘焙釀造 <br>
+陳舊了<span>這</span>紅銅色回憶 <br>
+一個又一<span>個</span>鏽在我心 <br>
+妳如壺中泉<span>水</span>的溫熱 <br>
+再次纏繞如那<span>母</span>愛般 <br>
+溶消極冰浮沈於<span>腦</span>海 <br>
+而被溫順開展的那 <br>
+萎縮的葉 <br>
+是在極光下 <br>
+畏縮的我 <br>
+</div>	
+</div>
+
+<p>在我思考了很久之後，看來它只能玩藏頭詩...。</p>

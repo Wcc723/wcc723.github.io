@@ -1,0 +1,93 @@
+---
+layout: post
+title: CSS沒有極限 - CSS3 :target選取器
+category: CSS
+tagline: 
+thumbnail: 
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+
+<p>CSS3多了相當多的selectors，而:target是其中一個，它可以讓html的id被套用上新的樣式，而這功能也可以讓html的互動性更高。</p>
+<!-- more -->
+<h3>:target</h3>
+<div class="demo d0929">
+	<a href="#test1" class="color-btn-orange">按我開始旋轉</a>
+	<a href="#2013-09-29" class="circles" id="test1"><span>點我可以停</span></a>
+</div>
+<pre>
+//html
+&lt;a href=&quot;#test1&quot; &gt;按我開始旋轉&lt;/a&gt;
+	//這個a的重點在於#test1，目標會因為這個ID被啟動
+&lt;a href=&quot;#2013-09-29&quot; class=&quot;circles&quot; id=&quot;test1&quot;&gt;&lt;span&gt;點我可以停&lt;/span&gt;&lt;/a&gt;
+	//class = circles 是他的樣式設定
+	//id = test1 是他被啟動的名字
+</pre>
+<pre>
+/CSS 重點code
+.circles:target
+	animation: ifinityCircles 3s linear infinite
+	當.circles的id被啟動時，就會開始旋轉
+
+.circles
+	//其他樣式設定
+</pre>
+<p>簡單來說它是利用class來做基本樣式的設定，透過連結讓ID被啟用新的樣式，新的樣式會被寫在.circles:target；而要將:target的效果關閉，只要其他的id被啟動即可。</p>
+
+<h3>lightbox</h3>
+<p>來源：<a href="http://devdocs.io/css/:target">http://devdocs.io/css/:target</a></p>
+<div class="demo d0929">
+	<a href="#example1" class="color-btn-gray">五月天 lightBox</a>
+</div>
+<pre>
+//html
+&lt;a class=&quot;lightbox d0929&quot; id=&quot;example1&quot; href=&quot;#2013-09-29&quot;&gt;
+	//利用a作為外框，是為了讓使用者點任何區域，都可以關閉:target的效果
+	&lt;figure&gt;
+	&lt;figcaption&gt;
+	&lt;img src=&quot;/images/mayday/009.JPEG&quot; alt=&quot;&quot;&gt;
+	&lt;/figcaption&gt;
+	&lt;/figure&gt;
+&lt;/a&gt;
+</pre>
+<pre>
+//sass
+&.lightbox:target
+	//樣式啟動
+	display: table
+
+&.lightbox
+	position: fixed
+	left: 0
+	top: 0
+	width: 100%
+	height: 100%
+	z-index: 20
+	background: rgba(00,00,00,.8)
+	display: none
+	//這一段是為了做出淺黑色的底
+	
+	figure			
+		display: table-cell
+		vertical-align: middle
+		text-align: center
+		//這邊是要讓lightbox完全置中
+
+		figcaption
+			display: inline-block
+			margin: auto 
+			padding: 15px
+			background: rgba(00,00,00,.6)
+			+border-radius(5px)
+			//而這就是五月天所登場的樣式了
+</pre>
+<p>這功能可以做出簡單的 nojs版本的lightbox，而註解我都寫在程式碼中，這邊就不再另述了。不過根據所查詢到的資料，:target要ie10才能夠run(哭哭)。</p>
+<a class="lightbox d0929" id="example1" href="#2013-09-29">
+		<figure>
+			<figcaption>
+				<img src="/images/mayday/009.JPEG" alt="">
+			</figcaption>
+		</figure>
+
+</a>

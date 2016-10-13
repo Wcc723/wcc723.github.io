@@ -1,0 +1,151 @@
+---
+layout: post
+title: CSS沒有極限 - CSS3的漸層
+category: CSS
+tagline: 
+thumbnail: 2013-09-24_164728.png
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+<p>本篇介紹CSS3的漸層，而就漸層這功能聽起來，似乎沒有什麼樣的變化，但其實透過復合式的背景可以堆疊出相當多的變化。</p>
+<!-- more -->
+<h3>漸層</h3>
+<pre>
+.gradient {
+  background: #bf2c73;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ff3b99), color-stop(100%, #7f1d4d));
+  background-image: -webkit-linear-gradient(#ff3b99, #7f1d4d);
+  background-image: -moz-linear-gradient(#ff3b99, #7f1d4d);
+  background-image: -o-linear-gradient(#ff3b99, #7f1d4d);
+  background-image: linear-gradient(#ff3b99, #7f1d4d);
+}
+</pre>	
+<p>CSS3漸層在各個瀏覽器的前輟詞並不相同，但在這邊不會特別介紹，主要會利用sass做範例(必須承認，不用sass寫那些前輟詞真的很痛苦...)</p>
+<div class="demo d0924">
+	<div class="gradient1"></div>
+</div>
+<pre>
++background-image(linear-gradient(left, #E80C7A,rgba(#E80C7A,.5), #E85D2D))
+</pre>
+<div class="demo d0924">
+	<div class="gradient2"></div>
+</div>
+<pre>
++background-image(linear-gradient(bottom, #E80C7A,rgba(#E80C7A,.5), #E85D2D))
+//從下方開始
+</pre>
+
+<div class="demo d0924">
+	<div class="gradient3"></div>
+</div>
+<pre>
++background-image(linear-gradient(-35deg, #E80C7A,rgba(#E80C7A,.5), #E85D2D))
+//旋轉	
+</pre>
+<p>這是最基本的漸層，除了垂直之外也可以改成水平甚至是有角度的。</p>
+<div class="demo d0924">
+	<div class="gradient4"></div>
+</div>
+<pre>+background-image(radial-gradient(#E80C7A,rgba(#E80C7A,.5), #E85D2D))	
+//放射狀
+</pre>
+<p>另外還有放射狀的漸層。</p>
+
+<h3>多重背景</h3>
+<div class="demo d0924">
+	<div class="gradient8"></div>
+</div>
+<pre>
++background-image(linear-gradient(left, rgba(#E80C7A,.5) 20%, transparent 50%))
+</pre>
+<div class="demo d0924">
+	<div class="gradient9"></div>
+</div>
+<pre>
++background-image(linear-gradient(top, rgba(#E80C7A,.5), transparent 70%))
+</pre>
+<p>這邊是兩個不同方向的漸層，下面要將他們合併。</p>	
+<div class="demo d0924">
+	<div class="gradient10"></div>
+</div>
+<pre>
++background(linear-gradient(left, rgba(#E80C7A,.5) 20%, transparent 50%),linear-gradient(top, rgba(#E80C7A,.5), transparent 70%))
+//兩個漸層只要用逗點隔開即可，這樣就可以做出多層次的漸層
+</pre>
+<p>在CSS3中背景可以做兩層以上，而不只是漸層，所有的背景圖案都可以，只要用逗點隔開就可以一直堆疊下去；所以在這邊我們只要把漸層語法用逗點隔開，就可以堆疊漸層。</p>
+
+
+
+<h3>圖樣背景</h3>
+<p>來源：<a href="http://codepen.io/html5web/pen/HDCrK">http://codepen.io/html5web/pen/HDCrK</a></p>
+<div class="demo d0924">
+	<div class="gradient11"></div>
+</div>
+<pre>
++background-image(linear-gradient(-45deg, #000 5px, transparent 50px))
+background-size: 50px 50px
+//利用background-size去控制每個背景的大小
+</pre>
+<p>如果要做類似圖樣的背景，我們可以設定背景的大小<code>background-size</code>，就可以做出一塊一塊的圖樣。</p>
+<div class="demo d0924">
+	<div class="gradient12"></div>
+</div>
+<pre>
++background-image(radial-gradient(#fff 3px, transparent 5px, #fff 7px, transparent 9px, #fff 11px, transparent 13px, #fff 15px, transparent 17px, #fff 19px, transparent 21px, #fff 23px, transparent 25px, #fff 27px, transparent 29px, #fff 31px, transparent 33px))
+background-color: #111
+background-size: 30px 30px
+//漸層還可以設定每個顏色的距離，只要在顏色後方輸入數值
+</pre>
+<p>漸層還可以設定每個顏色的區段距離，只要在色彩後方輸入數值就可以了。</p>
+
+
+
+<h3>旋轉吧漸層</h3>
+<p>來源：<a href="http://codepen.io/agriboz/pen/izLak">http://codepen.io/agriboz/pen/izLak</a></p>
+<div class="demo d0924">
+	<div class="gradient13"></div>
+</div>
+<pre>
+	+background(linear-gradient(45deg, #557777 50%, transparent 50%),linear-gradient(90deg, #ee6655 100%, transparent 100%),linear-gradient(135deg, #ffeebb 50%, transparent 50%) 100% 0%,linear-gradient(180deg, #ffcc55 100%, transparent 100%) 100% 0%,linear-gradient(225deg, #ffaa22 50%, transparent 50%) 100% 100%,linear-gradient(270deg, #ccddaa 100%, transparent 100%) 100% 100%,linear-gradient(315deg, #77aa88 50%, transparent 50%) 0% 100%,linear-gradient(360deg, #99cc99 100%, transparent 100%) 0% 100%)
+	//很抱歉，這顏色就是那麼的....長
+	background-repeat: no-repeat
+	background-size: 50% 50%
+	+border-radius(50%)
+	margin: 0 auto
+	width: 150px
+	height: 150px
+	border: 1em solid tomato
+	+transition(all, 3s)
+	//加點動態
+	&:hover
+		+transform(rotate(3600deg))
+</pre>
+<p>甚至結合其他語法，可以有更豐富的玩法，像是這結合了border-radius、transition、transform等等，讓這個元素像是轉盤一樣在旋轉。</p>
+
+
+<div class="demo d0924">
+	<div class="gradient14"></div>
+</div>
+<pre>
+	+background(linear-gradient(45deg, #557777 50%, transparent 50%),linear-gradient(90deg, #ee6655 100%, transparent 100%),linear-gradient(135deg, #ffeebb 50%, transparent 50%) 100% 0%,linear-gradient(180deg, #ffcc55 100%, transparent 100%) 100% 0%,linear-gradient(225deg, #ffaa22 50%, transparent 50%) 100% 100%,linear-gradient(270deg, #ccddaa 100%, transparent 100%) 100% 100%,linear-gradient(315deg, #77aa88 50%, transparent 50%) 0% 100%,linear-gradient(360deg, #99cc99 100%, transparent 100%) 0% 100%)
+	
+	background-repeat: no-repeat
+	background-size: 50% 50%
+	//移除動態及一些其他設定，僅保留重要的設定值
+</pre>
+<p>而這個效果很特別他每個漸層顏色是設定50%有色彩，另外50%是透明，然後每45度做一次顏色。</p>
+
+<div class="demo d0924">
+	<div class="gradient15"></div>
+</div>
+<pre>
+	+background(linear-gradient(45deg, #557777 50%, transparent 50%),linear-gradient(90deg, #ee6655 100%, transparent 100%),linear-gradient(135deg, #ffeebb 50%, transparent 50%) 100% 0%,linear-gradient(180deg, #ffcc55 100%, transparent 100%) 100% 0%,linear-gradient(225deg, #ffaa22 50%, transparent 50%) 100% 100%,linear-gradient(270deg, #ccddaa 100%, transparent 100%) 100% 100%,linear-gradient(315deg, #77aa88 50%, transparent 50%) 0% 100%,linear-gradient(360deg, #99cc99 100%, transparent 100%) 0% 100%)
+	
+	background-repeat: no-repeat
+	//在移除background-size: 50% 50%
+</pre>
+<p>並且每個漸層色只有50%*50%的大小，就是1/4的區域，如果沒有<code>background-size: 50% 50%</code>，他就會像上面這範例這樣。</p>
+
+
+

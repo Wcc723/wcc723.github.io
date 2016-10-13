@@ -1,0 +1,125 @@
+---
+layout: post
+title: 自己做web fonts icons
+category: css
+tagline: 
+thumbnail: 2013-10-05_132635.png
+cssdemo: 2013-autumn
+tags: [sass, css]
+---
+
+<p>承上一篇，本篇會介紹自己做web fonts icons，讓會手癢的設計師可以自行設計web font icon。</p>
+<!-- more -->
+<h3>先看看成品</h3>
+<style>
+@font-face {
+  font-family: "drangon";
+  src: url('/demoFile/css/fonts/normal');
+  src: url('/demoFile/css/fonts/normal?#iefix') format('eot'), url('/demoFile/css/fonts/icomoon.eot') format('embedded-opentype'), url('/demoFile/css/fonts/icomoon.ttf') format('truetype'), url('/demoFile/css/fonts/icomoon.woff') format('woff'), url('/demoFile/css/fonts/icomoon.svg') format('svg');
+  font-weight: normal;
+}
+
+</style>
+<div class="demo d1005" >
+  <div class="text-center demo6" >
+    <div class="drangon-icon">g</div>
+  </div>  
+</div>
+<p>這次的目標是做出七龍珠裡的一星球，使用的繪圖軟體是illustrator，而製作成web font是<a href="http://icomoon.io/app" target="_blank">http://icomoon.io/app</a> 這個網站。</p>
+
+<h2>步驟</h2>
+<h3>繪製向量檔</h3>
+<img src="/images/2013-10-05_132635.png" alt="">
+<p>這是illustrator的畫面，用哪套軟體倒是沒什麼關係，只要能夠轉SVG就可以了，但另外有一個重點，如果有用到線段要記得展開，轉SVG比較不會有問題。</p>
+<img src="/images/2013-10-05_132737.png" alt="">
+<p>存檔的時候，就選SVG就對了。</p>
+<img src="/images/2013-10-05_132753.png" alt="">
+<p>SVG選項請調整成SVG Tiny。</p>
+<h3>開始製作webfont</h3>
+<p>第一個步驟，就是先打開<a href="http://icomoon.io/app" target="_blank">http://icomoon.io/app</a> 的網頁</p>
+<img src="/images/2013-10-05_132910.png" alt="">
+<img src="/images/2013-10-05_132942.png" alt="">
+<p>把剛剛的檔案匯入到這個網站，選import或是直接拖曵檔案到網頁裡皆可。</p>
+<img src="/images/2013-10-05_133014.png" alt="">
+<p>SVG都匯入後，就可以點網頁下方的Font，這邊就只有一顆一星球。</p>
+<img src="/images/2013-10-05_133039.png" alt="">
+<p>接下來可以為每個一icon指定一個符號、英文或是數字，在這邊可以注意到我設定的是g，都確定後就點Download吧。</p>
+<img src="/images/2013-10-05_133200.png" alt="">
+<p>下載後的壓縮檔裡面有完整的範例檔，基本上只要按照範例檔去設定就可以了。</p>
+
+<h2>使用自己做的Web font Icon</h2>
+<p>由他所提供的範例檔可以得知，它的使用方式有兩種，一種是設定data，而另一種是設定Class。而不論是哪一種都必須載入他所提供的@font-face。</p>
+<pre>
+/*@font-face 設定*/
+@font-face {
+  font-family: 'icomoon';
+  src:url('fonts/icomoon.eot');
+  src:url('fonts/icomoon.eot?#iefix') format('embedded-opentype'),
+    url('fonts/icomoon.woff') format('woff'),
+    url('fonts/icomoon.ttf') format('truetype'),
+    url('fonts/icomoon.svg#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+</pre>
+
+<h3>利用Data-icon設定</h3>
+<div class="demo d1005" >
+  <div class="text-center demo6" >
+    <div data-drangon="g"></div>
+  </div>  
+</div>
+<pre>
+[data-icon]:before {
+  font-family: 'icomoon';
+  content: attr(data-icon);
+  speak: none;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+</pre>
+<p>這一個的原理是利用CSS的屬性選取器，選則html標籤裡有<code>data-icon</code>屬性的元素，並利用偽元素新增content，而content的內容會對應data-icon的值。如範例我的data-icon的值為"g"，就是當時設定的一星球。</p>
+
+
+<h3>利用Class設定</h3>
+<div class="demo d1005" >
+  <div class="text-center demo6" >
+    <div class="drangon-icon-drangonball"></div>
+  </div>  
+</div>
+<pre>
+.icon-dragonBall {
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+}
+.icon-dragonBall:before {
+  content: "\67";
+}
+</pre>
+<p>這是他所提供的另一個方式，設定Class他就能將指定的圖形載入，這作法也是比較基本且容易的。</p>
+<div class="demo d1005" >
+  <div class="text-center demo6" >
+    <div class="drangon-icon">g</div>
+  </div>  
+</div>
+<p>而我們也可以單獨把上面的Class拆出來用，直接輸入"g"一樣有效果。</p>
+
+
+<div class="demo d1005" >
+  <div class="text-center demo6" >
+    <div class="drangon-icon">g</div>
+  </div>  
+</div>
+
+<h2>相容性誤解</h2>
+<p>在上一篇的時候，我有說明到 web-font icon的相容性，在此可能要重新說明一下。上一篇所使用的 web font(ligature_symbols) 和本篇的 web font(icomoon.io) 有些不同。ligature_symbols的web font有再利用CSS3的語法(text-rendering)讓單字可以轉為icon；而本篇(icomoon)的是屬於基本款的web font，大部分的瀏覽器都有支援，造成誤會敬請見諒。</p>

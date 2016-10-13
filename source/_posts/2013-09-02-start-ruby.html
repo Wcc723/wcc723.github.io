@@ -1,0 +1,73 @@
+---
+layout: post
+title: 安裝ruby以及sass環境
+category: sass
+tagline: 本篇以windows為例
+thumbnail: 
+cssdemo: 
+tags: [ruby, sass]
+---
+<div class="note">
+<p>使用sass前的準備分為兩個部分:</p>
+<ol class="ollist">
+	<li>文字編輯器</li>
+	<li>編譯環境</li>	
+</ol>
+<p><strong>文字編輯器</strong>對於視覺設計師有Dreamweaver，而對於程式設計師則有vim、Visual studio等，除了以上之外這邊還會推薦使用<a href="http://www.sublimetext.com/">sublime text</a>，但本篇主要會先介紹編譯環境，所以在此不多敘述。</p>
+<p><strong>編譯環境</strong>是踏入sass最困難的一步，先前有提過sass是透過ruby所編譯的，所以在編譯前還需要有ruby，本篇會從如何建立ruby環境到sass的安裝。</p>
+<p><em>說實在，本篇範例不建議使用，編譯sass並沒有這麼困難，但會讓大家了解ruby是怎樣的東西，這安裝流程是怎麼樣的，這有助於更了解sass，後面會介紹其他編譯sass的方式。</em></p>
+</div>
+<!-- more -->
+
+<h2>Ruby & Sass安裝流程 <small>本篇以windows為例</small></h2>
+<ol class="ollist">
+	<li>安裝Rubyinstaller</li>
+	<li>使用 Command Prompt with Ruby (Ruby的命令提示字元…硬要翻)</li>
+	<li>安裝sass、系統更新、安裝compass</li>
+	<li>使用</li>
+</ol>
+<h3>步驟1.安裝Rubyinstaller</h3>
+<p>首先連結到官網安裝Rubyinstaller(<a href="http://rubyinstaller.org/downloads/">http://rubyinstaller.org/downloads/</a>)，應該不會有人卡在這邊...，如果卡在這邊，建議先去找個網路遊戲下載安裝試試看。</p>
+<img src="/images/2012-12-19_rubyinstall.png" alt="">
+
+<h3>步驟2.使用 Command Prompt with Ruby</h3>
+<p>在這個階段，只要找到你的Command Prompt with Ruby，並且打開就可以了。</p>
+<img src="/images/2012-12-19_startruby.png" alt="">
+
+<h3>步驟3.安裝sass</h3>
+<p>果你成功打開這個像DOS的東西，那應該就成功三分之一了，接下來就依序輸入指令碼，依序系統更新、安裝sass、安裝compass。
+請依序輸入以下指令碼。</p>
+<pre>
+gem update –system
+</pre>
+<pre>
+gem install sass
+</pre>
+<pre>
+gem install compass
+</pre>
+<img src="/images/2012-12-19_installsass.png" alt="">
+
+<h3>步驟4.使用sass</h3>
+<p>這個步驟的重點就是...怎麼使用dos指令，首先，就直接在桌面建立一個資料夾開始吧!</p>
+<p>(1)在桌面開了一個資料夾叫做SCSS，路徑是C:\Users\使用者ID\Desktop\scss (使用者ID)
+裡面包含了兩個資料夾1.css  2.scss</p>
+<img src="/images/2012-12-19_openfiles.png" alt=""><br><br>
+<p>(2)接下來就是進入到你所建立的資料夾</p>
+<pre>
+輸入cd\ (移動到根目錄)
+輸入cd C:\Users\使用者ID\Desktop\scss
+</pre>
+<p>(3)在你的C:\Users\使用者ID\Desktop\scss\scss資料夾中，創一個test.scss的檔，並在檔案裡面輸入CSS，也可參考官網<a href="http://sass-lang.com/">http://sass-lang.com/</a>來做測試。</p>
+<img src="/images/2012-12-19_creatadscss.png" alt=""><br><br>
+<p>(4)回到你的Command Prompt with Ruby，輸入sass –watch scss:css，他將會把scss資料夾內的檔案編譯成CSS，並存在CSS這個資料夾。</p>
+<pre>
+sass –watch scss:css
+</pre>
+<img src="/images/2012-12-19_inputsass.png" alt=""><br><br>
+
+<p>(5)神奇的事情發生了，SCSS被編譯成CSS檔，而且在你每次的SCSS存檔，都會被編譯。</p>
+<img src="/images/2012-12-19_translates.png" alt=""><br><br>
+
+<h3>完成!</h3>
+<p>只要Command Prompt with Ruby，沒有被中止，他就會持續監控你的SCSS檔，所以每次存檔都會被編譯。</p>
