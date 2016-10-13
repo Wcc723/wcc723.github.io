@@ -1,0 +1,1071 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="ironman,d3js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。
+今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為line、polygon、polyline、path，而其中我認為最難的是path…，希望今天能夠突">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SVG 超硬派了解 line, polygon, polyline, path (手工繪製)">
+<meta property="og:url" content="http://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。
+今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為line、polygon、polyline、path，而其中我認為最難的是path…，希望今天能夠突">
+<meta property="og:image" content="https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png">
+<meta property="og:updated_time" content="2016-10-13T02:20:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SVG 超硬派了解 line, polygon, polyline, path (手工繪製)">
+<meta name="twitter:description" content="這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。
+今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為line、polygon、polyline、path，而其中我認為最難的是path…，希望今天能夠突">
+<meta name="twitter:image" content="https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png">
+
+  <meta property="og:image" content="/images/2014ironman/day03_01.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> SVG 超硬派了解 line, polygon, polyline, path (手工繪製) | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SVG 超硬派了解 line, polygon, polyline, path (手工繪製)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-10-02T00:00:00+08:00" content="2014-10-02">
+              2014-10-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/d3js/" itemprop="url" rel="index">
+                    <span itemprop="name">d3js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/d3js/2014/10/02/Ironman-30-days-03/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/d3js/2014/10/02/Ironman-30-days-03/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014ironman/day03_01.png" rel="gallery_ciu7nsz7c001cynf0bfolab5m"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014ironman/day03_01.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。</p>
+<p>今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為line、polygon、polyline、path，而其中我認為最難的是path…，希望今天能夠突破他。<strong>我將用非天才型的硬派學習法！</strong></p>
+<p><em>本篇建議使用超過720px裝置觀看</em></p>
+<a id="more"></a>
+<p>教程參考：<a href="http://tutorials.jenkov.com/svg/" target="_blank" rel="external">http://tutorials.jenkov.com/svg/</a></p>
+<h2 id="Line"><a href="#Line" class="headerlink" title="Line"></a>Line</h2><p>這是最簡單的，只要標注上起點以及終點就完成了，起點是x1、y1，終點則是x2、y2。</p>
+
+<svg width="100%" height="100">
+	<line x1="0" y1="0" x2="300" y2="0" style="stroke: Tomato;stroke-width: 3px"/>
+	<line x1="0" y1="10" x2="300" y2="60" x3="0" y3="80" style="stroke: Tomato; stroke-width: 3px"/>
+</svg>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"100"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"0"</span> <span class="attr">y1</span>=<span class="string">"0"</span> <span class="attr">x2</span>=<span class="string">"300"</span> <span class="attr">y2</span>=<span class="string">"0"</span> <span class="attr">style</span>=<span class="string">"stroke: Tomato;stroke-width: 3px"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"0"</span> <span class="attr">y1</span>=<span class="string">"10"</span> <span class="attr">x2</span>=<span class="string">"300"</span> <span class="attr">y2</span>=<span class="string">"60"</span> <span class="attr">x3</span>=<span class="string">"0"</span> <span class="attr">y3</span>=<span class="string">"80"</span> <span class="attr">style</span>=<span class="string">"stroke: Tomato; stroke-width: 3px"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>我也試試看能不能三點，寫了x3、y3都是沒用的(白目)。</p>
+<h2 id="Polyline"><a href="#Polyline" class="headerlink" title="Polyline"></a>Polyline</h2><p>Polyline我查到的中文翻譯是折線，它主要是繪製多點線段。<a href="https://translate.google.com.tw/?ie=UTF-8&amp;hl=zh-CN&amp;client=tw-ob#en/zh-TW/Polyline" target="_blank" rel="external">來源…</a></p>
+<p>點的位置’40,0’，<code>40</code>代表x，<code>0</code>代表y，兩個點中間會接一個空格。</p>
+
+<svg width="100%" height="100">
+	<polyline points="40,0 60,60 0,60" style=" stroke:red; stroke-width:2"/>
+	<polyline points="140,0 160,60 100,60" style="fill:none; stroke:red; stroke-width:2"/>
+	<polyline points="240,0 260,60 200,60 240,0" style="fill:none; stroke:red; stroke-width:2"/>
+</svg>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"100"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">polyline</span> <span class="attr">points</span>=<span class="string">"40,0 60,60 0,60"</span> <span class="attr">style</span>=<span class="string">" stroke:red; stroke-width:2"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">polyline</span> <span class="attr">points</span>=<span class="string">"140,0 160,60 100,60"</span> <span class="attr">style</span>=<span class="string">"fill:none; stroke:red; stroke-width:2"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">polyline</span> <span class="attr">points</span>=<span class="string">"240,0 260,60 200,60 240,0"</span> <span class="attr">style</span>=<span class="string">"fill:none; stroke:red; stroke-width:2"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>Polyline開始類似Illustrator的鋼筆工具(但還不能繪製弧線)，在線段之間還能填入色彩，但特別要注意的是他並不是自動封閉線段。</p>
+<h2 id="Polygon"><a href="#Polygon" class="headerlink" title="Polygon"></a>Polygon</h2><p>Polygon中文翻譯為多邊形，用來繪製不少於3個邊的圖形，使用方式和<code>Polyline</code>完全相同。</p>
+
+<svg width="100%" height="100">
+	<polygon points="40,0 60,60 0,60" style=" stroke:red; stroke-width:2"/>
+	<polygon points="140,0 160,60 100,60" style="fill:none; stroke:red; stroke-width:2"/>
+	<polygon points="240,0 260,60 200,60 240,0" style="fill:none; stroke:red; stroke-width:2"/>
+</svg>
+
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"100"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">polygon</span> <span class="attr">points</span>=<span class="string">"40,0 60,60 0,60"</span> <span class="attr">style</span>=<span class="string">" stroke:red; stroke-width:2"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">polygon</span> <span class="attr">points</span>=<span class="string">"140,0 160,60 100,60"</span> <span class="attr">style</span>=<span class="string">"fill:none; stroke:red; stroke-width:2"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">polygon</span> <span class="attr">points</span>=<span class="string">"240,0 260,60 200,60 240,0"</span> <span class="attr">style</span>=<span class="string">"fill:none; stroke:red; stroke-width:2"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>刻意使用和polyline相同的程式碼，兩者只有標簽不同，從這樣比較能夠比對出兩個不同的地方，重點就是Polygon會<strong>自動連接最後點到第一個點</strong>。</p>
+<h2 id="地獄般的Path"><a href="#地獄般的Path" class="headerlink" title="地獄般的Path"></a>地獄般的Path</h2><p>SVG <code>&lt;path&gt;</code>是相當有難度的一個章節，每次打開到這個章節，都會想要關掉網頁。它的難度就我目前看來，就是用鍵盤畫貝茲曲線吧…。</p>
+<h4 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h4><p>這一張有一定的難度，所以在範例上我參考以下網站。</p>
+<ul>
+<li><a href="http://tutorials.jenkov.com/svg/path-element.html" target="_blank" rel="external">http://tutorials.jenkov.com/svg/path-element.html</a></li>
+<li><a href="http://www.w3schools.com/svg/svg_path.asp" target="_blank" rel="external">http://www.w3schools.com/svg/svg_path.asp</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths</a></li>
+</ul>
+<p>在w3c school的教程裡有提到path常用的屬性，這在path是相當重要的所以先列出來。</p>
+<p>其實我一直在逃避學習Path，因為他真的很複雜，所以我採用最熱血的學習方式！要用手工的方式把坐標，標在SVG上！</p>
+<ul>
+<li>M = moveto</li>
+<li>L = lineto</li>
+<li>H = horizontal lineto</li>
+<li>V = vertical lineto</li>
+<li>C = curveto</li>
+<li>S = smooth curveto</li>
+<li>Q = quadratic Bézier curve</li>
+<li>T = smooth quadratic Bézier curveto</li>
+<li>A = elliptical Arc</li>
+<li>Z = closepath</li>
+</ul>
+<p>接下來就用以上的資料，嘗試畫一個圖形。</p>
+
+<style>
+svg text{
+	fill: red;
+	font-size: 10px;
+}
+</style>
+
+<h4 id="Example-M、L"><a href="#Example-M、L" class="headerlink" title="Example M、L"></a>Example M、L</h4><p><code>M</code>、<code>L</code>使用方法：</p>
+<pre><code>M x y
+L x y
+</code></pre>
+<svg width="100%" height="200">
+	<path d="M150 3 L300 150 L3 150 Z" style=" stroke: #333; stroke-width:3; fill: MediumOrchid"/>
+	<!-- 硬派Circles! -->
+	<circle cx="150" cy="3" r="3" fill="red"/>
+	<text x="150" y="20" fill="red">150, 3</text>
+	<circle cx="300" cy="150" r="3" fill="red"/>
+	<text x="300" y="140" fill="red">300, 150</text>
+	<circle cx="3" cy="150" r="3" fill="red"/>
+	<text x="3" y="140" fill="red">3, 150</text>
+</svg>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"200"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M150 3 L300 150 L3 150 Z"</span> <span class="attr">style</span>=<span class="string">" stroke: #333; stroke-width:3; fill: MediumOrchid"</span>/&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 硬派Circles! --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"150"</span> <span class="attr">cy</span>=<span class="string">"3"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"150"</span> <span class="attr">y</span>=<span class="string">"20"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>150, 3<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"300"</span> <span class="attr">cy</span>=<span class="string">"150"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"300"</span> <span class="attr">y</span>=<span class="string">"140"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>300, 150<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"3"</span> <span class="attr">cy</span>=<span class="string">"150"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"3"</span> <span class="attr">y</span>=<span class="string">"140"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>3, 150<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>這個三角形的範例，<code>M150 3</code> 這樣是一個群組，所以第一個點是移動到<code>M150 3</code>開始，接下來劃線到<code>L300 150</code>這個點，再來是劃線到<code>L3 150</code>，最後直接用<code>Z</code>來封閉曲線。</p>
+<p><strong>因此，path的第一點通常是M: move to</strong></p>
+<h4 id="Example-H、V"><a href="#Example-H、V" class="headerlink" title="Example H、V"></a>Example H、V</h4><p><code>H</code>、<code>V</code>使用方法：</p>
+<pre><code>M x
+V y
+</code></pre>
+<svg width="100%" height="100">
+	<path d="M10 10 H 90 V 90 H 10 L 10 10" fill="black"/>
+	<!-- 硬派Circles! -->
+	<circle cx="10" cy="10" r="3" fill="red"/>
+	<text x="10" y="20" fill="red">10, 10</text>
+	<circle cx="10" cy="90" r="3" fill="red"/>
+	<text x="10" y="80" fill="red">10, 90</text>
+	<circle cx="90" cy="90" r="3" fill="red"/>
+	<text x="90" y="80" fill="red">90, 90</text>
+	<circle cx="90" cy="10" r="3" fill="red"/>
+	<text x="90" y="20" fill="red">90, 10</text>
+</svg>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"100"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M10 10 H 90 V 90 H 10 L 10 10"</span> <span class="attr">fill</span>=<span class="string">"black"</span>/&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 硬派Circles! --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"10"</span> <span class="attr">cy</span>=<span class="string">"10"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"10"</span> <span class="attr">y</span>=<span class="string">"20"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>10, 10<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"10"</span> <span class="attr">cy</span>=<span class="string">"90"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"10"</span> <span class="attr">y</span>=<span class="string">"80"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>10, 90<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"90"</span> <span class="attr">cy</span>=<span class="string">"90"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"90"</span> <span class="attr">y</span>=<span class="string">"80"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>90, 90<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"90"</span> <span class="attr">cy</span>=<span class="string">"10"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"90"</span> <span class="attr">y</span>=<span class="string">"20"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>90, 10<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>這一個範例，是利用<code>H</code>、<code>V</code>來取代垂直以及水平移動。這一段的內容是移動到<code>10 10</code>，再來垂直到x90的位置，再來是水平到y90，然後再到垂直向上到x10，最後用<code>L</code>拉線回到<code>10 10</code>的位置。</p>
+<p><strong>最後的<code>L</code>也可以直接用<code>Z</code>來close path</strong></p>
+<h4 id="Example-C-貝茲曲線"><a href="#Example-C-貝茲曲線" class="headerlink" title="Example C 貝茲曲線"></a>Example C 貝茲曲線</h4><p><code>C</code>使用方法：</p>
+<pre><code>C x1 y1, x2 y2, x y
+</code></pre><p>這是Mozilla所提供的示意圖，看了這個圖，認為還是自己畫一個可能比較了解，所以動手來試試看吧～。</p>
+<p><img src="https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png" alt=""></p>
+<p>圖片來源：<a href="https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png" target="_blank" rel="external">https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png</a></p>
+
+<svg width="100%" height="200px">
+  <path d="M10 10 C140 140,160 140,300 10" stroke="black" fill="none"/>
+  <!-- 硬派Circles! -->
+	<circle cx="10" cy="10" r="3" fill="red"/>
+	<text x="10" y="20" fill="red">M10 10</text>
+	<circle cx="140" cy="140" r="3" fill="red"/>
+	<text x="120" y="150" fill="red">C140 140</text>
+	<circle cx="160" cy="140" r="3" fill="red"/>
+	<text x="160" y="130" fill="red">160 140</text>
+	<circle cx="300" cy="10" r="3" fill="red"/>
+	<text x="300" y="20" fill="red">300 20</text>
+	<line x1="10" y1="10" x2="140" y2="140" style="stroke: Tomato;"/>
+	<line x1="160" y1="140" x2="300" y2="10" style="stroke: Tomato;"/>
+</svg>
+
+<p>用這樣的圖是不是更了解呢，首先定義第一個起始點位置<code>M10 10</code>，接下來加入C貝茲曲線，這邊開始就幻想著自己正在畫Illustrator，首先加入<code>C140 140</code>，這是第一根手把的位置，之後補一個<code>,</code>，在依序把後面的點完成。這之間可以對照上面的範例。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"200px"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M10 10 C140 140,160 140,300 10"</span> <span class="attr">stroke</span>=<span class="string">"black"</span> <span class="attr">fill</span>=<span class="string">"none"</span>/&gt;</span></div><div class="line">  <span class="comment">&lt;!-- 硬派Circles! --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"10"</span> <span class="attr">cy</span>=<span class="string">"10"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"10"</span> <span class="attr">y</span>=<span class="string">"20"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>M10 10<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"140"</span> <span class="attr">cy</span>=<span class="string">"140"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"120"</span> <span class="attr">y</span>=<span class="string">"150"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>C140 140<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"160"</span> <span class="attr">cy</span>=<span class="string">"140"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"160"</span> <span class="attr">y</span>=<span class="string">"130"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>160 140<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"300"</span> <span class="attr">cy</span>=<span class="string">"10"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"300"</span> <span class="attr">y</span>=<span class="string">"20"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>300 20<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"10"</span> <span class="attr">y1</span>=<span class="string">"10"</span> <span class="attr">x2</span>=<span class="string">"140"</span> <span class="attr">y2</span>=<span class="string">"140"</span> <span class="attr">style</span>=<span class="string">"stroke: Tomato;"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"160"</span> <span class="attr">y1</span>=<span class="string">"140"</span> <span class="attr">x2</span>=<span class="string">"300"</span> <span class="attr">y2</span>=<span class="string">"10"</span> <span class="attr">style</span>=<span class="string">"stroke: Tomato;"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="Example-S"><a href="#Example-S" class="headerlink" title="Example S"></a>Example S</h4><p><code>s</code>使用方法：</p>
+<pre><code>S x2 y2, x y
+</code></pre><p>我用超硬派學習法，徹底了解了它的特徵…。</p>
+
+<svg width="100%" height="200px">
+  <path d="M10 80 C140 140,160 140 , 300 80 S 520 20,600 80" stroke="black" fill="none"/>
+	<!-- 硬派Circles! -->
+	<circle cx="10" cy="80" r="3" fill="red"/>
+	<text x="10" y="90" fill="red">M10 80</text>
+	<circle cx="140" cy="140" r="3" fill="red"/>
+	<text x="140" y="160" fill="red">C140 160</text>
+	<circle cx="160" cy="140" r="3" fill="red"/>
+	<text x="140" y="120" fill="red">160 120</text>
+	<circle cx="300" cy="80" r="3" fill="red"/>
+	<text x="300" y="100" fill="red">300 80</text>
+	<circle cx="520" cy="20" r="3" fill="blue"/>
+	<text x="520" y="40" fill="blue">S520 40</text>
+	<circle cx="600" cy="80" r="3" fill="blue"/>
+	<text x="600" y="100" fill="blue">600 100</text>
+	<line x1="10" y1="80" x2="140" y2="140" style="stroke: Tomato;"/>
+	<line x1="160" y1="140" x2="300" y2="80" style="stroke: Tomato;"/>
+	<line x1="520" y1="20" x2="600" y2="80" style="stroke: blue;"/>
+	<circle cx="440" cy="20" r="3" fill="green"/>
+	<line x1="300" y1="80" x2="440" y2="20" style="stroke: green;"/>
+</svg>
+
+<p>透過超硬派學習法，一個一個刻出每個點的位置，感受到腦細胞的大量死亡，上圖的紅點是<code>C</code>所在的位置，<code>C</code>總共會有三個坐標，包含兩個手把以及最後一個點，而<code>S</code>是緊接在最後一個點的後方，延伸出一個綠色的手把(這一個不需要給坐標)，再補上一個藍色手把以及做後一個藍色點。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"200px"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M10 80 C140 140,160 140 , 300 80 S 520 20,600 80"</span> <span class="attr">stroke</span>=<span class="string">"black"</span> <span class="attr">fill</span>=<span class="string">"none"</span>/&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 硬派Circles! --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"10"</span> <span class="attr">cy</span>=<span class="string">"80"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"10"</span> <span class="attr">y</span>=<span class="string">"90"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>M10 80<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"140"</span> <span class="attr">cy</span>=<span class="string">"140"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"140"</span> <span class="attr">y</span>=<span class="string">"160"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>C140 160<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"160"</span> <span class="attr">cy</span>=<span class="string">"140"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"140"</span> <span class="attr">y</span>=<span class="string">"120"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>160 120<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"300"</span> <span class="attr">cy</span>=<span class="string">"80"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"300"</span> <span class="attr">y</span>=<span class="string">"100"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>300 80<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"520"</span> <span class="attr">cy</span>=<span class="string">"20"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"blue"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"520"</span> <span class="attr">y</span>=<span class="string">"40"</span> <span class="attr">fill</span>=<span class="string">"blue"</span>&gt;</span>S520 40<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"600"</span> <span class="attr">cy</span>=<span class="string">"80"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"blue"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"600"</span> <span class="attr">y</span>=<span class="string">"100"</span> <span class="attr">fill</span>=<span class="string">"blue"</span>&gt;</span>600 100<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"10"</span> <span class="attr">y1</span>=<span class="string">"80"</span> <span class="attr">x2</span>=<span class="string">"140"</span> <span class="attr">y2</span>=<span class="string">"140"</span> <span class="attr">style</span>=<span class="string">"stroke: Tomato;"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"160"</span> <span class="attr">y1</span>=<span class="string">"140"</span> <span class="attr">x2</span>=<span class="string">"300"</span> <span class="attr">y2</span>=<span class="string">"80"</span> <span class="attr">style</span>=<span class="string">"stroke: Tomato;"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"520"</span> <span class="attr">y1</span>=<span class="string">"20"</span> <span class="attr">x2</span>=<span class="string">"600"</span> <span class="attr">y2</span>=<span class="string">"80"</span> <span class="attr">style</span>=<span class="string">"stroke: blue;"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"440"</span> <span class="attr">cy</span>=<span class="string">"20"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"green"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"300"</span> <span class="attr">y1</span>=<span class="string">"80"</span> <span class="attr">x2</span>=<span class="string">"440"</span> <span class="attr">y2</span>=<span class="string">"20"</span> <span class="attr">style</span>=<span class="string">"stroke: green;"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="Example-Q-T"><a href="#Example-Q-T" class="headerlink" title="Example Q T"></a>Example Q T</h4><p><code>Q</code>、<code>T</code>使用方法：</p>
+<pre><code>Q x1 y1, x y
+T x y
+</code></pre><p>剛剛提到，C有三個點，兩個是手把，一個是終點，Q則是兩個點，一個共用手把，加上終點。T則是在Q後方，在複製一個相同的點，有點類似S的翻版。</p>
+
+<svg width="100%" height="200px">
+	<path d="M10 80 Q150 150, 300 80 T590 80" stroke="black" fill="none"/>
+	<!-- 硬派Circles! -->
+	<circle cx="10" cy="80" r="3" fill="red"/>
+	<text x="10" y="90" fill="red">M10 80</text>
+	<circle cx="150" cy="150" r="3" fill="red"/>
+	<text x="150" y="170" fill="red">Q150 150</text>
+	<circle cx="300" cy="80" r="3" fill="red"/>
+	<text x="300" y="100" fill="red">300 80</text>
+	<line x1="10" y1="80" x2="150" y2="150" style="stroke: Tomato;"/>
+	<line x1="300" y1="80" x2="150" y2="150" style="stroke: Tomato;"/>
+	<circle cx="590" cy="80" r="3" fill="blue"/>
+	<text x="590" y="100" fill="red">T590 80</text>
+	<polyline points="300,80 445,10 590,80" style="fill:none; stroke:green; fill: none"/>
+</svg>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"200px"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M10 80 Q150 150, 300 80 T590 80"</span> <span class="attr">stroke</span>=<span class="string">"black"</span> <span class="attr">fill</span>=<span class="string">"none"</span>/&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 硬派Circles! --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"10"</span> <span class="attr">cy</span>=<span class="string">"80"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"10"</span> <span class="attr">y</span>=<span class="string">"90"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>M10 80<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"150"</span> <span class="attr">cy</span>=<span class="string">"150"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"150"</span> <span class="attr">y</span>=<span class="string">"170"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>Q150 150<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"300"</span> <span class="attr">cy</span>=<span class="string">"80"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"300"</span> <span class="attr">y</span>=<span class="string">"100"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>300 80<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"10"</span> <span class="attr">y1</span>=<span class="string">"80"</span> <span class="attr">x2</span>=<span class="string">"150"</span> <span class="attr">y2</span>=<span class="string">"150"</span> <span class="attr">style</span>=<span class="string">"stroke: Tomato;"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"300"</span> <span class="attr">y1</span>=<span class="string">"80"</span> <span class="attr">x2</span>=<span class="string">"150"</span> <span class="attr">y2</span>=<span class="string">"150"</span> <span class="attr">style</span>=<span class="string">"stroke: Tomato;"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"590"</span> <span class="attr">cy</span>=<span class="string">"80"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"blue"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"590"</span> <span class="attr">y</span>=<span class="string">"100"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>T590 80<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">polyline</span> <span class="attr">points</span>=<span class="string">"300,80 445,10 590,80"</span> <span class="attr">style</span>=<span class="string">"fill:none; stroke:green; fill: none"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>透過本篇的超硬派教學，對於幾種線段應該會更了解吧，至少我很了解了(泣…)。SVG的文章不會太多，D3js至少會有20篇以上，大家可以放心～。</p>
+<p>另外在D3.js的教學裡面，超複雜的Path有很簡單的處理方式…，所以只要先大致了解就可以了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ironman/" rel="tag">#ironman</a>
+          
+            <a href="/tags/d3js/" rel="tag">#d3js</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/d3js/2014/10/01/Ironman-30-days-02/" rel="next" title="SVG 簡介">
+                <i class="fa fa-chevron-left"></i> SVG 簡介
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/10/03/Ironman-30-days-04/" rel="prev" title="SVG 超硬派了解 path Arcs">
+                SVG 超硬派了解 path Arcs <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Line"><span class="nav-number">1.</span> <span class="nav-text">Line</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Polyline"><span class="nav-number">2.</span> <span class="nav-text">Polyline</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Polygon"><span class="nav-number">3.</span> <span class="nav-text">Polygon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#地獄般的Path"><span class="nav-number">4.</span> <span class="nav-text">地獄般的Path</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#參考資料"><span class="nav-number">4.0.1.</span> <span class="nav-text">參考資料</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-M、L"><span class="nav-number">4.0.2.</span> <span class="nav-text">Example M、L</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-H、V"><span class="nav-number">4.0.3.</span> <span class="nav-text">Example H、V</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-C-貝茲曲線"><span class="nav-number">4.0.4.</span> <span class="nav-text">Example C 貝茲曲線</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-S"><span class="nav-number">4.0.5.</span> <span class="nav-text">Example S</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-Q-T"><span class="nav-number">4.0.6.</span> <span class="nav-text">Example Q T</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小結"><span class="nav-number">5.</span> <span class="nav-text">小結</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/d3js/2014/10/02/Ironman-30-days-03/';
+      var disqus_title = "SVG 超硬派了解 line, polygon, polyline, path (手工繪製)";
+      var disqus_url = 'http://wcc723.github.io//d3js/2014/10/02/Ironman-30-days-03/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

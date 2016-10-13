@@ -1,0 +1,937 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="css," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="這次是第二次的 CSS 讀書會，目標是要教大家 Sass 的環境建立，也算是比較大的挑戰，因為要在線上及現場教大家怎麼運行 Sass 的編譯環境，且主要的目標族群包含了設計師、網頁設計師，甚至是沒有碰過 command line 的開發者…。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二次 CSS 讀書會 - Sass 環境建置">
+<meta property="og:url" content="http://wcc723.github.io/css/2016/02/29/css-book-clud-2-sass-and-gulp/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="這次是第二次的 CSS 讀書會，目標是要教大家 Sass 的環境建立，也算是比較大的挑戰，因為要在線上及現場教大家怎麼運行 Sass 的編譯環境，且主要的目標族群包含了設計師、網頁設計師，甚至是沒有碰過 command line 的開發者…。">
+<meta property="og:image" content="http://wcc723.github.io/images/2016/02/cssBookclub-gulp.jpg">
+<meta property="og:image" content="http://wcc723.github.io/images/2016/02/step1.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2016/02/step2.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2016/02/step3.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2016/02/step4.png">
+<meta property="og:updated_time" content="2016-10-13T06:34:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="第二次 CSS 讀書會 - Sass 環境建置">
+<meta name="twitter:description" content="這次是第二次的 CSS 讀書會，目標是要教大家 Sass 的環境建立，也算是比較大的挑戰，因為要在線上及現場教大家怎麼運行 Sass 的編譯環境，且主要的目標族群包含了設計師、網頁設計師，甚至是沒有碰過 command line 的開發者…。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2016/02/cssBookclub-gulp.jpg">
+
+  <meta property="og:image" content="/images/2016/02/cssBookclub-gulp.jpg"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/css/2016/02/29/css-book-clud-2-sass-and-gulp/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 第二次 CSS 讀書會 - Sass 環境建置 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                第二次 CSS 讀書會 - Sass 環境建置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-02-29T00:00:00+08:00" content="2016-02-29">
+              2016-02-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/css/" itemprop="url" rel="index">
+                    <span itemprop="name">css</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/css/2016/02/29/css-book-clud-2-sass-and-gulp/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/css/2016/02/29/css-book-clud-2-sass-and-gulp/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2016/02/cssBookclub-gulp.jpg" rel="gallery_ciu7yuxiu005il7f0p4xuk997"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2016/02/cssBookclub-gulp.jpg" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>這次是第二次的 CSS 讀書會，目標是要教大家 Sass 的環境建立，<br>也算是比較大的挑戰，因為要在線上及現場教大家怎麼運行 Sass 的編譯環境，且主要的目標族群包含了設計師、網頁設計師，甚至是沒有碰過 command line 的開發者…。</p>
+<a id="more"></a>
+<p><img src="/images/2016/02/cssBookclub-gulp.jpg" alt=""></p>
+<h2 id="活動簡報"><a href="#活動簡報" class="headerlink" title="活動簡報"></a>活動簡報</h2><p>範例：<a href="https://github.com/Wcc723/gulp-web-designers" target="_blank" rel="external">https://github.com/Wcc723/gulp-web-designers</a></p>
+<p>這次活動的簡報是用 Keynote 做的，有些部分是講解上為了呈現動態效果，所以在 slideshare 無法呈現的很完整。</p>
+
+<iframe src="//www.slideshare.net/slideshow/embed_code/key/kOQtobRIzX2xBr" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/chihchengwang3/sass-node-sass" title="建立 Sass 環境，透過 Node sass" target="blank">建立 Sass 環境，透過 Node sass</a> </strong> from <strong><a target="blank" href="//www.slideshare.net/chihchengwang3">Chih-cheng Wang</a></strong> </div>
+
+<p>也有準備了 Hackpad 提供共筆，很感謝前端朋友們熱情協助寫共筆文件。</p>
+<p><script src="https://csscollege.hackpad.com/5k6BVvbKYTf.js"></script><noscript><div>View <a href="https://csscollege.hackpad.com/5k6BVvbKYTf" target="_blank" rel="external">CSS 讀書會 2 (Sass 編譯環境)</a> on Hackpad.</div></noscript></p>
+<h2 id="其他問題"><a href="#其他問題" class="headerlink" title="其他問題"></a>其他問題</h2><p>這次有許多問題是 Hackpad 上沒有提到，是在問卷內提出的問題，這邊我就一一回覆：</p>
+<h3 id="問題：Sass-與-Scss"><a href="#問題：Sass-與-Scss" class="headerlink" title="問題：Sass 與 Scss"></a>問題：Sass 與 Scss</h3><p>在一開始寫 Sass 就是使用 <code>.sass</code> 的格式，前前後後也有一年多的時間，雖然看到許多開發者都是使用 <code>.scss</code>，大多數的文件及範例也都是使用 <code>.scss</code> ，但當時是想說只要有愛，就可以堅持下去 !?</p>
+<p>直到出現一個問題用 <code>.sass</code> 很難解決(讓我轉跳 <code>.scss</code> 的原因)，那就是 Sass Maps (範例：<a href="http://www.sitepoint.com/using-sass-maps/)，當時也正好在學" target="_blank" rel="external">http://www.sitepoint.com/using-sass-maps/)，當時也正好在學</a> Susy， Susy 一定要使用 Sass Maps，用 <code>.sass</code> 格式寫 Sass Maps 簡直地獄…。</p>
+<pre><code>// scss
+$map: (
+  key: value,
+  other-key: other-value
+);
+</code></pre><p>Sass 格式中，Sass Maps不能換行 = =(實際上的 Maps 會更長)，當下花了很長的時間找解法，但一直找不到替代方式，就默默地轉向 <code>.scss</code>。</p>
+<pre><code>// sass
+$map: (key: value, other-key: other-value)
+</code></pre><p>另外一個原因是在寫教學文時 <code>.sass</code> 對於一般使用者較為陌生，如果不熟悉的讀者看到 <code>.sass</code> 應該不知道在寫什麼…。</p>
+<h3 id="問題：為何不再用-Susy"><a href="#問題：為何不再用-Susy" class="headerlink" title="問題：為何不再用 Susy"></a>問題：為何不再用 Susy</h3><p>關於 Susy 這個工具我用過 Susyone、Susy 2，後來確實有些偏見 (這部分是我該反省的點Q_Q，不該用自己的主觀來勸大家別用)，這邊還是要和大家分享為何我不再使用這樣的 Grid 工具。</p>
+<h4 id="第一階段"><a href="#第一階段" class="headerlink" title="第一階段"></a>第一階段</h4><p>這幾張圖我們就看有色彩的地方，假設需求是左邊有選單(4欄寬度)，右方的區域是文章內容(8欄寬度)，總共為 12 欄寬，一開始我們可能會使用 <code>.menu</code> 及 <code>.article</code> 來規劃 CSS 。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.menu</span> &#123;</div><div class="line">  <span class="comment">// 4 欄寬</span></div><div class="line">&#125;</div><div class="line"><span class="selector-class">.article</span> &#123;</div><div class="line">  <span class="comment">// 8 欄寬</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="/images/2016/02/step1.png" alt=""></p>
+<h4 id="第二階段"><a href="#第二階段" class="headerlink" title="第二階段"></a>第二階段</h4><p>但這兩個區域的實際內容可能不會只放文章，左邊也有可能是放廣告，所以就把側邊改成 <code>.side</code>，中間也改成了 <code>.content</code>，以符合以後的運用。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.side</span> &#123;</div><div class="line">  <span class="comment">// 4 欄寬</span></div><div class="line">&#125;</div><div class="line"><span class="selector-class">.content</span> &#123;</div><div class="line">  <span class="comment">// 8 欄寬</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="/images/2016/02/step2.png" alt=""></p>
+<h4 id="第三階段"><a href="#第三階段" class="headerlink" title="第三階段"></a>第三階段</h4><p>後來新增了一個區域 <code>.ad</code>，那個區域的寬度與 <code>.side</code>也都相同，但稱為 <code>.side</code> 的區域也不便直接套在 <code>.ad</code>，所有就新增一個 <code>.ad</code> 寬度也一樣是 4 欄寬。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.side</span> &#123;</div><div class="line">  <span class="comment">// 4 欄寬</span></div><div class="line">&#125;</div><div class="line"><span class="selector-class">.content</span> &#123;</div><div class="line">  <span class="comment">// 8 欄寬</span></div><div class="line">&#125;</div><div class="line"><span class="selector-class">.ad</span> &#123;</div><div class="line">  <span class="comment">// 4 欄寬</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="/images/2016/02/step3.png" alt=""></p>
+<h4 id="第四階段"><a href="#第四階段" class="headerlink" title="第四階段"></a>第四階段</h4><p>我們會發現其實 <code>.side</code>、<code>.ad</code> 兩者 CSS 屬性差異不大，所以可以改用欄寬的方式來定義這個 class 名稱，於是乎就出現了 <code>.col-4</code>、<code>.col-8</code>，m…到了這步驟，是不是發現和 Bootstrap 2 有點像呢!?這樣的 CSS 設計模式是將網格系統模組化，增加了Class 的可複用性。</p>
+<p><img src="/images/2016/02/step4.png" alt=""></p>
+<p>Susy 的優點在於快速建立格線系統，但如果是 <code>col-size</code> 的 Grid-system 就失去了快速建立格線系統的特色，模組化的優點是增加了 Class 的可複用性，但換個方向去思考，其實它也限制了創意的發想(畢竟 grid 都已經規劃好)，不同的方法與技巧也建議去嘗試看看，這樣才能了解何者適合目前的專案。</p>
+<h3 id="問題：為何需要用-Scss-與-CSS-如何跟後端的結合"><a href="#問題：為何需要用-Scss-與-CSS-如何跟後端的結合" class="headerlink" title="問題：為何需要用 Scss 與 CSS 如何跟後端的結合"></a>問題：為何需要用 Scss 與 CSS 如何跟後端的結合</h3><p>為何需要用 Scss？理由挺多的，就個人這段時間的學習來說，有以下幾個理由：</p>
+<ol>
+<li>節省時間：當初學習 CSS 時，每一行都是純手工寫出來的，雖然很有成就感，但久而久之都花時間在重複的地方，透過 Sass 的技術，不僅在重複的地方花更少的時間，還可以投資更多時間在新的技法上。</li>
+<li>管理 CSS：就純 CSS 來說，由於所有的程式碼都集中在同一個檔案上(當然也可以用@import，但就效能上有許多建議說別這麼做)，透過 Sass 可以將 CSS “模組”拆分成不同檔案，之後再編譯成同一隻檔案。</li>
+<li>進階的 CSS：Sass 在開發上多了變數、運算，可以去思考怎樣用簡單的方式做出豐富的效果，不過這也需要投資一定的時間去研究。</li>
+</ol>
+<p>如何與後端語言結合？</p>
+<p>其實我在專案上都是透過 Gulp 與後端結合，但這次的讀書會主要是讓新手可以入門 Sass 環境，所以沒仔細提到這段，如果是後端的開發者，可以參考<a href="https://github.com/Wcc723/gulp-web-designers" target="_blank" rel="external">範例</a>中的 <code>gulpfile.js</code>，抽離掉 webserver 模組後，就可以用來編譯給後端用的 Sass (也可以依據需求調整編譯路徑等)，或者私下敲<a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" rel="external">我</a>，我們再來討論討論。</p>
+<p>前端的工具還相當多，這樣的一次性介紹還缺乏很多，以後我再多研究研究其他前端工具再與大家分享(近期內應該還會介紹 Bower)。</p>
+<h3 id="建議：講者說話太快"><a href="#建議：講者說話太快" class="headerlink" title="建議：講者說話太快"></a>建議：講者說話太快</h3><p>嗯…，這部分是我該多注意的，往後的課程也會更著重在單一的主題上介紹，不過大家有問題還是盡量可以在 Hackpad 或直播頻道發問，上面有許多高手會一起交流解答～。</p>
+<p>就票數上來說，下次會介紹 CSS 架構，希望這個連假可以準備差不多 Orz 。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/css/" rel="tag">#css</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/css/2016/01/30/css-book-clud-1-grid-system/" rel="next" title="第一次 CSS 讀書會">
+                <i class="fa fa-chevron-left"></i> 第一次 CSS 讀書會
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/css/2016/04/11/rwd-workshop/" rel="prev" title="響應式網站設計實作坊 - 高雄前端社群">
+                響應式網站設計實作坊 - 高雄前端社群 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#活動簡報"><span class="nav-number">1.</span> <span class="nav-text">活動簡報</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他問題"><span class="nav-number">2.</span> <span class="nav-text">其他問題</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#問題：Sass-與-Scss"><span class="nav-number">2.1.</span> <span class="nav-text">問題：Sass 與 Scss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#問題：為何不再用-Susy"><span class="nav-number">2.2.</span> <span class="nav-text">問題：為何不再用 Susy</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一階段"><span class="nav-number">2.2.1.</span> <span class="nav-text">第一階段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二階段"><span class="nav-number">2.2.2.</span> <span class="nav-text">第二階段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三階段"><span class="nav-number">2.2.3.</span> <span class="nav-text">第三階段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四階段"><span class="nav-number">2.2.4.</span> <span class="nav-text">第四階段</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#問題：為何需要用-Scss-與-CSS-如何跟後端的結合"><span class="nav-number">2.3.</span> <span class="nav-text">問題：為何需要用 Scss 與 CSS 如何跟後端的結合</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#建議：講者說話太快"><span class="nav-number">2.4.</span> <span class="nav-text">建議：講者說話太快</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/css/2016/02/29/css-book-clud-2-sass-and-gulp/';
+      var disqus_title = "第二次 CSS 讀書會 - Sass 環境建置";
+      var disqus_url = 'http://wcc723.github.io//css/2016/02/29/css-book-clud-2-sass-and-gulp/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

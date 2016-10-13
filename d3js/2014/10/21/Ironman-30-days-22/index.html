@@ -1,0 +1,1073 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="ironman,d3js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="資料很多時候需要比較、切換，所以可能會同時加入多筆資料，前一篇文章所介紹的是相同數量的資料，這次要做隨機的資料量。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="D3.js 資料數量增減">
+<meta property="og:url" content="http://wcc723.github.io/d3js/2014/10/21/Ironman-30-days-22/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="資料很多時候需要比較、切換，所以可能會同時加入多筆資料，前一篇文章所介紹的是相同數量的資料，這次要做隨機的資料量。">
+<meta property="og:updated_time" content="2016-10-13T02:55:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="D3.js 資料數量增減">
+<meta name="twitter:description" content="資料很多時候需要比較、切換，所以可能會同時加入多筆資料，前一篇文章所介紹的是相同數量的資料，這次要做隨機的資料量。">
+
+  <meta property="og:image" content="/images/2014ironman/day21_01.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/d3js/2014/10/21/Ironman-30-days-22/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.2.0/d3.min.js"></script>
+
+
+  <title> D3.js 資料數量增減 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                D3.js 資料數量增減
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-10-21T00:00:00+08:00" content="2014-10-21">
+              2014-10-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/d3js/" itemprop="url" rel="index">
+                    <span itemprop="name">d3js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/d3js/2014/10/21/Ironman-30-days-22/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/d3js/2014/10/21/Ironman-30-days-22/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014ironman/day21_01.png" rel="gallery_ciu7r3cc80006l7f0n7pe8dxl"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014ironman/day21_01.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>資料很多時候需要比較、切換，所以可能會同時加入多筆資料，前一篇文章所介紹的是相同數量的資料，這次要做隨機的資料量。</p>
+<a id="more"></a>
+<h2 id="資料轉換"><a href="#資料轉換" class="headerlink" title="資料轉換"></a>資料轉換</h2><p>資料數量不同時，如果增加到沒什麼，因為原本就是從無到有，都是利用Append去增加新的物件：</p>
+<pre><code>bars.enter().append(&apos;rect&apos;);
+</code></pre><p>但是如果資料比原本還要少時，就要選取多餘的元件(exit)，並且移除它(remove)。</p>
+<pre><code>bars.exit() //選擇多餘的部分
+    .remove() //清除物件
+</code></pre><p>下面這個範例，預設會先用20筆資料，接下來點擊button，就會隨機的增減資料，另外動態做稍微誇張一些，覺得挺有趣的，玩了幾個動態模式，這個最彈了…。</p>
+
+<div class="demo">
+
+
+<button class="btn update_btn"> Click Me </button>
+</div>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> dataset = [];</div><div class="line"><span class="keyword">var</span> numValues = <span class="number">20</span>; <span class="comment">//一開始的資料數量是固定的</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> randDataset = <span class="function"><span class="keyword">function</span>(<span class="params">num</span>)</span>&#123;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i &lt; num; i++)&#123;</div><div class="line">		<span class="keyword">var</span> newNum = <span class="number">5</span> + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">30</span>);</div><div class="line">		dataset.push(&#123; <span class="attr">key</span> : i, <span class="attr">value</span>: newNum&#125;); <span class="comment">//產生一段陣列，包含key and value</span></div><div class="line">	&#125;</div><div class="line">&#125;<span class="comment">//只要給予資料"數量"，就會產生隨機資料</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> key = <span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123;</div><div class="line">			<span class="keyword">return</span> d.key;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">randDataset(numValues); <span class="comment">//一開始預設的20筆資料</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.table(dataset); <span class="comment">//打開console開結果</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> originDataLength = dataset.length <span class="comment">// 將原始的資料長度記錄</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> h=<span class="number">200</span>,w = <span class="number">500</span>, barMargin = <span class="number">1</span>;</div><div class="line"></div><div class="line">maxDataset = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> d.value &#125;); <span class="comment">//從value 取得最大值</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> xScale = d3.scale.ordinal()</div><div class="line"><span class="comment">//不同於linear的尺度，可以處理非數字資料</span></div><div class="line">	.domain(d3.range(dataset.length)) <span class="comment">//這範例是給予資料的長度</span></div><div class="line">	.rangeRoundBands([<span class="number">0</span>, w], <span class="number">0</span>); <span class="comment">//利用整體的寬度去做運算</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> yScale = d3.scale.linear() <span class="comment">//y尺度和先前是相同的，都是線性尺度</span></div><div class="line">		.domain([<span class="number">0</span> , maxDataset]) <span class="comment">//輸入值範圍</span></div><div class="line">		.range([<span class="number">0</span>, h]); <span class="comment">//輸出值範圍</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">'.demo'</span>).append(<span class="string">'svg'</span>).attr(<span class="string">'width'</span>,w).attr(<span class="string">'height'</span>, h); <span class="comment">//建立svg</span></div><div class="line"></div><div class="line">svg.selectAll(<span class="string">'rect'</span>).data(dataset, key) <span class="comment">//插入資料</span></div><div class="line">	.enter().append(<span class="string">'rect'</span>) <span class="comment">//直條圖用rect~</span></div><div class="line">	.attr(&#123;</div><div class="line">		<span class="string">'x'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d, i</span>)</span>&#123;</div><div class="line">			<span class="keyword">return</span> xScale(i); <span class="comment">//利用尺度算出每個rect的x軸位置</span></div><div class="line">		&#125;,</div><div class="line">		<span class="string">'y'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</div><div class="line">			<span class="keyword">return</span> h - yScale(d.value); <span class="comment">//算出y的位置(因為需要置底)</span></div><div class="line">		&#125;,</div><div class="line">		<span class="string">'width'</span>: w / dataset.length - barMargin,</div><div class="line">		<span class="comment">//每個rect寬度是固定的，但需要補上間距</span></div><div class="line">		<span class="string">'height'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> yScale(d.value)&#125;,</div><div class="line">		<span class="comment">//算出高度</span></div><div class="line">		<span class="string">'fill'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> d3.hsl(<span class="number">320</span> + d.value  % <span class="number">360</span> , <span class="number">.5</span> , <span class="number">.5</span>)&#125; <span class="comment">//利用資料產生不同色彩</span></div><div class="line">	&#125;);</div><div class="line"></div><div class="line"><span class="keyword">var</span> dataText = svg.selectAll(<span class="string">'text'</span>).data(dataset, key).enter().append(<span class="string">'text'</span>); <span class="comment">//補上文字</span></div><div class="line">dataText.text(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d.value&#125;)</div><div class="line">	.attr(&#123;</div><div class="line">		<span class="string">'x'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>)</span>&#123;</div><div class="line">			<span class="keyword">return</span> xScale(i) + <span class="number">11</span>; <span class="comment">//算出x位置</span></div><div class="line">		&#125;,</div><div class="line">		<span class="string">'y'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> (h - yScale(d.value) + <span class="number">15</span>)&#125;,</div><div class="line">		<span class="comment">//算出文字y的位置</span></div><div class="line">		<span class="string">'fill'</span>: <span class="string">'white'</span>, <span class="comment">//文字反白</span></div><div class="line">		<span class="string">'text-anchor'</span>: <span class="string">'middle'</span>, <span class="comment">//文字置中</span></div><div class="line">		<span class="string">'font-size'</span>: <span class="string">'11px'</span> <span class="comment">//字小一點比較秀氣</span></div><div class="line">	&#125;);</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> chartFn = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">//這一段是在點擊後觸發的函式</span></div><div class="line">	dataset = []; <span class="comment">//資料清空</span></div><div class="line">	<span class="keyword">var</span> numValues = <span class="number">1</span> + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">30</span>); <span class="comment">//隨機長度的資料</span></div><div class="line"></div><div class="line">	randDataset(numValues); <span class="comment">//重新製作一組資料</span></div><div class="line"></div><div class="line">	newDataLength = dataset.length <span class="comment">// 儲存新的資料長度</span></div><div class="line">	xScale.domain(d3.range(dataset.length))</div><div class="line">	<span class="comment">//資料長度不同，所以domain改變</span></div><div class="line"></div><div class="line">	maxDataset = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> d.value &#125;);</div><div class="line">	yScale.domain([<span class="number">0</span> , maxDataset])</div><div class="line">	<span class="comment">//資料最大值不同，所以domain改變</span></div><div class="line"></div><div class="line">	<span class="keyword">var</span> bars = svg.selectAll(<span class="string">"rect"</span>)</div><div class="line">			.data(dataset, key); <span class="comment">//重新套用資料</span></div><div class="line"></div><div class="line">		<span class="keyword">var</span> texts = svg.selectAll(<span class="string">'text'</span>)</div><div class="line">			.data(dataset, key);</div><div class="line"></div><div class="line">		<span class="comment">//檢查資料長度，如果比原本長就需要移除</span></div><div class="line">	<span class="keyword">if</span> (newDataLength &gt; originDataLength)&#123;  <span class="comment">//如果比原本長</span></div><div class="line"></div><div class="line">		bars.enter().append(<span class="string">'rect'</span>)</div><div class="line">			.transition()</div><div class="line">			.attr(<span class="string">'x'</span>, w); <span class="comment">//增加新的rect，以及進場的方式</span></div><div class="line"></div><div class="line">		texts.enter().append(<span class="string">'text'</span>).text(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d.value&#125;)</div><div class="line">			.attr(&#123;</div><div class="line">				<span class="string">'x'</span>: w,</div><div class="line">				<span class="string">'y'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> (h - yScale(d.value) + <span class="number">15</span>)&#125;</div><div class="line">			&#125;); <span class="comment">//類似同上</span></div><div class="line">		originDataLength = newDataLength; <span class="comment">//儲存資料長度</span></div><div class="line"></div><div class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (newDataLength &lt; originDataLength)&#123;</div><div class="line">		bars.exit() <span class="comment">//選擇多餘的部分</span></div><div class="line">		.transition() <span class="comment">//退場方式</span></div><div class="line">		<span class="comment">//.duration(500)</span></div><div class="line">		.attr(<span class="string">'width'</span>, <span class="number">0</span>) <span class="comment">//寬度降為0</span></div><div class="line">		.remove() <span class="comment">//清除物件</span></div><div class="line"></div><div class="line">		texts.exit().transition().duration(<span class="number">500</span>)</div><div class="line">		.attr(<span class="string">'width'</span>, <span class="number">0</span>)</div><div class="line">		.remove() <span class="comment">//清除文字物件</span></div><div class="line"></div><div class="line">		originDataLength = newDataLength; <span class="comment">//儲存資料長度</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line"></div><div class="line">		bars.transition()</div><div class="line">			.delay(<span class="number">500</span>) <span class="comment">//延遲新的效果(等前方的進退場動畫結束)</span></div><div class="line">			<span class="comment">// 	.delay(function(d, i) &#123;</span></div><div class="line">		<span class="comment">// 	return i / dataset.length * 1000;   </span></div><div class="line">		<span class="comment">// // 每個物件套用不同的delay 時間</span></div><div class="line">		<span class="comment">// &#125;)</span></div><div class="line">			.duration(<span class="number">1500</span>) <span class="comment">// 持續時間(豪秒)</span></div><div class="line">			.ease(<span class="string">'elastic'</span>) <span class="comment">// 動畫型態</span></div><div class="line"> 			.attr(&#123; <span class="comment">//這段同前</span></div><div class="line">			<span class="string">'x'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d, i</span>)</span>&#123;</div><div class="line">				<span class="keyword">return</span> xScale(i)</div><div class="line">			&#125;,</div><div class="line">			<span class="string">'y'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</div><div class="line">				<span class="keyword">return</span> h - yScale(d.value)</div><div class="line">			&#125;,</div><div class="line">			<span class="string">'width'</span>: w / dataset.length - barMargin,</div><div class="line">			<span class="string">'height'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</div><div class="line">				<span class="keyword">return</span> yScale(d.value);</div><div class="line">			&#125;,</div><div class="line">			<span class="string">'fill'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> d3.hsl(<span class="number">320</span> + d.value  % <span class="number">360</span> , <span class="number">.5</span> , <span class="number">.5</span>)&#125;</div><div class="line">		&#125;)</div><div class="line"> 	texts.transition() <span class="comment">//文字也是同前</span></div><div class="line">			.delay(<span class="number">500</span>)</div><div class="line">			.duration(<span class="number">1500</span>) <span class="comment">// 持續時間(豪秒)</span></div><div class="line">			.ease(<span class="string">'elastic'</span>) <span class="comment">// 動畫型態</span></div><div class="line">			.attr(&#123;</div><div class="line">			<span class="string">'x'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>)</span>&#123;</div><div class="line">				<span class="comment">//return i * (w  / dataset.length)</span></div><div class="line">				<span class="keyword">return</span> xScale(i) + <span class="number">11</span></div><div class="line">			&#125;,</div><div class="line">			<span class="string">'y'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> (h - yScale(d.value) + <span class="number">15</span>)&#125;,</div><div class="line">			<span class="string">'fill'</span>: <span class="string">'white'</span>,</div><div class="line">			<span class="string">'text-anchor'</span>: <span class="string">'middle'</span>,</div><div class="line">			<span class="string">'font-size'</span>: <span class="string">'11px'</span></div><div class="line">		&#125;);</div><div class="line"></div><div class="line"></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 點擊button時，更新資料</span></div><div class="line">d3.select(<span class="string">'.update_btn'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">	chartFn();</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>接下來，明天又要來亂抓Open data來玩囉～</p>
+
+<script>
+var dataset = [];
+var numValues = 20; //一開始的資料數量是固定的
+
+var randDataset = function(num){
+	for (var i=0; i < num; i++){
+		var newNum = 5 + Math.floor(Math.random() * 30);
+		dataset.push({ key : i, value: newNum}); //產生一段陣列，包含key and value
+	}
+}//只要給予資料"數量"，就會產生隨機資料
+
+var key = function(d) {
+			return d.key;
+		}
+
+randDataset(numValues); //一開始預設的20筆資料
+
+console.table(dataset); //打開console開結果
+
+var originDataLength = dataset.length // 將原始的資料長度記錄
+
+var h=200,w = 500, barMargin = 1;
+
+maxDataset = d3.max(dataset, function(d){ return d.value }); //從value 取得最大值
+
+
+var xScale = d3.scale.ordinal()
+//不同於linear的尺度，可以處理非數字資料
+	.domain(d3.range(dataset.length)) //這範例是給予資料的長度
+	.rangeRoundBands([0, w], 0); //利用整體的寬度去做運算
+
+var yScale = d3.scale.linear() //y尺度和先前是相同的，都是線性尺度
+		.domain([0 , maxDataset]) //輸入值範圍
+		.range([0, h]); //輸出值範圍
+
+var svg = d3.select('.demo').append('svg').attr('width',w).attr('height', h); //建立svg
+
+svg.selectAll('rect').data(dataset, key) //插入資料
+	.enter().append('rect') //直條圖用rect~
+	.attr({
+		'x': function(d, i){
+			return xScale(i); //利用尺度算出每個rect的x軸位置
+		},
+		'y': function(d){
+			return h - yScale(d.value); //算出y的位置(因為需要置底)
+		},
+		'width': w / dataset.length - barMargin,
+		//每個rect寬度是固定的，但需要補上間距
+		'height': function(d){ return yScale(d.value)},
+		//算出高度
+		'fill': function(d){ return d3.hsl(320 + d.value  % 360 , .5 , .5)} //利用資料產生不同色彩
+	});
+
+var dataText = svg.selectAll('text').data(dataset, key).enter().append('text'); //補上文字
+dataText.text(function(d){return d.value})
+	.attr({
+		'x': function(d,i){
+			return xScale(i) + 11; //算出x位置
+		},
+		'y': function(d){ return (h - yScale(d.value) + 15)},
+		//算出文字y的位置
+		'fill': 'white', //文字反白
+		'text-anchor': 'middle', //文字置中
+		'font-size': '11px' //字小一點比較秀氣
+	});
+
+
+
+var chartFn = function(){ //這一段是在點擊後觸發的函式
+	dataset = []; //資料清空
+	var numValues = 1 + Math.floor(Math.random() * 30); //隨機長度的資料
+
+	randDataset(numValues); //重新製作一組資料
+
+	newDataLength = dataset.length // 儲存新的資料長度
+	xScale.domain(d3.range(dataset.length))
+	//資料長度不同，所以domain改變
+
+	maxDataset = d3.max(dataset, function(d){ return d.value });
+	yScale.domain([0 , maxDataset])
+	//資料最大值不同，所以domain改變
+
+	var bars = svg.selectAll("rect")
+			.data(dataset, key); //重新套用資料
+
+		var texts = svg.selectAll('text')
+			.data(dataset, key);
+
+		//檢查資料長度，如果比原本長就需要移除
+	if (newDataLength > originDataLength){  //如果比原本長
+
+		bars.enter().append('rect')
+			.transition()
+			.attr('x', w); //增加新的rect，以及進場的方式
+
+		texts.enter().append('text').text(function(d){return d.value})
+			.attr({
+				'x': w,
+				'y': function(d){ return (h - yScale(d.value) + 15)}
+			}); //類似同上
+		originDataLength = newDataLength; //儲存資料長度
+
+	} else if (newDataLength < originDataLength){
+		bars.exit() //選擇多餘的部分
+		.transition() //退場方式
+		//.duration(500)
+		.attr('width', 0) //寬度降為0
+		.remove() //清除物件
+
+		texts.exit().transition().duration(500)
+		.attr('width', 0)
+		.remove() //清除文字物件
+
+		originDataLength = newDataLength; //儲存資料長度
+	}
+
+
+		bars.transition()
+			.delay(500) //延遲新的效果(等前方的進退場動畫結束)
+			// 	.delay(function(d, i) {
+		// 	return i / dataset.length * 1000;   
+		// // 每個物件套用不同的delay 時間
+		// })
+			.duration(1500) // 持續時間(豪秒)
+			.ease('elastic') // 動畫型態
+ 			.attr({ //這段同前
+			'x': function(d, i){
+				return xScale(i)
+			},
+			'y': function(d){
+				return h - yScale(d.value)
+			},
+			'width': w / dataset.length - barMargin,
+			'height': function(d){
+				return yScale(d.value);
+			},
+			'fill': function(d){ return d3.hsl(320 + d.value  % 360 , .5 , .5)}
+		})
+ 	texts.transition() //文字也是同前
+			.delay(500)
+			.duration(1500) // 持續時間(豪秒)
+			.ease('elastic') // 動畫型態
+			.attr({
+			'x': function(d,i){
+				//return i * (w  / dataset.length)
+				return xScale(i) + 11
+			},
+			'y': function(d){ return (h - yScale(d.value) + 15)},
+			'fill': 'white',
+			'text-anchor': 'middle',
+			'font-size': '11px'
+		});
+
+
+};
+
+// 點擊button時，更新資料
+d3.select('.update_btn').on('click', function(){
+	chartFn();
+});
+</script>
+
+<style>
+
+</style>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ironman/" rel="tag">#ironman</a>
+          
+            <a href="/tags/d3js/" rel="tag">#d3js</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/d3js/2014/10/20/Ironman-30-days-21/" rel="next" title="D3.js Transition動態效果">
+                <i class="fa fa-chevron-left"></i> D3.js Transition動態效果
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/10/22/Ironman-30-days-23/" rel="prev" title="像jQuery 一樣的D3.js，柯P野生官網API">
+                像jQuery 一樣的D3.js，柯P野生官網API <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#資料轉換"><span class="nav-number">1.</span> <span class="nav-text">資料轉換</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/d3js/2014/10/21/Ironman-30-days-22/';
+      var disqus_title = "D3.js 資料數量增減";
+      var disqus_url = 'http://wcc723.github.io//d3js/2014/10/21/Ironman-30-days-22/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

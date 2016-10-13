@@ -1,0 +1,990 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="sass,css," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="自從學了CSS 3D後，就一直想嘗試使用在網頁上，但除了形象網頁外，使用CSS 3D的網站似乎不是很多，畢竟這不是必要的效果。而最近在Amazon Books的購物商城上，發現他們有用CSS 3D在展示書籍的正反面。
+Amazon books">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Amazon book 書籍封面展示效果 (CSS 3D)">
+<meta property="og:url" content="http://wcc723.github.io/css/2014/01/27/amazon-books/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="自從學了CSS 3D後，就一直想嘗試使用在網頁上，但除了形象網頁外，使用CSS 3D的網站似乎不是很多，畢竟這不是必要的效果。而最近在Amazon Books的購物商城上，發現他們有用CSS 3D在展示書籍的正反面。
+Amazon books">
+<meta property="og:updated_time" content="2016-10-12T06:29:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Amazon book 書籍封面展示效果 (CSS 3D)">
+<meta name="twitter:description" content="自從學了CSS 3D後，就一直想嘗試使用在網頁上，但除了形象網頁外，使用CSS 3D的網站似乎不是很多，畢竟這不是必要的效果。而最近在Amazon Books的購物商城上，發現他們有用CSS 3D在展示書籍的正反面。
+Amazon books">
+
+  <meta property="og:image" content="/images/2014-01-27_084528.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/css/2014/01/27/amazon-books/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> Amazon book 書籍封面展示效果 (CSS 3D) | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Amazon book 書籍封面展示效果 (CSS 3D)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-01-27T00:00:00+08:00" content="2014-01-27">
+              2014-01-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/css/" itemprop="url" rel="index">
+                    <span itemprop="name">css</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/css/2014/01/27/amazon-books/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/css/2014/01/27/amazon-books/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014-01-27_084528.png" rel="gallery_ciu6ii0ae00146ef0ppf4h580"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014-01-27_084528.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>自從學了CSS 3D後，就一直想嘗試使用在網頁上，但除了形象網頁外，使用CSS 3D的網站似乎不是很多，畢竟這不是必要的效果。而最近在Amazon Books的購物商城上，發現他們有用CSS 3D在展示書籍的正反面。</p>
+<p><a href="http://www.amazon.com/gp/product/1936608367/ref=s9_simh_bw_p14_d2_i1?pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=merchandised-search-4&amp;pf_rd_r=0DRH0KAG65P45DCXEKPW&amp;pf_rd_t=101&amp;pf_rd_p=1401488422&amp;pf_rd_i=283155" target="_blank" rel="external">Amazon books</a></p>
+<a id="more"></a>
+<h2 id="本篇重點"><a href="#本篇重點" class="headerlink" title="本篇重點"></a>本篇重點</h2><p>試試看Amazon Books中的書籍展示效果，到底包含了些什麼CSS 語法。</p>
+<h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><p>這效果我是做在codepen 上，裡面的封面圖片是直接連結台灣博客來書店，所以如果掉圖就是…被下架了。</p>
+<iframe src="http://codepen.io/Wcc723/full/DjGBi" frameborder="0" width="100%" height="600px"></iframe>
+
+<p><a href="http://codepen.io/Wcc723/full/DjGBi" target="_blank" rel="external">codepen連結</a></p>
+<p>在滑鼠滑過書上方時，書本會呈現微開，這會讓使用者感覺書本可以點擊(在Amazon Books中，點擊書本就可以看書的簡介)；而在hover過下方的flip to back時，書會翻轉30度，如果點擊則會翻轉180度，這樣就可以看到書的背面。</p>
+<h2 id="語法結構"><a href="#語法結構" class="headerlink" title="語法結構"></a>語法結構</h2><p>題外話，最近我正在學slim，所以codepen上的html是用slim寫的，這邊就先介紹一下html的結構吧。</p>
+<h3 id="html結構"><a href="#html結構" class="headerlink" title="html結構"></a>html結構</h3><pre><code>&lt;div class=&quot;wrap&quot;&gt;
+&lt;div class=&quot;imgWrap&quot;&gt;
+    &lt;img src=&quot;#...&quot; alt=&quot;&quot; class=&quot;first-child&quot;&gt;
+    &lt;img src=&quot;#...&quot; alt=&quot;&quot; class=&quot;second-child&quot;&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;a href=&quot;#&quot; class=&quot;fliptoBack&quot;&gt;|flip to back&lt;/a&gt;
+</code></pre><ul>
+<li>.wrap 用途是來定位整體的位置</li>
+<li>.imgWrap 書本的外圍架構，並且做翻轉書本的效果</li>
+<li>img .first-child 書的正面</li>
+<li>img .second-child 書的背面</li>
+</ul>
+<h3 id="Js"><a href="#Js" class="headerlink" title="Js"></a>Js</h3><p>在看CSS前，我想先說明js的部分，有些地方沒有辦法用css達成的，會用js去完成，避免等等css的誤解，先介紹一下我的script寫了什麼。</p>
+<pre><code>先取得第一張封面的寬高定義為w,h
+w = $(&apos;.first-child&apos;).width();
+h = $(&apos;.first-child&apos;).height();
+
+//將外框及第二張圖設定成相同的寬高
+$(&apos;.imgWrap, .wrap, .second-child&apos;).width(w);
+$(&apos;.imgWrap, .wrap, .second-child&apos;).height(h);
+
+滑過下方文字時，將書本套用&apos;.flip&apos;的class
+$(&apos;.fliptoBack&apos;).hover(function() {
+  $(&apos;.imgWrap&apos;).toggleClass(&apos;flip&apos;);
+});
+
+點擊下方文字時，將書本套用&apos;.flip180&apos;的class
+$(&apos;.fliptoBack&apos;).click(function() {
+  $(&apos;.imgWrap&apos;).toggleClass(&apos;flip180&apos;);
+});
+</code></pre><h3 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h3><p>依慣例，我是用sass寫…，另外就是有點長。</p>
+<pre><code>$bookwidth: 60px //先定義書本的&quot;厚度&quot;
+
+.wrap
+    +perspective(1200px) //3D的景深
+    position: relative
+    margin: 40px auto 20px auto
+
+.fliptoBack  //下方文字的位置
+    display: block
+    text-align: center
+
+.imgWrap
+    +transform-style(preserve-3d) //先定義成transform3d的模式
+    +transition(transform .5s ease) //針對transform進行動畫
+    position: absolute
+    &amp;:before  //這一塊是要假裝成書的內頁
+        content: &quot;&quot;
+        position: absolute
+        width: 100%
+        height: 100%
+        +border-right-radius(5px)
+        background: black
+    &amp;:after  //這邊是書背
+        content: &quot;&quot;
+        position: absolute
+        left: 0
+        top: 0
+        height: 100%
+        width: $bookwidth
+        background: black
+        +transform3d(rotateY(90deg))
+        +transform-origin(0)
+
+    &amp;.flip  //在滑鼠掠過下方文字時，套用的&apos;.flip&apos;
+        +transform3d(rotateY(30deg)) //翻轉30度
+    &amp;.flip180  //點擊時套用的&apos;.flip180&apos;，用來翻轉180度
+        +transform3d(rotateY(180deg) translateZ($bookwidth))
+        //另外再翻轉180度後，必須調整書本的Z軸，讓他在視覺上位置不變
+
+    img  //兩張圖片的設定
+        position: absolute
+        top: 0
+        left: 0
+        border: #ccc 1px solid
+        +transition(transform .3s ease)
+        +backface-visibility(hidden)  //不顯示背面
+        +border-right-radius(3px)
+        +box-sizing(border-box)    
+    &amp;.first-child  //定義第一張圖片，並且滑鼠滑過時旋轉30度
+        +transform3d(rotateY(0deg))
+        +transform-origin(0)
+        z-index: 2      
+        &amp;:hover
+            +transform3d(rotateY(-30deg))
+    &amp;.second-child  //讓封底一開始時就反轉到另一面
+        +transform3d(rotateY(-180deg) translateZ($bookwidth))
+</code></pre><p>CSS 3D很有趣，只是看起來code有點長，但是玩一段時間會很有成就感。  </p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sass/" rel="tag">#sass</a>
+          
+            <a href="/tags/css/" rel="tag">#css</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/css/2014/01/22/css-to-sass/" rel="next" title="從CSS到Sass 學習分享">
+                <i class="fa fa-chevron-left"></i> 從CSS到Sass 學習分享
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/css/2014/02/10/web-font-icons/" rel="prev" title="做網頁如果缺Icons怎麼辦">
+                做網頁如果缺Icons怎麼辦 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#本篇重點"><span class="nav-number">1.</span> <span class="nav-text">本篇重點</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#效果展示"><span class="nav-number">2.</span> <span class="nav-text">效果展示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#語法結構"><span class="nav-number">3.</span> <span class="nav-text">語法結構</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#html結構"><span class="nav-number">3.1.</span> <span class="nav-text">html結構</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Js"><span class="nav-number">3.2.</span> <span class="nav-text">Js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CSS"><span class="nav-number">3.3.</span> <span class="nav-text">CSS</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/css/2014/01/27/amazon-books/';
+      var disqus_title = "Amazon book 書籍封面展示效果 (CSS 3D)";
+      var disqus_url = 'http://wcc723.github.io//css/2014/01/27/amazon-books/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

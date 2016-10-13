@@ -1,0 +1,966 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="jekyll," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。
+
+熟悉 Git (至少要會git push)
+熟悉 Html (修改 template 及 寫文章用)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jekyll 介紹">
+<meta property="og:url" content="http://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。
+
+熟悉 Git (至少要會git push)
+熟悉 Html (修改 template 及 寫文章用)">
+<meta property="og:image" content="http://wcc723.github.io/images/2013-12-14-jekyll.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014-01-04jekyll-flow-01.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014-01-04jekyll-flow-02.png">
+<meta property="og:updated_time" content="2016-10-12T06:05:20.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jekyll 介紹">
+<meta name="twitter:description" content="本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。
+
+熟悉 Git (至少要會git push)
+熟悉 Html (修改 template 及 寫文章用)">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2013-12-14-jekyll.png">
+
+  <meta property="og:image" content="/images/2013-12-14-jekyll.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> Jekyll 介紹 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Jekyll 介紹
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-01-04T00:00:00+08:00" content="2014-01-04">
+              2014-01-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/jekyll/" itemprop="url" rel="index">
+                    <span itemprop="name">jekyll</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/jekyll/2014/01/04/what-is-jekyll/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/jekyll/2014/01/04/what-is-jekyll/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2013-12-14-jekyll.png" rel="gallery_ciu6ii0b0001c6ef00asf5mzv"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2013-12-14-jekyll.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
+<ul>
+<li>熟悉 Git (至少要會git push)</li>
+<li>熟悉 Html (修改 template 及 寫文章用)</li>
+</ul>
+<a id="more"></a>
+<p><img src="/images/2013-12-14-jekyll.png" alt="jekyll"></p>
+<h2 id="為什麼會考慮Jykell"><a href="#為什麼會考慮Jykell" class="headerlink" title="為什麼會考慮Jykell"></a>為什麼會考慮Jykell</h2><p>在用之前，先說一下過去用過什麼類似的CMS好了。</p>
+<p>首先，我購買了一個php空間，什麼都不會的情況下，就用Wordpress建立了第一個<a href="http://www.f2e.wcc.tw/" target="_blank" rel="external">blog</a>，就個剛開始來說，他是挺方便的，只要上傳到空間就建完了。但我在這之中遇到了幾個問題：</p>
+<ul>
+<li>版型不好改(主要是要配合許多內建的元件及php語法，要花很多時間理解)。</li>
+<li>慢(1000元的美國空間配合強大的CMS…)。</li>
+<li>如果要在文章內放入自己的demo不方便。</li>
+<li>文章寫不方便(除了不是markdown外，光loading就很慢)</li>
+</ul>
+<p>接下來，我自己用ajax寫了第二個blog(?)，也是現在這blog的前生<a href="http://ashareaday.wcc.tw/" target="_blank" rel="external">a share a day</a>，做這個的原因，一部分是針對wordpress不方便做改進，另一部份是為了挑戰100天發文。但是自己寫的要和強大的CMS挑戰，就如同XX比雞腿一樣…。接下來就遇到了一些問題：</p>
+<ul>
+<li>文章一多很難管理(純html)</li>
+<li>Google 等搜尋引擎搜不到內容(試著處理，但還是有問題)</li>
+</ul>
+<p>在這期間logdown出了，真的是非常非常適合寫程式的人使用，簡單的介面、流暢的操作，但是這不是我要的blog，原因如下：</p>
+<ul>
+<li>我的CSS demo很多，這點還是不方便</li>
+<li>free template缺乏個性</li>
+</ul>
+<p>後來就是現在的<a href="http://wcc723.github.io/">Jekyll blog</a>，它有一些優點，是我喜歡的：</p>
+<ul>
+<li>自己做版型很容易，輕鬆做出自己的個性</li>
+<li>做demo容易</li>
+<li>快</li>
+<li>管理容易</li>
+<li>markdown 混用 html </li>
+</ul>
+<h2 id="Jykell-Necessary-Skills"><a href="#Jykell-Necessary-Skills" class="headerlink" title="Jykell Necessary Skills"></a>Jykell Necessary Skills</h2><p>在學習前，還是有學習門檻，往後的內容會牽涉到許多git及html，只要熟悉這兩個技能，建立就不會太困難。</p>
+<ul>
+<li>熟悉 Git (push 到 github page 用)</li>
+<li>熟悉 Html (修改 template 及 寫文章用)</li>
+</ul>
+<p><em>雖然寫文章是用markdown，但都會寫markdown的應該就精通html了吧-.-。</em></p>
+<hr>
+<h2 id="What-is-Jekyll"><a href="#What-is-Jekyll" class="headerlink" title="What is Jekyll"></a>What is Jekyll</h2><p>Jekyll是基於Ruby Gem的解析引擎，能夠將樣板、liquid 語言、markdown轉換為”靜態網頁”的產生器。<br><a href="http://jekyllrb.com/" target="_blank" rel="external">http://jekyllrb.com/</a></p>
+<p><strong>特色</strong></p>
+<ul>
+<li>No more databases 不需要資料庫</li>
+<li>Liquid Template 動態模板</li>
+<li>Free hosting with GitHub Pages 只要學會git push 就可以丟到github page上</li>
+<li>Markdown 好編寫</li>
+</ul>
+<h2 id="Jekyll-的相關技術"><a href="#Jekyll-的相關技術" class="headerlink" title="Jekyll 的相關技術"></a>Jekyll 的相關技術</h2><h3 id="Git-Github-Github-Pages"><a href="#Git-Github-Github-Pages" class="headerlink" title="Git, Github, Github Pages"></a>Git, Github, Github Pages</h3><p>Git版本控制工具，Github是使用git版本控制項目的的虛擬主機服務(這邊不再詳述)<br><a href="http://pages.github.com/" target="_blank" rel="external">http://pages.github.com/</a><br>Github Pages是Github提供的服務，可以建立自己的靜態頁面，而他有提供額外的Jekyll解析服務，在每次的git push後會將markdown轉換為靜態的html，且不需要任何databases，是很適合建立blog的服務。</p>
+<p><strong>特色</strong></p>
+<ul>
+<li>快速 html靜態頁就是快速。</li>
+<li>穩定 大廠牌”github” 就是穩定。</li>
+<li>免費 free!</li>
+<li>容量無限 只要會git commit、git push。</li>
+</ul>
+<h3 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h3><p>Markdown的目標是實現「易讀易寫」，他在編寫完後就像是一般的文字檔，而不會像是程式語言，並沒有許多的標籤及指令。<br>其語法都是用標點符號組成，主要目的是用來作為網路內容的寫作語言。相關範例建議參考 <a href="http://markdown.tw/" target="_blank" rel="external">http://markdown.tw/</a></p>
+<h3 id="Liquid-Template"><a href="#Liquid-Template" class="headerlink" title="Liquid Template"></a>Liquid Template</h3><p>Jekyll所使用的樣板語言，如果熟悉html或是其他樣板語言將會比較容易上手。</p>
+<hr>
+<h2 id="Jekyll-運作流程"><a href="#Jekyll-運作流程" class="headerlink" title="Jekyll 運作流程"></a>Jekyll 運作流程</h2><p>這分為兩種，一種是預計要使用的在github page上的，另一種是要在本地端預覽用的。而在github page呈現前，建議能夠在本地端正常運作，在push到github page上市能夠正常顯示的。</p>
+<h3 id="本地端"><a href="#本地端" class="headerlink" title="本地端"></a>本地端</h3><p><strong>Local</strong> 建立好本地端的Liquid Template以及文章，透過Jekyll server，就能產生出靜態的頁面。</p>
+<p><img src="/images/2014-01-04jekyll-flow-01.png" alt="Jekyll 流程1"></p>
+<h3 id="Github-Page"><a href="#Github-Page" class="headerlink" title="Github Page"></a>Github Page</h3><p>在push Liquid Template後，之後每次都只需要push文章就可以，而每次push到github上的文章及Template，都會透過Jekyll server轉換為靜態的網站。</p>
+<p><img src="/images/2014-01-04jekyll-flow-02.png" alt="Jekyll 流程2"></p>
+<hr>
+<p>###後記</p>
+<p>Jekyll loacl端建議使用Mac OSX，由於工作的關係，我會頻繁地在兩種系統交換使用，Windows是在安裝上的注意事項就可以寫一整篇了…，OSX就去看官網吧，三到四行貼完就結束了。</p>
+<p>不過我一開始是在Windows上建立的，接下來的文章還是會介紹我所遇到的問題。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/jekyll/" rel="tag">#jekyll</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/css/2014/01/01/font-family/" rel="next" title="font-family要怎麼玩">
+                <i class="fa fa-chevron-left"></i> font-family要怎麼玩
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tools/2014/01/04/emmet-livestyle/" rel="prev" title="Emmet Live Style 加減用啦~">
+                Emmet Live Style 加減用啦~ <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#為什麼會考慮Jykell"><span class="nav-number">1.</span> <span class="nav-text">為什麼會考慮Jykell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jykell-Necessary-Skills"><span class="nav-number">2.</span> <span class="nav-text">Jykell Necessary Skills</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-Jekyll"><span class="nav-number">3.</span> <span class="nav-text">What is Jekyll</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jekyll-的相關技術"><span class="nav-number">4.</span> <span class="nav-text">Jekyll 的相關技術</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Github-Github-Pages"><span class="nav-number">4.1.</span> <span class="nav-text">Git, Github, Github Pages</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Markdown"><span class="nav-number">4.2.</span> <span class="nav-text">Markdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Liquid-Template"><span class="nav-number">4.3.</span> <span class="nav-text">Liquid Template</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jekyll-運作流程"><span class="nav-number">5.</span> <span class="nav-text">Jekyll 運作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#本地端"><span class="nav-number">5.1.</span> <span class="nav-text">本地端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Github-Page"><span class="nav-number">5.2.</span> <span class="nav-text">Github Page</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/jekyll/2014/01/04/what-is-jekyll/';
+      var disqus_title = "Jekyll 介紹";
+      var disqus_url = 'http://wcc723.github.io//jekyll/2014/01/04/what-is-jekyll/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

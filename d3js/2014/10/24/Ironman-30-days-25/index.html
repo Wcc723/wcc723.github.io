@@ -1,0 +1,1109 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="ironman,d3js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="上一篇介紹了資料的來源以及動機，這篇就來介紹執行的層面吧。
+在原本的範例中，是只有一個圓在跳動，但是音樂所能擷取的資料是一段很長的陣列，我就思考著是不是有辦法做成折線圖，並且讓他有躍動的感覺。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="D3.js 也可以像音樂一樣動吃動吃動(2)">
+<meta property="og:url" content="http://wcc723.github.io/d3js/2014/10/24/Ironman-30-days-25/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="上一篇介紹了資料的來源以及動機，這篇就來介紹執行的層面吧。
+在原本的範例中，是只有一個圓在跳動，但是音樂所能擷取的資料是一段很長的陣列，我就思考著是不是有辦法做成折線圖，並且讓他有躍動的感覺。">
+<meta property="og:image" content="http://wcc723.github.io/images/2014ironman/day24_02.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014ironman/day24_03.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014ironman/day23_02.png">
+<meta property="og:updated_time" content="2016-10-13T02:47:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="D3.js 也可以像音樂一樣動吃動吃動(2)">
+<meta name="twitter:description" content="上一篇介紹了資料的來源以及動機，這篇就來介紹執行的層面吧。
+在原本的範例中，是只有一個圓在跳動，但是音樂所能擷取的資料是一段很長的陣列，我就思考著是不是有辦法做成折線圖，並且讓他有躍動的感覺。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2014ironman/day24_02.png">
+
+  <meta property="og:image" content="/images/2014ironman/day23_04.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/d3js/2014/10/24/Ironman-30-days-25/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.10/d3.min.js"></script>
+
+
+  <title> D3.js 也可以像音樂一樣動吃動吃動(2) | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                D3.js 也可以像音樂一樣動吃動吃動(2)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-10-24T00:00:00+08:00" content="2014-10-24">
+              2014-10-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/d3js/" itemprop="url" rel="index">
+                    <span itemprop="name">d3js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/d3js/2014/10/24/Ironman-30-days-25/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/d3js/2014/10/24/Ironman-30-days-25/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014ironman/day23_04.png" rel="gallery_ciu7r3ccv000tl7f0se4r34om"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014ironman/day23_04.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>上一篇介紹了資料的來源以及動機，這篇就來介紹執行的層面吧。</p>
+<p>在原本的範例中，是只有一個圓在跳動，但是音樂所能擷取的資料是一段很長的陣列，我就思考著是不是有辦法做成折線圖，並且讓他有躍動的感覺。</p>
+<a id="more"></a>
+<p>音樂來源：<a href="http://unlimited.kptaipei.tw/" target="_blank" rel="external">http://unlimited.kptaipei.tw/</a></p>
+<p>範例參考：<a href="http://webfinal.herokuapp.com/slides.html" target="_blank" rel="external">http://webfinal.herokuapp.com/slides.html</a></p>
+<h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><p>先看一下HTML的結構，在左邊呈現圖像化的效果，右邊是柯P的音樂選單，重要的是下方的<code>class=&quot;controller&quot;</code>，這並不是js的套件或是code，僅僅是Chrome的html5物件。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"player"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"visual"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"playlist"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"controller"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><img src="/images/2014ironman/day24_02.png" alt=""></p>
+<h2 id="柯P資料"><a href="#柯P資料" class="headerlink" title="柯P資料"></a>柯P資料</h2><p>直接透過d3.json去接柯P的資料，之前有提過KP這方面處理得相當好，用d3.js就可以直接接資料，接回來的範例如下，也可以直接打開chrome console看更完整資料。</p>
+<p><img src="/images/2014ironman/day24_03.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">d3.json(kpMusic, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123; <span class="comment">//取得柯P音樂資料</span></div><div class="line">  <span class="built_in">console</span>.log(data.data)</div><div class="line">  dataMusic = data.data; <span class="comment">//存到dataMusic</span></div><div class="line">  playlist() <span class="comment">//執行下一個function</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="Line-Chart"><a href="#Line-Chart" class="headerlink" title="Line Chart"></a>Line Chart</h2><p>這一段是特別需要注意的，因為音樂的所傳回的陣列長度是2048，值大概像下面這樣，範圍由-1 ~ 1，也因為長度過長，在繪製成圖形上會有效能上的問題，所以擷取其中一段即可。</p>
+<p><img src="/images/2014ironman/day23_02.png" alt=""></p>
+<p>所以該段js大概像這樣：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//buffer 為傳來的值</span></div><div class="line"></div><div class="line">newBuffer = <span class="built_in">Array</span>.prototype.slice.call(buffer,<span class="number">0</span>,<span class="number">64</span>)</div><div class="line"><span class="comment">//由於來源陣列長度有2048，這邊只取64就好</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> xScale = d3.scale.linear().domain([<span class="number">0</span>, newBuffer.length]).range([<span class="number">0</span>, w]);</div><div class="line">  <span class="keyword">var</span> yScale = d3.scale.linear().domain([<span class="number">1</span>, <span class="number">-1</span>]).range([h, <span class="number">0</span>]);</div><div class="line">  <span class="comment">//先前有提到資料最大及最小就是-1 ~ 1，輸出範圍就是曲線跳動的最大範圍</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> line = d3.svg.line()</div><div class="line">      .x(<span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> xScale(i + <span class="number">1</span>); <span class="comment">//利用尺度運算資料索引，傳回x的位置</span></div><div class="line">      &#125;)</div><div class="line">      .y(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> yScale(d); <span class="comment">//利用尺度運算資料的值，傳回y的位置</span></div><div class="line">      &#125;);</div><div class="line"></div><div class="line">  path.attr(<span class="string">'d'</span>, line(newBuffer)); <span class="comment">//將音樂資料套用至曲線</span></div></pre></td></tr></table></figure>
+<h2 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h2><p><strong>請先選擇右方音樂，再點選播放</strong></p>
+
+<div class="demo">
+<div class="player">
+  <div class="visual">
+  </div>
+  <div class="playlist">
+  </div>
+  <div class="controller">
+  </div>
+</div>
+</div>
+
+<p><em>很抱歉，目前本範例只支援Chrome</em></p>
+<h2 id="完整Code"><a href="#完整Code" class="headerlink" title="完整Code"></a>完整Code</h2><p>如果有興趣想要跟著實驗，只要把這段貼回家就可以玩囉</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> kpMusic = <span class="string">'http://api.kptaipei.tw/v1/musics/1?accessToken=kp54103aa1efbe14.85567715'</span></div><div class="line"><span class="comment">//柯p資料路徑</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> dataMusic = <span class="string">""</span>; <span class="comment">//音樂資料</span></div><div class="line"><span class="keyword">var</span> colorBase = <span class="number">0</span>; <span class="comment">//圓圈的顏色起始</span></div><div class="line"><span class="keyword">var</span> context; <span class="comment">//音樂格式</span></div><div class="line"><span class="keyword">var</span> h = <span class="number">100</span>, w = <span class="number">300</span>;</div><div class="line"></div><div class="line">d3.json(kpMusic, <span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123; <span class="comment">//取得柯P音樂資料</span></div><div class="line">  <span class="built_in">console</span>.log(data.data)</div><div class="line">  dataMusic = data.data; <span class="comment">//存到dataMusic</span></div><div class="line">  playlist() <span class="comment">//執行下一個function</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//這部分是建立基本的layout</span></div><div class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">".visual"</span>).append(<span class="string">'svg'</span>)</div><div class="line">  .attr(&#123;</div><div class="line">    <span class="attr">width</span>: <span class="number">300</span>,</div><div class="line">    <span class="attr">height</span>: <span class="number">300</span></div><div class="line">  &#125;);</div><div class="line"></div><div class="line"><span class="comment">//畫面中的圓圈</span></div><div class="line">circle = svg.append(<span class="string">'circle'</span>)</div><div class="line">  .attr(&#123;</div><div class="line">    <span class="attr">cx</span>: <span class="number">150</span>,</div><div class="line">    <span class="attr">cy</span>: <span class="number">150</span></div><div class="line">  &#125;);</div><div class="line"></div><div class="line"><span class="comment">//播放中音樂的文字</span></div><div class="line">playtext = svg.append(<span class="string">'text'</span>)</div><div class="line">  .attr(&#123;</div><div class="line">    <span class="attr">x</span>: <span class="number">20</span>,</div><div class="line">    <span class="attr">y</span>: <span class="number">20</span>,</div><div class="line">    <span class="attr">width</span>: <span class="number">260</span>,</div><div class="line">    <span class="attr">fill</span>: <span class="string">"white"</span></div><div class="line">  &#125;)</div><div class="line"></div><div class="line"><span class="comment">//中央跳動的曲線</span></div><div class="line">rect = svg.append(<span class="string">'g'</span>)<span class="comment">//增加一個群組g</span></div><div class="line">    .attr(<span class="string">'width'</span>, w)</div><div class="line">    .attr(<span class="string">'height'</span>, h)</div><div class="line">    .attr(<span class="string">'transform'</span>, <span class="string">'translate(0,'</span> + (h)  + <span class="string">')'</span>);</div><div class="line">path = rect.append(<span class="string">'path'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> audio = <span class="keyword">new</span> Audio(); <span class="comment">//建立音樂</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">playlist</span>(<span class="params"></span>)</span>&#123;</div><div class="line">d3.select(<span class="string">".playlist"</span>).selectAll(<span class="string">"a"</span>).data(dataMusic) <span class="comment">//右方先插入歌單</span></div><div class="line">  .enter()</div><div class="line">  .append(<span class="string">"a"</span>)</div><div class="line">  .text(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> d.song_name &#125;) <span class="comment">//傳入音樂名稱</span></div><div class="line">  .attr(<span class="string">"class"</span>, <span class="string">"song"</span>); <span class="comment">//插入Class，作為控制用</span></div><div class="line"></div><div class="line">  audio.controls = <span class="literal">true</span>; <span class="comment">//html5 音樂控制器</span></div><div class="line">  audio.preload = <span class="literal">true</span>; <span class="comment">//html5 預先下載</span></div><div class="line">  <span class="built_in">document</span>.querySelector(<span class="string">'.controller'</span>).appendChild(audio);</div><div class="line">  <span class="comment">//指定部分插入html5 audio元件</span></div><div class="line"></div><div class="line">  d3.selectAll(<span class="string">".song"</span>).on(<span class="string">"click"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</div><div class="line">    playsong(d); <span class="comment">//點擊歌單時載入音樂</span></div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//瀏覽器驗證</span></div><div class="line"><span class="keyword">try</span></div><div class="line">&#123;</div><div class="line">  context = <span class="keyword">new</span> webkitAudioContext();</div><div class="line">&#125;</div><div class="line"><span class="keyword">catch</span>(e)</div><div class="line">&#123;</div><div class="line">  <span class="keyword">try</span></div><div class="line">    &#123;</div><div class="line">      context= <span class="keyword">new</span> AudioContext();</div><div class="line">    &#125;</div><div class="line">  <span class="keyword">catch</span>(e)</div><div class="line">    &#123;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">processAudio</span>(<span class="params">e</span>) </span>&#123; <span class="comment">//如果音樂開始執行時</span></div><div class="line">  <span class="comment">//取得音軌資訊</span></div><div class="line">  <span class="keyword">var</span> buffer = e.inputBuffer.getChannelData(<span class="number">0</span>);</div><div class="line">  <span class="keyword">var</span> out = e.outputBuffer.getChannelData(<span class="number">0</span>);</div><div class="line">  <span class="keyword">var</span> amp = <span class="number">0</span>;</div><div class="line"></div><div class="line">  <span class="comment">// Iterate through buffer to get max amplitude</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; buffer.length; i++) &#123;</div><div class="line">    <span class="keyword">var</span> loud = <span class="built_in">Math</span>.abs(buffer[i]);</div><div class="line">    <span class="keyword">if</span>(loud &gt; amp) &#123;</div><div class="line">      amp = loud;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">// write input samples to output unchanged</span></div><div class="line">    out[i] = buffer[i];</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  newBuffer = <span class="built_in">Array</span>.prototype.slice.call(buffer,<span class="number">0</span>,<span class="number">64</span>)</div><div class="line">  <span class="comment">//由於來源陣列長度有2048，這邊只取64就好</span></div><div class="line"></div><div class="line"></div><div class="line">  <span class="keyword">var</span> xScale = d3.scale.linear().domain([<span class="number">0</span>, newBuffer.length]).range([<span class="number">0</span>, w]);</div><div class="line">  <span class="keyword">var</span> yScale = d3.scale.linear().domain([<span class="number">1</span>, <span class="number">-1</span>]).range([h, <span class="number">0</span>]);</div><div class="line">  <span class="comment">//先前有提到資料最大及最小就是-1 ~ 1，輸出範圍就是曲線跳動的最大範圍</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> line = d3.svg.line()</div><div class="line">      .x(<span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> xScale(i + <span class="number">1</span>); <span class="comment">//利用尺度運算資料索引，傳回x的位置</span></div><div class="line">      &#125;)</div><div class="line">      .y(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> yScale(d); <span class="comment">//利用尺度運算資料的值，傳回y的位置</span></div><div class="line">      &#125;);</div><div class="line"></div><div class="line">  colorBase ++; <span class="comment">//讓顏色隨著時間變化</span></div><div class="line">  <span class="keyword">var</span> color = d3.hsl(colorBase % <span class="number">360</span>, <span class="number">.7</span>,<span class="number">.7</span>); <span class="comment">//d3.hsl色彩運算</span></div><div class="line"></div><div class="line">  circle.attr(<span class="string">"r"</span>,<span class="number">20</span>+(amp*<span class="number">50</span>)) <span class="comment">//圓圈大小變換，以及顏色變換</span></div><div class="line">  .attr(<span class="string">"fill"</span>, color)</div><div class="line">  .attr(<span class="string">"stroke"</span>, color);</div><div class="line"></div><div class="line">  path.attr(<span class="string">'d'</span>, line(newBuffer)); <span class="comment">//將音樂資料套用至曲線</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">//以下為音樂相關的code</span></div><div class="line"><span class="keyword">var</span> node = context.createMediaElementSource(audio);</div><div class="line"><span class="keyword">var</span> processor = context.createScriptProcessor(<span class="number">2048</span>,<span class="number">1</span>,<span class="number">1</span>);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">playsong</span>(<span class="params">d</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(d)</div><div class="line">  audio.src = d.stream_url;</div><div class="line">  playtext.text(d.song_name + <span class="string">' / '</span> + d.groupname)</div><div class="line">  audio.addEventListener(<span class="string">'canplaythrough'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line"></div><div class="line">    processor.onaudioprocess = processAudio;</div><div class="line">    node.connect(processor);</div><div class="line">    processor.connect(context.destination);</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>還有CSS要補上喔～</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.player</span> &#123;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#000</span>;</div><div class="line">  <span class="attribute">width</span>: <span class="number">540px</span>;</div><div class="line">  <span class="attribute">padding</span>: <span class="number">20px</span>;</div><div class="line">  <span class="attribute">border-radius</span>: <span class="number">2px</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.player</span> <span class="selector-tag">circle</span>&#123;</div><div class="line">  <span class="attribute">fill</span>: none;</div><div class="line">&#125;</div><div class="line"><span class="selector-tag">path</span> &#123;</div><div class="line">  <span class="attribute">stroke</span>: DodgerBlue;</div><div class="line">  <span class="attribute">fill</span>: none;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.visual</span>&#123;</div><div class="line">  <span class="attribute">float</span>: left;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.playlist</span>&#123;</div><div class="line">  <span class="attribute">float</span>: right;</div><div class="line">  <span class="attribute">width</span>: <span class="number">200px</span>;</div><div class="line">  <span class="attribute">height</span>: <span class="number">300px</span>;</div><div class="line">  <span class="attribute">overflow-y</span>: auto;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.playlist</span> <span class="selector-tag">a</span>&#123;</div><div class="line">  <span class="attribute">color</span>: white;</div><div class="line">  <span class="attribute">display</span>: block;</div><div class="line">  <span class="attribute">cursor</span>: pointer;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.playlist</span> <span class="selector-tag">a</span><span class="selector-class">.selected</span> &#123;</div><div class="line">  <span class="attribute">color</span>: DeepSkyBlue;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.controller</span>&#123;</div><div class="line">  <span class="attribute">clear</span>: both;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h2><p>鐵人賽快要結束了，不過我到快結束才更了解D3js，有很多豐富的技巧還沒介紹的說…。</p>
+
+<style>
+.player {
+  background-color: #000;
+  width: 540px;
+  padding: 20px;
+  border-radius: 2px;
+}
+.player circle{
+  fill: none;
+}
+path {
+  stroke: DodgerBlue;
+  fill: none;
+}
+.visual{
+  float: left;
+}
+.playlist{
+  float: right;
+  width: 200px;
+  height: 300px;
+  overflow-y: auto;
+}
+.playlist a{
+  color: white;
+  display: block;
+  cursor: pointer;
+}
+.playlist a.selected {
+  color: DeepSkyBlue;
+}
+.controller{
+  clear: both;
+}
+</style>
+
+<script>
+
+var kpMusic = 'http://api.kptaipei.tw/v1/musics/1?accessToken=kp54103aa1efbe14.85567715'
+//柯p資料路徑
+
+var dataMusic = ""; //音樂資料
+var colorBase = 0; //圓圈的顏色起始
+var context; //音樂格式
+var h = 100, w = 300;
+
+d3.json(kpMusic, function(data){ //取得柯P音樂資料
+  console.log(data.data)
+  dataMusic = data.data; //存到dataMusic
+  playlist() //執行下一個function
+});
+
+
+//這部分是建立基本的layout
+var svg = d3.select(".visual").append('svg')
+  .attr({
+    width: 300,
+    height: 300
+  });
+
+//畫面中的圓圈
+circle = svg.append('circle')
+  .attr({
+    cx: 150,
+    cy: 150
+  });
+
+//播放中音樂的文字
+playtext = svg.append('text')
+  .attr({
+    x: 20,
+    y: 20,
+    width: 260,
+    fill: "white"
+  })
+
+//中央跳動的曲線
+rect = svg.append('g')//增加一個群組g
+    .attr('width', w)
+    .attr('height', h)
+    .attr('transform', 'translate(0,' + (h)  + ')');
+path = rect.append('path')
+
+
+var audio = new Audio(); //建立音樂
+function playlist(){
+d3.select(".playlist").selectAll("a").data(dataMusic) //右方先插入歌單
+  .enter()
+  .append("a")
+  .text(function(d){ return d.song_name }) //傳入音樂名稱
+  .attr("class", "song"); //插入Class，作為控制用
+
+  audio.controls = true; //html5 音樂控制器
+  audio.preload = true; //html5 預先下載
+  document.querySelector('.controller').appendChild(audio);
+  //指定部分插入html5 audio元件
+
+  d3.selectAll(".song").on("click", function(d){
+    playsong(d); //點擊歌單時載入音樂
+  });
+}
+
+//瀏覽器驗證
+try
+{
+  context = new webkitAudioContext();
+}
+catch(e)
+{
+  try
+    {
+      context= new AudioContext();
+    }
+  catch(e)
+    {
+    }
+}
+
+function processAudio(e) { //如果音樂開始執行時
+  //取得音軌資訊
+  var buffer = e.inputBuffer.getChannelData(0);
+  var out = e.outputBuffer.getChannelData(0);
+  var amp = 0;
+
+  // Iterate through buffer to get max amplitude
+  for (var i = 0; i < buffer.length; i++) {
+    var loud = Math.abs(buffer[i]);
+    if(loud > amp) {
+      amp = loud;
+    }
+    // write input samples to output unchanged
+    out[i] = buffer[i];
+  };
+
+  newBuffer = Array.prototype.slice.call(buffer,0,64)
+  //由於來源陣列長度有2048，這邊只取64就好
+
+
+  var xScale = d3.scale.linear().domain([0, newBuffer.length]).range([0, w]);
+  var yScale = d3.scale.linear().domain([1, -1]).range([h, 0]);
+  //先前有提到資料最大及最小就是-1 ~ 1，輸出範圍就是曲線跳動的最大範圍
+
+  var line = d3.svg.line()
+      .x(function(d,i) {
+        return xScale(i + 1); //利用尺度運算資料索引，傳回x的位置
+      })
+      .y(function(d) {
+        return yScale(d); //利用尺度運算資料的值，傳回y的位置
+      });
+
+  colorBase ++; //讓顏色隨著時間變化
+  var color = d3.hsl(colorBase % 360, .7,.7); //d3.hsl色彩運算
+
+  circle.attr("r",20+(amp*50)) //圓圈大小變換，以及顏色變換
+  .attr("fill", color)
+  .attr("stroke", color);
+
+  path.attr('d', line(newBuffer)); //將音樂資料套用至曲線
+}
+
+//以下為音樂相關的code
+var node = context.createMediaElementSource(audio);
+var processor = context.createScriptProcessor(2048,1,1);
+
+function playsong(d){
+  console.log(d)
+  audio.src = d.stream_url;
+  playtext.text(d.song_name + ' / ' + d.groupname)
+  audio.addEventListener('canplaythrough',function() {
+
+    processor.onaudioprocess = processAudio;
+    node.connect(processor);
+    processor.connect(context.destination);
+  });
+}
+
+</script>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ironman/" rel="tag">#ironman</a>
+          
+            <a href="/tags/d3js/" rel="tag">#d3js</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/d3js/2014/10/23/Ironman-30-days-24/" rel="next" title="D3.js 也可以像音樂一樣動吃動吃動(1)">
+                <i class="fa fa-chevron-left"></i> D3.js 也可以像音樂一樣動吃動吃動(1)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/10/25/Ironman-30-days-26/" rel="prev" title="d3.js layout (以環保局資料為例)">
+                d3.js layout (以環保局資料為例) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTML"><span class="nav-number">1.</span> <span class="nav-text">HTML</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#柯P資料"><span class="nav-number">2.</span> <span class="nav-text">柯P資料</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Line-Chart"><span class="nav-number">3.</span> <span class="nav-text">Line Chart</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DEMO"><span class="nav-number">4.</span> <span class="nav-text">DEMO</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整Code"><span class="nav-number">5.</span> <span class="nav-text">完整Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#後記"><span class="nav-number">6.</span> <span class="nav-text">後記</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/d3js/2014/10/24/Ironman-30-days-25/';
+      var disqus_title = "D3.js 也可以像音樂一樣動吃動吃動(2)";
+      var disqus_url = 'http://wcc723.github.io//d3js/2014/10/24/Ironman-30-days-25/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

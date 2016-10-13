@@ -1,0 +1,944 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="gulp," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Gulp主要有四個指令，用這些指令就可以完成大部份工作。
+
+gulp.task(name, fn) 定義一個任務名稱，接下來指定任務的工作內容
+gulp.run(task) 運行指定的任務
+gulp.src(glob) 檔案來源
+gulp.dest(folder) 檔案的存檔路徑
+
+而在上回的範例裡，已經呈現了主要的三個。
+123456789//gulpfile.jsvar gulp = requ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gulp Task and Gulp Pipe">
+<meta property="og:url" content="http://wcc723.github.io/gulp/2014/09/24/gulp-task/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="Gulp主要有四個指令，用這些指令就可以完成大部份工作。
+
+gulp.task(name, fn) 定義一個任務名稱，接下來指定任務的工作內容
+gulp.run(task) 運行指定的任務
+gulp.src(glob) 檔案來源
+gulp.dest(folder) 檔案的存檔路徑
+
+而在上回的範例裡，已經呈現了主要的三個。
+123456789//gulpfile.jsvar gulp = requ">
+<meta property="og:image" content="http://wcc723.github.io/images/gulp/screen_shot_gulp12.png">
+<meta property="og:image" content="http://wcc723.github.io/images/gulp/screen_shot_gulp13.png">
+<meta property="og:image" content="http://wcc723.github.io/images/gulp/screen_shot_gulp14.png">
+<meta property="og:updated_time" content="2016-10-13T00:43:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Gulp Task and Gulp Pipe">
+<meta name="twitter:description" content="Gulp主要有四個指令，用這些指令就可以完成大部份工作。
+
+gulp.task(name, fn) 定義一個任務名稱，接下來指定任務的工作內容
+gulp.run(task) 運行指定的任務
+gulp.src(glob) 檔案來源
+gulp.dest(folder) 檔案的存檔路徑
+
+而在上回的範例裡，已經呈現了主要的三個。
+123456789//gulpfile.jsvar gulp = requ">
+<meta name="twitter:image" content="http://wcc723.github.io/images/gulp/screen_shot_gulp12.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/gulp/2014/09/24/gulp-task/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> Gulp Task and Gulp Pipe | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Gulp Task and Gulp Pipe
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-09-24T00:00:00+08:00" content="2014-09-24">
+              2014-09-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/gulp/" itemprop="url" rel="index">
+                    <span itemprop="name">gulp</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/gulp/2014/09/24/gulp-task/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/gulp/2014/09/24/gulp-task/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+
+      
+        <p>Gulp主要有四個指令，用這些指令就可以完成大部份工作。</p>
+<ul>
+<li>gulp.task(name, fn) 定義一個任務名稱，接下來指定任務的工作內容</li>
+<li>gulp.run(task) 運行指定的任務</li>
+<li>gulp.src(glob) 檔案來源</li>
+<li>gulp.dest(folder) 檔案的存檔路徑</li>
+</ul>
+<p>而在上回的範例裡，已經呈現了主要的三個。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//gulpfile.js</span></div><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</div><div class="line">	coffee = <span class="built_in">require</span>(<span class="string">'gulp-coffee'</span>);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'coffee'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">//'coffee'是排程名稱，可自定</span></div><div class="line">	gulp.src(<span class="string">'./app/coffeescripts/*.coffee'</span>) <span class="comment">//來源檔案</span></div><div class="line">	.pipe(coffee()) <span class="comment">//編譯</span></div><div class="line">	.pipe(gulp.dest(<span class="string">'./app/assets/js'</span>)) <span class="comment">//輸出位置</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>而這篇會介紹如何用gulp將一個任務串接，並且監視它。</p>
+<a id="more"></a>
+<p>以下是今年coscup Appleboy所分享的簡報(他的投影片真得很精彩)，先前就有聽過Gulp、Grunt等等技術，但是實際要運用也是需要參考許多文章，而其中許多都是 Appleboy的資料。</p>
+<p>另外這邊有介紹Gulp與Grunt兩者在任務流程上的不同，Gulp在處理上，是不斷的編譯、編譯、編譯，最後直接寫入檔案，這篇就來介紹，Gulp是如何串接這些任務。</p>
+<p><img src="/images/gulp/screen_shot_gulp12.png" alt=""></p>
+<p>來源：<a href="http://www.slideshare.net/appleboy/automating-your-workflow-with-gulp" target="_blank" rel="external">http://www.slideshare.net/appleboy/automating-your-workflow-with-gulp</a></p>
+<h2 id="Js-ugly"><a href="#Js-ugly" class="headerlink" title="Js ugly"></a>Js ugly</h2><p>在上次的範例中，我們有準備兩個<code>coffee</code>原始檔，這次就要將這兩個原始檔合併壓縮。</p>
+<p>回到terminal中輸入以下指令。</p>
+<pre><code>npm install gulp-uglify gulp-concat --save-dev
+</code></pre><p><code>gulp-uglify</code>是用來壓縮js以及去除變數，<code>gulp-concat</code>則是用來合併多隻檔案。所有的流程都會用’.pipe’來進行串接，結果就會像下面的程式碼，編譯coffee、合併成一隻js、壓縮、輸出。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//gulp</span></div><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</div><div class="line">	concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>),</div><div class="line">	uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>),</div><div class="line">	coffee = <span class="built_in">require</span>(<span class="string">'gulp-coffee'</span>);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'coffee'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">//‘coffee'是排程名稱，可自定</span></div><div class="line">	gulp.src(<span class="string">'./app/coffeescripts/*.coffee'</span>) <span class="comment">//來源檔案</span></div><div class="line">		.pipe(coffee()) <span class="comment">//編譯</span></div><div class="line">		.pipe(concat(<span class="string">'main.js'</span>)) <span class="comment">//合併成一隻</span></div><div class="line">		.pipe(uglify()) <span class="comment">//壓縮、醜化</span></div><div class="line">		.pipe(gulp.dest(<span class="string">'./app/assets/js'</span>)) <span class="comment">//輸出位置</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'coffee'</span>]);<span class="comment">//預設動作 執行gulp</span></div></pre></td></tr></table></figure>
+<p><img src="/images/gulp/screen_shot_gulp13.png" alt=""></p>
+<p>接下來回到terminal執行<code>gulp</code>，應該會發現<code>/app/assets/js</code>內的js被合併成一隻<code>main.js</code>，到這邊也算達到預期的效果，但是每次不斷執行相同動作也是挺麻煩der~。所以我們要另外寫個任務，不斷地監測檔案是否修改，只要有修改檔案，就自動編譯。</p>
+<h2 id="Gulp-watch"><a href="#Gulp-watch" class="headerlink" title="Gulp watch"></a>Gulp watch</h2><p>透過<code>gulp.watch</code>，可以監聽指定的資料夾，而被監聽的資料夾只要有檔案變更，就會直行指定的任務。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//gulp</span></div><div class="line">gulp.task(<span class="string">'watch'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="comment">//自定一個watch的排程名稱</span></div><div class="line">	gulp.watch(<span class="string">'./app/coffeescripts/*.coffee'</span>, [<span class="string">'coffee'</span>]); <span class="comment">//監聽路徑，以及檔案變更後所執行的任務</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'coffee'</span>,<span class="string">'watch'</span>]);</div></pre></td></tr></table></figure>
+<p>參考以上的原始碼，只要在terminal輸入<code>gulp</code>，就會自動監聽。</p>
+<p><img src="/images/gulp/screen_shot_gulp14.png" alt=""></p>
+<p>只要每次修改，就會如上一樣，不斷地執行coffee這個任務，如果要中斷目前的監聽，就在Terminal內按下<code>Ctrl</code> + <code>C</code>。</p>
+<p>到目前為止的gulpfile.js</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</div><div class="line">	concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>),</div><div class="line">	uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>),</div><div class="line">	coffee = <span class="built_in">require</span>(<span class="string">'gulp-coffee'</span>);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'coffee'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">//‘coffee'是排程名稱，可自定</span></div><div class="line">	gulp.src(<span class="string">'./app/coffeescripts/*.coffee'</span>) <span class="comment">//來源檔案</span></div><div class="line">		.pipe(coffee()) <span class="comment">//編譯</span></div><div class="line">		.pipe(concat(<span class="string">'main.js'</span>)) <span class="comment">//合併成一隻</span></div><div class="line">		.pipe(uglify()) <span class="comment">//壓縮、醜化</span></div><div class="line">		.pipe(gulp.dest(<span class="string">'./app/assets/js'</span>)) <span class="comment">//輸出位置</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'watch'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="comment">//自定一個watch的排程名稱</span></div><div class="line">     gulp.watch(<span class="string">'./app/coffeescripts/*.coffee'</span>, [<span class="string">'coffee'</span>]); <span class="comment">//監聽路徑，以及檔案變更後所執行的任務</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'coffee'</span>,<span class="string">'watch'</span>]);</div></pre></td></tr></table></figure>
+<p>以目前的範例結果大概會像這樣。</p>
+<pre><code>| app /
+    | - coffeescripts /
+        | - a.coffee
+        | - b.coffee
+    | - js/
+        | - jquery-1.11.0.min.js
+    | - sass/
+        | - all.sass
+    | - assets/
+        | js /
+            | - main.js
+    | - index.html
+| node_modules /
+    | - 各式node module….
+| - gulpfile.js
+| - package.json
+</code></pre>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/gulp/" rel="tag">#gulp</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/gulp/2014/09/22/gulp-install/" rel="next" title="Gulp 環境安裝">
+                <i class="fa fa-chevron-left"></i> Gulp 環境安裝
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/09/30/Ironman-30-days-01/" rel="prev" title="2014 鐵人賽慢慢開始跑">
+                2014 鐵人賽慢慢開始跑 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Js-ugly"><span class="nav-number">1.</span> <span class="nav-text">Js ugly</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Gulp-watch"><span class="nav-number">2.</span> <span class="nav-text">Gulp watch</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/gulp/2014/09/24/gulp-task/';
+      var disqus_title = "Gulp Task and Gulp Pipe";
+      var disqus_url = 'http://wcc723.github.io//gulp/2014/09/24/gulp-task/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

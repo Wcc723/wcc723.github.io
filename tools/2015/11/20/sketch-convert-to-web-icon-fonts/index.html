@@ -1,0 +1,986 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="tools,icon fonts,sketch," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="在之前轉web font icons 通常是使用Icomoon，他提供不錯的介面以及大量的icons供開發者使用，但有些時候Icomoon並不符合我們的需求，例如：
+
+公司專案，不宜上傳到第三方空間
+有版本控管需求時
+設計師控制慾很強時(?
+
+而萬能的Sketch及Gulp再合體之後，就有了Sketch to icon fonts 的功能，只要轉一次，同時提供了：
+
+icon fonts 字型檔">
+<meta property="og:type" content="article">
+<meta property="og:title" content="將 Sketch icons 轉成 web icon fonts">
+<meta property="og:url" content="http://wcc723.github.io/tools/2015/11/20/sketch-convert-to-web-icon-fonts/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="在之前轉web font icons 通常是使用Icomoon，他提供不錯的介面以及大量的icons供開發者使用，但有些時候Icomoon並不符合我們的需求，例如：
+
+公司專案，不宜上傳到第三方空間
+有版本控管需求時
+設計師控制慾很強時(?
+
+而萬能的Sketch及Gulp再合體之後，就有了Sketch to icon fonts 的功能，只要轉一次，同時提供了：
+
+icon fonts 字型檔">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/installNodeJs.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/node_version.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/downloadRepo.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/goToDir.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/afterGulp.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/demoHTML.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/googleIcons.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/googleIconsToFonts.png">
+<meta property="og:updated_time" content="2016-10-13T06:29:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="將 Sketch icons 轉成 web icon fonts">
+<meta name="twitter:description" content="在之前轉web font icons 通常是使用Icomoon，他提供不錯的介面以及大量的icons供開發者使用，但有些時候Icomoon並不符合我們的需求，例如：
+
+公司專案，不宜上傳到第三方空間
+有版本控管需求時
+設計師控制慾很強時(?
+
+而萬能的Sketch及Gulp再合體之後，就有了Sketch to icon fonts 的功能，只要轉一次，同時提供了：
+
+icon fonts 字型檔">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2015/11/installNodeJs.png">
+
+  <meta property="og:image" content="/images/2015/11/googleIconsToFonts.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/tools/2015/11/20/sketch-convert-to-web-icon-fonts/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 將 Sketch icons 轉成 web icon fonts | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                將 Sketch icons 轉成 web icon fonts
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-11-20T00:00:00+08:00" content="2015-11-20">
+              2015-11-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/tools/" itemprop="url" rel="index">
+                    <span itemprop="name">tools</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/tools/2015/11/20/sketch-convert-to-web-icon-fonts/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/tools/2015/11/20/sketch-convert-to-web-icon-fonts/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2015/11/googleIconsToFonts.png" rel="gallery_ciu7yn0lk0047l7f0o948vv0y"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2015/11/googleIconsToFonts.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>在之前轉web font icons 通常是使用Icomoon，他提供不錯的介面以及大量的icons供開發者使用，但有些時候Icomoon並不符合我們的需求，例如：</p>
+<ul>
+<li>公司專案，不宜上傳到第三方空間</li>
+<li>有版本控管需求時</li>
+<li>設計師控制慾很強時(?</li>
+</ul>
+<p>而萬能的Sketch及Gulp再合體之後，就有了Sketch to icon fonts 的功能，只要轉一次，同時提供了：</p>
+<ul>
+<li>icon fonts 字型檔</li>
+<li>寫好的css檔</li>
+<li>還有HTML使用範本</li>
+</ul>
+<p>對於前端以及設計師簡直接就是一大福音。</p>
+<a id="more"></a>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><p>寫得很清楚的開發文件：<a href="https://github.com/cognitom/symbols-for-sketch" target="_blank" rel="external">https://github.com/cognitom/symbols-for-sketch</a></p>
+<p>在開始前，請先確認有以下環境：</p>
+<ol>
+<li>Mac</li>
+<li>正版的Sketch</li>
+<li>Node.js</li>
+<li>有gulp更好</li>
+</ol>
+<p>Sketch 是這次主要來輸出icons的繪圖軟體，由於只能在Mac上運行，所以Mac也是必須的，本文最後會在介紹直接使用<code>.svg</code>轉icon fonts的方法；Node.js是用來運行gulp的環境，如果還沒安裝可以直接到官網下載<a href="https://nodejs.org/en/" target="_blank" rel="external">https://nodejs.org/en/</a>；Gulp是這次的主角，負責將sketch轉成icon fonts的工具，如果熟悉javascript的開發者將會很容易上手，當然不熟也沒關係，本文會用圖文說明以下的步驟。</p>
+<h2 id="安裝Node-js"><a href="#安裝Node-js" class="headerlink" title="安裝Node.js"></a>安裝Node.js</h2><p>如果你還沒安裝Node.js，就到<a href="https://nodejs.org/en/" target="_blank" rel="external">官網</a>找到下載點，目前的版本有4.2.2及5.1.0，不管你是哪個版本，與本次的實作影響都不大。</p>
+<p><img src="/images/2015/11/installNodeJs.png" alt="install node js"></p>
+<p>安裝完以後再打開 Terminal 輸入以下指令，只要有跳出版本號就算成功了(我的版本追不上時代啊～)。</p>
+<pre><code>$ node -v
+</code></pre><p><img src="/images/2015/11/node_version.png" alt=""></p>
+<p>如果還沒安裝gulp，可以順便安裝，指令如下：</p>
+<pre><code>$ npm install gulp -g
+如果不行請加 `sudo` 在前方
+$ sudo npm install gulp -g
+</code></pre><p><em>在npm 前方加入<code>sudo</code>代表最高權限，通常只有在安裝全域(-g, -global)才有可能使用。</em></p>
+<h2 id="下載專案"><a href="#下載專案" class="headerlink" title="下載專案"></a>下載專案</h2><p>接下來到<a href="https://github.com/cognitom/symbols-for-sketch" target="_blank" rel="external">https://github.com/cognitom/symbols-for-sketch</a>把專案抓下來，如果熟悉git的開發者可以使用git指令將repo抓下來；另一種更潮的方式，就是直接選擇網站上下角的Download zip。</p>
+<p><img src="/images/2015/11/downloadRepo.png" alt="download repo"></p>
+<p>下載後請解壓縮它。</p>
+<h2 id="再次打開你的-Terminal，剩下簡單的三步驟就完成了"><a href="#再次打開你的-Terminal，剩下簡單的三步驟就完成了" class="headerlink" title="再次打開你的 Terminal，剩下簡單的三步驟就完成了"></a>再次打開你的 Terminal，剩下簡單的三步驟就完成了</h2><p>打開Terminal後，請到剛剛下載的資料夾，如果不熟可以參考以下這個指令(我常常把檔案丟桌面，所以以下指令是針對放在桌面上的)。</p>
+<pre><code>$ cd /Users/*****/Desktop/symbols-for-sketch-master
+</code></pre><p><img src="/images/2015/11/goToDir.png" alt=""></p>
+<h3 id="安裝node-gulp-相依套件"><a href="#安裝node-gulp-相依套件" class="headerlink" title="安裝node gulp 相依套件"></a>安裝node gulp 相依套件</h3><p>這個步驟是要將gulp相依的套件從網路上抓下來，相依套件同時會放在這個資料夾(node_modules)。</p>
+<pre><code>$ npm install
+</code></pre><h3 id="安裝Sketch-tool"><a href="#安裝Sketch-tool" class="headerlink" title="安裝Sketch tool"></a>安裝Sketch tool</h3><p>這有兩個方法，其中一種是使用指令，但在測試時沒有成功，所以這邊是使用方法二。</p>
+<p>方法一：直接輸入以下指令，我沒成功…</p>
+<pre><code>$ npm run installtool
+</code></pre><p>方法二：先下載<a href="http://sketchtool.bohemiancoding.com/sketchtool-latest.zip" target="_blank" rel="external">http://sketchtool.bohemiancoding.com/sketchtool-latest.zip</a>，解壓縮後到該資料夾，輸入以下指令：</p>
+<pre><code>$ cd ~/Downloads/sketchtools/
+$ sudo ./install.sh
+</code></pre><h3 id="將Sketch轉成icon-fonts"><a href="#將Sketch轉成icon-fonts" class="headerlink" title="將Sketch轉成icon fonts"></a>將Sketch轉成icon fonts</h3><p>最後，透過gulp指令結束這個回合吧！</p>
+<pre><code>$ gulp symbols
+</code></pre><p>到剛剛的資料夾，資料夾內增加了dist以及編譯完成的字型檔、CSS以及範例的html。</p>
+<p><img src="/images/2015/11/afterGulp.png" alt=""></p>
+<p>範例的HTML可以看到成果。</p>
+<p><img src="/images/2015/11/demoHTML.png" alt=""></p>
+<h2 id="將-svg-轉成icon-fonts"><a href="#將-svg-轉成icon-fonts" class="headerlink" title="將.svg 轉成icon fonts"></a>將.svg 轉成icon fonts</h2><p>以上的Sketch轉icons如果有成功，接下來的<code>.svg</code>轉icons也是相當容易，只要用相同的模組改幾行程式碼就可以運行。不過要注意的是<strong>這有可能編譯失敗</strong>(原因很多，包含svg的檔案也有可能造成編譯失敗)。</p>
+<p>這邊是使用Google Material Design 所提供的 icon，直接放在剛剛的資料夾內即可。</p>
+<p><img src="/images/2015/11/googleIcons.png" alt=""></p>
+<p>接下來打開<code>gulpfile.js</code>，找到以下幾行替換成<code>gulp.src([&#39;./svg/*.svg&#39;])</code> (路徑可以自行決定)。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">gulp.task(<span class="string">'symbols'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="comment">//gulp.src('symbol-font-14px.sketch') // 將原本轉換sketch的改成轉svg</span></div><div class="line">    <span class="comment">//.pipe(sketch(&#123;</span></div><div class="line">    <span class="comment">//  export: 'artboards',</span></div><div class="line">    <span class="comment">//  formats: 'svg'</span></div><div class="line">    <span class="comment">//&#125;))</span></div><div class="line">  gulp.src([<span class="string">'./svg/*.svg'</span>])</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>和先前的一樣，在 Terminal 輸入 <code>$ gulp symbols</code> 就可以了。</p>
+<pre><code>$ gulp symbols
+</code></pre><p><img src="/images/2015/11/googleIconsToFonts.png" alt=""></p>
+<p>完成～</p>
+<hr>
+<p>在以前都是使用 Icomoon 的服務再轉 web fonts，最早的時候還忘記要登入，結果整份 web fonts資料都要重建，透過這樣的工具可以自己轉、自己做版控，除了CDN的問題外，倒是挺方便的。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tools/" rel="tag">#tools</a>
+          
+            <a href="/tags/icon-fonts/" rel="tag">#icon fonts</a>
+          
+            <a href="/tags/sketch/" rel="tag">#sketch</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/tools/2015/10/19/styling-checkbox/" rel="next" title="SVG 客製化 checkbox">
+                <i class="fa fa-chevron-left"></i> SVG 客製化 checkbox
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tools/2015/11/25/better-jekyll-markdown-editor/" rel="prev" title="更棒的 Jekyll 編寫工具">
+                更棒的 Jekyll 編寫工具 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用"><span class="nav-number">1.</span> <span class="nav-text">如何使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝Node-js"><span class="nav-number">2.</span> <span class="nav-text">安裝Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下載專案"><span class="nav-number">3.</span> <span class="nav-text">下載專案</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#再次打開你的-Terminal，剩下簡單的三步驟就完成了"><span class="nav-number">4.</span> <span class="nav-text">再次打開你的 Terminal，剩下簡單的三步驟就完成了</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝node-gulp-相依套件"><span class="nav-number">4.1.</span> <span class="nav-text">安裝node gulp 相依套件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安裝Sketch-tool"><span class="nav-number">4.2.</span> <span class="nav-text">安裝Sketch tool</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#將Sketch轉成icon-fonts"><span class="nav-number">4.3.</span> <span class="nav-text">將Sketch轉成icon fonts</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#將-svg-轉成icon-fonts"><span class="nav-number">5.</span> <span class="nav-text">將.svg 轉成icon fonts</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/tools/2015/11/20/sketch-convert-to-web-icon-fonts/';
+      var disqus_title = "將 Sketch icons 轉成 web icon fonts";
+      var disqus_url = 'http://wcc723.github.io//tools/2015/11/20/sketch-convert-to-web-icon-fonts/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

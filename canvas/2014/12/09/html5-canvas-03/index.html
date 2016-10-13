@@ -1,0 +1,1020 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+<link href="/demoFile/css/2013-winter.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。
+翻翻一年之前做的，才發現原來有很多很酷的東西，還好有寫成簡易的文章，讓現在再重新看可以很快瞭解，這篇是介紹用Canvas做小畫家，並且還可以下載下來的功能，有分為好幾段，這邊全部合併成一篇。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="試試看Canvas (3)，Canvas 小畫家">
+<meta property="og:url" content="http://wcc723.github.io/canvas/2014/12/09/html5-canvas-03/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。
+翻翻一年之前做的，才發現原來有很多很酷的東西，還好有寫成簡易的文章，讓現在再重新看可以很快瞭解，這篇是介紹用Canvas做小畫家，並且還可以下載下來的功能，有分為好幾段，這邊全部合併成一篇。">
+<meta property="og:image" content="http://wcc723.github.io/images/2014-12-09.png">
+<meta property="og:updated_time" content="2016-10-13T03:49:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="試試看Canvas (3)，Canvas 小畫家">
+<meta name="twitter:description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。
+翻翻一年之前做的，才發現原來有很多很酷的東西，還好有寫成簡易的文章，讓現在再重新看可以很快瞭解，這篇是介紹用Canvas做小畫家，並且還可以下載下來的功能，有分為好幾段，這邊全部合併成一篇。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2014-12-09.png">
+
+  <meta property="og:image" content="/images/2014-12-09.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/canvas/2014/12/09/html5-canvas-03/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 試試看Canvas (3)，Canvas 小畫家 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                試試看Canvas (3)，Canvas 小畫家
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-12-09T00:00:00+08:00" content="2014-12-09">
+              2014-12-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/canvas/" itemprop="url" rel="index">
+                    <span itemprop="name">canvas</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/canvas/2014/12/09/html5-canvas-03/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/canvas/2014/12/09/html5-canvas-03/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014-12-09.png" rel="gallery_ciu7s0g41001tl7f059jdsmz7"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014-12-09.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>這篇也是前一個Blog的文章，最近在整理就一起拿出來。</p>
+<p>翻翻一年之前做的，才發現原來有很多很酷的東西，還好有寫成簡易的文章，讓現在再重新看可以很快瞭解，這篇是介紹用Canvas做小畫家，並且還可以下載下來的功能，有分為好幾段，這邊全部合併成一篇。</p>
+<a id="more"></a>
+<p>參考：<a href="http://codepen.io/hossman/pen/AyaFl" target="_blank" rel="external">http://codepen.io/hossman/pen/AyaFl</a></p>
+<h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>在開始介紹之前，先了解這個範例，這樣會更瞭解本篇所介紹的內容，Canvas範例的功能：</p>
+<ol>
+<li>繪製線段</li>
+<li>存檔</li>
+<li>調整RGB色彩</li>
+</ol>
+<p>所以可以在這上面隨意畫個幾筆，在調整色彩，最後在下載看看，這個功能簡簡單單，但是做出來挺有成就感的。</p>
+
+<div class="demo">
+  <div class="color">
+  R<input id="red" type="range" name="points" min="0" max="255" value="0"><br>
+  G<input id="green" type="range" name="points" min="0" max="255" value="0"><br>
+  B<input id="blue" type="range" name="points" min="0" max="255" value="0">
+  </div>
+  <div class="value">
+    R<input id="vred" type="text" value="0">
+    G<input id="vgreen" type="text" value="0">
+    B<input id="vblue" type="text" value="0">
+  </div>
+  <canvas id="canvas" width="400" height="400">
+    Sorry, your browser doesn't support the &lt;canvas&gt; element.
+  </canvas>
+  <p>請先在上面隨便畫兩筆</p>
+  <a id="save" href="#" download="aShareaDay.png" class="color-btn-green">Save Canvas</a>
+</div>
+
+<h4 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h4><p>在看JS之前，先稍微看一下這個html，這HTML也和上面一樣，分為三個部分。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo"</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 調整色彩 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"color"</span>&gt;</span></div><div class="line">  R<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"red"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">  G<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"green"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">  B<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"blue"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"value"</span>&gt;</span></div><div class="line">    R<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"vred"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></div><div class="line">    G<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"vgreen"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></div><div class="line">    B<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"vblue"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 調整色彩end --&gt;</span></div><div class="line"><span class="comment">&lt;!-- Canvas --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">"canvas"</span> <span class="attr">width</span>=<span class="string">"400"</span> <span class="attr">height</span>=<span class="string">"400"</span>&gt;</span></div><div class="line">    Sorry, your browser doesn't support the &amp;lt;canvas&amp;gt; element.</div><div class="line">  <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- Canvas end --&gt;</span></div><div class="line"><span class="comment">&lt;!-- 下載 --&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"save"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">download</span>=<span class="string">"aShareaDay.png"</span> <span class="attr">class</span>=<span class="string">"color-btn-green"</span>&gt;</span>Save Canvas<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 下載end --&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h4 id="繪製線段"><a href="#繪製線段" class="headerlink" title="繪製線段"></a>繪製線段</h4><p>這篇是前幾篇的綜合，還有參考<a href="http://codepen.io/hossman/pen/AyaFl" target="_blank" rel="external">http://codepen.io/hossman/pen/AyaFl</a>所製作出來的。</p>
+<p>這一段的重點在於，取得滑鼠的座標<code>getMousePos(canvas, evt)</code>，先取得滑鼠在畫布上的座標，在每次滑鼠移動時，都會繪製在畫布上，然後再放開滑鼠時，離開偵聽的事件。</p>
+<h4 id="下載"><a href="#下載" class="headerlink" title="下載"></a>下載</h4><p>Html5 的 a 有新的屬性download，可以將此標籤預設為下載的功能，並且預設檔名，另外在canvas可以利用toDataURL()把canvas轉成data:image。。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- html5 新增download，可以用來預設下載檔名 --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"save"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">download</span>=<span class="string">"dl.png"</span> &gt;</span>Save Canvas<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><em>如果把產生出來的src貼在網址列，也能產生完整的圖片。</em></p>
+<p>data:image參考:<a href="http://rritw.com/a/bianchengyuyan/C__/20131018/434112.html" target="_blank" rel="external">http://rritw.com/a/bianchengyuyan/C__/20131018/434112.html</a></p>
+<h2 id="調整色彩"><a href="#調整色彩" class="headerlink" title="調整色彩"></a>調整色彩</h2><p>接下來在抓取那三個scroll bar的rgb值，將它直接寫入到<code>ctx.strokeStyle</code>，<code>strokeStyle</code>是Canvas上的筆畫樣式，這樣就大功告成了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$(<span class="string">'.color input'</span>).change(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    r = $(<span class="string">'#red'</span>).val();</div><div class="line">    g = $(<span class="string">'#green'</span>).val();</div><div class="line">    b = $(<span class="string">'#blue'</span>).val();</div><div class="line">    changeColor(r,g,b);</div><div class="line">    <span class="comment">//取出input中的數值</span></div><div class="line">  &#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params">r,g,b</span>)</span>&#123;</div><div class="line">  ctx.strokeStyle = <span class="string">"rgb("</span>+r+<span class="string">","</span>+g+<span class="string">","</span>+b+<span class="string">")"</span>  </div><div class="line">  <span class="comment">//將數值寫入到 strokeStyle內即可</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="完整程式碼"><a href="#完整程式碼" class="headerlink" title="完整程式碼"></a>完整程式碼</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _canvas = <span class="built_in">document</span>.getElementById(<span class="string">'canvas'</span>);</div><div class="line"><span class="keyword">var</span> ctx = _canvas.getContext(<span class="string">'2d'</span>);  </div><div class="line"></div><div class="line">$(<span class="string">'.color input'</span>).change(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  r = $(<span class="string">'#red'</span>).val();</div><div class="line">  g = $(<span class="string">'#green'</span>).val();</div><div class="line">  b = $(<span class="string">'#blue'</span>).val();</div><div class="line">  changeColor(r,g,b);</div><div class="line">  <span class="comment">//取出input中的數值</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params">r,g,b</span>)</span>&#123;</div><div class="line">  colors = &#123;</div><div class="line">    <span class="attr">red</span> : r,</div><div class="line">    <span class="attr">green</span> : g,</div><div class="line">    <span class="attr">blue</span> : b</div><div class="line">  &#125;</div><div class="line">  $.each(colors, <span class="function"><span class="keyword">function</span>(<span class="params">_color, _value</span>) </span>&#123;</div><div class="line">    $(<span class="string">'#v'</span>+_color).val(_value);</div><div class="line">  &#125;);</div><div class="line">  ctx.strokeStyle = <span class="string">"rgb("</span>+r+<span class="string">","</span>+g+<span class="string">","</span>+b+<span class="string">")"</span> ;</div><div class="line">  <span class="comment">//將顏色的值寫到ctx.strokeStyle即可</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> x = <span class="number">0</span>;</div><div class="line"><span class="keyword">var</span> y = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMousePos</span>(<span class="params">canvas, evt</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> rect = canvas.getBoundingClientRect();</div><div class="line">  <span class="comment">//getBoundingClientRect 取得物件完整座標資訊，包含寬高等</span></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">x</span>: evt.clientX - rect.left,</div><div class="line">    <span class="attr">y</span>: evt.clientY - rect.top</div><div class="line">  &#125;;   </div><div class="line">  <span class="comment">//這個function將會傳回滑鼠在 _canvas上的座標</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mouseMove</span>(<span class="params">evt</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> mousePos = getMousePos(_canvas, evt);</div><div class="line">  <span class="comment">//透過getMousePos function 去取得滑鼠座標</span></div><div class="line">  <span class="comment">//mousePos 是一個物件，包含x和y的值</span></div><div class="line">  ctx.lineTo(mousePos.x, mousePos.y);</div><div class="line">  <span class="comment">//利用取回的值畫線</span></div><div class="line">  ctx.stroke();</div><div class="line">  <span class="comment">//畫!</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line">canvas.addEventListener(<span class="string">'mousedown'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> mousePos = getMousePos(_canvas, evt);</div><div class="line">  <span class="comment">//從按下去就會執行第一次的座標取得</span></div><div class="line">  evt.preventDefault();</div><div class="line">  ctx.beginPath();</div><div class="line">  <span class="comment">//建立path物件</span></div><div class="line">  ctx.moveTo(mousePos.x, mousePos.y);  </div><div class="line">  <span class="comment">//每次的點用moveTo去區別開，如果用lineTo會連在一起  </span></div><div class="line">  canvas.addEventListener(<span class="string">'mousemove'</span>, mouseMove, <span class="literal">false</span>);</div><div class="line">  <span class="comment">//mousemove的偵聽也在按下去的同時開啟</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">canvas.addEventListener(<span class="string">'mouseup'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  canvas.removeEventListener(<span class="string">'mousemove'</span>, mouseMove, <span class="literal">false</span>);</div><div class="line">&#125;, <span class="literal">false</span>);</div><div class="line"><span class="comment">//如果滑鼠放開，將會停止mouseup的偵聽</span></div><div class="line"></div><div class="line">$(<span class="string">'#save'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> _url = _canvas.toDataURL();</div><div class="line">  <span class="comment">//利用toDataURL() 把canvas轉成data:image</span></div><div class="line">  <span class="keyword">this</span>.href = _url;</div><div class="line">  <span class="comment">//再把href載入上面的Data:image</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>在畫個小新，滑鼠挺有挑戰性的…。</p>
+<p><img src="/images/2014-12-09.png" alt=""></p>
+<p>雖然是一些舊的文章，但現在回頭過來看，還是有許多有趣的點，甚至可以用這些概念，配合現在會的技術，發展出更有趣的玩具。</p>
+
+<script>
+  var _canvas = document.getElementById('canvas');
+  var ctx = _canvas.getContext('2d');  
+
+  $('.color input').change(function(){
+    r = $('#red').val();
+    g = $('#green').val();
+    b = $('#blue').val();
+    changeColor(r,g,b);
+    //取出input中的數值
+  });
+
+  function changeColor(r,g,b){
+    colors = {
+      red : r,
+      green : g,
+      blue : b
+    }
+    $.each(colors, function(_color, _value) {
+      $('#v'+_color).val(_value);
+    });
+    ctx.strokeStyle = "rgb("+r+","+g+","+b+")" ;
+    //將顏色的值寫到ctx.strokeStyle即可
+  };
+
+  var x = 0;
+  var y = 0;
+
+  function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    //getBoundingClientRect 取得物件完整座標資訊，包含寬高等
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };   
+    //這個function將會傳回滑鼠在 _canvas上的座標
+  };
+
+  function mouseMove(evt) {
+    var mousePos = getMousePos(_canvas, evt);
+    //透過getMousePos function 去取得滑鼠座標
+    //mousePos 是一個物件，包含x和y的值
+    ctx.lineTo(mousePos.x, mousePos.y);
+    //利用取回的值畫線
+    ctx.stroke();
+    //畫!
+  };
+
+  canvas.addEventListener('mousedown', function(evt) {
+    var mousePos = getMousePos(_canvas, evt);
+    //從按下去就會執行第一次的座標取得
+    evt.preventDefault();
+    ctx.beginPath();
+    //建立path物件
+    ctx.moveTo(mousePos.x, mousePos.y);  
+    //每次的點用moveTo去區別開，如果用lineTo會連在一起  
+    canvas.addEventListener('mousemove', mouseMove, false);
+    //mousemove的偵聽也在按下去的同時開啟
+  });
+
+  canvas.addEventListener('mouseup', function() {
+    canvas.removeEventListener('mousemove', mouseMove, false);
+  }, false);
+  //如果滑鼠放開，將會停止mouseup的偵聽
+
+  $('#save').on('click', function(){
+    var _url = _canvas.toDataURL();
+    //利用toDataURL() 把canvas轉成data:image
+    this.href = _url;
+    //再把href載入上面的Data:image
+  });
+</script>
+
+<style>
+  input[type='range']{
+    width: 50%;
+  }
+  canvas{
+    margin: 0 auto;
+    border: 1px solid #E80C7A;
+  }
+</style>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/canvas/2014/12/08/html5-canvas-02/" rel="next" title="試試看Canvas (2)，調整Canvas圖片色調">
+                <i class="fa fa-chevron-left"></i> 試試看Canvas (2)，調整Canvas圖片色調
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/canvas/2014/12/18/html5-canvas-04/" rel="prev" title="專輯封面顏色作為背景色(平均色)">
+                專輯封面顏色作為背景色(平均色) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#範例"><span class="nav-number">1.</span> <span class="nav-text">範例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#HTML"><span class="nav-number">1.0.1.</span> <span class="nav-text">HTML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#繪製線段"><span class="nav-number">1.0.2.</span> <span class="nav-text">繪製線段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#下載"><span class="nav-number">1.0.3.</span> <span class="nav-text">下載</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#調整色彩"><span class="nav-number">2.</span> <span class="nav-text">調整色彩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整程式碼"><span class="nav-number">3.</span> <span class="nav-text">完整程式碼</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/canvas/2014/12/09/html5-canvas-03/';
+      var disqus_title = "試試看Canvas (3)，Canvas 小畫家";
+      var disqus_url = 'http://wcc723.github.io//canvas/2014/12/09/html5-canvas-03/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

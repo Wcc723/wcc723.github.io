@@ -1,0 +1,994 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="sass,gulp,bootstrap,compass," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Bootstrap 是目前最流行的CSS Framework，第四版也釋出了開發版本，無論第幾版對於工程師來說 Bootstrap 就是那麼的容易上手，但扯上設計就要多多配合了，不同身份看待 Bootstrap 也有不同看法，例如：
+
+設計師：Bootstrap 很醜誒，你看那個濁濁的顏色 (當然每個設計師觀點不同啦…)。
+前端：Bootstrap 要配合設計師的稿，似乎有點麻煩…(看著對不上的G">
+<meta property="og:type" content="article">
+<meta property="og:title" content="客製化屬於你的 Bootstrap 4">
+<meta property="og:url" content="http://wcc723.github.io/sass/2015/12/01/bootstrap-and-compass/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="Bootstrap 是目前最流行的CSS Framework，第四版也釋出了開發版本，無論第幾版對於工程師來說 Bootstrap 就是那麼的容易上手，但扯上設計就要多多配合了，不同身份看待 Bootstrap 也有不同看法，例如：
+
+設計師：Bootstrap 很醜誒，你看那個濁濁的顏色 (當然每個設計師觀點不同啦…)。
+前端：Bootstrap 要配合設計師的稿，似乎有點麻煩…(看著對不上的G">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/12/screen_shot_2015-12-01_01.png">
+<meta property="og:updated_time" content="2016-10-13T06:26:02.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="客製化屬於你的 Bootstrap 4">
+<meta name="twitter:description" content="Bootstrap 是目前最流行的CSS Framework，第四版也釋出了開發版本，無論第幾版對於工程師來說 Bootstrap 就是那麼的容易上手，但扯上設計就要多多配合了，不同身份看待 Bootstrap 也有不同看法，例如：
+
+設計師：Bootstrap 很醜誒，你看那個濁濁的顏色 (當然每個設計師觀點不同啦…)。
+前端：Bootstrap 要配合設計師的稿，似乎有點麻煩…(看著對不上的G">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2015/12/screen_shot_2015-12-01_01.png">
+
+  <meta property="og:image" content="/images/2015/12/screen_shot_2015-12-01_01.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/sass/2015/12/01/bootstrap-and-compass/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 客製化屬於你的 Bootstrap 4 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                客製化屬於你的 Bootstrap 4
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-12-01T00:00:00+08:00" content="2015-12-01">
+              2015-12-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/sass/" itemprop="url" rel="index">
+                    <span itemprop="name">sass</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/sass/2015/12/01/bootstrap-and-compass/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/sass/2015/12/01/bootstrap-and-compass/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2015/12/screen_shot_2015-12-01_01.png" rel="gallery_ciu7yn0lo0049l7f06d3qdtro"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2015/12/screen_shot_2015-12-01_01.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>Bootstrap 是目前最流行的CSS Framework，第四版也釋出了開發版本，無論第幾版對於工程師來說 Bootstrap 就是那麼的容易上手，但扯上設計就要多多配合了，不同身份看待 Bootstrap 也有不同看法，例如：</p>
+<ul>
+<li>設計師：Bootstrap 很醜誒，你看那個濁濁的顏色 (當然每個設計師觀點不同啦…)。</li>
+<li>前端：Bootstrap 要配合設計師的稿，似乎有點麻煩…(看著對不上的Grid system)。</li>
+<li>後端：不是都長一樣嗎？</li>
+</ul>
+<p>其實Bootstrap的設定檔就有許多細節可以調整，不需要 Overwite，載入前就可以先調整，而且並不是一定要全部元件載入，可以只使用部分的元件，靈活的使用框架，才能發揮更大的價值。</p>
+<a id="more"></a>
+<h2 id="如何開始"><a href="#如何開始" class="headerlink" title="如何開始"></a>如何開始</h2><p>這個範例會使用 <code>Node.js</code>, <code>Gulp</code>, <code>Compass</code> 所以請先確定有以上環境，其中最重要的是 <code>Compass</code>，有Compass環境，也是可以達到相同的效果。</p>
+<p><em>本篇範例需要以下環境</em></p>
+<ul>
+<li>Ruby compass 1.0 +</li>
+<li>Node.js</li>
+<li>Bower</li>
+<li>Gulp</li>
+</ul>
+<h2 id="先運行一次，從中瞭解運作"><a href="#先運行一次，從中瞭解運作" class="headerlink" title="先運行一次，從中瞭解運作"></a>先運行一次，從中瞭解運作</h2><p>認真的範例：<a href="https://github.com/Wcc723/gulp-compass-bootstrap-demo" target="_blank" rel="external">https://github.com/Wcc723/gulp-compass-bootstrap-demo</a></p>
+<p>下載這個範例，目前的結構如下：</p>
+<pre><code>|- package.json      # gulp 的套件管理
+|- gulpfile.js       # gulp 執行檔案
+|- config.rb         # compass 設定檔 (重要)
+|- bower.json        # Bower 套件管理 (載入Bootstrap)
+|- source            # 專案資料夾    
+    |- index.html    # 範例檔
+    |- scss          # sass 範例檔
+        |- all.scss
+        |- helper
+            |- variables.scss # Sass 設定檔
+</code></pre><p>在<code>nodejs</code>環境下執行以下指令</p>
+<pre><code>$ npm install
+$ bower install
+$ gulp
+</code></pre><p>檔案結構改變如下</p>
+<pre><code>|- package.json      # ---
+|- gulpfile.js       # ---
+|- config.rb         # ---
+|- bower.json        # ---
+|- bower_components  # Bower 下載的套件資料夾 (Bootstrap, Jquery)
+|- node_modules      # node 模組資料夾，這個範例主要是 gulp
+|- source            # ---   
+    |- index.html    # ---
+    |- scss          # ---
+|- public            # ** 編譯完的檔案夾 **
+    |- index.html    # copy 過來的
+    |- stylesheets   # 編譯後的 CSS 在這
+    |- js            # jQuery.js 與 Bootstrap.js 的合併檔
+</code></pre><p>接下來打開<code>/public/index.html</code>可以看到主色被改成 <code>purple</code>，這就是被調整<code>變數</code>後的 Bootstrap，通常網站的設計都會有一個主要色，只要調整<code>_variables.scss</code>中的 <code>$brand-primary</code>，就可以定義Bootstrap的主要顏色。</p>
+<p><img src="/images/2015/12/screen_shot_2015-12-01_01.png" alt=""></p>
+<blockquote>
+<p>針對一個變數($brand-primary)調整，按鈕的顏色從藍色被修改成紫色。</p>
+</blockquote>
+<h4 id="打開-config-rb"><a href="#打開-config-rb" class="headerlink" title="打開 config.rb"></a>打開 <code>config.rb</code></h4><p>載入 bower bootstrap 的關鍵在於<code>config.rb</code>內的 <code>additional_import_paths</code>，這是 compass 載入外部 sass 檔案的方法，透過這個方法引用 Bootstrap 就像是本地端資料夾引用一樣。</p>
+<pre><code># 匯入 Bootstrap v4
+additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
+</code></pre><h2 id="調整變數"><a href="#調整變數" class="headerlink" title="調整變數"></a>調整變數</h2><p>Bootstrap 的變數在 <code>bower_components\bootstrap\scss\_variables.scss</code>，直接複製此檔案到 <code>source\scss\</code> 內。</p>
+<p><em>我的習慣架構是放在 <code>source\scss\helpers\_variables.scss</code>。</em></p>
+<p>以基本色彩來說，原始檔案內會有<code>變數 + 值 + !default</code>，修改只要加入新的值，並移除 <code>!default</code> 即可。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$brand-primary</span>:             <span class="number">#0275d8</span> !default;</div><div class="line"><span class="variable">$brand-success</span>:             <span class="number">#5cb85c</span> !default;</div><div class="line"><span class="variable">$brand-info</span>:                <span class="number">#5bc0de</span> !default;</div><div class="line"><span class="variable">$brand-warning</span>:             <span class="number">#f0ad4e</span> !default;</div><div class="line"><span class="variable">$brand-danger</span>:              <span class="number">#d9534f</span> !default;</div></pre></td></tr></table></figure>
+<p>接下來可以看看範例檔案，我調整了其中一個顏色，再載入後，Sass 就會以我的設定檔為優先去編譯它。</p>
+<p><em>m…，其實我是打算顏色全部換掉，後來發現我只加了紫色。</em></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="variable">$brand-primary</span>:             purple;</div><div class="line"><span class="variable">$brand-success</span>:             <span class="number">#5cb85c</span>;</div><div class="line"><span class="variable">$brand-info</span>:                <span class="number">#5bc0de</span>;</div><div class="line"><span class="variable">$brand-warning</span>:             <span class="number">#f0ad4e</span>;</div><div class="line"><span class="variable">$brand-danger</span>:              <span class="number">#d9534f</span>;</div></pre></td></tr></table></figure>
+<p>當會修改顏色以後，可以在看Bootstrap有提供多少的變數供修改。</p>
+<div style="overflow-y: auto; height: 450px;"><br><script src="https://gist.github.com/Wcc723/de2942e7341cdf210c6d.js"> </script><br></div>
+
+<p><em>注意：這份是複製檔，並非最新版 Bootstrap的設定檔</em></p>
+<h2 id="自定載入元件"><a href="#自定載入元件" class="headerlink" title="自定載入元件"></a>自定載入元件</h2><p>Bootstrap 是一個良好<code>OOCSS</code>範例，所有的CSS元件都模組化，基本上分為以下幾大類型。</p>
+<ul>
+<li>變數 (Core variables and mixins)：這邊是基本設定，建議載入</li>
+<li>重置 (Reset and dependencies)：主要是讓HTML標籤樣式一致，建議載入，有需求可透過變數修改</li>
+<li>核心 CSS (Core CSS)：主要、常用的 CSS</li>
+<li>元件 (Components)：基於核心或是Web經常使用的CSS元件，可以選擇是否載入</li>
+<li>JavaScript 套件 (Components w/ JavaScript)：好用的 Bootstrap js 套件，如果沒有需求可以不載入</li>
+<li>雜項 (Utility classes)：主要是單一的CSS樣式，建議載入</li>
+</ul>
+<p>接下來再打開 <code>source\scss\all.scss</code>，Sass載入 Bootstrap 的方式也有兩種，一種是全部載入，另一種是載入特定元件。</p>
+<p><em>如果要移除不要的元件，請選擇方法二，並將不要的元件直接刪除或是註解即可</em></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// import 自己的變數</span></div><div class="line">@<span class="keyword">import</span> <span class="string">"helpers/variables"</span>;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// **** 方法一：載入全部的Bootstrap 4 **** //</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">// @import "bootstrap";</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">// **** 方法二：自選要的元件 **** //</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">// Core variables and mixins</span></div><div class="line">@<span class="keyword">import</span> <span class="string">"variables"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"mixins"</span>;</div><div class="line"></div><div class="line"><span class="comment">// Reset and dependencies</span></div><div class="line">@<span class="keyword">import</span> <span class="string">"normalize"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"print"</span>;</div><div class="line"></div><div class="line"><span class="comment">// Core CSS</span></div><div class="line">@<span class="keyword">import</span> <span class="string">"reboot"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"type"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"images"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"code"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"grid"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"tables"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"forms"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"buttons"</span>;</div><div class="line"></div><div class="line"><span class="comment">// Components</span></div><div class="line">@<span class="keyword">import</span> <span class="string">"animation"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"dropdown"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"button-group"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"input-group"</span>;</div><div class="line"><span class="comment">//...... 略</span></div></pre></td></tr></table></figure>
+<p>Bootstrap 是很重視行動版的框架，但有時在行動版上，有時少可以再更少，如果想減少載入的 CSS 不妨從元件、js套件上開始移除。</p>
+<h2 id="優缺點"><a href="#優缺點" class="headerlink" title="優缺點"></a>優缺點</h2><p>這樣做法可以節省大量的時間，並且減少CSS的錯誤(相容性、延展性等等)，但有些問題也是必須去思考：</p>
+<h4 id="優點："><a href="#優點：" class="headerlink" title="優點："></a>優點：</h4><ul>
+<li>快速建置</li>
+<li>相對穩定</li>
+<li>減少對不上的問題 (相信很多人有 input 和 button 對不上的問題)</li>
+<li>工程師套用容易</li>
+</ul>
+<h4 id="缺點"><a href="#缺點" class="headerlink" title="缺點"></a>缺點</h4><ul>
+<li>環境建置學習成本較高</li>
+<li>雖然可以自訂，但想法容易被侷限</li>
+<li>必須花一定的時間成本學習 Bootstrap (尤其是需要自定義元件時)</li>
+</ul>
+<p>Bootstrap 4 觀察了一段時間，裡面許多的概念很喜歡，包括 flex、navbar、Utilities 這些的改進…，當然更重要的是從LESS轉到SASS(雖然他用的是node sass lib，但我總是用 ruby sass 去載入)。</p>
+<p>不過也有一點真心覺得麻煩，就是他的單位許多改成用<code>rem</code>，<code>em</code>、<code>rem</code>、<code>px</code>轉來轉去，我不是數學腦啊!!!</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sass/" rel="tag">#sass</a>
+          
+            <a href="/tags/gulp/" rel="tag">#gulp</a>
+          
+            <a href="/tags/bootstrap/" rel="tag">#bootstrap</a>
+          
+            <a href="/tags/compass/" rel="tag">#compass</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/tools/2015/11/28/ashareaday/" rel="next" title="過去的學習 每天一分享">
+                <i class="fa fa-chevron-left"></i> 過去的學習 每天一分享
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/life/2015/12/12/be-your-self/" rel="prev" title="被討厭的勇氣">
+                被討厭的勇氣 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何開始"><span class="nav-number">1.</span> <span class="nav-text">如何開始</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#先運行一次，從中瞭解運作"><span class="nav-number">2.</span> <span class="nav-text">先運行一次，從中瞭解運作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#打開-config-rb"><span class="nav-number">2.0.1.</span> <span class="nav-text">打開 config.rb</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#調整變數"><span class="nav-number">3.</span> <span class="nav-text">調整變數</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定載入元件"><span class="nav-number">4.</span> <span class="nav-text">自定載入元件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#優缺點"><span class="nav-number">5.</span> <span class="nav-text">優缺點</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#優點："><span class="nav-number">5.0.1.</span> <span class="nav-text">優點：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#缺點"><span class="nav-number">5.0.2.</span> <span class="nav-text">缺點</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/sass/2015/12/01/bootstrap-and-compass/';
+      var disqus_title = "客製化屬於你的 Bootstrap 4";
+      var disqus_url = 'http://wcc723.github.io//sass/2015/12/01/bootstrap-and-compass/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

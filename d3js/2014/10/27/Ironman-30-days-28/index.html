@@ -1,0 +1,1065 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="ironman,d3js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="看到KP API裡面有提供競選經費查詢，如果之前把資料撈回來，很難了解支出收入的關係，而且在支出與收入之中，何者比例較高。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="柯P的財務報表套用 D3js Partition Layout">
+<meta property="og:url" content="http://wcc723.github.io/d3js/2014/10/27/Ironman-30-days-28/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="看到KP API裡面有提供競選經費查詢，如果之前把資料撈回來，很難了解支出收入的關係，而且在支出與收入之中，何者比例較高。">
+<meta property="og:image" content="http://wcc723.github.io/images/2014ironman/day27_02.png">
+<meta property="og:updated_time" content="2016-10-13T02:47:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="柯P的財務報表套用 D3js Partition Layout">
+<meta name="twitter:description" content="看到KP API裡面有提供競選經費查詢，如果之前把資料撈回來，很難了解支出收入的關係，而且在支出與收入之中，何者比例較高。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2014ironman/day27_02.png">
+
+  <meta property="og:image" content="/images/2014ironman/day27_01.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/d3js/2014/10/27/Ironman-30-days-28/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.10/d3.min.js"></script>
+
+
+  <title> 柯P的財務報表套用 D3js Partition Layout | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                柯P的財務報表套用 D3js Partition Layout
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-10-27T00:00:00+08:00" content="2014-10-27">
+              2014-10-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/d3js/" itemprop="url" rel="index">
+                    <span itemprop="name">d3js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/d3js/2014/10/27/Ironman-30-days-28/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/d3js/2014/10/27/Ironman-30-days-28/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014ironman/day27_01.png" rel="gallery_ciu7r3cct000sl7f031o7lzbw"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014ironman/day27_01.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>看到KP API裡面有提供競選經費查詢，如果之前把資料撈回來，很難了解支出收入的關係，而且在支出與收入之中，何者比例較高。</p>
+<a id="more"></a>
+<h2 id="D3-js-Partition-layout"><a href="#D3-js-Partition-layout" class="headerlink" title="D3.js Partition layout"></a>D3.js Partition layout</h2><p>參考：<a href="http://bl.ocks.org/mbostock/4348373" target="_blank" rel="external">http://bl.ocks.org/mbostock/4348373</a></p>
+<p>透過這張圖，雖然沒有數值可以了解精確的關係，但可以透過視覺快速比較彼此之間的概略比率，這也是d3.js內建的layout之一，且在這頁面上可以看到完整的程式碼，只要套用就可以了。</p>
+<p><img src="/images/2014ironman/day27_02.png" alt=""></p>
+<p>不過在套用前，要先轉換json的格式，昨天的文章對此有介紹，所以對d3js結構轉換可參考<a href="casper/d3js/2014/10/26/Ironman-30-days-27/">casper/d3js/2014/10/26/Ironman-30-days-27/</a>。</p>
+<h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p><em>詳細競選經費，還是以柯文哲官網提供為主</em></p>
+<p>資料來源一樣是透過KP的API，只要資料結構轉換完，可以很輕鬆的套用各種d3.js layout範例。另外，在這個範例中整個圓並不是代表總金額，而只是支出與收入的比較圖。</p>
+
+<div class="demo">
+<div id="tooltip" class="hidden">
+  <div><strong>Infomation</strong></div>
+  <div>款項 : <span class="account"></span></div>
+  <div>類別 : <span class="type"></span></div>
+  <div>金額 : <span class="price"></span></div>
+</div>
+</div>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div></pre></td><td class="code"><pre><div class="line">kpPath = <span class="string">'http://api.kptaipei.tw/v1/financial/all'</span></div><div class="line"></div><div class="line"><span class="comment">// 將nest資料改成name, children</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">reSortRoot</span>(<span class="params">root,value_key</span>) </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> root) &#123;</div><div class="line">      <span class="keyword">if</span> (key == <span class="string">"key"</span>) &#123;</div><div class="line">        root.name = root.key;</div><div class="line">        <span class="keyword">delete</span> root.key;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (key == <span class="string">"values"</span>) &#123;</div><div class="line">        root.children = [];</div><div class="line">        <span class="keyword">for</span> (item <span class="keyword">in</span> root.values) &#123;</div><div class="line">          root.children.push(reSortRoot(root.values[item],value_key));</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">delete</span> root.values;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">if</span> (key == value_key) &#123;</div><div class="line">        root.value = <span class="built_in">parseFloat</span>(root[value_key]);</div><div class="line">        <span class="keyword">delete</span> root[value_key];</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> root;</div><div class="line">  &#125;</div><div class="line"><span class="comment">// 將nest資料改成name, children</span></div><div class="line"></div><div class="line">d3.json(kpPath, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="comment">//透過KP API撈資料</span></div><div class="line">  dataset = d.data;</div><div class="line"></div><div class="line">  <span class="keyword">var</span> nodesByType = d3.nest() <span class="comment">//匯入資料轉成巢狀</span></div><div class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.type; &#125;)</div><div class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.account; &#125;)</div><div class="line">    .entries(dataset); <span class="comment">//匯入KP資料</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> root = &#123;&#125;; <span class="comment">//定義一個空的物件</span></div><div class="line"></div><div class="line"></div><div class="line">  root.key = <span class="string">"Data"</span>; <span class="comment">//定義物件名稱</span></div><div class="line">  root.values = nodesByType; <span class="comment">//以及物件來源</span></div><div class="line"></div><div class="line">  <span class="comment">//將json的key轉成name, children</span></div><div class="line">  root = reSortRoot(root,<span class="string">"KpData"</span>);</div><div class="line"></div><div class="line">  <span class="built_in">console</span>.log(root)</div><div class="line">  runChart(root) <span class="comment">//資料轉完後就來開始畫圖</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">runChart</span>(<span class="params">root</span>)</span>&#123; <span class="comment">//畫圖 &lt;--主要插入資料位置</span></div><div class="line">  <span class="keyword">var</span> width = <span class="number">660</span>,</div><div class="line">    height = <span class="number">500</span>,</div><div class="line">    radius = <span class="built_in">Math</span>.min(width, height) / <span class="number">2</span>; <span class="comment">//定義圓的大小</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> x = d3.scale.linear() <span class="comment">//建立尺度</span></div><div class="line">      .range([<span class="number">0</span>, <span class="number">2</span> * <span class="built_in">Math</span>.PI]); <span class="comment">//圓周率是也</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> y = d3.scale.sqrt() <span class="comment">//尺度，開平方根，這真的太難了</span></div><div class="line">      .range([<span class="number">0</span>, radius]); <span class="comment">//</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> color = d3.scale.category20c(); <span class="comment">//載入d3.js 內建顏色</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> svg = d3.select(<span class="string">".demo"</span>).append(<span class="string">"svg"</span>) <span class="comment">//圖形繪製的位置及大小</span></div><div class="line">      .attr(<span class="string">"width"</span>, width)</div><div class="line">      .attr(<span class="string">"height"</span>, height)</div><div class="line">    .append(<span class="string">"g"</span>)</div><div class="line">      .attr(<span class="string">"transform"</span>, <span class="string">"translate("</span> + width / <span class="number">2</span> + <span class="string">","</span> + (height / <span class="number">2</span> + <span class="number">10</span>) + <span class="string">")"</span>);</div><div class="line"></div><div class="line">  <span class="keyword">var</span> partition = d3.layout.partition() <span class="comment">// 建立d3.js partition layout</span></div><div class="line">      .value(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.price; &#125;); <span class="comment">//資料值來源為 Price(金額)</span></div><div class="line"></div><div class="line">  <span class="keyword">var</span> arc = d3.svg.arc() <span class="comment">//建立弧形元件</span></div><div class="line">      .startAngle(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">Math</span>.max(<span class="number">0</span>, <span class="built_in">Math</span>.min(<span class="number">2</span> * <span class="built_in">Math</span>.PI, x(d.x))); &#125;)</div><div class="line">      .endAngle(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">Math</span>.max(<span class="number">0</span>, <span class="built_in">Math</span>.min(<span class="number">2</span> * <span class="built_in">Math</span>.PI, x(d.x + d.dx))); &#125;)</div><div class="line">      .innerRadius(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">Math</span>.max(<span class="number">0</span>, y(d.y)); &#125;)</div><div class="line">      .outerRadius(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> <span class="built_in">Math</span>.max(<span class="number">0</span>, y(d.y + d.dy)); &#125;);</div><div class="line"></div><div class="line">  <span class="keyword">var</span> path = svg.selectAll(<span class="string">"path"</span>) <span class="comment">//繪製path</span></div><div class="line">      .data(partition.nodes(root)) <span class="comment">//匯入資料 &lt;-- 主要插入資料位置</span></div><div class="line">      .enter().append(<span class="string">"path"</span>) <span class="comment">//用資料去跑</span></div><div class="line">      .attr(<span class="string">"d"</span>, arc)</div><div class="line">      .style(<span class="string">"fill"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> color((d.children ? d : d.parent).name); &#125;) <span class="comment">//</span></div><div class="line">      .on(<span class="string">"click"</span>, click); <span class="comment">//點擊事件</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">click</span>(<span class="params">d</span>) </span>&#123;</div><div class="line">      path.transition()</div><div class="line">        .duration(<span class="number">750</span>) <span class="comment">//轉場效果</span></div><div class="line">        .attrTween(<span class="string">"d"</span>, arcTween(d)); <span class="comment">//當點擊時執行縮放</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">  d3.select(self.frameElement).style(<span class="string">"height"</span>, height + <span class="string">"px"</span>);</div><div class="line"></div><div class="line">  <span class="comment">// 縮放事件</span></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">arcTween</span>(<span class="params">d</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),</div><div class="line">        yd = d3.interpolate(y.domain(), [d.y, <span class="number">1</span>]),</div><div class="line">        yr = d3.interpolate(y.range(), [d.y ? <span class="number">20</span> : <span class="number">0</span>, radius]);</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">d, i</span>) </span>&#123;</div><div class="line">      <span class="keyword">return</span> i</div><div class="line">          ? <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123; <span class="keyword">return</span> arc(d); &#125;</div><div class="line">          : <span class="function"><span class="keyword">function</span>(<span class="params">t</span>) </span>&#123; x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); <span class="keyword">return</span> arc(d); &#125;;</div><div class="line">    &#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">//滑鼠滑入事件</span></div><div class="line">  svg.selectAll(<span class="string">"path"</span>).on(<span class="string">'mouseover'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</div><div class="line">    mousePos = d3.mouse(<span class="keyword">this</span>); <span class="comment">//取得座標</span></div><div class="line">    <span class="keyword">var</span> xPos = mousePos[<span class="number">0</span>] + radius; <span class="comment">//修正座標</span></div><div class="line">    <span class="keyword">var</span> yPos = mousePos[<span class="number">1</span>] + radius; <span class="comment">//修正座標</span></div><div class="line"></div><div class="line">    d3.select(<span class="string">'#tooltip'</span>) <span class="comment">//顯示資料</span></div><div class="line">      .style(&#123;</div><div class="line">        <span class="string">'left'</span>: xPos + <span class="string">'px'</span>,</div><div class="line">        <span class="string">'top'</span>: yPos + <span class="string">'px'</span></div><div class="line">      &#125;)</div><div class="line">      .classed(<span class="string">'hidden'</span>, <span class="literal">false</span>) <span class="comment">//切換Class</span></div><div class="line">    d3.select(<span class="string">'#tooltip .account'</span>).html(d.account) <span class="comment">//顯示資料</span></div><div class="line">    d3.select(<span class="string">'#tooltip .type'</span>).html((d.children ? d : d.parent).name)</div><div class="line">    d3.select(<span class="string">'#tooltip .price'</span>).html(<span class="string">'$ '</span> + d.value)</div><div class="line">  &#125;).on(<span class="string">'mouseout'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="comment">//滑鼠移出</span></div><div class="line">    d3.select(<span class="string">'#tooltip'</span>).classed(<span class="string">'hidden'</span>, <span class="literal">true</span>) <span class="comment">//切換Class，隱藏tooltip</span></div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>大略看一下柯文哲的支出收入，目前還沒有結束，收入部分主要是來自於個人捐贈以及網路捐贈，而支出部分主要是在人事以及宣傳上。</p>
+<p>做完柯P財務報表，也會做看看連阿文的了…，不知道收入主要來源是不是爸爸。</p>
+
+<style>
+
+path {
+  stroke: #fff;
+  fill-rule: evenodd;
+}
+.demo{
+  position: relative;
+}
+#tooltip{
+  position: absolute;
+  max-width: 220px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 2px rgba(0,0,0, .16);
+  pointer-events: none;
+  transition: opacity .2s;
+  opacity: 1;
+  font-size: 11px;
+}
+#tooltip.hidden{
+  opacity: 0;
+}
+</style>
+<script>
+kpPath = 'http://api.kptaipei.tw/v1/financial/all'
+
+// 將nest資料改成name, children
+function reSortRoot(root,value_key) {
+
+    for (var key in root) {
+      if (key == "key") {
+        root.name = root.key;
+        delete root.key;
+      }
+      if (key == "values") {
+        root.children = [];
+        for (item in root.values) {
+          root.children.push(reSortRoot(root.values[item],value_key));
+        }
+        delete root.values;
+      }
+      if (key == value_key) {
+        root.value = parseFloat(root[value_key]);
+        delete root[value_key];
+      }
+    }
+    return root;
+  }
+// 將nest資料改成name, children
+
+d3.json(kpPath, function(d){ //透過KP API撈資料
+  dataset = d.data;
+
+  var nodesByType = d3.nest() //匯入資料轉成巢狀
+    .key(function(d) { return d.type; })
+    .key(function(d) { return d.account; })
+    .entries(dataset); //匯入KP資料
+
+  var root = {}; //定義一個空的物件
+
+
+  root.key = "Data"; //定義物件名稱
+  root.values = nodesByType; //以及物件來源
+
+  //將json的key轉成name, children
+  root = reSortRoot(root,"KpData");
+
+  console.log(root)
+  runChart(root) //資料轉完後就來開始畫圖
+});
+
+
+function runChart(root){ //畫圖 <--主要插入資料位置
+  var width = 660,
+    height = 500,
+    radius = Math.min(width, height) / 2; //定義圓的大小
+
+  var x = d3.scale.linear() //建立尺度
+      .range([0, 2 * Math.PI]); //圓周率是也
+
+  var y = d3.scale.sqrt() //尺度，開平方根，這真的太難了
+      .range([0, radius]); //
+
+  var color = d3.scale.category20c(); //載入d3.js 內建顏色
+
+  var svg = d3.select(".demo").append("svg") //圖形繪製的位置及大小
+      .attr("width", width)
+      .attr("height", height)
+    .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ")");
+
+  var partition = d3.layout.partition() // 建立d3.js partition layout
+      .value(function(d) { return d.price; }); //資料值來源為 Price(金額)
+
+  var arc = d3.svg.arc() //建立弧形元件
+      .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+      .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+      .innerRadius(function(d) { return Math.max(0, y(d.y)); })
+      .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+
+  var path = svg.selectAll("path") //繪製path
+      .data(partition.nodes(root)) //匯入資料 <-- 主要插入資料位置
+      .enter().append("path") //用資料去跑
+      .attr("d", arc)
+      .style("fill", function(d) { return color((d.children ? d : d.parent).name); }) //
+      .on("click", click); //點擊事件
+
+    function click(d) {
+      path.transition()
+        .duration(750) //轉場效果
+        .attrTween("d", arcTween(d)); //當點擊時執行縮放
+    }
+
+  d3.select(self.frameElement).style("height", height + "px");
+
+  // 縮放事件
+  function arcTween(d) {
+    var xd = d3.interpolate(x.domain(), [d.x, d.x + d.dx]),
+        yd = d3.interpolate(y.domain(), [d.y, 1]),
+        yr = d3.interpolate(y.range(), [d.y ? 20 : 0, radius]);
+    return function(d, i) {
+      return i
+          ? function(t) { return arc(d); }
+          : function(t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
+    };
+  }
+
+  //滑鼠滑入事件
+  svg.selectAll("path").on('mouseover', function(d){
+    mousePos = d3.mouse(this); //取得座標
+    var xPos = mousePos[0] + radius; //修正座標
+    var yPos = mousePos[1] + radius; //修正座標
+
+    d3.select('#tooltip') //顯示資料
+      .style({
+        'left': xPos + 'px',
+        'top': yPos + 'px'
+      })
+      .classed('hidden', false) //切換Class
+    d3.select('#tooltip .account').html(d.account) //顯示資料
+    d3.select('#tooltip .type').html((d.children ? d : d.parent).name)
+    d3.select('#tooltip .price').html('$ ' + d.value)
+  }).on('mouseout', function(d){ //滑鼠移出
+    d3.select('#tooltip').classed('hidden', true) //切換Class，隱藏tooltip
+  });
+}
+
+
+</script>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ironman/" rel="tag">#ironman</a>
+          
+            <a href="/tags/d3js/" rel="tag">#d3js</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/d3js/2014/10/26/Ironman-30-days-27/" rel="next" title="d3.js 再看更多layout前，先來轉換json結構">
+                <i class="fa fa-chevron-left"></i> d3.js 再看更多layout前，先來轉換json結構
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/10/28/Ironman-30-days-29/" rel="prev" title="PDF轉CSV，利用Tabula">
+                PDF轉CSV，利用Tabula <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#D3-js-Partition-layout"><span class="nav-number">1.</span> <span class="nav-text">D3.js Partition layout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#範例"><span class="nav-number">2.</span> <span class="nav-text">範例</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/d3js/2014/10/27/Ironman-30-days-28/';
+      var disqus_title = "柯P的財務報表套用 D3js Partition Layout";
+      var disqus_url = 'http://wcc723.github.io//d3js/2014/10/27/Ironman-30-days-28/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1176 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="ironman,d3js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="D3js最終還是需要與資料串接，在玩了一段時間基本的功能後，就會想找點東西試試看，於是就到處搜尋可以用的資料(希望與時事結合)，雖然取得資料方法相當多，但是能夠派上用場而且又要會使用，就沒有那麼容易。
+因為我的jsonp，或者json能力並不是挺好，所以在找資料前，有先研究怎麼與Google Drive做介接，所以這幾篇還會介紹怎麼從Google試算表取得資料。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="D3.js 究竟搭不搭捷運與死亡率有沒有關係？(1)">
+<meta property="og:url" content="http://wcc723.github.io/d3js/2014/10/15/Ironman-30-days-16/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="D3js最終還是需要與資料串接，在玩了一段時間基本的功能後，就會想找點東西試試看，於是就到處搜尋可以用的資料(希望與時事結合)，雖然取得資料方法相當多，但是能夠派上用場而且又要會使用，就沒有那麼容易。
+因為我的jsonp，或者json能力並不是挺好，所以在找資料前，有先研究怎麼與Google Drive做介接，所以這幾篇還會介紹怎麼從Google試算表取得資料。">
+<meta property="og:image" content="http://wcc723.github.io/images/2014ironman/day15_02.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014ironman/day15_03.png">
+<meta property="og:updated_time" content="2016-10-13T03:25:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="D3.js 究竟搭不搭捷運與死亡率有沒有關係？(1)">
+<meta name="twitter:description" content="D3js最終還是需要與資料串接，在玩了一段時間基本的功能後，就會想找點東西試試看，於是就到處搜尋可以用的資料(希望與時事結合)，雖然取得資料方法相當多，但是能夠派上用場而且又要會使用，就沒有那麼容易。
+因為我的jsonp，或者json能力並不是挺好，所以在找資料前，有先研究怎麼與Google Drive做介接，所以這幾篇還會介紹怎麼從Google試算表取得資料。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2014ironman/day15_02.png">
+
+  <meta property="og:image" content="/images/2014ironman/day15_01.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/d3js/2014/10/15/Ironman-30-days-16/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.10/d3.min.js"></script>
+
+
+  <title> D3.js 究竟搭不搭捷運與死亡率有沒有關係？(1) | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                D3.js 究竟搭不搭捷運與死亡率有沒有關係？(1)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-10-15T00:00:00+08:00" content="2014-10-15">
+              2014-10-15
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/d3js/" itemprop="url" rel="index">
+                    <span itemprop="name">d3js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/d3js/2014/10/15/Ironman-30-days-16/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/d3js/2014/10/15/Ironman-30-days-16/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014ironman/day15_01.png" rel="gallery_ciu7nsz60000xynf047piklku"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014ironman/day15_01.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>D3js最終還是需要與資料串接，在玩了一段時間基本的功能後，就會想找點東西試試看，於是就到處搜尋可以用的資料(希望與時事結合)，雖然取得資料方法相當多，但是能夠派上用場而且又要會使用，就沒有那麼容易。</p>
+<p>因為我的jsonp，或者json能力並不是挺好，所以在找資料前，有先研究怎麼與Google Drive做介接，所以這幾篇還會介紹怎麼從Google試算表取得資料。</p>
+<a id="more"></a>
+<p><strong>本篇統計僅供參考</strong></p>
+<h2 id="資料來源"><a href="#資料來源" class="headerlink" title="資料來源"></a>資料來源</h2><p>資料來源<a href="http://statis.moi.gov.tw/micst/stmain.jsp?sys=100" target="_blank" rel="external">http://statis.moi.gov.tw/micst/stmain.jsp?sys=100</a></p>
+<p>無意間剛好逛到這個網站，發現裡面有許多的人口資料，裡面包含了死亡人數統計，也恰巧有”粗死亡率”，想說最近有討論到<strong>搭不搭捷運與死亡率的關係</strong>，所以就來試試看這份資料可不可行。</p>
+<p>首先來了解一下基本資訊</p>
+<ul>
+<li>臺北捷運營運：1996年3月28日</li>
+<li>高雄捷運營運：2008年3月9日</li>
+<li>高雄縣市合併(來源資料)：2011年1月</li>
+</ul>
+<p>這份資料是抓取兩個都市的<strong>粗死亡率</strong>(所以不呈現人口數)，另外在高雄市2010年以前是合併前的資料，2011年以後是合併資料，來源當然是能撈多少就多少。</p>
+<p><img src="/images/2014ironman/day15_02.png" alt=""></p>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>雖然有很多工具可以呈現這樣的資料，但是就以目前的主題我選擇d3js + Jquery。</p>
+<p>資料在確定要哪些後，就把原始的資料轉貼到<a href="https://docs.google.com/spreadsheets/d/1hX3lqWLHFuwYiQeaBL0WevleUEOBAPKzshj2fJHogsM/edit#gid=1272070461" target="_blank" rel="external">Google Drive</a>，除了可以將資料統一格式外，也可以降低我對於跨網域的煩惱…。</p>
+<p>資料上我以都市為單位拆成三個資料表，每個圖表都包含了id、時間、死亡人數、粗死亡率。</p>
+<p><img src="/images/2014ironman/day15_03.png" alt=""></p>
+<p>接下來就開始串啦～，結果大概像下面這樣，Hover到點上，會顯示該時間點的資料。</p>
+<h4 id="高雄市與台北市粗死亡率"><a href="#高雄市與台北市粗死亡率" class="headerlink" title="高雄市與台北市粗死亡率"></a>高雄市與台北市粗死亡率</h4>
+<div class="demo" style="padding: 0">
+
+	<div id="tooltip" class="hidden">
+
+	</div>
+</div>
+
+<p><em>以上資料來源：<a href="http://statis.moi.gov.tw/micst/stmain.jsp?sys=100" target="_blank" rel="external">http://statis.moi.gov.tw/micst/stmain.jsp?sys=100</a></em></p>
+<p><em>高雄縣市合併時間(來源資料)：2011年1月</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div></pre></td></tr></table></figure>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>至於搭不搭捷運與死亡率有沒有關係，恩…可能研究不夠透徹，所以看不太出來，不過城鄉差距與死亡率關係倒是挺明顯的(可參考<a href="http://statis.moi.gov.tw/micst/stmain.jsp?sys=100" target="_blank" rel="external">http://statis.moi.gov.tw/micst/stmain.jsp?sys=100</a>)，所以縣市合併以後，高雄市的死亡率確實有略微增高。</p>
+<p>另外為什麼每年二、三月似乎死亡率高些…(抖)，尤其在2009年二月高很多，稍微有查詢一下，可能是經濟不景氣的關係(<a href="http://zh.wikipedia.org/wiki/2009%E5%B9%B4%E8%87%BA%E7%81%A3" target="_blank" rel="external">Wiki 2009台灣年表</a>)。</p>
+<p>透過這些圖表，可以容易看到表格資料不易發現的地方，這或許也是圖像化迷人的點吧。</p>
+
+<script>
+$(function() {
+
+var shPath = 'https://spreadsheets.google.com/feeds/list/',
+	shKey = '1hX3lqWLHFuwYiQeaBL0WevleUEOBAPKzshj2fJHogsM',
+	shCallback = '/public/values?alt=json-in-script&callback=?',
+	shList = [
+		{
+			'listKey': 'od6',
+			'dataName': 'dataTaipei'
+		},{
+			'listKey': 'ol1cvs7',
+			'dataName': 'dataKaohsiung'
+		}
+		// ,{
+		// 	'listKey': 'objevh6',
+		// 	'dataName': 'dataKaohsiungOld'
+		// }
+		]
+
+var url = shPath + shKey + '/' + shList + shCallback;
+var dataRemote = [];
+
+//讀入每一個資料表
+$.each(shList, function(i, list){
+	$.getJSON( shPath + shKey + '/' + list.listKey + shCallback)
+	.done(function (data) {	 //如果成功
+		list.dataName = []
+		var entry = data.feed.entry //只取feed entry的部分
+		var title = data.feed.title.$t
+		dataRemote.push({
+			'title': title,
+			'data': entry
+		}); //送回dataset
+		jsonDone();
+	})
+	.fail(function(jqxhr, textStatus, error){
+		console.log('GG,沒戲唱了'); //失敗
+	});
+
+})
+
+
+//驗證資料跑完沒
+jsonDone = function(){
+	if (shList.length != dataRemote.length){
+		console.log('快好了'); //驗證未完成
+	} else if (shList.length == dataRemote.length){
+		console.log('好了', dataRemote); //驗證成功
+		runData(); //整理資料
+	}
+};
+
+//整理資料
+runData = function(){
+	//整理資料
+	dataset = dataRemote
+	runChart();
+};
+
+
+//真的開始畫圖了
+runChart = function(){
+
+	var margin = {top: 60, right: 40, bottom: 50, left: 60};
+	var w = 560 ; // 寬
+	var h = 300 ; // 高
+
+	console.log(dataset[0].data.length)
+
+	// var Ymax = d3.max(dataset[0].data, function(d,i){ return d.data.gsx$percent.$t}),
+	// 	Ymin = d3.min(dataset[0].data, function(d,i){ return d.data.gsx$percent.$t});
+	datatime = [];
+	$.each(dataset[0].data,function(i,d){
+		datatime.push(d.gsx$time.$t)
+	});
+	console.log(datatime)
+	var xScale = d3.scale.linear().domain([0,dataset[0].data.length]).range([0,w])
+
+	var yScale = d3.scale.linear().domain([.2, .85]).range([h, 0]);
+
+	// console.log(Ymax,Ymin)
+
+	// 增加一個line function，用來把資料轉為x, y
+	var line = d3.svg.line()
+		.x(function(d,i) {
+			return xScale(i + 1); //利用尺度運算資料索引，傳回x的位置
+		})
+		.y(function(d) {
+			return yScale(d.gsx$percent.$t); //利用尺度運算資料的值，傳回y的位置
+		});
+
+	//增加一個SVG元素
+	var svg = d3.select('.demo').append('svg')
+		.attr('width', w + margin.left + margin.right) //將左右補滿
+		.attr('height', h + margin.top + margin.bottom) //上下補滿
+		.append('g') //增加一個群組g
+		.attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+	// 增加x軸線，tickSize是軸線的垂直高度，-h會往上拉高
+	// tickSubdivide不清楚是什麼用處
+	var xAxis = d3.svg.axis().scale(xScale).ticks(5).orient('bottom').tickSize(-h).tickSubdivide(true);
+	// SVG加入x軸線
+	svg.append('g')
+		.attr('class', 'x axis')
+		.attr('transform', 'translate(0,' + h + ')')
+		.call(xAxis);
+
+
+	// 建立y軸線，4個刻度，數字在左
+	var yAxisLeft = d3.svg.axis().scale(yScale).ticks(4).orient('left');
+	// SVG加入y軸線
+	svg.append('g')
+		.attr('class', 'y axis')
+		.attr('transform', 'translate(0,0)')
+		.call(yAxisLeft);
+
+	parseArray = function(data, l){
+		array = [];
+		$.each(data,function(i,d){
+			array.push(d.l)
+		})
+	}
+
+
+
+	// svg.append('path').attr('d', line(dataset[0].data));
+	// svg.append('path').attr('d', line(dataset[1].data));
+	$.each(dataset,function(i,d){
+		svg.append('path').attr('d', line(d.data))
+			.style({
+				'stroke': d3.hsl((120 + 90*i), .6, .6),
+				'stroke-width':1,
+			})//
+
+		svg.append('g').selectAll('circle').data(d.data).enter()
+		.append('circle')
+		.attr({
+			'cx': function(d, i){return xScale(i + 1) },
+			'cy': function(d){return yScale(d.gsx$percent.$t)},
+			'r':'2px',
+			'stroke':'transparent',
+			'stroke-width':'3px',
+			'class': 'dot'
+		})
+		.style({
+			'fill': d3.hsl((120 + 90*i), .6, .6)
+		})
+
+		svg.append('g').append('text')
+			.text(d.title)
+			.style({
+				'fill': d3.hsl((120 + 90*i), .6, .6),
+				'transform': 'translate(8px,'+ ((i * 15) + 12)
+					+'px)',
+				'font-size':'12px'
+			})
+	});
+
+	showTips = function(id){
+		date = dataset[0].data[id].gsx$time.$t
+		var html = ''
+		$.each(dataset, function(i, dataset){
+			title = dataset.title;
+			percent = dataset.data[id].gsx$percent.$t;
+			html = html + '<div><span>'+title+'</span>/<span> '+percent+'%</span></div>'
+		})
+		console.log(date)
+		html = '<div>'+date+'</div>' + html;
+		return html
+	}
+	svg.selectAll('.dot').on('mouseover', function(d){
+		var xPos = parseFloat(d3.select(this).attr('cx')) + margin.left
+		var yPos = parseFloat(d3.select(this).attr('cy')) + margin.top
+		var id = d.gsx$id.$t - 1
+
+		d3.select('#tooltip')
+			.style({
+				'left': xPos + 'px',
+				'top': yPos + 'px'
+			})
+			.classed('hidden', false)
+			.html(showTips(id))
+	}).on('mouseout', function(d){
+		d3.select('#tooltip').classed('hidden', true)
+	})
+
+
+
+
+}
+
+});
+</script>
+
+
+
+<style>
+path {
+	stroke: DodgerBlue;
+	stroke-width: 1;
+	fill: none;
+}
+.axis {
+	font-size: 11px;
+	fill: gray;
+}
+
+.x.axis line {
+  stroke: lightgrey;
+}
+
+.x.axis .minor {
+  stroke-opacity: .5;
+}
+
+.x.axis path {
+  stroke: #fafafa;
+}
+
+.y.axis line, .y.axis path {
+  fill: none;
+  stroke: lightgrey;
+}
+.x.axis text{
+	display: none;
+}
+.demo{
+	position: relative;
+}
+#tooltip{
+	position: absolute;
+	max-width: 220px;
+	padding: 10px;
+	background-color: #fff;
+	border-radius: 2px;
+	box-shadow: 0 2px 2px rgba(0,0,0, .16);
+	pointer-events: none;
+	transition: opacity .2s;
+	opacity: 1;
+	font-size: 11px;
+}
+#tooltip.hidden{
+	opacity: 0;
+}
+</style>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ironman/" rel="tag">#ironman</a>
+          
+            <a href="/tags/d3js/" rel="tag">#d3js</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/d3js/2014/10/14/Ironman-30-days-15/" rel="next" title="D3.js 折線圖(Line Chart)">
+                <i class="fa fa-chevron-left"></i> D3.js 折線圖(Line Chart)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/10/16/Ironman-30-days-17/" rel="prev" title="D3.js 究竟搭不搭捷運與死亡率有沒有關係？(2) - Google 試算表">
+                D3.js 究竟搭不搭捷運與死亡率有沒有關係？(2) - Google 試算表 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#資料來源"><span class="nav-number">1.</span> <span class="nav-text">資料來源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo"><span class="nav-number">2.</span> <span class="nav-text">Demo</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#高雄市與台北市粗死亡率"><span class="nav-number">2.0.1.</span> <span class="nav-text">高雄市與台北市粗死亡率</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結語"><span class="nav-number">3.</span> <span class="nav-text">結語</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/d3js/2014/10/15/Ironman-30-days-16/';
+      var disqus_title = "D3.js 究竟搭不搭捷運與死亡率有沒有關係？(1)";
+      var disqus_url = 'http://wcc723.github.io//d3js/2014/10/15/Ironman-30-days-16/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

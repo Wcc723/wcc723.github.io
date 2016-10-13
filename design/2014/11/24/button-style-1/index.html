@@ -1,0 +1,975 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="design," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="在參加完鐵人賽以後，會想要再精進UI設計的部分，所以想試著寫設計得文章，接下來會連續幾篇UI設計的文章，有些是在鐵人賽前就準備好的，最近在重新整理PO出來，希望大家會感興趣。
+網路上有許多開源的Framework，通常我都會參考他們的按鈕以及表單設計，因為這是最能夠表達Framework特色的元件。按鈕與表單，按鈕更能表達一個Framework的個性，如圓角、顏色填充的方式、預設的色彩變化、單位計">
+<meta property="og:type" content="article">
+<meta property="og:title" content="視覺前端 - 按鈕的個性">
+<meta property="og:url" content="http://wcc723.github.io/design/2014/11/24/button-style-1/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="在參加完鐵人賽以後，會想要再精進UI設計的部分，所以想試著寫設計得文章，接下來會連續幾篇UI設計的文章，有些是在鐵人賽前就準備好的，最近在重新整理PO出來，希望大家會感興趣。
+網路上有許多開源的Framework，通常我都會參考他們的按鈕以及表單設計，因為這是最能夠表達Framework特色的元件。按鈕與表單，按鈕更能表達一個Framework的個性，如圓角、顏色填充的方式、預設的色彩變化、單位計">
+<meta property="og:image" content="http://wcc723.github.io/images/2014button/2014-11-24-button_02.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014button/2014-11-24-button_01.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014button/2014-11-24-button_06.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014button/2014-11-24-button_07.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014button/2014-11-24-button_05.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014button/2014-11-24-button_03.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014button/2014-11-24-button_04.png">
+<meta property="og:updated_time" content="2016-10-13T03:49:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="視覺前端 - 按鈕的個性">
+<meta name="twitter:description" content="在參加完鐵人賽以後，會想要再精進UI設計的部分，所以想試著寫設計得文章，接下來會連續幾篇UI設計的文章，有些是在鐵人賽前就準備好的，最近在重新整理PO出來，希望大家會感興趣。
+網路上有許多開源的Framework，通常我都會參考他們的按鈕以及表單設計，因為這是最能夠表達Framework特色的元件。按鈕與表單，按鈕更能表達一個Framework的個性，如圓角、顏色填充的方式、預設的色彩變化、單位計">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2014button/2014-11-24-button_02.png">
+
+  <meta property="og:image" content="/images/2014button/2014-11-24-button_03.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/design/2014/11/24/button-style-1/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 視覺前端 - 按鈕的個性 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                視覺前端 - 按鈕的個性
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-11-24T00:00:00+08:00" content="2014-11-24">
+              2014-11-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/design/" itemprop="url" rel="index">
+                    <span itemprop="name">design</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/design/2014/11/24/button-style-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/design/2014/11/24/button-style-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014button/2014-11-24-button_03.png" rel="gallery_ciu7s0g32001el7f09e1hvxel"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014button/2014-11-24-button_03.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>在參加完鐵人賽以後，會想要再精進UI設計的部分，所以想試著寫設計得文章，接下來會連續幾篇UI設計的文章，有些是在鐵人賽前就準備好的，最近在重新整理PO出來，希望大家會感興趣。</p>
+<p>網路上有許多開源的Framework，通常我都會參考他們的按鈕以及表單設計，因為這是最能夠表達Framework特色的元件。按鈕與表單，按鈕更能表達一個Framework的個性，如圓角、顏色填充的方式、預設的色彩變化、單位計算方式(em or px)等等，當然表單也有，但許多為了實用性，表單會將設計簡化。</p>
+<a id="more"></a>
+<p>現在大多的HTML元件，在執行上大多會使用CSS語法，較少使用圖片，這樣可以提高元件可用性，在維護上也較為容易。而我在設計按鈕時，以時常會參考這些Framework的做法，再加以改變，這些Framework有許多CSS細節，非常有參考價值。</p>
+<p>以下列出幾個常見的CSS Framework button。</p>
+<h2 id="Bootstrap-2"><a href="#Bootstrap-2" class="headerlink" title="Bootstrap 2"></a>Bootstrap 2</h2><p><a href="http://getbootstrap.com/2.3.2/" target="_blank" rel="external">Bootstrap 2</a></p>
+<p>自從 2 開始就是Web frontend相當主流的CSS Framework，在 3 發行之後，2 的維護也中止，使用這套Framework的開發者也相對少很多，但是在網路上還是經常可以看到由Bootstrap 2所設計的網頁，Bootstrap 2依然是一款經典的CSS Framewrok。</p>
+<p><img src="/images/2014button/2014-11-24-button_02.png" alt=""></p>
+<p><strong>Bootstrap 2 按鈕設計特色</strong></p>
+<ol>
+<li>明顯的漸層</li>
+<li>鮮豔的色彩</li>
+<li>些許的內陰影</li>
+<li>4px的圓角</li>
+<li>凸起的立體感</li>
+</ol>
+<p>早期的按鈕，許多都是用圖片做的，因為圖片可以表現立體感、圓角等等的質感，以前的CSS沒有辦法達到這樣的效果。直到了CSS3，圓角、漸層、陰影都可以透過CSS運用在web上，此時也就流行了透過CSS達到圖片可以做的效果，如Bootstrap 2所表現的。</p>
+<p>這當中我最愛他的primary預設藍色漸層色彩，不僅顏色抓得恰到好處，搭配著些許內陰影，充分表現出類似圖片所能呈現的質感，但又更為精緻。</p>
+<h2 id="Bootstrap-3"><a href="#Bootstrap-3" class="headerlink" title="Bootstrap 3"></a>Bootstrap 3</h2><p><a href="http://getbootstrap.com/" target="_blank" rel="external">Bootstrap 3</a></p>
+<p><img src="/images/2014button/2014-11-24-button_01.png" alt=""></p>
+<ul>
+<li><a href="http://techorange.com/2013/07/19/5-dangers-of-flat-design/" target="_blank" rel="external">扁平化設計</a></li>
+<li><a href="http://zh.wikipedia.org/wiki/Metro_UI" target="_blank" rel="external">Metro UI</a></li>
+</ul>
+<p>在Window 8推出以後(Metro UI)，許多UI設計開始導入扁平化設計(Flat Design)的概念，而Web當然也不例外。扁平化就廣義來說，是相對於擬真的設計，去除了陰影、立體感，使用色塊來組成視覺的界面。</p>
+<p><strong>Bootstrap 3 按鈕設計特色</strong></p>
+<ol>
+<li>單色、無漸層</li>
+<li>顏色較為沈穩 </li>
+<li>無陰影</li>
+<li>一樣4px的圓角</li>
+<li>無立體感</li>
+</ol>
+<p>相對於Bootstrap 2的立體效果，Bootstrap導入了扁平化設計的概念，除了圓角外，其他立體效果都被移除。雖然沒有以往的立體感，但這樣的做法可以有效地減少使用者界面複雜度，更能凸顯按鈕的功能。</p>
+<p>整個Framework在設計上相當的偏重於功能性，移除了大部分的漸層、陰影，在單一按鈕的設計上，雖沒有Bootstrap 2 那麼的豐富，但也因為如此，他更能配合各網頁原有的設計，不會過度的突出。</p>
+<h2 id="Jquery-Mobile-1-3"><a href="#Jquery-Mobile-1-3" class="headerlink" title="Jquery Mobile 1.3"></a>Jquery Mobile 1.3</h2><p><a href="http://demos.jquerymobile.com/1.3.2/" target="_blank" rel="external">Jquery Mobile 1.3</a></p>
+<p><img src="/images/2014button/2014-11-24-button_06.png" alt=""></p>
+<p><img src="/images/2014button/2014-11-24-button_07.png" alt=""></p>
+<p><a href="http://jquerymobile.com/demos/" target="_blank" rel="external">Jquery Mobile</a></p>
+<p>Jquery Mobile 是基於Jquery所開發的行動裝置Web Framework，不僅在樣式上，還有許多的在行動裝置可用的效果，而這款Framework也有屬於自己的CSS 樣式。</p>
+<p><strong>Jquery Mobile 1.3 按鈕設計特色</strong></p>
+<ol>
+<li>淺漸層</li>
+<li>顏色較為暗沈</li>
+<li>有陰影</li>
+<li>1em的圓角</li>
+<li>明顯浮起的立體感</li>
+</ol>
+<p>Jquery mobile像對於其他CSS framework來說，視覺感較為工程導向，和Bootstrap2 比較來說，顏色稱不上鮮豔，較為混濁。畢竟Jquery mobile是用在行動裝置上，所以在規劃上並不是只有美觀，它凸顯了按鈕的立體感並且增加按鈕的尺寸，以便於觸控。</p>
+<h2 id="Jquery-Mobile-1-4"><a href="#Jquery-Mobile-1-4" class="headerlink" title="Jquery Mobile 1.4"></a>Jquery Mobile 1.4</h2><p><a href="http://demos.jquerymobile.com/1.4.5/" target="_blank" rel="external">Jquery Mobile 1.4</a></p>
+<p><img src="/images/2014button/2014-11-24-button_05.png" alt=""></p>
+<p>Jquery Mobile 1.4和以往的設計有很大的落差，最大的差別就是導入了扁平化設計，所以在預設的款式是沒有圓角、陰影、漸層等效果。</p>
+<p><strong>Jquery Mobile 1.4 按鈕設計特色</strong></p>
+<ol>
+<li>無漸層</li>
+<li>預設僅有黑白兩色</li>
+<li>預設無陰影(可選擇)</li>
+<li>預設無圓角(可選擇)</li>
+<li>無立體感</li>
+</ol>
+<p>就像上圖一樣，預設的按鈕相當的扁平，雖然他也提供圓角、陰影作為選擇，但沒有以往的強烈。另外在尺寸上有很重要變化，就是基本的按鈕高度為44px，44px是行動裝置上手指合適的觸控範圍尺寸。</p>
+<p>而Jquery Mobile兩個不同版本也刻意一起放出來比較，兩個在設計上已有很大的落差，1.4去除了許多裝飾(大圓角、漸層)，也將小圖示從<code>png</code>圖片換成了<code>svg</code>，這在retina顯示器的表現更為精緻。整體設計來說，我偏愛1.4的扁平化，不知大家覺得如何？</p>
+<h2 id="Pure"><a href="#Pure" class="headerlink" title="Pure"></a>Pure</h2><p><a href="http://purecss.io/" target="_blank" rel="external">Pure CSS</a></p>
+<p><img src="/images/2014button/2014-11-24-button_03.png" alt=""></p>
+<p><img src="/images/2014button/2014-11-24-button_04.png" alt=""></p>
+<p>Pure CSS Framework的設計理念是為了讓CSS更為簡單化，所有的元件都分為核心以及擴充兩類別，核心通常定義元件的尺寸、瀏覽器相容性，擴充則是定義元件的色彩、更多尺寸、不同狀態等。</p>
+<p><strong>Pure 按鈕設計特色</strong></p>
+<ol>
+<li>無漸層 (Hover有) </li>
+<li>單色</li>
+<li>無陰影</li>
+<li>2px 圓角</li>
+<li>無立體感</li>
+</ol>
+<p>Pure的按鈕，就視覺上是我喜歡的類型，有著簡單的外形、細膩的變化，用相當少量的程式碼達到跨瀏覽器的效果。另外Pure的按鈕有個很特別的特色，是其他Framework少見的效果，就是在hover的色彩，按鈕無論是哪一種顏色，都僅用半透明的漸層色覆蓋在上面，這樣可以有效地減少CSS程式碼，又能表現出hover的效果<br>，我想這是最符合Pure簡化的個性吧。</p>
+<p>Pure整個Framework在設計概念上就是要不斷地縮短CSS code，所以和其他Framework都有些不同，但又同時保有細膩的設計，也是很值得參考的framework。</p>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>以上列出了幾款不同framework的按鈕，不論他的架構，透過不同的設計，自然而然就會產生不同的個性，而這些個性，也會依據觀者的不同，會有不同的解讀方式；有人會喜歡Bootstrap 2的鮮豔漸層變化，也會有著許多人喜歡Bootstrap 3的純粹色彩，當然顏色深淺、鮮豔程度也都有不同的觀感。</p>
+<p>在製作時，<strong>參考合適的Framework風格(設計)，並挑選合適的執行方式(CSS)，在初學上可以減少錯誤</strong>，提升專案的可執行性。</p>
+<p>這篇看到了相當多的按鈕，接下來可能會出現一個問題，<strong>目前畫面適合放什麼按鈕</strong>，所以下一篇要介紹的是按鈕在畫面上的佈局規劃，如何透過簡單的方式，清楚了解目前畫面上合適的按鈕樣式。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/design/" rel="tag">#design</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/design/2014/11/12/frontend-designer-how-to-work/" rel="next" title="前端設計師的設計與執行">
+                <i class="fa fa-chevron-left"></i> 前端設計師的設計與執行
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/11/25/d3js-in-kh-frontend/" rel="prev" title="高雄前端社群 - d3js">
+                高雄前端社群 - d3js <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootstrap-2"><span class="nav-number">1.</span> <span class="nav-text">Bootstrap 2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootstrap-3"><span class="nav-number">2.</span> <span class="nav-text">Bootstrap 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jquery-Mobile-1-3"><span class="nav-number">3.</span> <span class="nav-text">Jquery Mobile 1.3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jquery-Mobile-1-4"><span class="nav-number">4.</span> <span class="nav-text">Jquery Mobile 1.4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pure"><span class="nav-number">5.</span> <span class="nav-text">Pure</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結論"><span class="nav-number">6.</span> <span class="nav-text">結論</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/design/2014/11/24/button-style-1/';
+      var disqus_title = "視覺前端 - 按鈕的個性";
+      var disqus_url = 'http://wcc723.github.io//design/2014/11/24/button-style-1/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

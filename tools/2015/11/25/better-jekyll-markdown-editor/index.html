@@ -1,0 +1,957 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="tools,jekyll," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="這個Blog也維持很長一段時間了，曾經會想要放棄維護轉到其它平台，主要原因是Jekyll上稿有些麻煩的地方，其中一項最痛的就是上圖…。在上圖之前，都必須先將圖片放到/images，接下來再手動寫相對位置，如果圖片要換，就必須再打開/images資料夾，一來一往必須花很多時間。
+最近發現了Atom編輯器有套件可以自動把圖片搬移到該資料夾，並且還有許多Jekyll的輔助功能，讓我可以更專注於Blog的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="更棒的 Jekyll 編寫工具">
+<meta property="og:url" content="http://wcc723.github.io/tools/2015/11/25/better-jekyll-markdown-editor/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="這個Blog也維持很長一段時間了，曾經會想要放棄維護轉到其它平台，主要原因是Jekyll上稿有些麻煩的地方，其中一項最痛的就是上圖…。在上圖之前，都必須先將圖片放到/images，接下來再手動寫相對位置，如果圖片要換，就必須再打開/images資料夾，一來一往必須花很多時間。
+最近發現了Atom編輯器有套件可以自動把圖片搬移到該資料夾，並且還有許多Jekyll的輔助功能，讓我可以更專注於Blog的">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom2.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom3.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/screen_shot 2015-11-25_0.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/2015-11-25-better-jekyll-markdown-editor_md_-__Users_oushimakoto_github_wcc723_github_io_-_Atom4.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom4.png">
+<meta property="og:updated_time" content="2016-10-13T06:29:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="更棒的 Jekyll 編寫工具">
+<meta name="twitter:description" content="這個Blog也維持很長一段時間了，曾經會想要放棄維護轉到其它平台，主要原因是Jekyll上稿有些麻煩的地方，其中一項最痛的就是上圖…。在上圖之前，都必須先將圖片放到/images，接下來再手動寫相對位置，如果圖片要換，就必須再打開/images資料夾，一來一往必須花很多時間。
+最近發現了Atom編輯器有套件可以自動把圖片搬移到該資料夾，並且還有許多Jekyll的輔助功能，讓我可以更專注於Blog的">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom.png">
+
+  <meta property="og:image" content="/images/2015/11/open-source-ddd56f69d6e1b5bd2c1b44b0db1d2a6c.jpg"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/tools/2015/11/25/better-jekyll-markdown-editor/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 更棒的 Jekyll 編寫工具 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                更棒的 Jekyll 編寫工具
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-11-25T00:00:00+08:00" content="2015-11-25">
+              2015-11-25
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/tools/" itemprop="url" rel="index">
+                    <span itemprop="name">tools</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/tools/2015/11/25/better-jekyll-markdown-editor/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/tools/2015/11/25/better-jekyll-markdown-editor/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2015/11/open-source-ddd56f69d6e1b5bd2c1b44b0db1d2a6c.jpg" rel="gallery_ciu7yn0m7004fl7f0znaqd2xg"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2015/11/open-source-ddd56f69d6e1b5bd2c1b44b0db1d2a6c.jpg" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>這個Blog也維持很長一段時間了，曾經會想要放棄維護轉到其它平台，主要原因是Jekyll上稿有些麻煩的地方，其中一項最痛的就是上圖…。在上圖之前，都必須先將圖片放到<code>/images</code>，接下來再手動寫相對位置，如果圖片要換，就必須再打開<code>/images</code>資料夾，一來一往必須花很多時間。</p>
+<p>最近發現了<strong>Atom</strong>編輯器有套件可以自動把圖片搬移到該資料夾，並且還有許多Jekyll的輔助功能，讓我可以更專注於Blog的文章內容。</p>
+<p>如果您跟我一樣是 Jekyll 的使用者，相信你會很喜歡這編輯工具。</p>
+<p><em>圖片來自於 Atom 官網</em></p>
+<a id="more"></a>
+<h2 id="如何使用"><a href="#如何使用" class="headerlink" title="如何使用"></a>如何使用</h2><p>在開始前，必須先安裝<code>Atom</code>，這是Github所開發的編輯器，大致上與 <code>sublime text 3</code> 相當接近，但對於套件的管理更為直覺，而且還可以容易的安裝各種 Theme(?。本篇就是要介紹他其中一個套件<code>Markdown-Writer</code>。</p>
+<ul>
+<li>安裝 Atom</li>
+<li>安裝 Markdown-Writer</li>
+</ul>
+<p>所以先到<a href="https://atom.io/" target="_blank" rel="external">Atom</a>的官網下載 <code>Atom</code> 安裝吧。</p>
+<h2 id="安裝-Markdown-Writer"><a href="#安裝-Markdown-Writer" class="headerlink" title="安裝 Markdown-Writer"></a>安裝 Markdown-Writer</h2><p>Atom 的使用相當直覺，只要直接選擇 <code>Perferences(cmd + ,)</code>就可以打開設定，其中就可以找到套件安裝(Install Packages)，如下圖就可以搜尋到<code>Markdown-Writer</code>，再按下 install 就會開始安裝(這邊我已經裝囉)。</p>
+<p><img src="/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom.png" alt="搜尋並安裝markdown writer"></p>
+<h2 id="設定-Markdown-Writer"><a href="#設定-Markdown-Writer" class="headerlink" title="設定 Markdown-Writer"></a>設定 Markdown-Writer</h2><p>設定最重要的…Blog路徑，這如果沒有設定，等等也玩不下去。一樣在設定內可以找到 <code>Packages</code>，列表上可以找到剛剛安裝的 <code>Markdown-Writer</code>。</p>
+<p><img src="/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom2.png" alt=""></p>
+<p><code>Site Local Directory</code> 這就是必要的設定，這請填入 Jekyll Blog 的本地位置。</p>
+<p><img src="/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom3.png" alt=""></p>
+<p>在開始使用前，在介紹一下快捷鍵的設置。在 command(<code>cmd + shift + p</code>) 執行 <code>Markdown Writer: Create Default keymaps</code>。</p>
+<p><img src="/images/2015/11/screen_shot 2015-11-25_0.png" alt=""></p>
+<p>再把下面的 <code>code</code> 找地方貼進去，這樣就可以運行 <code>Markdown Writer</code> 所提供的快捷鍵。</p>
+<pre><code>&quot;.platform-darwin atom-text-editor[data-grammar~=&apos;gfm&apos;]&quot;:
+  &quot;shift-cmd-K&quot;: &quot;markdown-writer:insert-link&quot;
+  &quot;shift-cmd-I&quot;: &quot;markdown-writer:insert-image&quot;
+  &quot;cmd-i&quot;:       &quot;markdown-writer:toggle-italic-text&quot;
+  &quot;cmd-b&quot;:       &quot;markdown-writer:toggle-bold-text&quot;
+  &quot;cmd-&apos;&quot;:       &quot;markdown-writer:toggle-code-text&quot;
+  &quot;cmd-k&quot;:       &quot;markdown-writer:toggle-keystroke-text&quot;
+  &quot;cmd-h&quot;:       &quot;markdown-writer:toggle-strikethrough-text&quot;
+  &quot;ctrl-alt-1&quot;:  &quot;markdown-writer:toggle-h1&quot;
+  &quot;ctrl-alt-2&quot;:  &quot;markdown-writer:toggle-h2&quot;
+  &quot;ctrl-alt-3&quot;:  &quot;markdown-writer:toggle-h3&quot;
+  &quot;ctrl-alt-4&quot;:  &quot;markdown-writer:toggle-h4&quot;
+  &quot;ctrl-alt-5&quot;:  &quot;markdown-writer:toggle-h5&quot;
+  &quot;shift-cmd-O&quot;: &quot;markdown-writer:toggle-ol&quot;
+  &quot;shift-cmd-U&quot;: &quot;markdown-writer:toggle-ul&quot;
+  &quot;shift-cmd-&gt;&quot;: &quot;markdown-writer:toggle-blockquote&quot;
+  &apos;shift-cmd-&quot;&apos;: &quot;markdown-writer:toggle-codeblock-text&quot;
+  &quot;cmd-j cmd-p&quot;: &quot;markdown-writer:jump-to-previous-heading&quot;
+  &quot;cmd-j cmd-n&quot;: &quot;markdown-writer:jump-to-next-heading&quot;
+  &quot;cmd-j cmd-d&quot;: &quot;markdown-writer:jump-between-reference-definition&quot;
+  &quot;cmd-j cmd-t&quot;: &quot;markdown-writer:jump-to-next-table-cell&quot;
+</code></pre><h2 id="使用-Markdown-Writer"><a href="#使用-Markdown-Writer" class="headerlink" title="使用 Markdown-Writer"></a>使用 Markdown-Writer</h2><p>在建立一個 Markdown 的檔案後，就可以嘗試插入圖片 <code>cmd + shift + i</code>，選擇圖片後，再勾選 <code>Copy Image to Site Image Directory</code>，這樣就能夠把其他位置的圖片直接移動到<code>/images</code>資料夾內，並且會自動新增 <code>年/月</code> 資料夾。</p>
+<p><img src="/images/2015/11/2015-11-25-better-jekyll-markdown-editor_md_-__Users_oushimakoto_github_wcc723_github_io_-_Atom4.png" alt=""></p>
+<p>(光是這個功能就足以讓我痛哭流涕…)</p>
+<p>其他功能在使用時會感受到，例如：</p>
+<ul>
+<li>程式碼標記自動插入頭尾 (`)</li>
+<li>快捷鍵控制各種文字標記 ex: <code>cmd + h</code> 文字加入刪除線</li>
+<li>還有超多功能可以在設定裡找到…(太多了，記不住)</li>
+</ul>
+<h2 id="Markdown-Writer-可能出現的錯誤"><a href="#Markdown-Writer-可能出現的錯誤" class="headerlink" title="Markdown-Writer 可能出現的錯誤"></a>Markdown-Writer 可能出現的錯誤</h2><p>在第一次使用時，可能是Atom版本較舊，所以出現錯誤，這時候建議先更新Atom，並且先 <code>Disabled</code> 套件後解除安裝，再重新安裝 <code>Markdown-Writer</code> 套件。</p>
+<p><img src="/images/2015/11/Settings_-__Users_oushimakoto_github_wcc723_github_io_-_Atom4.png" alt=""></p>
+<p>這段時間也研究了很多部落格平台，考慮的原因也很多，最後決定繼續維護目前的 Jekyll，原因有下：</p>
+<ul>
+<li>平台的 Editor 是否好用，難寫的根本撐不下去 (超重要)</li>
+<li>平台的費用，平台是否有另外買網址的必要 (github.io 根本潮)</li>
+<li>平台的使用者數量 (Jekyll 有 Github 罩)</li>
+<li>不論用哪種平台，都必須思考平台未來的發展 (什麼時候會消失，文章是否能匯出)</li>
+</ul>
+<p>基於這些原因，最後還是認為 Jekyll 適合我，也因此特別將Blog版型更新了一翻(雖然還有很多Bug Q_Q)…。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tools/" rel="tag">#tools</a>
+          
+            <a href="/tags/jekyll/" rel="tag">#jekyll</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/tools/2015/11/20/sketch-convert-to-web-icon-fonts/" rel="next" title="將 Sketch icons 轉成 web icon fonts">
+                <i class="fa fa-chevron-left"></i> 將 Sketch icons 轉成 web icon fonts
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/tools/2015/11/28/ashareaday/" rel="prev" title="過去的學習 每天一分享">
+                過去的學習 每天一分享 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何使用"><span class="nav-number">1.</span> <span class="nav-text">如何使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝-Markdown-Writer"><span class="nav-number">2.</span> <span class="nav-text">安裝 Markdown-Writer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#設定-Markdown-Writer"><span class="nav-number">3.</span> <span class="nav-text">設定 Markdown-Writer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Markdown-Writer"><span class="nav-number">4.</span> <span class="nav-text">使用 Markdown-Writer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Markdown-Writer-可能出現的錯誤"><span class="nav-number">5.</span> <span class="nav-text">Markdown-Writer 可能出現的錯誤</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/tools/2015/11/25/better-jekyll-markdown-editor/';
+      var disqus_title = "更棒的 Jekyll 編寫工具";
+      var disqus_url = 'http://wcc723.github.io//tools/2015/11/25/better-jekyll-markdown-editor/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

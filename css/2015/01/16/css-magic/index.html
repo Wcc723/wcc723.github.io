@@ -1,0 +1,955 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+<link href="/demoFile/css/2015-spring.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  <meta name="keywords" content="css," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="說到垂直置中一直是網頁設計師的痛，早期解決方法沒有那麼多，最常見到的就是height = line-height這種方式，可是這方式彈性很低，如果遇到多行文字就無法使用。
+然而隨著CSS的演進，越來越多種垂直置中的方法，這邊就介紹幾種實用性高的垂直置中方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 5種垂直置中方法">
+<meta property="og:url" content="http://wcc723.github.io/css/2015/01/16/css-magic/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="說到垂直置中一直是網頁設計師的痛，早期解決方法沒有那麼多，最常見到的就是height = line-height這種方式，可是這方式彈性很低，如果遇到多行文字就無法使用。
+然而隨著CSS的演進，越來越多種垂直置中的方法，這邊就介紹幾種實用性高的垂直置中方法。">
+<meta property="og:updated_time" content="2016-10-13T03:55:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS 5種垂直置中方法">
+<meta name="twitter:description" content="說到垂直置中一直是網頁設計師的痛，早期解決方法沒有那麼多，最常見到的就是height = line-height這種方式，可是這方式彈性很低，如果遇到多行文字就無法使用。
+然而隨著CSS的演進，越來越多種垂直置中的方法，這邊就介紹幾種實用性高的垂直置中方法。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/css/2015/01/16/css-magic/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> CSS 5種垂直置中方法 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                CSS 5種垂直置中方法
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2015-01-16T00:00:00+08:00" content="2015-01-16">
+              2015-01-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/css/" itemprop="url" rel="index">
+                    <span itemprop="name">css</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/css/2015/01/16/css-magic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/css/2015/01/16/css-magic/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+
+      
+        <p>說到垂直置中一直是網頁設計師的痛，早期解決方法沒有那麼多，最常見到的就是<code>height</code> = <code>line-height</code>這種方式，可是這方式彈性很低，如果遇到多行文字就無法使用。</p>
+<p>然而隨著CSS的演進，越來越多種垂直置中的方法，這邊就介紹幾種實用性高的垂直置中方法。</p>
+<a id="more"></a>
+<h2 id="條件"><a href="#條件" class="headerlink" title="條件"></a>條件</h2><p>這篇文章所介紹的垂直置中方式，都不會使用絕對值(px)，大多可以運用在各種環境，但實際上還是需要配合CSS的特性去做選用。</p>
+<p>這次用鳴人的圖片來做介紹，這張圖片是用背景的方式載入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">//sass code</div><div class="line">.naruto</div><div class="line">	background-image: image-url(&quot;narutoR.png&quot;)</div><div class="line">	background-color: orange</div><div class="line">	background-repeat: no-repeat</div><div class="line">	width: (image-width(&quot;narutoR.png&quot;) / 2)</div><div class="line">	height: (image-height(&quot;narutoR.png&quot;) / 2)</div><div class="line">	+background-size(cover)</div></pre></td></tr></table></figure>
+
+<div class="demo d0116">
+	<div class="naruto"></div>
+</div>
+
+<p>外框的部分就直接加入<code>height: 350px</code>的屬性。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">%box</div><div class="line">	height: 350px</div></pre></td></tr></table></figure>
+<h2 id="方法一：table"><a href="#方法一：table" class="headerlink" title="方法一：table"></a>方法一：table</h2><p>此<code>table</code>不是真table，這是IE8以上才支援的CSS語法，將div的屬性轉成table，再套用垂直置中的方式來完成。</p>
+<p>優點：概念簡單、支援度高(IE8+)</p>
+<p>缺點：html結構較多層、有table的特性</p>
+
+<div class="demo d0116 case1">
+	<div class="table">
+		<div class="table-cell">
+			<div class="naruto"></div>
+		</div>
+	</div>
+</div>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">.table</div><div class="line">	@extend %box</div><div class="line">	display: table</div><div class="line">	width: 100%</div><div class="line">.table-cell</div><div class="line">	display: table-cell</div><div class="line">	vertical-align: middle</div><div class="line">.naruto</div><div class="line">	margin: 0 auto</div></pre></td></tr></table></figure>
+<h2 id="方法二：display-inline-block"><a href="#方法二：display-inline-block" class="headerlink" title="方法二：display: inline-block"></a>方法二：display: inline-block</h2><p><code>vertical-align: middle</code>可以做垂直置中，但是限制只能使用在<code>inline</code>及<code>inline-block</code>上，而且還有諸多的限制…，但是透過一點小技巧，<code>vertical-align: middle</code>會是一個非常實用的置中方式(目前也常把這方法套用在專案上)。</p>
+<p>重點在於透過偽元素製作一個垂直100%的物件，而需要置中的元素也轉換為<code>inline-block</code>，並且套用<code>vertical-align: middle</code>。</p>
+<p>優點：相容性不錯，如果要ie7則必須自己手動插入偽元素的部分。</p>
+<p>缺點：必須轉成<code>inline-block</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">.box-wrap</div><div class="line">	@extend %box</div><div class="line">	text-align: center</div><div class="line">	&amp;:before</div><div class="line">		content: &quot;&quot;</div><div class="line">		display: inline-block</div><div class="line">		height: 100%</div><div class="line">		vertical-align: middle</div><div class="line">.naruto</div><div class="line">	display: inline-block</div><div class="line">	vertical-align: middle</div></pre></td></tr></table></figure>
+
+<div class="demo d0116 case5">
+	<div class="box-wrap">
+		<div class="naruto"></div>
+	</div>
+</div>
+
+<p>什麼是vertical-align：<a href="http://css-tricks.com/what-is-vertical-align/" target="_blank" rel="external">http://css-tricks.com/what-is-vertical-align/</a></p>
+<h2 id="方法三："><a href="#方法三：" class="headerlink" title="方法三："></a>方法三：</h2><p>這方法類似於<code>margin: 0 auto</code>的水平置中，但套用在垂直的元素上，只要將內元素設定<code>absolute</code>並將上下左右的距離皆設定為0，再補上<code>margin: auto</code>就大功告成了，但這方法只能用在內元素有明確的寬與高。</p>
+<p>優點：相容性高</p>
+<p>缺點：內元素必須有明確的寬高值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">.box-wrap</div><div class="line">	@extend %box</div><div class="line">	position: relative</div><div class="line">.naruto</div><div class="line">	position: absolute</div><div class="line">	top: 0</div><div class="line">	left: 0</div><div class="line">	bottom: 0</div><div class="line">	right: 0</div><div class="line">	margin: auto</div></pre></td></tr></table></figure>
+
+<div class="demo d0116 case3">
+	<div class="box-wrap">
+		<div class="naruto"></div>
+	</div>
+</div>
+
+<h2 id="方法四：translateY-50"><a href="#方法四：translateY-50" class="headerlink" title="方法四：translateY(- 50%)"></a>方法四：translateY(- 50%)</h2><p>以前常會用一種方式做垂直置中<code>top: 50%; margin-top: -(元素高 / 2);</code>，先用top往下推50%的距離，再利用margin-top拉回元素的一半高度，這方式雖然很好用，但是必須用在元素有明確高度上。</p>
+<p>而這邊所介紹是相同的道理，但是是用<code>transform: translateY(- 50%)</code>將元素垂直向上50%的距離，這50%則是元素的高度，且語法都集中在元素上。</p>
+<p>優點：如果不提到ie就沒有缺點</p>
+<p>缺點：如果提到ie就是缺點(ie9+)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.naruto</div><div class="line">	position: relative</div><div class="line">	top: 50%</div><div class="line">	margin: 0 auto</div><div class="line">	+transform(translateY(- 50%))</div></pre></td></tr></table></figure>
+
+<div class="demo d0116 case2">
+	<div class="flex-wrap">
+		<div class="naruto"></div>
+	</div>
+</div>
+
+<h2 id="方法五：flex"><a href="#方法五：flex" class="headerlink" title="方法五：flex"></a>方法五：flex</h2><p>近幾年W3C針對CSS的layout提出了新的語法 <code>flex</code>，經過多番的波折目前也差不多定案，所以主流的瀏覽器幾乎都支援 <code>flex</code>。</p>
+<p>透過<a href="http://compass-style.org/reference/compass/css3/flexbox/" target="_blank" rel="external">Compass</a>(1.0+)，許多前輟詞都可以省略。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.flex-wrap</div><div class="line">	+display-flex //flex</div><div class="line">	+flex-wrap(wrap) //flex外框</div><div class="line">	+align-items(center) //水平置中</div><div class="line">	+justify-content(center) //垂直置中</div></pre></td></tr></table></figure>
+<p>優點：很潮</p>
+<p>缺點：如果提到ie就是缺點(全部)、建議熟悉flex概念</p>
+
+<div class="demo d0116 case4">
+	<div class="box-wrap">
+		<div class="naruto"></div>
+	</div>
+</div>
+
+<p>前年的鐵人賽我有介紹過flex，也可以參考前年的文章，flex看似簡單，但似乎沒有那麼容易…。</p>
+<ul>
+<li><a href="http://wcc723.github.io/css/2013/10/24/css-flex-1/">display:flex</a></li>
+<li><a href="http://wcc723.github.io/css/2013/10/25/css-flex-2/">CSS3 Flex的排版方式</a></li>
+<li><a href="http://wcc723.github.io/css/2013/10/26/css-flex-3/">CSS3 Flex的對齊</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/css/" rel="tag">#css</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/css/2015/01/13/css-magic/" rel="next" title="CSS 冷知識">
+                <i class="fa fa-chevron-left"></i> CSS 冷知識
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/sass/2015/02/11/sass-map-get/" rel="prev" title="Sass map get">
+                Sass map get <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#條件"><span class="nav-number">1.</span> <span class="nav-text">條件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法一：table"><span class="nav-number">2.</span> <span class="nav-text">方法一：table</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法二：display-inline-block"><span class="nav-number">3.</span> <span class="nav-text">方法二：display: inline-block</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法三："><span class="nav-number">4.</span> <span class="nav-text">方法三：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法四：translateY-50"><span class="nav-number">5.</span> <span class="nav-text">方法四：translateY(- 50%)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法五：flex"><span class="nav-number">6.</span> <span class="nav-text">方法五：flex</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/css/2015/01/16/css-magic/';
+      var disqus_title = "CSS 5種垂直置中方法";
+      var disqus_url = 'http://wcc723.github.io//css/2015/01/16/css-magic/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1013 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+<link href="/demoFile/css/2013-summer.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。
+Canvas挺有趣的，在一年前試過，而網路上也有相當多的library，但是在使用lib前還是先簡單了解一下canvas的運作吧。
+參考：https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Canvas_tutorial/Basic_usage
+這篇主要是介紹Canvas中調整RGB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="試試看Canvas (2)，調整Canvas圖片色調">
+<meta property="og:url" content="http://wcc723.github.io/canvas/2014/12/08/html5-canvas-02/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。
+Canvas挺有趣的，在一年前試過，而網路上也有相當多的library，但是在使用lib前還是先簡單了解一下canvas的運作吧。
+參考：https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Canvas_tutorial/Basic_usage
+這篇主要是介紹Canvas中調整RGB">
+<meta property="og:updated_time" content="2016-10-13T03:49:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="試試看Canvas (2)，調整Canvas圖片色調">
+<meta name="twitter:description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。
+Canvas挺有趣的，在一年前試過，而網路上也有相當多的library，但是在使用lib前還是先簡單了解一下canvas的運作吧。
+參考：https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Canvas_tutorial/Basic_usage
+這篇主要是介紹Canvas中調整RGB">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/canvas/2014/12/08/html5-canvas-02/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 試試看Canvas (2)，調整Canvas圖片色調 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                試試看Canvas (2)，調整Canvas圖片色調
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-12-08T00:00:00+08:00" content="2014-12-08">
+              2014-12-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/canvas/" itemprop="url" rel="index">
+                    <span itemprop="name">canvas</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/canvas/2014/12/08/html5-canvas-02/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/canvas/2014/12/08/html5-canvas-02/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+
+      
+        <p>這篇也是前一個Blog的文章，最近在整理就一起拿出來。</p>
+<p>Canvas挺有趣的，在一年前試過，而網路上也有相當多的library，但是在使用lib前還是先簡單了解一下canvas的運作吧。</p>
+<p>參考：<a href="https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Canvas_tutorial/Basic_usage" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/Canvas_tutorial/Basic_usage</a></p>
+<p>這篇主要是介紹Canvas中調整RGB的值，藉此改變顏色色調。</p>
+<a id="more"></a>
+<h2 id="Canvas-調整色調"><a href="#Canvas-調整色調" class="headerlink" title="Canvas 調整色調"></a>Canvas 調整色調</h2><p>利用canvas可以重新調整影像的樣式，其中一種就是改變色彩。</p>
+<p>參考：<a href="http://www.html5canvastutorials.com/advanced/html5-canvas-invert-image-colors-tutorial/" target="_blank" rel="external">http://www.html5canvastutorials.com/advanced/html5-canvas-invert-image-colors-tutorial/</a></p>
+<h2 id="反轉顏色"><a href="#反轉顏色" class="headerlink" title="反轉顏色"></a>反轉顏色</h2><p>點陣圖是由很多的點構成的，而每一個點都是由RGB三色組成，所以要反轉顏色前必須先取得每一個點的RGB值。</p>
+<pre><code>//影像rgb的資訊
+//以下數值每三個一組，如72,84,74這樣是一組，72是紅色(R)、84是綠色(G)、74是藍色(B)
+[72, 84, 74, 255, 85, 95, 86, 255, 98, 106, 95, 255, 103, 106, 97, 255, 107, 109, 98, 255, 117, 114, 105, 255, 123, 119, 108, 255, 125, 118, 108, 255, 133, 127, 115, 255, 134, 130, 118, 255, 139, 137, 125, 255, 143, 145, 132, 255, 150, 154, 140, 255, 155, 163, 148, 255, 163, 171, 158, 255, 166, 177, 163, 255, 175, 181, 169, 255, 177, 183, 171, 255, 183, 186, 175, 255, 185, 188, 177, 255, 187, 190, 179, 255, 188, 191, 180, 255, 191, 193, 182, 255, 192, 194, 183, 255, 196, 196, 184, 255…]
+</code></pre><p>反轉顏色就是將(255 - 值)，這樣減了以後就會黑色變白色，黃色變藍等等。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _canvas = <span class="built_in">document</span>.getElementById(<span class="string">'canvas'</span>);</div><div class="line"><span class="keyword">var</span> ctx = _canvas.getContext(<span class="string">'2d'</span>);</div><div class="line"><span class="comment">//建立canvas物件</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> img = <span class="keyword">new</span> Image();</div><div class="line">img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;   </div><div class="line">  ctx.canvas.width = img.width</div><div class="line">  ctx.canvas.height = img.height    </div><div class="line">  draw(<span class="keyword">this</span>,<span class="number">0</span>,<span class="number">0</span>);</div><div class="line">  <span class="comment">//draw function</span></div><div class="line">&#125;;</div><div class="line">img.src = <span class="string">'/images/2013-winter/cd2.jpg'</span>;</div><div class="line"><span class="comment">//圖片載入的事件(與上次同)</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params">imgObj,w,h</span>)</span>&#123;</div><div class="line"><span class="keyword">var</span> x = <span class="number">0</span>;</div><div class="line"><span class="keyword">var</span> y = <span class="number">0</span>;</div><div class="line"><span class="comment">//先定義圖片的x,p坐標位置</span></div><div class="line">ctx.drawImage(imgObj,x,y);</div><div class="line"><span class="comment">//將原始的圖片匯入</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> imgData = ctx.getImageData(x, y, imgObj.width, imgObj.height);</div><div class="line"><span class="comment">//取得canvas物件的資訊(需要完整的坐標及範圍)</span></div><div class="line"><span class="keyword">var</span> data = imgData.data;</div><div class="line"><span class="comment">//再將資訊轉存出來</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(data);</div><div class="line"><span class="comment">//這時候用console.log(data)，就可以看到RGB的值</span></div><div class="line"></div><div class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.length; i += <span class="number">4</span>) &#123;</div><div class="line">  <span class="comment">//利用回圈將顏色全部替換</span></div><div class="line">    <span class="comment">// red</span></div><div class="line">    data[i] = <span class="number">255</span> - data[i];</div><div class="line">    <span class="comment">// green</span></div><div class="line">    data[i + <span class="number">1</span>] = <span class="number">255</span> - data[i + <span class="number">1</span>];</div><div class="line">    <span class="comment">// blue</span></div><div class="line">    data[i + <span class="number">2</span>] = <span class="number">255</span> - data[i + <span class="number">2</span>];</div><div class="line">  &#125;</div><div class="line">  ctx.putImageData(imgData,<span class="number">0</span>,<span class="number">0</span>)</div><div class="line">  <span class="comment">//重新將新的影像資訊覆蓋上去</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<div class="demo">
+  <canvas id="canvas" width="30" height="30">
+    Sorry, your browser doesn't support the &lt;canvas&gt; element.
+  </canvas>
+</div>
+
+<p>Note: The getImageData() method requires that the image is hosted on a web server with the same domain as the code executing it.  If this condition is not met, a SECURITY_ERR exception will be thrown.(跨網域會有問題)</p>
+
+<script>
+var _canvas = document.getElementById('canvas');
+var ctx = _canvas.getContext('2d');
+//建立canvas物件
+
+var img = new Image();
+img.onload = function(){   
+  ctx.canvas.width = img.width
+  ctx.canvas.height = img.height    
+  draw(this,0,0);
+  //draw function
+};
+img.src = '/images/2013-winter/cd2.jpg';
+//圖片載入的事件(與上次同)
+
+function draw(imgObj,w,h){
+var x = 0;
+var y = 0;
+//先定義圖片的x,p坐標位置
+ctx.drawImage(imgObj,x,y);
+//將原始的圖片匯入
+
+var imgData = ctx.getImageData(x, y, imgObj.width, imgObj.height);
+//取得canvas物件的資訊(需要完整的坐標及範圍)
+var data = imgData.data;
+//再將資訊轉存出來
+
+console.log(data);
+//這時候用console.log(data)，就可以看到RGB的值
+
+for(var i = 0; i < data.length; i += 4) {
+  //利用回圈將顏色全部替換
+    // red
+    data[i] = 255 - data[i];
+    // green
+    data[i + 1] = 255 - data[i + 1];
+    // blue
+    data[i + 2] = 255 - data[i + 2];
+  }
+  ctx.putImageData(imgData,0,0)
+  //重新將新的影像資訊覆蓋上去
+}
+</script>
+
+<h2 id="手動調整色調"><a href="#手動調整色調" class="headerlink" title="手動調整色調"></a>手動調整色調</h2><p>利用剛剛的反轉顏色，再加入一些控制元素，就可以做出類似photoshop的影像調整工具(簡易版…)，說實在還挺有趣的。</p>
+<p>首先，先新增三個input將type設定為range，min值爲0，max值爲255，這樣就能做出RGB的控制條。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"color"</span>&gt;</span></div><div class="line">    R<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"colorR"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"255"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">    G<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"colorG"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></div><div class="line">    B<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"colorB"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+
+<div class="demo">
+  <div class="color">
+      R<input id="colorR" type="range" name="points" min="0" max="255" value="255"><br>
+      G<input id="colorG" type="range" name="points" min="0" max="255" value="0"><br>
+      B<input id="colorB" type="range" name="points" min="0" max="255" value="0">
+  </div>
+
+  <canvas id="canvas2" width="30" height="30">
+    Sorry, your browser doesn't support the &lt;canvas&gt; element.
+  </canvas>
+</div>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> _canvas2 = <span class="built_in">document</span>.getElementById(<span class="string">'canvas2'</span>);</div><div class="line"><span class="keyword">var</span> ctx2 = _canvas2.getContext(<span class="string">'2d'</span>);</div><div class="line"><span class="keyword">var</span> _colorR = $(<span class="string">'#colorR'</span>).val();</div><div class="line"><span class="keyword">var</span> _colorG = $(<span class="string">'#colorG'</span>).val();</div><div class="line"><span class="keyword">var</span> _colorB = $(<span class="string">'#colorB'</span>).val();</div><div class="line"><span class="keyword">var</span> x = <span class="number">0</span>;</div><div class="line"><span class="keyword">var</span> y = <span class="number">0</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> img2 = <span class="keyword">new</span> Image();</div><div class="line">img2.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;   </div><div class="line">  ctx2.canvas.width = img2.width</div><div class="line">  ctx2.canvas.height = img2.height    </div><div class="line">  draw2(<span class="keyword">this</span>,<span class="number">0</span>,<span class="number">0</span>);</div><div class="line">&#125;;</div><div class="line">img2.src = <span class="string">'/images/2013-winter/cd2.jpg'</span>;</div><div class="line"><span class="comment">//以上和上次接近，只是將幾個不太會改變的變數改成全域變數</span></div><div class="line"></div><div class="line">$(<span class="string">'.color'</span>).on(<span class="string">'change'</span>,<span class="string">'input'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line"><span class="comment">//多一個on change的function，去監控這次加入的input</span></div><div class="line"><span class="comment">//只要他改變，就會執行這個function</span></div><div class="line"></div><div class="line">  _colorR = $(<span class="string">'#colorR'</span>).val()</div><div class="line">  _colorG = $(<span class="string">'#colorG'</span>).val()</div><div class="line">  _colorB = $(<span class="string">'#colorB'</span>).val()</div><div class="line">  <span class="comment">//重新取得input的 RGB的值</span></div><div class="line">  imgObj = img2;</div><div class="line">  draw2(imgObj);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw2</span>(<span class="params">imgObj,w,h</span>)</span>&#123;  </div><div class="line">  ctx2.drawImage(imgObj,x,y);  </div><div class="line">  <span class="keyword">var</span> imgData = ctx2.getImageData(x, y, imgObj.width, imgObj.height);    </div><div class="line">  <span class="keyword">var</span> data = imgData.data;</div><div class="line">  <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; data.length; i += <span class="number">4</span>) &#123;</div><div class="line">    <span class="comment">// 這邊以下將會套用新的RGB色彩</span></div><div class="line">    <span class="comment">// red</span></div><div class="line">    data[i] = _colorR - (<span class="number">255</span> - data[i]);</div><div class="line">    <span class="comment">// green</span></div><div class="line">    data[i + <span class="number">1</span>] = _colorG - (<span class="number">255</span> - data[i + <span class="number">1</span>]);</div><div class="line">    <span class="comment">// blue</span></div><div class="line">    data[i + <span class="number">2</span>] = _colorB - (<span class="number">255</span> -data[i + <span class="number">2</span>]);</div><div class="line">  &#125;</div><div class="line">  ctx2.putImageData(imgData,<span class="number">0</span>,<span class="number">0</span>)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<script>
+var _canvas2 = document.getElementById('canvas2');
+var ctx2 = _canvas2.getContext('2d');
+var _colorR = $('#colorR').val();
+var _colorG = $('#colorG').val();
+var _colorB = $('#colorB').val();
+var x = 0;
+var y = 0;
+
+var img2 = new Image();
+img2.onload = function(){   
+  ctx2.canvas.width = img2.width
+  ctx2.canvas.height = img2.height    
+  draw2(this,0,0);
+};
+img2.src = '/images/2013-winter/cd2.jpg';
+//以上和上次接近，只是將幾個不太會改變的變數改成全域變數
+
+$('.color').on('change','input',function(){
+//多一個on change的function，去監控這次加入的input
+//只要他改變，就會執行這個function
+
+  _colorR = $('#colorR').val()
+  _colorG = $('#colorG').val()
+  _colorB = $('#colorB').val()
+  //重新取得input的 RGB的值
+  imgObj = img2;
+  draw2(imgObj);
+});
+
+function draw2(imgObj,w,h){  
+  ctx2.drawImage(imgObj,x,y);  
+  var imgData = ctx2.getImageData(x, y, imgObj.width, imgObj.height);    
+  var data = imgData.data;
+  for(var i = 0; i < data.length; i += 4) {
+    // 這邊以下將會套用新的RGB色彩
+    // red
+    data[i] = _colorR - (255 - data[i]);
+    // green
+    data[i + 1] = _colorG - (255 - data[i + 1]);
+    // blue
+    data[i + 2] = _colorB - (255 -data[i + 2]);
+  }
+  ctx2.putImageData(imgData,0,0)
+}
+</script>
+
+<p>以前很多的範例，久沒看真的都會在忘記，趁這段時間整理的時候再稍微複習一下，</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/canvas/2014/12/04/html5-canvas-01/" rel="next" title="試試看Canvas">
+                <i class="fa fa-chevron-left"></i> 試試看Canvas
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/canvas/2014/12/09/html5-canvas-03/" rel="prev" title="試試看Canvas (3)，Canvas 小畫家">
+                試試看Canvas (3)，Canvas 小畫家 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Canvas-調整色調"><span class="nav-number">1.</span> <span class="nav-text">Canvas 調整色調</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反轉顏色"><span class="nav-number">2.</span> <span class="nav-text">反轉顏色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手動調整色調"><span class="nav-number">3.</span> <span class="nav-text">手動調整色調</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/canvas/2014/12/08/html5-canvas-02/';
+      var disqus_title = "試試看Canvas (2)，調整Canvas圖片色調";
+      var disqus_url = 'http://wcc723.github.io//canvas/2014/12/08/html5-canvas-02/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

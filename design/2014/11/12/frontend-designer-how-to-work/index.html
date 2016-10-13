@@ -1,0 +1,943 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="design," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="圖片來源 google material design
+
+看到 嫁給RD的 UI Designer 的這篇文章有感，想說也寫一下我對於這個主題的想法，在工作的流程中，每個人所佔的崗位不同，都會有不同的觀點，她的這一篇所在的角色是UI，我的看法是設計師與前端之間的角色。
+從學設計到現在轉職成前端，因為設計背景的關係，所以大部份在執行時都是從設計到切版都是我做，這在執行上並一定是好的流程，只是不同崗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端設計師的設計與執行">
+<meta property="og:url" content="http://wcc723.github.io/design/2014/11/12/frontend-designer-how-to-work/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="圖片來源 google material design
+
+看到 嫁給RD的 UI Designer 的這篇文章有感，想說也寫一下我對於這個主題的想法，在工作的流程中，每個人所佔的崗位不同，都會有不同的觀點，她的這一篇所在的角色是UI，我的看法是設計師與前端之間的角色。
+從學設計到現在轉職成前端，因為設計背景的關係，所以大部份在執行時都是從設計到切版都是我做，這在執行上並一定是好的流程，只是不同崗">
+<meta property="og:image" content="http://wcc723.github.io/images/2014-11-12-02.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014-11-12-03.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2014-11-12-04.png">
+<meta property="og:updated_time" content="2016-10-13T03:49:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="前端設計師的設計與執行">
+<meta name="twitter:description" content="圖片來源 google material design
+
+看到 嫁給RD的 UI Designer 的這篇文章有感，想說也寫一下我對於這個主題的想法，在工作的流程中，每個人所佔的崗位不同，都會有不同的觀點，她的這一篇所在的角色是UI，我的看法是設計師與前端之間的角色。
+從學設計到現在轉職成前端，因為設計背景的關係，所以大部份在執行時都是從設計到切版都是我做，這在執行上並一定是好的流程，只是不同崗">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2014-11-12-02.png">
+
+  <meta property="og:image" content="/images/2014-11-12-01.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/design/2014/11/12/frontend-designer-how-to-work/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 前端設計師的設計與執行 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                前端設計師的設計與執行
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-11-12T00:00:00+08:00" content="2014-11-12">
+              2014-11-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/design/" itemprop="url" rel="index">
+                    <span itemprop="name">design</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/design/2014/11/12/frontend-designer-how-to-work/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/design/2014/11/12/frontend-designer-how-to-work/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014-11-12-01.png" rel="gallery_ciu7s0g2y001bl7f07t5kigw5"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014-11-12-01.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <blockquote>
+<p>圖片來源 google material design</p>
+</blockquote>
+<p>看到 嫁給RD的 UI Designer 的<a href="http://blog.akanelee.me/posts/241439-design-and-f2e-cut-images" target="_blank" rel="external">這篇文章</a>有感，想說也寫一下我對於這個主題的想法，在工作的流程中，每個人所佔的崗位不同，都會有不同的觀點，她的這一篇所在的角色是UI，我的看法是設計師與前端之間的角色。</p>
+<p>從學設計到現在轉職成前端，因為設計背景的關係，所以大部份在執行時都是從設計到切版都是我做，這在執行上並一定是好的流程，只是不同崗位，有不同的觀點，同時橫跨兩個崗位，就會掌握不同的面向，但畢竟是一個人，無法面面俱到，所以這邊會提出一些我的看法及解決辦法。</p>
+<a id="more"></a>
+<h2 id="規劃"><a href="#規劃" class="headerlink" title="規劃"></a>規劃</h2><p>首先，在設計前必須了解需求，需求不外乎包含瀏覽器限制、Responsive web design、整體色調、是否包含維護、配合的後端技術or其他framework等等…，再從這些面向去思考設計如何執行。</p>
+<h2 id="瀏覽器限制"><a href="#瀏覽器限制" class="headerlink" title="瀏覽器限制"></a>瀏覽器限制</h2><p>基本上我現在所執行的網站大多是IE8+，甚至是不用管IE(在2013年後期政府專案很多都只要ie8+)，這些直接影響了所使用的CSS layout、CSS3效果、SVG等等效果，如果還有使用webfont，雖然可以執行，但是Render 會很醜…。</p>
+<p>如果遇到需要配合低階瀏覽器，會避免掉許多效果，像是RWD、Retina display。配合低階瀏覽器，還要做這些，無疑是拿石頭砸自己的腳；且目標客群都不想用新式瀏覽器，自然也不會在乎這網站上用了什麼技術。</p>
+<h2 id="設計工具"><a href="#設計工具" class="headerlink" title="設計工具"></a>設計工具</h2><p>講到這就突然難過了起來，以前我都是使用Illustrator，在設計Web時剛開始也就認命的辛苦些(有點難用)，直到了用過Sketch、Affinity Designer，發現不僅是程式不斷的在演化，設計工具也是必須有改變，但苦於想學的東西太多，不知不覺設計工具的優先值就被往後排了。</p>
+<p>因此在設計前先了解對於軟體的熟悉度，以及專案是否有配合其他設計師，從中判斷用哪套軟體(現在我多用Sketch 起手)。</p>
+<p>關於Sketch、Affinity Designer，兩套我都有買，但並非相當精通，我認為Sketch較偏向Layout，而Affinity比較適合繪製細節，像是Icon、Logo等。</p>
+<p><img src="/images/2014-11-12-02.png" alt=""></p>
+<blockquote>
+<p>Sketch</p>
+</blockquote>
+<p><img src="/images/2014-11-12-03.png" alt=""></p>
+<blockquote>
+<p>Affinity Designer</p>
+</blockquote>
+<h2 id="Responsive-web-design"><a href="#Responsive-web-design" class="headerlink" title="Responsive web design"></a>Responsive web design</h2><p>這也是重點中的重點，今年以前Responsive web design只要提出來，價碼都好說好說(以後幾乎是必備)，所以在前公司提案時，盡量都會以Responsive web design為賣點，以增加拿到案子的成功率，所以既然挖了這個坑就要自己跳了…。</p>
+<p>RWD在執行時，要先思考使用CSS framework 或是自己用sass做，在過去我主要會使用sass 搭配 susy執行，但現在由於專案越來越大，我就會自幹CSS framework。兩者不同點在於susy 比較適合小型專案，他可以語意化Class，可以快速搭建小型專案所需的layout，但在大型專案中，所有的CSS最好都是模組化，可供各頁面重複使用，以增加工作效率。</p>
+<p>如果真有要考慮RWD，會Sass是比較好，如果不熟Sass，使用bootstrap grid system可能會穩定些。</p>
+<h2 id="顏色"><a href="#顏色" class="headerlink" title="顏色"></a>顏色</h2><p>(這部分我改天整理更完整的)</p>
+<p>在使用繪圖軟體時，調色我都使用RGB bar去拉，再把最適合的色彩存在色票內，可能會約存5種色彩(主要顏色、底色、次要色、警告色、提示色等)，有點類似bootstrap所提供色彩，但會因為專案的不同所調整。</p>
+<p><img src="/images/2014-11-12-04.png" alt=""></p>
+<p>常用的顏色會拉下來當色票，不過建議是排整齊，別跟我一樣，排整齊之後反而找不到…。</p>
+<p>顏色上再進入sass開發後，會定義成變數，並且在套用時進行色彩運算，如果是經常使用的色彩，也可以先運算。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$primary-color: #009aff</div><div class="line">$primary-color-darken: darken($primary-color, 10%)</div><div class="line">$primary-color-lighten: lighten($primary-color, 10%)</div></pre></td></tr></table></figure>
+<p></p><p data-height="268" data-theme-id="0" data-slug-hash="zxOgZR" data-default-tab="result" data-user="Wcc723" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/zxOgZR/" target="_blank" rel="external">zxOgZR</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="external">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p><p></p>
+<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>這樣可以讓顏色更有系統的管理，不過變數的命名又是另一門學問了，這邊就不再多作闡述。</p>
+<h2 id="維護"><a href="#維護" class="headerlink" title="維護"></a>維護</h2><p>這直接影響這個專案的未來，有資歷的開發者都很有感觸，到底要不要挖坑給未來的自己跳…，只有經驗會告訴你。</p>
+<p><em>不過以為專案就像石頭往河裡丟一樣，但常常像飛盤一樣飛回來打到自己。</em></p>
+<h2 id="配合的後端以及相關Framework、library"><a href="#配合的後端以及相關Framework、library" class="headerlink" title="配合的後端以及相關Framework、library"></a>配合的後端以及相關Framework、library</h2><p>執行前，有機會也可以先和配合的後端聊聊，雖然我寫的是Sass，但卻沒有配合過Rails  or Node.js專案(泣)，可以先了解後端了解的事項有：</p>
+<ol>
+<li>切好的Prototype如何交付</li>
+<li>細部的已知功能工作分配 (javascript的分配)</li>
+<li>專案架構是否為MVC，以及版面修正配合方式</li>
+</ol>
+<p>接下來還可以詢問javascript library為何，一般來說最常使用的jquery，如果是jquery還要了解版本為何，以及可能會使用到的plugin，就以我工作上來說，大多會另外使用bootstrap js、datatable等等，這些在設計上就可以盡量使用。</p>
+<hr>
+<p>除了這些之外，更重要的當然是怎樣做好Web UI，除了多看好的設計之外，更重要的是要閱讀Style guide，UI設計和程式有很大的關係，必須依據一定的準則，在執行及操作上才會有良好的體驗。</p>
+<p>如果要推薦一份Style guide，當然就是Google material design，而且運氣不錯，有人翻譯成繁體中文版了(<a href="http://wcc723.gitbooks.io/google_design_translate/" target="_blank" rel="external">http://wcc723.gitbooks.io/google_design_translate/</a>)。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/design/" rel="tag">#design</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/gulp/2014/11/07/gulp-on-diff-os/" rel="next" title="Gulp RUN ruby-compass">
+                <i class="fa fa-chevron-left"></i> Gulp RUN ruby-compass
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/design/2014/11/24/button-style-1/" rel="prev" title="視覺前端 - 按鈕的個性">
+                視覺前端 - 按鈕的個性 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#規劃"><span class="nav-number">1.</span> <span class="nav-text">規劃</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#瀏覽器限制"><span class="nav-number">2.</span> <span class="nav-text">瀏覽器限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#設計工具"><span class="nav-number">3.</span> <span class="nav-text">設計工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Responsive-web-design"><span class="nav-number">4.</span> <span class="nav-text">Responsive web design</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#顏色"><span class="nav-number">5.</span> <span class="nav-text">顏色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#維護"><span class="nav-number">6.</span> <span class="nav-text">維護</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配合的後端以及相關Framework、library"><span class="nav-number">7.</span> <span class="nav-text">配合的後端以及相關Framework、library</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/design/2014/11/12/frontend-designer-how-to-work/';
+      var disqus_title = "前端設計師的設計與執行";
+      var disqus_url = 'http://wcc723.github.io//design/2014/11/12/frontend-designer-how-to-work/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

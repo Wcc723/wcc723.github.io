@@ -1,0 +1,1072 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="ironman,d3js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="先前的資料，都是固定的，沒有任何變化，這次要介紹的是利用資料的轉變以及transition的效果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="D3.js Transition動態效果">
+<meta property="og:url" content="http://wcc723.github.io/d3js/2014/10/20/Ironman-30-days-21/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="先前的資料，都是固定的，沒有任何變化，這次要介紹的是利用資料的轉變以及transition的效果。">
+<meta property="og:updated_time" content="2016-10-13T02:51:47.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="D3.js Transition動態效果">
+<meta name="twitter:description" content="先前的資料，都是固定的，沒有任何變化，這次要介紹的是利用資料的轉變以及transition的效果。">
+
+  <meta property="og:image" content="/images/2014ironman/day20_01.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/d3js/2014/10/20/Ironman-30-days-21/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.10/d3.min.js"></script>
+
+
+  <title> D3.js Transition動態效果 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                D3.js Transition動態效果
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-10-20T00:00:00+08:00" content="2014-10-20">
+              2014-10-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/d3js/" itemprop="url" rel="index">
+                    <span itemprop="name">d3js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/d3js/2014/10/20/Ironman-30-days-21/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/d3js/2014/10/20/Ironman-30-days-21/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014ironman/day20_01.png" rel="gallery_ciu7r3cc40003l7f0vfaykuje"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014ironman/day20_01.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>先前的資料，都是固定的，沒有任何變化，這次要介紹的是利用資料的轉變以及transition的效果。</p>
+<a id="more"></a>
+<h2 id="Transition"><a href="#Transition" class="headerlink" title="Transition"></a>Transition</h2><p>這次的範例是之前提到那本書上的唷～。</p>
+<p>D3.js的transition和CSS的transition很像，都是放在開始的地方，然後再加入一些時間，這樣就完成了，像下面這個範例：</p>
+<pre><code>d3.select(&apos;div&apos;)
+.transition() //套用動態效果
+.duration(250) //動態持續時間
+.attr(/* do something */)
+</code></pre><p>如果和資料有關係，作法大致是相同的，再加入資料後，一樣加入.transition()：</p>
+<pre><code>d3.select(&apos;div&apos;).data(dataset)
+.transition() //套用動態效果
+.duration(250) //動態持續時間
+.attr(/* do something */)
+</code></pre><p>下面這一個範例中，只要點擊’Click Me’，就會產生出一組新的陣列並且套用入SVG，可以看到圓型以及左方、下方的軸線也會跟著轉場變化。</p>
+
+<div class="demo" style="padding: 0">
+
+
+<button class="btn"> Click Me </button>
+</div>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> w = <span class="number">600</span>,h = <span class="number">400</span>,padding = <span class="number">30</span>;</div><div class="line"></div><div class="line"><span class="keyword">var</span> dataset = []; <span class="comment">//產生空的陣列</span></div><div class="line"><span class="keyword">var</span> numDataPoints = <span class="number">100</span>; <span class="comment">//最大點的數量是100</span></div><div class="line"><span class="keyword">var</span> xRange = <span class="built_in">Math</span>.random() * <span class="number">1000</span>;</div><div class="line"><span class="keyword">var</span> yRange = <span class="built_in">Math</span>.random() * <span class="number">1000</span>; <span class="comment">//隨機範圍最大值都是1000</span></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; numDataPoints; i++)&#123;</div><div class="line">	<span class="keyword">var</span> num1 = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * xRange);</div><div class="line">	<span class="keyword">var</span> num2 = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * yRange);</div><div class="line">	dataset.push([num1,num2]) <span class="comment">//運算出新的值，並加到dataset</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> Xmax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</div><div class="line">	Xmin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</div><div class="line">	Ymax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;),</div><div class="line">	Ymin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;); <span class="comment">//計算最大值</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> xScale = d3.scale.linear() <span class="comment">//線性尺度</span></div><div class="line">			.domain([<span class="number">0</span>, Xmax]) <span class="comment">//輸入值</span></div><div class="line">			.range([padding , w - padding]) <span class="comment">//輸出值</span></div><div class="line">			.nice() <span class="comment">//取最適合數值</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> yScale = d3.scale.linear()</div><div class="line">			.domain([<span class="number">0</span>, Ymax])</div><div class="line">			.range([ h - padding ,padding])</div><div class="line">			.nice()</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">'.demo'</span>).append(<span class="string">'svg'</span>).attr(&#123;<span class="string">'width'</span>: w,<span class="string">'height'</span>: h&#125;)</div><div class="line"></div><div class="line"><span class="comment">//裁切區域</span></div><div class="line">svg.append(<span class="string">'clipPath'</span>) <span class="comment">//新增svg裁切區域</span></div><div class="line">	.attr(<span class="string">'id'</span>, <span class="string">'chart-area'</span>) <span class="comment">//定義id</span></div><div class="line">	.append(<span class="string">'rect'</span>)	<span class="comment">//再增加一個矩型</span></div><div class="line">	.attr(&#123;</div><div class="line">		<span class="string">'x'</span>: padding,</div><div class="line">		<span class="string">'y'</span>: padding,</div><div class="line">		<span class="string">'width'</span>: w - padding * <span class="number">2</span>,</div><div class="line">		<span class="string">'height'</span>: h - padding * <span class="number">2</span></div><div class="line">	&#125;)</div><div class="line"></div><div class="line">	svg.append(<span class="string">'g'</span>)</div><div class="line">		.attr(<span class="string">'clip-path'</span>, <span class="string">'url(#chart-area)'</span>) <span class="comment">//套用裁切區域</span></div><div class="line">		.selectAll(<span class="string">'circle'</span>)</div><div class="line">		.data(dataset).enter() <span class="comment">//輸入資料</span></div><div class="line">		.append(<span class="string">'circle'</span>) <span class="comment">//加入圓</span></div><div class="line">		.attr(&#123;</div><div class="line">			<span class="string">'cx'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> xScale(d[<span class="number">0</span>])&#125;, <span class="comment">//用x尺度算出cx位置</span></div><div class="line">			<span class="string">'cy'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> yScale(d[<span class="number">1</span>])&#125;, <span class="comment">//用y尺度算出cy位置</span></div><div class="line">			<span class="string">'r'</span>: <span class="string">'3px'</span></div><div class="line">		&#125;);</div><div class="line"></div><div class="line"><span class="comment">//Axis</span></div><div class="line"><span class="keyword">var</span> xAxis = d3.svg.axis().scale(xScale) <span class="comment">//用x尺度製作x軸線</span></div><div class="line">	.orient(<span class="string">"bottom"</span>) <span class="comment">//標示位置</span></div><div class="line">	.ticks(<span class="number">6</span>) <span class="comment">//尺度數量</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> yAxis = d3.svg.axis().scale(yScale)</div><div class="line">	.orient(<span class="string">"left"</span>) <span class="comment">//標示位置</span></div><div class="line">	.ticks(<span class="number">6</span>) <span class="comment">//尺度數量</span></div><div class="line"></div><div class="line">svg.append(<span class="string">'g'</span>).attr(<span class="string">'class'</span>, <span class="string">'x axis'</span>) <span class="comment">//定義尺度樣式</span></div><div class="line">	.attr(<span class="string">'transform'</span>, <span class="string">'translate(0, '</span>+ (h - padding) +<span class="string">')'</span>) <span class="comment">//移動到下方</span></div><div class="line">	.call(xAxis) <span class="comment">//套用x軸線</span></div><div class="line"></div><div class="line">svg.append(<span class="string">'g'</span>).attr(<span class="string">'class'</span>, <span class="string">'y axis'</span>)</div><div class="line">	.attr(<span class="string">'transform'</span>, <span class="string">'translate('</span>+ (padding) +<span class="string">')'</span>, <span class="number">0</span>)</div><div class="line">	.call(yAxis)</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">//轉場時的code，其實有許多是和原本相同</span></div><div class="line"><span class="comment">//如果有興趣的可以先全部讀完，再重新製作一次</span></div><div class="line">d3.select(<span class="string">'.btn'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">//每次點擊的時候</span></div><div class="line">	dataset = []; <span class="comment">//將陣列清空</span></div><div class="line">	<span class="keyword">var</span> xRange = <span class="built_in">Math</span>.random() * <span class="number">1000</span>;</div><div class="line">	<span class="keyword">var</span> yRange = <span class="built_in">Math</span>.random() * <span class="number">1000</span>;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; numDataPoints; i++)&#123;</div><div class="line">		<span class="keyword">var</span> num1 = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * xRange);</div><div class="line">		<span class="keyword">var</span> num2 = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * yRange);</div><div class="line">		dataset.push([num1,num2])</div><div class="line">	&#125; <span class="comment">//這段和前面一樣，YA</span></div><div class="line"></div><div class="line">	<span class="keyword">var</span> Xmax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</div><div class="line">		Xmin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</div><div class="line">		Ymax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;),</div><div class="line">		Ymin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;); <span class="comment">//一樣</span></div><div class="line"></div><div class="line">	<span class="keyword">var</span> xScale = d3.scale.linear() <span class="comment">//由於尺度有重新計算，所以必須再跑一次</span></div><div class="line">			.domain([<span class="number">0</span>, Xmax])</div><div class="line">			.range([padding , w - padding])</div><div class="line">			.nice() <span class="comment">//取整數</span></div><div class="line"></div><div class="line">	<span class="keyword">var</span> yScale = d3.scale.linear()</div><div class="line">			.domain([<span class="number">0</span>, Ymax])</div><div class="line">			.range([ h - padding ,padding])</div><div class="line">			.nice()</div><div class="line"></div><div class="line">	svg.selectAll(<span class="string">'circle'</span>).data(dataset)</div><div class="line">		<span class="comment">// .enter() //這不需要再加入</span></div><div class="line">		<span class="comment">// .append('circle') //這也不需要</span></div><div class="line">		.transition() <span class="comment">//套用動態效果</span></div><div class="line">		.duration(<span class="number">250</span>) <span class="comment">//動態持續時間</span></div><div class="line">		.each(<span class="string">'start'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123; <span class="comment">//過場開始執行</span></div><div class="line">			d3.select(<span class="keyword">this</span>)</div><div class="line">				.attr(<span class="string">'fill'</span>, <span class="string">'DeepPink'</span>)</div><div class="line">				.attr(<span class="string">'r'</span>, <span class="number">2</span>)</div><div class="line">		&#125;)</div><div class="line">		.transition() <span class="comment">//套用動態效果</span></div><div class="line">		.duration(<span class="number">1000</span>) <span class="comment">//第二段時間</span></div><div class="line">		.attr(&#123;</div><div class="line">			<span class="string">'cx'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> xScale(d[<span class="number">0</span>])&#125;,</div><div class="line">			<span class="string">'cy'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> yScale(d[<span class="number">1</span>])&#125;,</div><div class="line">			<span class="string">'r'</span>: <span class="string">'3px'</span>,</div><div class="line">			<span class="string">'fill'</span>: <span class="string">'black'</span>,</div><div class="line">			<span class="string">'r'</span>: <span class="number">5</span></div><div class="line">		&#125;);</div><div class="line"></div><div class="line">	<span class="comment">// 更新Axis</span></div><div class="line">	<span class="keyword">var</span> xAxis = d3.svg.axis().scale(xScale)</div><div class="line">		.orient(<span class="string">"bottom"</span>) <span class="comment">//標示位置</span></div><div class="line">		.ticks(<span class="number">6</span>) <span class="comment">//尺度數量</span></div><div class="line"></div><div class="line">	<span class="keyword">var</span> yAxis = d3.svg.axis().scale(yScale)</div><div class="line">		.orient(<span class="string">"left"</span>) <span class="comment">//標示位置</span></div><div class="line">		.ticks(<span class="number">6</span>) <span class="comment">//尺度數量</span></div><div class="line"></div><div class="line"></div><div class="line">	svg.select(<span class="string">'.x.axis'</span>)</div><div class="line">		.transition() <span class="comment">//動態尺度</span></div><div class="line">		.duration(<span class="number">1000</span>)</div><div class="line">		.call(xAxis);</div><div class="line"></div><div class="line">	svg.select(<span class="string">'.y.axis'</span>)</div><div class="line">		.transition()</div><div class="line">		.duration(<span class="number">1000</span>)</div><div class="line">		.call(yAxis);</div><div class="line"></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>如果圖表會產生變化，觀者可以感受到位移，可以感受到數值的變化，在繪製圖表的時候，適當的加入不僅可以更吸引人，而且閱讀性更佳(增加前後比較的資訊)，但如果過度的效果，就會讓人眼花撩亂。</p>
+
+<script>
+var w = 600,h = 400,padding = 30;
+
+var dataset = []; //產生空的陣列
+var numDataPoints = 100; //最大點的數量是100
+var xRange = Math.random() * 1000;
+var yRange = Math.random() * 1000; //隨機範圍最大值都是1000
+for (var i = 0; i < numDataPoints; i++){
+	var num1 = Math.floor(Math.random() * xRange);
+	var num2 = Math.floor(Math.random() * yRange);
+	dataset.push([num1,num2]) //運算出新的值，並加到dataset
+}
+
+
+var Xmax = d3.max(dataset, function(d){return d[0]}),
+	Xmin = d3.min(dataset, function(d){return d[0]}),
+	Ymax = d3.max(dataset, function(d){return d[1]}),
+	Ymin = d3.min(dataset, function(d){return d[1]}); //計算最大值
+
+var xScale = d3.scale.linear() //線性尺度
+			.domain([0, Xmax]) //輸入值
+			.range([padding , w - padding]) //輸出值
+			.nice() //取最適合數值
+
+var yScale = d3.scale.linear()
+			.domain([0, Ymax])
+			.range([ h - padding ,padding])
+			.nice()
+
+
+
+
+var svg = d3.select('.demo').append('svg').attr({'width': w,'height': h})
+
+//裁切區域
+svg.append('clipPath') //新增svg裁切區域
+	.attr('id', 'chart-area') //定義id
+	.append('rect')	//再增加一個矩型
+	.attr({
+		'x': padding,
+		'y': padding,
+		'width': w - padding * 2,
+		'height': h - padding * 2
+	})
+
+	svg.append('g')
+		.attr('clip-path', 'url(#chart-area)') //套用裁切區域
+		.selectAll('circle')
+		.data(dataset).enter() //輸入資料
+		.append('circle') //加入圓
+		.attr({
+			'cx': function(d){return xScale(d[0])}, //用x尺度算出cx位置
+			'cy': function(d){return yScale(d[1])}, //用y尺度算出cy位置
+			'r': '3px'
+		});
+
+//Axis
+var xAxis = d3.svg.axis().scale(xScale) //用x尺度製作x軸線
+	.orient("bottom") //標示位置
+	.ticks(6) //尺度數量
+
+var yAxis = d3.svg.axis().scale(yScale)
+	.orient("left") //標示位置
+	.ticks(6) //尺度數量
+
+
+svg.append('g').attr('class', 'x axis') //定義尺度樣式
+	.attr('transform', 'translate(0, '+ (h - padding) +')') //移動到下方
+	.call(xAxis) //套用x軸線
+
+
+svg.append('g').attr('class', 'y axis')
+	.attr('transform', 'translate('+ (padding) +')', 0)
+	.call(yAxis)
+
+
+
+
+//轉場時的code，其實有許多是和原本相同
+//如果有興趣的可以先全部讀完，再重新製作一次
+d3.select('.btn').on('click', function(){ //每次點擊的時候
+	dataset = []; //將陣列清空
+	var xRange = Math.random() * 1000;
+	var yRange = Math.random() * 1000;
+	for (var i = 0; i < numDataPoints; i++){
+		var num1 = Math.floor(Math.random() * xRange);
+		var num2 = Math.floor(Math.random() * yRange);
+		dataset.push([num1,num2])
+	} //這段和前面一樣，YA
+
+	var Xmax = d3.max(dataset, function(d){return d[0]}),
+		Xmin = d3.min(dataset, function(d){return d[0]}),
+		Ymax = d3.max(dataset, function(d){return d[1]}),
+		Ymin = d3.min(dataset, function(d){return d[1]}); //一樣
+
+	var xScale = d3.scale.linear() //由於尺度有重新計算，所以必須再跑一次
+			.domain([0, Xmax])
+			.range([padding , w - padding])
+			.nice() //取整數
+
+	var yScale = d3.scale.linear()
+			.domain([0, Ymax])
+			.range([ h - padding ,padding])
+			.nice()
+
+	svg.selectAll('circle').data(dataset)
+		// .enter() //這不需要再加入
+		// .append('circle') //這也不需要
+		.transition() //套用動態效果
+		.duration(250) //動態持續時間
+		.each('start', function(){ //過場開始執行
+			d3.select(this)
+				.attr('fill', 'DeepPink')
+				.attr('r', 2)
+		})
+		.transition() //套用動態效果
+		.duration(1000) //第二段時間
+		.attr({
+			'cx': function(d){return xScale(d[0])},
+			'cy': function(d){return yScale(d[1])},
+			'r': '3px',
+			'fill': 'black',
+			'r': 5
+		});
+
+	// 更新Axis
+	var xAxis = d3.svg.axis().scale(xScale)
+		.orient("bottom") //標示位置
+		.ticks(6) //尺度數量
+
+	var yAxis = d3.svg.axis().scale(yScale)
+		.orient("left") //標示位置
+		.ticks(6) //尺度數量
+
+
+	svg.select('.x.axis')
+		.transition() //動態尺度
+		.duration(1000)
+		.call(xAxis);
+
+	svg.select('.y.axis')
+		.transition()
+		.duration(1000)
+		.call(yAxis);
+
+});
+</script>
+
+<style>
+.axis path, .axis line{
+	fill: none;
+	stroke: black;
+	shape-rendering: cirspEdges;
+}
+.axis text{
+	font-size: 11px;
+}
+</style>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ironman/" rel="tag">#ironman</a>
+          
+            <a href="/tags/d3js/" rel="tag">#d3js</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/d3js/2014/10/19/Ironman-30-days-20/" rel="next" title="D3.js 超粘的Voronoi Diagram繪圖">
+                <i class="fa fa-chevron-left"></i> D3.js 超粘的Voronoi Diagram繪圖
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/10/21/Ironman-30-days-22/" rel="prev" title="D3.js 資料數量增減">
+                D3.js 資料數量增減 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Transition"><span class="nav-number">1.</span> <span class="nav-text">Transition</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/d3js/2014/10/20/Ironman-30-days-21/';
+      var disqus_title = "D3.js Transition動態效果";
+      var disqus_url = 'http://wcc723.github.io//d3js/2014/10/20/Ironman-30-days-21/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

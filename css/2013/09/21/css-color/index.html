@@ -1,0 +1,1009 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+<link href="/demoFile/css/2013-autumn.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  <meta name="keywords" content="sass,css," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="在過去我們只要使用色碼來表示顏色，色碼是用三組十六進制數位表示，每位元組從00到FF，相當十進位數位從0到255...，而現在我們有了新的屬性alpha(透明度)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS沒有極限 - CSS3的色彩">
+<meta property="og:url" content="http://wcc723.github.io/CSS/2013/09/21/css-color/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="在過去我們只要使用色碼來表示顏色，色碼是用三組十六進制數位表示，每位元組從00到FF，相當十進位數位從0到255...，而現在我們有了新的屬性alpha(透明度)。">
+<meta property="og:image" content="http://wcc723.github.io/images/200px-AdditiveColorMixiing.svg.png">
+<meta property="og:image" content="http://wcc723.github.io/images/2013-09-20_174951.jpg">
+<meta property="og:image" content="http://wcc723.github.io/images/Triangulo_HSV.png">
+<meta property="og:image" content="http://wcc723.github.io/images/HSL_HSV_cylinder_color_solid_comparison.png">
+<meta property="og:updated_time" content="2016-10-12T03:37:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS沒有極限 - CSS3的色彩">
+<meta name="twitter:description" content="在過去我們只要使用色碼來表示顏色，色碼是用三組十六進制數位表示，每位元組從00到FF，相當十進位數位從0到255...，而現在我們有了新的屬性alpha(透明度)。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/200px-AdditiveColorMixiing.svg.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/CSS/2013/09/21/css-color/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> CSS沒有極限 - CSS3的色彩 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                CSS沒有極限 - CSS3的色彩
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2013-09-21T00:00:00+08:00" content="2013-09-21">
+              2013-09-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/CSS/" itemprop="url" rel="index">
+                    <span itemprop="name">CSS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/CSS/2013/09/21/css-color/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/CSS/2013/09/21/css-color/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+
+      
+        
+
+
+<p>在過去我們只要使用色碼來表示顏色，色碼是用三組十六進制數位表示，每位元組從00到FF，相當十進位數位從0到255...，而現在我們有了新的屬性alpha(透明度)。</p>
+<a id="more"></a>
+<h3>RGBA</h3>
+<p>RGB在色彩學上定義為色光三原色，分為紅、綠、藍三色，而其混色模式為加法混色，在三種顏色相加後會變成白色；而另一種混色模式為印刷色料，是屬於減法混色，由CMYK四色組成，顏色在混和後會變成黑色。三原色的呈現主要適用於電視及電腦的顯示器，因此網頁也是利用RGB三原色。</p>
+<img src="/images/200px-AdditiveColorMixiing.svg.png" alt="">
+<p><em>圖片來源 <a href="http://zh.wikipedia.org/wiki/RGB_%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4" target="_blank" rel="external">http://zh.wikipedia.org/wiki/RGB_%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4</a></em></p>
+
+<p>RGB相信對於一般視覺設計師來說非常的熟悉，是開啟繪圖軟體後經常會使用的色彩模式之一，其數值為0~255之間，三種數值如果都為255會顯示白色；如果三種顏色都為0則會是黑色。</p>
+<img src="/images/2013-09-20_174951.jpg" alt="">
+<p>圖片來源 Illustrator</p>
+<p>在CSS3中新增了一個新的屬性<code>alpha</code>，alpha一般用作不透明度參數，數值從0~1之間，0是透明，而1代表不透明。</p>
+<div class="demo d0921">
+	<div class="rgba1"></div>
+	<div class="rgba2"></div>
+	<div class="rgba3"></div>
+	<div class="rgba4"></div>
+	<div class="rgba5"></div>
+</div>
+<pre>
+/css
+.rgba1 {
+  background: rgba(232, 12, 122, 0.2);
+}
+.rgba2 {
+  background: rgba(232, 12, 122, 0.4);
+}
+.rgba3 {
+  background: rgba(232, 12, 122, 0.6);
+}
+.rgba4 {
+  background: rgba(232, 12, 122, 0.8);
+}
+.rgba5 {
+  background: #e80c7a;
+}
+</pre>
+<p>編寫方式為<code>屬性：rgba(R值,G值,B值,alpha值)。</code></p>
+
+
+
+
+<h3>HSLA</h3>
+<p>HSL是由色相(H)、飽和度(S)、亮度(L)組成，飽和度以及明度的值為0~100%，而色相是利用色彩學的色相環概念(如下圖的H)，所以值是由0~360，他所表現的也是一個圓環上的各個顏色。</p>
+<img src="/images/Triangulo_HSV.png" alt="">
+<img src="/images/HSL_HSV_cylinder_color_solid_comparison.png" alt="">
+<p><em>圖片來源 <a href="http://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4" target="_blank" rel="external">http://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4</a></em></p>
+
+<p>如上圖，和HSL類似的色彩模式為HSV，主要差異為明度(V)換成了亮度(L)，而CSS3所採用的色彩模式為HSL，兩者比較可以參考 <a href="http://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4" target="_blank" rel="external">http://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV%E8%89%B2%E5%BD%A9%E7%A9%BA%E9%97%B4</a>。</p>
+<div class="demo d0921">
+	<p class="text-center">僅調整色相(H)的效果</p>
+	<div class="h1"></div>
+	<div class="h2"></div>
+	<div class="h3"></div>
+	<div class="h4"></div>
+	<div class="h5"></div>
+	<div class="h6"></div>
+</div>
+<pre>
+//利用sass調整其色相(H)的數值
+@for $i from 1 through 6 //分為6階
+	.h#{$i} //class h1~h6
+		background: hsla(60 * $i,100%,50%,1) 
+		//色相(H)60為1階，乘以6階，飽和度100，明度50，alpha為1(不透明)
+</pre>
+<div class="demo d0921">
+	<p class="text-center">僅調整飽和度(S)的效果</p>
+	<div class="s1"></div>
+	<div class="s2"></div>
+	<div class="s3"></div>
+	<div class="s4"></div>
+	<div class="s5"></div>
+	<div class="s6"></div>
+</div>
+<pre>
+//利用sass調整其飽和度(S)的數值
+@for $i from 1 through 6
+	.s#{$i}
+		background: hsla(120,(20% * $i - 20),50%,1)
+		//色相(H)為120，飽和度20為1階分為6階，明度50，alpha為1(不透明)
+</pre>
+<div class="demo d0921">
+	<p class="text-center">僅調整明度(L)的效果</p>
+	<div class="l1"></div>
+	<div class="l2"></div>
+	<div class="l3"></div>
+	<div class="l4"></div>
+	<div class="l5"></div>
+	<div class="l6"></div>
+</div>
+<pre>
+//利用sass調整其飽和度(S)的數值
+@for $i from 1 through 6
+	.l#{$i}
+		background: hsla(120,100%,(20% * $i - 20),1)
+		//色相(H)為120，飽和度100，明度20為1階分為6階，alpha為1(不透明)
+</pre>
+<p>Hsla編寫方式為<code>屬性：hsla(h值,s值,l值,alpha值)。</code></p>
+
+<h3>Kuler</h3>
+<p><a href="https://kuler.adobe.com" target="_blank" rel="external">https://kuler.adobe.com</a></p>
+<p>這是Adobe公司所出的顏色工具，不管事RGB或是色碼都可方便轉換及調整。</p>
+
+
+
+<h3>支援程度</h3>
+<p>主要會有支援問題的是alpha屬性，所以在使用時須考慮替代方案，如先設定好沒有alpha的色彩，在設定有alpha屬性的色彩。</p>
+<table class="atableLight"><tbody>
+<tr>
+<th>Feature</th> <th>Chrome</th> <th>Firefox (Gecko)</th> <th>Internet Explorer</th> <th>Opera</th> <th>Safari (WebKit)</th> </tr>
+<tr>
+<td>keywords colors</td> <td>1.0</td> <td>1.0 (1.0)</td> <td>3.0 <sup><a href="#1">[*]</a></sup>
+</td> <td>3.5</td> <td>1.0 (85)</td> </tr>
+<tr>
+<td><code>#RRGGBB | #RGB</code></td> <td>1.0</td> <td>1.0 (1.0)</td> <td>3.0</td> <td>3.5</td> <td>1.0 (85)</td> </tr>
+<tr>
+<td><code>rgb()</code></td> <td>1.0</td> <td>1.0 (1.0)</td> <td>4.0</td> <td>3.5</td> <td>1.0 (85)</td> </tr>
+<tr>
+<td><code>hsl()</code></td> <td>1.0</td> <td>1.0 (1.5)</td> <td>9.0</td> <td>9.5</td> <td>3.1 (525)</td> </tr>
+<tr>
+<td><code>rgba()</code></td> <td>1.0</td> <td>3.0 (1.9)</td> <td>9.0</td> <td>10.0</td> <td>3.1 (525)</td> </tr>
+<tr>
+<td><code>hsla()</code></td> <td>1.0</td> <td>3.0 (1.9)</td> <td>9.0</td> <td>10.0</td> <td>3.1 (525)</td> </tr>
+<tr>
+<td><code>currentColor</code></td> <td>1.0</td> <td>1.5 (1.8)</td> <td>9.0</td> <td>9.5</td> <td>4.0 (528)</td> </tr>
+<tr>
+<td><code>transparent</code></td> <td>1.0</td> <td>3.0 (1.9)</td> <td>9.0 <sup><a href="#2">[**]</a></sup>
+</td> <td>10.0</td> <td>3.1 (525)</td> </tr>
+</tbody></table>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sass/" rel="tag">#sass</a>
+          
+            <a href="/tags/css/" rel="tag">#css</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/CSS/2013/09/20/compass-2/" rel="next" title="CSS沒有極限 - Sass 與 Compass(2)">
+                <i class="fa fa-chevron-left"></i> CSS沒有極限 - Sass 與 Compass(2)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/CSS/2013/09/22/css-pseudo-element/" rel="prev" title="CSS沒有極限 - 別忘了偽元素">
+                CSS沒有極限 - 別忘了偽元素 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">RGBA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">HSLA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">Kuler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">支援程度</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/CSS/2013/09/21/css-color/';
+      var disqus_title = "CSS沒有極限 - CSS3的色彩";
+      var disqus_url = 'http://wcc723.github.io//CSS/2013/09/21/css-color/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

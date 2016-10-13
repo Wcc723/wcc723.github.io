@@ -1,0 +1,1006 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+<link href="/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  <meta name="keywords" content="ruby,rails," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="最近要學的技術有兩個，一個是D3.js，另一個是Rails，目前是參考Xdite所提供的Rails 101，安裝過程中有發生些小問題，所以特別記錄起來，以免之後要在裝的時候忘記…。
+Rails不是要打算精通後端，而是希望了解，以便往後再配合後端時能更有效率的處理問題。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rails 環境建設">
+<meta property="og:url" content="http://wcc723.github.io/rails/2014/06/22/rails-101-install/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="最近要學的技術有兩個，一個是D3.js，另一個是Rails，目前是參考Xdite所提供的Rails 101，安裝過程中有發生些小問題，所以特別記錄起來，以免之後要在裝的時候忘記…。
+Rails不是要打算精通後端，而是希望了解，以便往後再配合後端時能更有效率的處理問題。">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails00.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails01.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails02.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails03.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails04.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails05.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails06.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails07.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails08.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails10.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails11.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails12.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails13.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails14.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails14.5.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails15.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails16.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails17.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails18.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails19.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails21.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails22.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails23.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails24.png">
+<meta property="og:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails25.png">
+<meta property="og:updated_time" content="2016-10-12T06:07:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Rails 環境建設">
+<meta name="twitter:description" content="最近要學的技術有兩個，一個是D3.js，另一個是Rails，目前是參考Xdite所提供的Rails 101，安裝過程中有發生些小問題，所以特別記錄起來，以免之後要在裝的時候忘記…。
+Rails不是要打算精通後端，而是希望了解，以便往後再配合後端時能更有效率的處理問題。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/rails_base/rails_install/screen_shot_rails00.png">
+
+  <meta property="og:image" content="/images/screen_shot_rails101_0622.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/rails/2014/06/22/rails-101-install/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> Rails 環境建設 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Rails 環境建設
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-06-22T00:00:00+08:00" content="2014-06-22">
+              2014-06-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/rails/" itemprop="url" rel="index">
+                    <span itemprop="name">rails</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/rails/2014/06/22/rails-101-install/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/rails/2014/06/22/rails-101-install/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/screen_shot_rails101_0622.png" rel="gallery_ciu6ikn7d00366ef013wv85h3"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/screen_shot_rails101_0622.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>最近要學的技術有兩個，一個是D3.js，另一個是Rails，目前是參考Xdite所提供的Rails 101，安裝過程中有發生些小問題，所以特別記錄起來，以免之後要在裝的時候忘記…。</p>
+<p>Rails不是要打算精通後端，而是希望了解，以便往後再配合後端時能更有效率的處理問題。</p>
+<a id="more"></a>
+<h2 id="安裝環境"><a href="#安裝環境" class="headerlink" title="安裝環境"></a>安裝環境</h2><ul>
+<li>參考的書籍：Rails 101 <a href="https://leanpub.com/rails-101" target="_blank" rel="external">https://leanpub.com/rails-101</a></li>
+<li>硬體：Macbook pro retina 2013</li>
+<li>系統版本：OSX 10.9.3</li>
+</ul>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails00.png" alt=""></p>
+<h2 id="安裝Homebrew"><a href="#安裝Homebrew" class="headerlink" title="安裝Homebrew"></a>安裝Homebrew</h2><p>在PDF書上第一個要安裝的，會想要記錄也是以下這原因…。</p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails01.png" alt=""></p>
+<p>以上的圖是書上的範例，直接複製會得到以下的結果…，沒有空白鍵啊!!!重點是我找不到原因還卡很久…</p>
+<pre><code>ruby-e&quot;$(curl-fsSLhttps://raw.github.com/Homebrew/homebrew/go/install)&quot;
+</code></pre><p>所以沒意外的話應該是以下指令</p>
+<pre><code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails02.png" alt=""><br><img src="/images/rails_base/rails_install/screen_shot_rails03.png" alt=""></p>
+<p>想說我有裝git了，跳過<code>brew install git</code>，直接升級。</p>
+<pre><code>brew update
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails04.png" alt=""></p>
+<pre><code>brew tap homebrew/dupes
+</code></pre><p><code>brew install apple-gcc42</code>怎好像沒截到圖<br>…。</p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails05.png" alt=""></p>
+<h2 id="安裝-XQuartz"><a href="#安裝-XQuartz" class="headerlink" title="安裝 XQuartz"></a>安裝 XQuartz</h2><p>安裝XQuartz。</p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails06.png" alt=""></p>
+<p>安裝完後登出在登入。</p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails07.png" alt=""></p>
+<h2 id="安裝-ImageMagick-MySQL"><a href="#安裝-ImageMagick-MySQL" class="headerlink" title="安裝 ImageMagick / MySQL"></a>安裝 ImageMagick / MySQL</h2><p>別懷疑，這邊我完全不懂，只知道MySQL是資料庫。</p>
+<pre><code>brew install imagemagick
+</code></pre><p><em>透過brew安裝時，圖示都變成啤酒了…</em></p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails08.png" alt=""><br><!-- ![](/images/rails_base/rails_install/screen_shot_rails09.png) --></p>
+<pre><code>Installing mysql
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails10.png" alt=""></p>
+<pre><code>unset TMDIR
+</code></pre><p>這個用了沒感覺(跳過…)</p>
+<pre><code>mysql_install_db --verbose --user=`whoami` --basedir=&quot;$(brew--prefixmysql)&quot; -\
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails11.png" alt=""></p>
+<pre><code>sudo mysqladmin -u root password &apos;123456&apos;
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails12.png" alt=""></p>
+<pre><code>mkdir -p ~/Library/LaunchAgents
+</code></pre><p>這個用了沒感覺(跳過…)</p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails13.png" alt=""></p>
+<pre><code>find /usr/local/Cellar/mysql/ -name &quot;homebrew.mxcl.mysql.plist&quot; -exec cp {} ~/Library/LaunchAgents/ \;
+
+
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails14.png" alt=""></p>
+<h2 id="安裝-RVM"><a href="#安裝-RVM" class="headerlink" title="安裝 RVM"></a>安裝 RVM</h2><p>透過rvm就可以執行特定版本的ruby及gems，rails的版本演進相當快，所以必須透過RVM來切換不同的rails版本。</p>
+<pre><code>bash -s stable &lt; &lt;(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails14.5.png" alt=""></p>
+<pre><code>. ~/.profile
+$source ~/.profile
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails15.png" alt=""></p>
+<h2 id="安裝-Ruby-2-0"><a href="#安裝-Ruby-2-0" class="headerlink" title="安裝 Ruby 2.0"></a>安裝 Ruby 2.0</h2><pre><code>brew install libyaml
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails16.png" alt=""></p>
+<pre><code>rvm pkg install openssl
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails17.png" alt=""></p>
+<pre><code>rvm install 2.0.0
+--with-openssl-dir=$HOME/.rvm/usr
+--verify-downloads 1
+</code></pre><p>很順利，忘記截圖…</p>
+<p><code>rvm use 2.0.0</code>，這段我出了點問題，於是上網找了其他解法，依序輸入以下幾行。</p>
+<pre><code>source ~/.rvm/scripts/rvm
+type rvm | head -n 1
+rvm use 2.0.0
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails18.png" alt=""></p>
+<h2 id="安裝必要-Ruby-gems"><a href="#安裝必要-Ruby-gems" class="headerlink" title="安裝必要 Ruby gems"></a>安裝必要 Ruby gems</h2><pre><code>gem install rails --version 4.0.0
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails19.png" alt=""><br><!-- ![](/images/rails_base/rails_install/screen_shot_rails20.png) --></p>
+<pre><code>gem install mysql2
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails21.png" alt=""></p>
+<pre><code>gem install capistrano
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails22.png" alt=""></p>
+<pre><code>gem install capistrano-ext
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails23.png" alt=""></p>
+<h2 id="設定-HTTP-Server-使用-Pow"><a href="#設定-HTTP-Server-使用-Pow" class="headerlink" title="設定 HTTP Server (使用 Pow)"></a>設定 HTTP Server (使用 Pow)</h2><p>簡單來說，就是看<code>localhost:3000</code>不爽，要換掉的意思!?</p>
+<pre><code>curl get.pow.cx | sh
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails24.png" alt=""></p>
+<pre><code>gem install powder
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails25.png" alt=""></p>
+<p>Pow用法，方法一</p>
+<blockquote>
+<p>   cd ~/.pow/<br>   ln -s ~/projects/wiki</p>
+</blockquote>
+<p>方法二</p>
+<blockquote>
+<p>   powder link</p>
+</blockquote>
+<p>Rails安裝環境相當複雜，如果沒有記錄，到時候也是會卡在相同的地方…。</p>
+<p>安裝環境 全劇終…</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ruby/" rel="tag">#ruby</a>
+          
+            <a href="/tags/rails/" rel="tag">#rails</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/svg/2014/06/15/svg-css-stroke-animation/" rel="next" title="CSS + SVG stroke 動態描繪">
+                <i class="fa fa-chevron-left"></i> CSS + SVG stroke 動態描繪
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3/2014/06/24/d3-js-intro/" rel="prev" title="D3 Js 介紹">
+                D3 Js 介紹 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝環境"><span class="nav-number">1.</span> <span class="nav-text">安裝環境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝Homebrew"><span class="nav-number">2.</span> <span class="nav-text">安裝Homebrew</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝-XQuartz"><span class="nav-number">3.</span> <span class="nav-text">安裝 XQuartz</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝-ImageMagick-MySQL"><span class="nav-number">4.</span> <span class="nav-text">安裝 ImageMagick / MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝-RVM"><span class="nav-number">5.</span> <span class="nav-text">安裝 RVM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝-Ruby-2-0"><span class="nav-number">6.</span> <span class="nav-text">安裝 Ruby 2.0</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安裝必要-Ruby-gems"><span class="nav-number">7.</span> <span class="nav-text">安裝必要 Ruby gems</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#設定-HTTP-Server-使用-Pow"><span class="nav-number">8.</span> <span class="nav-text">設定 HTTP Server (使用 Pow)</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/rails/2014/06/22/rails-101-install/';
+      var disqus_title = "Rails 環境建設";
+      var disqus_url = 'http://wcc723.github.io//rails/2014/06/22/rails-101-install/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

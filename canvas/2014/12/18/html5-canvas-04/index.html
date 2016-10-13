@@ -1,0 +1,1052 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+<link href="/demoFile/css/2013-autumn.css" rel="stylesheet" type="text/css" />
+
+
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="現在有些音樂專輯選單做得很豐富，其中一種背景色會隨著專輯色改變，我剛好想到以前有做一個CSS專輯選單，如果結合Canvas似乎就能達到差不多的效果，所以就來試試看。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="專輯封面顏色作為背景色(平均色)">
+<meta property="og:url" content="http://wcc723.github.io/canvas/2014/12/18/html5-canvas-04/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="現在有些音樂專輯選單做得很豐富，其中一種背景色會隨著專輯色改變，我剛好想到以前有做一個CSS專輯選單，如果結合Canvas似乎就能達到差不多的效果，所以就來試試看。">
+<meta property="og:image" content="http://wcc723.github.io/images/mayday/001.jpg">
+<meta property="og:image" content="http://wcc723.github.io/images/mayday/002.jpg">
+<meta property="og:image" content="http://wcc723.github.io/images/mayday/003.jpg">
+<meta property="og:image" content="http://wcc723.github.io/images/mayday/004.jpg">
+<meta property="og:image" content="http://wcc723.github.io/images/mayday/005.jpg">
+<meta property="og:image" content="http://wcc723.github.io/images/mayday/006.jpg">
+<meta property="og:updated_time" content="2016-10-13T03:49:13.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="專輯封面顏色作為背景色(平均色)">
+<meta name="twitter:description" content="現在有些音樂專輯選單做得很豐富，其中一種背景色會隨著專輯色改變，我剛好想到以前有做一個CSS專輯選單，如果結合Canvas似乎就能達到差不多的效果，所以就來試試看。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/mayday/001.jpg">
+
+  <meta property="og:image" content="/images/2014-12-18.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/canvas/2014/12/18/html5-canvas-04/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 專輯封面顏色作為背景色(平均色) | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                專輯封面顏色作為背景色(平均色)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-12-18T00:00:00+08:00" content="2014-12-18">
+              2014-12-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/canvas/" itemprop="url" rel="index">
+                    <span itemprop="name">canvas</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/canvas/2014/12/18/html5-canvas-04/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/canvas/2014/12/18/html5-canvas-04/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014-12-18.png" rel="gallery_ciu7s0g49001ul7f0xp4cxksx"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014-12-18.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>現在有些音樂專輯選單做得很豐富，其中一種背景色會隨著專輯色改變，我剛好想到以前有做一個CSS專輯選單，如果結合Canvas似乎就能達到差不多的效果，所以就來試試看。</p>
+<a id="more"></a>
+<h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p><a href="/css/2013/10/12/css-album-list/">之前的CSS範例</a></p>
+<p>去年在練習CSS時就有寫一篇文章，是把CD封面作成3D的，這次就再拿這個範例做實驗，結果如下：</p>
+
+<div class="d1012 demo">
+  <div id="album" class="complete padding">
+    <div class="cover">
+      <ul class="coverflow-list">
+        <input type="radio" name="cover-item" id="cover-a">
+        <li class="coverflow-item">
+          <label for="cover-a">
+            <figure class="album-cover">
+              <img src="/images/mayday/001.jpg" alt="">
+            </figure>
+             <figcaption class="album-name">為愛而生</figcaption>
+          </label>
+        </li>
+
+        <input type="radio" name="cover-item" id="cover-b">
+        <li class="coverflow-item">
+          <label for="cover-b">
+            <figure class="album-cover">
+              <img src="/images/mayday/002.jpg" alt="">
+            </figure>
+             <figcaption class="album-name">我們是五月天</figcaption>
+          </label>
+        </li>
+
+        <input type="radio" name="cover-item" id="cover-c">
+        <li class="coverflow-item">
+          <label for="cover-c">
+            <figure class="album-cover">
+              <img src="/images/mayday/003.jpg" alt="">
+            </figure>
+             <figcaption class="album-name">神的孩子都在跳舞</figcaption>
+          </label>
+        </li>
+
+        <input type="radio" name="cover-item" id="cover-d">
+        <li class="coverflow-item">
+          <label for="cover-d">
+            <figure class="album-cover">
+              <img src="/images/mayday/004.jpg" alt="">
+            </figure>
+             <figcaption class="album-name">後青春期的詩</figcaption>
+          </label>
+        </li>
+
+        <input type="radio" name="cover-item" id="cover-e">
+        <li class="coverflow-item">
+          <label for="cover-e">
+            <figure class="album-cover">
+              <img src="/images/mayday/005.jpg" alt="">
+            </figure>
+             <figcaption class="album-name">人生海海</figcaption>
+          </label>
+        </li>
+
+        <input type="radio" name="cover-item" id="cover-f">
+        <li class="coverflow-item">
+          <label for="cover-f">
+            <figure class="album-cover">
+              <img src="/images/mayday/006.jpg" alt="">
+            </figure>
+             <figcaption class="album-name">神的孩子都在跳舞</figcaption>
+          </label>
+        </li>
+      </ul>
+    </div>
+    <div class="controllor">
+      <label for="cover-a">1</label>
+      <label for="cover-b">2</label>
+      <label for="cover-c">3</label>
+      <label for="cover-d">4</label>
+      <label for="cover-e">5</label>
+      <label for="cover-f">6</label>
+    </div>
+  </div>
+</div>
+
+<p>背景的顏色是使用Canvas來抓顏色資料，所以他還是必須有canvas元素，這也是可以隱藏的。</p>
+
+<div class="d1012 demo">
+  <canvas id="canvas">
+  </canvas>
+</div>
+
+<h2 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h2><p>這一個實作的重點在於RGB顏色的平均，上一篇有介紹怎麼取得RGB的顏色，這次其實只要將RGB的顏色平均後寫入背景色就算完成了。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">$(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> _canvas = <span class="built_in">document</span>.getElementById(<span class="string">'canvas'</span>);</div><div class="line">  <span class="keyword">var</span> ctx = _canvas.getContext(<span class="string">'2d'</span>);</div><div class="line"></div><div class="line">  $(<span class="string">'#album input'</span>).on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">//取得選擇的專輯封面</span></div><div class="line">    <span class="keyword">if</span> ($(<span class="keyword">this</span>).is(<span class="string">':checked'</span>))&#123;</div><div class="line">      imgPath = $(<span class="keyword">this</span>).next(<span class="string">'li'</span>).find(<span class="string">'img'</span>)</div><div class="line">        .attr(<span class="string">'src'</span>);</div><div class="line">      getImg(imgPath);</div><div class="line">    &#125;</div><div class="line">  &#125;);</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getImg</span>(<span class="params">imgPath</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> img = <span class="keyword">new</span> Image();</div><div class="line">    img.src = imgPath;</div><div class="line">    <span class="comment">//取得圖片的路徑，並且讀取後取得長寬資料</span></div><div class="line">    img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;   </div><div class="line">      ctx.canvas.width = img.width;</div><div class="line">      ctx.canvas.height = img.height ;</div><div class="line">      draw(<span class="keyword">this</span>,<span class="number">0</span>,<span class="number">0</span>);</div><div class="line">      <span class="comment">//draw function</span></div><div class="line">    &#125;;</div><div class="line"></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">draw</span>(<span class="params">imgObj,w,h</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> x = <span class="number">0</span>, y = <span class="number">0</span>;</div><div class="line">    <span class="keyword">var</span> r=[],g=[],b=[];<span class="comment">//準備空的R,G,B陣列</span></div><div class="line">    ctx.drawImage(imgObj,x,y);</div><div class="line">    <span class="comment">//將圖片繪製在canvas上</span></div><div class="line">    <span class="keyword">var</span> imgData = ctx.getImageData(x, y, imgObj.width, imgObj.height);</div><div class="line"></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; imgData.data.length; i += <span class="number">4</span>) &#123;</div><div class="line">        <span class="comment">//製作原始R,G,B陣列</span></div><div class="line">        <span class="comment">// red</span></div><div class="line">        r.push(imgData.data[i]);</div><div class="line">        <span class="comment">// green</span></div><div class="line">        g.push(imgData.data[i + <span class="number">1</span>]);</div><div class="line">        <span class="comment">// blue</span></div><div class="line">        b.push(imgData.data[i + <span class="number">2</span>]);</div><div class="line">    &#125;</div><div class="line">    rgb = avg(r) + <span class="string">','</span> + avg(g) + <span class="string">','</span> + avg(b); <span class="comment">//平均R,G,B顏色</span></div><div class="line">    $(<span class="string">'#album'</span>).css(<span class="string">'background-color'</span>,<span class="string">'rgba('</span>+rgb+<span class="string">',1)'</span>); <span class="comment">//將顏色寫入背景</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">avg</span>(<span class="params">arguments</span>) </span>&#123;</div><div class="line">    <span class="comment">//取得平均值，並且轉為整數</span></div><div class="line">    <span class="keyword">var</span> sum = <span class="number">0</span>;</div><div class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>, j = <span class="built_in">arguments</span>.length; i &lt; j; i++) &#123;</div><div class="line">        sum += <span class="built_in">arguments</span>[i];</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.floor(sum / <span class="built_in">arguments</span>.length);</div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h2 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h2><p>不過我相信實作並不是這麼容易做出來的，還會去分析顏色所佔的面積，利用較大面積色彩作為背景色，如果是這樣平均的色彩容易髒髒的，在畫面上不一定好看。並且還要去計算所適合的文字色彩，這麼說一說，似乎還有很多可以研究…。</p>
+
+<style>
+  .padding{
+    padding: 20px;
+  }
+</style>
+
+<script>
+
+$(document).ready(function(){
+  var _canvas = document.getElementById('canvas');
+  var ctx = _canvas.getContext('2d');
+
+  $('#album input').on('change', function(){
+    //取得選擇的專輯封面
+    if ($(this).is(':checked')){
+      imgPath = $(this).next('li').find('img')
+        .attr('src');
+      getImg(imgPath);
+    }
+  });
+
+  function getImg(imgPath){
+    var img = new Image();
+    img.src = imgPath;
+    //取得圖片的路徑，並且讀取後取得長寬資料
+    img.onload = function(){   
+      ctx.canvas.width = img.width;
+      ctx.canvas.height = img.height ;
+      draw(this,0,0);
+      //draw function
+    };
+
+  }
+
+  function draw(imgObj,w,h){
+    var x = 0, y = 0;
+    var r=[],g=[],b=[];//準備空的R,G,B陣列
+    ctx.drawImage(imgObj,x,y);
+    //將圖片繪製在canvas上
+    var imgData = ctx.getImageData(x, y, imgObj.width, imgObj.height);
+
+    for(var i = 0; i < imgData.data.length; i += 4) {
+        //製作原始R,G,B陣列
+        // red
+        r.push(imgData.data[i]);
+        // green
+        g.push(imgData.data[i + 1]);
+        // blue
+        b.push(imgData.data[i + 2]);
+    }
+    rgb = avg(r) + ',' + avg(g) + ',' + avg(b); //平均R,G,B顏色
+    $('#album').css('background-color','rgba('+rgb+',1)'); //將顏色寫入背景
+  }
+
+  function avg(arguments) {
+    //取得平均值，並且轉為整數
+    var sum = 0;
+    for (var i = 0, j = arguments.length; i < j; i++) {
+        sum += arguments[i];
+    }
+    return Math.floor(sum / arguments.length);
+  }
+});
+
+</script>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag">#javascript</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/canvas/2014/12/09/html5-canvas-03/" rel="next" title="試試看Canvas (3)，Canvas 小畫家">
+                <i class="fa fa-chevron-left"></i> 試試看Canvas (3)，Canvas 小畫家
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/project/2014/12/31/open-project-for-kh/" rel="prev" title="參與開源專案">
+                參與開源專案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#範例"><span class="nav-number">1.</span> <span class="nav-text">範例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#實作"><span class="nav-number">2.</span> <span class="nav-text">實作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#後記"><span class="nav-number">3.</span> <span class="nav-text">後記</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/canvas/2014/12/18/html5-canvas-04/';
+      var disqus_title = "專輯封面顏色作為背景色(平均色)";
+      var disqus_url = 'http://wcc723.github.io//canvas/2014/12/18/html5-canvas-04/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

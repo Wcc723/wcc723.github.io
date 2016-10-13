@@ -1,0 +1,971 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="ironman,d3js," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="上一篇其實就已經介紹了D3.js相當重要的data()以及enter()，今天要介紹的也是很重要，就是(Scale)尺度。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="D3.js Scale 尺度">
+<meta property="og:url" content="http://wcc723.github.io/d3js/2014/10/09/Ironman-30-days-10/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="上一篇其實就已經介紹了D3.js相當重要的data()以及enter()，今天要介紹的也是很重要，就是(Scale)尺度。">
+<meta property="og:image" content="http://wcc723.github.io/images/2014ironman/day09_01.png">
+<meta property="og:updated_time" content="2016-10-13T03:08:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="D3.js Scale 尺度">
+<meta name="twitter:description" content="上一篇其實就已經介紹了D3.js相當重要的data()以及enter()，今天要介紹的也是很重要，就是(Scale)尺度。">
+<meta name="twitter:image" content="http://wcc723.github.io/images/2014ironman/day09_01.png">
+
+  <meta property="og:image" content="/images/2014ironman/day09_01.png"/>
+  
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://wcc723.github.io/d3js/2014/10/09/Ironman-30-days-10/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.3.10/d3.min.js"></script>
+
+
+  <title> D3.js Scale 尺度 | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                D3.js Scale 尺度
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2014-10-09T00:00:00+08:00" content="2014-10-09">
+              2014-10-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/d3js/" itemprop="url" rel="index">
+                    <span itemprop="name">d3js</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/d3js/2014/10/09/Ironman-30-days-10/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/d3js/2014/10/09/Ironman-30-days-10/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2014ironman/day09_01.png" rel="gallery_ciu7nsz52000rynf0z3yzetgx"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2014ironman/day09_01.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>上一篇其實就已經介紹了D3.js相當重要的<code>data()</code>以及<code>enter()</code>，今天要介紹的也是很重要，就是(Scale)尺度。</p>
+<a id="more"></a>
+<h2 id="尺度"><a href="#尺度" class="headerlink" title="尺度"></a>尺度</h2><p>尺度是一個D3的函式可以設定輸入以及輸出的範圍，就以下方的圖來說，如果來源的資料範圍是10~990，目標輸出的範圍必須限制在0~100，透過尺度函式後，所有的資料就會依據這尺度進行轉換，就像是輸入的資料值如果是500，那麼在目標輸出值就會是50。</p>
+<p><img src="/images/2014ironman/day09_01.png" alt=""></p>
+<p>所以在使用時必須定義輸入及輸出的資料範圍，就以這個範例來說，他的函式會如下，<code>domain([10, 990])</code>表示輸入範圍，<code>range([0, 100])</code>表示輸出範圍。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> d3Scale = d3.scale.linear() <span class="comment">//產生一個線性尺度</span></div><div class="line">		.domain([<span class="number">10</span>, <span class="number">999</span>]) <span class="comment">//傳入的值</span></div><div class="line">		.range([<span class="number">0</span> , <span class="number">100</span>]) <span class="comment">//輸出的範圍</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="string">"輸出的值 = "</span> + d3Scale(<span class="number">500</span>))</div></pre></td></tr></table></figure>
+<p><em>在本頁可以打開瀏覽器的開發工具 &gt; console，就可以看到輸出的值是”50”。</em></p>
+<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>接下來我們利用這個概念來做一個範例，這個範例的值是隨機產生的，值得範圍很不一定，因此還必須取得資料的最大值及最小值，這部分d3也有提供函式可以處理，<code>d3.max()</code>、<code>d3.min()</code>這兩個函式可以取得最大值及最小值。</p>
+
+<div class="demo">
+
+</div>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> w = <span class="number">600</span>,h = <span class="number">250</span>,padding = <span class="number">20</span>;</div><div class="line"><span class="comment">//定義SVG的大小</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> dataset = [];</div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i &lt; <span class="number">20</span>; i++)&#123;</div><div class="line">	<span class="keyword">var</span> Num1 = <span class="number">5</span> + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">900</span>);</div><div class="line">	<span class="keyword">var</span> Num2 = <span class="number">5</span> + <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">220</span>);</div><div class="line">	dataset.push([Num1, Num2]);</div><div class="line">&#125;;</div><div class="line"><span class="built_in">console</span>.log(dataset);</div><div class="line"><span class="comment">//和先前一樣，產生一組隨機的資料</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> Xmax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</div><div class="line">	Xmin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</div><div class="line">	Ymax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;),</div><div class="line">	Ymin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;)</div><div class="line"><span class="comment">//這個函示可以取得資料的最大值、最小值</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> xScale = d3.scale.linear() <span class="comment">//產生一個屬於X軸的線性尺度</span></div><div class="line">	.domain([Xmin, Xmax]) <span class="comment">//傳入的值是原始資料的最小及最大值</span></div><div class="line">	.range([padding , w - padding])</div><div class="line">	<span class="comment">//輸出的範圍是左邊的padd距離，到右邊的padding</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> yScale = d3.scale.linear()</div><div class="line">	.domain([Ymin, Ymax])</div><div class="line">	.range([ h - padding ,padding])</div><div class="line">	<span class="comment">//類似X軸的尺度</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">'.demo'</span>).append(<span class="string">'svg'</span>).attr(&#123;<span class="string">'width'</span>: w,<span class="string">'height'</span>: h&#125;)</div><div class="line">	<span class="comment">//接下來開始產生SVG</span></div><div class="line"></div><div class="line">svg.selectAll(<span class="string">'circle'</span>).data(dataset).enter() <span class="comment">//和先前一樣，選取'circle'並把資料加入</span></div><div class="line">.append(<span class="string">'circle'</span>) <span class="comment">// 增加圓到SVG內</span></div><div class="line">.attr(&#123;	<span class="comment">//加入屬性到圓</span></div><div class="line">	<span class="string">'cx'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> xScale(d[<span class="number">0</span>])&#125;, <span class="comment">//利用尺度算出X的位置</span></div><div class="line">	<span class="string">'cy'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> yScale(d[<span class="number">1</span>])&#125;, <span class="comment">//同理算出Y</span></div><div class="line">	<span class="string">'r'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> <span class="built_in">Math</span>.sqrt(h - d[<span class="number">1</span>])&#125;, <span class="comment">//圓的大小是高 - Y值的平方</span></div><div class="line">	<span class="string">'fill'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d3.hsl(d[<span class="number">0</span>] % <span class="number">360</span>, <span class="number">.6</span>, <span class="number">.6</span> );&#125;</div><div class="line">	<span class="comment">//介紹一個顏色的function hsl，可以將顏色算出後轉成色碼</span></div><div class="line">	<span class="comment">//格式 (360色相, 1彩度, 1明度)</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">svg.selectAll(<span class="string">'text'</span>).data(dataset).enter() <span class="comment">//補上資料數值</span></div><div class="line">.append(<span class="string">'text'</span>)</div><div class="line">.text(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> d[<span class="number">0</span>]+ <span class="string">','</span> + d[<span class="number">1</span>]&#125;) <span class="comment">//將值寫到SVG上</span></div><div class="line">.attr(&#123;</div><div class="line">	<span class="string">'x'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> xScale(d[<span class="number">0</span>])&#125;, <span class="comment">//和上面相同，算出X、Y的位置</span></div><div class="line">	<span class="string">'y'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> yScale(d[<span class="number">1</span>])&#125;,</div><div class="line">	<span class="string">'fill'</span>: <span class="string">'red'</span>, <span class="comment">//文字填滿為紅色</span></div><div class="line">	<span class="string">'font-size'</span>: <span class="string">'10px'</span> <span class="comment">//Fill、font-size也可以用CSS寫喔～</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>有了這些函式，就可以讓圖形資料乖乖的在範圍內呈現了。</p>
+
+<script>
+var d3Scale = d3.scale.linear() //產生一個屬於X軸的線性尺度
+		.domain([10, 990]) //傳入的值是原始資料的最小及最大值
+		.range([0 , 100])
+		//輸出的範圍是左邊的padd距離，到右邊的padding
+console.log("輸出的值 = " + d3Scale(500))
+</script>
+
+
+<script>
+    var w = 600,h = 250,padding = 20;
+	//定義SVG的大小
+
+	var dataset = [];
+	for (var i=0; i < 20; i++){
+		var Num1 = 5 + Math.floor(Math.random() * 900);
+		var Num2 = 5 + Math.floor(Math.random() * 220);
+		dataset.push([Num1, Num2]);
+	};
+	console.log(dataset);
+	//和先前一樣，產生一組隨機的資料
+
+	var Xmax = d3.max(dataset, function(d){return d[0]}),
+		Xmin = d3.min(dataset, function(d){return d[0]}),
+		Ymax = d3.max(dataset, function(d){return d[1]}),
+		Ymin = d3.min(dataset, function(d){return d[1]})
+	//這個函示可以取得資料的最大值、最小值
+
+	var xScale = d3.scale.linear() //產生一個屬於X軸的線性尺度
+					.domain([Xmin, Xmax]) //傳入的值是原始資料的最小及最大值
+					.range([padding , w - padding])
+					//輸出的範圍是左邊的padd距離，到右邊的padding
+
+	var yScale = d3.scale.linear()
+					.domain([Ymin, Ymax])
+					.range([ h - padding ,padding])
+					//類似X軸的尺度
+
+	var svg = d3.select('.demo').append('svg').attr({'width': w,'height': h})
+		//接下來開始產生SVG
+
+		svg.selectAll('circle').data(dataset).enter() //和先前一樣，選取'circle'並把資料加入
+		.append('circle') // 增加圓到SVG內
+		.attr({	//加入屬性到圓
+			'cx': function(d){return xScale(d[0])}, //利用尺度算出X的位置
+			'cy': function(d){return yScale(d[1])}, //同理算出Y
+			'r': function(d){return Math.sqrt(h - d[1])}, //圓的大小是高 - Y值的平方
+			'fill': function(d){return d3.hsl(d[0] % 360, .6, .6 );}
+			//介紹一個顏色的function hsl，可以將顏色算出後轉成色碼
+			//格式 (360色相, 1彩度, 1明度)
+		});
+
+		svg.selectAll('text').data(dataset).enter() //補上資料數值
+		.append('text')
+		.text(function(d){ return d[0]+ ',' + d[1]}) //將值寫到SVG上
+		.attr({
+			'x': function(d){return xScale(d[0])}, //和上面相同，算出X、Y的位置
+			'y': function(d){return yScale(d[1])},
+			'fill': 'red', //文字填滿為紅色
+			'font-size': '10px' //Fill、font-size也可以用CSS寫喔～
+		});
+
+</script>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ironman/" rel="tag">#ironman</a>
+          
+            <a href="/tags/d3js/" rel="tag">#d3js</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/d3js/2014/10/08/Ironman-30-days-09/" rel="next" title="D3js 將資料投影到SVG上">
+                <i class="fa fa-chevron-left"></i> D3js 將資料投影到SVG上
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/d3js/2014/10/10/Ironman-30-days-11/" rel="prev" title="D3.js 國慶日在家裡畫長條圖">
+                D3.js 國慶日在家裡畫長條圖 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">176</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">37</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#尺度"><span class="nav-number">1.</span> <span class="nav-text">尺度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Demo"><span class="nav-number">2.</span> <span class="nav-text">Demo</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/d3js/2014/10/09/Ironman-30-days-10/';
+      var disqus_title = "D3.js Scale 尺度";
+      var disqus_url = 'http://wcc723.github.io//d3js/2014/10/09/Ironman-30-days-10/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
