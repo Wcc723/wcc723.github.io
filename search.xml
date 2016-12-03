@@ -4,6 +4,62 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 3 - OOCSS 結構與樣式、容器與內容]]></title>
+      <url>https://wcc723.github.io//css/2016/12/03/oocss-two/</url>
+      <content type="html"><![CDATA[<p>結構與樣式在執行的概念上就是這樣的白話，目標即是將這兩者分離，上一篇我們用建築物的結構與外觀樣式做分離，再依不同的需求去做組合。</p>
+<p>CSS 上也是相同的道理，比如說我們可以做這樣的分類：</p>
+<ul>
+<li>結構：<code>margin</code>、<code>padding</code>、<code>display</code>、<code>vertical-align</code></li>
+<li>樣式：<ul>
+<li>色彩樣式：<code>color</code>、<code>background-color</code>、<code>border-color</code></li>
+<li>尺寸樣式：<code>font-size</code>、<code>height</code></li>
+</ul>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="案例說明"><a href="#案例說明" class="headerlink" title="案例說明"></a>案例說明</h2><p>我們透過一個簡單的小故事作為範例，讓大家了解 OOCSS 在實作上是如何運作。</p>
+<h3 id="Step1"><a href="#Step1" class="headerlink" title="Step1"></a>Step1</h3><p>我們接到一個工作要設計一組按鈕的 CSS，由於這組按鈕是作為銷售頁面的用途，在設計上我們有以下規劃：</p>
+<ul>
+<li>按鈕有三個，依據顯眼程度的順序是 購買、註冊、說明。</li>
+<li>網站的主色是藍色，強調色彩是紅色 (這邊不特別定義色碼)。</li>
+</ul>
+
+<p data-height="300" data-theme-id="0" data-slug-hash="KzXZaz" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="OOCSS (Demo 1)" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/KzXZaz/" target="_blank" rel="external">OOCSS (Demo 1)</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="external">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<p>就以需求來說，我們可以依據需求做出三個按鈕，名稱分別命名為 <code>.button-resgister</code>、<code>.button-purchase</code>、<code>.button-info</code>，顏色也分別為 <code>藍色</code>、<code>紅色</code>、<code>白色</code>。</p>
+<p>就以這個範例來說，我刻意很明確地將相同的部分寫在上方，其實這也就是結構與樣式混合的範例。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.button-resgister</span> &#123;</div><div class="line">  <span class="comment">/* 重複的部分 */</span></div><div class="line">  <span class="attribute">display</span>: inline-block;</div><div class="line">  <span class="attribute">padding</span>: .<span class="number">375rem</span> <span class="number">1rem</span>;</div><div class="line">  <span class="attribute">font-size</span>: <span class="number">1rem</span>;</div><div class="line">  <span class="attribute">font-weight</span>: <span class="number">400</span>;</div><div class="line">  <span class="attribute">line-height</span>: <span class="number">1.5</span>;</div><div class="line">  <span class="attribute">text-align</span>: center;</div><div class="line">  <span class="attribute">white-space</span>: nowrap;</div><div class="line">  <span class="attribute">vertical-align</span>: middle;</div><div class="line">  <span class="attribute">cursor</span>: pointer;</div><div class="line">  <span class="attribute">user-select</span>: none;</div><div class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid transparent;</div><div class="line">  <span class="attribute">border-radius</span>: .<span class="number">25rem</span>;</div><div class="line"></div><div class="line">  <span class="comment">/* 樣式 */</span></div><div class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#0275d8</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">#0275d8</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>結構與樣式的混合的結果，就是有大量重複的程式碼，這個案例中我們可以先將重複的程式碼抓出來，來達到結構與樣式分離。</p>
+
+<p data-height="300" data-theme-id="0" data-slug-hash="dOdWGQ" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="OOCSS (Demo 1)" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/dOdWGQ/" target="_blank" rel="external">OOCSS (Demo 1)</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="external">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<h3 id="Step2"><a href="#Step2" class="headerlink" title="Step2"></a>Step2</h3><p>由於需要更多的按鈕樣式，目前提供的三個按鈕並不足夠，在規劃上需要做以下調整：</p>
+<ul>
+<li>按鈕有三個，依據顯眼程度的順序是 購買(主色)、註冊(強調色)、說明。</li>
+<li>網站的主色是藍色，強調色彩是紅色 (這邊不特別定義色碼)。</li>
+<li><strong>說明按鈕還要做登入的功能，註冊按鈕還要兼著做訂閱電子報。</strong></li>
+</ul>
+<p>所以命名的部分，建議不要直接使用按鈕的功能性直接命名，而是可以按鈕的樣式特性來命名，比如說：</p>
+<ul>
+<li>結構：<code>btn</code></li>
+<li>色彩<ul>
+<li>主次要：<code>primary</code>, <code>accent</code></li>
+</ul>
+</li>
+</ul>
+<p>依據這樣的調整，樣式的設計就不會被原本的功能限制，使用更為靈活。</p>
+
+<p data-height="300" data-theme-id="0" data-slug-hash="YpeVNg" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="OOCSS (Demo 1)" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/YpeVNg/" target="_blank" rel="external">OOCSS (Demo 1)</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="external">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.btn</span> &#123;</div><div class="line">  <span class="attribute">display</span>: inline-block;</div><div class="line">  <span class="attribute">padding</span>: .<span class="number">375rem</span> <span class="number">1rem</span>;</div><div class="line">  <span class="attribute">font-size</span>: <span class="number">1rem</span>;</div><div class="line">  <span class="attribute">font-weight</span>: <span class="number">400</span>;</div><div class="line">  <span class="attribute">line-height</span>: <span class="number">1.5</span>;</div><div class="line">  <span class="attribute">text-align</span>: center;</div><div class="line">  <span class="attribute">white-space</span>: nowrap;</div><div class="line">  <span class="attribute">vertical-align</span>: middle;</div><div class="line">  <span class="attribute">cursor</span>: pointer;</div><div class="line">  <span class="attribute">user-select</span>: none;</div><div class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid transparent;</div><div class="line">  <span class="attribute">border-radius</span>: .<span class="number">25rem</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.btn-primary</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#0275d8</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">#0275d8</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.btn-accent</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#d9534f</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">#d9534f</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.btn-secondary</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#373a3c</span>;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">#ccc</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最後，按鈕的結構就會有很大的調整，結構與樣式分離後，面對更多的挑戰(? 時可以減少修改的幅度，如果要再調整按鈕大小，相信大家也能夠用相同的概念去調整。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 2 - OOCSS 結構與樣式、容器與內容]]></title>
       <url>https://wcc723.github.io//css/2016/12/02/oocss-one/</url>
       <content type="html"><![CDATA[<p>以前剛進入這行，掌握了 CSS2 的大部分關鍵之後，對於製作網頁非常有成就感，因為當時寫一個站不需要太多時間(整個網站約落在 800 ~ 1200 行 CSS)，而且 CSS2 語法數量也不多，查找時間也不需要太長，自然覺得世界美好(!?)</p>
