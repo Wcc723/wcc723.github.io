@@ -4,6 +4,67 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 5 - CSS 的命名技巧]]></title>
+      <url>https://wcc723.github.io//css/2016/12/05/css-naming/</url>
+      <content type="html"><![CDATA[<p>程式語言的命名一直是個麻煩課題，除了要有良好邏輯外，還必須有大量的英文詞彙能力。CSS 雖然不需要有太深的邏輯，但由於上手容易，團隊合作的命名就容易被其他小夥伴所影響。</p>
+<p>本篇透過圖文及小故事來介紹 CSS 命名概念，讓你與小夥伴的命名協作能力更順暢。</p>
+<a id="more"></a>
+<p>除了不需要維護的網站以外， CSS 命名都是前端工程師的痛，因為很容易踩到先前所寫的坑，久而久之就會發生權重的問題。</p>
+<p>案例s<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 100 行 */</span></div><div class="line"><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 300 行 */</span></div><div class="line"><span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: blue;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 600 行 */</span></div><div class="line"><span class="selector-class">.card</span> <span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: green;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 1200 行 Joe 1203 修正錯誤 */</span></div><div class="line"><span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red <span class="meta">!important</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>相信在維護過去的專案時，不少人有遇過這樣的經驗，當下的網站樣式是正常的，新的需求要調整目前的樣式，前一個離職同事用巧妙的手法安裝了未爆彈，為了證明你的實力只好再多一層 <code>!important</code>。</p>
+<p>前人的債我們只能補，新的路我們可以自己鋪，除了前面所提到的兩個 CSS 分離方法，這邊要介紹好的 CSS 命名，讓 Class 複用性更高，這邊介紹幾個基本原則：</p>
+<ol>
+<li>抽象化命名 (避免使用具體的色彩、單位尺寸等)</li>
+<li>用元件形體命名 (不使用頁面上的功能做命名)</li>
+</ol>
+<h2 id="抽象化命名"><a href="#抽象化命名" class="headerlink" title="抽象化命名"></a>抽象化命名</h2><p>一般來說，品牌會定義色彩，網站也是一樣會定義色彩，比如說網站會定義主要色、次要色、強調色、警告色等。</p>
+<ul>
+<li>主要色：藍色</li>
+<li>強調色：紅色</li>
+</ul>
+<p>網站上可以依據這樣的色彩直接命名，就如同下方這個範例，將色彩直接作為名稱</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 避免 */</span></div><div class="line"><span class="selector-class">.text-blue</span>&#123;</div><div class="line">  <span class="attribute">color</span>: blue;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.text-red</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但是，好景不常，設計師和老闆總是能夠合力起來做 “微調”，先前的藍色想改成綠色，紅色想改成橘色，畢竟這樣比較有質感。為了避免新人不知道紅為什麼是橘，還要跟他說一篇故事來介紹，其實我們可以將名稱做以下的調整。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 建議 */</span></div><div class="line"><span class="selector-class">.text-primary</span> &#123;</div><div class="line">  <span class="attribute">color</span>: blue;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.text-accent</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>除此之外，還有許多會使用單位尺寸做名稱，如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 避免 */</span></div><div class="line"><span class="selector-class">.m-t-50</span> &#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">50px</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.m-t-30</span> &#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">30px</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.m-t-10</span> &#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">10px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>為了避免發生 “50px 太大了，改 44px 可以嗎？”。 (小劇場等以下略)<br>所以也是避免直接用數值來命名，我們可以用抽象畫的尺寸來做調整。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 建議 */</span></div><div class="line"><span class="selector-class">.m-t-l</span> &#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">50px</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.m-t-m</span> &#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">30px</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.m-t-s</span> &#123;</div><div class="line">  <span class="attribute">margin-top</span>: <span class="number">10px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果這時候他需要在兩個數值中間再插入一個值呢？<br>我也不知道，因為這真的太欠揍了。</p>
+<h2 id="用元件形體命名"><a href="#用元件形體命名" class="headerlink" title="用元件形體命名"></a>用元件形體命名</h2><p>一般來說命名都會很直白，像是 左側的選單 就叫做 <code>left-menu</code>，產品列表稱為 <code>.product-list</code>。</p>
+<p>這樣的以後選單只能放在左邊，如果放到右邊去又是一個小劇場了；產品列表也是相同道理，誰知道哪天會不會放產品以外的內容呢!?</p>
+<p>這邊用一個範例來介紹命名的方法：</p>
+<p>這是一個排版的範例，左側是選單，右側比較大的空間是主要文章，一開始可能直接會用他所在的位置或功能性來命名，如 <code>.menu</code>、<code>.article</code>。</p>
+<p><img src="/images/2016_ironman/05_oocss_01.png" alt=""></p>
+<p>實際上呢，側面欄不會只有放選單；右方的主要內容可能也不是文章，可能會有產品、廣告、文件等其他內容，所以我們可以將命名做一些調整，用頁面上所在的位置命名，例如側面叫做 <code>.side</code>，主要內容區域叫做 <code>.content</code> 。</p>
+<p><img src="/images/2016_ironman/05_oocss_02.png" alt=""></p>
+<p>接下來，下方增加了 .ad 的區塊，寬度佔 1/3 和 .side 相同，由於是後來新增的區塊，直接稱為 .side 不太適合，所以就直接命名為 .ad。</p>
+<p><img src="/images/2016_ironman/05_oocss_03.png" alt=""></p>
+<p>這個時候，如果直接用 12欄的命名方法來命名，這樣網格的可用性就會變得更高。</p>
+<p><img src="/images/2016_ironman/05_oocss_04.png" alt=""></p>
+<p>所以我們在命名的時候，如果只能用在當下，沒有思考到未來的發展就可能會有大量相同的模組，或者是命名與實際運用的不搭，在這邊提供幾個命名概念給大家參考：</p>
+<ul>
+<li>元件的外型命名<ul>
+<li>避免限制性的命名：<code>.product-list</code></li>
+<li>建議：<code>.list</code></li>
+</ul>
+</li>
+<li>色彩的命名<ul>
+<li>避免直接用色名：<code>.text-blue</code></li>
+<li>建議：<code>.text-primary</code></li>
+</ul>
+</li>
+<li>Layout 的命名<ul>
+<li>避免直接用位置命名：<code>.left-menu</code></li>
+<li>建議：<code>col-4</code></li>
+</ul>
+</li>
+</ul>
+<p>這篇嘗試使用小劇場的方式來介紹 CSS，自我感覺良好，但需要花雙倍的時間啊啊啊啊～。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 4 - OOCSS 容器與內容分離 (最佳實踐)]]></title>
       <url>https://wcc723.github.io//css/2016/12/04/oocss-three/</url>
       <content type="html"><![CDATA[<p>結構與樣式分離，對於網頁的樣式設計是一種解放，所有元件的樣式組合搭配及擴增變得更自由。</p>
@@ -8483,6 +8544,44 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io//jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -8553,44 +8652,6 @@ git commit -m &quot;first commit&quot;
 <p>###後記</p>
 <p>Jekyll loacl端建議使用Mac OSX，由於工作的關係，我會頻繁地在兩種系統交換使用，Windows是在安裝上的注意事項就可以寫一整篇了…，OSX就去看官網吧，三到四行貼完就結束了。</p>
 <p>不過我一開始是在Windows上建立的，接下來的文章還是會介紹我所遇到的問題。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
 ]]></content>
     </entry>
     
