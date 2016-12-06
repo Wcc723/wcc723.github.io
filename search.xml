@@ -4,13 +4,59 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 5 - CSS 的元件狀態]]></title>
+      <url>https://wcc723.github.io//css/2016/12/06/css-status/</url>
+      <content type="html"><![CDATA[<p>CSS 元件狀態重點可以分為兩部分，一個是原生的 CSS 偽類(Pseudo-classes)，另一則是配合 Javascript 所提供的 Class，在這部分相當在元件的初始時，就同時完成兩個部分。</p>
+<a id="more"></a>
+<h2 id="元件狀態的套用方式"><a href="#元件狀態的套用方式" class="headerlink" title="元件狀態的套用方式"></a>元件狀態的套用方式</h2><p>狀態再套用時，有兩種常見的手法，一則是使用 CSS 偽類(Pseudo-classes)，另一則是提供 Class 供 javascript 作切換。</p>
+<p>一般在撰寫 CSS 時，就會將偽類規劃進去，最常見的就是 <a> 連結，其常用的偽類有：</a></p>
+<ul>
+<li><code>:active</code> 滑鼠按下的樣式</li>
+<li><code>:focus</code> 鍵盤聚焦的樣式</li>
+<li><code>:hover</code> 滑鼠滑過的樣式</li>
+<li><code>:link</code> 還沒被訪問的樣式</li>
+<li><code>:visited</code> 被訪問過的樣式</li>
+</ul>
+<p>假設是 <code>a:hover</code> 有製作以下的狀態，那麼用戶在滑鼠滑過後就能改變色彩。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> &#123;</div><div class="line">  <span class="attribute">color</span>: blue;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>但有時在呈現狀態時，並不是需要與用戶互動，而是回饋一個狀態讓用戶理解目前發生了什麼事。</p>
+<p>如按鈕要表達已經被按下了，用戶不需要再按下一次，那麼我們可以用 <code>.active</code> 來說明這個狀態。或者用戶並沒有滿足按下按鈕的條件，我們可以用 <code>.disabled</code> 來呈現。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.btn</span><span class="selector-pseudo">:active</span>, <span class="selector-class">.btn</span><span class="selector-class">.active</span> &#123;</div><div class="line">  <span class="attribute">color</span>: blue;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.btn</span><span class="selector-pseudo">:disabled</span>, <span class="selector-class">.disabled</span> &#123;</div><div class="line">  <span class="attribute">cursor</span>: not-allowed;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="一次做足元件狀態"><a href="#一次做足元件狀態" class="headerlink" title="一次做足元件狀態"></a>一次做足元件狀態</h2><p>元件狀態是初學網頁設計師經常忽略的內容，就以 input 來說就有以下常見的狀態</p>
+<ul>
+<li>一般狀態</li>
+<li>focus<ul>
+<li>用戶選取的狀態</li>
+</ul>
+</li>
+<li>disabled<ul>
+<li>無法選取的狀態</li>
+</ul>
+</li>
+<li>feedback<ul>
+<li>輸入錯誤或正確的回饋狀態</li>
+</ul>
+</li>
+</ul>
+<p>如果在設計時，僅有提供 input 的一般狀態及 Focus 的狀態，那麼在開發時就會因為元素狀態不足，需要不斷的增加，如果增加時又沒有依據原有邏輯新增，就容易讓程式碼變得難以維護。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 125 行 */</span></div><div class="line"><span class="selector-class">.input</span> &#123;</div><div class="line">  <span class="comment">/* input style*/</span></div><div class="line">&#125;</div><div class="line"><span class="selector-class">.input</span><span class="selector-pseudo">:focus</span> &#123;</div><div class="line">  <span class="attribute">border-color</span>: blue;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/* 800 行 */</span></div><div class="line"><span class="selector-class">.input</span><span class="selector-pseudo">:disabled</span>, <span class="selector-class">.input</span><span class="selector-class">.disabled</span>&#123;</div><div class="line">  <span class="attribute">cursor</span>: not-allowed;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以建議在一開始時，就將常見的狀態先一次補足：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 125 行 */</span></div><div class="line"><span class="selector-class">.input</span> &#123;</div><div class="line">  <span class="comment">/* input style*/</span></div><div class="line">&#125;</div><div class="line"><span class="selector-class">.input</span><span class="selector-pseudo">:focus</span> &#123;</div><div class="line">  <span class="attribute">border-color</span>: blue;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.input</span><span class="selector-pseudo">:disabled</span>, <span class="selector-class">.input</span><span class="selector-class">.disabled</span> &#123;</div><div class="line">  <span class="attribute">cursor</span>: not-allowed;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* success feedback */</span></div><div class="line"><span class="selector-class">.input</span><span class="selector-class">.success</span> &#123;</div><div class="line">  <span class="attribute">border-color</span>: green;</div><div class="line">&#125;</div><div class="line"><span class="comment">/* error feedback */</span></div><div class="line"><span class="selector-class">.input</span><span class="selector-class">.success</span> &#123;</div><div class="line">  <span class="attribute">border-color</span>: red;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><ul>
+<li>在寫偽類的時候別浪費，順便補上 <code>.class</code> 的樣式</li>
+<li>在一開始寫的時候請順便規劃各種狀態</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 5 - CSS 的命名技巧]]></title>
       <url>https://wcc723.github.io//css/2016/12/05/css-naming/</url>
       <content type="html"><![CDATA[<p>程式語言的命名一直是個麻煩課題，除了要有良好邏輯外，還必須有大量的英文詞彙能力。CSS 雖然不需要有太深的邏輯，但由於上手容易，團隊合作的命名就容易被其他小夥伴所影響。</p>
 <p>本篇透過圖文及小故事來介紹 CSS 命名概念，讓你與小夥伴的命名協作能力更順暢。</p>
 <a id="more"></a>
 <p>除了不需要維護的網站以外， CSS 命名都是前端工程師的痛，因為很容易踩到先前所寫的坑，久而久之就會發生權重的問題。</p>
-<p>案例s<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 100 行 */</span></div><div class="line"><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 300 行 */</span></div><div class="line"><span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: blue;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 600 行 */</span></div><div class="line"><span class="selector-class">.card</span> <span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: green;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 1200 行 Joe 1203 修正錯誤 */</span></div><div class="line"><span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red <span class="meta">!important</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>案例：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 100 行 */</span></div><div class="line"><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 300 行 */</span></div><div class="line"><span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: blue;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 600 行 */</span></div><div class="line"><span class="selector-class">.card</span> <span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: green;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 1200 行 Joe 1203 修正錯誤 */</span></div><div class="line"><span class="selector-tag">a</span><span class="selector-class">.tab</span> &#123;</div><div class="line">  <span class="attribute">color</span>: red <span class="meta">!important</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>相信在維護過去的專案時，不少人有遇過這樣的經驗，當下的網站樣式是正常的，新的需求要調整目前的樣式，前一個離職同事用巧妙的手法安裝了未爆彈，為了證明你的實力只好再多一層 <code>!important</code>。</p>
 <p>前人的債我們只能補，新的路我們可以自己鋪，除了前面所提到的兩個 CSS 分離方法，這邊要介紹好的 CSS 命名，讓 Class 複用性更高，這邊介紹幾個基本原則：</p>
 <ol>
