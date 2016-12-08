@@ -4,6 +4,61 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 7 - CSS 框架架構參考 Bootstrap]]></title>
+      <url>https://wcc723.github.io//css/2016/12/08/framework-bootstrap/</url>
+      <content type="html"><![CDATA[<p>Bootstrap 是目前我最喜歡的 CSS 框架。</p>
+<p>雖說如此，我以往可是很討厭 Bootstrap 的，身為一名設計師希望能夠有更多自己發揮的空間，所以早期一直在避免使用 Bootstrap 這樣的框架，總認為這些框架做出來的設計都很像，還因此自己寫一個 CSS 框架。</p>
+<p>經歷過了一段自幹的歷程，從新再研究了 Bootstrap 的框架才發現自己很多觀念上的不足如：</p>
+<ul>
+<li>過度的 sass @extend (良好的 CSS 架構，不太需要使用 @extend)</li>
+<li>OOCSS 觀念不夠強 (結構與樣式並未良好的分離)</li>
+<li>框架可用套件不足 (自幹的怎會有套件 @_@)</li>
+<li>Bug 發現慢 (多人開發的框架 bug 自然少)</li>
+</ul>
+<a id="more"></a>
+<h2 id="Sass-架構簡介"><a href="#Sass-架構簡介" class="headerlink" title="Sass 架構簡介"></a>Sass 架構簡介</h2><p>Bootstrap 第三版是使用 <code>LESS</code>，到了第四版改用 <code>SASS</code>，但不管用哪一個開發工具，其實整個架構的差異都不大，只要了解其中一種觀念，就可以套用在每個版本上。</p>
+<p>Bootstrap 的架構其實並不複雜，整個核心都圍繞在 “模組” 上，我們可以視 Bootstrap 每一個部件都是一個模組：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">|- bootstrap.scss   # 主檔案，負責載入所有模組</div><div class="line">|- _variables.scss  # 變數，如果要修改整體樣式可從這裡調整</div><div class="line">|- _buttons.scss    # 從這以下都是模組</div><div class="line">|- _tables.scss</div><div class="line">|- _alert.scss</div><div class="line">|- _utilities.scss</div><div class="line">|- ...</div><div class="line">|- /mixins          # 樣式運算函式庫</div><div class="line">   |- _buttons.scss</div><div class="line">   |- _forms.scss</div><div class="line">   |- _grid.scss</div><div class="line">   |- ...</div></pre></td></tr></table></figure>
+<h3 id="bootstrap-scss"><a href="#bootstrap-scss" class="headerlink" title="bootstrap.scss"></a>bootstrap.scss</h3><p>這隻檔案相當的單純，主要是載入全部的樣式表，除了這隻以外還有以下幾個分支：</p>
+<p>bootstrap-flex.scss<br>bootstrap-grid.scss<br>bootstrap-reboot.scss</p>
+<p>這些的功能都是一樣的，只是差異在載入的檔案不同，如果第一次想了解 Bootstrap 的同學，可以先看看這隻檔案 “依序” 載入了哪些的檔案。</p>
+<h3 id="variables-scss"><a href="#variables-scss" class="headerlink" title="_variables.scss"></a>_variables.scss</h3><p>在 <code>scss</code> 中，前方帶有下底線的代表該檔案不會被輸出(所以上一段落的 bootstrap.scss 會被轉成 css)，Bootstrap 主要的樣式也都是在這隻檔案做設定。</p>
+<p>以色彩來說，檔案裡面可以看到以下的設定，開發者可以修改以下變數，在編譯時自然會套用到所有的模組上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$brand-primary:             #0275d8 !default;</div><div class="line">$brand-success:             #5cb85c !default;</div><div class="line">$brand-info:                #5bc0de !default;</div><div class="line">$brand-warning:             #f0ad4e !default;</div><div class="line">$brand-danger:              #d9534f !default;</div><div class="line">$brand-inverse:             $gray-dark !default;</div></pre></td></tr></table></figure>
+<h3 id="buttons-scss-tables-scss-utilities-scss-…"><a href="#buttons-scss-tables-scss-utilities-scss-…" class="headerlink" title="_buttons.scss, _tables.scss, _utilities.scss …"></a>_buttons.scss, _tables.scss, _utilities.scss …</h3><p>這個部分就是整個 Bootstrap 的結構重點了，除了以上的 bootstrap.scss、_variables.scss 及稍後提到的 <code>_mixins</code> 資料夾，其他都是屬於 “模組”。</p>
+<p>Bootstrap 將模組檔案拆分得相當細，官方的文件也是依據這個架構所呈現：</p>
+<p><img src="/images/2016_ironman/08_framework_bootstrap_01.png" alt=""></p>
+<p>Bootstrap 的說明文件</p>
+<p>每個元件拆離以後有以下優點：</p>
+<ul>
+<li>元件各自獨立，互不影響 (僅少部分有相依關係 如：buttons, button-group)</li>
+<li>易讀性高：開發者可以輕易地找出元件檔案，並且在開發新元件不影響其他元件</li>
+<li>開發者可以依據 bootstrap.scss 自行決定載入哪些元件</li>
+</ul>
+<blockquote>
+<p>元件之間影響變小了，全部是由 bootstrap.scss 串接，由 _variables.scss 決定樣式。</p>
+</blockquote>
+<p>元件的設計除了有 Pure CSS 的結構與樣式分離外，Bootstrap 在容器與內容分離也是做得相當徹底，加上 Bootstrap 有大量的元件，彼此之間的組合變化也相當多元，就 Bootstrap 現有的架構下其實我們可以將元件分為兩大類型：</p>
+<p><img src="/images/2016_ironman/08_framework_bootstrap_03.png" alt=""></p>
+<p>一則是在外的容器，另外則是在內的元件(內容)；像是 grid-system 就是屬於在外的容器，在外側的容器並不會影響內部的元件樣式，按鈕來說他就是屬於在內部的元件，他可以依附在任何的容器內。</p>
+<p>以下是簡單的 Bootstrap 容器與元件分類：</p>
+<p><img src="/images/2016_ironman/08_framework_bootstrap_02.png" alt=""></p>
+<p>Bootstrap 就如同前文 OOCSS 所介紹的包含結構與樣式分離、容器與內容分離，在這架構下 Bootstrap 的可用性就會相當高，而且在後續的新增元件也會更為容易。</p>
+<blockquote>
+<p>說句坦白話，拆解 Bootstrap 讓我更能了解 OOCSS。</p>
+</blockquote>
+<h3 id="mixins-資料夾"><a href="#mixins-資料夾" class="headerlink" title="_mixins 資料夾"></a>_mixins 資料夾</h3><p>_mixins 資料夾是元件的運算函式，在大部分的情況下不需要做調整，只要修改 _variables.scss，就能運算出新的樣式表，本篇就不細說了。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>一般來說閱讀 Bootstrap 的結構方法如下：</p>
+<ol>
+<li>找出 bootstrap.scss (了解整體架構)</li>
+<li>找出變數檔案 _variables.scss</li>
+<li>尋找、閱讀 各元件</li>
+</ol>
+<p>了解整體架構後，如果需要自行修改或自幹(?)也會相對容易很多。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 7 - CSS 框架架構參考 PURE CSS]]></title>
       <url>https://wcc723.github.io//css/2016/12/07/framework-pure-css/</url>
       <content type="html"><![CDATA[<p>在瞭解完 OOCSS 後，可以看看主流框架是不是有帶入其中之概念，接下來會介紹兩篇 PureCSS 與 Bootstrap，這兩者的簡單架構概念讓大家參考參考。</p>
@@ -8635,44 +8690,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io//jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -8743,6 +8760,44 @@ git commit -m &quot;first commit&quot;
 <p>###後記</p>
 <p>Jekyll loacl端建議使用Mac OSX，由於工作的關係，我會頻繁地在兩種系統交換使用，Windows是在安裝上的注意事項就可以寫一整篇了…，OSX就去看官網吧，三到四行貼完就結束了。</p>
 <p>不過我一開始是在Windows上建立的，接下來的文章還是會介紹我所遇到的問題。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
 ]]></content>
     </entry>
     

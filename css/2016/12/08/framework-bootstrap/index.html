@@ -1,0 +1,943 @@
+<!doctype html>
+
+
+
+
+<html class="theme-next pisces">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.2" rel="stylesheet" type="text/css" />
+
+
+
+
+
+  <meta name="keywords" content="css,oocss," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.2" />
+
+
+
+
+
+
+<meta name="description" content="Bootstrap 是目前我最喜歡的 CSS 框架。
+雖說如此，我以往可是很討厭 Bootstrap 的，身為一名設計師希望能夠有更多自己發揮的空間，所以早期一直在避免使用 Bootstrap 這樣的框架，總認為這些框架做出來的設計都很像，還因此自己寫一個 CSS 框架。
+經歷過了一段自幹的歷程，從新再研究了 Bootstrap 的框架才發現自己很多觀念上的不足如：
+
+過度的 sass @exte">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鐵人賽 7 - CSS 框架架構參考 Bootstrap">
+<meta property="og:url" content="https://wcc723.github.io/css/2016/12/08/framework-bootstrap/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="Bootstrap 是目前我最喜歡的 CSS 框架。
+雖說如此，我以往可是很討厭 Bootstrap 的，身為一名設計師希望能夠有更多自己發揮的空間，所以早期一直在避免使用 Bootstrap 這樣的框架，總認為這些框架做出來的設計都很像，還因此自己寫一個 CSS 框架。
+經歷過了一段自幹的歷程，從新再研究了 Bootstrap 的框架才發現自己很多觀念上的不足如：
+
+過度的 sass @exte">
+<meta property="og:image" content="https://wcc723.github.io/images/2016_ironman/08_oocss_header.png">
+<meta property="og:updated_time" content="2016-12-08T01:48:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="鐵人賽 7 - CSS 框架架構參考 Bootstrap">
+<meta name="twitter:description" content="Bootstrap 是目前我最喜歡的 CSS 框架。
+雖說如此，我以往可是很討厭 Bootstrap 的，身為一名設計師希望能夠有更多自己發揮的空間，所以早期一直在避免使用 Bootstrap 這樣的框架，總認為這些框架做出來的設計都很像，還因此自己寫一個 CSS 框架。
+經歷過了一段自幹的歷程，從新再研究了 Bootstrap 的框架才發現自己很多觀念上的不足如：
+
+過度的 sass @exte">
+<meta name="twitter:image" content="https://wcc723.github.io/images/2016_ironman/08_oocss_header.png">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: false,
+    duoshuo: {
+      userId: '0',
+      author: '作者'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="https://wcc723.github.io/css/2016/12/08/framework-bootstrap/"/>
+
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.2"></script>
+
+
+
+
+
+
+  <title> 鐵人賽 7 - CSS 框架架構參考 Bootstrap | 前端，沒有極限 </title>
+</head>
+
+<body itemscope itemtype="//schema.org/WebPage" lang="zh-tw">
+
+  
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '556473851118881',
+      xfbml      : true,
+      version    : 'v2.6'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/zh_tw/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-43235390-2', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="//schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">前端，沒有極限</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            歸檔
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            標籤
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            檢索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="//schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                鐵人賽 7 - CSS 框架架構參考 Bootstrap
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">發表於</span>
+            <time itemprop="dateCreated" datetime="2016-12-08T00:00:00+08:00" content="2016-12-08">
+              2016-12-08
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分類於</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/css/" itemprop="url" rel="index">
+                    <span itemprop="name">css</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/css/2016/12/08/framework-bootstrap/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="/css/2016/12/08/framework-bootstrap/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+            &nbsp; | &nbsp;
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="//schema.org/ImageGallery">
+          
+
+          <a class="post-gallery-img fancybox"
+             href="/images/2016_ironman/08_oocss_header.png" rel="gallery_ciwfowwle0000i9f0snac165g"
+             itemscope itemtype="//schema.org/ImageObject" itemprop="url">
+            <img src="/images/2016_ironman/08_oocss_header.png" itemprop="contentUrl"/>
+          </a>
+
+          
+          
+        </div>
+      
+
+      
+        <p>Bootstrap 是目前我最喜歡的 CSS 框架。</p>
+<p>雖說如此，我以往可是很討厭 Bootstrap 的，身為一名設計師希望能夠有更多自己發揮的空間，所以早期一直在避免使用 Bootstrap 這樣的框架，總認為這些框架做出來的設計都很像，還因此自己寫一個 CSS 框架。</p>
+<p>經歷過了一段自幹的歷程，從新再研究了 Bootstrap 的框架才發現自己很多觀念上的不足如：</p>
+<ul>
+<li>過度的 sass @extend (良好的 CSS 架構，不太需要使用 @extend)</li>
+<li>OOCSS 觀念不夠強 (結構與樣式並未良好的分離)</li>
+<li>框架可用套件不足 (自幹的怎會有套件 @_@)</li>
+<li>Bug 發現慢 (多人開發的框架 bug 自然少)</li>
+</ul>
+<a id="more"></a>
+<h2 id="Sass-架構簡介"><a href="#Sass-架構簡介" class="headerlink" title="Sass 架構簡介"></a>Sass 架構簡介</h2><p>Bootstrap 第三版是使用 <code>LESS</code>，到了第四版改用 <code>SASS</code>，但不管用哪一個開發工具，其實整個架構的差異都不大，只要了解其中一種觀念，就可以套用在每個版本上。</p>
+<p>Bootstrap 的架構其實並不複雜，整個核心都圍繞在 “模組” 上，我們可以視 Bootstrap 每一個部件都是一個模組：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">|- bootstrap.scss   # 主檔案，負責載入所有模組</div><div class="line">|- _variables.scss  # 變數，如果要修改整體樣式可從這裡調整</div><div class="line">|- _buttons.scss    # 從這以下都是模組</div><div class="line">|- _tables.scss</div><div class="line">|- _alert.scss</div><div class="line">|- _utilities.scss</div><div class="line">|- ...</div><div class="line">|- /mixins          # 樣式運算函式庫</div><div class="line">   |- _buttons.scss</div><div class="line">   |- _forms.scss</div><div class="line">   |- _grid.scss</div><div class="line">   |- ...</div></pre></td></tr></table></figure>
+<h3 id="bootstrap-scss"><a href="#bootstrap-scss" class="headerlink" title="bootstrap.scss"></a>bootstrap.scss</h3><p>這隻檔案相當的單純，主要是載入全部的樣式表，除了這隻以外還有以下幾個分支：</p>
+<p>bootstrap-flex.scss<br>bootstrap-grid.scss<br>bootstrap-reboot.scss</p>
+<p>這些的功能都是一樣的，只是差異在載入的檔案不同，如果第一次想了解 Bootstrap 的同學，可以先看看這隻檔案 “依序” 載入了哪些的檔案。</p>
+<h3 id="variables-scss"><a href="#variables-scss" class="headerlink" title="_variables.scss"></a>_variables.scss</h3><p>在 <code>scss</code> 中，前方帶有下底線的代表該檔案不會被輸出(所以上一段落的 bootstrap.scss 會被轉成 css)，Bootstrap 主要的樣式也都是在這隻檔案做設定。</p>
+<p>以色彩來說，檔案裡面可以看到以下的設定，開發者可以修改以下變數，在編譯時自然會套用到所有的模組上。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$brand-primary:             #0275d8 !default;</div><div class="line">$brand-success:             #5cb85c !default;</div><div class="line">$brand-info:                #5bc0de !default;</div><div class="line">$brand-warning:             #f0ad4e !default;</div><div class="line">$brand-danger:              #d9534f !default;</div><div class="line">$brand-inverse:             $gray-dark !default;</div></pre></td></tr></table></figure>
+<h3 id="buttons-scss-tables-scss-utilities-scss-…"><a href="#buttons-scss-tables-scss-utilities-scss-…" class="headerlink" title="_buttons.scss, _tables.scss, _utilities.scss …"></a>_buttons.scss, _tables.scss, _utilities.scss …</h3><p>這個部分就是整個 Bootstrap 的結構重點了，除了以上的 bootstrap.scss、_variables.scss 及稍後提到的 <code>_mixins</code> 資料夾，其他都是屬於 “模組”。</p>
+<p>Bootstrap 將模組檔案拆分得相當細，官方的文件也是依據這個架構所呈現：</p>
+<p><img src="/images/2016_ironman/08_framework_bootstrap_01.png" alt=""></p>
+<p>Bootstrap 的說明文件</p>
+<p>每個元件拆離以後有以下優點：</p>
+<ul>
+<li>元件各自獨立，互不影響 (僅少部分有相依關係 如：buttons, button-group)</li>
+<li>易讀性高：開發者可以輕易地找出元件檔案，並且在開發新元件不影響其他元件</li>
+<li>開發者可以依據 bootstrap.scss 自行決定載入哪些元件</li>
+</ul>
+<blockquote>
+<p>元件之間影響變小了，全部是由 bootstrap.scss 串接，由 _variables.scss 決定樣式。</p>
+</blockquote>
+<p>元件的設計除了有 Pure CSS 的結構與樣式分離外，Bootstrap 在容器與內容分離也是做得相當徹底，加上 Bootstrap 有大量的元件，彼此之間的組合變化也相當多元，就 Bootstrap 現有的架構下其實我們可以將元件分為兩大類型：</p>
+<p><img src="/images/2016_ironman/08_framework_bootstrap_03.png" alt=""></p>
+<p>一則是在外的容器，另外則是在內的元件(內容)；像是 grid-system 就是屬於在外的容器，在外側的容器並不會影響內部的元件樣式，按鈕來說他就是屬於在內部的元件，他可以依附在任何的容器內。</p>
+<p>以下是簡單的 Bootstrap 容器與元件分類：</p>
+<p><img src="/images/2016_ironman/08_framework_bootstrap_02.png" alt=""></p>
+<p>Bootstrap 就如同前文 OOCSS 所介紹的包含結構與樣式分離、容器與內容分離，在這架構下 Bootstrap 的可用性就會相當高，而且在後續的新增元件也會更為容易。</p>
+<blockquote>
+<p>說句坦白話，拆解 Bootstrap 讓我更能了解 OOCSS。</p>
+</blockquote>
+<h3 id="mixins-資料夾"><a href="#mixins-資料夾" class="headerlink" title="_mixins 資料夾"></a>_mixins 資料夾</h3><p>_mixins 資料夾是元件的運算函式，在大部分的情況下不需要做調整，只要修改 _variables.scss，就能運算出新的樣式表，本篇就不細說了。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>一般來說閱讀 Bootstrap 的結構方法如下：</p>
+<ol>
+<li>找出 bootstrap.scss (了解整體架構)</li>
+<li>找出變數檔案 _variables.scss</li>
+<li>尋找、閱讀 各元件</li>
+</ol>
+<p>了解整體架構後，如果需要自行修改或自幹(?)也會相對容易很多。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/css/" rel="tag">#css</a>
+          
+            <a href="/tags/oocss/" rel="tag">#oocss</a>
+          
+        </div>
+      
+
+      
+        <div style="margin: 15px 0;">
+          <a href="http://www.hexschool.com/" target="_blank">
+            <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+          </a>
+        </div>
+
+        
+          <div style="margin: 15px 0;">
+            <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+          </div>
+        
+
+        
+          <div style="overflow: hidden">
+            <div class="fb-like" data-layout="button_count" data-share="true"></div>
+          </div>
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/css/2016/12/07/framework-pure-css/" rel="next" title="鐵人賽 7 - CSS 框架架構參考 PURE CSS">
+                <i class="fa fa-chevron-left"></i> 鐵人賽 7 - CSS 框架架構參考 PURE CSS
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="//schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="https://avatars1.githubusercontent.com/u/3422575?v=3&s=466motion"
+               alt="Wang Casper" />
+          <p class="site-author-name" itemprop="name">Wang Casper</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">185</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-name">分類</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">39</span>
+                <span class="site-state-item-name">標籤</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/Wcc723" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" title="Facebook">
+                  
+                    <i class="fa fa-fw fa-facebook-official"></i>
+                  
+                  Facebook
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Sass-架構簡介"><span class="nav-number">1.</span> <span class="nav-text">Sass 架構簡介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#bootstrap-scss"><span class="nav-number">1.1.</span> <span class="nav-text">bootstrap.scss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#variables-scss"><span class="nav-number">1.2.</span> <span class="nav-text">_variables.scss</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#buttons-scss-tables-scss-utilities-scss-…"><span class="nav-number">1.3.</span> <span class="nav-text">_buttons.scss, _tables.scss, _utilities.scss …</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mixins-資料夾"><span class="nav-number">1.4.</span> <span class="nav-text">_mixins 資料夾</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#結語"><span class="nav-number">2.</span> <span class="nav-text">結語</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wang Casper</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.0.2"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.0.2"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.2"></script>
+
+
+
+  
+
+
+
+  
+
+    <script type="text/javascript">
+      var disqus_shortname = 'ashare';
+      var disqus_identifier = '/css/2016/12/08/framework-bootstrap/';
+      var disqus_title = "鐵人賽 7 - CSS 框架架構參考 Bootstrap";
+      var disqus_url = 'https://wcc723.github.io//css/2016/12/08/framework-bootstrap/';
+
+      function run_disqus_script(disqus_script){
+        var dsq = document.createElement('script');
+        dsq.type = 'text/javascript';
+        dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      }
+
+      run_disqus_script('count.js');
+      
+        run_disqus_script('embed.js');
+      
+    </script>
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = false;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title >= 0 || index_content >= 0 ){
+                                isMatch = true;
+								if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            } 
+							
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
