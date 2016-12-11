@@ -4,7 +4,71 @@
   
     
     <entry>
-      <title><![CDATA[鐵人賽 8 - CSS 實戰心法 搶到決定權，開發環境自己來]]></title>
+      <title><![CDATA[鐵人賽 11 - Gulp - 透過 PostCSS 加入 CSS Prefix]]></title>
+      <url>https://wcc723.github.io//css/2016/12/11/gulp-postcss/</url>
+      <content type="html"><![CDATA[<p>說到 CSS prefix 相信大家都不是很清楚當下主流版本的 prefix 有哪些是必要？又有哪些是不必要的？</p>
+<p>以往都是使用 Sass 的 Compass 來加入 prefix，這種增加方式就是無差別的加入，但其實現在的 CSS 有 9 成以上的 prefix 都沒有加入的必要，相信在短期內除了測試的 CSS 以外，都不需要再加入 prefix。</p>
+<a id="more"></a>
+<p>現在寫入 prefix 以後還要移除也是個大工程，這時候推薦使用 PostCSS 的 autoPrefixer。PostCSS 類似 Sass，但是他是直接編譯 <code>.css</code> 檔案，另外他的套件都是用插件的方式載入，並不是像 Sass 已經有固定的寫法。這邊特別推薦他的 autoPrefixer 套件，使用上也非常容易，對於往後的維護也是無痛更新。</p>
+<h2 id="PostCSS"><a href="#PostCSS" class="headerlink" title="PostCSS"></a>PostCSS</h2><p>範例：<br><a href="https://github.com/Wcc723/ironman-gulp-sass/tree/v0.2.postcss" target="_blank" rel="external">https://github.com/Wcc723/ironman-gulp-sass/tree/v0.2.postcss</a></p>
+<p>延續前一篇的進度，這篇加入兩個新套件 <code>gulp-postcss</code>、<code>autoprefixer</code>，在 <code>package.json</code> 的檔案內可以找到這段：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">"dependencies": &#123;</div><div class="line">    "autoprefixer": "^6.5.3",</div><div class="line">    "gulp": "^3.9.1",</div><div class="line">    "gulp-postcss": "^6.2.0",</div><div class="line">    "gulp-sass": "^2.3.2"</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下來修改 gulpfile.js 內的 sass task，直接將 PostCSS 加到原有的 Sass 流程上就能運行了。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> autoprefixer = <span class="built_in">require</span>(<span class="string">'autoprefixer'</span>);</div><div class="line"><span class="keyword">var</span> postcss = <span class="built_in">require</span>(<span class="string">'gulp-postcss'</span>);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'sass'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> processors = [                                 <span class="comment">// 定義 postCSS 所需要的元件</span></div><div class="line">      autoprefixer(&#123;<span class="attr">browsers</span>: [<span class="string">'last 5 version'</span>]&#125;)   <span class="comment">// 使用 autoprefixer，這邊定義最新的五個版本瀏覽器</span></div><div class="line">  ];</div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./source/scss/**/*.scss'</span>)</div><div class="line">    .pipe(sass(</div><div class="line">      &#123;<span class="attr">outputStyle</span>: <span class="string">'expanded'</span>&#125;</div><div class="line">    ).on(<span class="string">'error'</span>, sass.logError))</div><div class="line">    .pipe(postcss(processors))                       <span class="comment">// 將 PostCSS 插入流程</span></div><div class="line">    .pipe(gulp.dest(<span class="string">'./public/stylesheets'</span>));</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>autoPrefixer 的瀏覽器版本可以自行定義，文件可參考：<a href="https://github.com/postcss/autoprefixer" target="_blank" rel="external">https://github.com/postcss/autoprefixer</a></p>
+<p>這個範例是選擇 <code>&#39;last 5 version&#39;</code> (最新的五個版本瀏覽器)，如果是調整 <code>&#39;last 2 version&#39;</code> 那需要加入 prefix 的還真的沒幾個，大家也可以修改看看這段與編譯結果的差異。</p>
+<h2 id="編譯"><a href="#編譯" class="headerlink" title="編譯"></a>編譯</h2><p>這時候的開發流程不會有太多的改變，一樣是在 <code>all.scss</code>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">// 編譯前</div><div class="line">$primary-color: blue;</div><div class="line"></div><div class="line">body &#123;</div><div class="line">  color: $primary-color;</div><div class="line">  filter: blur(5px);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>編譯後 (含 PostCSS)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  color: blue;</div><div class="line">  -webkit-filter: blur(5px);</div><div class="line">          filter: blur(5px);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>原有的 <code>.scss</code> 我略作些微調整，補上了 <code>filter</code>，這時候執行 <code>gulp sass</code> 就能看到 filter 加上了 <code>-webkit-</code> 的 prefix，如果說你看到的結果沒有加入 prefix，想必這篇文章年代已久遠，如果你堅持要使用 autoprefixer，可以參考文件，將 autoprefixer 的版本拉到 ie 7 那個年代 @_@。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽 10 - Gulp 與 Sass 開發環境]]></title>
+      <url>https://wcc723.github.io//css/2016/12/10/gulp-init/</url>
+      <content type="html"><![CDATA[<p>Gulp 是我目前最使用的自動化工具，在先前一篇也有介紹有哪些自動化工具，這篇開始會介紹 Gulp 自動化工具如何使用、有哪些推薦的工具以及一些經驗上的分享。而本次系列文都是著重在 CSS 的開發，所以不會介紹 Javascript 的自動化工具。</p>
+<a id="more"></a>
+<h2 id="Gulp-可以做什麼？"><a href="#Gulp-可以做什麼？" class="headerlink" title="Gulp 可以做什麼？"></a>Gulp 可以做什麼？</h2><p>Gulp 是一個前端任務管理工具，它可以做到如Fire.app、Prepros、Grunt等等所能做的事情，簡單內容如下：</p>
+<ul>
+<li>編譯 SASS、Coffeescript</li>
+<li>壓縮 .CSS, .JS, 甚至圖檔</li>
+<li>web server with Livereload</li>
+<li>享受自己動手做Task工具的快感</li>
+<li>others..</li>
+</ul>
+<p>雖然很多工具，都能做到類似的功能，但是如果需求不足的時候，就要開另一個工具來幫忙；另外許多專案已經在執行中或者是老專案，有些工具就會顯得限制太多，那麼就可以用gulp客製化屬於該專案使用的工具。</p>
+<h2 id="快速建置"><a href="#快速建置" class="headerlink" title="快速建置"></a>快速建置</h2><p>在開始使用 Gulp 前，需要先安裝 Node.js，Node.js 是一個讓 Javascript 運行在服務端的開發平台。<br>另外還有 npm，是由 Node.js 官方提供的第三方管理工具，並且是一種在 Node.js 應用程式中建立、分享、重複使用模組，而 npm 在目前的版本，都會隨著 Node.js 的安裝同時安裝好 npm。</p>
+<p>簡而言之，我們使用 Node.js 的服務以及透過 npm 管理工具。</p>
+<p>這一部分網路上有相當多的文章，本篇就不再贅述。</p>
+<h2 id="透過範例來了解如何運行"><a href="#透過範例來了解如何運行" class="headerlink" title="透過範例來了解如何運行"></a>透過範例來了解如何運行</h2><p>這邊我準備了一個很簡單的 Gulp Sass 案例：</p>
+<p><a href="https://github.com/Wcc723/ironman-gulp-sass/tree/v0.1.sass" target="_blank" rel="external">https://github.com/Wcc723/ironman-gulp-sass/tree/v0.1.sass</a></p>
+<p>下載後，在 Terminal 打開這個專案，並輸入以下指令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm install gulp -g</div><div class="line">npm install</div></pre></td></tr></table></figure>
+<p>這就是透過 npm 來安裝相關所需的套件，<code>npm install gulp -g</code> 會在全域環境下安裝 <code>gulp</code>，<code>npm install</code> 則是會安裝專案內的 <code>package.json</code> 所列出的需要元件。</p>
+<p>package json 如下，這範例中只會安裝 gulp、gulp-sass。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"name"</span>: <span class="string">"gulp-sass"</span>,</div><div class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</div><div class="line">  <span class="attr">"description"</span>: <span class="string">""</span>,</div><div class="line">  <span class="attr">"main"</span>: <span class="string">"index.js"</span>,</div><div class="line">  <span class="attr">"scripts"</span>: &#123;</div><div class="line">    <span class="attr">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">"author"</span>: <span class="string">""</span>,</div><div class="line">  <span class="attr">"license"</span>: <span class="string">"ISC"</span>,</div><div class="line">  <span class="attr">"dependencies"</span>: &#123;</div><div class="line">    <span class="attr">"gulp"</span>: <span class="string">"^3.9.1"</span>,</div><div class="line">    <span class="attr">"gulp-sass"</span>: <span class="string">"^2.3.2"</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接下來在執行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gulp sass</div></pre></td></tr></table></figure>
+<p><img src="/images/2016_ironman/10_gulp_sass_01.png" alt=""></p>
+<p>執行後就會將 <code>source/scss/all.scss</code> 編譯到 <code>public/stylesheets/all.css</code> ，此時整個範例流程也就結束。</p>
+<h2 id="解說"><a href="#解說" class="headerlink" title="解說"></a>解說</h2><p>在一開始下載時檔案結構如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">|- /source/scss   # 專案資料夾 (sass 位置)</div><div class="line">|- .gitignore</div><div class="line">|- gulpfile.js    # gulp 腳本檔案</div><div class="line">|- package.json   # 套件管理 json</div></pre></td></tr></table></figure>
+<p>執行完以上步驟後，資料夾結構會如下，<code>node_modules</code> 是運行 gulp 的套件資料工具資料夾，<code>public</code> 就是前端匯出的專案資料夾，在這個範例中我們可以將 public 指定任何的資料夾名稱與後端結構配合。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">|- /source/scss   # 專案資料夾 (sass 位置)</div><div class="line">|- /mode_modules  # node.js 套件資料夾</div><div class="line">|- /public        # 專案匯出的資料夾</div><div class="line">|- .gitignore</div><div class="line">|- gulpfile.js    # gulp 腳本檔案</div><div class="line">|- package.json   # 套件管理 json</div></pre></td></tr></table></figure>
+<p><code>gulpfile.js</code> 是整個 gulp 的核心，相當於一齣戲的劇本，開發者可以在腳本中定義自動化的運行流程，這邊用相當簡單的 gulp-sass 來介紹怎麼撰寫一份 gulpfile。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);  <span class="comment">// 將 node_modules 的檔案載入</span></div><div class="line"><span class="keyword">var</span> sass = <span class="built_in">require</span>(<span class="string">'gulp-sass'</span>);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'sass'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;     <span class="comment">// 定義 sass 的任務名稱</span></div><div class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./source/scss/**/*.scss'</span>) <span class="comment">// sass 的來源資料夾</span></div><div class="line">    .pipe(sass(                     <span class="comment">// 編譯 sass</span></div><div class="line">      &#123;<span class="attr">outputStyle</span>: <span class="string">'expanded'</span>&#125;     <span class="comment">// sass 的輸出格式</span></div><div class="line">    ).on(<span class="string">'error'</span>, sass.logError))</div><div class="line">    .pipe(gulp.dest(<span class="string">'./public/stylesheets'</span>)); <span class="comment">// sass 編譯完成後的匯出資料夾</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'sass:watch'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  gulp.watch(<span class="string">'./source/scss/**/*.scss'</span>, [<span class="string">'sass'</span>]); </div><div class="line">  <span class="comment">// 監控資料夾，當有變化時執行 'sass' 任務</span></div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<blockquote>
+<p>範例中的 watch 資料夾有誤，請稍做調整如本文</p>
+</blockquote>
+<p>所以開發者可以定義相當多的 Task，就以本範例中還有一個監控的任務可以使用 <code>gulp sass:watch</code>，如果不想要一直重啟 gulp 來編譯 sass 可以使用此指令。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>接下來連續幾篇都會介紹 gulp 以及與 CSS 相關的套件給大家參考。 </p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽 9 - CSS 實戰心法 搶到決定權，開發環境自己來]]></title>
       <url>https://wcc723.github.io//css/2016/12/09/css-dev/</url>
       <content type="html"><![CDATA[<p>前端工程師一般來說只要搞定 HTML、CSS、Javascript 就可以了，所以後端的環境上不用太在意，但在這幾年的體悟下，這是一個不負責任的想法。</p>
 <p>我用過的前端自動化開發環境有：</p>
