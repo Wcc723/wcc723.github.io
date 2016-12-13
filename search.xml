@@ -4,6 +4,24 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 14 - Gulp - Webserver]]></title>
+      <url>https://wcc723.github.io//css/2016/12/14/gulp-webserver/</url>
+      <content type="html"><![CDATA[<p>Gulp 很適合搭配任何其他的前後端結構，就先前介紹的幾個章節，只要略為修改輸入及輸出的路徑即可；除了搭配其他後端結構外，Gulp 也有適合直接開發的方法，本章會在介紹 Gulp Webserver，這樣就能夠直接在 Gulp 中開啟 Webserver。</p>
+<a id="more"></a>
+<h2 id="gulp-webserver"><a href="#gulp-webserver" class="headerlink" title="gulp webserver"></a>gulp webserver</h2><p>範例程式碼：<a href="https://github.com/Wcc723/ironman-gulp-sass/tree/v0.4.icon-fonts" target="_blank" rel="external">https://github.com/Wcc723/ironman-gulp-sass/tree/v0.4.icon-fonts</a></p>
+<p>Gulp webserver 能夠在 gulp 運行的期間開啟 webserver，並且包含著 Livereload 的功能，只要修改專案中的資料夾檔案，就能夠自動的更新瀏覽器上的畫面，讓開發更迅速。</p>
+<p>package.json: 僅有新增一個 gulp-webserver。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">"dependencies": &#123;</div><div class="line">  "async": "^2.1.4",</div><div class="line">  "autoprefixer": "^6.5.3",</div><div class="line">  "gulp": "^3.9.1",</div><div class="line">  "gulp-consolidate": "^0.2.0",</div><div class="line">  "gulp-iconfont": "^8.0.1",</div><div class="line">  "gulp-plumber": "^1.1.0",</div><div class="line">  "gulp-postcss": "^6.2.0",</div><div class="line">  "gulp-sass": "^2.3.2",</div><div class="line">  "gulp-webserver": "^0.9.1"</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>gulpfile.js</code> 可以依據以下的方法設定。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> webserver = <span class="built_in">require</span>(<span class="string">'gulp-webserver'</span>);  <span class="comment">// 載入 webserver</span></div><div class="line"></div><div class="line"><span class="comment">// webserver</span></div><div class="line">gulp.task(<span class="string">'webserver'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    gulp.src(path.public)                   <span class="comment">// 預設開啟路徑</span></div><div class="line">      .pipe(webserver(&#123;                     <span class="comment">// 啟動 webserver</span></div><div class="line">        livereload: <span class="literal">true</span>,                   <span class="comment">// Livereload 的功能</span></div><div class="line">        open: <span class="literal">false</span>,                        <span class="comment">// 是否自動開啟 瀏覽器</span></div><div class="line">        host: <span class="string">'0.0.0.0'</span>,                    <span class="comment">// 如果使用 0.0.0.0 的 ip，還會另外開啟 wifi 等對外網路</span></div><div class="line">        port: <span class="number">10000</span>,                        <span class="comment">// 開放通訊埠</span></div><div class="line">      &#125;));</div><div class="line">  &#125;, <span class="number">1000</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'others'</span>, <span class="string">'sass'</span>, <span class="string">'iconfonts'</span>, <span class="string">'watch'</span>, <span class="string">'webserver'</span>]);</div></pre></td></tr></table></figure>
+<p>設定完成後，一樣輸入 <code>gulp</code> 就會依序執行先前所設定的內容，而 Webserver 放在做後是確保所有流程完成後再開啟 Webserver ，使第一次執行專案的開發者也能夠執行。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>Gulp 介紹的目前為止，其實已經掌握大部分 Gulp 所使用的手法，接下來僅需要調整到合適的搭配環境即可；如果在開發上遇到 Gulp 不足的地方，可以到 NPM 的網站上透過 <code>gulp</code> 作為關鍵字，搜尋是否有其他套件可以使用。</p>
+<p><img src="/images/2016_ironman/14_gulp_webserver_01.png" alt=""></p>
+<p>到目前所介紹的內容，也都只要略作修改，觀念都可以運用在任何的套件上，如果遇到任何問題，也歡迎來詢問我喔～。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 13 - Gulp - 在本地端製作 Icon Fonts]]></title>
       <url>https://wcc723.github.io//css/2016/12/13/gulp-dev-env/</url>
       <content type="html"><![CDATA[<p>網頁設計都會需要大量的小 icon，現在的 icon 都傾向使用 web fonts 來處理，因為 web font 所製作的 icon 有以下的好處：</p>
