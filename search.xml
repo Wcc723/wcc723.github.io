@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 17 - 自定義你的 Bootstrap 樣式超簡單]]></title>
+      <url>https://wcc723.github.io//css/2016/12/17/bootstrap-custom/</url>
+      <content type="html"><![CDATA[<p>在導入框架至網站時，還要考慮框架是否符合網站風格以及往後的維護性。Bootstrap 雖然設計上是要給開發者直接運用的，但實際上他所設計的彈性非常之高，也很適合做客製化，甚至 fork 作為公司團體的 Style Guide。</p>
+<a id="more"></a>
+<p>本篇範例：<a href="https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component" target="_blank" rel="external">https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component</a></p>
+<h2 id="複製-Variables"><a href="#複製-Variables" class="headerlink" title="複製 Variables"></a>複製 Variables</h2><p>Bootstrap 所有設定都是放在 <code>_variables.scss</code> 這隻檔案下，但要學會怎麼修改其實沒有那麼困難，最簡單的方式就是將以下路徑的 <code>_variables.scss</code> 複製到專案目錄下的 <code>./source/scss</code>，這邊我個人是更習慣放在 <code>helpers</code> 資料夾內，算是寫 Sass 的習慣。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss</div><div class="line"></div><div class="line">// 複製到</div><div class="line">/source/scss</div></pre></td></tr></table></figure>
+<p>接下來我們將 <code>./source/scss/all.scss</code> 打開後加入 <code>@import &quot;helpers/variables&quot;;</code> 再次執行 gulp ，如果沒有跳任何錯誤代表正確。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">import</span> <span class="string">"helpers/variables"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"bootstrap"</span>;</div></pre></td></tr></table></figure>
+<h2 id="修改-變數"><a href="#修改-變數" class="headerlink" title="修改 變數"></a>修改 變數</h2><p>打開 Bootstrap 變數稍微閱讀一下其實會發現非常好懂，以下色彩這段來說，分為灰色系列色與品牌系列色，而品牌系列色就是我們看到 Bootstrap 各個元件的主要配色。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">//== Colors</div><div class="line">//</div><div class="line">//## Gray and brand colors for use across Bootstrap.</div><div class="line"></div><div class="line">$gray-base:              #000 !default;</div><div class="line">$gray-darker:            lighten($gray-base, 13.5%) !default; // #222</div><div class="line">$gray-dark:              lighten($gray-base, 20%) !default;   // #333</div><div class="line">$gray:                   lighten($gray-base, 33.5%) !default; // #555</div><div class="line">$gray-light:             lighten($gray-base, 46.7%) !default; // #777</div><div class="line">$gray-lighter:           lighten($gray-base, 93.5%) !default; // #eee</div><div class="line"></div><div class="line">$brand-primary:         darken(#428bca, 6.5%) !default; // #337ab7</div><div class="line">$brand-success:         #5cb85c !default;</div><div class="line">$brand-info:            #5bc0de !default;</div><div class="line">$brand-warning:         #f0ad4e !default;</div><div class="line">$brand-danger:          #d9534f !default;</div></pre></td></tr></table></figure>
+<p>然後每一個變數的後方都會接上一個 <code>!default</code> 在後方做為預設，所以在修改變數時需要同時將 <code>!default</code> 移除，請參考以下範例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$brand-primary:         #0275d8; //darken(#428bca, 6.5%) !default; // #337ab7</div><div class="line">$brand-success:         #5cb85c !default;</div><div class="line">$brand-info:            #5bc0de !default;</div></pre></td></tr></table></figure>
+<p>加入一個新色彩 <code>#0275d8</code> 並將原本色彩註解在後方，這時候在執行 <code>gulp</code> 就能看到結果。</p>
+<p>原色彩</p>
+<p><img src="/images/2016_ironman/17_bootstrap_02.png" alt=""></p>
+<p>經調整，類似於 Bootstrap 4 的色彩</p>
+<p><img src="/images/2016_ironman/17_bootstrap_01.png" alt=""></p>
+<p>像這樣的配色就比較接近於 Bootstrap 4 的色彩，用這個方法就可以輕易地修改 Bootstrap 中各個元件中的樣式變數，修改就是這麼樣的容易，只要修改一些變數就能完成。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 16 - 將 Bootstrap 導入自動化流程]]></title>
       <url>https://wcc723.github.io//css/2016/12/16/bootstrap-include/</url>
       <content type="html"><![CDATA[<p>先前的流程我們將 Gulp 的基礎流程已經建立起來了，現在我們要將 Bootstrap 導入自動化流程，讓接下來的客製化更為容易。</p>
@@ -8931,44 +8954,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io//jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -9039,6 +9024,44 @@ git commit -m &quot;first commit&quot;
 <p>###後記</p>
 <p>Jekyll loacl端建議使用Mac OSX，由於工作的關係，我會頻繁地在兩種系統交換使用，Windows是在安裝上的注意事項就可以寫一整篇了…，OSX就去看官網吧，三到四行貼完就結束了。</p>
 <p>不過我一開始是在Windows上建立的，接下來的文章還是會介紹我所遇到的問題。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
 ]]></content>
     </entry>
     
