@@ -4,7 +4,66 @@
   
     
     <entry>
-      <title><![CDATA[鐵人賽 17 - 自定義你的 Bootstrap 樣式超簡單]]></title>
+      <title><![CDATA[鐵人賽 18 - Bootstrap 元件分類概觀 (content, container)]]></title>
+      <url>https://wcc723.github.io//css/2016/12/18/bootstrap-component/</url>
+      <content type="html"><![CDATA[<p>接下來我們依循著 OOCSS 與 Bootstrap 的設計模式繼續擴資、修改元件，不過在繼續下一個階段以前，我們先來了解一下 Bootstrap 的設計模式。</p>
+<a id="more"></a>
+<h2 id="Bootstrap-檔案結構"><a href="#Bootstrap-檔案結構" class="headerlink" title="Bootstrap 檔案結構"></a>Bootstrap 檔案結構</h2><p>還記得我們一開始所說到的 OOCSS 中結構與樣式、容器與內容這兩者的概念嗎？無論是哪一個版本，Bootstrap 所有樣式模組都是以元件為基礎作為設計，基於這個概念我們可以很快得了解 Bootstrap 3 的結構。</p>
+<p>Bootstrap Sass 版本的檔案結構：<a href="https://github.com/twbs/bootstrap-sass/tree/master/assets/stylesheets/bootstrap" target="_blank" rel="external">https://github.com/twbs/bootstrap-sass/tree/master/assets/stylesheets/bootstrap</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">/bootstrap</div><div class="line">|- /mixins/</div><div class="line">|- _variables.scss</div><div class="line">|- _buttons.scss</div><div class="line">|- ....scss</div><div class="line">|- _components.scss</div><div class="line">|- _utilities.scss</div></pre></td></tr></table></figure>
+<p>主要資料夾如上，這邊略為介紹：</p>
+<ul>
+<li>/mixins/ 資料夾：樣式運算的函式庫，這部分可以先忽略他</li>
+<li><code>_variables.scss</code>：變數檔案，上一篇有介紹過，大部分的 Bootstrap 樣式變數都從這檔案設定。</li>
+<li><code>_button.scss</code> ~ <code>_components.scss</code>：剩下這層的檔案幾乎都是元件。</li>
+<li><code>_utilities.scss</code>：雖然說是元件，但又沒有完整的形體，像是 .clearfix 清除浮動就被歸在此類。</li>
+</ul>
+<p>而這篇要介紹的就是廣大的 Components 類別，從官方的文件及 OOCSS 混合來看，又可以將它作為兩大類的區分，一則是易於修改樣式的 <code>元件</code> (OOCSS 的內容)，另一則是包覆個許多子元件專用的 <code>容器</code>；這段很熟悉吧，我們在一開始所介紹到的 OOCSS 與此部分又開始產生連結。</p>
+<p><img src="/images/2016_ironman/18_bootstrap_01.png" alt=""></p>
+<h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><p>作為外層的容器，主要就是要包覆著在其內的內容及元件，在網頁上的功能偏向於排版用途，通常不會有滑鼠事件互動，所以在設計上會遵循著以下概念：</p>
+<ul>
+<li>不設定高度且具有彈性</li>
+<li>寬度以百分比為主</li>
+<li>可以有 theme (主題)</li>
+<li>狀態不是必須的</li>
+</ul>
+<p><img src="/images/2016_ironman/18_bootstrap_02.png" alt=""></p>
+<h3 id="元件-內容"><a href="#元件-內容" class="headerlink" title="元件 (內容)"></a>元件 (內容)</h3><p><img src="/images/2016_ironman/18_bootstrap_03.png" alt=""></p>
+<p>元件的特色在於包含許多樣式、狀態，是使用者在觀看網頁時主要互動的物件；以按鈕來說，使用者會滑過按鈕、按下按鈕，並且按鈕可能會回饋訊息給用戶了解，所以除了不同樣式上，元件所傳達得狀態訊息狀態也相同重要：</p>
+<ul>
+<li>有固定的外型</li>
+<li>有許多的樣式</li>
+<li>設計需要包含回饋狀態</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">容器型</th>
+<th style="text-align:left">元件型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">grid-system</td>
+<td style="text-align:left">form</td>
+</tr>
+<tr>
+<td style="text-align:left">button-group</td>
+<td style="text-align:left">buttons</td>
+</tr>
+<tr>
+<td style="text-align:left">panel</td>
+<td style="text-align:left">breadcrumbs</td>
+</tr>
+</tbody>
+</table>
+<p>這設計在 Bootstrap 4 更為明顯，但本篇還是以 Bootstrap 作為介紹。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>樣式雖然不是一定為哪種容器或是元件，但我們在設計一項新的物件時，一定要去思考他是傾向于哪種類型的物件，假設我們需要新增一個容器型物件，我們就要測試他有內容物及無內容物時的差異，甚至在大量的內容時是否會造成破版的問題。反之，設計元件型的樣式時則要思考在不同情境下使用的狀態，基本上就要補上 <code>啟用中</code>、<code>無法使用</code> 的狀態，這樣的設計會影響往後樣式在套用時的靈活性，與其在後續補上，不如在初期則做到一定的彈性。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽 17 - Bootstrap 自定義樣式超簡單]]></title>
       <url>https://wcc723.github.io//css/2016/12/17/bootstrap-custom/</url>
       <content type="html"><![CDATA[<p>在導入框架至網站時，還要考慮框架是否符合網站風格以及往後的維護性。Bootstrap 雖然設計上是要給開發者直接運用的，但實際上他所設計的彈性非常之高，也很適合做客製化，甚至 fork 作為公司團體的 Style Guide。</p>
 <a id="more"></a>
