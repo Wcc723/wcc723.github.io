@@ -4,6 +4,107 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 19 - 一次看懂元件的使用組合]]></title>
+      <url>https://wcc723.github.io//css/2016/12/19/bootstrap-component/</url>
+      <content type="html"><![CDATA[<p>Bootstrap 的官方文件有完整的說明以及範例，就算是如此，還是會有許多朋友希望有快速入門的介紹，本篇就來介紹絕大部分 Bootstrap 元件的組合手法，搞懂一次後就能快速運用到其他模組上，甚至 Bootstrap 4 也是用相同的概念就能夠運用唷。</p>
+<h2 id="元件組合"><a href="#元件組合" class="headerlink" title="元件組合"></a>元件組合</h2><p>Bootstrap 是標準的 OOCSS 概念下所設計的框架，也就如同樂高一樣可以反覆的堆疊，不過前提也是要在正確的卡楯上才能順利的接上。</p>
+<p>以按鈕為例，一般來說會看到長長的一段說明怎麼使用，以及有哪些樣式、大小、狀態等等使用方法(除了按鈕以外，大部分的文件皆是如此)，如果是要熟悉 Bootstrap 一個一個邊看邊使用也需要很長的時間，這邊來介紹一下基本的運用：</p>
+<p><img src="/images/2016_ironman/19_bootstrap_01.png" alt=""></p>
+<p>Bootstrap 在使用時，都會有個 <code>{ 模組 }</code> 作為元件的架構，所以按鈕就會有 <code>.btn</code> 然而這段也會混用在其他的延伸樣式上，如配色、樣式皆是如此，不過狀態就不會帶上 <code>.btn</code> 囉，這段要多注意一下。</p>
+<p>這邊我們在列出常見的按鈕表格模組，這樣是不是一目了然呢？</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模組</th>
+<th style="text-align:left">配色</th>
+<th style="text-align:left">樣式</th>
+<th style="text-align:left">狀態</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">btn</td>
+<td style="text-align:left">btn-primary</td>
+<td style="text-align:left">btn-sm</td>
+<td style="text-align:left">active</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">btn-default</td>
+<td style="text-align:left">btn-lg</td>
+<td style="text-align:left">disabled</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">btn-success</td>
+<td style="text-align:left">btn-xs</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">btn-info</td>
+<td style="text-align:left">btn-block</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">…</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<p>這時候如果在製作一個流程表單，要呈現用戶尚未填寫完成，需要一個較大的下一步按鈕並且加上不能點選的按鈕，我們就可以依上表格挑選。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">模組</th>
+<th style="text-align:left">配色</th>
+<th style="text-align:left">樣式</th>
+<th style="text-align:left">狀態</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">v <strong>btn</strong></td>
+<td style="text-align:left">btn-primary</td>
+<td style="text-align:left">btn-sm</td>
+<td style="text-align:left">active</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">btn-default</td>
+<td style="text-align:left">v <strong>btn-lg</strong></td>
+<td style="text-align:left">v <strong>disabled</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">v <strong>btn-success</strong></td>
+<td style="text-align:left">btn-xs</td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">btn-info</td>
+<td style="text-align:left">v <strong>btn-block</strong></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left">…</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<p>組出來的結果會是 <code>class=&quot;btn btn-success btn-lg disabled&quot;</code> 這樣就能出現一個綠色，且不能點擊的大按鈕。</p>
+<h2 id="結構"><a href="#結構" class="headerlink" title="結構"></a>結構</h2><p>以上案例可以套用在絕大部分的 Bootstrap 元件上，另外在介紹一下 Bootstrap 的元件模組結構，絕大部分如 btn、nav、navbar、progress、pagination… 都是用模組名稱在前，後方使用 <code>-</code> 帶入各種延伸的配色、樣式，而第一個模組名稱其實就是 <code>模組的結構</code> ，這個設計概念也是不斷的反覆出現結構與樣式分離，讓 Bootstrap 如此靈活的主要原因。</p>
+<p><img src="/images/2016_ironman/19_bootstrap_02.png" alt=""></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>本篇的概念可以快速使用 Bootstrap 3 的模組，且對於往後的 Bootstrap 4 版本更是如此，這個概念會更加的明顯。當然我們在製作元件時如果能夠帶入這些觀念，也助於我們的元件開發。。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 18 - Bootstrap 元件分類概觀 (content, container)]]></title>
       <url>https://wcc723.github.io//css/2016/12/18/bootstrap-component/</url>
       <content type="html"><![CDATA[<p>接下來我們依循著 OOCSS 與 Bootstrap 的設計模式繼續擴資、修改元件，不過在繼續下一個階段以前，我們先來了解一下 Bootstrap 的設計模式。</p>
