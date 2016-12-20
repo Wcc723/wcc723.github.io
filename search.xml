@@ -4,9 +4,36 @@
   
     
     <entry>
-      <title><![CDATA[鐵人賽 19 - 一次看懂元件的使用組合]]></title>
+      <title><![CDATA[鐵人賽 20 - Sass 資料夾結構]]></title>
+      <url>https://wcc723.github.io//css/2016/12/20/sass-folder/</url>
+      <content type="html"><![CDATA[<p>對於 Bootstrap 有一定了解後，我們即將要開始新增元件，不過在新增前我在分享一下 Sass 開發時的資料結構。</p>
+<p>Sass 資料夾結構相信大家也聽說 SMACSS 等，不過我們我們已經加入了 Bootstrap ，在開發時也要思考如何結合不同的開發概念 (自己的元件與 Bootstrap 元件的結合)，並且還有往後的 Bootstrap 框架更新、專案的樣式更新等問題。</p>
+<a id="more"></a>
+<h2 id="以元件為主的開發觀念"><a href="#以元件為主的開發觀念" class="headerlink" title="以元件為主的開發觀念"></a>以元件為主的開發觀念</h2><p>直觀的概念下，樣式通常會是用到哪寫到哪，這樣的開發下 CSS 的可用性較低，且開發到後期，前期的樣式都不太會再次使用(甚至不敢修改)，所以如果在開發時以元件作為出發點，就可以避免樣式可用性不高的問題。</p>
+<p>架構參考：<a href="http://www.sitepoint.com/architecture-sass-project/" target="_blank" rel="external">http://www.sitepoint.com/architecture-sass-project/</a></p>
+<p>這架構是我很喜歡的 Sass 開發架構，目前開發都是以此為基礎作延伸，但由於會搭配 Bootstrap 所以還是略有調整。</p>
+<p>這架構也並非每次都全開，會依據專案需求來做調整(用到哪開到哪)，以 layout、pages 來說，開發都是以元件為基礎，不太會使用到 layout 及 pages，所以這兩個資料夾開啟的機率不高(這兩者通常會用在活動型的網頁)。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div></pre></td><td class="code"><pre><div class="line">sass/</div><div class="line">|</div><div class="line">|– base/</div><div class="line">|   |– _reset.scss       # Reset/normalize</div><div class="line">|   |– _typography.scss  # Typography rules</div><div class="line">|   ...                  # Etc…</div><div class="line">|</div><div class="line">|– components/</div><div class="line">|   |– _buttons.scss     # Buttons</div><div class="line">|   |– _carousel.scss    # Carousel</div><div class="line">|   |– _cover.scss       # Cover</div><div class="line">|   |– _dropdown.scss    # Dropdown</div><div class="line">|   |– _navigation.scss  # Navigation</div><div class="line">|   ...                  # Etc…</div><div class="line">|</div><div class="line">|– helpers/</div><div class="line">|   |– _variables.scss   # Sass Variables</div><div class="line">|   |– _functions.scss   # Sass Functions</div><div class="line">|   |– _mixins.scss      # Sass Mixins</div><div class="line">|   |– _helpers.scss     # Class &amp; placeholders helpers</div><div class="line">|   ...                  # Etc…</div><div class="line">|</div><div class="line">|– layout/</div><div class="line">|   |– _grid.scss        # Grid system</div><div class="line">|   |– _header.scss      # Header</div><div class="line">|   |– _footer.scss      # Footer</div><div class="line">|   |– _sidebar.scss     # Sidebar</div><div class="line">|   |– _forms.scss       # Forms</div><div class="line">|   ...                  # Etc…</div><div class="line">|</div><div class="line">|– pages/</div><div class="line">|   |– _home.scss        # Home specific styles</div><div class="line">|   |– _contact.scss     # Contact specific styles</div><div class="line">|   ...                  # Etc…</div><div class="line">|</div><div class="line">|– themes/</div><div class="line">|   |– _theme.scss       # Default theme</div><div class="line">|   |– _admin.scss       # Admin theme</div><div class="line">|   ...                  # Etc…</div><div class="line">|</div><div class="line">|– vendors/</div><div class="line">|   |– _jquery-ui.scss   # jQuery UI</div><div class="line">|   ...                  # Etc…</div></pre></td></tr></table></figure>
+<p>而我的開發流程就是依據以上再作為調整，開發的心法如下</p>
+<ol>
+<li><code>all.scss</code> 載入開發模組 (Bootstrap 或自行開發的模組庫)。</li>
+<li>透過 helper 內的變數重新定義專案專屬的變數。</li>
+<li>增加專案所需要的元件 (元件庫所缺乏的元件)。</li>
+<li>增加區域性的元件如 header、footer (這部分的元件有可能再轉換成 components)。</li>
+<li>依據頁面需求撰寫 Pages 的 css。</li>
+<li>撰寫權限用的主題</li>
+<li>如果有載入外部 Javascripts ，會將外部的Javascript 的 css 檔名改成 <code>_xxxx.scss</code> 丟到vendors。</li>
+</ol>
+<p><img src="/images/2016_ironman/20_sass_01.png" alt=""></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>大多情況下，我都是以 <code>all.scss</code>、<code>/helpers/</code>、<code>/components/</code> 作為開場，如果是中小型的專案甚至從頭到尾的架構都是如此，大家也可以試試看用這個架構作為開發，可以從中思考到很多 CSS 架構管理的方法，以減少大型專案的樣式失控的問題。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽 19 - Bootstrap 一次看懂元件的使用組合]]></title>
       <url>https://wcc723.github.io//css/2016/12/19/bootstrap-component/</url>
       <content type="html"><![CDATA[<p>Bootstrap 的官方文件有完整的說明以及範例，就算是如此，還是會有許多朋友希望有快速入門的介紹，本篇就來介紹絕大部分 Bootstrap 元件的組合手法，搞懂一次後就能快速運用到其他模組上，甚至 Bootstrap 4 也是用相同的概念就能夠運用唷。</p>
+<a id="more"></a>
 <h2 id="元件組合"><a href="#元件組合" class="headerlink" title="元件組合"></a>元件組合</h2><p>Bootstrap 是標準的 OOCSS 概念下所設計的框架，也就如同樂高一樣可以反覆的堆疊，不過前提也是要在正確的卡楯上才能順利的接上。</p>
 <p>以按鈕為例，一般來說會看到長長的一段說明怎麼使用，以及有哪些樣式、大小、狀態等等使用方法(除了按鈕以外，大部分的文件皆是如此)，如果是要熟悉 Bootstrap 一個一個邊看邊使用也需要很長的時間，這邊來介紹一下基本的運用：</p>
 <p><img src="/images/2016_ironman/19_bootstrap_01.png" alt=""></p>
