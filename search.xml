@@ -4,6 +4,90 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 22 - 實戰心法 - 經常使用，但卻容易被忽視的 CSS]]></title>
+      <url>https://wcc723.github.io//css/2016/12/22/css-utilities/</url>
+      <content type="html"><![CDATA[<p>Bootstrap 3 載入以後其實就有包含大部分的元件，原本的設計概念上是希望透過一套框架就能滿足大多的需求，但實際在專案運作時有許多客製化需要微調，而很多微調的項目如下：</p>
+<ul>
+<li>左邊一點、右邊一點、間格大一點</li>
+<li>文字色彩</li>
+<li>背景色</li>
+<li>對齊方法</li>
+<li>垂直置中方法</li>
+<li>CSS 屬性：顯示屬性、背景屬性、Position …</li>
+</ul>
+<p>這些雜七雜八的，通常會運用在每個元件上，但每個元件都補上重複性又高，這一個部分我們通常會用另一個元件 <code>_utilities.scss</code> 來管理。</p>
+<a id="more"></a>
+<h2 id="Utilities"><a href="#Utilities" class="headerlink" title="Utilities"></a>Utilities</h2><p>在 Bootstrap 第四版這一兩個月的改版也有這樣的設計，而且數量多到有細項分類；就算如此，還是建議了解有哪些項目建議可以自行設計，因為這使用率非常高，就算用了第四版還是有不足的可能。</p>
+<p><img src="/images/2016_ironman/22_mind_01.png" alt=""></p>
+<p>以下我就來介紹一下常用的 Utilities 分類</p>
+<h4 id="Spacing"><a href="#Spacing" class="headerlink" title="Spacing"></a>Spacing</h4><p>間格分為兩大類，一則是 margin，另一則是 padding，兩者的使用頻率都非常高，所以別想偷懶只做一種。另外依據 OOCSS 的概念，間格要避免直接使用數值命名，如：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.mb-5</span> &#123;</div><div class="line">  <span class="attribute">margin-bottom</span>: <span class="number">5px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以這部分都會用 <code>s</code>、<code>m</code>、<code>l</code> 或是倍數型的 <code>1</code>、<code>2</code>、<code>3</code>，實作範例如下 (僅列出部分的範例…)。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* 實作範例 */</span></div><div class="line"><span class="selector-class">.mb0</span> &#123;</div><div class="line">  <span class="attribute">margin-bottom</span>: <span class="number">0</span> <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.mbs</span> &#123;</div><div class="line">  <span class="attribute">margin-bottom</span>: $gap-small;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.mbm</span> &#123;</div><div class="line">  <span class="attribute">margin-bottom</span>: $gap-base;</div><div class="line">&#125;</div><div class="line"></div><div class="line">...</div><div class="line"><span class="selector-class">.pdm</span> &#123;</div><div class="line">  <span class="attribute">padding</span>: $gutter;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="文字色彩-與-背景色"><a href="#文字色彩-與-背景色" class="headerlink" title="文字色彩 與 背景色"></a>文字色彩 與 背景色</h2><p>文字色彩也是經常使用的，除了品牌色 (Bootstrap 中有提到) 另外經常使用的色彩就是灰階、白色，這段的問題比較小，只是建議要使用 !important 來確保色彩覆蓋(僅列出部分的範例…)。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.text-primary</span> &#123;</div><div class="line">  <span class="attribute">color</span>: $brand-primary <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.text-danger</span> &#123;</div><div class="line">  <span class="attribute">color</span>: $brand-danger <span class="meta">!important</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.text-white</span> &#123;</div><div class="line">  <span class="attribute">color</span>: white <span class="meta">!important</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>背景色如同文字色彩，但是背景色有些會有更多延伸，如：</p>
+<ul>
+<li>是否包含不同明暗度</li>
+<li>是否要額外製作漸層</li>
+</ul>
+<p>在製作漸層時，如果專案維護的人不多(或者只有自己)，很建議先寫需要使用的色彩即可，不用的色彩可先不寫，因為很多色彩真的不會去用…。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.bg-primary</span> &#123;</div><div class="line">  <span class="attribute">background-color</span>: $brand-primary</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.bg-primary-lighter</span> &#123;</div><div class="line">  <span class="attribute">background-color</span>: <span class="built_in">lighten</span>($brand-primary, 12%)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.bg-primary-darken</span> &#123;</div><div class="line">  <span class="attribute">background-color</span>: <span class="built_in">darken</span>($brand-primary, 12%)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="對齊方法"><a href="#對齊方法" class="headerlink" title="對齊方法"></a>對齊方法</h2><p>這邊主要是文字的對齊，文字分為三種對齊置左、置中、置右，一般來說也是這三種即可，但是在 Bootstrap 4 之中還特別製作了不同的裝置尺寸的對齊方式。</p>
+<p>垂直置中的部分在後面會有獨立章節介紹。</p>
+<h2 id="CSS-屬性"><a href="#CSS-屬性" class="headerlink" title="CSS 屬性"></a>CSS 屬性</h2><p>CSS 很多屬性都是經常性的會運用到，這邊列出常用的：</p>
+<ul>
+<li>float</li>
+<li>background-size<ul>
+<li>cover</li>
+<li>contain</li>
+</ul>
+</li>
+<li>display<ul>
+<li>block</li>
+<li>inline-block</li>
+<li>none</li>
+</ul>
+</li>
+<li>position<ul>
+<li>relative</li>
+<li>absolute</li>
+<li>fixed</li>
+</ul>
+</li>
+<li>overflow<ul>
+<li>overflow-y</li>
+<li>overflow-x</li>
+</ul>
+</li>
+</ul>
+<p>這些都屬於零碎的 CSS 屬性，使用頻率說高不高、說低不低，但是要用實在另外寫 CSS 也是挺麻煩的，所以我也會將它獨立出來。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.bg-cover</span> &#123;</div><div class="line">  <span class="attribute">background-size</span>: cover</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.bg-contain</span> &#123;</div><div class="line">  <span class="attribute">background-size</span>: contain</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.p-relative</span> &#123;</div><div class="line">  <span class="attribute">position</span>: relative;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.p-absolute</span> &#123;</div><div class="line">  <span class="attribute">position</span>: absolute;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.p-fixed</span> &#123;</div><div class="line">  <span class="attribute">position</span>: fixed;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>除了垂直置中以外，其他常見的雜項我都已經在本篇列出，在製作第二次框架時，我就將大量的 Utilities 加入，導致我上班不太需要寫 CSS <strong>@_@</strong>，也很高興第四版 Bootstrap 加入了大量的 Utilities 讓我寫的 CSS 更少了…。</p>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽 21 - Bootstrap 透過 Sass 新增自定義元件]]></title>
+      <url>https://wcc723.github.io//css/2016/12/21/bootstrap-add-component/</url>
+      <content type="html"><![CDATA[<p>許多人在使用 Bootstrap 時，如果有需要新增、調整，都是寫在 CSS 的後方或是另開一個新檔透過 “覆蓋” 的特性來新增、調整。先前的文章已經介紹了如何調整 Bootstrap 的 CSS，透過變數的方式，我們可以調整整體的樣式設定，而 “新增” 我們也應該用相同的方法來製作，這樣的方法更有一致性，且能夠調用 Bootstrap 原有的變數及 @mixin。</p>
+<a id="more"></a>
+<h2 id="新增一個元件"><a href="#新增一個元件" class="headerlink" title="新增一個元件"></a>新增一個元件</h2><p>範例連結<br><a href="https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component" target="_blank" rel="external">https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component</a></p>
+<p>先前的文章介紹到 Sass 的架構，所以我們的專案結構會做些許的調整，目前已經有了 <code>all.scss</code> 以及 <code>helpers/_variables.scss</code> 這兩隻 .scss 檔案，接下來新增 <code>components</code> 資料夾，預計新增的元件就會放在這裡。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">scss/</div><div class="line">|- all.scss</div><div class="line">|</div><div class="line">|– helpers/</div><div class="line">|   |– _variables.scss   # Sass Variables</div><div class="line">|</div><div class="line">|– components/</div><div class="line">|   |– _card.scss        # 預計新增的模組</div></pre></td></tr></table></figure>
+<p>元件來源：<a href="https://github.com/doabit/semantic-ui-sass/blob/master/app/assets/stylesheets/semantic-ui/views/_card.scss" target="_blank" rel="external">https://github.com/doabit/semantic-ui-sass/blob/master/app/assets/stylesheets/semantic-ui/views/_card.scss</a></p>
+<p>我在 Sematic UI 上找到了一個現成的 Card 模組，這個模組所使用的變數不多，刪除後面的段落後，就可以直接加入 <code>components/_card.scss</code> 內。</p>
+<p>參考加入內容：<a href="https://github.com/Wcc723/ironman-gulp-sass/blob/v.0.7.component/source/scss/components/_card.scss" target="_blank" rel="external">https://github.com/Wcc723/ironman-gulp-sass/blob/v.0.7.component/source/scss/components/_card.scss</a></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*--------------</span></div><div class="line">      Card</div><div class="line">---------------*/</div><div class="line"></div><div class="line"><span class="selector-class">.ui</span><span class="selector-class">.cards</span> &gt; <span class="selector-class">.card</span>,</div><div class="line"><span class="selector-class">.ui</span><span class="selector-class">.card</span> &#123;</div><div class="line">  <span class="attribute">max-width</span>: <span class="number">100%</span>;</div><div class="line">  <span class="attribute">position</span>: relative;</div><div class="line">  <span class="attribute">display</span>: -webkit-box;</div><div class="line">  <span class="attribute">display</span>: -webkit-flex;</div><div class="line">  <span class="attribute">display</span>: -ms-flexbox;</div><div class="line">  <span class="attribute">display</span>: flex;</div><div class="line">  <span class="attribute">-webkit-box-orient</span>: vertical;</div><div class="line">  <span class="attribute">-webkit-box-direction</span>: normal;</div><div class="line">  <span class="attribute">-webkit-flex-direction</span>: column;</div><div class="line">      <span class="attribute">-ms-flex-direction</span>: column;</div><div class="line">          <span class="attribute">flex-direction</span>: column;</div><div class="line">  <span class="attribute">width</span>: <span class="number">290px</span>;</div><div class="line">  <span class="attribute">min-height</span>: <span class="number">0px</span>;</div><div class="line">  <span class="attribute">background</span>: <span class="number">#FFFFFF</span>;</div><div class="line">  <span class="attribute">padding</span>: <span class="number">0em</span>;</div><div class="line">  <span class="attribute">border</span>: none;</div><div class="line">  <span class="attribute">border-radius</span>: <span class="number">0.28571429rem</span>;</div><div class="line">  <span class="attribute">box-shadow</span>: <span class="number">0px</span> <span class="number">1px</span> <span class="number">3px</span> <span class="number">0px</span> <span class="number">#D4D4D5</span>, <span class="number">0px</span> <span class="number">0px</span> <span class="number">0px</span> <span class="number">1px</span> <span class="number">#D4D4D5</span>;</div><div class="line">  <span class="attribute">-webkit-transition</span>: box-shadow <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</div><div class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</div><div class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, transform <span class="number">0.1s</span> ease;</div><div class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, transform <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</div><div class="line">  <span class="attribute">z-index</span>: <span class="string">''</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 略 .. */</span></div></pre></td></tr></table></figure>
+<p>新增元件的心法在前面幾個章節有詳細的描述，本篇就直接運用半成品來說明，在 <code>_card.scss</code> 加入後，如果直接運行 <code>gulp</code> 是不會看到 card 加入至你的 CSS 內，所以必須要在 <code>all.scss</code> 補上以下內容確認載入才行。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@<span class="keyword">import</span> <span class="string">"helpers/variables"</span>;</div><div class="line">@<span class="keyword">import</span> <span class="string">"bootstrap"</span>;</div><div class="line"></div><div class="line">@<span class="keyword">import</span> <span class="string">"components/card"</span>;</div></pre></td></tr></table></figure>
+<p>此時，執行 <code>gulp</code> 沒有出錯的情況下就會看到 Card 模組已經載入了。以下範例為調整後的按鈕色彩及卡片模組。</p>
+<p><img src="/images/2016_ironman/21_bootstrap_01.png" alt=""></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>透過這一段的教學，大家能夠更靈活的使用 Bootstrap，其實這段流程並沒有那麼複雜，只要稍作練習，就能夠彈性的運用這些技能，且能有效地增加工作效率。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 20 - Sass 資料夾結構]]></title>
       <url>https://wcc723.github.io//css/2016/12/20/sass-folder/</url>
       <content type="html"><![CDATA[<p>對於 Bootstrap 有一定了解後，我們即將要開始新增元件，不過在新增前我在分享一下 Sass 開發時的資料結構。</p>
