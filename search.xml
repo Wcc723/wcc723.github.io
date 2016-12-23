@@ -4,6 +4,102 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 23 - 實戰心法 - 常見的垂直置中手法]]></title>
+      <url>https://wcc723.github.io//css/2016/12/23/vertical-align/</url>
+      <content type="html"><![CDATA[<p>上一章節介紹了各種 Utilities ，唯獨垂直置中不介紹，因為在製作、使用垂直置中時要先思考 “支援的瀏覽器”，就算現在全部 IE 的使用率低於 2% 的情況下，還是會有很多小兄弟會希望網站優先支援 IE。</p>
+<p>本篇會介紹幾種垂直置中手法(不包含舊瀏覽器)，每一種手法的寫法都不大一樣，所以使用時要特別注意使用規則。</p>
+<a id="more"></a>
+<h2 id="條件"><a href="#條件" class="headerlink" title="條件"></a>條件</h2><p>這篇文章所介紹的垂直置中方式，都不會使用絕對值(px)，大多可以運用在各種環境，但實際上還是需要配合CSS的特性去做選用。</p>
+<p>這次用鳴人的圖片來做介紹，這張圖片是用背景的方式載入。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.naruto</span> &#123;</div><div class="line">    <span class="attribute">background-image</span>: <span class="built_in">url</span>(/images/narutoR.png?1372854973);</div><div class="line">    <span class="attribute">background-color</span>: orange;</div><div class="line">    <span class="attribute">background-repeat</span>: no-repeat;</div><div class="line">    <span class="attribute">width</span>: <span class="number">107px</span>;</div><div class="line">    <span class="attribute">height</span>: <span class="number">207px</span>;</div><div class="line">    <span class="attribute">background-size</span>: cover;</div><div class="line">    <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.box-wrap</span> &#123;</div><div class="line">    <span class="attribute">height</span>: <span class="number">350px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+<style>
+.naruto {
+    background-image: url(/images/narutoR.png?1372854973);
+    background-color: orange;
+    background-repeat: no-repeat;
+    width: 107px;
+    height: 207px;
+    background-size: cover;
+    margin: 0 auto;
+}
+.box-wrap {
+    height: 350px;
+    border: 1px dashed red;
+}
+</style>
+
+
+<div class="demo box-wrap">
+	<div class="naruto"></div>
+</div>
+
+<h3 id="display-table"><a href="#display-table" class="headerlink" title="display table"></a>display table</h3><p>此 <code>table</code> 不是真 table，這是 IE8 以上才支援的 CSS 語法，將 div 的屬性轉成 table，再套用垂直置中的方式來完成。</p>
+<p>優點：概念簡單、支援度高(IE8+)</p>
+<p>缺點：html 結構較多層、有 table 的特性</p>
+
+<style>
+.d0116 .table {
+    display: table;
+    width: 100%;
+}
+.d0116 .table-cell {
+    display: table-cell;
+    vertical-align: middle;
+}
+</style>
+<div class="demo d0116">
+	<div class="table box-wrap">
+		<div class="table-cell">
+			<div class="naruto"></div>
+		</div>
+	</div>
+</div>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></div><div class="line"><span class="selector-class">.d0116</span> <span class="selector-class">.table</span> &#123;</div><div class="line">    <span class="attribute">display</span>: table;</div><div class="line">    <span class="attribute">width</span>: <span class="number">100%</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.d0116</span> <span class="selector-class">.table-cell</span> &#123;</div><div class="line">    <span class="attribute">display</span>: table-cell;</div><div class="line">    <span class="attribute">vertical-align</span>: middle;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo d0116"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"table box-wrap"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"table-cell"</span>&gt;</span></div><div class="line">			<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"naruto"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">		<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="translateY"><a href="#translateY" class="headerlink" title="translateY"></a>translateY</h3><p>以前常會用一種方式做垂直置中 top: 50%; margin-top: -(元素高 / 2);，先用 top 往下推 50% 的距離，再利用 margin-top 拉回元素的一半高度，這方式雖然很好用，但是必須用在元素有明確高度上。</p>
+<p>而這邊所介紹是相同的道理，但是是用 <code>transform: translateY(-50%)</code> 將元素垂直向上 50% 的距離，這 50% 則是元素的高度，且語法都集中在元素上。</p>
+<p>優點：超簡單</p>
+<p>缺點：並非所有情境都適用</p>
+
+<style>
+.vertical-center {
+  position: relative;
+  top: 50%;
+  margin: 0 auto;
+  transform: translateY(-50%);
+}
+</style>
+<div class="demo d0116">
+	<div class="box-wrap">
+		<div class="naruto vertical-center"></div>
+	</div>
+</div>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></div><div class="line"><span class="selector-class">.vertical-center</span> &#123;</div><div class="line">  <span class="attribute">position</span>: relative;</div><div class="line">  <span class="attribute">top</span>: <span class="number">50%</span>;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">  <span class="attribute">transform</span>: <span class="built_in">translateY</span>(-50%);</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo d0116"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box-wrap"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"naruto vertical-center"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><p>Flex 是這幾年我經常使用的語法，這讓 CSS 排版的彈性大幅提升，不過在使用時還是有些瀏覽器的差異，像是舊版的 iOS Safari 就會略有不同，另外在實戰上的注意事項也較多。</p>
+<p>優點：很潮</p>
+<p>缺點：建議熟悉flex概念</p>
+
+<style>
+.flex-center {
+  display: flex;
+	align-items: center;
+	justify-content: center;
+}
+</style>
+<div class="demo d0116">
+	<div class="box-wrap flex-center">
+		<div class="naruto"></div>
+	</div>
+</div>
+
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></div><div class="line"><span class="selector-class">.flex-center</span> &#123;</div><div class="line">  <span class="attribute">display</span>: flex;</div><div class="line">	<span class="attribute">align-items</span>: center;</div><div class="line">	<span class="attribute">justify-content</span>: center;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo d0116"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box-wrap flex-center"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"naruto"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>這三種是我在實戰上比較常使用的，其中最常用的是 translate ，因為只需要一個 class 就能套用，相容性略高於 flex，相當簡單易用。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 22 - 實戰心法 - 經常使用，但卻容易被忽視的 CSS]]></title>
       <url>https://wcc723.github.io//css/2016/12/22/css-utilities/</url>
       <content type="html"><![CDATA[<p>Bootstrap 3 載入以後其實就有包含大部分的元件，原本的設計概念上是希望透過一套框架就能滿足大多的需求，但實際在專案運作時有許多客製化需要微調，而很多微調的項目如下：</p>
@@ -9225,6 +9321,44 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io//jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -9295,44 +9429,6 @@ git commit -m &quot;first commit&quot;
 <p>###後記</p>
 <p>Jekyll loacl端建議使用Mac OSX，由於工作的關係，我會頻繁地在兩種系統交換使用，Windows是在安裝上的注意事項就可以寫一整篇了…，OSX就去看官網吧，三到四行貼完就結束了。</p>
 <p>不過我一開始是在Windows上建立的，接下來的文章還是會介紹我所遇到的問題。</p>
-]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
 ]]></content>
     </entry>
     
