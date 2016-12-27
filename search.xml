@@ -4,6 +4,35 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽 27 - CSS 框架自幹心得 - 失敗三次的框架建構經驗]]></title>
+      <url>https://wcc723.github.io//css/2016/12/27/over-my-dead-body/</url>
+      <content type="html"><![CDATA[<p>先前提到過有自幹過框架，主要的經驗是兩次，第三次就不再完全重新自幹了，每次到了最後都會發現有些概念不夠完美，然後修正前一版的錯誤再出發一次!?後來發現自幹本身就有很大的風險在…。</p>
+<a id="more"></a>
+<h2 id="第一次"><a href="#第一次" class="headerlink" title="第一次"></a>第一次</h2><p>距今約 36 個月以前(這樣說比較久)。</p>
+<p>剛開始接觸 Sass 時發現他的 <code>@mixin</code> 真的很神，發現很多樣式可以先準備好 <code>@mixin</code> 等到需要使用的時候在載入，所以當時就以產生 <strong>樣式庫</strong> 的概念做設計，當時還沒有參考主流的框架，單純以自己的觀念做開發，包含按鈕、表單、jQuery 套件等常見的樣式庫都有設計。</p>
+<p><img src="/images/2016_ironman/26_custom_01.png" alt=""></p>
+<p>當時文件只要輸入 <code>+divider($gap: 1.5em)</code> 就可以引用上方的範例樣式。</p>
+<p><img src="/images/2016_ironman/26_custom_02.png" alt=""></p>
+<p>且設計上都是用當時主流的漸層效果在做，只要輸入一個色彩就會運算出各種狀態的漸層，真的是好潮好潮～。當時這些都是自己在維護、使用，久而久之發現每個專案都要重新 <code>@include</code> 這些樣式也真的很麻煩，心想不如直接寫一款都預設 <code>@include</code> 的好了。</p>
+<h2 id="第二次"><a href="#第二次" class="headerlink" title="第二次"></a>第二次</h2><p>距今約 24 個月以前。</p>
+<p>已經經歷過一次的框架歷練的我，等級已經是翻倍再翻倍，這時候是以一個完整可運用的框架去執行，所以執行時也有考慮到框架的文件、運用、擴充等問題。</p>
+<p><img src="/images/2016_ironman/26_custom_03.png" alt=""></p>
+<p>樣式文件，命名還要帶點叛逆。</p>
+<p><img src="/images/2016_ironman/26_custom_04.png" alt=""></p>
+<p>包含延伸運用都有製作在內。</p>
+<p>這樣的架構其實並沒有太大問題，但是發現 CSS 檔案大小上升略快 &gt;O&lt;，所以每次加入新元件都要不斷的檢查問題點在哪，後來發現 <code>@extend</code> 的問題以及 OOCSS 的架構。</p>
+<h2 id="第三次"><a href="#第三次" class="headerlink" title="第三次"></a>第三次</h2><p>後來仔細研究了 Bootstrap 文件原始碼及 OOCSS 的概念，清楚了解到自己開發的框架問題點，所以就很乾脆的將 Bootstrap 給 fork 惹…。現在主要都是以 Bootstrap 作為基底來當作樣式框架開發的底層，並且依據自己喜愛的設計風格、專案需求去做調整。</p>
+<p><img src="/images/2016_ironman/26_custom_05.png" alt=""></p>
+<p>色彩相對於當時的 Bootstrap 3 來說更為鮮豔，且圓角更小。</p>
+<p><img src="/images/2016_ironman/26_custom_06.png" alt=""></p>
+<p>還有很愛的 outline button，在 Bootstrap 4 的版本也有加入，很開心的是當時很多概念在 Bootstrap 4 都有提供，如 Card、Spacing…。</p>
+<p><img src="/images/2016_ironman/26_custom_07.png" alt=""></p>
+<p>還以 Material Design 為概念的 jQuery UI，當然這是選用的，預設的情況下是不需要載入的。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>現在，許多情況下 Bootstrap 4 能滿足基礎的開發需求，再以 Sass 的特性結合需要的元件開發就能節省許多時間。除了公司專案外，我大多情況不會重頭開始寫 CSS 或是另外開發框架。</p>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 26 - 實戰心法 - 應避免的 Sass @extend]]></title>
       <url>https://wcc723.github.io//css/2016/12/26/sass-extend/</url>
       <content type="html"><![CDATA[<p>Sass 的 <code>@extend</code> 可以將相同的樣式整理再一起，在其他語言來說是非常帥氣的技法，但在 CSS 中請警慎使用。</p>
