@@ -4,6 +4,43 @@
   
     
     <entry>
+      <title><![CDATA[Javascript Promise 範例]]></title>
+      <url>https://wcc723.github.io//javascript/2017/03/02/javascript-promise/</url>
+      <content type="html"><![CDATA[<p>Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。</p>
+<a id="more"></a>
+
+<p data-height="400" data-theme-id="0" data-slug-hash="qrbKNg" data-default-tab="js" data-user="Wcc723" data-embed-version="2" data-pen-title="ES6 Promise" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/qrbKNg/" target="_blank" rel="external">ES6 Promise</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="external">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> epaAPI = <span class="string">"http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?"</span>;</div><div class="line">  <span class="keyword">let</span> errorUrl = <span class="string">"http://opendata.epa.gov.tw/ws/Data/UL/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?"</span>;</div><div class="line">  <span class="keyword">let</span> _DefaultContry = <span class="string">'臺北市'</span>;</div><div class="line">  </div><div class="line">  <span class="keyword">var</span> getData = <span class="function">(<span class="params">url</span>)=&gt;</span> &#123; <span class="comment">// 傳入的 URL</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123; <span class="comment">// return promise</span></div><div class="line">      $.getJSON( url, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        format: <span class="string">"json"</span></div><div class="line">      &#125;).done(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (data) &#123;</div><div class="line">          resolve(data); <span class="comment">// 成功後透過 resolve 回傳值</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">          reject(<span class="string">'Error'</span>);</div><div class="line">        &#125;</div><div class="line">      &#125;).fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        reject(<span class="string">'Error'</span>);</div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  getData(epaAPI) <span class="comment">// 傳入的 url</span></div><div class="line">    .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值</span></div><div class="line">      <span class="built_in">console</span>.log(data);</div><div class="line">      $.each( data, <span class="function"><span class="keyword">function</span>(<span class="params"> i, item </span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(item);</div><div class="line">        <span class="keyword">let</span> list = <span class="string">`&lt;li&gt;<span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.PublishTime&#125;</span> <span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span> </div><div class="line">        <span class="comment">//利用item.值，把每一個值取出，並寫成一個html存在list的變數內</span></div><div class="line">        $(<span class="string">'.itemlist'</span>).append(list);</div><div class="line">        <span class="comment">//最後把剛剛的html放到表格內</span></div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  </div><div class="line">  getData(errorUrl) <span class="comment">// 傳入錯誤的 url</span></div><div class="line">    .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span></div><div class="line">      <span class="built_in">console</span>.log(data);</div><div class="line">    &#125;)</div><div class="line">    .catch(<span class="function">(<span class="params">response</span>)=&gt;</span> &#123; <span class="comment">// 錯誤狀態的回傳</span></div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'errorUrl:'</span>, response);</div><div class="line">    &#125;);</div><div class="line">  </div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<h2 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h2><h3 id="new-Promise"><a href="#new-Promise" class="headerlink" title="new Promise"></a>new Promise</h3><p><code>var getData()</code> 裡面包含非同步的 Ajax，如果直接套用 <code>getData()</code> 會無法確實取得資料後再執行其他 function，所以這時候在內部加上 <code>new Promise()</code> 確保 Ajax 完成後再回傳資料。<br><code>getData(epaAPI)</code> 套用時可以傳入 url，在後方的 <code>.then</code> 表示任務完成第一段後取得 <code>resolve()</code> 內的值，接下來就如同 jQuery Ajax 回傳後得處理方式一樣，。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> list = <span class="string">`&lt;li&gt;<span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.PublishTime&#125;</span> <span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span></div></pre></td></tr></table></figure>
+<p>題外話：這一段則是 ES6 中的字串處理方式，用 <code>` 符號框住整個字串，再透過類似 jQuery 的 selector (</code>${}<code>) 就能帶入字串中的變數，取代過去使用</code>“ “ + variable + “ “` 撰寫起來輕便許多。</p>
+<h3 id="錯誤回傳"><a href="#錯誤回傳" class="headerlink" title="錯誤回傳"></a>錯誤回傳</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">getData(errorUrl) <span class="comment">// 傳入錯誤的 url</span></div><div class="line">  .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span></div><div class="line">    <span class="built_in">console</span>.log(data);</div><div class="line">  &#125;)</div><div class="line">  .catch(<span class="function">(<span class="params">response</span>)=&gt;</span> &#123; <span class="comment">// 錯誤狀態的回傳</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'errorUrl:'</span>, response);</div><div class="line">  &#125;);</div></pre></td></tr></table></figure>
+<p>後面包含另一個 <code>getData(errorUrl)</code> 刻意傳入錯誤的連結使其產生錯誤，這時候的 <code>.then</code> 沒有辦法接受到資料，後方的 <code>.catch</code> 則可以接到由 <code>reject()</code> 回傳的訊息。</p>
+<p>參考文件：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="external">https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> js </tag>
+            
+            <tag> promise </tag>
+            
+            <tag> es6 </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽 30 - CSS 鐵人賽的結束與接下來的研究]]></title>
       <url>https://wcc723.github.io//css/2016/12/30/ironman-ending/</url>
       <content type="html"><![CDATA[<p>相較於 Javascript 來說，CSS 的演進速度算是非常緩慢的，主要原因當然是瀏覽器的相容性，瀏覽器不太能因為新的特色加入而毀了以前所建置的網站。</p>
@@ -34,6 +71,22 @@
 <p>以下為圖文參考的文件，就目前看來有許多語法與 <code>flex</code> 是共用的，期望 webkit 能統一瀏覽器世界，讓這些語法能夠快速進入實際運用。</p>
 <p><a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="external">https://css-tricks.com/snippets/css/complete-guide-grid/</a></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Sass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -136,6 +189,22 @@ ul.green li ul li.blue {
 <p>這個手法是不斷提升堆疊單一個 className 的權重，並使它可以超過其它巢狀元素的優先值，所以並不會影響到標籤的 <code>style</code> 及 <code>!important</code> 的權重。</p>
 <p>那麼，如果這個情況下還需要更高的權重呢？那…就慢慢加長吧。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Sass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -156,6 +225,22 @@ ul.green li ul li.blue {
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">.autofullscreen &#123;</div><div class="line">  input, select, textarea, button &#123;</div><div class="line">    font-size: 16px;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>結果如上，只要調整 CSS 就能大幅改善使用者體驗。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Sass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -185,6 +270,22 @@ ul.green li ul li.blue {
 <p>還以 Material Design 為概念的 jQuery UI，當然這是選用的，預設的情況下是不需要載入的。</p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>現在，許多情況下 Bootstrap 4 能滿足基礎的開發需求，再以 Sass 的特性結合需要的元件開發就能節省許多時間。除了公司專案外，我大多情況不會重頭開始寫 CSS 或是另外開發框架。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Sass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -215,6 +316,22 @@ ul.green li ul li.blue {
 <figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.btn-primary</span><span class="selector-class">.disabled</span>, <span class="selector-class">.btn-primary</span><span class="selector-class">.disabled</span><span class="selector-pseudo">:hover</span>, <span class="selector-class">.btn-primary</span><span class="selector-class">.disabled</span><span class="selector-pseudo">:focus</span>, <span class="selector-class">.btn-primary</span><span class="selector-class">.disabled</span><span class="selector-class">.focus</span>, <span class="selector-class">.btn-primary</span><span class="selector-class">.disabled</span><span class="selector-pseudo">:active</span>, <span class="selector-class">.btn-primary</span><span class="selector-class">.disabled</span><span class="selector-class">.active</span>, <span class="selector-class">.btn-primary</span><span class="selector-attr">[disabled]</span>, <span class="selector-class">.btn-primary</span><span class="selector-attr">[disabled]</span><span class="selector-pseudo">:hover</span>, <span class="selector-class">.btn-primary</span><span class="selector-attr">[disabled]</span><span class="selector-pseudo">:focus</span>, <span class="selector-class">.btn-primary</span><span class="selector-attr">[disabled]</span><span class="selector-class">.focus</span>, <span class="selector-class">.btn-primary</span><span class="selector-attr">[disabled]</span><span class="selector-pseudo">:active</span>, <span class="selector-class">.btn-primary</span><span class="selector-attr">[disabled]</span><span class="selector-class">.active</span>, <span class="selector-tag">fieldset</span><span class="selector-attr">[disabled]</span> <span class="selector-class">.btn-primary</span>, <span class="selector-tag">fieldset</span><span class="selector-attr">[disabled]</span> <span class="selector-class">.btn-primary</span><span class="selector-pseudo">:hover</span>, <span class="selector-tag">fieldset</span><span class="selector-attr">[disabled]</span> <span class="selector-class">.btn-primary</span><span class="selector-pseudo">:focus</span>, <span class="selector-tag">fieldset</span><span class="selector-attr">[disabled]</span> <span class="selector-class">.btn-primary</span><span class="selector-class">.focus</span>, <span class="selector-tag">fieldset</span><span class="selector-attr">[disabled]</span> <span class="selector-class">.btn-primary</span><span class="selector-pseudo">:active</span>, <span class="selector-tag">fieldset</span><span class="selector-attr">[disabled]</span> <span class="selector-class">.btn-primary</span><span class="selector-class">.active</span> &#123;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#009AFF</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">#009AFF</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>其實學到現在，要安全點其實是避開 <code>@extend</code> 不使用，就連 Bootstrap 的原始碼中也不怎麼使用 <code>@extend</code> 這手法，但為什麼本篇會特別提出呢…!?因為我以前就是敗在這上的啊 Q_Q。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Sass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -239,6 +356,22 @@ ul.green li ul li.blue {
 
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>現在的 CSS 大多會使用 Sass、Less、PostCSS 來做管理，使用哪一種語言倒是無所謂，但建議先從一種入門到熟悉，會發現省去許多不必要的時間，且在管理上會容易許多。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Sass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -268,6 +401,22 @@ ul.green li ul li.blue {
 <p>原始碼範例: <a href="http://codepen.io/Wcc723/pen/ENMEqY/" target="_blank" rel="external">http://codepen.io/Wcc723/pen/ENMEqY/</a></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>在套用其他人開發的 grid system 之前，不妨先自己是寫看看，然候修改其中的程式碼這樣更能夠知道每個環節的用途。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -364,6 +513,22 @@ ul.green li ul li.blue {
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="css"></span></div><div class="line"><span class="selector-class">.flex-center</span> &#123;</div><div class="line">  <span class="attribute">display</span>: flex;</div><div class="line">	<span class="attribute">align-items</span>: center;</div><div class="line">	<span class="attribute">justify-content</span>: center;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo d0116"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box-wrap flex-center"</span>&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"naruto"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>這三種是我在實戰上比較常使用的，其中最常用的是 translate ，因為只需要一個 class 就能套用，相容性略高於 flex，相當簡單易用。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -428,6 +593,22 @@ ul.green li ul li.blue {
 <figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.bg-cover</span> &#123;</div><div class="line">  <span class="attribute">background-size</span>: cover</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.bg-contain</span> &#123;</div><div class="line">  <span class="attribute">background-size</span>: contain</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.p-relative</span> &#123;</div><div class="line">  <span class="attribute">position</span>: relative;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.p-absolute</span> &#123;</div><div class="line">  <span class="attribute">position</span>: absolute;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.p-fixed</span> &#123;</div><div class="line">  <span class="attribute">position</span>: fixed;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>除了垂直置中以外，其他常見的雜項我都已經在本篇列出，在製作第二次框架時，我就將大量的 Utilities 加入，導致我上班不太需要寫 CSS <strong>@_@</strong>，也很高興第四版 Bootstrap 加入了大量的 Utilities 讓我寫的 CSS 更少了…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -448,6 +629,22 @@ ul.green li ul li.blue {
 <p><img src="/images/2016_ironman/21_bootstrap_01.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>透過這一段的教學，大家能夠更靈活的使用 Bootstrap，其實這段流程並沒有那麼複雜，只要稍作練習，就能夠彈性的運用這些技能，且能有效地增加工作效率。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -474,6 +671,22 @@ ul.green li ul li.blue {
 <p><img src="/images/2016_ironman/20_sass_01.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>大多情況下，我都是以 <code>all.scss</code>、<code>/helpers/</code>、<code>/components/</code> 作為開場，如果是中小型的專案甚至從頭到尾的架構都是如此，大家也可以試試看用這個架構作為開發，可以從中思考到很多 CSS 架構管理的方法，以減少大型專案的樣式失控的問題。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -576,6 +789,22 @@ ul.green li ul li.blue {
 <p><img src="/images/2016_ironman/19_bootstrap_02.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>本篇的概念可以快速使用 Bootstrap 3 的模組，且對於往後的 Bootstrap 4 版本更是如此，這個概念會更加的明顯。當然我們在製作元件時如果能夠帶入這些觀念，也助於我們的元件開發。。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -635,6 +864,22 @@ ul.green li ul li.blue {
 <p>這設計在 Bootstrap 4 更為明顯，但本篇還是以 Bootstrap 作為介紹。</p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>樣式雖然不是一定為哪種容器或是元件，但我們在設計一項新的物件時，一定要去思考他是傾向于哪種類型的物件，假設我們需要新增一個容器型物件，我們就要測試他有內容物及無內容物時的差異，甚至在大量的內容時是否會造成破版的問題。反之，設計元件型的樣式時則要思考在不同情境下使用的狀態，基本上就要補上 <code>啟用中</code>、<code>無法使用</code> 的狀態，這樣的設計會影響往後樣式在套用時的靈活性，與其在後續補上，不如在初期則做到一定的彈性。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -658,6 +903,22 @@ ul.green li ul li.blue {
 <p><img src="/images/2016_ironman/17_bootstrap_01.png" alt=""></p>
 <p>像這樣的配色就比較接近於 Bootstrap 4 的色彩，用這個方法就可以輕易地修改 Bootstrap 中各個元件中的樣式變數，修改就是這麼樣的容易，只要修改一些變數就能完成。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -684,6 +945,22 @@ ul.green li ul li.blue {
 <p><img src="/images/2016_ironman/16_bootstrap_03.png" alt=""></p>
 <p>最後的結果如上，一開始的 color: blue 是我們自己定義的，而後方開始就是完整的 Bootstrap，接下來我們再來了解如何去調整 Bootstrap 的樣式。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -720,6 +997,22 @@ ul.green li ul li.blue {
 </ul>
 <h2 id="本篇系列作要介紹什麼"><a href="#本篇系列作要介紹什麼" class="headerlink" title="本篇系列作要介紹什麼"></a>本篇系列作要介紹什麼</h2><p>Bootstrap 本身在使用上難度並不高，就基於元件如何使用官方文件上介紹以非常完整，本篇會開始會介紹 Bootstrap 的進階使用及設計模式去介紹，讓 Bootstrap 可以依據專案需求去做調整及延伸(Bootstrap 甚至能作為大型開發專案的基底)。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> Bootstrap </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -738,6 +1031,22 @@ ul.green li ul li.blue {
 <p><img src="/images/2016_ironman/14_gulp_webserver_01.png" alt=""></p>
 <p>到目前所介紹的內容，也都只要略作修改，觀念都可以運用在任何的套件上，如果遇到任何問題，也歡迎來詢問我喔～。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> gulp </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -784,6 +1093,22 @@ ul.green li ul li.blue {
 <p><img src="/images/2016_ironman/13_gulp_iconfonts_01.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>在使用這功能時，要思考團隊中是不是有專門的設計師能繪製 icon ，以及 icon 不足時能不能有專人提供，避免用了這個功能，卻無法做良好的維護。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> gulp </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -806,6 +1131,22 @@ ul.green li ul li.blue {
 <p>完成到這個步驟，只要執行 <code>gulp</code> 就會自動將以上流程一次完成，並且監聽相關的檔案是否有異動。</p>
 <p>到目前為止，基本的 Gulp 運用已經足夠應付 CSS 在前端上的需求，在後面的章節會介紹更進階的 Gulp 套件運用。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> gulp </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -828,6 +1169,22 @@ ul.green li ul li.blue {
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">body &#123;</div><div class="line">  color: blue;</div><div class="line">  -webkit-filter: blur(5px);</div><div class="line">          filter: blur(5px);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>原有的 <code>.scss</code> 我略作些微調整，補上了 <code>filter</code>，這時候執行 <code>gulp sass</code> 就能看到 filter 加上了 <code>-webkit-</code> 的 prefix，如果說你看到的結果沒有加入 prefix，想必這篇文章年代已久遠，如果你堅持要使用 autoprefixer，可以參考文件，將 autoprefixer 的版本拉到 ie 7 那個年代 @_@。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> gulp </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -870,6 +1227,22 @@ ul.green li ul li.blue {
 <p>所以開發者可以定義相當多的 Task，就以本範例中還有一個監控的任務可以使用 <code>gulp sass:watch</code>，如果不想要一直重啟 gulp 來編譯 sass 可以使用此指令。</p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>接下來連續幾篇都會介紹 gulp 以及與 CSS 相關的套件給大家參考。 </p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> gulp </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -899,6 +1272,22 @@ ul.green li ul li.blue {
 <p>經常會有前後端或者設計師抱怨其他不同領域的開發者，很多時候在於不夠了解對方，也許會思考 “我時間都不夠了” ，為什麼還要花時間去學對方的領域呢？</p>
 <p>換個層面思考，如果了解對方的領域(對方領域的基礎運作即可)，是不是能夠減少更多的溝通成本，進而節省時間。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> gulp </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -954,6 +1343,22 @@ ul.green li ul li.blue {
 </ol>
 <p>了解整體架構後，如果需要自行修改或自幹(?)也會相對容易很多。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> oocss </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -999,6 +1404,22 @@ ul.green li ul li.blue {
 <p>Bootstrap Navbar color theme: <a href="http://v4-alpha.getbootstrap.com/components/navbar/#color-schemes" target="_blank" rel="external">http://v4-alpha.getbootstrap.com/components/navbar/#color-schemes</a></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>在現在 Sass、PostCSS 盛行的情況下，在製作多種樣式時都是透過工具去做運算，Pure CSS 僅提供 CSS 並運用 CSS 的特性讓其他開發者也能輕易自訂樣式，這也是我喜歡 Pure CSS 的部分。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> oocss </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1045,6 +1466,22 @@ ul.green li ul li.blue {
 <li>在一開始寫的時候請順便規劃各種狀態</li>
 </ul>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> oocss </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1106,6 +1543,22 @@ ul.green li ul li.blue {
 </ul>
 <p>這篇嘗試使用小劇場的方式來介紹 CSS，自我感覺良好，但需要花雙倍的時間啊啊啊啊～。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> oocss </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1144,6 +1597,22 @@ ul.green li ul li.blue {
 <p>就當下這個設計，我們其實可以略作調整，將 <code>ul</code> 及 <code>img</code> 拉出來製作，然元件的容器與內容分離。</p>
 <p>這樣就學會了兩大 OOCSS 的觀念，而這兩個觀念下還有些細節可以注意，等到看完這幾天的介紹，就能掌握整個 CSS 模組的核心概念。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> oocss </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1200,6 +1669,22 @@ ul.green li ul li.blue {
 <figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.btn</span> &#123;</div><div class="line">  <span class="attribute">display</span>: inline-block;</div><div class="line">  <span class="attribute">padding</span>: .<span class="number">375rem</span> <span class="number">1rem</span>;</div><div class="line">  <span class="attribute">font-size</span>: <span class="number">1rem</span>;</div><div class="line">  <span class="attribute">font-weight</span>: <span class="number">400</span>;</div><div class="line">  <span class="attribute">line-height</span>: <span class="number">1.5</span>;</div><div class="line">  <span class="attribute">text-align</span>: center;</div><div class="line">  <span class="attribute">white-space</span>: nowrap;</div><div class="line">  <span class="attribute">vertical-align</span>: middle;</div><div class="line">  <span class="attribute">cursor</span>: pointer;</div><div class="line">  <span class="attribute">user-select</span>: none;</div><div class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid transparent;</div><div class="line">  <span class="attribute">border-radius</span>: .<span class="number">25rem</span>;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.btn-primary</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#0275d8</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">#0275d8</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.btn-accent</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#fff</span>;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#d9534f</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">#d9534f</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="selector-class">.btn-secondary</span> &#123;</div><div class="line">  <span class="attribute">color</span>: <span class="number">#373a3c</span>;</div><div class="line">  <span class="attribute">background-color</span>: <span class="number">#fff</span>;</div><div class="line">  <span class="attribute">border-color</span>: <span class="number">#ccc</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>最後，按鈕的結構就會有很大的調整，結構與樣式分離後，面對更多的挑戰(? 時可以減少修改的幅度，如果要再調整按鈕大小，相信大家也能夠用相同的概念去調整。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> oocss </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1240,6 +1725,22 @@ ul.green li ul li.blue {
 <p>除了結構與樣式分離外，身為外容器的物件與內容的物件也應當需要分離，避免元件只能在原有的容器上使用；容器與內容分離的情況下，元件再重新組裝時能夠更為容易，可擴增元件的再使用率。</p>
 <p>但這些概念如果套用在網頁該如何解釋呢？<br>別著急～，我們在後續的章節會用實際的範例來說明。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> oocss </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1273,6 +1774,20 @@ ul.green li ul li.blue {
 <p>在整個觀念釐清以後，除了踩到自己腳外的問題也會一一有了答案，比如說效能問題，在良好的架構下，我們可以簡單地抽離不必要的 CSS 模組，並且不會對其他的畫面產生影響。</p>
 <p>驚險刺激的鐵人賽又開始囉，這次能不能順利達成呢!?</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1363,6 +1878,22 @@ ul.green li ul li.blue {
 <p>目前 Yarn 個人還沒完全測試過，但就一開始的體驗確實不錯，入門也不太需要太多改變 (除了砍掉了 Xcode 而已!?)，算是一個值得入手的好工具。</p>
 <p>開發團隊包含了 Facebook、Google 等，而且相容目前的 NPM 註冊表，有興趣的可以放心使用 <a href="http://www.ithome.com.tw/news/108974" target="_blank" rel="external">http://www.ithome.com.tw/news/108974</a>。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> nodejs </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> nodejs </tag>
+            
+            <tag> npm </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1392,6 +1923,20 @@ ul.green li ul li.blue {
 
 <p>這也是我們在與學員之間的問答中常遇到的，這次找個機會寫個文章跟大家分享分享。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1408,6 +1953,22 @@ ul.green li ul li.blue {
 <p>這次的活動自認為講授的內容進步了很多，時間上我是控制在 1hr，主要原因是如果講滿了 1.5hr，會缺乏許多和到場的人互動，所以時間上就比以往在短一些。</p>
 <h2 id="下次的活動"><a href="#下次的活動" class="headerlink" title="下次的活動"></a>下次的活動</h2><p>下次的活動預計訂在六月中旬以後，我們會拉更多的人入坑，讓 CSS 讀書會的豐富度提升。而直播也會視入坑的開發者是否願意，主要還是供到場的朋友吸收好的內容。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> workshop </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1436,6 +1997,20 @@ ul.green li ul li.blue {
 <p>六角學院網站：<a href="http://www.hexschool.com/" target="_blank" class="fbp-link" data-fbp="LinkToHexschool">http://www.hexschool.com/</a></p>
 </blockquote>
 ]]></content>
+      
+        <categories>
+            
+            <category> study </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> study </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1476,6 +2051,20 @@ ul.green li ul li.blue {
 <p>六角學院網站：<a href="http://www.hexschool.com/" target="_blank" class="fbp-link" data-fbp="LinkToHexschool">http://www.hexschool.com/</a></p>
 </blockquote>
 ]]></content>
+      
+        <categories>
+            
+            <category> study </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> study </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1509,6 +2098,22 @@ ul.green li ul li.blue {
 <p>這個月的 Javascript 、 CSS 讀書會都應該會暫停，因為主辦人都中了教召….。</p>
 <p><img src="/images/2016/04/24636.png" alt=""></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> workshop </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1554,6 +2159,22 @@ ul.green li ul li.blue {
 </ul>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>這次活動比較沒拿捏好的部分是進度，我花很多時間在前半部，但在後半段的時間就略顯不足，有很多想在特別介紹的，卻沒有控制好時間，這在往後的活動都要特別注意。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> workshop </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1606,6 +2227,20 @@ $map: (key: value, other-key: other-value)
 <h3 id="建議：講者說話太快"><a href="#建議：講者說話太快" class="headerlink" title="建議：講者說話太快"></a>建議：講者說話太快</h3><p>嗯…，這部分是我該多注意的，往後的課程也會更著重在單一的主題上介紹，不過大家有問題還是盡量可以在 Hackpad 或直播頻道發問，上面有許多高手會一起交流解答～。</p>
 <p>就票數上來說，下次會介紹 CSS 架構，希望這個連假可以準備差不多 Orz 。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1638,6 +2273,20 @@ $map: (key: value, other-key: other-value)
 <h4 id="往後主題"><a href="#往後主題" class="headerlink" title="往後主題"></a>往後主題</h4><p>因為 CSS 架構以及實作的選擇數量差距較小，以後再主題的規劃上就會兩者並重，且在內容的安排上，會持續貼近設計師與前端工程師的組合，也感謝本次參與者提供意見，希望在以後能夠透過這樣的方式互相交流成長。</p>
 <p>另外，自己意外的喜歡這個副標 『擺脫 They 的問題，完全掌控 You 的 CSS』。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1659,6 +2308,20 @@ $map: (key: value, other-key: other-value)
 <p><img src="/images/2016/01/1399273_1237514302931876_2296648380467320406_o.jpg" alt=""></p>
 <p>這個體感問度是…，讓我回想到馬祖的冬天。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1684,6 +2347,20 @@ $map: (key: value, other-key: other-value)
 <p><a href="http://wcc723.github.io/WorkShop-gh-pages/glowButton/">http://wcc723.github.io/WorkShop-gh-pages/glowButton/</a></p>
 <p>我很喜歡這樣的按鈕表現模式，雖然說之前我不喜歡大圓角，但這樣的光暈及漸層表現方式真的很棒，而且也擺脫目前許多 Style Guide 的扁平化思維。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1728,6 +2405,20 @@ $map: (key: value, other-key: other-value)
 </ul>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>透過直接的範例，減少用文字的說明，可以較快速的了解 CSS 的特性，畢竟 CSS 主要是用來處理視覺上的效果。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1771,6 +2462,24 @@ $map: (key: value, other-key: other-value)
 <p><em>Illustrator 會將漸層轉成 Base64 ，並非 SVG的漸層</em></p>
 <p>本篇介紹的是 SVG Sprites，適合用在有色彩的圖案上，如果說專案只需要單色的圖示，建議可以使用 icon fonts 就可以了，icon fonts 的文章可以參考 <a href="http://wcc723.github.io/tools/2015/11/20/sketch-convert-to-web-icon-fonts/">將 Sketch icons 轉成 web icon fonts</a>。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> gulp </tag>
+            
+            <tag> compass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1809,6 +2518,24 @@ $map: (key: value, other-key: other-value)
 <p><img src="/images/2015/12/screen_shot_2015-12-25-03.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>Autoprefixer 是目前 post-css 看到最必須導入的工具，有效減少 prefix 的問題。其他的工具 <code>cssnext</code>、<code>lost</code>等等，目前僅會做測試或研究並不會導入。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> gulp </tag>
+            
+            <tag> compass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1861,6 +2588,24 @@ Your browser does not support the video tag.
 <p>接下來還會介紹 <code>sass-lint</code>、<code>gulp-svg-sprites</code>、<code>gulp-postcss</code>，對於以上有其他建議也歡迎一起在下方留言。</p>
 <p>另外…<code>Webm</code>真是好物，中間的那個短片就是<code>webm</code>，不到1mb的影片甚至比<code>gif</code>還小。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> gulp </tag>
+            
+            <tag> compass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -1905,6 +2650,20 @@ Your browser does not support the video tag.
 <hr>
 <p>後來我還買了另一本書，”什麼都能賣出好價錢：頂尖經紀人教你賣什麼都讓人買單<br>“，在看了本書的第一章會認為與”被討厭的勇氣”有許多相似的地方，書中開頭就提到<strong>先別管行銷了──第一步該是找到你自己</strong>，這樣的開頭以及”被討厭的勇氣”讓我感受到<code>自己</code>的重要性，這樣的生活不僅自由，而且充滿了價值。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> life </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> study </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2003,6 +2762,26 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
 <p>Bootstrap 4 觀察了一段時間，裡面許多的概念很喜歡，包括 flex、navbar、Utilities 這些的改進…，當然更重要的是從LESS轉到SASS(雖然他用的是node sass lib，但我總是用 ruby sass 去載入)。</p>
 <p>不過也有一點真心覺得麻煩，就是他的單位許多改成用<code>rem</code>，<code>em</code>、<code>rem</code>、<code>px</code>轉來轉去，我不是數學腦啊!!!</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> gulp </tag>
+            
+            <tag> bootstrap </tag>
+            
+            <tag> compass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2020,6 +2799,20 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
 
 <p>網站連結：<a href="http://wcc723.github.io/ashareaday/">http://wcc723.github.io/ashareaday/</a></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> study </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2086,6 +2879,22 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
 </ul>
 <p>基於這些原因，最後還是認為 Jekyll 適合我，也因此特別將Blog版型更新了一翻(雖然還有很多Bug Q_Q)…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jekyll </tag>
+            
+            <tag> tools </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2156,6 +2965,24 @@ $ sudo ./install.sh
 <hr>
 <p>在以前都是使用 Icomoon 的服務再轉 web fonts，最早的時候還忘記要登入，結果整份 web fonts資料都要重建，透過這樣的工具可以自己轉、自己做版控，除了CDN的問題外，倒是挺方便的。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> icon fonts </tag>
+            
+            <tag> sketch </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2185,6 +3012,20 @@ $ sudo ./install.sh
 
 <p><a href="http://wcc723.github.io/WorkShop-gh-pages/stylingCheckbox/">範例網址</a></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2216,6 +3057,20 @@ $ sudo ./install.sh
 <p>由於本 Blog 不適合繼續玩 Funnel、Form 所以只能留給大家自己玩了。</p>
 <p>許多時候設計師和工程師在介面上各有意見時，不仿試試看監測工具，分析使用者的行為，或許使用者操作會超乎所有開發者的預期。而相關的工具也越來越多，只能多方嘗試，選定合適才是上策。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2274,6 +3129,20 @@ $ sudo ./install.sh
 <h5 id="align-self"><a href="#align-self" class="headerlink" title="align-self"></a>align-self</h5><p>和外容器的<code>align-items</code>的屬性類似，但是只能控制元件本身的對齊。</p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p><a href="http://wcc723.github.io/css/2013/10/24/css-flex-1/">以前</a>有寫過Flex文章，有些時候偷懶都會用flex來排垂直置中的物件，而上次製作了css column，就會引發更多的思考，column可以拿來排什麼；這次的flex也是一樣的道理，直接動手玩一次，能更了解每個屬性的用途，等到機會來臨，就可以輕鬆上手。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2296,6 +3165,20 @@ $ sudo ./install.sh
 <p><img src="/images/2015-07-31_05.png" alt=""></p>
 <p>除此之外這包還有許多不錯的範例，像是Camera…，如果有興趣可以自己打開來看看。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> web </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> web </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2493,6 +3376,20 @@ $(document).ready(function(){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2516,6 +3413,20 @@ $(document).ready(function(){
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.image-slider</span>&#123;</div><div class="line">  <span class="comment">// 外部容器定位</span></div><div class="line">  <span class="attribute">position</span>: relative;</div><div class="line">  <span class="attribute">display</span>: inline-block; <span class="comment">// 上層的最大範圍不會超過image</span></div><div class="line">  <span class="attribute">line-height</span>: <span class="number">0</span>;</div><div class="line">  &amp; &gt; <span class="selector-tag">div</span> &#123;</div><div class="line">    <span class="comment">// 內部上層影像容器</span></div><div class="line">    <span class="attribute">position</span>: absolute;</div><div class="line">    <span class="attribute">top</span>: <span class="number">0</span>; <span class="attribute">bottom</span>: <span class="number">0</span>; <span class="attribute">left</span>: <span class="number">0</span>;</div><div class="line">    <span class="attribute">width</span>: <span class="number">25px</span>;</div><div class="line">    <span class="attribute">max-width</span>: <span class="number">100%</span>;</div><div class="line">    <span class="attribute">overflow</span>: hidden;</div><div class="line">    <span class="attribute">resize</span>: horizontal; <span class="comment">//使用者可以重新調整區塊大小    </span></div><div class="line">    &amp;:before &#123;</div><div class="line">      <span class="comment">// 右下方提示可縮放的示意三角形</span></div><div class="line">      <span class="attribute">content</span>: <span class="string">''</span>;</div><div class="line">      <span class="attribute">position</span>: absolute;</div><div class="line">      <span class="attribute">right</span>: <span class="number">0</span>; <span class="attribute">bottom</span>: <span class="number">0</span>;</div><div class="line">      <span class="attribute">width</span>: <span class="number">13px</span>; <span class="attribute">height</span>: <span class="number">13px</span>;</div><div class="line">      <span class="attribute">padding</span>: <span class="number">5px</span>;</div><div class="line">      <span class="attribute">background</span>: linear-gradient(-<span class="number">45deg</span>, white <span class="number">50%</span>, transparent <span class="number">0</span>);</div><div class="line">      <span class="attribute">background-clip</span>: content-box;</div><div class="line">      <span class="attribute">cursor</span>: ew-resize;</div><div class="line">      -webkit-<span class="attribute">filter</span>: drop-shadow(<span class="number">0</span> <span class="number">0</span> <span class="number">2px</span> black);</div><div class="line">      <span class="attribute">filter</span>: drop-shadow(<span class="number">0</span> <span class="number">0</span> <span class="number">2px</span> black);</div><div class="line">      <span class="comment">//使用filter 可以用圖示輪廓做陰影</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="selector-tag">img</span> &#123;</div><div class="line">    user-<span class="selector-tag">select</span>: none; <span class="comment">//圖片無法被選擇</span></div><div class="line">    <span class="attribute">max-width</span>: <span class="number">400px</span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <h3 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h3><p>本站重新改變了風格，也是重新開始新的篇章(<a href="http://www.getmdl.io/" target="_blank" rel="external">版型來源</a>)，接下來繼續來寫CSS吧。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2541,6 +3452,22 @@ $(document).ready(function(){
 </blockquote>
 <p>透過這個方法，可以有效的壓縮css，但其實在使用上並沒有那麼容易(需要補上ignore)。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> gulp </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> gulp </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2559,6 +3486,20 @@ $(document).ready(function(){
 <p>以我來說，通常會用facebook追蹤各種社群，或者是定期瀏覽一些技術網站、Blog，再看到關鍵字後，在搜尋這技術對於我的專業上是否有幫助，以及學習的適切性，如果可以再安排進自己的學習時程。</p>
 <h2 id=""><a href="#" class="headerlink" title=""></a><!-- more --></h2><p>而對於學習，不太需要擔心學了用不到，在研究所時，我從設計師轉學Flash Actionscript 3.0，在當完兵後Flash被賈伯斯批的一文不值，Actionscript 3.0也跟著沒落，但這段學習影響到後來javascript。同樣的還有許多技術學習，會衍伸其他觀念的理解，只要保持開放的心胸，保持學習，人生的旅途自然會越來越開闊。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> study </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> study </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2589,6 +3530,22 @@ end
 <pre><code>Invariant Violation: _registerComponent(...): Target container is not a DOM element
 </code></pre><p>請將你的<code>&lt;%= javascript_include_tag  &quot;all&quot; %&gt;</code> 放在 <code>&lt;body&gt;</code>的後方。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> js </tag>
+            
+            <tag> reactjs </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2616,6 +3573,22 @@ $ npm install gulp gulp-concat gulp-uglify gulp-react gulp-html-replace --save-d
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);</div><div class="line"><span class="keyword">var</span> concat = <span class="built_in">require</span>(<span class="string">'gulp-concat'</span>); <span class="comment">// 串接</span></div><div class="line"><span class="keyword">var</span> uglify = <span class="built_in">require</span>(<span class="string">'gulp-uglify'</span>); <span class="comment">// 醜化js</span></div><div class="line"><span class="keyword">var</span> react = <span class="built_in">require</span>(<span class="string">'gulp-react'</span>);</div><div class="line"><span class="keyword">var</span> htmlreplace = <span class="built_in">require</span>(<span class="string">'gulp-html-replace'</span>);</div><div class="line"></div><div class="line"><span class="comment">// 定義變數</span></div><div class="line"><span class="keyword">var</span> path = &#123;</div><div class="line">  <span class="attr">HTML</span>: <span class="string">'app/index.html'</span>,</div><div class="line">  <span class="attr">ALL</span>: [<span class="string">'app/js/*.js'</span>, <span class="string">'app/js/**/*.js'</span>, <span class="string">'app/index.html'</span>],</div><div class="line">  <span class="attr">JS</span>: [<span class="string">'app/js/*.js'</span>, <span class="string">'app/js/**/*.js'</span>],</div><div class="line">  <span class="attr">MINIFIED_OUT</span>: <span class="string">'build.min.js'</span>,</div><div class="line">  <span class="attr">DEST_SRC</span>: <span class="string">'dist/app'</span>,</div><div class="line">  <span class="attr">DEST_BUILD</span>: <span class="string">'dist/build'</span>,</div><div class="line">  <span class="attr">DEST</span>: <span class="string">'dist'</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 建立任務，轉換JSX</span></div><div class="line">gulp.task(<span class="string">'transform'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  gulp.src(path.JS)</div><div class="line">    .pipe(react())</div><div class="line">    .pipe(gulp.dest(path.DEST_SRC));</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 複製index.html到dist資料夾</span></div><div class="line">gulp.task(<span class="string">'copy'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  gulp.src(path.HTML)</div><div class="line">    .pipe(gulp.dest(path.DEST));</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 監控以上兩個任務</span></div><div class="line">gulp.task(<span class="string">'watch'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  gulp.watch(path.ALL, [<span class="string">'transform'</span>, <span class="string">'copy'</span>]);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 定義預設動作</span></div><div class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'watch'</span>]);</div><div class="line"></div><div class="line"><span class="comment">// gulu build</span></div><div class="line">gulp.task(<span class="string">'build'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  gulp.src(path.JS) </div><div class="line">    .pipe(react()) <span class="comment">//轉換jsx</span></div><div class="line">    .pipe(concat(path.MINIFIED_OUT)) <span class="comment">// 串接所有js</span></div><div class="line">    .pipe(uglify(path.MINIFIED_OUT)) <span class="comment">// 最小化js</span></div><div class="line">    .pipe(gulp.dest(path.DEST_BUILD));</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// 轉換js路徑</span></div><div class="line">gulp.task(<span class="string">'replaceHTML'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  gulp.src(path.HTML)</div><div class="line">    .pipe(htmlreplace(&#123;</div><div class="line">      <span class="string">'js'</span>: <span class="string">'build/'</span> + path.MINIFIED_OUT</div><div class="line">    &#125;))</div><div class="line">    .pipe(gulp.dest(path.DEST));</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// production 輸出</span></div><div class="line">gulp.task(<span class="string">'production'</span>, [<span class="string">'replaceHTML'</span>, <span class="string">'build'</span>]);</div></pre></td></tr></table></figure>
 <p>到這部分基本上就完成了，只要透過<code>gulp</code>或<code>gulp production</code>就能預覽jsx轉換成js。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> js </tag>
+            
+            <tag> reactjs </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2637,6 +3610,22 @@ $ npm install gulp gulp-concat gulp-uglify gulp-react gulp-html-replace --save-d
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> LifeCycle = React.createClass(&#123;</div><div class="line">  <span class="attr">getInitialState</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 元件初始化</span></div><div class="line">    alert(<span class="string">'getInitialState 的狀態'</span>);</div><div class="line">    <span class="keyword">return</span> &#123;</div><div class="line">      <span class="attr">name</span>: <span class="string">'比克'</span></div><div class="line">    &#125;</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">textClick</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">      <span class="attr">name</span>: <span class="string">'悟飯'</span></div><div class="line">    &#125;)</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">componentWillMount</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 元件即將建立</span></div><div class="line">    alert(<span class="string">'componentWillMount 的狀態'</span>);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">componentDidMount</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 元件建立</span></div><div class="line">    alert(<span class="string">'componentDidMount 的狀態'</span>);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">componentWillReceiveProps</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="comment">// 尚未測試出來</span></div><div class="line">    alert(<span class="string">'componentWillReceiveProps 的狀態'</span>);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">render</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    <span class="keyword">return</span>(</div><div class="line">      <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">onClick</span>=<span class="string">&#123;this.textClick&#125;</span>&gt;</span></span></div><div class="line">        必殺, &#123;this.state.name&#125; &#123;this.props.skill&#125;</div><div class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">React.render(<span class="xml"><span class="tag">&lt;<span class="name">LifeCycle</span> <span class="attr">skill</span>=<span class="string">"魔貫光殺砲"</span> /&gt;</span>,</span></div><div class="line">document.getElementById('app')</div><div class="line">);</div></pre></td></tr></table></figure>
 <p><a class="jsbin-embed" href="http://jsbin.com/xaxicigedi/2/embed?html,js,output" target="_blank" rel="external">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> js </tag>
+            
+            <tag> reactjs </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2693,6 +3682,22 @@ $ npm install gulp gulp-concat gulp-uglify gulp-react gulp-html-replace --save-d
 <p><a class="jsbin-embed" href="http://jsbin.com/rilufojegu/8/embed?html,js,output" target="_blank" rel="external">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script></p>
 <p>累了，React的tag有沒有什麼工具…，純手打好累。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> js </tag>
+            
+            <tag> reactjs </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2729,6 +3734,20 @@ $ npm install gulp gulp-concat gulp-uglify gulp-react gulp-html-replace --save-d
 <h2 id="更棒的文章"><a href="#更棒的文章" class="headerlink" title="更棒的文章"></a>更棒的文章</h2><p>在寫完這篇後，我看到一篇更棒的文章<a href="http://blog.taian.su/2012-10-17-explaining-javascript-scope-and-closures-by-robert-nyman/" target="_blank" rel="external">http://blog.taian.su/2012-10-17-explaining-javascript-scope-and-closures-by-robert-nyman/</a>，這篇將閉包解釋得更清楚，且還有許多的範例，有機會一定要跟著做一次喔。</p>
 <p>如果本文有錯誤，煩請提出，我會盡快理解在修正。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2768,6 +3787,22 @@ $ npm install gulp gulp-concat gulp-uglify gulp-react gulp-html-replace --save-d
 <p><img src="/images/zeplin/2015_04_09_zeplin_11.png" alt=""></p>
 <p>如果撇除Mac有點貴之外，Sketch是相當值得入手的軟體，加上現在對Sketch的支援越來越多(Zeplin，或者是Google Material Design也支援Sketch範本)，有興趣的不仿來試試看。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> zeplin </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2817,6 +3852,20 @@ gem &quot;compass&quot;
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>相對於gulp來說，middleman非常非常的容易上手，如果對於fire.app熟悉的話，並且略懂rails，大概只要20分鐘就可以開始用了。</p>
 <p>如果說缺點，就是他並不像gulp那樣的靈活，可以與其他語言服務一起混用。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2838,6 +3887,20 @@ gem &quot;compass&quot;
 </ol>
 <p>目前還沒有明確要做什麼，但並不會那樣的恐懼，不好的環境，還是有辦法成功，與其抱怨，不如去尋找希望。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> life </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> life </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2871,6 +3934,22 @@ gem &quot;compass&quot;
 <script async src="//assets.codepen.io/assets/embed/ei.js"> </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -2957,6 +4036,20 @@ gem &quot;compass&quot;
 <li><a href="http://wcc723.github.io/css/2013/10/26/css-flex-3/">CSS3 Flex的對齊</a></li>
 </ul>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3008,6 +4101,20 @@ gem &quot;compass&quot;
 
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>如果看完這篇，還有想到什麼CSS冷知識，拜託…，跟我分享…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3048,6 +4155,20 @@ gem &quot;compass&quot;
 <h2 id="2015的期望"><a href="#2015的期望" class="headerlink" title="2015的期望"></a>2015的期望</h2><p>技術學習上還沒有思考要繼續學什麼，可能是繼續專精CSS，或者是學Angular，也有可能玩玩Rails，這都還在思考中。</p>
 <p>但有另一個比較明確的方向，就是在高雄推廣<code>開源專案</code>。很羨慕台北有<code>g0v</code>這樣的團體，許多不同專業的高手一起合作，設計師和工程師的協作，彼此拉高互相的價值，這樣活動讓許多國家稱羨。<br>希望能有機會參與類似的活動，但g0v也不就是先由少數人發起嗎？於是坑就在我的腦中浮現，慢慢的具現化…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> life </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> life </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3082,6 +4203,20 @@ gem &quot;compass&quot;
 <p>除此之外，還會有其他使用者分享的頁面、範例教學、圖表下載等等功能，這些頁面也是不斷地調整操作流程，試著讓使用者易於理解。</p>
 <p>如果可能的話，會盡量在農曆年前釋出第一版，也希望大家能夠給我們更好的回饋，並且以行動支持Code for Kaohsiung，不斷的激發更好的創作能量。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> project </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> project </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3246,6 +4381,20 @@ $(document).ready(function(){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> canvas </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3380,6 +4529,20 @@ $(document).ready(function(){
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> canvas </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3518,6 +4681,20 @@ function draw2(imgObj,w,h){
 
 <p>以前很多的範例，久沒看真的都會在忘記，趁這段時間整理的時候再稍微複習一下，</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> canvas </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3671,6 +4848,20 @@ function draw3(){
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//要畫一個好看的圖案太難了，所以我直接參考上面的提供的網址。</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">draw4</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    ctx.strokeStyle = <span class="string">"rgb(220,200,45)"</span>; <span class="comment">//線段顏色</span></div><div class="line">    ctx.beginPath();</div><div class="line">    ctx.arc(<span class="number">75</span>,<span class="number">75</span>,<span class="number">50</span>,<span class="number">0</span>,<span class="built_in">Math</span>.PI*<span class="number">2</span>,<span class="literal">true</span>); <span class="comment">// 最外圈的線段</span></div><div class="line">    ctx.moveTo(<span class="number">110</span>,<span class="number">75</span>); <span class="comment">//跳到另一個線段</span></div><div class="line">    ctx.arc(<span class="number">75</span>,<span class="number">75</span>,<span class="number">35</span>,<span class="number">0</span>,<span class="built_in">Math</span>.PI,<span class="literal">false</span>);   <span class="comment">// 嘴巴</span></div><div class="line">    ctx.moveTo(<span class="number">65</span>,<span class="number">65</span>);</div><div class="line">    ctx.arc(<span class="number">60</span>,<span class="number">65</span>,<span class="number">5</span>,<span class="number">0</span>,<span class="built_in">Math</span>.PI*<span class="number">2</span>,<span class="literal">true</span>);  <span class="comment">// 左眼</span></div><div class="line">    ctx.moveTo(<span class="number">95</span>,<span class="number">65</span>);</div><div class="line">    ctx.arc(<span class="number">90</span>,<span class="number">65</span>,<span class="number">5</span>,<span class="number">0</span>,<span class="built_in">Math</span>.PI*<span class="number">2</span>,<span class="literal">true</span>);  <span class="comment">// 右眼</span></div><div class="line">    ctx.stroke(); <span class="comment">//筆畫上色</span></div><div class="line">  &#125;</div></pre></td></tr></table></figure>
 <p>這些是舊的部落格文章，最近整理出來的部分。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> canvas </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3709,6 +4900,20 @@ function draw3(){
 
 <p>如果要跨瀏覽器的scrollbar，就建議使用javascript或是jquery了。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3729,6 +4934,22 @@ function draw3(){
 <p>寫到這，我突然想起來為什麼沒有放到這Blog上了…，因為當時Jekyll載入外部Js功能還沒寫好，後來寫好忘記放進來…，所以最近可以補很多以前的Js文章…。</p>
 <p>另外舊的Blog(aShareaDay)因為空間沒有再續約，所以停了，大部分文章在這Blog都可以找到，有缺的部分也會盡量補齊，感謝大家的支持。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> jquery </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jquery </tag>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3794,6 +5015,20 @@ function draw3(){
 <li>其他通通都是用外框線類型的按鈕</li>
 </ol>
 ]]></content>
+      
+        <categories>
+            
+            <category> design </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> design </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3809,6 +5044,20 @@ function draw3(){
 <p>簡報連結：<a href="https://docs.google.com/presentation/d/182xz65Ebr_T5wUiEcnYLKi-O-4sMHfr_Z1gXe83XvPg/" target="_blank" rel="external">D3.js for 高雄前端</a></p>
 <p>這次的範例很多，主要是想要讓大家可以透過範例快速理解(不過還是被說範例太多了orz，觀者會很累)，簡報不宜介紹過多的重點…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3894,6 +5143,20 @@ function draw3(){
 <p>在製作時，<strong>參考合適的Framework風格(設計)，並挑選合適的執行方式(CSS)，在初學上可以減少錯誤</strong>，提升專案的可執行性。</p>
 <p>這篇看到了相當多的按鈕，接下來可能會出現一個問題，<strong>目前畫面適合放什麼按鈕</strong>，所以下一篇要介紹的是按鈕在畫面上的佈局規劃，如何透過簡單的方式，清楚了解目前畫面上合適的按鈕樣式。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> design </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> design </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3945,6 +5208,20 @@ function draw3(){
 <p>除了這些之外，更重要的當然是怎樣做好Web UI，除了多看好的設計之外，更重要的是要閱讀Style guide，UI設計和程式有很大的關係，必須依據一定的準則，在執行及操作上才會有良好的體驗。</p>
 <p>如果要推薦一份Style guide，當然就是Google material design，而且運氣不錯，有人翻譯成繁體中文版了(<a href="http://wcc723.gitbooks.io/google_design_translate/" target="_blank" rel="external">http://wcc723.gitbooks.io/google_design_translate/</a>)。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> design </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> design </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -3986,6 +5263,22 @@ gem -v susy
 </a></li>
 </ul>
 ]]></content>
+      
+        <categories>
+            
+            <category> gulp </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> gulp </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4028,6 +5321,22 @@ gem -v susy
 <p><img src="/images/gulp/screen_shot_gulp-3-07.png" alt=""></p>
 <p>這樣就可以還原整個專案，且在不同作業系統都可以正常運作。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> gulp </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> gulp </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4089,6 +5398,22 @@ gem -v susy
 <p><img src="/images/2014ironman/day29_01.png" alt=""></p>
 <p>就這麼樣，我們下次見(如果還有力氣的話)。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4122,6 +5447,22 @@ gem -v susy
 <p><img src="/images/2014ironman/day28_05.png" alt=""></p>
 <p>存檔以後，一份資料CSV就完成了，就可以供d3.js使用，相信對需要整理政府資料的工程師相當實用…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4302,6 +5643,22 @@ function runChart(root){ //畫圖 <--主要插入資料位置
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4378,6 +5735,22 @@ d3.json(kpPath, function(d){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4535,6 +5908,22 @@ dataFilter = function(data, filter){ //過濾部分資料
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4754,6 +6143,22 @@ function playsong(d){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -4970,6 +6375,22 @@ function playsong(d){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -5011,6 +6432,22 @@ d3.json(kpapi, function(d){
 <p><a class="jsbin-embed" href="http://jsbin.com/wipam/3/embed?js,output" target="_blank" rel="external">JS Bin</a> <script src="http://static.jsbin.com/js/embed.js"></script></p>
 <p>這樣來回介紹，應該會更了解D3.js吧～</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -5201,6 +6638,22 @@ d3.select('.update_btn').on('click', function(){
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -5390,6 +6843,22 @@ d3.select('.btn').on('click', function(){ //每次點擊的時候
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -5483,6 +6952,22 @@ path {
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -5560,6 +7045,22 @@ circle {
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -5807,6 +7308,22 @@ path {
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -5909,6 +7426,22 @@ $(function(){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6196,6 +7729,22 @@ path {
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6313,6 +7862,22 @@ path {
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6426,6 +7991,22 @@ svg.append('g').attr('class', 'axis')
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6530,6 +8111,22 @@ d3.csv(dataUrl, function(data){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6574,6 +8171,22 @@ d3.csv(dataUrl, function(data){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6659,6 +8272,22 @@ d3.csv(dataUrl, function(data){
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6745,6 +8374,22 @@ console.log("輸出的值 = " + d3Scale(500))
 </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6803,6 +8448,22 @@ svg.selectAll('text').data(dataset).enter() //補上資料數值
 
 <p>這一篇難度也沒有很高，主要只是要介紹怎麼使用D3.js畫在SVG上，但是下一篇，將會有很重要的觀念需要了解。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6868,6 +8529,22 @@ svg.selectAll('text').data(dataset).enter() //補上資料數值
 </style>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -6910,6 +8587,22 @@ npm -v
 <a class="jsbin-embed" href="http://jsbin.com/wipam/2/embed?js,output" target="_blank" rel="external">JS Bin</a> <script src="http://static.jsbin.com/js/embed.js"> </script>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7028,6 +8721,22 @@ npm -v
 <p>台灣也有高手是介紹SVG的也可以多向他學習<a href="http://www.oxxostudio.tw/index.html?tag-web" target="_blank" rel="external">http://www.oxxostudio.tw/index.html?tag-web</a>，不止基礎的教學，還包含許多豐富的技法，令人歎為觀止(跪)。</p>
 <p>接下來開始，就會進入D3js的世界，有許多沒辦法做很好的地方，就試試看用硬派的方式去處理吧。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7107,6 +8816,22 @@ svg:hover .circle1{
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"180"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">defs</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">linearGradient</span> <span class="attr">id</span>=<span class="string">"gradient"</span></span></div><div class="line">			<span class="attr">x1</span>=<span class="string">"0%"</span> <span class="attr">y1</span>=<span class="string">"0%"</span></div><div class="line">			<span class="attr">x2</span>=<span class="string">"0%"</span> <span class="attr">y2</span>=<span class="string">"100%"</span></div><div class="line">			<span class="attr">spreadMethod</span>=<span class="string">"pad"</span>&gt;</div><div class="line">		<span class="tag">&lt;<span class="name">stop</span> <span class="attr">offset</span>=<span class="string">"0%"</span>   <span class="attr">stop-color</span>=<span class="string">"DodgerBlue"</span> <span class="attr">stop-opacity</span>=<span class="string">"1"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">stop</span> <span class="attr">offset</span>=<span class="string">"50%"</span> <span class="attr">stop-color</span>=<span class="string">"DeepSkyBlue"</span> <span class="attr">stop-opacity</span>=<span class="string">"1"</span>/&gt;</span></div><div class="line">		<span class="tag">&lt;<span class="name">stop</span> <span class="attr">offset</span>=<span class="string">"100%"</span> <span class="attr">stop-color</span>=<span class="string">"white"</span> <span class="attr">stop-opacity</span>=<span class="string">"0"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">linearGradient</span>&gt;</span></div><div class="line">	<span class="tag">&lt;/<span class="name">defs</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">g</span> <span class="attr">class</span>=<span class="string">"pos"</span>&gt;</span></div><div class="line">    	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">class</span>=<span class="string">"circle1"</span> <span class="attr">cx</span>=<span class="string">"0"</span> <span class="attr">cy</span>=<span class="string">"0"</span> <span class="attr">r</span>=<span class="string">"79"</span> /&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">g</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">@-<span class="keyword">webkit</span>-<span class="keyword">keyframes</span> rotate &#123;</div><div class="line">    <span class="selector-tag">from</span> &#123;</div><div class="line">    	<span class="attribute">-webkit-transform</span>: <span class="built_in">rotate</span>(0deg);</div><div class="line">    &#125;</div><div class="line">    <span class="selector-tag">to</span> &#123;</div><div class="line">    	<span class="attribute">-webkit-transform</span>: <span class="built_in">rotate</span>(360deg);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.pos</span>&#123;</div><div class="line">	<span class="attribute">-webkit-transform</span>: <span class="built_in">translate</span>(82px, 82px);</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.circle1</span>&#123;</div><div class="line">	<span class="attribute">background-position</span>: center center;</div><div class="line">	<span class="attribute">background-repeat</span>: no-repeat;</div><div class="line">	<span class="attribute">fill</span>: none;</div><div class="line">	<span class="attribute">stroke-width</span>: <span class="number">3</span>;</div><div class="line">	<span class="attribute">-webkit-transition</span>: all .<span class="number">5s</span>;</div><div class="line">	<span class="attribute">stroke</span>: <span class="built_in">url</span>(#gradient);</div><div class="line">	<span class="attribute">-webkit-animation</span>: rotate <span class="number">1s</span> infinite linear;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7230,6 +8955,22 @@ A 1 2 0 0 1 310 215
 <figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"250"</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M10 215</span></span></div><div class="line">		L 110 215</div><div class="line">		A 120 120 0 1 1 310 215</div><div class="line">		L 540 215" <span class="attr">stroke</span>=<span class="string">"#333"</span> <span class="attr">fill</span>=<span class="string">"none"</span> <span class="attr">stroke-width</span>=<span class="string">"3"</span> <span class="attr">fill-opacity</span>=<span class="string">"0.5"</span>/&gt;</div><div class="line">	<span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M10 215</span></span></div><div class="line">		L 110 215</div><div class="line">		A 120 120 0 0 1 310 215</div><div class="line">		L 540 215" <span class="attr">stroke</span>=<span class="string">"#333"</span> <span class="attr">stroke-dasharray</span>=<span class="string">"5, 5"</span> <span class="attr">fill</span>=<span class="string">"none"</span> <span class="attr">stroke-width</span>=<span class="string">"3"</span> <span class="attr">fill-opacity</span>=<span class="string">"0.5"</span>/&gt;</div><div class="line">	<span class="comment">&lt;!-- 硬派Circles! --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"110"</span> <span class="attr">cy</span>=<span class="string">"215"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"110"</span> <span class="attr">y</span>=<span class="string">"225"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>110, 315 起點<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">"310"</span> <span class="attr">cy</span>=<span class="string">"215"</span> <span class="attr">r</span>=<span class="string">"3"</span> <span class="attr">fill</span>=<span class="string">"red"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"310"</span> <span class="attr">y</span>=<span class="string">"225"</span> <span class="attr">fill</span>=<span class="string">"red"</span>&gt;</span>162, 225 終點<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"210"</span> <span class="attr">y1</span>=<span class="string">"215"</span> <span class="attr">x2</span>=<span class="string">"210"</span> <span class="attr">y2</span>=<span class="string">"95"</span> <span class="attr">style</span>=<span class="string">"stroke: green;"</span> <span class="attr">transform</span>=<span class="string">"translate(0 -67)"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">line</span> <span class="attr">x1</span>=<span class="string">"210"</span> <span class="attr">y1</span>=<span class="string">"215"</span> <span class="attr">x2</span>=<span class="string">"330"</span> <span class="attr">y2</span>=<span class="string">"215"</span> <span class="attr">style</span>=<span class="string">"stroke: green;"</span> <span class="attr">transform</span>=<span class="string">"translate(0 -67)"</span>/&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">text</span> <span class="attr">x</span>=<span class="string">"214"</span> <span class="attr">y</span>=<span class="string">"144"</span> <span class="attr">fill</span>=<span class="string">"green"</span>&gt;</span>A 120 120<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>真的超級難懂，不過自己試著做一次，就會好懂很多。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7415,6 +9156,22 @@ T x y
 <h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>透過本篇的超硬派教學，對於幾種線段應該會更了解吧，至少我很了解了(泣…)。SVG的文章不會太多，D3js至少會有20篇以上，大家可以放心～。</p>
 <p>另外在D3.js的教學裡面，超複雜的Path有很簡單的處理方式…，所以只要先大致了解就可以了。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7479,6 +9236,22 @@ T x y
 
 <h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>如果對於SVG有興趣的設計師，也可以試試看把Illustrator的檔案轉出成SVG，在一個個拆解，就會發現SVG跟Illustrator根本就是太像了。用canvas的概念來思考，當然也可以將Photoshop轉成png，只是最終發現他還是一張圖…(認真)。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7515,6 +9288,22 @@ T x y
 </ul>
 <p>所以這三十篇不會是教學，而是個人學習記錄分享，而到了最後會有其他延伸運用。當然有遇到任何問題，也是會跟大家討論。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3js </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ironman </tag>
+            
+            <tag> d3js </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7567,6 +9356,20 @@ T x y
 | - gulpfile.js
 | - package.json
 </code></pre>]]></content>
+      
+        <categories>
+            
+            <category> gulp </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> gulp </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7663,6 +9466,20 @@ npm -v
 
 <p>官方網站 <a href="http://mopcon.org/2014/" target="_blank" rel="external">http://mopcon.org/2014/</a></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> gulp </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> gulp </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7687,6 +9504,20 @@ npm -v
 </code></pre><p><img src="/images/jekyll/jekyll-20140905-04.png" alt=""></p>
 <p>至於這樣有什麼功能呢？我也還正在閱讀中…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jekyll </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7741,6 +9572,20 @@ npm -v
 <p><img src="/images/gitbook/gitbook-20140904-13.png" alt=""></p>
 <p>剩下的部分，可以參考目前<a href="https://github.com/Wcc723/google_design_translate" target="_blank" rel="external">範例</a>的架構。而最近發這篇文，是因為聽說9月9日快到了。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> design </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> design </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7782,6 +9627,20 @@ npm -v
 <hr>
 <p>在翻譯這計劃告一段落後，就會回到原本的計劃，學習D3.js、Susy 2；至於會不會有其它翻譯或開放專案，我也不確定，說不定iOS 8也會在借助大家的幫忙？</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> design </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> design </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7822,6 +9681,22 @@ selection.enter // 將資料傳送至未被串街的元素
 </ul>
 <p>如果有任何問題，可以直接下方留言，或者不夠好的地方，也請多多賜教，感謝。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> d3 </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> js </tag>
+            
+            <tag> d3 </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -7916,6 +9791,22 @@ rvm use 2.0.0
 <p>Rails安裝環境相當複雜，如果沒有記錄，到時候也是會卡在相同的地方…。</p>
 <p>安裝環境 全劇終…</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> rails </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ruby </tag>
+            
+            <tag> rails </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8036,6 +9927,22 @@ line.l2{
 </code></pre><p>以上的SVG code，當然這也可以用Illustrator來繪製，只要把svg code換掉就可以了。</p>
 <p><strong>注意，儘量不要在網頁上做無限循環的重復播放，很耗效能。</strong></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> svg </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> svg </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8104,6 +10011,20 @@ svg
 
 <p>最後這也是我在實驗的效果，結合SVG<code>stroke</code>的粗細變化，以及<code>stroke</code>的漸層。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> svg </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> svg </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8137,6 +10058,20 @@ svg
 <p>接下來，按照原本的Chrome開發者工具使用方法，就可直接修改screen.sass這個檔案，配合著compass、livereload等等，畫面就會自動重整。</p>
 <p><img src="/images/20140602_sass_source_maps10.png" alt=""></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8191,6 +10126,22 @@ svg
     div
         display: inline-block
 </code></pre>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8254,6 +10205,22 @@ svg
 
 <p>很容易吧～</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8364,6 +10331,20 @@ git commit -m &quot;Updates for heroku deployment&quot;
 <p><em>登入Heroku網頁一樣可以看到應用程式的網址</em></p>
 <p><img src="/images/ishot-1405061104381.png" alt=""></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> rails </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> rails </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8412,6 +10393,20 @@ git commit -m &quot;Updates for heroku deployment&quot;
 &lt;/svg&gt;
 </code></pre><p>這邊我刻意用和polyline相同的code，兩者只有標簽不同，從這樣比較能夠比對出兩個不同的地方，重點就是Polygon會<strong>自動連接最後點到第一個點</strong>。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> svg </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> svg </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8467,6 +10462,20 @@ git commit -m &quot;Updates for heroku deployment&quot;
 </code></pre><p>有圖有真相(有沒有好用的Macbook pro截圖軟體…，可以自動壓縮的)</p>
 <p><img src="/images/screen_shot2014-05-01-5.png" alt=""></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8524,6 +10533,20 @@ git commit -m &quot;Updates for heroku deployment&quot;
 &lt;/svg&gt;
 </code></pre><h4 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h4><p>咦…到目前為止是不是太容易點…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> svg </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> svg </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8627,6 +10650,20 @@ git commit -m &quot;Updates for heroku deployment&quot;
 &lt;/svg&gt;
 </code></pre><p>不過我沒想到的是，svg還可以這樣用，在<code>&lt;g&gt;</code>裡面再放一個<code>&lt;svg&gt;</code>，這樣就可以設定他的<code>x,y</code>，這招太絕了，這樣就可以避免使用translate，使用x,y來設定位置。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> svg </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> svg </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8673,6 +10710,20 @@ git commit -m &quot;Updates for heroku deployment&quot;
 <p>而這兩個技術的差別，網路上也有許多文章有提到，但我希望在日後再比較兩者的差異。</p>
 <p>對SVG還不到相當了解可以寫非常長的文章，但我不認為要寫夠分量才值得算一篇文章，學習過程中過度的要求，會影響到學習技術的熱誠以及效率，所以很快就會有下一篇了(應該)。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> svg </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> svg </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8738,6 +10789,22 @@ $icons2x-sprite-dimensions: true
 <p>現在許多網站的icons sprites也有做for retina，像是facebook新版的網站，當然還有非常多，不妨四處觀察看看吧。</p>
 <p><img src="https://fbstatic-a.akamaihd.net/rsrc.php/v2/y2/r/DycYx0ssBHq.png" alt="隨時會不見的圖"></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8796,6 +10863,22 @@ $icons-sprite-dimensions: true
 
 <p>這樣就可以省去一大半用css算sprites位置的時間囉～。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8822,6 +10905,22 @@ $('.d0818click').click(function(evt) {
     $('.new').is(':animated') || $('.new').animate({left: '+=10'});
 });	
 </pre>]]></content>
+      
+        <categories>
+            
+            <category> jquery </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jquery </tag>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8849,6 +10948,22 @@ $('.d0818click').click(function(evt) {
 <p>codepen :<a href="http://codepen.io/Wcc723/pen/GFgtm" target="_blank" rel="external">http://codepen.io/Wcc723/pen/GFgtm</a></p>
 <p>以上是針對此題目的兩個CSS解法，還有人想到其他解決方案嗎？</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -8946,6 +11061,22 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
 </div>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9042,6 +11173,22 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
 <p>用這方式就可以完成sass模組，且包含了許多樣式。而這模組的架構，是我目前在測試的，有興趣的可以參考就好，畢竟CSS寫法相當多樣，只有適合沒有完美的寫法，下方另外提供codepen範例。</p>
 <iframe src="http://codepen.io/Wcc723/full/EfpiA" frameborder="0" width="100%" height="300px"> </iframe>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9102,6 +11249,24 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
 <h2 id="ie7"><a href="#ie7" class="headerlink" title="ie7"></a>ie7</h2><p>IE 7的部分，由於新的大魔王IE 11出現，測試一直有問題，所以我用Aurora 瀏覽器模擬IE7進行測試，結果是可以的，如果有純正IE 7的使用者，不妨試試看…(不是在本站測試，本站並沒有載入ie7 fix)。</p>
 <p><img src="/images/2014-02-10_143144.png" alt=""></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+            <tag> icons </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9208,6 +11373,22 @@ $(&apos;.fliptoBack&apos;).click(function() {
         +transform3d(rotateY(-180deg) translateZ($bookwidth))
 </code></pre><p>CSS 3D很有趣，只是看起來code有點長，但是玩一段時間會很有成就感。  </p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9256,6 +11437,22 @@ $(&apos;.fliptoBack&apos;).click(function() {
 <p>到了現在，每天發文就是一個習慣，一段時間不發文就會有罪惡感-O-，而這到底是興趣還是被迫…？算興趣吧，但某方面來說已經變強迫症(笑)。</p>
 <p>以上提到的，最重要還是一個”開始”，如果不知道怎麼開始，可以問問上方社群的人，不然就點畫面最下方有我的facebook，就來問我吧。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9349,6 +11546,24 @@ endfor,endif
 { % include JB/setup %}
  ^                //記得消除..
 </code></pre>]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jekyll </tag>
+            
+            <tag> github </tag>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9394,6 +11609,24 @@ git push
 <p>接下來回到網頁上，可以試著留言，而他的留言是依據網址，如果需要管理這些內容可以到disqus的後台(連Local都建了…)。</p>
 <p><img src="/images/2014-01-10_173888.png" alt=""></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jekyll </tag>
+            
+            <tag> github </tag>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9469,6 +11702,24 @@ self.content = File.read(File.join(base, name),:encoding=&gt;&quot;utf-8&quot;)
 </code></pre><p><img src="/images/2014-01-13-83410.png" alt=""></p>
 <p>所以我喜歡在Mac OS寫文章…。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jekyll </tag>
+            
+            <tag> github </tag>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9536,6 +11787,24 @@ git push
 <h2 id="這時候可能會遇到的錯誤"><a href="#這時候可能會遇到的錯誤" class="headerlink" title="這時候可能會遇到的錯誤"></a>這時候可能會遇到的錯誤</h2><p>如果github page在此時如果編譯錯誤，他會發一封mail到用戶的信箱，如下圖，這是沒有驗證過的信箱…，要驗證後的信箱他才會正常的編譯。</p>
 <p><img src="/images/2014-01-12_114728.png" alt=""></p>
 ]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jekyll </tag>
+            
+            <tag> github </tag>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9585,44 +11854,24 @@ git commit -m &quot;first commit&quot;
 <p><img src="/images/2014-01-02_165626.png" alt=""></p>
 <h2 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h2><p>到這部分github page就算是成功了，而接下來就會開始接觸到jekyll，如果用過github的使用者應該是相當容易上手的。</p>
 ]]></content>
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jekyll </tag>
+            
+            <tag> github </tag>
+            
+            <tag> git </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9697,6 +11946,76 @@ git commit -m &quot;first commit&quot;
 <p>Jekyll loacl端建議使用Mac OSX，由於工作的關係，我會頻繁地在兩種系統交換使用，Windows是在安裝上的注意事項就可以寫一整篇了…，OSX就去看官網吧，三到四行貼完就結束了。</p>
 <p>不過我一開始是在Windows上建立的，接下來的文章還是會介紹我所遇到的問題。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9863,6 +12182,20 @@ git commit -m &quot;first commit&quot;
 </div>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -9917,6 +12250,20 @@ git commit -m &quot;first commit&quot;
 <hr>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>Prepos在概念上是很棒的一套軟體，在3.0.X版本的時候我就有接觸過，但是當時他經常性的編譯錯誤(有時候多按個save又編譯成功= =)，所以我在使用時，都是開fire.app，然後關閉prepos的auto compile，僅使用它的跨裝置功能。而最近他出4.0.1版，有空可以多拿來玩看看還有沒有類似的問題。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10023,6 +12370,22 @@ span
         +transform(translate3d(-50%,0,0))
         +filter(drop-shadow(-5px 0 0 rgba(black ,.5)))
 </code></pre>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10117,6 +12480,22 @@ span
 <p><img src="/images/2013-12-19_110135.png" alt="transform"></p>
 <p>本篇是用sass做介紹，如果想了解所產生的css，可以參考<a href="http://codepen.io/Wcc723/pen/wFrCn" target="_blank" rel="external">http://codepen.io/Wcc723/pen/wFrCn</a>。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10132,6 +12511,20 @@ span
 </iframe>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> jquery </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jquery </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10216,6 +12609,22 @@ span
 }
 </code></pre><p>如果本篇有任何疑問，也歡迎在下方留言。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10262,6 +12671,24 @@ span
 <p>在版型完成後，就替換掉jekyll bootstrap，把原本的html css抽換，保留許多的Liquid模組，就大致完成了aShare，而許多不足的地方，就是不斷地搜尋及測試。</p>
 <p><a href="http://ashareaday.wcc.tw/" target="_blank" rel="external">ashareaday</a>是在2013/11/30結束，它讓我學習太多了，而這個網站會保留其大部分文章，且會以更精緻的方式執行下去。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> intro </tag>
+            
+            <tag> beginner </tag>
+            
+            <tag> jekyll </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10296,6 +12723,24 @@ span
 <p>Github 提供靜態網頁的服務，稱作為<a href="http://pages.github.com/" target="_blank" rel="external">github page</a>，而他也支援jekyll(如何使用在未來有機會在介紹)，兩個在一起就是無線流量、容量的blog，只要寫好新的文章commit就可以post新的文章。</p>
 <p>缺點：馬的，明明就很難 !</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> jekyll </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> intro </tag>
+            
+            <tag> beginner </tag>
+            
+            <tag> jekyll </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10334,6 +12779,24 @@ $('#delayMap').on('click',function(){
 </pre>
 
 <a class="jsbin-embed" href="http://jsbin.com/ECEDOhI/2/embed?html,js" target="_blank" rel="external">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>]]></content>
+      
+        <categories>
+            
+            <category> jquery </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jquery </tag>
+            
+            <tag> javascript </tag>
+            
+            <tag> mobile </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10422,6 +12885,22 @@ $('#delayMap').on('click',function(){
 <br>
 <br>
 ]]></content>
+      
+        <categories>
+            
+            <category> jquery </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jquery </tag>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10502,6 +12981,22 @@ $('#delayMap').on('click',function(){
 		<th>紫外線指數</th>
 	</tr>
 </table>]]></content>
+      
+        <categories>
+            
+            <category> jquery </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jquery </tag>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10574,6 +13069,22 @@ TWD97Lat: "23,29,52"
 TWD97Lon: "120,25,28"
 UVI: "0"
 </pre>]]></content>
+      
+        <categories>
+            
+            <category> jquery </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jquery </tag>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10660,6 +13171,22 @@ $.each( data.items, function( i, item ) {
 </pre>
 <img src="/images/2013-11-01_151843.png" alt="">
 <p>從他所產生的結果，其實可以了解這範例僅有取用media的圖檔位置而已，其實還有許多值還沒有用到，有興趣的人可以把它其他的值抓出來玩玩看，或許可以讓內容豐富更多~。</p>]]></content>
+      
+        <categories>
+            
+            <category> jquery </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> jquery </tag>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10724,6 +13251,22 @@ $.each( data.items, function( i, item ) {
 		</div>				
 	</div>
 </div>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10815,6 +13358,22 @@ $.each( data.items, function( i, item ) {
 </div>
 
 <p>這些的CSS效果，其實都是先前所介紹的屬性，如果有不清楚可以參考看看先前所寫的CSS transform系列文章~</p></)。<></p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -10931,6 +13490,22 @@ $.each( data.items, function( i, item ) {
 </div>
 
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -11080,6 +13655,22 @@ div
 
 
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -11191,6 +13782,22 @@ display: flex; is the actual version.
   </div>
 </div>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -11249,6 +13856,22 @@ writing-mode: vertical-rl
   </div>
 </div>
 <p>如果還不夠，可以把字體換成標楷體...，就可以重現小學課本上的古詩了...。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -11359,6 +13982,22 @@ writing-mode: vertical-rl
   <label class="box10" for="a7"></label>
   <label class="box11" for="a7"></label>
 </div>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -11471,6 +14110,22 @@ div
 
 
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -11498,6 +14153,22 @@ div
 <h3>接下來的規劃</h3>
 <p>A share a day 並不是一個好的架構，他連SEO都有問題，只是在DEMO上真的很方便。所以除了繼續進行下去外，也會開始尋找合適的方式記錄這些文章(我原本是用wordpress，我認為還是不方便)，可能會是logdown吧～</p>
 <p>另外會開始挑戰用CSS做更有趣的作品，就像是Codepen上的一樣，但...應該要再過個幾週後吧...。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -11581,6 +14252,22 @@ div
 
 
 <p>網路上的資源絕對不止這些，但以上所挑選的網站都是會不斷地更新資料，如果有興趣的朋友可以不定期的看這些網站。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -11916,6 +14603,22 @@ input[type="radio"]
       border: 1px solid #555
 </pre>
 <p>這一部分可以著重的重點就是放在CSS selector的<code>~</code>語法，再被選取的radio後方，進行反向Y軸旋轉的動作。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -12039,6 +14742,22 @@ input[type="radio"]
 +perspective-origin(right bottom)
 </pre>
 <p>而把視點放在下方底部，可以凸顯出圖形的氣勢，如果需要有張力的表現，也可以試試看把視點放在下方。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -12163,6 +14882,22 @@ input[type="radio"]
   </div>
 </div>
 <p>就如同最開始所說的，如果設定好起始點，畫一個時鐘也不是問題。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -12299,6 +15034,22 @@ input[type="radio"]
 </div>
 
 <p>經過以上的實驗，相信會更了解物件的軸線吧(!?)。了解後，對於學習CSS transform也會有很大的幫助，接下來會介紹transform的基準點，敬請期待。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -12383,6 +15134,22 @@ input[type="radio"]
 </div>
 
 <p>這篇文章或許不長，但是Demo做超久的...，主要還是想讓大家知道transform有很多有趣的地方(還有順便準備後面章節的內容...)，這周就來一起研究transform吧~。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -12511,6 +15278,22 @@ div
 
 <p>剛剛有提到，label可以讓樣式設定更為容易，所以我們可以把checked隱藏起來，讓使用者只有看到label，這樣在畫面的設計上會更為自由。</p>
 <p>而這互動效果，在後面的章節會有更豐富的運用，敬請期待!</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -12596,6 +15379,22 @@ img
   +filter(blur(10px))
 </pre>
 <p>如果大家是用-webkit-瀏覽器，應該就能感受到這些豐富的效果，如果是firefox、IE10等等瀏覽器，如果沒看到以上效果應該就能了解到了吧，這些效果固然非常有趣，但目前只有-webkit-有支援，相信firefox等瀏覽器在不久的未來都會支援這些效果。</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -12718,6 +15517,22 @@ img
 <h2>相容性誤解</h2>
 <p>在上一篇的時候，我有說明到 web-font icon的相容性，在此可能要重新說明一下。上一篇所使用的 web font(ligature_symbols) 和本篇的 web font(icomoon.io) 有些不同。ligature_symbols的web font有再利用CSS3的語法(text-rendering)讓單字可以轉為icon；而本篇(icomoon)的是屬於基本款的web font，大部分的瀏覽器都有支援，造成誤會敬請見諒。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -12890,6 +15705,22 @@ text-shadow: 1px 1px 5px rgba(black,.5)
 <p>注意，這會有支援性的問題。</p>
 
 <p>明天將會介紹怎麼做web-font icon，敬請期待!!</p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13040,6 +15871,22 @@ cubic-bezier(n,n,n,n)：自由定義cubic-bezier函數，每個值為0到1之間
 </div>
 <p>不過這似乎不是本篇重點...，在後面的文章會再另外介紹animation~，本篇就先到此為止。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> Sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13130,6 +15977,22 @@ cubic-bezier(n,n,n,n)：自由定義cubic-bezier函數，每個值為0到1之間
 	</div>
 </div>
 <p>而這只是靠兩種CSS3語法就能達到的效果，再結合更多的語法，也會有更豐富的變化，所以CSS是沒有極限的!!</p>]]></content>
+      
+        <categories>
+            
+            <category> Sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13219,6 +16082,22 @@ cubic-bezier(n,n,n,n)：自由定義cubic-bezier函數，每個值為0到1之間
 		</figure>
 
 </a>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13286,6 +16165,22 @@ div
 </div>
 
 <p>在我思考了很久之後，看來它只能玩藏頭詩...。</p>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13415,6 +16310,22 @@ html
 
 
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13524,6 +16435,22 @@ html
 </pre>
 <p>而這是一個等距離的圓圈，利用的就是calc(100% - 4em)，做出的等距離效果，而他的動畫，根本次要說明的範例毫無關係><，只是個噱頭。< p="">
 </，只是個噱頭。<></p>]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13644,6 +16571,22 @@ html
 	</div>
 </div>
 <p>參考來源：<a href="http://lea.verou.me/more-css-secrets/#background-attachment" target="_blank" rel="external">http://lea.verou.me/more-css-secrets/#background-attachment</a></p>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13792,6 +16735,22 @@ background-size: 30px 30px
 
 
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13896,6 +16855,22 @@ color: white
 <p>是利用兩個陰影堆疊出來的，可惜的是第一個陰影必須與背景相同顏色。</p>
 <br>
 <p>而其實text-shadow是一個很簡單的效果，但是可以有非常多的變化，以上範例只是一小部分，而說不定現在正在看的各位，已經有新的想法，可以做出新的效果，有機會就分享來給大家知道喔~!</p>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -13983,6 +16958,22 @@ $color: #f74b48
 </pre>
 <em>歌詞引用自：五月天 入陣曲</em>
 <p>偽元素的用途多不勝數，且只要在ie8以上就能夠執行，而在本篇會特別提及的原因，就是偽元素能夠過CSS3做相當多的變化，例如旋轉、陰影、漸層色甚至是結合動態效果，且偽元素也能適當的減少html的標籤使用，讓html的維護更輕鬆。</p>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14119,6 +17110,22 @@ $color: #f74b48
 <td><code>transparent</code></td> <td>1.0</td> <td>3.0 (1.9)</td> <td>9.0 <sup><a href="#2">[**]</a></sup>
 </td> <td>10.0</td> <td>3.1 (525)</td> </tr>
 </tbody></table>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14340,6 +17347,22 @@ table.table3
 
 
 <p>本篇所介紹的Sass和Compass的功能只是其中一部份，但其實在使用上已經很充足，畢竟Sass也是屬於一種工具，與其學的精，不如先發揮其所能，希望有興趣的朋友們，來一起嘗試看看吧。</p>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14450,6 +17473,22 @@ table.table3
 	
 
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14530,6 +17569,22 @@ table.table3
 </pre>
 <p>這是CSS3漸層效果，為了避免不支援的瀏覽器看不到顏色，請先將<code>background: #bf2c73;</code>放在CSS3語法前方，讓不支援CSS3的瀏覽器也能看到單一的色彩，而支援的瀏覽器將會依條件顯示正常的漸層色彩。</p>
 <p>往後的內容將會越來越精彩，敬請期待>O<</p>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14601,6 +17656,22 @@ table.table3
 </p>
 <p>而以上的效果，在剩下的28篇文章會有更詳細的介紹，讓網頁一起動起來吧~。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14616,6 +17687,24 @@ table.table3
 <a href="http://www.dungeonsanddevelopers.com/#_a2b2c2de3r2s2tuvw_19_Casper" target="_blank">目標天賦</a>
 <img src="/images/2013091502.png" alt="">
 <p>而不斷的挑戰自己，就是朝目標前進最快的方式，保持著一樣的心情，迎接明天新的篇章。</p>]]></content>
+      
+        <categories>
+            
+            <category> html </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+            <tag> html </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14668,6 +17757,22 @@ table.table3
 		$all: append($all, append(#{$i}px #{$i}px 0 ,darken($rgb,$i/1.6)),comma)	
 	text-shadow: $all,$lenght+1px $lenght+1px 1px rgba(0,0,0,.3),$lenght+2px $lenght+2px 10px rgba(0,0,0,.6)
 </pre>]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14727,6 +17832,22 @@ table.table3
 	border-top: $color 10px solid
 </pre>
 ]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14771,6 +17892,22 @@ table.table3
 <img src="/images/2013-09-02_livereload2.png" alt="">
 <p>回到剛剛<code>http://127.0.0.1:24681/</code>的頁面，如果點擊右上方的圓圈，可以如圖呈現黑色，就恭喜你成功了。接下來在修改網頁後的每次存檔，你的chrome都會自動重新整理網頁。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> fire.app </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14841,6 +17978,22 @@ sass –watch scss:css
 <h3>完成!</h3>
 <p>只要Command Prompt with Ruby，沒有被中止，他就會持續監控你的SCSS檔，所以每次存檔都會被編譯。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> ruby </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14889,6 +18042,22 @@ sass –watch scss:css
 	<dd>自己去看<a href="/index.html#2013-08-30">上一集</a>! </dd>
 </dl>
 <p>如果看完以上文章，還不是很了解的話，在接下來的文章會教大家如何使用，從實際範例中慢慢的認識sass。</p>]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -14935,6 +18104,22 @@ box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 </pre>
 <p>只要匯入Css3 @mixin後，他就會幫你自動加入CSS個瀏覽器的hack，很棒吧~，在接下來的分享如何開始使用Sass與compass。</p>
 ]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -15030,6 +18215,22 @@ Invert($color)
 </pre>
 <div class="d0826 demo"><div class="org">$color = #F09671</div><div class="invert">complement($color)= #0f698e</div>
 </div>]]></content>
+      
+        <categories>
+            
+            <category> sass </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -15136,6 +18337,22 @@ cubic-bezier(n,n,n,n)：自由定義cubic-bezier函數，每個值為0到1之間
 <div class="timing8">step-end</div>
 <div class="timing9">steps(4, end)</div>
 </div>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -15295,6 +18512,22 @@ font-family: 'The Girl Next Door', cursive;
         <td><span style="color: #888;" title="Please update this with the earliest version of support.">(Yes)</span></td>
       </tr>
 </tbody></table>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -15345,6 +18578,20 @@ font-family: 'The Girl Next Door', cursive;
 <p>強制頁面在當前窗口以獨立頁面顯示。(這段不是很了解，似乎是不能被當成iframe?)</p>
 <pre>&lt;meta http-equiv=&quot;Window-target&quot; content=&quot;_top&quot;&gt;</pre>
 <p>在html5之後<code>meta</code>屬性越來越多樣，還有許多目前沒提到，之後會依序補充。</p>]]></content>
+      
+        <categories>
+            
+            <category> html </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> html </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -15390,6 +18637,22 @@ font-family: 'The Girl Next Door', cursive;
 	<img xlink:href="/images/20130821.svg" src="/images/20130821.png" width="75" height="75"/></svg>
 </div>
 <p>好像不可以啊?</p>]]></content>
+      
+        <categories>
+            
+            <category> html </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> html </tag>
+            
+            <tag> svg </tag>
+            
+        </tags>
+        
     </entry>
     
     <entry>
@@ -15465,6 +18728,22 @@ text-shadow: 0 0 5px red</pre>
 <div class="d0820 demo">
 	<div class="text-shadow10">ANAGLYPHIC TEXT EFFECT</div>
 </div>]]></content>
+      
+        <categories>
+            
+            <category> CSS </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> sass </tag>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
     </entry>
     
   

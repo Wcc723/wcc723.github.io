@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Javascript Promise 範例 | 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="js,promise,es6" />
+    
+    <meta name="description" content="Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Javascript Promise 範例">
+<meta property="og:url" content="https://wcc723.github.io/javascript/2017/03/02/javascript-promise/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42">
+<meta property="og:updated_time" content="2017-03-02T14:03:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javascript Promise 範例">
+<meta name="twitter:description" content="Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">javascript</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-javascript-promise" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Javascript Promise 範例
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/javascript/2017/03/02/javascript-promise/" class="article-date">
+    <time datetime="2017-03-01T16:00:00.000Z" itemprop="datePublished">2017-03-02</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es6/">es6</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/promise/">promise</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42" rel="gallery_cizs0v21p00ks1sgago5pjqg7">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <p>Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。</p>
+<a id="more"></a>
+
+<p data-height="400" data-theme-id="0" data-slug-hash="qrbKNg" data-default-tab="js" data-user="Wcc723" data-embed-version="2" data-pen-title="ES6 Promise" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/qrbKNg/" target="_blank" rel="external">ES6 Promise</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="external">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> epaAPI = <span class="string">"http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?"</span>;</div><div class="line">  <span class="keyword">let</span> errorUrl = <span class="string">"http://opendata.epa.gov.tw/ws/Data/UL/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?"</span>;</div><div class="line">  <span class="keyword">let</span> _DefaultContry = <span class="string">'臺北市'</span>;</div><div class="line">  </div><div class="line">  <span class="keyword">var</span> getData = <span class="function">(<span class="params">url</span>)=&gt;</span> &#123; <span class="comment">// 傳入的 URL</span></div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123; <span class="comment">// return promise</span></div><div class="line">      $.getJSON( url, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">        format: <span class="string">"json"</span></div><div class="line">      &#125;).done(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (data) &#123;</div><div class="line">          resolve(data); <span class="comment">// 成功後透過 resolve 回傳值</span></div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">          reject(<span class="string">'Error'</span>);</div><div class="line">        &#125;</div><div class="line">      &#125;).fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        reject(<span class="string">'Error'</span>);</div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  getData(epaAPI) <span class="comment">// 傳入的 url</span></div><div class="line">    .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值</span></div><div class="line">      <span class="built_in">console</span>.log(data);</div><div class="line">      $.each( data, <span class="function"><span class="keyword">function</span>(<span class="params"> i, item </span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(item);</div><div class="line">        <span class="keyword">let</span> list = <span class="string">`&lt;li&gt;<span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.PublishTime&#125;</span> <span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span> </div><div class="line">        <span class="comment">//利用item.值，把每一個值取出，並寫成一個html存在list的變數內</span></div><div class="line">        $(<span class="string">'.itemlist'</span>).append(list);</div><div class="line">        <span class="comment">//最後把剛剛的html放到表格內</span></div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  </div><div class="line">  getData(errorUrl) <span class="comment">// 傳入錯誤的 url</span></div><div class="line">    .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span></div><div class="line">      <span class="built_in">console</span>.log(data);</div><div class="line">    &#125;)</div><div class="line">    .catch(<span class="function">(<span class="params">response</span>)=&gt;</span> &#123; <span class="comment">// 錯誤狀態的回傳</span></div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'errorUrl:'</span>, response);</div><div class="line">    &#125;);</div><div class="line">  </div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<h2 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h2><h3 id="new-Promise"><a href="#new-Promise" class="headerlink" title="new Promise"></a>new Promise</h3><p><code>var getData()</code> 裡面包含非同步的 Ajax，如果直接套用 <code>getData()</code> 會無法確實取得資料後再執行其他 function，所以這時候在內部加上 <code>new Promise()</code> 確保 Ajax 完成後再回傳資料。<br><code>getData(epaAPI)</code> 套用時可以傳入 url，在後方的 <code>.then</code> 表示任務完成第一段後取得 <code>resolve()</code> 內的值，接下來就如同 jQuery Ajax 回傳後得處理方式一樣，。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> list = <span class="string">`&lt;li&gt;<span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.PublishTime&#125;</span> <span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span></div></pre></td></tr></table></figure>
+<p>題外話：這一段則是 ES6 中的字串處理方式，用 <code>` 符號框住整個字串，再透過類似 jQuery 的 selector (</code>${}<code>) 就能帶入字串中的變數，取代過去使用</code>“ “ + variable + “ “` 撰寫起來輕便許多。</p>
+<h3 id="錯誤回傳"><a href="#錯誤回傳" class="headerlink" title="錯誤回傳"></a>錯誤回傳</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">getData(errorUrl) <span class="comment">// 傳入錯誤的 url</span></div><div class="line">  .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span></div><div class="line">    <span class="built_in">console</span>.log(data);</div><div class="line">  &#125;)</div><div class="line">  .catch(<span class="function">(<span class="params">response</span>)=&gt;</span> &#123; <span class="comment">// 錯誤狀態的回傳</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'errorUrl:'</span>, response);</div><div class="line">  &#125;);</div></pre></td></tr></table></figure>
+<p>後面包含另一個 <code>getData(errorUrl)</code> 刻意傳入錯誤的連結使其產生錯誤，這時候的 <code>.then</code> 沒有辦法接受到資料，後方的 <code>.catch</code> 則可以接到由 <code>reject()</code> 回傳的訊息。</p>
+<p>參考文件：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="external">https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all</a></p>
+
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/css/2016/12/30/ironman-ending/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">鐵人賽 30 - CSS 鐵人賽的結束與接下來的研究</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/03/02/javascript-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42)" alt="Javascript Promise 範例" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/03/02/javascript-promise/" class="title">Javascript Promise 範例</a></p>
+                            <p class="item-date"><time datetime="2017-03-01T16:00:00.000Z" itemprop="datePublished">2017-03-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2016/12/30/ironman-ending/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/2016_ironman/30_ending_header.jpg)" alt="鐵人賽 30 - CSS 鐵人賽的結束與接下來的研究" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2016/12/30/ironman-ending/" class="title">鐵人賽 30 - CSS 鐵人賽的結束與接下來的研究</a></p>
+                            <p class="item-date"><time datetime="2016-12-29T16:00:00.000Z" itemprop="datePublished">2016-12-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2016/12/29/one-class/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"> </span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2016/12/29/one-class/" class="title">鐵人賽 29 - CSS 實戰小技巧 - 不使用 important 的高優先值技巧</a></p>
+                            <p class="item-date"><time datetime="2016-12-28T16:00:00.000Z" itemprop="datePublished">2016-12-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2016/12/28/ios-input/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/2016_ironman/28_ios_gif_01.gif)" alt="鐵人賽 28 - 實戰小技巧 - iOS 表單的使用者體驗優化" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2016/12/28/ios-input/" class="title">鐵人賽 28 - 實戰小技巧 - iOS 表單的使用者體驗優化</a></p>
+                            <p class="item-date"><time datetime="2016-12-27T16:00:00.000Z" itemprop="datePublished">2016-12-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2016/12/27/over-my-dead-body/" class="thumbnail">
+    
+    
+        <span style="background-image:url(/images/2016_ironman/26_custom_01.png)" alt="鐵人賽 27 - CSS 框架自幹心得 - 失敗三次的框架建構經驗" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2016/12/27/over-my-dead-body/" class="title">鐵人賽 27 - CSS 框架自幹心得 - 失敗三次的框架建構經驗</a></p>
+                            <p class="item-date"><time datetime="2016-12-26T16:00:00.000Z" itemprop="datePublished">2016-12-27</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.71px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 13.57px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.71px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 12.14px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 18.57px;">d3js</a> <a href="/tags/design/" style="font-size: 12.86px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.86px;">git</a> <a href="/tags/github/" style="font-size: 12.86px;">github</a> <a href="/tags/gulp/" style="font-size: 17.14px;">gulp</a> <a href="/tags/html/" style="font-size: 11.43px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.71px;">intro</a> <a href="/tags/ironman/" style="font-size: 17.86px;">ironman</a> <a href="/tags/javascript/" style="font-size: 16.43px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.71px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 15px;">jquery</a> <a href="/tags/js/" style="font-size: 13.57px;">js</a> <a href="/tags/life/" style="font-size: 10.71px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 12.14px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 14.29px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10px;">promise</a> <a href="/tags/rails/" style="font-size: 10.71px;">rails</a> <a href="/tags/reactjs/" style="font-size: 12.14px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.71px;">ruby</a> <a href="/tags/sass/" style="font-size: 19.29px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.86px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 14.29px;">svg</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.43px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io//javascript/2017/03/02/javascript-promise/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+    </div>
+</body>
+</html>
