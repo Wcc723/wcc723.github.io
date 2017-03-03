@@ -20,7 +20,7 @@ module.exports = {
     // 輸出
     'sass_output': 'stylesheets/',
     'js_output': 'js/',
-    'public': './themes/next/source/',
+    'public': './themes/hueman/source/',
     // Bower
     'bower': './bower_components/'
   },
