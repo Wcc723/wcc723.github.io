@@ -4,6 +4,100 @@
   
     
     <entry>
+      <title><![CDATA[CSS Grid 屬性介紹]]></title>
+      <url>https://wcc723.github.io//css/2017/03/22/css-grid-layout/</url>
+      <content type="html"><![CDATA[<p>CSS gird 在最近 Chrome 更新已經慢慢開始支援 (就是還很久才會完全支援的意思)，開始之前還是來介紹一些語法。</p>
+<p>與 CSS Flex 一樣，CSS Grid 用兩個部分來看比較快，一個是屬於外部容器的屬性，另一個是屬於內部容器的屬性；從外開始向內看可以加快理解的速度。</p>
+<a id="more"></a>
+<p>CSS Grid 可以做什麼呢？這邊提供一個簡單範例給大家看看，相同的 Grid System 如果使用 float 需要多很多層，還要注意清除浮動等等。在 CSS grid 的加持下每個 class 都僅需少量的屬性就可做到相同的效果。</p>
+
+<p data-height="265" data-theme-id="0" data-slug-hash="gmedKW" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="CSS Grid Layout" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/gmedKW/" target="_blank" rel="external">CSS Grid Layout</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="external">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="external">CodePen</a>.</p>
+<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
+
+<hr>
+<p>本篇內容有許多參考 <a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="external">https://css-tricks.com/snippets/css/complete-guide-grid/</a></p>
+<h2 id="外部容器"><a href="#外部容器" class="headerlink" title="外部容器"></a>外部容器</h2><h3 id="dispaly"><a href="#dispaly" class="headerlink" title="dispaly"></a>dispaly</h3><p>和 Flex 一樣，需要定義容器的顯示類型。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.container</span> &#123;</div><div class="line">  <span class="attribute">display</span>: grid | inline-grid | subgrid;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="grid-template-columns-grid-template-rows"><a href="#grid-template-columns-grid-template-rows" class="headerlink" title="grid-template-columns, grid-template-rows"></a>grid-template-columns, grid-template-rows</h3><p>看完這個屬性，對於 CSS Grid 就會有基礎的了解。</p>
+<p>Grid 和 flex 最大不同之處，透過 grid template 來定義版型的結構，分別由 column 及 row 定義出直排與橫列的格線，內容再依隔線作安排。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fs_1E340AD7809EDC17E1CE05A890D5C5BC743073124AFCE711A7E632C8E15F1686_1489471771069_grid-start-end-a.png?alt=media&amp;token=646e175a-0d08-4c45-b306-c067bccd9ac4" alt=""></p>
+<p>圖片來源：<a href="https://css-tricks.com/snippets/css/complete-guide-grid/" target="_blank" rel="external">https://css-tricks.com/snippets/css/complete-guide-grid/</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">.container &#123;</div><div class="line">  grid-template-columns: &lt;track-size&gt; ... | &lt;line-name&gt; &lt;track-size&gt; ...;</div><div class="line">  grid-template-rows: &lt;track-size&gt; ... | &lt;line-name&gt; &lt;track-size&gt; ...;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>track-size: 可使用彈性的長度、百分比或分數 (分數的部分需使用 fr 單位)</li>
+<li>line-name: 可自行命名的名稱 </li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fs_1E340AD7809EDC17E1CE05A890D5C5BC743073124AFCE711A7E632C8E15F1686_1489474448383_file.png?alt=media&amp;token=9e749af7-2dfe-4e8a-8d2d-f8ed6b8dff65" alt=""></p>
+<blockquote>
+<p>圖片：自己畫的</p>
+</blockquote>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.wrap</span> &#123;</div><div class="line">  <span class="attribute">display</span>: grid;</div><div class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">200px</span> <span class="number">50px</span> auto <span class="number">50px</span> <span class="number">200px</span>;</div><div class="line">  <span class="attribute">grid-template-rows</span>: <span class="number">25%</span> <span class="number">100px</span> auto;</div><div class="line">  <span class="attribute">height</span>: <span class="number">100vh</span>;</div><div class="line">  <span class="attribute">width</span>: <span class="number">940px</span>;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>粉紅色的部分就是 grid-template-columns，黃色部份則是 grid-template-rows，<strong>隔線排版就能靠上面一張圖了解</strong>！grid-template-columns 定義水平方向的空間，grid-template-rows 定義垂直方向的空間，且可以使用大部分的單位數值。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.wrap</span> &#123;</div><div class="line">  <span class="attribute">grid-template-columns</span>: <span class="built_in">repeat</span>(2, 1fr 2fr) <span class="number">100px</span>;</div><div class="line">  <span class="comment">/* grid-template-columns: repeat(&#123;次數&#125;, &#123;格線...&#125; | &#123;格線...&#125;) | &#123;格線...&#125;; */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>這個地方在介紹兩個新東西，一個是 fr 這個單位，這個單位能夠將可用的 剩餘空間 做比例分割，以上面的 1fr 2fr 為例，空間將被分割成 1/3、2/3 兩個大小。<br>另一個是 repeat，可以重複隔線。</p>
+<h3 id="grid-template-areas"><a href="#grid-template-areas" class="headerlink" title="grid-template-areas"></a>grid-template-areas</h3><p>透過 area 定義區塊在 template 上的位置，概念就是在畫面上登記屬於該元素的空間，此部分要內外元素一起看。</p>
+<ul>
+<li>內元素 grid-area：定義空間的名稱</li>
+<li>外元素 grid-template-areas：定義空間的位置，是透過幾組字串的組合，組合方式可以參考下圖及程式碼。</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fs_1E340AD7809EDC17E1CE05A890D5C5BC743073124AFCE711A7E632C8E15F1686_1489479687278_file.png?alt=media&amp;token=b902a96f-d842-4148-9c7d-60a137e4c2e7" alt=""></p>
+<p>假設我們需要繪製如上的空間配置，上方出現 5 * 3 那麼會透過 grid-area 來命名小空間的名稱，再透過 grid-template-areas 來表示整體空間的配置，配置的方式是透過字串的方式組合。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.wrap</span> &#123;</div><div class="line">  <span class="attribute">display</span>: grid;</div><div class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">200px</span> <span class="number">50px</span> auto <span class="number">50px</span> <span class="number">200px</span>;</div><div class="line">  <span class="attribute">grid-template-rows</span>: <span class="number">25%</span> <span class="number">100px</span> auto;</div><div class="line">  <span class="attribute">grid-template-areas</span>:</div><div class="line">    <span class="string">"header header header header header"</span></div><div class="line">    <span class="string">"side  main main main main"</span></div><div class="line">    <span class="string">"side footer footer footer footer"</span>;</div><div class="line">  <span class="attribute">height</span>: <span class="number">100vh</span>;</div><div class="line">  <span class="attribute">width</span>: <span class="number">940px</span>;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.item-a</span> &#123;</div><div class="line">  <span class="attribute">grid-area</span>: header;</div><div class="line">  <span class="attribute">background-color</span>: purple;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.item-b</span> &#123;</div><div class="line">  <span class="attribute">grid-area</span>: main;</div><div class="line">  <span class="attribute">background-color</span>: orange;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.item-c</span> &#123;</div><div class="line">  <span class="attribute">grid-area</span>: side;</div><div class="line">  <span class="attribute">background-color</span>: green;</div><div class="line">&#125;</div><div class="line"><span class="selector-class">.item-d</span> &#123;</div><div class="line">  <span class="attribute">grid-area</span>: footer;</div><div class="line">  <span class="attribute">background-color</span>: gray;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意：</p>
+<ul>
+<li>空間不能分離且是唯一的，錯誤範例: <code>&quot;side main side&quot;</code></li>
+</ul>
+<h3 id="grid-auto-columns-grid-auto-rows"><a href="#grid-auto-columns-grid-auto-rows" class="headerlink" title="grid-auto-columns, grid-auto-rows"></a>grid-auto-columns, grid-auto-rows</h3><p>簡單版的 Grid，如果版型較為簡單，可以直接使用 grid-auto-{ cols or rows}。如果是簡易的 960 12欄 grid 設定如下即可。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.row</span> &#123;</div><div class="line">  <span class="attribute">display</span>: grid;</div><div class="line">  <span class="attribute">grid-auto-columns</span>: <span class="number">60px</span>;</div><div class="line">  <span class="attribute">grid-auto-flow</span>: column;</div><div class="line">  <span class="attribute">grid-gap</span>: <span class="number">20px</span>;</div><div class="line">  <span class="attribute">width</span>: <span class="number">940px</span>;</div><div class="line">  <span class="attribute">min-height</span>: <span class="number">100vh</span>;</div><div class="line">  <span class="attribute">margin</span>: <span class="number">0</span> auto;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="grid-auto-flow"><a href="#grid-auto-flow" class="headerlink" title="grid-auto-flow"></a>grid-auto-flow</h3><p>Grid 的排列方式，以上面 12 欄排列 grid 來說，如果沒有設定 column，就會變成垂直排列。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.row</span> &#123;</div><div class="line">  <span class="attribute">grid-auto-flow</span>: row | column | row dense | column dense</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="grid-gap-grid-column-gap-grid-row-gap"><a href="#grid-gap-grid-column-gap-grid-row-gap" class="headerlink" title="grid-gap, grid-column-gap, grid-row-gap"></a>grid-gap, grid-column-gap, grid-row-gap</h3><p>格線的間隔包含垂直及水平，可參考如下。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">grid-column-gap: &#123; grid-column-gap &#125;;</div><div class="line">grid-row-gap: &#123; grid-row-gap &#125;;</div><div class="line">grid-gap: &#123; grid-row-gap &#125; &#123; grid-column-gap &#125;;</div></pre></td></tr></table></figure>
+<h3 id="justify-items-justify-content-align-content"><a href="#justify-items-justify-content-align-content" class="headerlink" title="justify-items, justify-content, align-content"></a>justify-items, justify-content, align-content</h3><p>與 flex 的使用方法一樣，先跳過之後再補充</p>
+<hr>
+<h2 id="內部容器"><a href="#內部容器" class="headerlink" title="內部容器"></a>內部容器</h2><h3 id="grid-column-start-grid-column-end-grid-row-start-grid-row-end"><a href="#grid-column-start-grid-column-end-grid-row-start-grid-row-end" class="headerlink" title="grid-column-start, grid-column-end, grid-row-start, grid-row-end"></a>grid-column-start, grid-column-end, grid-row-start, grid-row-end</h3><p>物件所佔的空間位置，Column 及 Row 所到的起始點及終點</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.item</span> &#123;</div><div class="line">  <span class="attribute">grid-column-start</span>: &lt;number&gt; | &lt;name&gt; | span &lt;number&gt; | span &lt;name&gt; | auto</div><div class="line">  grid-column-end: &lt;number&gt; | &lt;name&gt; | span &lt;number&gt; | span &lt;name&gt; | auto</div><div class="line">  grid-row-start: &lt;number&gt; | &lt;name&gt; | span &lt;number&gt; | span &lt;name&gt; | auto</div><div class="line">  grid-row-end: &lt;number&gt; | &lt;name&gt; | span &lt;number&gt; | span &lt;name&gt; | auto</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><code>&lt;line&gt;</code> - 用數字表示 物件 所在的線，可參考上一段的 template</li>
+<li>span <code>&lt;number&gt;</code> - 物件所佔用的欄位數</li>
+<li>span <code>&lt;name&gt;</code> - 物件所在的 grid 名稱</li>
+<li>auto - 自動的啦</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.item</span> &#123;</div><div class="line">  <span class="attribute">grid-column-start</span>: <span class="number">2</span>; <span class="comment">/* 物件起始線 */</span></div><div class="line">  <span class="attribute">grid-column-end</span>: span <span class="number">4</span>; <span class="comment">/* 終點線 = 物件所佔的空間數 */</span></div><div class="line">  <span class="attribute">grid-row-start</span>: <span class="number">3</span>; <span class="comment">/* 物件起始線 */</span></div><div class="line">  <span class="attribute">grid-row-end</span>: auto; <span class="comment">/* 不設定終點線 */</span></div><div class="line">  <span class="attribute">background-color</span>: red;</div><div class="line">  <span class="attribute">z-index</span>: <span class="number">999</span>; <span class="comment">/* 欄位重疊可用 z-index 設定前後順序 */</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="grid-column-grid-row"><a href="#grid-column-grid-row" class="headerlink" title="grid-column, grid-row"></a>grid-column, grid-row</h3><p>上面那段的縮寫，使用斜線 (/) 隔開屬性。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.item</span> &#123;</div><div class="line">  <span class="attribute">grid-column</span>: <span class="number">2</span> / span <span class="number">4</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="grid-area"><a href="#grid-area" class="headerlink" title="grid-area"></a>grid-area</h3><ul>
+<li><code>&lt;name&gt;</code>: 使用命名的方式，透過 <code>grid-template-areas</code> 來套用</li>
+<li><code>&lt;row-start&gt;</code> / <code>&lt;column-start&gt;</code> / <code>&lt;row-end&gt;</code> / <code>&lt;column-end&gt;</code>:  指定 grid 線數或 grid 名稱來定位</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.item-a</span> &#123;</div><div class="line">  <span class="attribute">grid-area</span>: <span class="number">2</span> / <span class="number">2</span> / <span class="number">4</span>/ <span class="number">4</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="justify-self-align-self"><a href="#justify-self-align-self" class="headerlink" title="justify-self, align-self"></a>justify-self, align-self</h3><p>內容器的定位模式，與 flex 使用方式一樣。</p>
+<hr>
+<p>Grid 目前想到的運用方面有：</p>
+<ul>
+<li>滿版的排版，適合拿來做平面設計風格的排版</li>
+<li>輕量的 grid system，或許下次 Bootstrap 就改用 Display grid 在排版了 ~_~。</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> grid </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[VSCode 快速推坑介紹文]]></title>
       <url>https://wcc723.github.io//javascript/2017/03/03/vscode-for-mac/</url>
       <content type="html"><![CDATA[<p>用過的 Editor 很多，常常出現新款的 Editor 都會嘗試一下，雖然主流的不一定會喜歡，但多嘗試也不是壞事，這邊稍微列出個人主觀的意見供大家參考參考：</p>
@@ -9992,9 +10086,9 @@ line.l2{
         
         <tags>
             
-            <tag> css </tag>
-            
             <tag> svg </tag>
+            
+            <tag> css </tag>
             
         </tags>
         
@@ -11930,62 +12024,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io//jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -12068,6 +12106,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
@@ -17752,11 +17846,11 @@ table.table3
         
         <tags>
             
+            <tag> html </tag>
+            
             <tag> sass </tag>
             
             <tag> css </tag>
-            
-            <tag> html </tag>
             
         </tags>
         
