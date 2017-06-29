@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()] | 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript" />
+    
+    
+    
+    <meta name="description" content="陣列處理技巧是 JavaScript 中非常重要的一塊，現在框架大亂鬥的時代，框架基本上對於 DOM 的處理都有屬於自己一套良好的方法。只要能夠對於陣列資料操作熟悉，配合框架就能夠將開發效率更上層樓。
+本篇介紹到的方法有：
+
+filter()
+find()
+forEach()
+map()
+every()
+some()
+reduce()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]">
+<meta property="og:url" content="https://wcc723.github.io/javascript/2017/06/29/es6-native-array/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="陣列處理技巧是 JavaScript 中非常重要的一塊，現在框架大亂鬥的時代，框架基本上對於 DOM 的處理都有屬於自己一套良好的方法。只要能夠對於陣列資料操作熟悉，配合框架就能夠將開發效率更上層樓。
+本篇介紹到的方法有：
+
+filter()
+find()
+forEach()
+map()
+every()
+some()
+reduce()">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F20170629.png?alt=media&token=2db01bf7-e82a-4d54-bd43-7cb17a53592d">
+<meta property="og:updated_time" content="2017-06-29T07:31:43.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]">
+<meta name="twitter:description" content="陣列處理技巧是 JavaScript 中非常重要的一塊，現在框架大亂鬥的時代，框架基本上對於 DOM 的處理都有屬於自己一套良好的方法。只要能夠對於陣列資料操作熟悉，配合框架就能夠將開發效率更上層樓。
+本篇介紹到的方法有：
+
+filter()
+find()
+forEach()
+map()
+every()
+some()
+reduce()">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F20170629.png?alt=media&token=2db01bf7-e82a-4d54-bd43-7cb17a53592d">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">javascript</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-es6-native-array" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/javascript/2017/06/29/es6-native-array/" class="article-date">
+    <time datetime="2017-06-28T16:00:00.000Z" itemprop="datePublished">2017-06-29</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F20170629.png?alt=media&token=2db01bf7-e82a-4d54-bd43-7cb17a53592d" rel="gallery_cj4i3cofe00l5luga6ejcf999">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F20170629.png?alt=media&token=2db01bf7-e82a-4d54-bd43-7cb17a53592d" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <p>陣列處理技巧是 JavaScript 中非常重要的一塊，現在框架大亂鬥的時代，框架基本上對於 DOM 的處理都有屬於自己一套良好的方法。只要能夠對於陣列資料操作熟悉，配合框架就能夠將開發效率更上層樓。</p>
+<p>本篇介紹到的方法有：</p>
+<ul>
+<li><a href="#Array-prototype-filter">filter()</a></li>
+<li><a href="#Array-prototype-find">find()</a></li>
+<li><a href="#Array-prototype-forEach">forEach()</a></li>
+<li><a href="#Array-prototype-map">map()</a></li>
+<li><a href="#Array-prototype-every">every()</a></li>
+<li><a href="#Array-prototype-some">some()</a></li>
+<li><a href="#Array-prototype-reduce">reduce()</a></li>
+</ul>
+<a id="more"></a>
+<p>直接點上方連結就能跳到指定區域</p>
+<h2 id="初始資料"><a href="#初始資料" class="headerlink" title="初始資料"></a>初始資料</h2><p>本篇都是使用同一份陣列資料，當然你也可以把相關的函式直接貼在 jsbin 或 codepen 上就能看到結果，因為篇幅已經很長了，所以就不在另外補上範例檔。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 相同的陣列</span></div><div class="line"><span class="keyword">var</span> people = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Casper'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'鍋燒意麵'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">18</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Wang'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'炒麵'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">24</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Bobo'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'蘿蔔泥'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">1</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'滷蛋'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'蘿蔔泥'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">3</span></div><div class="line">  &#125;</div><div class="line">];</div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-filter"><a href="#Array-prototype-filter" class="headerlink" title="Array.prototype.filter()"></a>Array.prototype.filter()</h2><p>filter() 會回傳一個陣列，其條件是 return 後方為 true 的物件，很適合用在搜尋符合條件的資料。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> filterEmpty = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(filterEmpty);    <span class="comment">// 沒有條件，會是一個空陣列</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> filterAgeThan5 = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">5</span>;       <span class="comment">// 取得大於五歲的</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(filterAgeThan5); <span class="comment">// Casper, Wang 這兩個物件</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> filterDouble = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> index % <span class="number">2</span> === <span class="number">1</span>;    <span class="comment">// 取得陣列中雙數的物件</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(filterDouble);   <span class="comment">// Wang, 滷蛋 這兩個物件</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-find"><a href="#Array-prototype-find" class="headerlink" title="Array.prototype.find()"></a>Array.prototype.find()</h2><p>find() 與 filter() 很像，但 find() <strong>只會回傳一次值</strong>，且是第一次為 true 的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> findEmpty = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findEmpty);          <span class="comment">// 沒有條件，會是 undefined</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> findAgeThan5 = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">5</span>;           <span class="comment">// 取得大於五歲的</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findAgeThan5);       <span class="comment">// 雖然答案有兩個，但只會回傳 Casper 這一個物件</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> findLike = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.like === <span class="string">'蘿蔔泥'</span>;  <span class="comment">// 取得陣列 like === '蘿蔔泥'</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findLike);           <span class="comment">// 雖然答案有兩個，但只會回傳第一個 Bobo 物件</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-forEach"><a href="#Array-prototype-forEach" class="headerlink" title="Array.prototype.forEach()"></a>Array.prototype.forEach()</h2><p>forEach 是這幾個陣列函式最單純的一個，不會額外回傳值，只單純執行每個陣列內的物件或值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> forEachIt = people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(item, index, array); <span class="comment">// 物件, 索引, 全部陣列</span></div><div class="line">  <span class="keyword">return</span> item;                     <span class="comment">// forEach 沒在 return 的，所以這邊寫了也沒用</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(forEachIt);            <span class="comment">// undefined</span></div><div class="line"></div><div class="line">people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  item.age = item.age + <span class="number">1</span>;         <span class="comment">// forEach 就如同 for，不過寫法更容易</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(people);               <span class="comment">// 全部 age + 1</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-map"><a href="#Array-prototype-map" class="headerlink" title="Array.prototype.map()"></a>Array.prototype.map()</h2><p>使用 map() 時他需要回傳一個值，他會透過函式內所回傳的值組合成一個陣列。</p>
+<ul>
+<li>如果不回傳則是 <code>undefined</code></li>
+<li>回傳數量等於原始陣列的長度</li>
+</ul>
+<p>這很適合將原始的變數運算後重新組合一個新的陣列。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> mapEmpty = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(mapEmpty);    <span class="comment">// [undefined, undefined, undefined, undefined]</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> mapAgeThan5 = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">5</span>;    <span class="comment">// 比較大於五歲的</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(mapAgeThan5); <span class="comment">// [true, true, false, false]</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> mapAgeThan5_2 = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="comment">// 錯誤示範</span></div><div class="line">  <span class="keyword">if</span> (item.age &gt; <span class="number">5</span>) &#123;</div><div class="line">    <span class="keyword">return</span> item;              <span class="comment">// 回傳大於五歲的</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="literal">false</span>;               <span class="comment">// 別以為空的或是 false 就不會回傳</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(mapAgeThan5_2);   <span class="comment">// [&#123;name: 'Casper'...&#125;, &#123;name: 'Wang'...&#125;, false, false]</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> mapEat = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">if</span> (item.like !== <span class="string">'蘿蔔泥'</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;item.like&#125;</span> 好吃`</span>;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;item.like&#125;</span> 不好吃`</span>;</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(mapEat);          <span class="comment">// ["鍋燒意麵 好吃", "炒麵 好吃", "蘿蔔泥 不好吃", "蘿蔔泥 不好吃"]</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-every"><a href="#Array-prototype-every" class="headerlink" title="Array.prototype.every()"></a>Array.prototype.every()</h2><p>every() 可以檢查所有的陣列是否符合條件，這僅會回傳一個值 <code>true</code> or <code>false</code>，可以用來檢查陣列中的內容是否符合特定條件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> array = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Casper'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'鍋燒意麵'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">18</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Wang'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'炒麵'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">24</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Bobo'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'蘿蔔泥'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">1</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'滷蛋'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'蘿蔔泥'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">3</span></div><div class="line">  &#125;</div><div class="line">];</div><div class="line"></div><div class="line"><span class="keyword">var</span> ans = array.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(item, index, array); <span class="comment">// 物件, 索引, 全部陣列</span></div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">10</span> <span class="comment">// 當全部 age 大於 10 才能回傳 true</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans); <span class="comment">// false: 只要有部分不符合，則為 false</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans2 = array.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &lt; <span class="number">25</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// true: 全部 age 都小於 25</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-some"><a href="#Array-prototype-some" class="headerlink" title="Array.prototype.some()"></a>Array.prototype.some()</h2><p>some() 與 every() 非常接近，都是回傳 true or false，差異僅在 every() 需完全符合，some() 僅需要部分符合。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ans = people.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">10</span> <span class="comment">// 當全部 age 大於 10 才能回傳 true</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans);  <span class="comment">// true: 只要有部分符合，則為 true</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans2 = people.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &lt; <span class="number">25</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// true: 只要有部分符合，則為 true  </span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans2 = people.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">25</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// false: 全部都不符合則為 false</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-reduce"><a href="#Array-prototype-reduce" class="headerlink" title="Array.prototype.reduce()"></a>Array.prototype.reduce()</h2><p>reduce() 和其他幾個差異就很大了，他可以與前一個回傳的值再次作運算，參數包含以下：</p>
+<ul>
+<li>accumulator: 前一個參數，如果是第一個陣列的話，值是以另外傳入或初始化的值</li>
+<li>currentValue: 當前變數</li>
+<li>currentIndex: 當前索引</li>
+<li>array: 全部陣列</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reduceEmpty = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(reduceEmpty);                 <span class="comment">// 沒有條件，會是 undefined</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> reducePlus = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">  <span class="comment">// 分別為前一個回傳值, 目前值, 當前索引值</span></div><div class="line">  <span class="built_in">console</span>.log(accumulator, currentValue, currentIndex);</div><div class="line">  <span class="keyword">return</span> accumulator + currentValue.age;  <span class="comment">// 與前一個值相加</span></div><div class="line">&#125;, <span class="number">0</span>);                                    <span class="comment">// 傳入初始化值為 0</span></div><div class="line"><span class="built_in">console</span>.log(reducePlus);                  <span class="comment">// 總和為 46</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> reducePlus = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'reduce'</span>, accumulator, currentValue, currentIndex)</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.max( accumulator, currentValue.age ); <span class="comment">// 與前一個值比較哪個大</span></div><div class="line">&#125;, <span class="number">0</span>);</div><div class="line"><span class="built_in">console</span>.log(reducePlus);                  <span class="comment">// 最大值為 24</span></div></pre></td></tr></table></figure>
+<p>reduce() 的使用方法更為豐富，想認識更詳細可參考 <a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce" target="_blank" rel="external">MDN</a>。</p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>預設的陣列行為 <em>(本篇中除了 reduce() 是傳入初始資料)</em> 內的 this 是指向 window，如果要改，可以在 function 後傳入。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// arr.forEach(function callback(currentValue, index, array) &#123;</span></div><div class="line"><span class="comment">// your iterator</span></div><div class="line"><span class="comment">// &#125;[, thisArg]);</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans3 = people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">// 這邊的 this 就會使用後方傳入的</span></div><div class="line">  <span class="keyword">return</span> item.age &lt; <span class="number">25</span></div><div class="line">&#125;, people);         <span class="comment">// 傳入的物件，替代 this，如果無則是 window</span></div></pre></td></tr></table></figure>
+
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/life/2017/05/25/promise/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">JavaScript ES6 Promise</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/06/29/es6-native-array/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F20170629.png?alt=media&token=2db01bf7-e82a-4d54-bd43-7cb17a53592d)" alt="JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/06/29/es6-native-array/" class="title">JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]</a></p>
+                            <p class="item-date"><time datetime="2017-06-28T16:00:00.000Z" itemprop="datePublished">2017-06-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/life/2017/05/25/promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-25%20%E4%B8%8A%E5%8D%8810.27.33.png?alt=media&token=19fb72ee-5d56-4a05-a8bb-cadf1f627f52)" alt="JavaScript ES6 Promise" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/life/">life</a></p>
+                            <p class="item-title"><a href="/life/2017/05/25/promise/" class="title">JavaScript ES6 Promise</a></p>
+                            <p class="item-date"><time datetime="2017-05-24T16:00:00.000Z" itemprop="datePublished">2017-05-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/life/2017/05/24/css-grid/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fcss_grid.001.png?alt=media&token=32d09c60-25c4-4f8b-b510-f1c49f68798e)" alt="CSS3 Grid Layout" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/life/">life</a></p>
+                            <p class="item-title"><a href="/life/2017/05/24/css-grid/" class="title">CSS3 Grid Layout</a></p>
+                            <p class="item-date"><time datetime="2017-05-23T16:00:00.000Z" itemprop="datePublished">2017-05-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/life/2017/04/14/save-money-or-not/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F20170414.png?alt=media&token=523ff7e6-55f5-4896-a31c-a7230c4358cd)" alt="剛出社會要存錢嗎？" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/life/">life</a></p>
+                            <p class="item-title"><a href="/life/2017/04/14/save-money-or-not/" class="title">剛出社會要存錢嗎？</a></p>
+                            <p class="item-date"><time datetime="2017-04-13T16:00:00.000Z" itemprop="datePublished">2017-04-14</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2017/03/22/css-grid-layout/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fs_1E340AD7809EDC17E1CE05A890D5C5BC743073124AFCE711A7E632C8E15F1686_1489479687278_file.png?alt=media&token=b902a96f-d842-4148-9c7d-60a137e4c2e7)" alt="CSS Grid 屬性介紹" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2017/03/22/css-grid-layout/" class="title">CSS Grid 屬性介紹</a></p>
+                            <p class="item-date"><time datetime="2017-03-21T16:00:00.000Z" itemprop="datePublished">2017-03-22</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.71px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 13.57px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.71px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 12.14px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 18.57px;">d3js</a> <a href="/tags/design/" style="font-size: 12.86px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.71px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.86px;">git</a> <a href="/tags/github/" style="font-size: 12.86px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 17.14px;">gulp</a> <a href="/tags/html/" style="font-size: 11.43px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.71px;">intro</a> <a href="/tags/ironman/" style="font-size: 17.86px;">ironman</a> <a href="/tags/javascript/" style="font-size: 16.43px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.71px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 15px;">jquery</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/life/" style="font-size: 11.43px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 12.14px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 14.29px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.71px;">promise</a> <a href="/tags/rails/" style="font-size: 10.71px;">rails</a> <a href="/tags/reactjs/" style="font-size: 12.14px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.71px;">ruby</a> <a href="/tags/sass/" style="font-size: 19.29px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.86px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 14.29px;">svg</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.43px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io//javascript/2017/06/29/es6-native-array/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>

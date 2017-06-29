@@ -4,6 +4,69 @@
   
     
     <entry>
+      <title><![CDATA[JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]]]></title>
+      <url>https://wcc723.github.io//javascript/2017/06/29/es6-native-array/</url>
+      <content type="html"><![CDATA[<p>陣列處理技巧是 JavaScript 中非常重要的一塊，現在框架大亂鬥的時代，框架基本上對於 DOM 的處理都有屬於自己一套良好的方法。只要能夠對於陣列資料操作熟悉，配合框架就能夠將開發效率更上層樓。</p>
+<p>本篇介紹到的方法有：</p>
+<ul>
+<li><a href="#Array-prototype-filter">filter()</a></li>
+<li><a href="#Array-prototype-find">find()</a></li>
+<li><a href="#Array-prototype-forEach">forEach()</a></li>
+<li><a href="#Array-prototype-map">map()</a></li>
+<li><a href="#Array-prototype-every">every()</a></li>
+<li><a href="#Array-prototype-some">some()</a></li>
+<li><a href="#Array-prototype-reduce">reduce()</a></li>
+</ul>
+<a id="more"></a>
+<p>直接點上方連結就能跳到指定區域</p>
+<h2 id="初始資料"><a href="#初始資料" class="headerlink" title="初始資料"></a>初始資料</h2><p>本篇都是使用同一份陣列資料，當然你也可以把相關的函式直接貼在 jsbin 或 codepen 上就能看到結果，因為篇幅已經很長了，所以就不在另外補上範例檔。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 相同的陣列</span></div><div class="line"><span class="keyword">var</span> people = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Casper'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'鍋燒意麵'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">18</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Wang'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'炒麵'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">24</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Bobo'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'蘿蔔泥'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">1</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'滷蛋'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'蘿蔔泥'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">3</span></div><div class="line">  &#125;</div><div class="line">];</div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-filter"><a href="#Array-prototype-filter" class="headerlink" title="Array.prototype.filter()"></a>Array.prototype.filter()</h2><p>filter() 會回傳一個陣列，其條件是 return 後方為 true 的物件，很適合用在搜尋符合條件的資料。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> filterEmpty = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(filterEmpty);    <span class="comment">// 沒有條件，會是一個空陣列</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> filterAgeThan5 = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">5</span>;       <span class="comment">// 取得大於五歲的</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(filterAgeThan5); <span class="comment">// Casper, Wang 這兩個物件</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> filterDouble = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> index % <span class="number">2</span> === <span class="number">1</span>;    <span class="comment">// 取得陣列中雙數的物件</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(filterDouble);   <span class="comment">// Wang, 滷蛋 這兩個物件</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-find"><a href="#Array-prototype-find" class="headerlink" title="Array.prototype.find()"></a>Array.prototype.find()</h2><p>find() 與 filter() 很像，但 find() <strong>只會回傳一次值</strong>，且是第一次為 true 的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> findEmpty = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findEmpty);          <span class="comment">// 沒有條件，會是 undefined</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> findAgeThan5 = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">5</span>;           <span class="comment">// 取得大於五歲的</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findAgeThan5);       <span class="comment">// 雖然答案有兩個，但只會回傳 Casper 這一個物件</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> findLike = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.like === <span class="string">'蘿蔔泥'</span>;  <span class="comment">// 取得陣列 like === '蘿蔔泥'</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findLike);           <span class="comment">// 雖然答案有兩個，但只會回傳第一個 Bobo 物件</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-forEach"><a href="#Array-prototype-forEach" class="headerlink" title="Array.prototype.forEach()"></a>Array.prototype.forEach()</h2><p>forEach 是這幾個陣列函式最單純的一個，不會額外回傳值，只單純執行每個陣列內的物件或值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> forEachIt = people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(item, index, array); <span class="comment">// 物件, 索引, 全部陣列</span></div><div class="line">  <span class="keyword">return</span> item;                     <span class="comment">// forEach 沒在 return 的，所以這邊寫了也沒用</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(forEachIt);            <span class="comment">// undefined</span></div><div class="line"></div><div class="line">people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  item.age = item.age + <span class="number">1</span>;         <span class="comment">// forEach 就如同 for，不過寫法更容易</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(people);               <span class="comment">// 全部 age + 1</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-map"><a href="#Array-prototype-map" class="headerlink" title="Array.prototype.map()"></a>Array.prototype.map()</h2><p>使用 map() 時他需要回傳一個值，他會透過函式內所回傳的值組合成一個陣列。</p>
+<ul>
+<li>如果不回傳則是 <code>undefined</code></li>
+<li>回傳數量等於原始陣列的長度</li>
+</ul>
+<p>這很適合將原始的變數運算後重新組合一個新的陣列。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> mapEmpty = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(mapEmpty);    <span class="comment">// [undefined, undefined, undefined, undefined]</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> mapAgeThan5 = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">5</span>;    <span class="comment">// 比較大於五歲的</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(mapAgeThan5); <span class="comment">// [true, true, false, false]</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> mapAgeThan5_2 = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="comment">// 錯誤示範</span></div><div class="line">  <span class="keyword">if</span> (item.age &gt; <span class="number">5</span>) &#123;</div><div class="line">    <span class="keyword">return</span> item;              <span class="comment">// 回傳大於五歲的</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="literal">false</span>;               <span class="comment">// 別以為空的或是 false 就不會回傳</span></div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(mapAgeThan5_2);   <span class="comment">// [&#123;name: 'Casper'...&#125;, &#123;name: 'Wang'...&#125;, false, false]</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> mapEat = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">if</span> (item.like !== <span class="string">'蘿蔔泥'</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;item.like&#125;</span> 好吃`</span>;</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;item.like&#125;</span> 不好吃`</span>;</div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(mapEat);          <span class="comment">// ["鍋燒意麵 好吃", "炒麵 好吃", "蘿蔔泥 不好吃", "蘿蔔泥 不好吃"]</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-every"><a href="#Array-prototype-every" class="headerlink" title="Array.prototype.every()"></a>Array.prototype.every()</h2><p>every() 可以檢查所有的陣列是否符合條件，這僅會回傳一個值 <code>true</code> or <code>false</code>，可以用來檢查陣列中的內容是否符合特定條件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> array = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Casper'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'鍋燒意麵'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">18</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Wang'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'炒麵'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">24</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'Bobo'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'蘿蔔泥'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">1</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'滷蛋'</span>,</div><div class="line">    <span class="attr">like</span>: <span class="string">'蘿蔔泥'</span>,</div><div class="line">    <span class="attr">age</span>: <span class="number">3</span></div><div class="line">  &#125;</div><div class="line">];</div><div class="line"></div><div class="line"><span class="keyword">var</span> ans = array.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(item, index, array); <span class="comment">// 物件, 索引, 全部陣列</span></div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">10</span> <span class="comment">// 當全部 age 大於 10 才能回傳 true</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans); <span class="comment">// false: 只要有部分不符合，則為 false</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans2 = array.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &lt; <span class="number">25</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// true: 全部 age 都小於 25</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-some"><a href="#Array-prototype-some" class="headerlink" title="Array.prototype.some()"></a>Array.prototype.some()</h2><p>some() 與 every() 非常接近，都是回傳 true or false，差異僅在 every() 需完全符合，some() 僅需要部分符合。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ans = people.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">10</span> <span class="comment">// 當全部 age 大於 10 才能回傳 true</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans);  <span class="comment">// true: 只要有部分符合，則為 true</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans2 = people.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &lt; <span class="number">25</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// true: 只要有部分符合，則為 true  </span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans2 = people.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.age &gt; <span class="number">25</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// false: 全部都不符合則為 false</span></div></pre></td></tr></table></figure>
+<h2 id="Array-prototype-reduce"><a href="#Array-prototype-reduce" class="headerlink" title="Array.prototype.reduce()"></a>Array.prototype.reduce()</h2><p>reduce() 和其他幾個差異就很大了，他可以與前一個回傳的值再次作運算，參數包含以下：</p>
+<ul>
+<li>accumulator: 前一個參數，如果是第一個陣列的話，值是以另外傳入或初始化的值</li>
+<li>currentValue: 當前變數</li>
+<li>currentIndex: 當前索引</li>
+<li>array: 全部陣列</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reduceEmpty = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(reduceEmpty);                 <span class="comment">// 沒有條件，會是 undefined</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> reducePlus = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">  <span class="comment">// 分別為前一個回傳值, 目前值, 當前索引值</span></div><div class="line">  <span class="built_in">console</span>.log(accumulator, currentValue, currentIndex);</div><div class="line">  <span class="keyword">return</span> accumulator + currentValue.age;  <span class="comment">// 與前一個值相加</span></div><div class="line">&#125;, <span class="number">0</span>);                                    <span class="comment">// 傳入初始化值為 0</span></div><div class="line"><span class="built_in">console</span>.log(reducePlus);                  <span class="comment">// 總和為 46</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> reducePlus = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'reduce'</span>, accumulator, currentValue, currentIndex)</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.max( accumulator, currentValue.age ); <span class="comment">// 與前一個值比較哪個大</span></div><div class="line">&#125;, <span class="number">0</span>);</div><div class="line"><span class="built_in">console</span>.log(reducePlus);                  <span class="comment">// 最大值為 24</span></div></pre></td></tr></table></figure>
+<p>reduce() 的使用方法更為豐富，想認識更詳細可參考 <a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce" target="_blank" rel="external">MDN</a>。</p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><p>預設的陣列行為 <em>(本篇中除了 reduce() 是傳入初始資料)</em> 內的 this 是指向 window，如果要改，可以在 function 後傳入。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// arr.forEach(function callback(currentValue, index, array) &#123;</span></div><div class="line"><span class="comment">// your iterator</span></div><div class="line"><span class="comment">// &#125;[, thisArg]);</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans3 = people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>) <span class="comment">// 這邊的 this 就會使用後方傳入的</span></div><div class="line">  <span class="keyword">return</span> item.age &lt; <span class="number">25</span></div><div class="line">&#125;, people);         <span class="comment">// 傳入的物件，替代 this，如果無則是 window</span></div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[JavaScript ES6 Promise]]></title>
       <url>https://wcc723.github.io//life/2017/05/25/promise/</url>
       <content type="html"><![CDATA[<p>Promise 一直都是 JavaScript 夢寐以求的功能，非同步的處理如果沒有使用 Promise 經常導致函式或資料無法正常的運作。本篇避開許多深度的詞彙，直接透過範例來瞭解怎麼運行。</p>
@@ -20,7 +83,7 @@
 <li>rejected: 已拒絕，操作失敗</li>
 </ul>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-25%20%E4%B8%8A%E5%8D%889.57.12.png?alt=media&amp;token=245fe1d1-694f-40d2-bf33-aca343a8be06" alt=""></p>
-<p>上圖就是一個轉化中的圖 (一開始是 Pending，等我展開的時候已經 resolved 了… )。 </p>
+<p>上圖就是一個轉化中的圖 (一開始是 Pending，等我展開的時候已經 resolved 了… )。</p>
 <p>這個建構式另外還提供兩種調用 promise 的方法 race() 與 all()：</p>
 <ul>
 <li>Promise.all(): 此方法可以同時執行大量 Promise 物件，並且在 “全部” 完成後回傳陣列。</li>
@@ -30,7 +93,7 @@
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 宣告 promise 建構式</span></div><div class="line"><span class="keyword">let</span> newPromise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> ran = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.random() * <span class="number">5000</span>); <span class="comment">// 隨機成功或失敗</span></div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'隨機時間完成'</span>);</div><div class="line">  &#125;, ran);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">let</span> newPromise2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'2 秒完成'</span>);</div><div class="line">  &#125;, <span class="number">2000</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">let</span> newPromise3 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'3 秒完成'</span>);</div><div class="line">  &#125;, <span class="number">3000</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">let</span> newPromise4 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  reject(<span class="string">'失敗'</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">Promise</span>.all([newPromise1, newPromise2, newPromise3, newPromise4]).then(<span class="function">(<span class="params">data</span>)=&gt;</span> &#123;</div><div class="line">  <span class="comment">// 一次性同時回傳成功訊息，回傳以上三個數值的陣列</span></div><div class="line">  <span class="built_in">console</span>.log(data);</div><div class="line">&#125;).catch( <span class="function"><span class="params">err</span> =&gt;</span> &#123;</div><div class="line">  <span class="comment">// 失敗訊息 (立即)</span></div><div class="line">  <span class="built_in">console</span>.log(err)</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="built_in">Promise</span>.race([newPromise1, newPromise2, newPromise3]).then(<span class="function">(<span class="params">data</span>)=&gt;</span> &#123;</div><div class="line">  <span class="comment">// 僅會回傳一個最快完成的 resolve 或 reject</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'race'</span>, data);</div><div class="line">&#125;).catch( <span class="function"><span class="params">err</span> =&gt;</span> &#123;</div><div class="line">  <span class="comment">// 失敗訊息 (立即)</span></div><div class="line">  <span class="built_in">console</span>.log(err)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>這個案例較長，前面主要是宣告幾個 Promise 建構式，差異在時間與刻意的失敗；後面介紹 Promise.all() 與 Promise.race() 的差異。</p>
 <h2 id="Chain-鏈接方法"><a href="#Chain-鏈接方法" class="headerlink" title="Chain 鏈接方法"></a>Chain 鏈接方法</h2><p>Promise 一個很重要的方法 then()，其實是可以不斷的做鏈接。基本的概念就是前一個 return 會是下一個 then() 傳送的變數。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 前面宣告的不重要</span></div><div class="line"><span class="keyword">let</span> newPromise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> ran = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.random() * <span class="number">5000</span>); <span class="comment">// 隨機成功或失敗</span></div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'隨機時間完成'</span>);</div><div class="line">  &#125;, ran);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">let</span> newPromise2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'2 秒完成'</span>);</div><div class="line">  &#125;, <span class="number">2000</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">let</span> newPromise3 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'3 秒完成'</span>);</div><div class="line">  &#125;, <span class="number">3000</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 這段以前不重要</span></div><div class="line"></div><div class="line"><span class="comment">// 鏈接方法 </span></div><div class="line">newPromise1.then(<span class="function">(<span class="params">data1</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'data1'</span>, data1);</div><div class="line">  <span class="keyword">return</span> newPromise2.then(<span class="function">(<span class="params">data2</span>) =&gt;</span> &#123; </div><div class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;data2&#125;</span> + <span class="subst">$&#123;data1&#125;</span>`</span> <span class="comment">// 回傳 Promise 內的值，讓下一個 then 可以接收</span></div><div class="line">  &#125;);</div><div class="line">&#125;).then(<span class="function">(<span class="params">data3</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'data3'</span>, data3);</div><div class="line">  <span class="keyword">return</span> newPromise3.then(<span class="function">(<span class="params">data4</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;data4&#125;</span> + <span class="subst">$&#123;data3&#125;</span>`</span> <span class="comment">// 回傳 Promise 內的值，讓下一個 then 可以接收</span></div><div class="line">  &#125;);</div><div class="line">&#125;).then(<span class="function">(<span class="params">data5</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`最後的 + <span class="subst">$&#123;data5&#125;</span>`</span>)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 前面宣告的不重要</span></div><div class="line"><span class="keyword">let</span> newPromise1 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> ran = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.random() * <span class="number">5000</span>); <span class="comment">// 隨機成功或失敗</span></div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'隨機時間完成'</span>);</div><div class="line">  &#125;, ran);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">let</span> newPromise2 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'2 秒完成'</span>);</div><div class="line">  &#125;, <span class="number">2000</span>);</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="keyword">let</span> newPromise3 = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">    resolve(<span class="string">'3 秒完成'</span>);</div><div class="line">  &#125;, <span class="number">3000</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 這段以前不重要</span></div><div class="line"></div><div class="line"><span class="comment">// 鏈接方法</span></div><div class="line">newPromise1.then(<span class="function">(<span class="params">data1</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'data1'</span>, data1);</div><div class="line">  <span class="keyword">return</span> newPromise2.then(<span class="function">(<span class="params">data2</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;data2&#125;</span> + <span class="subst">$&#123;data1&#125;</span>`</span> <span class="comment">// 回傳 Promise 內的值，讓下一個 then 可以接收</span></div><div class="line">  &#125;);</div><div class="line">&#125;).then(<span class="function">(<span class="params">data3</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'data3'</span>, data3);</div><div class="line">  <span class="keyword">return</span> newPromise3.then(<span class="function">(<span class="params">data4</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;data4&#125;</span> + <span class="subst">$&#123;data3&#125;</span>`</span> <span class="comment">// 回傳 Promise 內的值，讓下一個 then 可以接收</span></div><div class="line">  &#125;);</div><div class="line">&#125;).then(<span class="function">(<span class="params">data5</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`最後的 + <span class="subst">$&#123;data5&#125;</span>`</span>)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>用文字不好表達這段，直接看圖。Promise 執行時可以使用 then 做串接，串接的方法在於需要使用 return 來做下一個 then() 的傳入值，透過這個方法可以避免 JavaScript 原始碼過巢導致難以閱讀。</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-25%20%E4%B8%8A%E5%8D%8810.27.33.png?alt=media&amp;token=19fb72ee-5d56-4a05-a8bb-cadf1f627f52" alt=""></p>
 <p>以上程式碼皆可直接複製貼到 Chrome 開發者工具內的 console 運行。</p>
@@ -45,7 +108,7 @@
         
         <tags>
             
-            <tag> css </tag>
+            <tag> js </tag>
             
         </tags>
         
@@ -10210,9 +10273,9 @@ line.l2{
         
         <tags>
             
-            <tag> css </tag>
-            
             <tag> svg </tag>
+            
+            <tag> css </tag>
             
         </tags>
         
@@ -12148,6 +12211,62 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io//jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -12230,62 +12349,6 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io//tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
             
         </tags>
         
@@ -17971,11 +18034,11 @@ table.table3
         
         <tags>
             
+            <tag> html </tag>
+            
             <tag> sass </tag>
             
             <tag> css </tag>
-            
-            <tag> html </tag>
             
         </tags>
         
