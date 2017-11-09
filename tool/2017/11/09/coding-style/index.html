@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>在 VSCode 啟用程式碼規範工具 (ESLint) | 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="tool" />
+    
+    
+
+    <meta name="description" content="許多同學會詢問到程式碼怎樣寫可以比較整齊且符合規範，在 VSCode 中非常容易整合這樣的工具，這邊提供兩個方法給大家參考，不過記得兩者不能混用，使用時請擇一即可。
+
+ESLint：比較正式的方法，有完整的文件規範，適合團隊使用
+JavaScript Standard Style 插件：比較簡單的方法。
+
+方法一：ESLint先開啟 / 安裝 VSCode 中的 ESLint 套件，記得預設的 V">
+<meta property="og:type" content="article">
+<meta property="og:title" content="在 VSCode 啟用程式碼規範工具 (ESLint)">
+<meta property="og:url" content="https://wcc723.github.io/tool/2017/11/09/coding-style/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="許多同學會詢問到程式碼怎樣寫可以比較整齊且符合規範，在 VSCode 中非常容易整合這樣的工具，這邊提供兩個方法給大家參考，不過記得兩者不能混用，使用時請擇一即可。
+
+ESLint：比較正式的方法，有完整的文件規範，適合團隊使用
+JavaScript Standard Style 插件：比較簡單的方法。
+
+方法一：ESLint先開啟 / 安裝 VSCode 中的 ESLint 套件，記得預設的 V">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC9C74D6F-F88E-4799-846B-AF4AB6347E39.png?alt=media&token=437a863a-3544-4ccd-a8d6-54fef6095d4e">
+<meta property="og:updated_time" content="2017-11-09T09:01:30.953Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="在 VSCode 啟用程式碼規範工具 (ESLint)">
+<meta name="twitter:description" content="許多同學會詢問到程式碼怎樣寫可以比較整齊且符合規範，在 VSCode 中非常容易整合這樣的工具，這邊提供兩個方法給大家參考，不過記得兩者不能混用，使用時請擇一即可。
+
+ESLint：比較正式的方法，有完整的文件規範，適合團隊使用
+JavaScript Standard Style 插件：比較簡單的方法。
+
+方法一：ESLint先開啟 / 安裝 VSCode 中的 ESLint 套件，記得預設的 V">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC9C74D6F-F88E-4799-846B-AF4AB6347E39.png?alt=media&token=437a863a-3544-4ccd-a8d6-54fef6095d4e">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/tool/">tool</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-coding-style" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        在 VSCode 啟用程式碼規範工具 (ESLint)
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/tool/2017/11/09/coding-style/" class="article-date">
+    <time datetime="2017-11-08T16:00:00.000Z" itemprop="datePublished">2017-11-09</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tool/">tool</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC9C74D6F-F88E-4799-846B-AF4AB6347E39.png?alt=media&token=437a863a-3544-4ccd-a8d6-54fef6095d4e" rel="gallery_cj9s8voxe0000wsgaon11r5t5">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC9C74D6F-F88E-4799-846B-AF4AB6347E39.png?alt=media&token=437a863a-3544-4ccd-a8d6-54fef6095d4e" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <p>許多同學會詢問到程式碼怎樣寫可以比較整齊且符合規範，在 VSCode 中非常容易整合這樣的工具，這邊提供兩個方法給大家參考，不過記得兩者不能混用，使用時請擇一即可。</p>
+<ul>
+<li>ESLint：比較正式的方法，有完整的文件規範，適合團隊使用</li>
+<li>JavaScript Standard Style 插件：比較簡單的方法。</li>
+</ul>
+<h2 id="方法一：ESLint"><a href="#方法一：ESLint" class="headerlink" title="方法一：ESLint"></a>方法一：ESLint</h2><p>先開啟 / 安裝 VSCode 中的 ESLint 套件，記得預設的 VSCode 是有安裝此套件的，套件中也有提到如何運行。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC9C74D6F-F88E-4799-846B-AF4AB6347E39.png?alt=media&amp;token=437a863a-3544-4ccd-a8d6-54fef6095d4e" alt=""></p>
+<p>安裝 ESlint  的 npm 套件，目的是可以使用 eslint 的指令，方便建立規範使用的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g eslint</div></pre></td></tr></table></figure></p>
+<p>開啟 Terminal 後，輸入 <code>eslint --init</code></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4A7B52F5-F115-42C9-835D-4AACEFEE9795.png?alt=media&amp;token=fc7f2c3e-0051-426f-a57e-acea42063a2b" alt=""></p>
+<p>接下來會出現一連串的問題，你想要怎麼建立 ESLint 的規範文件？<br>Q: How would you like to configure ESLint?</p>
+<ul>
+<li>Answer questions about your style</li>
+<li>Use a popular style guide</li>
+<li>Inspect your JavaScript file(s)</li>
+</ul>
+<p>建議選擇 使用主流的 Style Guide (第二個)，如果使用此選項，他會要求先建立 package.json，如果專案中沒有 package.json 可以輸入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm init</div></pre></td></tr></table></figure></p>
+<p>其中的問題可以 Enter 到底即可，接下來再回到上一步 <code>eslint --init</code> 繼續選擇建立規範。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F862F1C82-5EAD-4538-9232-DB2FA3BD0710.png?alt=media&amp;token=aea5f737-3299-4c74-9075-6c00ac8b8e33" alt=""></p>
+<p>選擇 Use a popular style guide 後，會出現三個主流的規範。</p>
+<ul>
+<li>Google</li>
+<li>Airbnb：如果選擇此選項，會多問一個是否使用 React</li>
+<li>Standard</li>
+</ul>
+<p>接下來會選擇要哪一種格式 <code>YAML</code>、<code>js</code>、<code>json</code> 來儲存規範，這個規範是能夠讓其他專案使用的，只要團隊討論好即可。</p>
+<p>安裝完後，在專案內會增加一個 <code>eslint.js</code> (或者其他，依據上述選擇的而定)，此時可以先關閉 VSCode 專案再重啟一次，接下來選擇 “輸出” 可以看到 ESLint server is running. 表示已成功運行。</p>
+<p>接下來會看到畫面上都了很多紅色提示，滑鼠移到紅底線上方會提示該如何修改。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_11_9_%E4%B8%8B%E5%8D%884_05.png?alt=media&amp;token=efd91747-f9b8-47f6-a622-d8ebaff47085" alt=""></p>
+<p>目標就是減少畫面上的紅字 T_T，如果有未定義的變數也會跳紅字，目標當然是去除專案中的紅字來符合規範。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5ACA71A6-A31F-4ECF-8309-B96E307B99BE.png?alt=media&amp;token=6f166e2c-5b69-41ce-ac0e-57ae1d3081f9" alt=""></p>
+<p>上圖選的是 Airbnb 的規範，相關可參考：<a href="https://github.com/airbnb/javascript" target="_blank" rel="external">GitHub - airbnb/javascript: JavaScript Style Guide</a></p>
+<hr>
+<h2 id="方法二：JavaScript-Standard-Style"><a href="#方法二：JavaScript-Standard-Style" class="headerlink" title="方法二：JavaScript Standard Style"></a>方法二：JavaScript Standard Style</h2><p>這是使用 Standard JS 提供的 VSCode 套件，不要與 ESLint 混合使用，也可以直接在工作區關閉 ESLint 只執行 Standard JS</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2E7D2A5E-D945-4384-880B-ACFCF28F8E3A.png?alt=media&amp;token=72a6f452-0194-42dd-a891-5bc4ab2131f0" alt=""></p>
+<p>接下來安裝 JavaScript Standard Style 的 VSCode 套件，安裝完後直接重起就能使用了，沒有額外的設定檔。</p>
+<p>套件路徑：<a href="https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs" target="_blank" rel="external">https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs</a></p>
+<p>啟用後再右下方一樣會出現 JavaScript Standard Style 的字樣，Standard 相對於其他規範來說寬鬆很多，最大的特點是沒有分號。</p>
+<p>寫起來長得像這樣 (未定義或定義但未使用的仍然會跳錯)，另外還有繁體中文的文件 (<a href="https://github.com/standard/standard/blob/master/docs/README-zhtw.md" target="_blank" rel="external">standard/README-zhtw.md at master · standard/standard · GitHub</a>)。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F31102DE8-BBF0-48D5-AA08-8231D70B6899.png?alt=media&amp;token=ca226394-348f-4e14-ad77-8fec44d07b38" alt=""></p>
+<p>我自己是比較喜歡 Standard，但缺點就是沒有分號，如果用在教學中同學可能會誤以為 JavaScript 不用分號。Airbnb 比較不習慣的則是物件裡的逗號，一般物件的最後一個是沒有逗號，但在 Airbnb 則是逗號到底。</p>
+
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/life/2017/07/27/from-starter/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">從設計轉職工程師的原因及過程</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/tool/2017/11/09/coding-style/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC9C74D6F-F88E-4799-846B-AF4AB6347E39.png?alt=media&token=437a863a-3544-4ccd-a8d6-54fef6095d4e)" alt="在 VSCode 啟用程式碼規範工具 (ESLint)" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/tool/">tool</a></p>
+                            <p class="item-title"><a href="/tool/2017/11/09/coding-style/" class="title">在 VSCode 啟用程式碼規範工具 (ESLint)</a></p>
+                            <p class="item-date"><time datetime="2017-11-08T16:00:00.000Z" itemprop="datePublished">2017-11-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/life/2017/07/27/from-starter/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-07-26%20%E4%B8%8B%E5%8D%883.45.23.png?alt=media&token=720ac5c3-b576-48db-9057-275e22f28e02)" alt="從設計轉職工程師的原因及過程" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/life/">life</a></p>
+                            <p class="item-title"><a href="/life/2017/07/27/from-starter/" class="title">從設計轉職工程師的原因及過程</a></p>
+                            <p class="item-date"><time datetime="2017-07-26T16:00:00.000Z" itemprop="datePublished">2017-07-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2017/07/21/css-flex/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-cover.png?alt=media&token=d7ec42c3-d953-4aeb-813f-8069116de341)" alt="圖解：CSS Flex 屬性一點也不難" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2017/07/21/css-flex/" class="title">圖解：CSS Flex 屬性一點也不難</a></p>
+                            <p class="item-date"><time datetime="2017-07-20T16:00:00.000Z" itemprop="datePublished">2017-07-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/06/29/es6-native-array/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F20170629.png?alt=media&token=2db01bf7-e82a-4d54-bd43-7cb17a53592d)" alt="JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/06/29/es6-native-array/" class="title">JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]</a></p>
+                            <p class="item-date"><time datetime="2017-06-28T16:00:00.000Z" itemprop="datePublished">2017-06-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/life/2017/05/25/promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-25%20%E4%B8%8A%E5%8D%8810.27.33.png?alt=media&token=19fb72ee-5d56-4a05-a8bb-cadf1f627f52)" alt="JavaScript ES6 Promise" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/life/">life</a></p>
+                            <p class="item-title"><a href="/life/2017/05/25/promise/" class="title">JavaScript ES6 Promise</a></p>
+                            <p class="item-date"><time datetime="2017-05-24T16:00:00.000Z" itemprop="datePublished">2017-05-25</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.71px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 13.57px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.71px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 12.14px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 18.57px;">d3js</a> <a href="/tags/design/" style="font-size: 12.86px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.71px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.86px;">git</a> <a href="/tags/github/" style="font-size: 12.86px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 17.14px;">gulp</a> <a href="/tags/html/" style="font-size: 11.43px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.71px;">intro</a> <a href="/tags/ironman/" style="font-size: 17.86px;">ironman</a> <a href="/tags/javascript/" style="font-size: 16.43px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.71px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 15px;">jquery</a> <a href="/tags/js/" style="font-size: 15px;">js</a> <a href="/tags/life/" style="font-size: 12.14px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 12.14px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 14.29px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.71px;">promise</a> <a href="/tags/rails/" style="font-size: 10.71px;">rails</a> <a href="/tags/reactjs/" style="font-size: 12.14px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.71px;">ruby</a> <a href="/tags/sass/" style="font-size: 19.29px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.86px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 14.29px;">svg</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.43px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io//tool/2017/11/09/coding-style/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
