@@ -187,7 +187,7 @@ ga('send', 'pageview');
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-25%20%E4%B8%8A%E5%8D%8810.27.33.png?alt=media&token=19fb72ee-5d56-4a05-a8bb-cadf1f627f52" rel="gallery_cjasxxju300l9rzgajdiml6ho">
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-25%20%E4%B8%8A%E5%8D%8810.27.33.png?alt=media&token=19fb72ee-5d56-4a05-a8bb-cadf1f627f52" rel="gallery_cjaszas3w00ljkygayqunhsnv">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-25%20%E4%B8%8A%E5%8D%8810.27.33.png?alt=media&token=19fb72ee-5d56-4a05-a8bb-cadf1f627f52" itemprop="image" />
     </a>
     
@@ -208,7 +208,8 @@ ga('send', 'pageview');
 
                 </div>
             
-            <p>Promise 一直都是 JavaScript 夢寐以求的功能，非同步的處理如果沒有使用 Promise 經常導致函式或資料無法正常的運作。本篇避開許多深度的詞彙，直接透過範例來瞭解怎麼運行。</p>
+            <div class="need-gallery">
+                <p>Promise 一直都是 JavaScript 夢寐以求的功能，非同步的處理如果沒有使用 Promise 經常導致函式或資料無法正常的運作。本篇避開許多深度的詞彙，直接透過範例來瞭解怎麼運行。</p>
 <p>簡單的 Promise 範例：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 宣告 promise 建構式</span></div><div class="line"><span class="keyword">let</span> newPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  <span class="comment">// 傳入 resolve 與 reject，表示資料成功與失敗</span></div><div class="line">  <span class="keyword">let</span> ran = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.random() * <span class="number">2</span>); <span class="comment">// 隨機成功或失敗</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'Promise 開始'</span>)</div><div class="line">  <span class="keyword">if</span> (ran) &#123;</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="comment">// 3 秒時間後，透過 resolve 來表示完成</span></div><div class="line">      resolve(<span class="string">'3 秒時間(fulfilled)'</span>);</div><div class="line">    &#125;, <span class="number">3000</span>);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="comment">// 回傳失敗</span></div><div class="line">    reject(<span class="string">'失敗中的失敗(rejected)'</span>)</div><div class="line">  &#125;</div><div class="line"></div><div class="line">&#125;);</div><div class="line"></div><div class="line">newPromise.then(<span class="function">(<span class="params">data</span>)=&gt;</span> &#123;</div><div class="line">  <span class="comment">// 成功訊息 (需要 3 秒)</span></div><div class="line">  <span class="built_in">console</span>.log(data);</div><div class="line">&#125;).catch(<span class="function">(<span class="params">err</span>)=&gt;</span> &#123;</div><div class="line">  <span class="comment">// 失敗訊息 (立即)</span></div><div class="line">  <span class="built_in">console</span>.log(err)</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>以上就是一個基本的 Promise 範例，執行 Promise 建構式時還會再帶入 resolve 與 reject 的 callback function。</p>
@@ -237,6 +238,7 @@ ga('send', 'pageview');
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-05-25%20%E4%B8%8A%E5%8D%8810.27.33.png?alt=media&amp;token=19fb72ee-5d56-4a05-a8bb-cadf1f627f52" alt=""></p>
 <p>以上程式碼皆可直接複製貼到 Chrome 開發者工具內的 console 運行。</p>
 
+            </div>
             <div style="margin: 15px 0;">
                 <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
                     <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
