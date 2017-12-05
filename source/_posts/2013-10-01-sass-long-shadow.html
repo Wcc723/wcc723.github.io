@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 用sass 做long shadow
-category: Sass
-tagline: 
+category: sass
+tagline:
 thumbnail: 2013-12-11_194845.png
 cssdemo: 2013-autumn
 tags: [sass, css]
@@ -44,9 +44,9 @@ tags: [sass, css]
 	//先準備一個空的變數
 	@for $i from 1 through $lenght
 	//利用for 迴圈決定長度
-		$all: append($all, append(#{$i}px #{$i}px 0 ,rgba(darken($rgb,10%),1/$i)),comma)	
+		$all: append($all, append(#{$i}px #{$i}px 0 ,rgba(darken($rgb,10%),1/$i)),comma)
 		//將陰影的效果利用迴圈的方式不斷的增加到$all
-	+box-shadow($all)	
+	+box-shadow($all)
 	//將$all的變數增加到box-shadow裡
 </pre>
 <p>這是box部分的<code>mixin</code>，其中可以注意的就是我把長度($lenght)和顏色($rgb)提出來，讓每次使用都可以重新調整色彩。</p>
@@ -54,7 +54,7 @@ tags: [sass, css]
 .test
 	+box-longShadow($lenght: 80,$rgb: #ef5936)
 	//增加到sass樣式
-	margin: 25px auto 
+	margin: 25px auto
 	background: #25aae2
 	width: 1em
 	height: 1em
@@ -77,7 +77,7 @@ tags: [sass, css]
 @mixin text-longShadow($lenght: 20,$rgb: #000)
 	$all: ()
 	@for $i from 1 through $lenght
-		$all: append($all, append(#{$i}px #{$i}px 0 ,rgba($rgb,0.9/$i + 0.05)),comma)	
+		$all: append($all, append(#{$i}px #{$i}px 0 ,rgba($rgb,0.9/$i + 0.05)),comma)
 	text-shadow: $all
 </pre>
 <pre>
@@ -87,7 +87,7 @@ tags: [sass, css]
 <p>text-shadow和box上較為接近，只是在使用時要特別注意文字，如果較細的字體，效果沒那麼好，所以使用的時候可以試試看許多不同的字體。</p>
 <h3>Finish(動畫版)</h3>
 <div class="demo d1001" >
-	<div class="test4"> 
+	<div class="test4">
 		B
 	</div>
 </div>

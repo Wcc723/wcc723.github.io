@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Sprites for Retina
-category: CSS
+category: css
 tagline:
 tags: [css, sass]
 cssdemo: 2014-spring

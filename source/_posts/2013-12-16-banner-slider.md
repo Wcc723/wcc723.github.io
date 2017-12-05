@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 純 "CSS" Banner animation教學
-category: CSS
+category: css
 tagline: 本站上方banner製作方式已修改
 tags: [css, sass]
 thumbnail: banner-01.png

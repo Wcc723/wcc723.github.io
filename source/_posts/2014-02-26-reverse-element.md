@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 大陸面試題 如何反轉元素內容
-category: CSS
+category: css
 tagline: 
 tags: [css, sass]
 cssdemo: 2014-spring

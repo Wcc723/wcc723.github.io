@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Spriting with Compass
-category: CSS
+category: css
 tagline:
 tags: [css, sass]
 cssdemo: 2014-spring
