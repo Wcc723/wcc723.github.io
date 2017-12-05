@@ -4,6 +4,84 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：執行環境與堆疊]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/05/ironman-2017/</url>
+      <content type="html"><![CDATA[<p>JavaScript 一次只能做一件事情，他會依據 <code>執行環境</code> (Execution Context) 來一一執行工作內容，本篇系列文會用舉例的方式，讓大家用簡單的方式瞭解這些艱深詞彙。</p>
+<h2 id="全域執行環境與函式"><a href="#全域執行環境與函式" class="headerlink" title="全域執行環境與函式"></a>全域執行環境與函式</h2><p>在一開始會登記一個函式在全域環境下(global context)，然後這個全域環境下可以登記其他函式，然後每一段執行環境下會有屬於他的變數以及物件，如果找不到該執行環境的變數或物件，則會向外層尋找。</p>
+<blockquote>
+<p><strong>故事說明</strong>：小明是本作的主角，早上時固定會做幾件事情，一個是與老媽說早安，另一個則是吃早餐，老媽與早餐可能會換(?)，所以他是可能會變動的，但大致上來說是說完早安，再去吃早餐。於是會在紙上紀錄下早上要做的事情。</p>
+</blockquote>
+<p>早上要做的事情：</p>
+<ul>
+<li>變數<ul>
+<li>媽：”老媽”</li>
+<li>早餐：”麵包”</li>
+</ul>
+</li>
+<li>要做的事情 (function context)<ul>
+<li>吃早餐</li>
+<li>說 ‘hi’</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">doMorningWork</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// 從此 function 的大括號是另一個執行環境</span></div><div class="line">  <span class="keyword">var</span> mom = <span class="string">"老媽"</span>;</div><div class="line">  <span class="keyword">var</span> breakfast = <span class="string">"麵包"</span>;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 說早安執行環境</span></div><div class="line">    <span class="keyword">return</span> <span class="string">'hi '</span> + mom;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">eatBreakfast</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 吃早餐執行環境</span></div><div class="line">    <span class="keyword">return</span> <span class="string">'吃 '</span> + breakfast;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'早安,'</span> + sayHi() + <span class="string">', '</span> + eatBreakfast());</div><div class="line">&#125;</div><div class="line"></div><div class="line">doMorningWork();   <span class="comment">// 執行</span></div></pre></td></tr></table></figure>
+<p>這個地方我們得到了三個執行環境(Execution Context)，其中一個是 (global context)，另外兩個則是在 global 下的 <code>doMorningWork</code> 內。</p>
+<blockquote>
+<p><strong>故事說明</strong>：小明得了一個症狀，每天早上都是全新的一天，他會忘記先前的人事物(簡直電影故事劇情，細節不重要)，他會將每天該做的事情記錄下來，也分為主要任務及主要任務下的次要任務，並且把任務的相關人等寫下，並且一件一件事情完成它 (小明只有一個，一次只能做一件事情)。</p>
+</blockquote>
+<p>他會依序將工作完成：</p>
+<ol>
+<li>檢視一下工作任務有哪些</li>
+<li>看完早上的任務後開始執行 <code>doMorningWork()</code><ol>
+<li>接下來將會面對的人事物先存在大腦內 <code>var ...</code></li>
+<li>接下來他會面對第一個工作 sayHi()<ol>
+<li>這個工作沒有專屬的變數，於是他找主要任務的變數 <code>mom</code></li>
+<li>執行完成</li>
+</ol>
+</li>
+<li>做下一個任務…</li>
+</ol>
+</li>
+<li>他會將所有的任務完成，才會開始做下一個主要任務 (這個範例只有一個)</li>
+</ol>
+<p>要做的事情往後會越來越多，小明會把要做的事情存在腦內，然後依據順序來執行。</p>
+<p>糟糕的事情是，遇到他不知道該怎麼做下去的事情，他會卡在那邊一整天 (<code>xxx is not defined</code>)。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-01.jpg?alt=media&amp;token=012167a0-4b4d-4900-a5ca-48e8998ae819" alt=""></p>
+<blockquote>
+<p>小明的筆記本與 JavaScript 有著接近的邏輯，有著一件一件要做的事情等待他去完成。</p>
+</blockquote>
+<h2 id="執行堆疊"><a href="#執行堆疊" class="headerlink" title="執行堆疊"></a>執行堆疊</h2><p>在這個故事中也可以說明 JavaScript 的執行堆疊，一開始會先進入 global 執行環境，接下來再進入內層的環境，執行完的堆疊就會被釋放掉 (function 內的 return 即是完成)，然後逐步地完成所有堆疊，最後將控制權交還給 Global。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-02.jpg?alt=media&amp;token=e87ef86d-0ced-4556-b6f8-455ffa39dcb1" alt=""></p>
+<p>每個執行堆疊都會一層一層地向內執行，等到都執行完以後才會回到外層執行下一個任務。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-03.jpg?alt=media&amp;token=38486c48-eb61-4096-a492-20a8cb240457" alt=""></p>
+<p>這段概念影響了什麼？</p>
+<ol>
+<li>JavaScript 由外而內執行，執行完才會進行下一個動作</li>
+<li>如果其中一個環境卡住，那麼 JavaScript 就會掛掉(小明想不通)</li>
+</ol>
+<p>另外，變數的作用域也與此有很大的關係，我們到下一章節來繼續介紹關於作用域 :)。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：邁向 JavaScript 勇者之路 - 開始]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/04/ironman-2017/</url>
       <content type="html"><![CDATA[<p>iT邦幫忙的鐵人賽到目前是第四次參加，前幾次參加有兩次是 CSS，而本次是 JavaScript，主要原因當然是 JavaScript 即將要統治世界 (!?)，僅只有 CSS 的能力很難體會這個世界的<del>險惡</del>美好。</p>
@@ -12492,6 +12570,62 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -12574,62 +12708,6 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
             
         </tags>
         
