@@ -4,6 +4,62 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：變數的宣告與他的作用域]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/05/javascript-variables/</url>
+      <content type="html"><![CDATA[<p>變數分為全域與區域變數，差異點在於宣告 (var) 的方式，就 MSDN 上的說明 <code>在函式定義之外宣告的變數就是全域變數，其值可在整個程式中存取和修改。</code> 所以我們可以使用函式來做兩個的分隔點，函式之內宣告的稱為區域，函式以外宣告的稱為全域。</p>
+<h2 id="全域性的變數"><a href="#全域性的變數" class="headerlink" title="全域性的變數"></a>全域性的變數</h2><p>在函數外宣告的變數則是具有全域性(或是包含全域物件之內)，在瀏覽器下的全域物件是 <code>window</code>，有以下方式所產生的變數都會在 <code>window</code> 內。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 在函示外宣告</span></div><div class="line"><span class="keyword">var</span> mom = <span class="string">'老媽'</span>;</div><div class="line"></div><div class="line"><span class="comment">// 沒有使用 var</span></div><div class="line">mom = <span class="string">'老媽'</span>;</div><div class="line"></div><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="comment">// 或是在函式內，但沒有使用 var</span></div><div class="line">  mom = <span class="string">'老媽'</span>;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>以上方式都可以在 <code>console.log(window);</code> 後找到 `mom 這個變數，這個變數也屬於 全域物件，因此所有函式也都能取用此變數。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FCB1DAB43-AC68-49BD-AD79-6F6CF4DEBBBA.png?alt=media&amp;token=547987cf-fa8f-4bae-b558-f29a5ab7f6e6" alt=""></p>
+<p>另外，也可以直接產生在 <code>window</code> 物件下。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.mom = <span class="string">'老媽'</span>;</div></pre></td></tr></table></figure></p>
+<p>這幾種方式都會在 window 物件下產生 <code>mom</code>，並且所有函示都能取用，但還是有些差異 (後面會介紹)，但就實際使用來說，<strong>建議無論如何都宣告你的變數</strong>。</p>
+<h2 id="變數與他的作用域"><a href="#變數與他的作用域" class="headerlink" title="變數與他的作用域"></a>變數與他的作用域</h2><p>每個變數在宣告時，都只會在執行環境內建立記憶體，這個就是他的作用域，單如果此作用域內沒有可用的變數時，他則會參照外圍的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">doMorningWork</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> mom = <span class="string">"老媽"</span>;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	  <span class="keyword">var</span> greeting = <span class="string">'hi'</span>;</div><div class="line">    <span class="keyword">return</span> greeting + <span class="string">' '</span> + mom;</div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(sayHi());</div><div class="line">&#125;</div><div class="line">doMorningWork();   <span class="comment">// 執行</span></div></pre></td></tr></table></figure>
+<blockquote>
+<p>回到上一集的故事：<br>小明會將每一天的要做的事情寫在記事本內，並且記錄著許多工作內容。小明在  <code>doMorningWork()</code> 工作下建立了 <code>mom</code> 變數，這個 <code>mom</code> 就僅屬於 <code>doMorningWork()</code> 內，其它外部的函式都無法取用這個函式。 (旁白：小明出門後就可以不認這個媽媽了!?)</p>
+</blockquote>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c2-01.jpg?alt=media&amp;token=ebe1e4a2-c440-422d-b158-af7db0e62154" alt=""></p>
+<ul>
+<li>外層  doMorningWork(); 具有 <code>mom</code>  的變數<ul>
+<li>內層 sayHi(); 可以使用 <code>mom</code> 這個變數，讓小明可以跟媽媽說早安</li>
+</ul>
+</li>
+<li>另一個函式就無法取用 <code>mom</code> 這個變數。</li>
+</ul>
+<p>其中內層沒有 <code>mom</code> 的變數，他就會向外層尋找，找到有相同名稱的就直接拿來使用。(旁白：小明啊，你應該把媽設為全域啊!?)</p>
+<h2 id="變數與記憶體關係"><a href="#變數與記憶體關係" class="headerlink" title="變數與記憶體關係"></a>變數與記憶體關係</h2><p>使用 var 宣告一個變數時，記憶體會先準備一個空間給予此變數，所以在實際運行前調用此變數並不會出現錯誤，只會出現 <code>undefined</code> (已經有記憶體空間，但沒有值)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(mom); <span class="comment">// undefined</span></div><div class="line"><span class="keyword">var</span> mom = <span class="string">'老媽'</span>;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>故事：<br>小明本身記性就不好，他會採取先整個看一次的方式，將整個印象存在腦中 (開啟記憶體空間)，實際開始後再把實際把當天人、事、物整個記在腦內。</p>
+</blockquote>
+<h2 id="宣告與不宣告"><a href="#宣告與不宣告" class="headerlink" title="宣告與不宣告"></a>宣告與不宣告</h2><p>MDN 文中提到 <code>其中差異在於, 已宣告的變數是全域物件裡的一個無法變更 (non-configurable) 的屬性, 而未宣告的變數則是可變更的 (configurable)</code> ，可以嘗試刪除產生的變數，觀察其差異。</p>
+<p>案例：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> mom1 = <span class="string">"老媽1"</span>;</div><div class="line">mom2 = <span class="string">"老媽2"</span>; </div><div class="line"></div><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  mom3 = <span class="string">"老媽3"</span>; </div><div class="line">&#125;)();</div><div class="line"></div><div class="line"><span class="keyword">delete</span> mom1;</div><div class="line"><span class="keyword">delete</span> mom2;</div><div class="line"><span class="keyword">delete</span> mom3;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.mom1);  <span class="comment">// 僅剩此有值</span></div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.mom2);</div><div class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.mom3);</div></pre></td></tr></table></figure></p>
+<h4 id="提醒"><a href="#提醒" class="headerlink" title="提醒"></a>提醒</h4><p>如果使用 var 則會先在記憶體準備一個空間給他，所以執行以前使用這個變數還不至於跳錯。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(mom); <span class="comment">// undefined</span></div><div class="line"><span class="keyword">var</span> mom = <span class="string">'老媽'</span>;</div></pre></td></tr></table></figure>
+<p>但如果沒有使用 var，則會跳出錯誤。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(mom); <span class="comment">// mom is not defined</span></div><div class="line">mom = <span class="string">'老媽'</span>;</div></pre></td></tr></table></figure></p>
+<p>所以無論你的變數或函式是否要使用全域，都盡可能地去宣告它。至於 <code>Let</code>、<code>Const</code> 請容許我到後面 ES6 章節再來介紹它 :)。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：執行環境與堆疊]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/05/ironman-2017/</url>
       <content type="html"><![CDATA[<p>JavaScript 一次只能做一件事情，他會依據 <code>執行環境</code> (Execution Context) 來一一執行工作內容，本篇系列文會用舉例的方式，讓大家用簡單的方式瞭解這些艱深詞彙。</p>
