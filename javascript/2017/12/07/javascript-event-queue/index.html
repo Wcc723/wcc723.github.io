@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>鐵人賽：一次只能做一件事情的 JavaScript | 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,js,ironman" />
+    
+    
+
+    <meta name="description" content="在 JavaScript 中，一次只會執行一段程式碼，相信看到這段大家心中都會有所疑惑，我們實作中可以大量發出許多事件，並重複執行不同的函式，這樣為何還是單執行緒 (single threaded) 的程式語言呢？
+這段如果用純文字解釋較為困難，所以本篇會加入動畫讓大家更容易了解原理。
+故事說明小明故事：小明在完成早上的事情後，他會準備做以下事情：
+
+打電話給漂亮阿姨
+等待漂亮阿姨回覆
+
+
+清理碗">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鐵人賽：一次只能做一件事情的 JavaScript">
+<meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/07/javascript-event-queue/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="在 JavaScript 中，一次只會執行一段程式碼，相信看到這段大家心中都會有所疑惑，我們實作中可以大量發出許多事件，並重複執行不同的函式，這樣為何還是單執行緒 (single threaded) 的程式語言呢？
+這段如果用純文字解釋較為困難，所以本篇會加入動畫讓大家更容易了解原理。
+故事說明小明故事：小明在完成早上的事情後，他會準備做以下事情：
+
+打電話給漂亮阿姨
+等待漂亮阿姨回覆
+
+
+清理碗">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c3-01.jpg?alt=media&token=33d7975b-42e9-4e59-b878-c1a578a382d1">
+<meta property="og:updated_time" content="2017-12-07T03:06:33.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="鐵人賽：一次只能做一件事情的 JavaScript">
+<meta name="twitter:description" content="在 JavaScript 中，一次只會執行一段程式碼，相信看到這段大家心中都會有所疑惑，我們實作中可以大量發出許多事件，並重複執行不同的函式，這樣為何還是單執行緒 (single threaded) 的程式語言呢？
+這段如果用純文字解釋較為困難，所以本篇會加入動畫讓大家更容易了解原理。
+故事說明小明故事：小明在完成早上的事情後，他會準備做以下事情：
+
+打電話給漂亮阿姨
+等待漂亮阿姨回覆
+
+
+清理碗">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c3-01.jpg?alt=media&token=33d7975b-42e9-4e59-b878-c1a578a382d1">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">javascript</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-javascript-event-queue" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        鐵人賽：一次只能做一件事情的 JavaScript
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/javascript/2017/12/07/javascript-event-queue/" class="article-date">
+    <time datetime="2017-12-06T16:00:00.000Z" itemprop="datePublished">2017-12-07</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c3-01.jpg?alt=media&token=33d7975b-42e9-4e59-b878-c1a578a382d1" rel="gallery_cjavuas2w00lz74gak1jhdulg">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c3-01.jpg?alt=media&token=33d7975b-42e9-4e59-b878-c1a578a382d1" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>在 JavaScript 中，一次只會執行一段程式碼，相信看到這段大家心中都會有所疑惑，我們實作中可以大量發出許多事件，並重複執行不同的函式，這樣為何還是單執行緒 (single threaded) 的程式語言呢？</p>
+<p>這段如果用純文字解釋較為困難，所以本篇會加入動畫讓大家更容易了解原理。</p>
+<h2 id="故事說明"><a href="#故事說明" class="headerlink" title="故事說明"></a>故事說明</h2><p>小明故事：<br>小明在完成早上的事情後，他會準備做以下事情：</p>
+<ul>
+<li>打電話給漂亮阿姨<ul>
+<li>等待漂亮阿姨回覆</li>
+</ul>
+</li>
+<li>清理碗盤…</li>
+</ul>
+<p>接下來他會有以下動作</p>
+<ol>
+<li>打電話給漂亮阿姨</li>
+<li>心中掛念著 <strong>漂亮阿姨</strong> 回電  (Event Queue)</li>
+<li>去清理碗盤</li>
+<li>接到阿姨的回電</li>
+</ol>
+<p>小明並沒有再打給阿姨後就守在電話旁，而是先去做其他事情等待，並且把漂亮阿姨回電這件事情先放在心中，等待回電後再去接聽。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">doWork</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> auntie = <span class="string">"漂亮阿姨"</span>;</div><div class="line">  </div><div class="line">  (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'打給阿姨'</span>)</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(auntie + <span class="string">'回電'</span>)</div><div class="line">    &#125;, <span class="number">3000</span>)</div><div class="line">  &#125;)();</div><div class="line">  </div><div class="line">  (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'洗碗'</span>);</div><div class="line">  &#125;)();</div><div class="line">&#125;</div><div class="line"></div><div class="line">doWork();   <span class="comment">// 執行</span></div><div class="line"></div><div class="line"><span class="comment">// 打給阿姨</span></div><div class="line"><span class="comment">// 洗碗</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">// 漂亮阿姨回電</span></div></pre></td></tr></table></figure>
+<h2 id="Event-queue-事件佇列"><a href="#Event-queue-事件佇列" class="headerlink" title="Event queue (事件佇列)"></a>Event queue (事件佇列)</h2><p>像小明先把事情擱置在心中，等待條件觸發在 JavaScript 稱為 Event queue。像是 setTimeout, addEventListener, XMLHttpRequest 等等，這些方法在執行時會先將事件放到這地方，並將所有的事件堆疊<strong>完成後</strong>，才會開始讓 <code>event queue</code> 內的事件被觸發。</p>
+<p>我們透過以下的短影片來了解一下 <code>event queue</code> 是怎麼樣概念 (影片下方是時間軸，用來解釋事件堆疊)。</p>
+<video width="100%" controls autoplay loop><br>  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2Fevent_queue.mp4?alt=media&token=77b9bb26-d3dc-4c1e-af5f-3233e7e4c11c" type="video/mp4"><br>Your browser does not support the video tag.<br></video>
+
+<p>影片中我們可以看到</p>
+<ul>
+<li>事件堆疊會逐一執行</li>
+<li>等到執行到不會立即執行的行為，就會放到 <code>event queue</code>，<code>event queue</code> 的事件在 <strong>所有事件完成前</strong> 不會被執行。</li>
+<li>等到所有事件堆疊完成後 <code>event queue</code> 內的事件才能被觸發。</li>
+</ul>
+<p>這裡將 setTimeout 修改成 0 試試看，確認是不是所有事件堆疊都完成後，才會執行 <code>event queue</code> 的事件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">doWork</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> auntie = <span class="string">"漂亮阿姨"</span>;</div><div class="line">  </div><div class="line">  (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'打給阿姨'</span>)</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(auntie + <span class="string">'回電'</span>)</div><div class="line">    &#125;, <span class="number">0</span>) <span class="comment">// 修改成 0 秒</span></div><div class="line">  &#125;)();</div><div class="line">  </div><div class="line">  <span class="comment">// ...</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'洗碗'</span>);</div><div class="line">	<span class="keyword">return</span> <span class="string">'完成事件堆疊'</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">doWork();   <span class="comment">// 執行</span></div></pre></td></tr></table></figure>
+<p>他一樣會將所有事件完成後，再讓 setTimeout 完成，以上這段程式碼也可以貼在 Chrome  開發者工具內試試看。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">打給阿姨</div><div class="line">洗碗</div><div class="line">// &quot;完成事件堆疊&quot;</div><div class="line">漂亮阿姨回電</div></pre></td></tr></table></figure>
+<p>在所有非同步事件如 <code>click</code>、<code>setTimeout</code>、<code>ajax</code>…，都不會立即執行這些行為，而是將這些行為放到 <code>event queue</code> 中，等待事件觸發後再回來執行。</p>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/javascript/2017/12/06/javascript-variables/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">鐵人賽：JavaScript 變數的宣告與他的作用域</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/07/javascript-event-queue/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c3-01.jpg?alt=media&token=33d7975b-42e9-4e59-b878-c1a578a382d1)" alt="鐵人賽：一次只能做一件事情的 JavaScript" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/07/javascript-event-queue/" class="title">鐵人賽：一次只能做一件事情的 JavaScript</a></p>
+                            <p class="item-date"><time datetime="2017-12-06T16:00:00.000Z" itemprop="datePublished">2017-12-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/06/javascript-variables/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c2-01.jpg?alt=media&token=ebe1e4a2-c440-422d-b158-af7db0e62154)" alt="鐵人賽：JavaScript 變數的宣告與他的作用域" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/06/javascript-variables/" class="title">鐵人賽：JavaScript 變數的宣告與他的作用域</a></p>
+                            <p class="item-date"><time datetime="2017-12-05T16:00:00.000Z" itemprop="datePublished">2017-12-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/05/ironman-2017/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-cover.jpg?alt=media&token=b19f2731-7567-4d4c-a809-df264b8f04ee)" alt="鐵人賽：執行環境與堆疊" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/05/ironman-2017/" class="title">鐵人賽：執行環境與堆疊</a></p>
+                            <p class="item-date"><time datetime="2017-12-04T16:00:00.000Z" itemprop="datePublished">2017-12-05</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/04/ironman-2017/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fcover.png?alt=media&token=bd1153b8-c75b-4570-b3e9-45f571eb4eaf)" alt="鐵人賽：邁向 JavaScript 勇者之路 - 開始" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/04/ironman-2017/" class="title">鐵人賽：邁向 JavaScript 勇者之路 - 開始</a></p>
+                            <p class="item-date"><time datetime="2017-12-03T16:00:00.000Z" itemprop="datePublished">2017-12-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/tool/2017/11/09/coding-style/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC9C74D6F-F88E-4799-846B-AF4AB6347E39.png?alt=media&token=437a863a-3544-4ccd-a8d6-54fef6095d4e)" alt="在 VSCode 啟用程式碼規範工具 (ESLint)" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/tool/">tool</a></p>
+                            <p class="item-title"><a href="/tool/2017/11/09/coding-style/" class="title">在 VSCode 啟用程式碼規範工具 (ESLint)</a></p>
+                            <p class="item-date"><time datetime="2017-11-08T16:00:00.000Z" itemprop="datePublished">2017-11-09</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.33px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 13.33px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.67px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 12px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 18px;">d3js</a> <a href="/tags/design/" style="font-size: 12.67px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.67px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.67px;">git</a> <a href="/tags/github/" style="font-size: 12.67px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 16.67px;">gulp</a> <a href="/tags/html/" style="font-size: 11.33px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.67px;">intro</a> <a href="/tags/ironman/" style="font-size: 18.67px;">ironman</a> <a href="/tags/javascript/" style="font-size: 17.33px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.33px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 14.67px;">jquery</a> <a href="/tags/js/" style="font-size: 16px;">js</a> <a href="/tags/life/" style="font-size: 12px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 12px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 14px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.67px;">promise</a> <a href="/tags/rails/" style="font-size: 10.67px;">rails</a> <a href="/tags/reactjs/" style="font-size: 12px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.67px;">ruby</a> <a href="/tags/sass/" style="font-size: 19.33px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.67px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 14px;">svg</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.67px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.33px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io/javascript/2017/12/07/javascript-event-queue/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>

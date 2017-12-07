@@ -4,6 +4,64 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：一次只能做一件事情的 JavaScript]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/07/javascript-event-queue/</url>
+      <content type="html"><![CDATA[<p>在 JavaScript 中，一次只會執行一段程式碼，相信看到這段大家心中都會有所疑惑，我們實作中可以大量發出許多事件，並重複執行不同的函式，這樣為何還是單執行緒 (single threaded) 的程式語言呢？</p>
+<p>這段如果用純文字解釋較為困難，所以本篇會加入動畫讓大家更容易了解原理。</p>
+<h2 id="故事說明"><a href="#故事說明" class="headerlink" title="故事說明"></a>故事說明</h2><p>小明故事：<br>小明在完成早上的事情後，他會準備做以下事情：</p>
+<ul>
+<li>打電話給漂亮阿姨<ul>
+<li>等待漂亮阿姨回覆</li>
+</ul>
+</li>
+<li>清理碗盤…</li>
+</ul>
+<p>接下來他會有以下動作</p>
+<ol>
+<li>打電話給漂亮阿姨</li>
+<li>心中掛念著 <strong>漂亮阿姨</strong> 回電  (Event Queue)</li>
+<li>去清理碗盤</li>
+<li>接到阿姨的回電</li>
+</ol>
+<p>小明並沒有再打給阿姨後就守在電話旁，而是先去做其他事情等待，並且把漂亮阿姨回電這件事情先放在心中，等待回電後再去接聽。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">doWork</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> auntie = <span class="string">"漂亮阿姨"</span>;</div><div class="line">  </div><div class="line">  (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'打給阿姨'</span>)</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(auntie + <span class="string">'回電'</span>)</div><div class="line">    &#125;, <span class="number">3000</span>)</div><div class="line">  &#125;)();</div><div class="line">  </div><div class="line">  (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'洗碗'</span>);</div><div class="line">  &#125;)();</div><div class="line">&#125;</div><div class="line"></div><div class="line">doWork();   <span class="comment">// 執行</span></div><div class="line"></div><div class="line"><span class="comment">// 打給阿姨</span></div><div class="line"><span class="comment">// 洗碗</span></div><div class="line"><span class="comment">//</span></div><div class="line"><span class="comment">// 漂亮阿姨回電</span></div></pre></td></tr></table></figure>
+<h2 id="Event-queue-事件佇列"><a href="#Event-queue-事件佇列" class="headerlink" title="Event queue (事件佇列)"></a>Event queue (事件佇列)</h2><p>像小明先把事情擱置在心中，等待條件觸發在 JavaScript 稱為 Event queue。像是 setTimeout, addEventListener, XMLHttpRequest 等等，這些方法在執行時會先將事件放到這地方，並將所有的事件堆疊<strong>完成後</strong>，才會開始讓 <code>event queue</code> 內的事件被觸發。</p>
+<p>我們透過以下的短影片來了解一下 <code>event queue</code> 是怎麼樣概念 (影片下方是時間軸，用來解釋事件堆疊)。</p>
+<video width="100%" controls autoplay loop><br>  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2Fevent_queue.mp4?alt=media&token=77b9bb26-d3dc-4c1e-af5f-3233e7e4c11c" type="video/mp4"><br>Your browser does not support the video tag.<br></video>
+
+<p>影片中我們可以看到</p>
+<ul>
+<li>事件堆疊會逐一執行</li>
+<li>等到執行到不會立即執行的行為，就會放到 <code>event queue</code>，<code>event queue</code> 的事件在 <strong>所有事件完成前</strong> 不會被執行。</li>
+<li>等到所有事件堆疊完成後 <code>event queue</code> 內的事件才能被觸發。</li>
+</ul>
+<p>這裡將 setTimeout 修改成 0 試試看，確認是不是所有事件堆疊都完成後，才會執行 <code>event queue</code> 的事件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">doWork</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> auntie = <span class="string">"漂亮阿姨"</span>;</div><div class="line">  </div><div class="line">  (<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'打給阿姨'</span>)</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(auntie + <span class="string">'回電'</span>)</div><div class="line">    &#125;, <span class="number">0</span>) <span class="comment">// 修改成 0 秒</span></div><div class="line">  &#125;)();</div><div class="line">  </div><div class="line">  <span class="comment">// ...</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'洗碗'</span>);</div><div class="line">	<span class="keyword">return</span> <span class="string">'完成事件堆疊'</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">doWork();   <span class="comment">// 執行</span></div></pre></td></tr></table></figure>
+<p>他一樣會將所有事件完成後，再讓 setTimeout 完成，以上這段程式碼也可以貼在 Chrome  開發者工具內試試看。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">打給阿姨</div><div class="line">洗碗</div><div class="line">// &quot;完成事件堆疊&quot;</div><div class="line">漂亮阿姨回電</div></pre></td></tr></table></figure>
+<p>在所有非同步事件如 <code>click</code>、<code>setTimeout</code>、<code>ajax</code>…，都不會立即執行這些行為，而是將這些行為放到 <code>event queue</code> 中，等待事件觸發後再回來執行。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：JavaScript 變數的宣告與他的作用域]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/06/javascript-variables/</url>
       <content type="html"><![CDATA[<p>變數分為全域與區域變數，差異點在於宣告 (var) 的方式，就 MSDN 上的說明 <code>在函式定義之外宣告的變數就是全域變數，其值可在整個程式中存取和修改。</code> 所以我們可以使用函式來做兩個的分隔點，函式之內宣告的稱為區域，函式以外宣告的稱為全域。</p>
@@ -3527,9 +3585,9 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
             
             <tag> gulp </tag>
             
-            <tag> bootstrap </tag>
-            
             <tag> compass </tag>
+            
+            <tag> bootstrap </tag>
             
         </tags>
         
@@ -10688,9 +10746,9 @@ line.l2{
         
         <tags>
             
-            <tag> css </tag>
-            
             <tag> svg </tag>
+            
+            <tag> css </tag>
             
         </tags>
         
@@ -18449,11 +18507,11 @@ table.table3
         
         <tags>
             
+            <tag> html </tag>
+            
             <tag> sass </tag>
             
             <tag> css </tag>
-            
-            <tag> html </tag>
             
         </tags>
         
