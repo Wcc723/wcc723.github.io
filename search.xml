@@ -4,6 +4,55 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：JavaScript 就是一堆物件的概念]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/09/javascript-object/</url>
+      <content type="html"><![CDATA[<p>在 JavaScript 中，除了上一篇所介紹到的原始型別以外的都是物件，包含陣列、函式…甚至全域本身都是物件，物件本身可以一層包著一層，其內層可以是字串、數值、陣列、物件，甚至是函式。</p>
+<h2 id="故事說明"><a href="#故事說明" class="headerlink" title="故事說明"></a>故事說明</h2><blockquote>
+<p>小明的記事本都是用物件的概念在做紀錄，他會將要做的事情、筆記分門別類的做巢狀紀錄，這樣的好處可以讓他在尋找資料時比較好處理，並且可以自由地新增屬性及值。</p>
+</blockquote>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c6-01.jpg?alt=media&amp;token=f4e6e42e-02ab-4a93-a42c-fd87bf514089" alt=""></p>
+<p>那麼小明筆記本資料如果使用 JavaScript 寫的話會如下，可以發現其實大家做筆記的方式也是這樣的巢狀概念：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> note = &#123;</div><div class="line">  <span class="string">'聯絡人資料'</span>: &#123;</div><div class="line">    <span class="string">'阿姨'</span>: &#123;</div><div class="line">      <span class="attr">name</span>: <span class="string">'陳小美'</span>,</div><div class="line">      <span class="attr">ages</span>: <span class="number">22</span>,</div><div class="line">      <span class="attr">bwh</span>: &#123;              <span class="comment">// 三圍</span></div><div class="line">        strength: <span class="number">34</span>,</div><div class="line">        <span class="attr">agility</span>: <span class="number">25</span>,</div><div class="line">        <span class="attr">intelligence</span>: <span class="number">96</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">single</span>: <span class="literal">true</span></div><div class="line">    &#125;,</div><div class="line">    <span class="string">'杰倫'</span>: &#123;</div><div class="line">      <span class="attr">name</span>: <span class="string">'陳小美'</span>,</div><div class="line">      <span class="attr">ages</span>: <span class="number">19</span>,</div><div class="line">      <span class="attr">bwh</span>: &#123;              <span class="comment">// 三圍</span></div><div class="line">        strength: <span class="number">87</span>,</div><div class="line">        <span class="attr">agility</span>: <span class="number">87</span>,</div><div class="line">        <span class="attr">intelligence</span>: <span class="number">87</span></div><div class="line">      &#125;,</div><div class="line">      <span class="attr">single</span>: <span class="literal">false</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我們簡化一下資料內容，紀錄單人資料時也是用巢狀的方式在記錄，如果要尋找一個人的特定屬性時也會比較快。(ex: 漂亮阿姨的力量值在 auntie -&gt; bwh -&gt; strength 可以找到)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> auntie = &#123; </div><div class="line">  <span class="attr">name</span>: <span class="string">'陳小美'</span>, </div><div class="line">  <span class="attr">ages</span>: <span class="number">22</span>,</div><div class="line">	<span class="attr">bwh</span>: &#123;              <span class="comment">// 三圍</span></div><div class="line">	  strength: <span class="number">34</span>,</div><div class="line">	  <span class="attr">agility</span>: <span class="number">25</span>,</div><div class="line">    <span class="attr">intelligence</span>: <span class="number">96</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">single</span>: <span class="literal">true</span></div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h2 id="如何存取物件"><a href="#如何存取物件" class="headerlink" title="如何存取物件"></a>如何存取物件</h2><p>物件本身的組成是由一個 <code>{屬性(property) / 值(value)}</code> 組成的，可以透過 JavaScript 的規則定義一個物件的名稱，舉例來說上述的阿姨可以用以下方式定義：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> auntie = &#123;&#125;;</div><div class="line"></div><div class="line">auntie.name = <span class="string">'陳小美'</span>;</div><div class="line">auntie.ages = <span class="number">22</span>;</div><div class="line">auntie.single = <span class="literal">true</span>;</div></pre></td></tr></table></figure>
+<p>相同的概念，我們能夠使用一樣的方式取出物件的值，但如果是未定義的屬性則會出現 <code>undefined</code>，嘗試取出未定義屬性的子屬性則會出錯：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(auntie.name); <span class="comment">// '陳小美'</span></div><div class="line"><span class="built_in">console</span>.log(auntie.name); <span class="comment">// 22</span></div><div class="line"></div><div class="line"><span class="comment">// 假設以下值位定義</span></div><div class="line"><span class="built_in">console</span>.log(auntie.bwh);  <span class="comment">// undefined</span></div><div class="line"><span class="built_in">console</span>.log(auntie.bwh.strength);  <span class="comment">// 錯誤</span></div></pre></td></tr></table></figure>
+<p>另外也可以使用中括號來取用變數的值：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> str = <span class="string">'name'</span></div><div class="line"></div><div class="line">auntie[<span class="string">'name'</span>];      <span class="comment">// 使用純字串</span></div><div class="line">auntie[str];         <span class="comment">// 使用變數</span></div><div class="line">auntie[<span class="number">0</span>];           <span class="comment">// 使用數字，就如同存取陣列一樣 (如果有此值)</span></div><div class="line">auntie[<span class="string">'some-name'</span>]; <span class="comment">// 使用字串，就算此名稱不符合 JS 的變數命名規則 (如果有此值)</span></div></pre></td></tr></table></figure>
+<h2 id="列舉物件"><a href="#列舉物件" class="headerlink" title="列舉物件"></a>列舉物件</h2><p>有時候，我們無法預設了解物件內有什麼屬性，此時我們可以使用列舉 <code>(for ... in)</code> 來取出物件內的屬性及值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> auntie = &#123; </div><div class="line">  <span class="attr">name</span>: <span class="string">'陳小美'</span>, </div><div class="line">  <span class="attr">ages</span>: <span class="number">22</span>,</div><div class="line">	<span class="attr">bwh</span>: &#123;</div><div class="line">	  <span class="attr">strength</span>: <span class="number">34</span>,</div><div class="line">	  <span class="attr">agility</span>: <span class="number">25</span>,</div><div class="line">    <span class="attr">intelligence</span>: <span class="number">96</span></div><div class="line">  &#125;,</div><div class="line">  <span class="attr">single</span>: <span class="literal">true</span></div><div class="line">&#125;;</div><div class="line"><span class="keyword">for</span> (prop <span class="keyword">in</span> auntie) &#123;</div><div class="line">  <span class="built_in">console</span>.log(auntie[prop]);  <span class="comment">// 陳小美, 22, &#123;bwh&#125;,true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="除了原始型別以外都是物件"><a href="#除了原始型別以外都是物件" class="headerlink" title="除了原始型別以外都是物件"></a>除了原始型別以外都是物件</h2><p>JavaScript 本身可以運行在瀏覽器、伺服器端，以瀏覽器來說全域本身就是一個大物件 (window)，裡面包含許多瀏覽器的 API、開發者定義變數、DOM 物件… 、方法等，只要在開發者工具下輸入 console.log(window) 就可以看到。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FE5865D7B-361A-467A-B46F-E32D51DD6966.png?alt=media&amp;token=e7c52737-cd79-4b3e-b931-4020e4f7cc61" alt=""></p>
+<p>上圖可以看到剛剛宣告的物件也存在於 window 的物件下。</p>
+<p>接下來可能會思考到為何陣列、函式都是物件？如果說陣列本身是物件可能也許好理解，他的存取方式與物件是非常相似的 (下方範例)：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> auntie = [<span class="string">'陳小美'</span>, <span class="number">22</span>, &#123;</div><div class="line">  <span class="attr">strength</span>: <span class="number">34</span>,</div><div class="line">  <span class="attr">agility</span>: <span class="number">25</span>,</div><div class="line">  <span class="attr">intelligence</span>: <span class="number">96</span></div><div class="line">&#125;, <span class="literal">true</span>];</div><div class="line"></div><div class="line">auntie[<span class="number">0</span>];  <span class="comment">// '陳小美'</span></div></pre></td></tr></table></figure>
+<p>但偏偏他還多了許多陣列方法 (像是：<code>push</code>, <code>shift</code>, <code>unshift</code>)，為何還會說是陣列呢？</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_12_9_%E4%B8%8A%E5%8D%8810_51.png?alt=media&amp;token=ec593d80-640b-4968-8217-035ea1dc72df" alt=""></p>
+<p>這段都與原型繼承有關，我們在更後續的章節再來介紹這一段。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：動態型別的 JavaScript]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/08/javascript-typeof/</url>
       <content type="html"><![CDATA[<p>JavaScript 是屬於動態型別，它定義了七種資料型別，分別為六種原始型別 (ES6 新增一種原始型別)及 Object 型別。在開始之前先用小明來說明一下型別是怎樣的東西。</p>
@@ -3654,9 +3703,9 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
             
             <tag> gulp </tag>
             
-            <tag> compass </tag>
-            
             <tag> bootstrap </tag>
+            
+            <tag> compass </tag>
             
         </tags>
         
@@ -10815,9 +10864,9 @@ line.l2{
         
         <tags>
             
-            <tag> svg </tag>
-            
             <tag> css </tag>
+            
+            <tag> svg </tag>
             
         </tags>
         
@@ -18576,11 +18625,11 @@ table.table3
         
         <tags>
             
-            <tag> html </tag>
-            
             <tag> sass </tag>
             
             <tag> css </tag>
+            
+            <tag> html </tag>
             
         </tags>
         
