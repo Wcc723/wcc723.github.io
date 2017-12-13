@@ -4,6 +4,69 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：另一種方式介紹 JavaScript 閉包]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/13/javascript-closure/</url>
+      <content type="html"><![CDATA[<p>閉包解釋非常多，這裡先透過幾個方式說明一下閉包是什麼：</p>
+<ol>
+<li>運作原理：就是呼叫 Function 內的 Function</li>
+<li>這樣有什麼用：內層 Function 作用域變數只會存在內層</li>
+<li>然後勒：內層 Function 變數可以不被釋放，重複使用</li>
+<li>卡斯伯會常用此方法嗎：沒注意，好像會不經意的使出來</li>
+<li>那幹麻學：理解作用域</li>
+</ol>
+<h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>這個範例用花錢的概念來說明，我們每次都會傳入不同的金額，並且把剩餘的金額存在內部作用域。</p>
+<h4 id="直接呼叫內層函示"><a href="#直接呼叫內層函示" class="headerlink" title="直接呼叫內層函示"></a>直接呼叫內層函示</h4><p>閉包就是存取內部的函式，所以直接使用 <code>buyItem()(100)</code> 兩個括號就是呼叫內部的函式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">buyItem</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> myMoney = <span class="number">1000</span>;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;   <span class="comment">// 這裡就是一個閉包，不過目前只會使用一次</span></div><div class="line">	  myMoney = myMoney - price;</div><div class="line">    <span class="keyword">return</span> myMoney;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> balance = buyItem()(<span class="number">100</span>);  <span class="comment">// 存取內部函式的變數</span></div><div class="line"><span class="built_in">console</span>.log(balance);</div></pre></td></tr></table></figure>
+<p>幹麻要這樣？</p>
+<ol>
+<li>外層 <code>myMoney</code> 此時的變數可以被內層的 function 存取</li>
+<li>內層的 <code>myMoney</code> 後來是私有的變數，外層無法讀取</li>
+<li>運行 <code>buyItem()(100)</code> 時，等同於呼叫一次外層，在呼叫一次內層，最終將內層的值回傳給 <code>balance</code> 的變數。</li>
+</ol>
+<p>這樣還沒完，目前只是一次性運作，來調整一下程式碼。</p>
+<blockquote>
+<p>這個的行為是直接去操作內部的錢包，就像是直接花費一樣，接下來我們會用扣款的概念，不斷的使用錢包內部的金額。</p>
+</blockquote>
+<h4 id="將外層函式賦予到另一個變數上"><a href="#將外層函式賦予到另一個變數上" class="headerlink" title="將外層函式賦予到另一個變數上"></a>將外層函式賦予到另一個變數上</h4><p>接下來不要直接呼叫，而是將函式賦予在另一個變數上，這樣的方式就會將 <code>myMoney</code> 這個變數存在內層的作用域，然後每次執行後不斷更新此值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">buyItem</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> myMoney = <span class="number">1000</span>;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;    <span class="comment">// 這個閉包目前會被重複呼叫</span></div><div class="line">    myMoney = myMoney - price;</div><div class="line">    <span class="comment">// myMoney 第一次由外部傳入，接下來在這個 function 內不斷更新</span></div><div class="line">    <span class="keyword">return</span> myMoney;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> balance = buyItem(); <span class="comment">// 存取內部函式的變數</span></div><div class="line">balance(<span class="number">100</span>); <span class="comment">// 900</span></div><div class="line">balance(<span class="number">100</span>); <span class="comment">// 800</span></div><div class="line">balance(<span class="number">100</span>); <span class="comment">// 700</span></div><div class="line"><span class="comment">// 每次執行都是跑內層的函式，因此也只更新內層的函式變數</span></div></pre></td></tr></table></figure>
+<p>然後勒？</p>
+<ol>
+<li><code>buyItem()</code> 直接執行會出現 <code>function ...</code>，所以沒辦法直接使用。</li>
+<li>balance 現在指向 <code>buyItem()</code> 使其可以不斷的反覆呼叫，且內層記憶體不會被釋放。</li>
+<li>balance() 每次執行時，只會執行內層的函式，在內層記憶體沒有被釋放的情況下，<code>myMoney</code> 變數會不斷的被更新。</li>
+</ol>
+<h4 id="多個具私有變數的函式"><a href="#多個具私有變數的函式" class="headerlink" title="多個具私有變數的函式"></a>多個具私有變數的函式</h4><blockquote>
+<p>小明拜訪完漂亮阿姨以後，接著遇到 Rich 的朋友 “杰倫哥”，杰倫哥與小明去四處揮霍，小明也想趁此機會計算一下杰倫哥的花費狀況。透過閉包的方法，小明可以用同一個公式算出兩個人剩餘多少錢。</p>
+</blockquote>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 使用閉包產生兩個作用域</span></div><div class="line"><span class="comment">// 這裡的 money 代表身上帶的錢</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">buyItem</span>(<span class="params">money</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> myMoney = money;</div><div class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>);          <span class="comment">// 趁機偷問，此地的 this 指向誰？</span></div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);        <span class="comment">// 趁機偷問，此地的 this 指向誰？</span></div><div class="line">    <span class="comment">// myMoney 第一次由外部傳入，接下來在這個 function 內不斷更新</span></div><div class="line">    myMoney = myMoney - price;</div><div class="line">    <span class="keyword">return</span> myMoney;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> MingCost = buyItem(<span class="number">1000</span>); <span class="comment">// 存取內部函式的變數，這個是小明錢包內的錢</span></div><div class="line"><span class="keyword">let</span> JayCost = buyItem(<span class="number">10000</span>); <span class="comment">// 杰哥拿出的小錢</span></div><div class="line"></div><div class="line"><span class="comment">// 小明的內層作用域變數，也就是小明剩的錢</span></div><div class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 900</span></div><div class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 800</span></div><div class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 700</span></div><div class="line"></div><div class="line"><span class="comment">// 杰哥的內層作用域變數，這裡是杰哥剩的錢</span></div><div class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 9000</span></div><div class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 8000</span></div><div class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 7000</span></div></pre></td></tr></table></figure>
+<p>以上片段建議分段執行，更能理解其中的過程：</p>
+<ol>
+<li><code>let MingCost = buyItem(1000);</code> 此時 <code>buyItem</code> 已經執行過一次，並且 <code>myMoney</code> 的變數已經依傳入的變數做調整。</li>
+<li>每次執行 <code>MingCost(100)</code> 時，調整的則是傳至內層的 <code>myMoney</code> 變數。</li>
+</ol>
+<p>要了解閉包，就要多了解函式的作用域，掌握 <code>變數</code> 的作用域及函式的運作原理，此篇章難度就不會很高。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：JavaScript 的 this 到底是誰？]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/12/javascript-this/</url>
       <content type="html"><![CDATA[<p>This 的在 JS 使用上非常頻繁，但一個 this 每個 function 都各自表示，這裡就直接用範例說明 This 有哪些情境，不過請注意一點，影響 this 的是在於<strong>函式的呼叫方法</strong>，並非宣告的時機：</p>
