@@ -4,6 +4,58 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：JavaScript 函式與參數]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/14/javascript-arguments/</url>
+      <content type="html"><![CDATA[<p>函式可以將參數傳入，使得函式的可用性提高許多，不過其中也有許多小技巧及方法可以運用，以下我們用 <strong>悠遊卡的概念</strong> 來說明此段。</p>
+<blockquote>
+<p>小明的悠遊卡裡面有 1000 元，他要儲值一些零用錢進悠遊卡內 (真是優秀青年，這麼多錢還繼續儲)，好讓他可以繼續搭乘捷運。</p>
+</blockquote>
+<h2 id="傳入變數"><a href="#傳入變數" class="headerlink" title="傳入變數"></a>傳入變數</h2><p>以下是一個簡單的函式，用來更新悠遊卡的金額。小明將錢 <code>cash</code> 投入機器內後，按下執行按鈕 <code>updateEasyCard()</code> 就會回傳更新後的悠遊卡金額。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> originCash = <span class="number">1000</span>; <span class="comment">// 悠遊卡內原有的現金</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span> (<span class="params">cash</span>) </span>&#123; <span class="comment">// 傳入儲值金進入悠遊卡</span></div><div class="line">  <span class="keyword">var</span> newCash = cash + originCash;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'我有 '</span> + newCash + <span class="string">' 元'</span>);</div><div class="line">&#125;</div><div class="line">updateEasyCard(<span class="number">1000</span>); <span class="comment">// 我有 2000 元</span></div><div class="line">updateEasyCard(<span class="number">2000</span>); <span class="comment">// 我有 3000 元</span></div></pre></td></tr></table></figure>
+<p>但如果機器沒有設定好，小明還沒有投入任何金額就按下 <code>updateEasyCard()</code> 就會跳出 NaN (Not a Number) 的錯誤 。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">updateEasyCard(); <span class="comment">// 我有 NaN 元</span></div></pre></td></tr></table></figure>
+<p>所以有些函式會透過 <code>||</code> 來加入預設值，在沒有輸入任何值的情況下會使用預設值代替，這邊就先將預設值設為 <code>100</code> (佛心機器，沒投錢也會給 100)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> originCash = <span class="number">1000</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params">cash</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> money = (cash || <span class="number">100</span>) + originCash;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'我有 '</span> + money + <span class="string">' 元'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">updateEasyCard(); <span class="comment">// 我有 1100 元</span></div></pre></td></tr></table></figure>
+<p>這樣，至少不會出現錯誤了，但會出現另一個問題，假設函式中真的需要使用 <code>0</code>、<code>false</code> 這種值傳入時，他一樣會使用前者所套用的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">updateEasyCard(<span class="number">0</span>); <span class="comment">// 我有 1100 元</span></div></pre></td></tr></table></figure>
+<p><em>0 會被強制轉型成 false，所以兩者都會被替代。</em></p>
+<h3 id="複雜的判斷式"><a href="#複雜的判斷式" class="headerlink" title="複雜的判斷式"></a>複雜的判斷式</h3><p><code>||</code> 本身就是一個判斷式，如果簡單的判斷式沒辦法滿足需求，那麼就使用更複雜的判斷式來寫，以下範例：如果 cash 是 false，且 cash 不等於 0 的情況， cash = 100。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> originCash = <span class="number">1000</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params">cash</span>) </span>&#123;</div><div class="line">	<span class="keyword">if</span> (!cash &amp;&amp; cash !== <span class="number">0</span>) &#123;</div><div class="line">	  cash = <span class="number">100</span>;</div><div class="line">	&#125;</div><div class="line">  <span class="keyword">var</span> money = cash + originCash;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'我有 '</span> + money + <span class="string">' 元'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">updateEasyCard(); <span class="comment">// 我有 1100 元</span></div><div class="line">updateEasyCard(<span class="number">0</span>); <span class="comment">// 我有 1000 元</span></div></pre></td></tr></table></figure>
+<p>當然，還有一種情況就是傳入的並非數值而是字串，這樣則會造成金額也自動轉換成字串。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">updateEasyCard(<span class="string">'1000'</span>); <span class="comment">// 我有 10001000 元</span></div></pre></td></tr></table></figure>
+<p>那麼就需要先將文字轉成數值，避免原始的數值被轉換為字串。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> originCash = <span class="number">1000</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params">cash</span>) </span>&#123;</div><div class="line">  cash = <span class="built_in">Number</span>.parseInt(cash);</div><div class="line">	<span class="keyword">if</span> (!cash &amp;&amp; cash !== <span class="number">0</span>) &#123;</div><div class="line">	  cash = <span class="number">100</span>;</div><div class="line">	&#125;</div><div class="line">  <span class="keyword">var</span> money = cash + originCash;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'我有 '</span> + money + <span class="string">' 元'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">updateEasyCard(<span class="string">'100'</span>); <span class="comment">// 我有 1100 元</span></div><div class="line">updateEasyCard(<span class="string">'這不是錢'</span>); <span class="comment">// 我有 1000 元 (無法被轉換)</span></div></pre></td></tr></table></figure>
+<h3 id="ES6-預設函式變數"><a href="#ES6-預設函式變數" class="headerlink" title="ES6 預設函式變數"></a>ES6 預設函式變數</h3><p>在 ES6 中提供更簡潔的方式來解決此問題，可以直接在傳入的參數賦予預設值，此預設值也不需要額外的帶入判斷式就能達到以上效果(但文字問題依然要自己修正喔)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> originCash = <span class="number">1000</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params">cash = <span class="number">100</span></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> money = cash + originCash;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'我有 '</span> + money + <span class="string">' 元'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">updateEasyCard(); <span class="comment">// 我有 1100 元</span></div><div class="line">updateEasyCard(<span class="number">0</span>); <span class="comment">// 我有 1000 元</span></div></pre></td></tr></table></figure>
+<h2 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h2><blockquote>
+<p>假設小明零錢很多，他要一個一個投進去機器內儲值，這樣參數該如何設計？</p>
+</blockquote>
+<p>除此之外，JavaScript 有預設的參數 <code>arguments</code> 可直接帶入，這種參數不須預先設定，所有函式都內建此參數，他會將呼叫函式所帶入的參數一並透過陣列的方式傳入。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> originCash = <span class="number">1000</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> cash = <span class="number">0</span>;</div><div class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>); <span class="comment">// 這裡可以看到 arguments 的結構</span></div><div class="line">  <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="built_in">arguments</span>.length; i++) &#123;</div><div class="line">    cash += <span class="built_in">arguments</span>[i];</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">var</span> money = cash + originCash;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'我有 '</span> + money + <span class="string">' 元'</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line">updateEasyCard(<span class="number">0</span>); <span class="comment">// 我有 1000 元</span></div><div class="line"><span class="comment">// arguments = [];</span></div><div class="line"></div><div class="line">updateEasyCard(<span class="number">10</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">500</span>); <span class="comment">// 我有 1718 元</span></div><div class="line"><span class="comment">// arguments = [10, 50, 100, 50, 5, 1, 1, 1, 500];</span></div></pre></td></tr></table></figure>
+<p>不過 <code>arguments</code> 實際在使用時會有一些小問題，像是範例中為何是使用 for 迴圈，而不是使用 <code>forEach</code> (forEach 可以使用在陣列上)，主要原因是 <code>arguments</code> 並非真正的 <code>陣列</code>，它是 <code>類陣列(Array-like)</code> 的物件，因此無法使用許多陣列相關的方法。</p>
+<p>相關文件可查閱：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/arguments</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：另一種方式介紹 JavaScript 閉包]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/13/javascript-closure/</url>
       <content type="html"><![CDATA[<p>閉包解釋非常多，這裡先透過幾個方式說明一下閉包是什麼：</p>
@@ -11080,9 +11132,9 @@ line.l2{
         
         <tags>
             
-            <tag> css </tag>
-            
             <tag> svg </tag>
+            
+            <tag> css </tag>
             
         </tags>
         
@@ -13018,62 +13070,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -13156,6 +13152,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
@@ -18841,11 +18893,11 @@ table.table3
         
         <tags>
             
+            <tag> html </tag>
+            
             <tag> sass </tag>
             
             <tag> css </tag>
-            
-            <tag> html </tag>
             
         </tags>
         
