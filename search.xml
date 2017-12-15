@@ -4,6 +4,58 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：JavaScript 的嚴格模式 "use strict"]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/15/javascript-use-strict/</url>
+      <content type="html"><![CDATA[<p>JavaScript 不斷的演進下，許多不嚴謹的寫法都應該逐漸被修正，但哪些是需要修正的字詞呢!? <code>&#39;use strict&#39;</code> 則是新加入的標準，目的是為了讓編寫「具穩定性的 JavaScript 更容易」，在不穩定的語法或妨礙最佳化的語意都會跳出警告，讓開發者避開這些寫法。</p>
+<p>而在傳統的瀏覽器下 <code>&#39;use strict&#39;</code> 僅會被視為沒有用處的字串，所以不會對舊有的瀏覽器產生影響。</p>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p><code>&#39;use strict&#39;</code> 直接加入在程式碼的前方就可以開始運作，特別值得注意的是它也可以單獨使用在 function 下，如果要靠 <code>&#39;use strict&#39;</code> 來修正目前語法上的問題，可以先針對部分的 function 來做調整。</p>
+<p>簡單示範一個錯誤 (未定義的變數不能直接賦予值)：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="meta">'use strict'</span>;</div><div class="line">auntie = <span class="string">'漂亮阿姨'</span>;</div><div class="line"><span class="comment">// Uncaught ReferenceError: auntie is not defined</span></div></pre></td></tr></table></figure></p>
+<p>嚴謹模式也能僅用在函式內，這樣將只有此函式套用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">  'use strict'</span>;</div><div class="line">  auntie = <span class="string">'漂亮阿姨'</span>;</div><div class="line">  <span class="comment">// Uncaught ReferenceError: auntie is not defined</span></div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>如果使用在函式的開頭，那將只會在此函式套用 “嚴謹模式”，函式的外部將不受影響。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">  'use strict'</span>;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line">mom = <span class="string">'老媽管不到'</span>;</div><div class="line"><span class="comment">// 不會跳錯</span></div></pre></td></tr></table></figure>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>只有將 <code>&#39;use strict&#39;</code> 放在函式開頭才會有作用。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> aa;</div><div class="line">  <span class="string">'use strict'</span>;  <span class="comment">// 無效</span></div><div class="line">  auntie = <span class="string">'漂亮阿姨'</span>;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure></p>
+<h2 id="常見錯誤"><a href="#常見錯誤" class="headerlink" title="常見錯誤"></a>常見錯誤</h2><p>基本錯誤如下：</p>
+<ul>
+<li>不宣告直接賦予變數</li>
+<li>刪除已經宣告的錯誤</li>
+<li>物件內有重複屬性</li>
+<li>數值使用 8 進位語法</li>
+<li>不能使用 ‘with’ 語法</li>
+<li>arguments、eval 不能作為變數名稱</li>
+<li>新增的保留字也不能被作為變數名稱 implements, interface, let, package, private, protected, public, static, yield，這些是為了 ES6 做得準備。</li>
+</ul>
+<p>如果嘗試修改 getter 則不會默默地沒改，而是直接地跳出錯誤：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">  'use strict'</span>;</div><div class="line">  <span class="keyword">var</span> family = &#123;</div><div class="line">    get mom() &#123; <span class="keyword">return</span> <span class="string">'老媽'</span> &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(family.mom); <span class="comment">// 老媽</span></div><div class="line">  family.mom = <span class="string">'老爸'</span>; <span class="comment">// 跳錯</span></div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<p>不可以嘗試刪除一個不可刪除的屬性(此為原型，在後面的章節會介紹到)：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">  'use strict'</span>;</div><div class="line">  <span class="keyword">delete</span> <span class="built_in">Object</span>.prototype;</div><div class="line">&#125;)();</div></pre></td></tr></table></figure>
+<h2 id="‘use-strict’-及-this"><a href="#‘use-strict’-及-this" class="headerlink" title="‘use strict’ 及 this"></a>‘use strict’ 及 this</h2><p>在先前介紹 this 的時有介紹到不同的呼叫方法，在 ‘use strict’ 的環境下的 <code>純粹的調用 (Simple call)</code> 的 this 不在是全域變數。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.auntie = <span class="string">'漂亮阿姨'</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span>(<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">  'use strict'</span>;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'call:'</span>, <span class="keyword">this</span>.auntie);</div><div class="line">&#125;</div><div class="line"></div><div class="line">callAuntie.call(&#123; <span class="attr">auntie</span>: <span class="string">'叫阿姨'</span> &#125;); <span class="comment">// Ok</span></div><div class="line">callAuntie(); <span class="comment">// 錯誤，此呼叫會導致 this 為全域</span></div></pre></td></tr></table></figure>
+<p>但 this 依然可作為 window 的方式傳入。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.auntie = <span class="string">'漂亮阿姨'</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span>(<span class="params"></span>) </span>&#123;</div><div class="line"><span class="meta">  'use strict'</span>;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'call:'</span>, <span class="keyword">this</span>.auntie);</div><div class="line">&#125;</div><div class="line"></div><div class="line">callAuntie.call(<span class="keyword">this</span>); <span class="comment">// Ok，call: 漂亮阿姨</span></div></pre></td></tr></table></figure>
+<p>現在會建議寫 JavaScript 的時候加入 <code>&#39;use strict&#39;</code>，這可以改正一些編寫時的不良習慣，但也有可以因此導致專案無法運作，此時可以考慮將 <code>&#39;use strict&#39;</code> 加在函式內，避免影響過去的程式碼及相關套件。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：JavaScript 函式與參數]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/14/javascript-arguments/</url>
       <content type="html"><![CDATA[<p>函式可以將參數傳入，使得函式的可用性提高許多，不過其中也有許多小技巧及方法可以運用，以下我們用 <strong>悠遊卡的概念</strong> 來說明此段。</p>
