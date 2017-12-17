@@ -4,7 +4,55 @@
   
     
     <entry>
-      <title><![CDATA[Function 與 Hoisting]]></title>
+      <title><![CDATA[鐵人賽：JavaScript 的原型繼承]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/</url>
+      <content type="html"><![CDATA[<p>許多人在寫 JavaScript 應該多少都會聽過原型鍊、原型繼承…，這個觀念在寫 JavaScript 是否重要呢？實作中會不會常使用到這樣的技巧？這裡可以先回答 “會”，而且我們很常使用到原型，而且了解原型會有助於我們加速理解 JavaScript 的概念。</p>
+<p>以下有一個物件，物件裡面只有一個 <code>name</code> 及一個 <code>function run()</code>，所以我們了解以下物件只能執行 <code>run()</code>，因為他沒有其他的函式可以使用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> person = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'小明'</span>,</div><div class="line">  <span class="attr">run</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">' 跑向世界的另一端'</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">person.run(); <span class="comment">// "小明 跑向世界的另一端"</span></div><div class="line">person.hasOwnProperty(<span class="string">'run'</span>); <span class="comment">// true</span></div><div class="line">person.hasOwnProperty(<span class="string">'friend'</span>); <span class="comment">// false</span></div></pre></td></tr></table></figure>
+<p>但除此以外還有一些額外的方法可以使用，像是 <code>hasOwnProperty()</code>，但奇怪的事情是 <code>hasOwnProperty()</code> 這個方法，沒有在 person 這個物件下，為何還可以使用此 <code>hasOwnProperty()</code> 的方法，原因在於 “原型繼承”。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_1.jpg?alt=media&amp;token=934dd4b5-494b-464c-9463-f45cc5f034bb" alt=""></p>
+<p>上圖中 <code>person</code> 這個是我們剛剛宣告的物件，它的上層是則是他的原型物件(它是半透明的喔，所以我們平常會沒注意到)，當他在使用 <code>hasOwnProperty()</code> 時，就是在使用它原型物件的方法。</p>
+<h4 id="透過錯誤範例了解原型"><a href="#透過錯誤範例了解原型" class="headerlink" title="透過錯誤範例了解原型"></a>透過錯誤範例了解原型</h4><p><strong>錯誤範例</strong>：這裡提供一個觀念上的錯誤範例，實際執行時我們不會用此方法來增加原型方法。JavaScript 中所有的物件、函式都有 <code>__proto__</code> 的原型屬性，這一個原形屬性會不斷的向上尋找他的上層原型。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ming = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'小明'</span></div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(ming);</div></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FCEE32FA8-B533-4189-8E50-B61D83FA709A.png?alt=media&amp;token=91ceb969-30ac-4567-a3f8-623029c1eb4a" alt=""></p>
+<p>我們在 <code>ming</code> 下的 <code>__proto__</code> 直接掛上 <code>run</code> 的方法，使其產生在 <code>__proto__</code> 下 <strong>注意：請不要這樣做，只是為了方便理解</strong>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ming = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'小明'</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> run = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">' 跑向世界的另一端'</span></div><div class="line">&#125;</div><div class="line">ming.__proto__.run = run;</div><div class="line"><span class="built_in">console</span>.log(ming.name); <span class="comment">// &#123;name: "小明"&#125;</span></div><div class="line"><span class="built_in">console</span>.log(ming.run()); <span class="comment">// "小明 跑向世界的另一端"</span></div></pre></td></tr></table></figure></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FEC9D6B41-AAED-4697-AAB5-263FCC075BC5.png?alt=media&amp;token=56953efd-7fbd-4ff4-bea3-1e143075c6b3" alt=""></p>
+<p>雖然直接 <code>console.log(ming)</code> 並不會看到 <code>run()</code> 這個方法，但執行時他會不斷的向上尋找到原型內的 <code>run()</code> 方法來執行它。</p>
+<h2 id="共用原型"><a href="#共用原型" class="headerlink" title="共用原型"></a>共用原型</h2><p>其中原型還有個特性，我們如果在物件原型下直接建立新的方法，就會造成以下的問題，兩個看似沒有關係的物件將會共用相同的原型方法 (因為兩者的原型都是物件)，這種情況會出現管理上的問題。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ming = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'小明'</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> casper = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'卡斯伯'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> run = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>.name + <span class="string">' 跑向世界的另一端'</span></div><div class="line">&#125;</div><div class="line">ming.__proto__.run = run;</div><div class="line"><span class="built_in">console</span>.log(ming.run()); <span class="comment">// "小明 跑向世界的另一端"</span></div><div class="line"><span class="built_in">console</span>.log(casper.run()); <span class="comment">// "卡斯伯 跑向世界的另一端"</span></div></pre></td></tr></table></figure>
+<p>這個範例中，我們強制將函式寫到了 <code>物件</code> 這個原型上，所以新增的物件都會 <strong>共用</strong> 此屬性。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_2.jpg?alt=media&amp;token=d880e22d-0931-471c-a0cb-ccc587f8ea7e" alt=""></p>
+<p>在後面的章節我們會介紹如何正確地使用原型繼承。</p>
+<h2 id="原型鍊的的頂端是物件"><a href="#原型鍊的的頂端是物件" class="headerlink" title="原型鍊的的頂端是物件"></a>原型鍊的的頂端是物件</h2><p>JavaScript 只有一個建構物：”物件”，如果上述程式碼以下我們繼續往下增加：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> mingFamily = [<span class="string">'ming'</span>, <span class="string">'mom'</span>, <span class="string">'漂亮阿姨'</span>];</div><div class="line"><span class="keyword">var</span> casperFamily = [<span class="string">'卡斯伯'</span>, <span class="string">'媽'</span>];</div><div class="line"></div><div class="line"><span class="comment">// 嘗試呼叫先前物件下的原型</span></div><div class="line">mingFamily.run();</div><div class="line"><span class="string">"undefined 跑向世界的另一端"</span> <span class="comment">//雖然出現錯誤，但依然可以呼叫</span></div></pre></td></tr></table></figure>
+<p>這個範例中，我們新增一段陣列，並在陣列中使用先前的物件原型方法，雖然會出錯，但是是可以執行的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> getFirst = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">this</span>[<span class="number">0</span>];</div><div class="line">&#125;</div><div class="line"><span class="comment">// 對 陣列原型加入新的方法</span></div><div class="line">mingFamily.__proto__.getFirst = getFirst;</div><div class="line"></div><div class="line">mingFamily.getFirst();  <span class="comment">// "ming"</span></div><div class="line">casperFamily.getFirst(); <span class="comment">// "卡斯伯"</span></div><div class="line"></div><div class="line">ming.getFirst();</div><div class="line"><span class="comment">// ming.getFirst is not a function</span></div></pre></td></tr></table></figure>
+<p>在此段，我們對任一陣列原型加入新的函式，此時兩個陣列都可以套用此函式，但對於物件來說卻不能執行此方法，因為在原型鍊上物件屬於陣列的頂端。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_3.jpg?alt=media&amp;token=9ab2ad7a-ad01-4fc4-85f6-5710f70492ca" alt=""></p>
+<p>由於原型有不斷向上查找的特性，如果在上一層找不到可用的方法，他就會繼續往上找，這個也就稱為原型鍊，所以在 <code>mingFamily</code> 這個陣列才會取用到剛剛物件原型所增加的方法，本篇只是簡單介紹原型的概念，接下來幾篇則會開始讓大家了解這有什麼樣的用處。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽：JavaScript Function 與 Hoisting]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/16/javascript-hoisting/</url>
       <content type="html"><![CDATA[<p>Hoisting 在 JavaScript 僅是一個觀念，主要是在說明變數、函式在宣告期間就會先建立一個記憶體空間，等到實際運行時再將值放入到該記憶體空間內。不過為了確保程式的穩定性，我們不會在實作中使用這個方法，僅了解觀念即可。</p>
 <blockquote>
