@@ -4,6 +4,51 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：JavaScript 建構式與原型]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/19/javascript-constructor-and-prototype/</url>
+      <content type="html"><![CDATA[<p>還記得先前幾篇的原型鍊嗎？多個物件可以使用相同原型的那個章節，兩個不同的角色但是共用相同的原型，所以當原型增加新的功能，另一個角色一樣會獲得相同功能：</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_2.jpg?alt=media&amp;token=d880e22d-0931-471c-a0cb-ccc587f8ea7e" alt=""></p>
+<p>現在已經透過 JavaScript 建構式產生一個獨立的物件，我們接下來會使用原型鍊的概念來創造原型。</p>
+<h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>目前已經使用建構式製作一個簡單手機樣板，但我們會發現作為一個手機似乎少了一個重要的功能 <code>打電話</code>，這個功能是所有手機都具備個功能，無論他是何種型號。因此，這裡要透過 <strong>原型</strong> 的概念將手機賦予 <code>打電話</code> 這個功能，無論是哪一種型號，都能直接繼承此功能。</p>
+<p>以下這段和上一個章節的程式碼是相同的，這裡已經透過手機範本 (<code>PhoneTemplate</code>)建立了兩隻手機。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">PhoneTemplate</span>(<span class="params">brand, modal, withCamera</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.brand = brand;</div><div class="line">  <span class="keyword">this</span>.modal = modal;</div><div class="line">  <span class="keyword">this</span>.withCamera = withCamera || <span class="literal">false</span>;</div><div class="line">  <span class="keyword">this</span>.takePhoto = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.withCamera) &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 照相'</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 這台沒有照相功能'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Sony'</span>, <span class="string">'Z100'</span>, <span class="literal">true</span>);</div><div class="line"><span class="keyword">var</span> nokiaPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Nokia'</span>, <span class="string">'3310'</span>, <span class="literal">false</span>);</div></pre></td></tr></table></figure>
+<p>接下來直接在 手機範本 上使用  <code>prototype</code> 的語法來加入撥打電話的功能 (<code>callSomeone</code>)，加入此功能後這兩隻手機都同時具有撥打電話的功能。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 加入 prototype</span></div><div class="line">PhoneTemplate.prototype.callSomeone = <span class="function"><span class="keyword">function</span> (<span class="params">someone</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'打通電話給 '</span> + someone)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 兩者同時共用相同的原型</span></div><div class="line">sonyPhone.callSomeone(<span class="string">'小明'</span>); <span class="comment">// 打通電話給 小明</span></div><div class="line">nokiaPhone.callSomeone(<span class="string">'小明'</span>); <span class="comment">// 打通電話給 小明</span></div></pre></td></tr></table></figure>
+<p>發生什麼事了？可以透過 console.log() 來看看兩隻手機內有什麼樣的變化，此段的 <code>__proto__</code> 是 <code>PhoneTemplate</code> 的原型，在 <code>__proto__</code> 內可以看到 <code>callSomeone()</code> 的方法，我們直接在手機範本上加入就會使透過此建構式生成的物件套用這段原型。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FE6BF06FD-6127-4D14-80EC-E02CEF30A3BC.png?alt=media&amp;token=5bb695d4-f0f1-476f-83c5-6863a2fc3fc8" alt=""></p>
+<p>此時我們如果查看另一支手機也會有相同的功能。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F8C94B350-05D3-4F65-8664-E35EDC06054E.png?alt=media&amp;token=1577b749-9ca4-4dd6-a879-da08d52665c1" alt=""></p>
+<p>在概念上，這段的原型會如下圖顯示，兩者的上層皆是 <code>phoneTemplate</code>，並且共用相同的方法，這也像魂結一樣兩個連向共用的物件，當此物件新增了任何功能，兩個物件也能一起繼承。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16.jpg?alt=media&amp;token=b1c47a22-b452-4ce8-88ba-56b57672f3b6" alt=""></p>
+<h2 id="記憶體概念"><a href="#記憶體概念" class="headerlink" title="記憶體概念"></a>記憶體概念</h2><p>除了共用的概念外，我們每次新增一個物件時，物件內的屬性、函式都會需要佔用記憶體空間。也就是一個物件內有 10 個屬性，生成 10 個則會佔用 100 單位的記憶體空間，如果適當地將 5 個屬性轉至原型內，則只會佔用 <code>(5*10) + 5 = 55</code> 的記憶體空間。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16_2.jpg?alt=media&amp;token=13d99d56-3827-4b68-9a41-0c6181b1a853" alt=""></p>
+<p>這點在開發 Node.js 應用程式時影響更大，由於伺服器端的記憶體不能像瀏覽器隨意關閉釋放，所以記憶體的控制更為重要。</p>
+<h2 id="原型觀念"><a href="#原型觀念" class="headerlink" title="原型觀念"></a>原型觀念</h2><p>如果你了解此段，很容易就能看到任何物件的根本，對於看懂 JavaScript 的文件也會更為容易，就如同以下是 “陣列” 的原型，所以所有陣列都與此原型產生魂結牽連，因此可以用以下的方法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2017-12-19_%E4%B8%8A%E5%8D%889_48_52.png?alt=media&amp;token=2a29ff7a-e28e-464e-8e1f-32e343d23f48" alt=""></p>
+<p>而為什麼 DOM 方法取得的陣列為什麼不能用很多陣列方法，原因他是屬於 <strong>array-like(類陣列)</strong>，我們可以從原型中得知它與陣列不是共用的。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-12-19%20%E4%B8%8A%E5%8D%889.54.32.png?alt=media&amp;token=dde5aae3-fe41-4dcf-a7f4-1d40ab7ebe41" alt=""></p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：JavaScript 建構式]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/</url>
       <content type="html"><![CDATA[<p>了解原型繼承後，可以開始思考這個概念可以用在哪個地方，其中一個就是建構式。我們先不介紹建構式有什麼優點，先了解一下該怎麼透過 JavaScript 來寫建構式，然後再用原型的概念來介紹他的特別之處。</p>
@@ -11333,9 +11378,9 @@ line.l2{
         
         <tags>
             
-            <tag> svg </tag>
-            
             <tag> css </tag>
+            
+            <tag> svg </tag>
             
         </tags>
         
@@ -19094,11 +19139,11 @@ table.table3
         
         <tags>
             
-            <tag> html </tag>
-            
             <tag> sass </tag>
             
             <tag> css </tag>
+            
+            <tag> html </tag>
             
         </tags>
         
