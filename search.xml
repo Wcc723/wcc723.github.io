@@ -4,6 +4,65 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：箭頭函式 (Arrow functions)]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/21/javascript-es6-arrow-function/</url>
+      <content type="html"><![CDATA[<p><code>Arrow function</code> 對於它也是又愛又恨的，看似簡約的外型卻有著全新的體驗，它有著更簡短的語法以及重新定義的 <code>this</code>，所以先前學的 <code>this</code> 在此也會有不同的情境。</p>
+<h2 id="簡短的語法"><a href="#簡短的語法" class="headerlink" title="簡短的語法"></a>簡短的語法</h2><p>一般使用箭頭函式與 function 的用法大致一致，可以傳入參數、也有大括號包起來，除此之外箭頭函式也有更簡短的寫法如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 正常寫法</span></div><div class="line"><span class="keyword">var</span> callSomeone = <span class="function">(<span class="params">someone</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">return</span> someone + <span class="string">'吃飯了'</span></div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(callSomeone(<span class="string">'小明'</span>))</div><div class="line"></div><div class="line"><span class="comment">// 縮寫，單一行陳述不需要 &#123;&#125;</span></div><div class="line"><span class="keyword">var</span> callSomeone = <span class="function">(<span class="params">someone</span>) =&gt;</span> someone + <span class="string">'吃飯了'</span></div><div class="line"><span class="built_in">console</span>.log(callSomeone(<span class="string">'小明'</span>))</div><div class="line"></div><div class="line"><span class="comment">// 只有一個參數可以不加括號</span></div><div class="line"><span class="keyword">var</span> callSomeone = <span class="function"><span class="params">someone</span> =&gt;</span> someone + <span class="string">'吃飯了'</span></div><div class="line"><span class="built_in">console</span>.log(callSomeone(<span class="string">'小明'</span>))</div><div class="line"></div><div class="line"><span class="comment">// 沒有參數時，一定要有括號</span></div><div class="line"><span class="keyword">var</span> callSomeone = <span class="function"><span class="params">()</span> =&gt;</span> <span class="string">'小明'</span> + <span class="string">'吃飯了'</span></div><div class="line"><span class="built_in">console</span>.log(callSomeone(<span class="string">'小明'</span>))</div></pre></td></tr></table></figure>
+<p>不過這個上述有個小地方也要注意一下，在大括號內的 <code>{}</code> 是需要自行加入 <code>return</code>，如果沒有傳入值則會出現 <code>undefined</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> callSomeone = <span class="function">(<span class="params">someone</span>) =&gt;</span> &#123; someone + <span class="string">'吃飯了'</span> &#125;</div><div class="line"><span class="built_in">console</span>.log(callSomeone(<span class="string">'小明'</span>)) <span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<h2 id="沒有-arguments-參數"><a href="#沒有-arguments-參數" class="headerlink" title="沒有 arguments 參數"></a>沒有 arguments 參數</h2><p>在先前有一個小故事，小明要儲值悠遊卡，他投入不同的金額要加值，要使用 <code>arguments</code> 這個參數了解總共傳入了幾次並加總，但在箭頭函式內是沒有此變數的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> originCash = <span class="number">1000</span>;</div><div class="line"><span class="keyword">const</span> updateEasyCard = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="keyword">let</span> cash = <span class="number">0</span>;</div><div class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>); <span class="comment">// arguments is not defined</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">updateEasyCard(<span class="number">10</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">500</span>);</div></pre></td></tr></table></figure>
+<p>所以當需要使用 <code>arguments</code> 請維持使用 <code>function</code>。</p>
+<h2 id="綁定的-this-不同"><a href="#綁定的-this-不同" class="headerlink" title="綁定的 this 不同"></a>綁定的 this 不同</h2><ul>
+<li>傳統函式：依呼叫的方法而定</li>
+<li>箭頭函式：綁定到其定義時所在的物件 (這個詞看似簡單，但又充滿了陷阱!?)</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> name = <span class="string">'全域阿婆'</span></div><div class="line"><span class="keyword">var</span> auntie = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>,</div><div class="line">  <span class="attr">callName</span>: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; </div><div class="line">    <span class="comment">// 注意，這裡是 function，以此為基準產生一個作用域</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'1'</span>, <span class="keyword">this</span>.name); <span class="comment">// 1 漂亮阿姨</span></div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'2'</span>, <span class="keyword">this</span>.name); <span class="comment">// 2 漂亮阿姨</span></div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'3'</span>, <span class="keyword">this</span>); <span class="comment">// 3 auntie 這個物件</span></div><div class="line">    &#125;, <span class="number">10</span>);</div><div class="line">  &#125;,</div><div class="line">  <span class="attr">callName2</span>: <span class="function"><span class="params">()</span> =&gt;</span> &#123; </div><div class="line">    <span class="comment">// 注意，如果使用箭頭函式，this 依然指向 window</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'4'</span>, <span class="keyword">this</span>.name); <span class="comment">// 4 全域阿婆</span></div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'5'</span>, <span class="keyword">this</span>.name); <span class="comment">// 5 全域阿婆</span></div><div class="line">      <span class="built_in">console</span>.log(<span class="string">'6'</span>, <span class="keyword">this</span>); <span class="comment">// 6 window 物件</span></div><div class="line">    &#125;, <span class="number">10</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">auntie.callName();</div><div class="line">auntie.callName2();</div></pre></td></tr></table></figure>
+<p><code>綁定到其定義時所在的物件</code>，我們要了解一般函式在建立時是在 window 下，所以在 window 下使用箭頭函式自然會指向 window，要確實將箭頭函式宣告在物件內部，這樣 <code>this</code> 才會指向該物件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> func = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> func2 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>); </div><div class="line">    &#125;, <span class="number">10</span>);</div><div class="line">  &#125;;</div><div class="line">  <span class="comment">// 這裡才算真正的建立一個物件</span></div><div class="line">  <span class="comment">// 因此要在此物件下的箭頭函式才會以此作為基準</span></div><div class="line">  <span class="keyword">var</span> func3 = &#123;</div><div class="line">    <span class="attr">func</span>: func2,</div><div class="line">    <span class="attr">var4</span>: <span class="number">4</span></div><div class="line">  &#125;</div><div class="line">  func2(); <span class="comment">// this = window</span></div><div class="line">  func3.func(); <span class="comment">// func3 Object</span></div><div class="line">&#125;</div><div class="line">func(); </div><div class="line"><span class="comment">// 就算在這裡新增一個 function，也不會影響到內層的箭頭函式</span></div></pre></td></tr></table></figure>
+<p>這個範例稍作複雜些，但只是要解釋不同建立方式的差異，注意：如果 <strong>不是</strong> 建立在物件內的函式，並不會影響箭頭函示的 <code>this</code>：</p>
+<ul>
+<li><code>func()</code> 是最外層的函式，他對於內層的箭頭不會有影響。</li>
+<li><code>func2()</code> 是包覆在內層的函式，但由於箭頭函式不是在物件內，所以沒有影響。</li>
+<li><code>func3()</code> 是呼叫在物件內的函式，因此箭頭函式會是使用它所在的物件。</li>
+</ul>
+<h4 id="縮寫的函式"><a href="#縮寫的函式" class="headerlink" title="縮寫的函式"></a>縮寫的函式</h4><p>另外注意：物件縮寫形式的函式也是屬於 <code>function</code>，所以依然能夠產生作用域。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ==</span></div><div class="line"><span class="keyword">var</span> auntie = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>,</div><div class="line">  callName () &#123; </div><div class="line">    <span class="comment">// 注意，縮寫形式的 function 屬於傳統 function</span></div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">// auntie 這個物件</span></div><div class="line">    &#125;, <span class="number">10</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">auntie.callName();</div></pre></td></tr></table></figure>
+<h2 id="不可使用的情況"><a href="#不可使用的情況" class="headerlink" title="不可使用的情況"></a>不可使用的情況</h2><h4 id="apply-call-bind"><a href="#apply-call-bind" class="headerlink" title="apply, call, bind"></a>apply, call, bind</h4><p><code>this</code> 在 Arrow function 中是被綁定的，所以套用 <code>call</code> 的方法時是無法修改 <code>this</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> family = &#123;</div><div class="line">  <span class="attr">ming</span>: <span class="string">'小明'</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">const</span> func = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">&#125;</div><div class="line"><span class="keyword">const</span> func2 = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);</div><div class="line">&#125;</div><div class="line">func.call(family); <span class="comment">// 箭頭函式的情況，this 依然是 window</span></div><div class="line">func2.call(family); <span class="comment">// 一般函示 this 則是傳入的物件</span></div></pre></td></tr></table></figure>
+<h4 id="不能用在建構式"><a href="#不能用在建構式" class="headerlink" title="不能用在建構式"></a>不能用在建構式</h4><p>由於 this 的是在物件下建立，所以箭頭函式不能像 function 一樣作為建構式的函式，如果嘗試使用此方法則會出現錯誤 (<code>... is not a constructor</code>)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> PhoneTemplate = <span class="function">(<span class="params">brand, modal, withCamera</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">this</span>.brand = brand;</div><div class="line">  <span class="keyword">this</span>.modal = modal;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Sony'</span>, <span class="string">'Z100'</span>, <span class="literal">true</span>);</div><div class="line"><span class="comment">// 錯誤：PhoneTemplate is not a constructor</span></div></pre></td></tr></table></figure>
+<h4 id="DOM-事件監聽"><a href="#DOM-事件監聽" class="headerlink" title="DOM 事件監聽"></a>DOM 事件監聽</h4><p>同先前說的， <code>this</code> 是指向所建立的物件上，如果是用在監聽 DOM 上一樣會指向 window，所以無法使用在此情境。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> elements = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'div'</span>);</div><div class="line"><span class="keyword">var</span> changeDOM = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>);                   <span class="comment">// 指向 window Object</span></div><div class="line">  <span class="keyword">this</span>.style.border = <span class="string">'1px solid red'</span>. <span class="comment">// 錯誤</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</div><div class="line">  elements[i].addEventListener(<span class="string">'click'</span>, changeDOM, <span class="literal">false</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="Prototype-中使用-this"><a href="#Prototype-中使用-this" class="headerlink" title="Prototype 中使用 this"></a>Prototype 中使用 this</h4><p>一樣是 this 的問題，如果原型上新增一個箭頭函式，並嘗試使用 this 的話會指向全域。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">PhoneTemplate</span> (<span class="params">brand, modal, withCamera</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.brand = brand;</div><div class="line">  <span class="keyword">this</span>.modal = modal;</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">PhoneTemplate.prototype.callSomeone = <span class="function"><span class="keyword">function</span> (<span class="params">someone</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.brand + <span class="string">' 打通電話給 '</span> + someone)</div><div class="line">&#125;</div><div class="line">PhoneTemplate.prototype.callSomeone2 = <span class="function">(<span class="params">someone</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.brand + <span class="string">' 打通電話給 '</span> + someone)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Sony'</span>, <span class="string">'Z100'</span>, <span class="literal">true</span>);</div><div class="line">sonyPhone.callSomeone(<span class="string">'小明'</span>); <span class="comment">// Sony 打通電話給 小明</span></div><div class="line">sonyPhone.callSomeone2(<span class="string">'杰哥'</span>); <span class="comment">// undefined 打通電話給 杰哥</span></div></pre></td></tr></table></figure>
+<h2 id="善用的方式"><a href="#善用的方式" class="headerlink" title="善用的方式"></a>善用的方式</h2><p>過去我們在寫物件內的函式時，為了確保 this 能夠正確運作會先將它賦予在另一個變數上 (that, self, vm…)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> auntie = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>,</div><div class="line">  callName () &#123; </div><div class="line">    <span class="comment">// 先使用另一個變數指向 this，讓內層函式可以正確使用</span></div><div class="line">    <span class="keyword">var</span> that = <span class="keyword">this</span>;</div><div class="line">    setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">      <span class="built_in">console</span>.log(that); <span class="comment">// auntie 這個物件</span></div><div class="line">    &#125;, <span class="number">10</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">auntie.callName();</div></pre></td></tr></table></figure>
+<p>箭頭函式本就會指向他所生成的物件上，所以可以不需要另外指向另一個物件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> auntie = &#123;</div><div class="line">  <span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>,</div><div class="line">  callName () &#123; </div><div class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">		<span class="comment">// 箭頭函式中會自動指向生成的物件上</span></div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">// auntie 這個物件</span></div><div class="line">    &#125;, <span class="number">10</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">auntie.callName();</div></pre></td></tr></table></figure>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：ES6 開始的新生活 let, const]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/20/javascript-es6-let-const/</url>
       <content type="html"><![CDATA[<p>接下來本篇開始會介紹 ES6 語法，在很久之前聽到 ES6 這個名詞時我都是保持觀望的態度，裡面有許多語法讓我感覺的不是很真實，像是 <code>...</code>、<code>=&gt;</code>、<code>class</code> 等等，這些看起來與現有的 JavaScript 很不搭嘎 :(。</p>
@@ -13388,62 +13447,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -13526,6 +13529,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
