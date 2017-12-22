@@ -4,6 +4,47 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：JavaScript Template String 樣板字串]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/22/javascript-template-string/</url>
+      <content type="html"><![CDATA[<p>在過去我們撰寫字串的時候都是使用 <code>&quot;</code> ，這種寫法會讓程式碼變得很攏長且難以閱讀，再多行的時候也必須插入反斜線來換行。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> people = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'小明'</span>,</div><div class="line">    <span class="attr">friends</span>: <span class="number">2</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'阿姨'</span>,</div><div class="line">    <span class="attr">friends</span>: <span class="number">999</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'杰倫'</span>,</div><div class="line">    <span class="attr">friends</span>: <span class="number">0</span></div><div class="line">  &#125;</div><div class="line">]</div><div class="line"></div><div class="line"><span class="keyword">let</span> originString = <span class="string">'我叫做 '</span> + people[<span class="number">0</span>].name; <span class="comment">// 過去的寫法</span></div><div class="line"><span class="keyword">let</span> originUl = <span class="string">'&lt;ul&gt;\</span></div><div class="line">  &lt;li&gt;我叫做 ' + people[<span class="number">0</span>].name + <span class="string">'&lt;/li&gt;\</span></div><div class="line">  &lt;li&gt;我叫做 ' + people[<span class="number">1</span>].name + <span class="string">'&lt;/li&gt;\</span></div><div class="line">  &lt;li&gt;我叫做 ' + people[<span class="number">2</span>].name + <span class="string">'&lt;/li&gt;\</span></div><div class="line">&lt;/ul&gt;'; <span class="comment">// 多行的寫法</span></div></pre></td></tr></table></figure>
+<p>ES6 借鏡了許多開發工具 (這種寫法真的很像 <code>CoffeeScript</code>，不過在這語言是使用 <code>&quot;</code> + <code>#{}</code> 插入變數)，可以使用 反引號 來插入一段字串，並且可以使用 <code>${}</code> 來加入變數或函式，如以下範例可以直接輸入字串，並且使用 <code>${people[0].name}</code> 來插入變數，省去一堆 <code>+</code>來做串接。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> string = <span class="string">`我叫做 <span class="subst">$&#123;people[<span class="number">0</span>].name&#125;</span>`</span> <span class="comment">// ES6 String Template</span></div><div class="line"><span class="comment">// "我叫做 小明"</span></div></pre></td></tr></table></figure>
+<p>再多行的時候也是直接撰寫即可，不需要額外的符號。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> ul = <span class="string">`</span></div><div class="line">  &lt;ul&gt;</div><div class="line">    &lt;li&gt;我叫做 <span class="subst">$&#123;people[<span class="number">0</span>].name&#125;</span>&lt;/li&gt;</div><div class="line">    &lt;li&gt;我叫做 <span class="subst">$&#123;people[<span class="number">1</span>].name&#125;</span>&lt;/li&gt;</div><div class="line">    &lt;li&gt;我叫做 <span class="subst">$&#123;people[<span class="number">2</span>].name&#125;</span>&lt;/li&gt;</div><div class="line">  &lt;/ul&gt;</div><div class="line">`</div><div class="line"><span class="comment">// "</span></div><div class="line"><span class="comment">//   &lt;ul&gt;</span></div><div class="line"><span class="comment">//     &lt;li&gt;我叫做 小明&lt;/li&gt;</span></div><div class="line"><span class="comment">//     &lt;li&gt;我叫做 阿姨&lt;/li&gt;</span></div><div class="line"><span class="comment">//     &lt;li&gt;我叫做 杰倫&lt;/li&gt;</span></div><div class="line"><span class="comment">//   &lt;/ul&gt;</span></div><div class="line"><span class="comment">// "</span></div></pre></td></tr></table></figure>
+<p>甚至可以在 <code>${}</code> 內使用函式 (函式內可在使用 Template String)。不過這裡特別注意，單行的箭頭函式會自動 <code>return</code>，所以在這裡是省略了 <code>return</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> ul2 = <span class="string">`</span></div><div class="line">  &lt;ul&gt;</div><div class="line">    <span class="subst">$&#123;people.map(person =&gt; <span class="string">`&lt;li&gt;我叫做 <span class="subst">$&#123;person.name&#125;</span>&lt;/li&gt;`</span>).join(<span class="string">''</span>)&#125;</span></div><div class="line">  &lt;/ul&gt;</div><div class="line">`</div></pre></td></tr></table></figure></p>
+<p>也可以在函式內增添更多的判斷式。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">let ul2 = `</div><div class="line">  &lt;ul&gt;</div><div class="line">    $&#123;people.map((person) =&gt; &#123;</div><div class="line">        if (person.friends) &#123;</div><div class="line">          return `&lt;li&gt;$&#123;person.name&#125; 有 $&#123;person.friends&#125; 朋友&lt;/li&gt;`</div><div class="line">        &#125; else &#123;</div><div class="line">          return `&lt;li&gt;$&#123;person.name&#125; 邊緣人&lt;/li&gt;`</div><div class="line">        &#125;</div><div class="line">      &#125;).join('')</div><div class="line">    &#125;</div><div class="line">  &lt;/ul&gt;</div><div class="line">`</div><div class="line">// "</div><div class="line">//   &lt;ul&gt;</div><div class="line">//     &lt;li&gt;小明 有 2 朋友&lt;/li&gt;&lt;li&gt;阿姨 有 999 朋友&lt;/li&gt;&lt;li&gt;杰倫 邊緣人&lt;/li&gt;</div><div class="line">//   &lt;/ul&gt;</div><div class="line">// "</div></pre></td></tr></table></figure></p>
+<h2 id="巢狀-String-Template"><a href="#巢狀-String-Template" class="headerlink" title="巢狀 String Template"></a>巢狀 String Template</h2><p>如同上述的方法 <code>${}</code> 內可以加入函式及其更內層的 Template String，所以也可以在 <code>${}</code> 插入另一組的函式的 Template String。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> travelers = &#123;</div><div class="line">  <span class="attr">leader</span>: <span class="string">'老媽'</span>,</div><div class="line">  <span class="attr">partner</span>: people</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">renderList</span>(<span class="params">people</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">`</span></div><div class="line">    &lt;div&gt;上車名單&lt;/div&gt;</div><div class="line">    &lt;ul&gt;</div><div class="line">      <span class="subst">$&#123;people.map(person =&gt; <span class="string">`&lt;li&gt;<span class="subst">$&#123;person.name&#125;</span>&lt;/li&gt;`</span>).join(<span class="string">''</span>)&#125;</span></div><div class="line">    &lt;/ul&gt;</div><div class="line">  `</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> template = <span class="string">`</span></div><div class="line">  &lt;div class="template"&gt;</div><div class="line">  &lt;h2&gt;導遊：<span class="subst">$&#123;travelers.leader&#125;</span>&lt;/h2&gt;</div><div class="line">  <span class="subst">$&#123;renderList(travelers.partner)&#125;</span></div><div class="line">  &lt;/div&gt;</div><div class="line">`</div><div class="line"></div><div class="line"><span class="comment">// "</span></div><div class="line"><span class="comment">//   &lt;div class="template"&gt;</span></div><div class="line"><span class="comment">//   &lt;h2&gt;導遊：老媽&lt;/h2&gt;</span></div><div class="line">  </div><div class="line"><span class="comment">//     &lt;div&gt;上車名單&lt;/div&gt;</span></div><div class="line"><span class="comment">//     &lt;ul&gt;</span></div><div class="line"><span class="comment">//       &lt;li&gt;小明&lt;/li&gt;&lt;li&gt;阿姨&lt;/li&gt;&lt;li&gt;杰倫&lt;/li&gt;</span></div><div class="line"><span class="comment">//     &lt;/ul&gt;</span></div><div class="line">  </div><div class="line"><span class="comment">//   &lt;/div&gt;</span></div><div class="line"><span class="comment">// "</span></div></pre></td></tr></table></figure>
+<h2 id="跳脫字元"><a href="#跳脫字元" class="headerlink" title="跳脫字元"></a>跳脫字元</h2><p>如果有需要插入特殊字元，一樣可以使用 <code>\</code> 反斜線來插入：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">`\\`</span>);</div></pre></td></tr></table></figure>
+<p>如果要計算字元數，或是需要將字串做額外處理，跳脫字元是不佔字符數的：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">`\\`</span>.length); <span class="comment">// 1</span></div></pre></td></tr></table></figure>
+<p>要取得含特殊字元的字串可用 <code>String.raw()</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="built_in">String</span>.raw<span class="string">`\\`</span>.length)</div></pre></td></tr></table></figure>
+<p>ES6 就是加入了這些好用的功能，讓 JavaScript 在撰寫時變得更容易、快速、易讀，使得用過的人都回不去了 T_T。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：箭頭函式 (Arrow functions)]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/21/javascript-es6-arrow-function/</url>
       <content type="html"><![CDATA[<p><code>Arrow function</code> 對於它也是又愛又恨的，看似簡約的外型卻有著全新的體驗，它有著更簡短的語法以及重新定義的 <code>this</code>，所以先前學的 <code>this</code> 在此也會有不同的情境。</p>
@@ -4348,9 +4389,9 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
             
             <tag> gulp </tag>
             
-            <tag> bootstrap </tag>
-            
             <tag> compass </tag>
+            
+            <tag> bootstrap </tag>
             
         </tags>
         
@@ -13447,6 +13488,62 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -13529,62 +13626,6 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
             
         </tags>
         
