@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>鐵人賽：ES6 解構賦值 | 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,js,ironman" />
+    
+    
+
+    <meta name="description" content="解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。
+解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。
+陣列解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鐵人賽：ES6 解構賦值">
+<meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/25/javascript-destructuring/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。
+解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。
+陣列解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478">
+<meta property="og:updated_time" content="2017-12-25T02:40:01.032Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="鐵人賽：ES6 解構賦值">
+<meta name="twitter:description" content="解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。
+解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。
+陣列解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">javascript</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-javascript-destructuring" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        鐵人賽：ES6 解構賦值
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/javascript/2017/12/25/javascript-destructuring/" class="article-date">
+    <time datetime="2017-12-24T16:00:00.000Z" itemprop="datePublished">2017-12-25</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" rel="gallery_cjblkcczq00wjgrgaobuual8v">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。</p>
+<p>解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&amp;token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" alt=""></p>
+<h2 id="陣列"><a href="#陣列" class="headerlink" title="陣列"></a>陣列</h2><p>解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對映。因此右方的的五個值(字串)直接對應左方陣列的五個變數。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> family = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>, <span class="string">'老媽'</span>, <span class="string">'老爸'</span>];</div><div class="line"><span class="keyword">let</span> ming = family[<span class="number">0</span>];</div><div class="line"><span class="keyword">let</span> jay = family[<span class="number">1</span>];</div><div class="line"><span class="keyword">let</span> auntie = family[<span class="number">2</span>];</div><div class="line"><span class="comment">// ... 略</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> [ming, jay, auntie, mom, papa] = family;</div></pre></td></tr></table></figure>
+<p>如果遇到空的變數，這些值也會跳過。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> family = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>, <span class="string">'老媽'</span>, <span class="string">'老爸'</span>];</div><div class="line"><span class="keyword">let</span> [ming, , , mom, papa] = family;</div><div class="line"><span class="comment">// ming: 小明</span></div><div class="line"><span class="comment">// mom: 老媽</span></div><div class="line"><span class="comment">// papa: 老爸</span></div></pre></td></tr></table></figure>
+<p>如果左方多於右方，左方的變數會出現 <code>undefined</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> family = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>, <span class="string">'老媽'</span>, <span class="string">'老爸'</span>];</div><div class="line"><span class="keyword">let</span> [, , , , , who] = family;</div><div class="line"><span class="comment">// who: undefined</span></div></pre></td></tr></table></figure>
+<p>至於傳值是否有順序性，在這個範例中直接將右邊的變數交換到左邊，可以看到是<strong>同時</strong>交換變數，所以在互換變數值時是非常方便的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> Goku = <span class="string">'悟空'</span>;</div><div class="line"><span class="keyword">let</span> Ginyu = <span class="string">'基紐'</span>;</div><div class="line">[Goku, Ginyu] = [Ginyu, Goku];</div><div class="line"><span class="comment">// Goku: '基紐'</span></div><div class="line"><span class="comment">// Ginyu: '悟空'</span></div></pre></td></tr></table></figure>
+<p>遇到字串則會將字串拆解成一個一個字元，賦予到左方的變數上。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> str = <span class="string">'基紐特攻隊'</span>;</div><div class="line">[a, b, c, d, e] = str;</div></pre></td></tr></table></figure>
+<h2 id="物件解構"><a href="#物件解構" class="headerlink" title="物件解構"></a>物件解構</h2><p>物件解構也是和陣列解構有著相同的概念，只不過陣列是使用順序的索引值對應，但物件則是使用物件的屬性名稱來做對應(因此沒有順序性)。在以下範例則是快速將物件值解構在變數上。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> family = &#123;</div><div class="line">  <span class="attr">ming</span>: <span class="string">'小明'</span>,</div><div class="line">  <span class="attr">jay</span>: <span class="string">'杰倫'</span>,</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 一般會這樣寫</span></div><div class="line"><span class="keyword">let</span> ming = family.ming</div><div class="line"><span class="keyword">let</span> jay = family.jay</div><div class="line"></div><div class="line"><span class="comment">// 縮寫版</span></div><div class="line"><span class="keyword">let</span> &#123; ming, jay &#125; = family</div><div class="line"><span class="comment">// ming: 小明</span></div><div class="line"><span class="comment">// jay: 杰倫</span></div></pre></td></tr></table></figure>
+<p>而物件的解構方法，還能重新賦予變數的名稱，如以下 <code>Ginyu</code> 在取得值後，將變數名稱改為 <code>Goku</code>，因此 <code>Goku === &#39;基紐&#39;</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> GinyuTeam = &#123;</div><div class="line">  <span class="attr">Ginyu</span>: <span class="string">'基紐'</span>,</div><div class="line">  <span class="attr">Jeice</span>: <span class="string">'吉斯'</span>,</div><div class="line">  <span class="attr">burter</span>: <span class="string">'巴特'</span>,</div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;</div><div class="line"><span class="keyword">let</span> &#123; <span class="attr">Ginyu</span>: Goku &#125; = GinyuTeam;</div><div class="line"><span class="comment">// Goku: '基紐'</span></div></pre></td></tr></table></figure>
+<h3 id="混合使用"><a href="#混合使用" class="headerlink" title="混合使用"></a>混合使用</h3><p>相同的觀念，只要了解以上的觀念，這題也能了解到最終會產生怎樣的變數。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> &#123; <span class="attr">ming</span>: Goku, <span class="attr">family</span>: [, mom] &#125; = &#123; <span class="attr">ming</span>: <span class="string">'小明'</span>, <span class="attr">family</span>: [<span class="string">'阿姨'</span>, <span class="string">'老媽'</span>, <span class="string">'老爸'</span>] &#125;</div><div class="line"><span class="built_in">console</span>.log(Goku, mom); <span class="comment">// 請問答案是什麼？</span></div></pre></td></tr></table></figure></p>
+<p>說明：</p>
+<ul>
+<li><code>ming</code> 取得右方的 ‘小明’ 後，將變數名稱改為 <code>Goku</code></li>
+<li><code>family</code> 取得家庭陣列後，再將第二個值套用在 <code>mom</code> (第二個變數上。)</li>
+</ul>
+<h3 id="預設值"><a href="#預設值" class="headerlink" title="預設值"></a>預設值</h3><p>除了使用鏡射的概念外，為了避免值沒有賦予造成 <code>undefined</code>，可以使用預設值避免此問題。如以下左方的陣列都先賦予的預設值，當右方的陣列只有一個值時，左方的陣列剩餘內容將會採用預設值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> [ming = <span class="string">'小明'</span>, jay = <span class="string">'杰倫'</span>] = [<span class="string">'阿明'</span>] </div><div class="line"><span class="comment">// 第一個會被賦值，第二個會用預設</span></div><div class="line"><span class="comment">// ming: "阿明"</span></div><div class="line"><span class="comment">// jay: "杰倫"</span></div></pre></td></tr></table></figure>
+<p>物件的預設值也是相同的概念。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> &#123; <span class="attr">family</span>: ming = <span class="string">'小明'</span> &#125; = &#123;&#125;</div><div class="line"><span class="comment">// ming: '小明'</span></div></pre></td></tr></table></figure>
+<h2 id="函式"><a href="#函式" class="headerlink" title="函式"></a>函式</h2><p>除了以上的方法外，解構也能使用在函式的參數，使用方式如同將傳入的物件對應到函式參數上。這樣參數一樣能夠能夠自訂變數名稱、順序、預設值等。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span> (<span class="params">&#123;person = <span class="string">'小明'</span>, person2&#125;</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person&#125;</span> 呼叫 <span class="subst">$&#123;person2&#125;</span>`</span>)</div><div class="line">&#125;</div><div class="line">callSomeone(&#123; <span class="attr">person</span>: <span class="string">'杰倫'</span>, <span class="attr">person2</span>: <span class="string">'阿姨'</span> &#125;); <span class="comment">// 杰倫 呼叫 阿姨</span></div><div class="line">callSomeone(<span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>); <span class="comment">// 小明 呼叫 undefined</span></div><div class="line">callSomeone(&#123; <span class="attr">person2</span>: <span class="string">'阿姨'</span> &#125;); <span class="comment">// 小明 呼叫 阿姨</span></div><div class="line">callSomeone(&#123; <span class="attr">person2</span>: <span class="string">'杰倫'</span>, <span class="attr">person</span>: <span class="string">'啊罵'</span> &#125;); <span class="comment">// 啊罵 呼叫 杰倫</span></div><div class="line">callSomeone(&#123;&#125;); <span class="comment">// 小明 呼叫 undefined</span></div></pre></td></tr></table></figure>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/javascript/2017/12/24/javascript-spread-operator/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">鐵人賽：JavaScript 展開與其餘</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/25/javascript-destructuring/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478)" alt="鐵人賽：ES6 解構賦值" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/25/javascript-destructuring/" class="title">鐵人賽：ES6 解構賦值</a></p>
+                            <p class="item-date"><time datetime="2017-12-24T16:00:00.000Z" itemprop="datePublished">2017-12-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/24/javascript-spread-operator/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_21.jpg?alt=media&token=dc0c2214-73bf-4ad6-be70-257e52f337e7)" alt="鐵人賽：JavaScript 展開與其餘" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/24/javascript-spread-operator/" class="title">鐵人賽：JavaScript 展開與其餘</a></p>
+                            <p class="item-date"><time datetime="2017-12-23T16:00:00.000Z" itemprop="datePublished">2017-12-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/23/javascript-short-hand/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_20.png?alt=media&token=a93a1475-6769-47fc-81d0-57dd63ba0d28)" alt="鐵人賽：ES6 的縮寫概念" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/23/javascript-short-hand/" class="title">鐵人賽：ES6 的縮寫概念</a></p>
+                            <p class="item-date"><time datetime="2017-12-22T16:00:00.000Z" itemprop="datePublished">2017-12-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/22/javascript-template-string/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_19.png?alt=media&token=ba14bb6d-cb7d-4409-83b7-7ad890cadb48)" alt="鐵人賽：JavaScript Template String 樣板字串" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/22/javascript-template-string/" class="title">鐵人賽：JavaScript Template String 樣板字串</a></p>
+                            <p class="item-date"><time datetime="2017-12-21T16:00:00.000Z" itemprop="datePublished">2017-12-22</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/21/javascript-es6-arrow-function/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_18.png?alt=media&token=a4d8b729-9c90-40f4-98a0-b628219f213b)" alt="鐵人賽：箭頭函式 (Arrow functions)" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/21/javascript-es6-arrow-function/" class="title">鐵人賽：箭頭函式 (Arrow functions)</a></p>
+                            <p class="item-date"><time datetime="2017-12-20T16:00:00.000Z" itemprop="datePublished">2017-12-21</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">22</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.33px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 13.33px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.67px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 12px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 17.33px;">d3js</a> <a href="/tags/design/" style="font-size: 12.67px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.67px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.67px;">git</a> <a href="/tags/github/" style="font-size: 12.67px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 16px;">gulp</a> <a href="/tags/html/" style="font-size: 11.33px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.67px;">intro</a> <a href="/tags/ironman/" style="font-size: 18.67px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.33px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 14.67px;">jquery</a> <a href="/tags/js/" style="font-size: 16.67px;">js</a> <a href="/tags/life/" style="font-size: 12px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 12px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 14px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.67px;">promise</a> <a href="/tags/rails/" style="font-size: 10.67px;">rails</a> <a href="/tags/reactjs/" style="font-size: 12px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.67px;">ruby</a> <a href="/tags/sass/" style="font-size: 19.33px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.67px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 14px;">svg</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.67px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.33px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io/javascript/2017/12/25/javascript-destructuring/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
