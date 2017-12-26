@@ -4,6 +4,54 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：ES6 陣列方法]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/26/javascript-array/</url>
+      <content type="html"><![CDATA[<p>在過去處理陣列的方法不外乎就是使用 <code>for</code> 迴圈，或是使用配合框架的 <code>forEach</code> 像是 jQuery, angular.js 這些過去的框架都會提供 <code>forEach</code>；但到了 ES6 後，許多框架都不再提供 <code>forEach</code> 的語法，主要原因也是因為 ES6 就已經包含許多實用的陣列方法。</p>
+<h2 id="過去使用-forEach-的方式"><a href="#過去使用-forEach-的方式" class="headerlink" title="過去使用 forEach 的方式"></a>過去使用 forEach 的方式</h2><p>過去 JavaScript 並沒有 forEach 這樣的方法，如果是用原生的方式大多會使用 <code>for...</code>，這樣的寫法並不直覺，所以大多開發者會使用 jQuery、underscore 的框架處理 forEach 的方法。</p>
+<p><code>for...</code> 的是看陣列數量有多少，就跑幾次的迴圈，程式邏輯很好理解，但在程式碼的呈現並不直覺。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> people = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'小明'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">500</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">3000</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'杰倫'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">60000</span></div><div class="line">  &#125;</div><div class="line">];</div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; people.length; i++) &#123;</div><div class="line">  <span class="keyword">let</span> person = people[i];</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">// 小明 有 500 元</span></div><div class="line"><span class="comment">// 漂亮阿姨 有 3000 元</span></div><div class="line"><span class="comment">// 杰倫 有 60000 元</span></div></pre></td></tr></table></figure>
+<p>幾年前 jQuery 幾乎是每個 Web 頁面必備的框架，除了很好的 DOM 操作外，裡面已經包含了許多好用的 JavaScript 方法，其中之一當然就是 <code>$.each</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$.each(people, (i, person) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
+<p>不僅 jQuery 會提供這樣的方法，同時期的框架也大多會提供，但到了現在的主流框架(React, Vue, Angular 2+)大多會搭配 ES6 編譯工具，所以就不會另外提供陣列的 Each 方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 過去 angular 1 也有類似方法，不過參數的位置與 jQuery 有點不同</span></div><div class="line">angular.forEach(people, (person, i) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
+<p>除了以上兩個框架外，另外也有一個專門處理物件、陣列的框架 (underscore)[<a href="http://underscorejs.org/]，不管前後端都非常適合使用。" target="_blank" rel="external">http://underscorejs.org/]，不管前後端都非常適合使用。</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">_.forEach(people, (person, i) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
+<h2 id="ES6-一行解決"><a href="#ES6-一行解決" class="headerlink" title="ES6 一行解決"></a>ES6 一行解決</h2><p>ES6 開始提供了不同的 JavaScript 方法，並且搭配 <code>箭頭函式</code>、<code>Template String</code> 讓程式碼變得更簡短。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">people.forEach(<span class="function"><span class="params">person</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>));</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
+<p><code>forEach</code> 傳入的參數有三，大多會只使用前兩者 <code>單一物件</code> 及 <code>物件索引</code>，而最後一個則是完整的陣列本體。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">people.forEach(<span class="function">(<span class="params">person, i, array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(person, i, array);</div><div class="line">  <span class="comment">// person: 單一個陣列的值</span></div><div class="line">  <span class="comment">// i: 陣列的索引值 0, 1, 2, ...</span></div><div class="line">  <span class="comment">// array: 傳入的陣列本體</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>另外 <code>forEach</code> 這類型的方法無法中斷，如果想要中斷迴圈的執行會建議使用傳統的 <code>for...loop</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; people.length; i++) &#123;</div><div class="line">  <span class="keyword">let</span> person = people[i]</div><div class="line">  <span class="keyword">if</span> (person.money &gt; <span class="number">500</span>) &#123;</div><div class="line">    <span class="keyword">break</span>; <span class="comment">// 可中斷</span></div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(person);</div><div class="line">&#125;</div><div class="line">people.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">person</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (person.money &gt; <span class="number">500</span> ) &#123;</div><div class="line">    <span class="keyword">break</span>; <span class="comment">// 會跳錯</span></div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(person);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2 id="無法使用的陣列"><a href="#無法使用的陣列" class="headerlink" title="無法使用的陣列"></a>無法使用的陣列</h2><p>先前提過物件原型的概念，有很多類陣列有著陣列的外觀，但其實並不是真正的陣列(如：<code>arguments</code>)，這些就無法直接使用 <code>forEach</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> callAll = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>)</div><div class="line">  <span class="comment">// arguments.forEach is not a function</span></div><div class="line">  <span class="built_in">arguments</span>.forEach(<span class="function">(<span class="params">arg</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(arg)</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line">callAll(people[<span class="number">0</span>], people[<span class="number">1</span>], people[<span class="number">2</span>])</div></pre></td></tr></table></figure>
+<p>不過可以使用前文介紹的展開語法 <code>...</code> 將 <code>array-like</code> 轉成 <code>array</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> callAll = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</div><div class="line">  <span class="keyword">let</span> thisPeople = [...arguments];</div><div class="line">  <span class="comment">// arguments.forEach is not a function</span></div><div class="line">  thisPeople.forEach(<span class="function">(<span class="params">arg</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(arg)</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line">callAll(people[<span class="number">0</span>], people[<span class="number">1</span>], people[<span class="number">2</span>]);</div></pre></td></tr></table></figure>
+<p>但也有部分的類陣列是可以使用 <code>forEach</code>，DOM 的就是屬於其中一種。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> doms = <span class="built_in">document</span>.querySelectorAll(<span class="string">'p'</span>);</div><div class="line"><span class="comment">// 不會跳錯</span></div><div class="line">doms.forEach(<span class="function">(<span class="params">ele</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(ele);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>至於類陣列這麼多，怎知道哪些可以哪些不行，其實可以從原型中查找，像是上述的 dom 陣列，我們就可以從 <code>console.log()</code> 查看 <code>__proto__</code> 找到 <code>forEach</code> 的方法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_12_22_%E4%B8%8A%E5%8D%8810_37.png?alt=media&amp;token=40ad30c1-11e2-4ec9-aa35-9fc96e249fc3" alt=""></p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：ES6 解構賦值]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/25/javascript-destructuring/</url>
       <content type="html"><![CDATA[<p>解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。</p>
@@ -4530,9 +4578,9 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
             
             <tag> gulp </tag>
             
-            <tag> compass </tag>
-            
             <tag> bootstrap </tag>
+            
+            <tag> compass </tag>
             
         </tags>
         

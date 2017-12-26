@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>鐵人賽：ES6 陣列方法 | 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,js,ironman" />
+    
+    
+
+    <meta name="description" content="在過去處理陣列的方法不外乎就是使用 for 迴圈，或是使用配合框架的 forEach 像是 jQuery, angular.js 這些過去的框架都會提供 forEach；但到了 ES6 後，許多框架都不再提供 forEach 的語法，主要原因也是因為 ES6 就已經包含許多實用的陣列方法。
+過去使用 forEach 的方式過去 JavaScript 並沒有 forEach 這樣的方法，如果是用原生">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鐵人賽：ES6 陣列方法">
+<meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/26/javascript-array/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="在過去處理陣列的方法不外乎就是使用 for 迴圈，或是使用配合框架的 forEach 像是 jQuery, angular.js 這些過去的框架都會提供 forEach；但到了 ES6 後，許多框架都不再提供 forEach 的語法，主要原因也是因為 ES6 就已經包含許多實用的陣列方法。
+過去使用 forEach 的方式過去 JavaScript 並沒有 forEach 這樣的方法，如果是用原生">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_23.jpg?alt=media&token=9b3510d2-0327-44e4-be39-420760891ae0">
+<meta property="og:updated_time" content="2017-12-26T01:38:06.006Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="鐵人賽：ES6 陣列方法">
+<meta name="twitter:description" content="在過去處理陣列的方法不外乎就是使用 for 迴圈，或是使用配合框架的 forEach 像是 jQuery, angular.js 這些過去的框架都會提供 forEach；但到了 ES6 後，許多框架都不再提供 forEach 的語法，主要原因也是因為 ES6 就已經包含許多實用的陣列方法。
+過去使用 forEach 的方式過去 JavaScript 並沒有 forEach 這樣的方法，如果是用原生">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_23.jpg?alt=media&token=9b3510d2-0327-44e4-be39-420760891ae0">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">javascript</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-javascript-array" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        鐵人賽：ES6 陣列方法
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/javascript/2017/12/26/javascript-array/" class="article-date">
+    <time datetime="2017-12-25T16:00:00.000Z" itemprop="datePublished">2017-12-26</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_23.jpg?alt=media&token=9b3510d2-0327-44e4-be39-420760891ae0" rel="gallery_cjbmy1x4m00v5ocga1uh7zs7g">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_23.jpg?alt=media&token=9b3510d2-0327-44e4-be39-420760891ae0" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>在過去處理陣列的方法不外乎就是使用 <code>for</code> 迴圈，或是使用配合框架的 <code>forEach</code> 像是 jQuery, angular.js 這些過去的框架都會提供 <code>forEach</code>；但到了 ES6 後，許多框架都不再提供 <code>forEach</code> 的語法，主要原因也是因為 ES6 就已經包含許多實用的陣列方法。</p>
+<h2 id="過去使用-forEach-的方式"><a href="#過去使用-forEach-的方式" class="headerlink" title="過去使用 forEach 的方式"></a>過去使用 forEach 的方式</h2><p>過去 JavaScript 並沒有 forEach 這樣的方法，如果是用原生的方式大多會使用 <code>for...</code>，這樣的寫法並不直覺，所以大多開發者會使用 jQuery、underscore 的框架處理 forEach 的方法。</p>
+<p><code>for...</code> 的是看陣列數量有多少，就跑幾次的迴圈，程式邏輯很好理解，但在程式碼的呈現並不直覺。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> people = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'小明'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">500</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">3000</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'杰倫'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">60000</span></div><div class="line">  &#125;</div><div class="line">];</div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; people.length; i++) &#123;</div><div class="line">  <span class="keyword">let</span> person = people[i];</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">// 小明 有 500 元</span></div><div class="line"><span class="comment">// 漂亮阿姨 有 3000 元</span></div><div class="line"><span class="comment">// 杰倫 有 60000 元</span></div></pre></td></tr></table></figure>
+<p>幾年前 jQuery 幾乎是每個 Web 頁面必備的框架，除了很好的 DOM 操作外，裡面已經包含了許多好用的 JavaScript 方法，其中之一當然就是 <code>$.each</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$.each(people, (i, person) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
+<p>不僅 jQuery 會提供這樣的方法，同時期的框架也大多會提供，但到了現在的主流框架(React, Vue, Angular 2+)大多會搭配 ES6 編譯工具，所以就不會另外提供陣列的 Each 方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 過去 angular 1 也有類似方法，不過參數的位置與 jQuery 有點不同</span></div><div class="line">angular.forEach(people, (person, i) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
+<p>除了以上兩個框架外，另外也有一個專門處理物件、陣列的框架 (underscore)[<a href="http://underscorejs.org/]，不管前後端都非常適合使用。" target="_blank" rel="external">http://underscorejs.org/]，不管前後端都非常適合使用。</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">_.forEach(people, (person, i) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
+<h2 id="ES6-一行解決"><a href="#ES6-一行解決" class="headerlink" title="ES6 一行解決"></a>ES6 一行解決</h2><p>ES6 開始提供了不同的 JavaScript 方法，並且搭配 <code>箭頭函式</code>、<code>Template String</code> 讓程式碼變得更簡短。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">people.forEach(<span class="function"><span class="params">person</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>));</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
+<p><code>forEach</code> 傳入的參數有三，大多會只使用前兩者 <code>單一物件</code> 及 <code>物件索引</code>，而最後一個則是完整的陣列本體。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">people.forEach(<span class="function">(<span class="params">person, i, array</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(person, i, array);</div><div class="line">  <span class="comment">// person: 單一個陣列的值</span></div><div class="line">  <span class="comment">// i: 陣列的索引值 0, 1, 2, ...</span></div><div class="line">  <span class="comment">// array: 傳入的陣列本體</span></div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>另外 <code>forEach</code> 這類型的方法無法中斷，如果想要中斷迴圈的執行會建議使用傳統的 <code>for...loop</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; people.length; i++) &#123;</div><div class="line">  <span class="keyword">let</span> person = people[i]</div><div class="line">  <span class="keyword">if</span> (person.money &gt; <span class="number">500</span>) &#123;</div><div class="line">    <span class="keyword">break</span>; <span class="comment">// 可中斷</span></div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(person);</div><div class="line">&#125;</div><div class="line">people.forEach(<span class="function"><span class="keyword">function</span> (<span class="params">person</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (person.money &gt; <span class="number">500</span> ) &#123;</div><div class="line">    <span class="keyword">break</span>; <span class="comment">// 會跳錯</span></div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(person);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<h2 id="無法使用的陣列"><a href="#無法使用的陣列" class="headerlink" title="無法使用的陣列"></a>無法使用的陣列</h2><p>先前提過物件原型的概念，有很多類陣列有著陣列的外觀，但其實並不是真正的陣列(如：<code>arguments</code>)，這些就無法直接使用 <code>forEach</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> callAll = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>)</div><div class="line">  <span class="comment">// arguments.forEach is not a function</span></div><div class="line">  <span class="built_in">arguments</span>.forEach(<span class="function">(<span class="params">arg</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(arg)</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line">callAll(people[<span class="number">0</span>], people[<span class="number">1</span>], people[<span class="number">2</span>])</div></pre></td></tr></table></figure>
+<p>不過可以使用前文介紹的展開語法 <code>...</code> 將 <code>array-like</code> 轉成 <code>array</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> callAll = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</div><div class="line">  <span class="keyword">let</span> thisPeople = [...arguments];</div><div class="line">  <span class="comment">// arguments.forEach is not a function</span></div><div class="line">  thisPeople.forEach(<span class="function">(<span class="params">arg</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(arg)</div><div class="line">  &#125;);</div><div class="line">&#125;</div><div class="line">callAll(people[<span class="number">0</span>], people[<span class="number">1</span>], people[<span class="number">2</span>]);</div></pre></td></tr></table></figure>
+<p>但也有部分的類陣列是可以使用 <code>forEach</code>，DOM 的就是屬於其中一種。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> doms = <span class="built_in">document</span>.querySelectorAll(<span class="string">'p'</span>);</div><div class="line"><span class="comment">// 不會跳錯</span></div><div class="line">doms.forEach(<span class="function">(<span class="params">ele</span>) =&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(ele);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>至於類陣列這麼多，怎知道哪些可以哪些不行，其實可以從原型中查找，像是上述的 dom 陣列，我們就可以從 <code>console.log()</code> 查看 <code>__proto__</code> 找到 <code>forEach</code> 的方法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_12_22_%E4%B8%8A%E5%8D%8810_37.png?alt=media&amp;token=40ad30c1-11e2-4ec9-aa35-9fc96e249fc3" alt=""></p>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/javascript/2017/12/25/javascript-destructuring/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">鐵人賽：ES6 解構賦值</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/26/javascript-array/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_23.jpg?alt=media&token=9b3510d2-0327-44e4-be39-420760891ae0)" alt="鐵人賽：ES6 陣列方法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/26/javascript-array/" class="title">鐵人賽：ES6 陣列方法</a></p>
+                            <p class="item-date"><time datetime="2017-12-25T16:00:00.000Z" itemprop="datePublished">2017-12-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/25/javascript-destructuring/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478)" alt="鐵人賽：ES6 解構賦值" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/25/javascript-destructuring/" class="title">鐵人賽：ES6 解構賦值</a></p>
+                            <p class="item-date"><time datetime="2017-12-24T16:00:00.000Z" itemprop="datePublished">2017-12-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/24/javascript-spread-operator/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_21.jpg?alt=media&token=dc0c2214-73bf-4ad6-be70-257e52f337e7)" alt="鐵人賽：JavaScript 展開與其餘" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/24/javascript-spread-operator/" class="title">鐵人賽：JavaScript 展開與其餘</a></p>
+                            <p class="item-date"><time datetime="2017-12-23T16:00:00.000Z" itemprop="datePublished">2017-12-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/23/javascript-short-hand/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_20.png?alt=media&token=a93a1475-6769-47fc-81d0-57dd63ba0d28)" alt="鐵人賽：ES6 的縮寫概念" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/23/javascript-short-hand/" class="title">鐵人賽：ES6 的縮寫概念</a></p>
+                            <p class="item-date"><time datetime="2017-12-22T16:00:00.000Z" itemprop="datePublished">2017-12-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/22/javascript-template-string/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_19.png?alt=media&token=ba14bb6d-cb7d-4409-83b7-7ad890cadb48)" alt="鐵人賽：JavaScript Template String 樣板字串" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/22/javascript-template-string/" class="title">鐵人賽：JavaScript Template String 樣板字串</a></p>
+                            <p class="item-date"><time datetime="2017-12-21T16:00:00.000Z" itemprop="datePublished">2017-12-22</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">23</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.71px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 13.57px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.71px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 12.14px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 17.14px;">d3js</a> <a href="/tags/design/" style="font-size: 12.86px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.71px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.86px;">git</a> <a href="/tags/github/" style="font-size: 12.86px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 16.43px;">gulp</a> <a href="/tags/html/" style="font-size: 11.43px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.71px;">intro</a> <a href="/tags/ironman/" style="font-size: 18.57px;">ironman</a> <a href="/tags/javascript/" style="font-size: 17.86px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.71px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 15px;">jquery</a> <a href="/tags/js/" style="font-size: 17.14px;">js</a> <a href="/tags/life/" style="font-size: 12.14px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 12.14px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 14.29px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.71px;">promise</a> <a href="/tags/rails/" style="font-size: 10.71px;">rails</a> <a href="/tags/reactjs/" style="font-size: 12.14px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.71px;">ruby</a> <a href="/tags/sass/" style="font-size: 19.29px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.86px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 14.29px;">svg</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 15px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.43px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io/javascript/2017/12/26/javascript-array/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
