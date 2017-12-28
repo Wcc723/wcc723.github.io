@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>鐵人賽：ES6 原生 Fetch 遠端資料方法 | 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,js,ironman" />
+    
+    
+
+    <meta name="description" content="如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 XMLHttpRequest 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求：
+本篇使用的是 https://randomuser.me/ 隨機用戶產生器，這很適合用來作為 AJAX G">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鐵人賽：ES6 原生 Fetch 遠端資料方法">
+<meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/28/javascript-fetch/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 XMLHttpRequest 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求：
+本篇使用的是 https://randomuser.me/ 隨機用戶產生器，這很適合用來作為 AJAX G">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a">
+<meta property="og:updated_time" content="2017-12-28T02:09:21.552Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="鐵人賽：ES6 原生 Fetch 遠端資料方法">
+<meta name="twitter:description" content="如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 XMLHttpRequest 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求：
+本篇使用的是 https://randomuser.me/ 隨機用戶產生器，這很適合用來作為 AJAX G">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">javascript</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-javascript-fetch" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        鐵人賽：ES6 原生 Fetch 遠端資料方法
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/javascript/2017/12/28/javascript-fetch/" class="article-date">
+    <time datetime="2017-12-27T16:00:00.000Z" itemprop="datePublished">2017-12-28</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a" rel="gallery_cjbptww420000fw719fbtkh24">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 <code>XMLHttpRequest</code> 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求：</p>
+<p>本篇使用的是 <code>https://randomuser.me/</code> 隨機用戶產生器，這很適合用來作為 AJAX Get 的範例。 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">reqOnload</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> data = <span class="built_in">JSON</span>.parse(<span class="keyword">this</span>.responseText);</div><div class="line">  <span class="built_in">console</span>.log(data)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">reqError</span> (<span class="params">err</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'錯誤'</span>, err)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 宣告一個 XHR 的物件</span></div><div class="line"><span class="keyword">var</span> Req = <span class="keyword">new</span> XMLHttpRequest(); </div><div class="line"><span class="comment">// 定義連線方式</span></div><div class="line">Req.open(<span class="string">'get'</span>, <span class="string">'https://randomuser.me/api/'</span>, <span class="literal">true</span>);</div><div class="line"><span class="comment">// 送出請求</span></div><div class="line">Req.send();</div><div class="line"><span class="comment">// 如果成功就執行 reqOnload()</span></div><div class="line">Req.onload = reqOnload; </div><div class="line"><span class="comment">// 失敗就 reqError()</span></div><div class="line">Req.onerror = reqError;</div></pre></td></tr></table></figure>
+<p>當然，在框架的時代我們已經習慣透過框架包裝以上的行為，讓程式碼的更為容易使用及閱讀，以 <code>randomuser</code> 網站所提供的範例來說，以上的行為可以寫成以下 (錯誤方法可參考 jQuery 文件)，不需要在另外自己包裝發送的物件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">  <span class="attr">url</span>: <span class="string">'https://randomuser.me/api/'</span>,</div><div class="line">  <span class="attr">dataType</span>: <span class="string">'json'</span>,</div><div class="line">  <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(data);</div><div class="line">    <span class="comment">// 取得的遠端資料</span></div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><code>XMLHttpRequest</code> 在製作時每次都要新建一個請求的實體，而 AJAX 的網站，通常也不會只做一次請求而已，為了讓程式碼更容易維護及開發，大多開發者都會使用框架來包裝這類行為。</p>
+<h2 id="Fetch"><a href="#Fetch" class="headerlink" title="Fetch"></a>Fetch</h2><p>Fetch 在使用時看似與 jQuery <code>$.ajax</code> 挺相近的，所以在使用上也相對容易上手，不過兩者亦有不同概念之處(可<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch" target="_blank" rel="external">參考</a>)。</p>
+<p>這裡提供一個簡單的範例來取得遠端的資料，這裡與 $.ajax 不同點在於：</p>
+<ul>
+<li>fetch 會使用 ES6 的 Promise 作回應<ul>
+<li>then 作為下一步</li>
+<li>catch 作為錯誤回應 (404, 500…)</li>
+</ul>
+</li>
+<li>回傳的為 <code>ReadableStream</code> 物件，需要使用不同資料類型使用對應方法，才能正確取得資料物件。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'https://randomuser.me/api/'</span>, &#123;&#125;)</div><div class="line">  .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// 這裡會得到一個 ReadableStream 的物件</span></div><div class="line">    <span class="built_in">console</span>.log(response);</div><div class="line">    <span class="comment">// 可以透過 blob(), json(), text() 轉成可用的資訊</span></div><div class="line">    <span class="keyword">return</span> response.json(); </div><div class="line">  &#125;).then(<span class="function">(<span class="params">jsonData</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(jsonData);</div><div class="line">  &#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'錯誤:'</span>, err);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><code>fetch</code> 後方會接 <code>then()</code>，這是 Promise 的特性，資料取得後可在 then 裡面接收。<code>return response.json();</code> 的資料則會傳到下一個 <code>then()</code>，至於詳細的 Promise 方法我們會留下一個章節介紹。</p>
+<p>這裡如果刻意將網址打錯，會出現以下錯誤訊息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'https://randomuserkkk.me/api/'</span>, &#123;&#125;)</div></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F25102432-129A-45C6-B96D-BECE11E3499B.png?alt=media&amp;token=f75552cf-4cee-4b95-9804-05e5f7a0177f" alt=""></p>
+<h3 id="ReadableStream"><a href="#ReadableStream" class="headerlink" title="ReadableStream"></a>ReadableStream</h3><p>Fetch API 的 Response 物件中的 body 屬性提供了一個 ReadableStream 的實體，這個階段我們無法直接讀取資料內容，而 ReadableStream 物件中可用以下對應的方法來取得資料 (<a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：" target="_blank" rel="external">https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：</a></p>
+<ul>
+<li>arrayBuffer()</li>
+<li>blob()</li>
+<li>formData()</li>
+<li>json()</li>
+<li>text()</li>
+</ul>
+<h4 id="text"><a href="#text" class="headerlink" title="text()"></a>text()</h4><p>像是以上的範例，我們可以將 <code>response.json()</code> 改為 <code>response.text()</code>，那麼取得的資料格式將會是純字串。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F390506CF-1E4F-4D86-9D82-C1E76CE997EA.png?alt=media&amp;token=d0200785-8dc3-463c-bb04-79249d565e37" alt=""></p>
+<h4 id="blob"><a href="#blob" class="headerlink" title="blob()"></a>blob()</h4><p>也可以將資料轉為 <code>blob</code> 物件，像是圖片就可以做這樣的轉換 (這裡的圖片並非指圖片路徑，而是圖片檔案本身)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// unsplash 上的圖片</span></div><div class="line"><span class="keyword">let</span> url = <span class="string">'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&amp;fit=crop&amp;w=634&amp;q=80'</span></div><div class="line">fetch(url)</div><div class="line">  .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> response.blob();</div><div class="line">  &#125;)</div><div class="line">  .then(<span class="function">(<span class="params">imageBlob</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">let</span> img = <span class="built_in">document</span>.createElement(<span class="string">'IMG'</span>)</div><div class="line">    <span class="built_in">document</span>.querySelector(<span class="string">'.newImg'</span>).appendChild(img);</div><div class="line">    <span class="comment">// 將 blog 物件轉為 url</span></div><div class="line">    img.src = URL.createObjectURL(imageBlob);</div><div class="line">  &#125;)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>URL 也是新的 API，可以將 blob 物件轉為網址</p>
+</blockquote>
+
+<script>
+// unsplash 上的圖片
+let url = 'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&fit=crop&w=634&q=80'
+fetch(url)
+  .then((response) => {
+    return response.blob();
+  })
+  .then((imageBlob) => {
+    let img = document.createElement('IMG')
+    document.querySelector('.newImg').appendChild(img);
+    // 將 blog 物件轉為 url
+    img.src = URL.createObjectURL(imageBlob);
+  })
+</script>
+<div class="newImg"></div>
+
+<blockquote>
+<p>範例圖片，從 Unsplash 上所截取的圖片實體 <del>小明眼中的漂亮阿姨</del></p>
+</blockquote>
+<h3 id="POST-方法"><a href="#POST-方法" class="headerlink" title="POST 方法"></a>POST 方法</h3><p>六角的課程中有提供一個 <code>POST</code> 方法的練習(因為想不到哪裡可以測試 POST)，下方的程式碼就可以對測試的機器發送 <code>POST</code>，然後接受不同的結果 (這段 <code>POST</code> 並不會真的儲存帳密，只會將資料存在伺服器的記憶體，不久後會自動釋放)。</p>
+<p>使用 <code>fetch()</code> 做  <code>POST</code>時，由於它並沒有向一些框架一樣包那麼徹底，所以有些地方還是需要做調整，其中 <code>body</code> 所送出的資料必須先轉純字串後才能送出，以下範例就是一個簡單的 <code>POST</code>行為。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> url = <span class="string">'https://hexschool-tutorial.herokuapp.com/api/signup'</span>;</div><div class="line">fetch(url, &#123;</div><div class="line">  <span class="attr">method</span>: <span class="string">'POST'</span>,</div><div class="line">  <span class="comment">// headers 加入 json 格式</span></div><div class="line">  headers: &#123;</div><div class="line">    <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span></div><div class="line">  &#125;,</div><div class="line">  <span class="comment">// body 將 json 轉字串送出</span></div><div class="line">  body: <span class="built_in">JSON</span>.stringify(&#123;</div><div class="line">    <span class="attr">email</span>: <span class="string">'lovef1232e@hexschool.com'</span>,</div><div class="line">    <span class="attr">password</span>: <span class="string">'12345678'</span></div><div class="line">  &#125;)</div><div class="line">&#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> response.json(); </div><div class="line">  &#125;).then(<span class="function">(<span class="params">jsonData</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(jsonData);</div><div class="line">  &#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'錯誤:'</span>, err);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>所以這是第 25 篇了(表示庫存已用完)。</p>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/javascript/2017/12/27/javascript-array-function/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">鐵人賽：常用陣列方法</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/28/javascript-fetch/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a)" alt="鐵人賽：ES6 原生 Fetch 遠端資料方法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/28/javascript-fetch/" class="title">鐵人賽：ES6 原生 Fetch 遠端資料方法</a></p>
+                            <p class="item-date"><time datetime="2017-12-27T16:00:00.000Z" itemprop="datePublished">2017-12-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/27/javascript-array-function/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_24.jpg?alt=media&token=7d52e71f-cce0-419a-a479-5fc1bdfe90a8)" alt="鐵人賽：常用陣列方法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/27/javascript-array-function/" class="title">鐵人賽：常用陣列方法</a></p>
+                            <p class="item-date"><time datetime="2017-12-26T16:00:00.000Z" itemprop="datePublished">2017-12-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/26/javascript-array/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_23.jpg?alt=media&token=9b3510d2-0327-44e4-be39-420760891ae0)" alt="鐵人賽：ES6 陣列方法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/26/javascript-array/" class="title">鐵人賽：ES6 陣列方法</a></p>
+                            <p class="item-date"><time datetime="2017-12-25T16:00:00.000Z" itemprop="datePublished">2017-12-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/25/javascript-destructuring/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478)" alt="鐵人賽：ES6 解構賦值" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/25/javascript-destructuring/" class="title">鐵人賽：ES6 解構賦值</a></p>
+                            <p class="item-date"><time datetime="2017-12-24T16:00:00.000Z" itemprop="datePublished">2017-12-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/24/javascript-spread-operator/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_21.jpg?alt=media&token=dc0c2214-73bf-4ad6-be70-257e52f337e7)" alt="鐵人賽：JavaScript 展開與其餘" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/24/javascript-spread-operator/" class="title">鐵人賽：JavaScript 展開與其餘</a></p>
+                            <p class="item-date"><time datetime="2017-12-23T16:00:00.000Z" itemprop="datePublished">2017-12-24</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">25</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.33px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 13.33px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.67px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 12px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.67px;">d3js</a> <a href="/tags/design/" style="font-size: 12.67px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.67px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.67px;">git</a> <a href="/tags/github/" style="font-size: 12.67px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 16px;">gulp</a> <a href="/tags/html/" style="font-size: 11.33px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.67px;">intro</a> <a href="/tags/ironman/" style="font-size: 18.67px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.33px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 14.67px;">jquery</a> <a href="/tags/js/" style="font-size: 17.33px;">js</a> <a href="/tags/life/" style="font-size: 12px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 12px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 14px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.67px;">promise</a> <a href="/tags/rails/" style="font-size: 10.67px;">rails</a> <a href="/tags/reactjs/" style="font-size: 12px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.67px;">ruby</a> <a href="/tags/sass/" style="font-size: 19.33px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.67px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 14px;">svg</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.67px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.33px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2017 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io/javascript/2017/12/28/javascript-fetch/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>

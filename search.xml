@@ -4,11 +4,154 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：ES6 原生 Fetch 遠端資料方法]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/28/javascript-fetch/</url>
+      <content type="html"><![CDATA[<p>如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 <code>XMLHttpRequest</code> 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求：</p>
+<p>本篇使用的是 <code>https://randomuser.me/</code> 隨機用戶產生器，這很適合用來作為 AJAX Get 的範例。 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">reqOnload</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> data = <span class="built_in">JSON</span>.parse(<span class="keyword">this</span>.responseText);</div><div class="line">  <span class="built_in">console</span>.log(data)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">reqError</span> (<span class="params">err</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'錯誤'</span>, err)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 宣告一個 XHR 的物件</span></div><div class="line"><span class="keyword">var</span> Req = <span class="keyword">new</span> XMLHttpRequest(); </div><div class="line"><span class="comment">// 定義連線方式</span></div><div class="line">Req.open(<span class="string">'get'</span>, <span class="string">'https://randomuser.me/api/'</span>, <span class="literal">true</span>);</div><div class="line"><span class="comment">// 送出請求</span></div><div class="line">Req.send();</div><div class="line"><span class="comment">// 如果成功就執行 reqOnload()</span></div><div class="line">Req.onload = reqOnload; </div><div class="line"><span class="comment">// 失敗就 reqError()</span></div><div class="line">Req.onerror = reqError;</div></pre></td></tr></table></figure>
+<p>當然，在框架的時代我們已經習慣透過框架包裝以上的行為，讓程式碼的更為容易使用及閱讀，以 <code>randomuser</code> 網站所提供的範例來說，以上的行為可以寫成以下 (錯誤方法可參考 jQuery 文件)，不需要在另外自己包裝發送的物件。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$.ajax(&#123;</div><div class="line">  <span class="attr">url</span>: <span class="string">'https://randomuser.me/api/'</span>,</div><div class="line">  <span class="attr">dataType</span>: <span class="string">'json'</span>,</div><div class="line">  <span class="attr">success</span>: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(data);</div><div class="line">    <span class="comment">// 取得的遠端資料</span></div><div class="line">  &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><code>XMLHttpRequest</code> 在製作時每次都要新建一個請求的實體，而 AJAX 的網站，通常也不會只做一次請求而已，為了讓程式碼更容易維護及開發，大多開發者都會使用框架來包裝這類行為。</p>
+<h2 id="Fetch"><a href="#Fetch" class="headerlink" title="Fetch"></a>Fetch</h2><p>Fetch 在使用時看似與 jQuery <code>$.ajax</code> 挺相近的，所以在使用上也相對容易上手，不過兩者亦有不同概念之處(可<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch" target="_blank" rel="external">參考</a>)。</p>
+<p>這裡提供一個簡單的範例來取得遠端的資料，這裡與 $.ajax 不同點在於：</p>
+<ul>
+<li>fetch 會使用 ES6 的 Promise 作回應<ul>
+<li>then 作為下一步</li>
+<li>catch 作為錯誤回應 (404, 500…)</li>
+</ul>
+</li>
+<li>回傳的為 <code>ReadableStream</code> 物件，需要使用不同資料類型使用對應方法，才能正確取得資料物件。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'https://randomuser.me/api/'</span>, &#123;&#125;)</div><div class="line">  .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">    <span class="comment">// 這裡會得到一個 ReadableStream 的物件</span></div><div class="line">    <span class="built_in">console</span>.log(response);</div><div class="line">    <span class="comment">// 可以透過 blob(), json(), text() 轉成可用的資訊</span></div><div class="line">    <span class="keyword">return</span> response.json(); </div><div class="line">  &#125;).then(<span class="function">(<span class="params">jsonData</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(jsonData);</div><div class="line">  &#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'錯誤:'</span>, err);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p><code>fetch</code> 後方會接 <code>then()</code>，這是 Promise 的特性，資料取得後可在 then 裡面接收。<code>return response.json();</code> 的資料則會傳到下一個 <code>then()</code>，至於詳細的 Promise 方法我們會留下一個章節介紹。</p>
+<p>這裡如果刻意將網址打錯，會出現以下錯誤訊息。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">fetch(<span class="string">'https://randomuserkkk.me/api/'</span>, &#123;&#125;)</div></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F25102432-129A-45C6-B96D-BECE11E3499B.png?alt=media&amp;token=f75552cf-4cee-4b95-9804-05e5f7a0177f" alt=""></p>
+<h3 id="ReadableStream"><a href="#ReadableStream" class="headerlink" title="ReadableStream"></a>ReadableStream</h3><p>Fetch API 的 Response 物件中的 body 屬性提供了一個 ReadableStream 的實體，這個階段我們無法直接讀取資料內容，而 ReadableStream 物件中可用以下對應的方法來取得資料 (<a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：" target="_blank" rel="external">https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：</a></p>
+<ul>
+<li>arrayBuffer()</li>
+<li>blob()</li>
+<li>formData()</li>
+<li>json()</li>
+<li>text()</li>
+</ul>
+<h4 id="text"><a href="#text" class="headerlink" title="text()"></a>text()</h4><p>像是以上的範例，我們可以將 <code>response.json()</code> 改為 <code>response.text()</code>，那麼取得的資料格式將會是純字串。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F390506CF-1E4F-4D86-9D82-C1E76CE997EA.png?alt=media&amp;token=d0200785-8dc3-463c-bb04-79249d565e37" alt=""></p>
+<h4 id="blob"><a href="#blob" class="headerlink" title="blob()"></a>blob()</h4><p>也可以將資料轉為 <code>blob</code> 物件，像是圖片就可以做這樣的轉換 (這裡的圖片並非指圖片路徑，而是圖片檔案本身)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// unsplash 上的圖片</span></div><div class="line"><span class="keyword">let</span> url = <span class="string">'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&amp;fit=crop&amp;w=634&amp;q=80'</span></div><div class="line">fetch(url)</div><div class="line">  .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> response.blob();</div><div class="line">  &#125;)</div><div class="line">  .then(<span class="function">(<span class="params">imageBlob</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">let</span> img = <span class="built_in">document</span>.createElement(<span class="string">'IMG'</span>)</div><div class="line">    <span class="built_in">document</span>.querySelector(<span class="string">'.newImg'</span>).appendChild(img);</div><div class="line">    <span class="comment">// 將 blog 物件轉為 url</span></div><div class="line">    img.src = URL.createObjectURL(imageBlob);</div><div class="line">  &#125;)</div></pre></td></tr></table></figure>
+<blockquote>
+<p>URL 也是新的 API，可以將 blob 物件轉為網址</p>
+</blockquote>
+
+<script>
+// unsplash 上的圖片
+let url = 'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&fit=crop&w=634&q=80'
+fetch(url)
+  .then((response) => {
+    return response.blob();
+  })
+  .then((imageBlob) => {
+    let img = document.createElement('IMG')
+    document.querySelector('.newImg').appendChild(img);
+    // 將 blog 物件轉為 url
+    img.src = URL.createObjectURL(imageBlob);
+  })
+</script>
+<div class="newImg"></div>
+
+<blockquote>
+<p>範例圖片，從 Unsplash 上所截取的圖片實體 <del>小明眼中的漂亮阿姨</del></p>
+</blockquote>
+<h3 id="POST-方法"><a href="#POST-方法" class="headerlink" title="POST 方法"></a>POST 方法</h3><p>六角的課程中有提供一個 <code>POST</code> 方法的練習(因為想不到哪裡可以測試 POST)，下方的程式碼就可以對測試的機器發送 <code>POST</code>，然後接受不同的結果 (這段 <code>POST</code> 並不會真的儲存帳密，只會將資料存在伺服器的記憶體，不久後會自動釋放)。</p>
+<p>使用 <code>fetch()</code> 做  <code>POST</code>時，由於它並沒有向一些框架一樣包那麼徹底，所以有些地方還是需要做調整，其中 <code>body</code> 所送出的資料必須先轉純字串後才能送出，以下範例就是一個簡單的 <code>POST</code>行為。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> url = <span class="string">'https://hexschool-tutorial.herokuapp.com/api/signup'</span>;</div><div class="line">fetch(url, &#123;</div><div class="line">  <span class="attr">method</span>: <span class="string">'POST'</span>,</div><div class="line">  <span class="comment">// headers 加入 json 格式</span></div><div class="line">  headers: &#123;</div><div class="line">    <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span></div><div class="line">  &#125;,</div><div class="line">  <span class="comment">// body 將 json 轉字串送出</span></div><div class="line">  body: <span class="built_in">JSON</span>.stringify(&#123;</div><div class="line">    <span class="attr">email</span>: <span class="string">'lovef1232e@hexschool.com'</span>,</div><div class="line">    <span class="attr">password</span>: <span class="string">'12345678'</span></div><div class="line">  &#125;)</div><div class="line">&#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</div><div class="line">    <span class="keyword">return</span> response.json(); </div><div class="line">  &#125;).then(<span class="function">(<span class="params">jsonData</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(jsonData);</div><div class="line">  &#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'錯誤:'</span>, err);</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>所以這是第 25 篇了(表示庫存已用完)。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽：常用陣列方法]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/27/javascript-array-function/</url>
+      <content type="html"><![CDATA[<p>除了 <code>forEach</code> 外還有非常多實用的陣列方法，上一篇介紹一些注意事項，本篇要來介紹其它常用的陣列方法，這些陣列方法在大部分瀏覽器也都可以運作了，除了少數舊款的 Android Browser, ie 9 等等不能用以外。</p>
+<p>接下來都是使用這份資料來實作一些方法：</p>
+<ul>
+<li>累加</li>
+<li>比大小</li>
+<li>分別運算</li>
+<li>搜尋特定值等</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> people = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'小明'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">500</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">3000</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'杰倫'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">60000</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'老媽'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="literal">Infinity</span></div><div class="line">  &#125;</div><div class="line">];</div></pre></td></tr></table></figure>
+<h2 id="ForEach-與其它不同之處"><a href="#ForEach-與其它不同之處" class="headerlink" title="ForEach 與其它不同之處"></a>ForEach 與其它不同之處</h2><p>除了 forEach 以外的幾個方法都會回傳陣列或一個值，在等號的左方如果放置一個變數，那麼此變數會是 <code>undefined</code> (沒有回傳任何值)。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> forEachLoop = people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">	<span class="built_in">console</span>.log(item, index, array); <span class="comment">// 物件, 索引, 全部陣列)</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(forEachLoop); <span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<p>其它的方法都會回傳一個值或陣列，以此來說就會回傳原本的陣列值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> mapLoop = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(mapLoop); <span class="comment">// 與原本陣列資料相同</span></div></pre></td></tr></table></figure>
+<h3 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h3><p><code>filter</code> 可以用來過濾陣列中符合條件的物件，以下範例中搜尋符合大於 5000 元的，只要將該物件中的回傳為 true，那麼就會回傳完整的物件。 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Filter</span></div><div class="line"><span class="keyword">var</span> filterEmpty = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(filterEmpty);    <span class="comment">// 沒有條件，會是一個空陣列</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> filterMoneyThan5000 = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">5000</span>;       <span class="comment">// 取得大於五千元</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(filterMoneyThan5000); <span class="comment">// 杰倫, 老媽 這兩個物件</span></div></pre></td></tr></table></figure>
+<h3 id="find"><a href="#find" class="headerlink" title="find"></a>find</h3><p><code>find</code> 是用來搜尋陣列中符合條件的物件，且<strong>僅能有一個</strong>，當回傳 <code>true</code> 數量超過兩者以上，那會以第一個為優先，通常會適合搜尋來搜尋特定 id。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> findEmpty = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findEmpty);          <span class="comment">// 沒有條件，會是 undefined</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> findMoneyThan5000 = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">5000</span>;      <span class="comment">// 取得大於五千元</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findMoneyThan5000);  <span class="comment">// 雖然答案有兩個，但只會回傳 '杰倫' 這一個物件</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> findJay = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.name === <span class="string">'杰倫'</span>;    <span class="comment">// 找到杰倫</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(findJay);            <span class="comment">// '杰倫'</span></div></pre></td></tr></table></figure>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><p><code>map</code> 會回傳 return 的物件、值，功用上是用來處理陣列回傳新值產生一個新陣列，要特別注意回傳的值數量與原始陣列長度相同，所以留空的 return 則會產生 <code>undefined</code>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 沒有 return 也會產生 undefined</span></div><div class="line"><span class="keyword">var</span> mapEmpty = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(mapEmpty);    <span class="comment">// [undefined, undefined, undefined, undefined]</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> everyoneAdd = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  item.money = item.money + <span class="number">500</span>; <span class="comment">// 每個 money + 500</span></div><div class="line">  <span class="keyword">return</span> item;             <span class="comment">// 回傳物件</span></div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(everyoneAdd);  <span class="comment">// 回傳每個處理後的數值，不過記得這是傳參考特性，會影響到原始的物件</span></div><div class="line"><span class="comment">// &#123;name: "小明", money: 1500&#125;</span></div><div class="line"><span class="comment">// &#123;name: "漂亮阿姨", money: 3500&#125;</span></div><div class="line"><span class="comment">// &#123;name: "杰倫", money: 60500&#125;</span></div><div class="line"><span class="comment">// &#123;name: "老媽", money: Infinity&#125;</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> mapMoneyThan5000 = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>) </span>&#123;</div><div class="line">  <span class="comment">// 錯誤示範，長度不符合時</span></div><div class="line">  <span class="keyword">if</span> (item.money &gt; <span class="number">5000</span>) &#123;</div><div class="line">    <span class="keyword">return</span> item;              <span class="comment">// 取得大於五千元</span></div><div class="line">  &#125;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(mapMoneyThan5000);</div><div class="line"><span class="comment">// [undefined, undefined, &#123;name: "杰倫", money: 60000&#125;, &#123;name: "老媽", money: Infinity&#125; ]</span></div></pre></td></tr></table></figure>
+<h3 id="every"><a href="#every" class="headerlink" title="every"></a>every</h3><p>驗證全部的結果，當全部的值都為 true 時，則最終會得到 true；只要其中之一為 false，則回傳為 false。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ans = people.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">10000</span>;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans); <span class="comment">// false: 只要有部分不符合，則為 false</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans2 = people.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">300</span>;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// true: 大家錢都有超過 300</span></div></pre></td></tr></table></figure>
+<h3 id="some"><a href="#some" class="headerlink" title="some"></a>some</h3><p>與前者類似，但只要部分為 true，則回傳為 true；全部為 false 則才會為 false。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> ans = people.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">10000</span>;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans); <span class="comment">// false: 只要有部分符合，則為 true</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> ans2 = people.some(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> item.money &lt; <span class="number">300</span>;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// true: 大家錢都不少於 300</span></div></pre></td></tr></table></figure>
+<h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce"></a>reduce</h3><p><code>reduce</code> 是其中最為特別的，首先他回傳的參數與先前的不同，他會接收到前一個回傳的值供下一個物件使用，很適合用在累加與比對上，以下提供不同範例供參考。</p>
+<ul>
+<li>accumulator: 前一個參數，如果是第一個陣列的話，值是以另外傳入或初始化的值</li>
+<li>currentValue: 當前變數</li>
+<li>currentIndex: 當前索引</li>
+<li>array: 全部陣列</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reduceEmpty = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">&#125;);</div><div class="line"><span class="built_in">console</span>.log(reduceEmpty);                 <span class="comment">// 沒有條件，會是 undefined</span></div></pre></td></tr></table></figure>
+<p>可以透過與前一個相加的方式，累加陣列中所有的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">people.pop(); <span class="comment">// 老媽的錢深不可測，先移除掉</span></div><div class="line"><span class="keyword">var</span> reducePlus = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">  <span class="comment">// 分別為前一個回傳值, 目前值, 當前索引值</span></div><div class="line">  <span class="built_in">console</span>.log(accumulator, currentValue, currentIndex);</div><div class="line">  <span class="keyword">return</span> accumulator + currentValue.money;  <span class="comment">// 與前一個值相加</span></div><div class="line">&#125;, <span class="number">0</span>);                                      <span class="comment">// 傳入初始化值為 0</span></div><div class="line"><span class="built_in">console</span>.log(reducePlus);                    <span class="comment">// 總和為 63500</span></div></pre></td></tr></table></figure>
+<p>也可以相互比對，取出最高的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> reduceBestOne = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'reduce'</span>, accumulator, currentValue, currentIndex)</div><div class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.max(accumulator, currentValue.money); <span class="comment">// 與前一個值比較哪個大</span></div><div class="line">&#125;, <span class="number">0</span>);</div><div class="line"><span class="built_in">console</span>.log(reduceBestOne);                  <span class="comment">// 最大值為 60000</span></div></pre></td></tr></table></figure>
+<p>最近許多角色都沒機會出場，要來想點辦法了 :(。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：ES6 陣列方法]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/26/javascript-array/</url>
       <content type="html"><![CDATA[<p>在過去處理陣列的方法不外乎就是使用 <code>for</code> 迴圈，或是使用配合框架的 <code>forEach</code> 像是 jQuery, angular.js 這些過去的框架都會提供 <code>forEach</code>；但到了 ES6 後，許多框架都不再提供 <code>forEach</code> 的語法，主要原因也是因為 ES6 就已經包含許多實用的陣列方法。</p>
 <h2 id="過去使用-forEach-的方式"><a href="#過去使用-forEach-的方式" class="headerlink" title="過去使用 forEach 的方式"></a>過去使用 forEach 的方式</h2><p>過去 JavaScript 並沒有 forEach 這樣的方法，如果是用原生的方式大多會使用 <code>for...</code>，這樣的寫法並不直覺，所以大多開發者會使用 jQuery、underscore 的框架處理 forEach 的方法。</p>
-<p><code>for...</code> 的是看陣列數量有多少，就跑幾次的迴圈，程式邏輯很好理解，但在程式碼的呈現並不直覺。</p>
+<p><code>for...</code> 是看陣列數量有多少，就跑幾次的迴圈，程式邏輯很好理解，但在程式碼的呈現並不直覺。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> people = [</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'小明'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">500</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">3000</span></div><div class="line">  &#125;,</div><div class="line">  &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'杰倫'</span>,</div><div class="line">    <span class="attr">money</span>: <span class="number">60000</span></div><div class="line">  &#125;</div><div class="line">];</div><div class="line"></div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; people.length; i++) &#123;</div><div class="line">  <span class="keyword">let</span> person = people[i];</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;</div><div class="line"><span class="comment">// 小明 有 500 元</span></div><div class="line"><span class="comment">// 漂亮阿姨 有 3000 元</span></div><div class="line"><span class="comment">// 杰倫 有 60000 元</span></div></pre></td></tr></table></figure>
 <p>幾年前 jQuery 幾乎是每個 Web 頁面必備的框架，除了很好的 DOM 操作外，裡面已經包含了許多好用的 JavaScript 方法，其中之一當然就是 <code>$.each</code>。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$.each(people, (i, person) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person.name&#125;</span> 有 <span class="subst">$&#123;person.money&#125;</span> 元`</span>);</div><div class="line">&#125;);</div><div class="line"><span class="comment">// 結果同上</span></div></pre></td></tr></table></figure>
@@ -11739,9 +11882,9 @@ line.l2{
         
         <tags>
             
-            <tag> svg </tag>
-            
             <tag> css </tag>
+            
+            <tag> svg </tag>
             
         </tags>
         
@@ -19500,11 +19643,11 @@ table.table3
         
         <tags>
             
-            <tag> html </tag>
-            
             <tag> sass </tag>
             
             <tag> css </tag>
+            
+            <tag> html </tag>
             
         </tags>
         
