@@ -4,6 +4,162 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：透過 ESLint 學習 JavaScript ES6]]></title>
+      <url>https://wcc723.github.io/javascript/2018/01/01/javascript-eslint/</url>
+      <content type="html"><![CDATA[<p>至於 ES6 該怎麼學比較好!?很建議安裝 ESLint 來邊學邊修正觀念。ESLint 是一個團隊統一程式碼結構的工具，如果程式碼不符合規範，則會出現相對應的提示，而其中有三大主流規範是許多開發者愛用的：</p>
+<ul>
+<li>Google</li>
+<li>Airbnb</li>
+<li>JavaScript Standard Style</li>
+</ul>
+<p>三個都有各自的擁護者，風格上 Airbnb 較為嚴謹，每一種語法都有嚴格的規範；而 JavaScript Standard Style 感受上較為輕鬆，像是每行的最後方也不需要加上分號，也不至於強制要求每一種語法的寫法，簡單來說：整齊就好。</p>
+<p>以下面這個範例來說是屬於 Airbnb 的錯誤，沒有符合規範的語法會出現紅色提示，裡面也有完整的描述說明該如何修正。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2FJan-01-2018%2010-09-10.gif?alt=media&amp;token=c6f0f06d-5fff-427d-989f-0614ab77df89" alt=""></p>
+<p>在此依據提示將範例修正了一下，包括：</p>
+<ul>
+<li>不會再修改的請用 <code>const</code></li>
+<li>能寫單行請別寫那麼多行好嗎？</li>
+<li>一個參數而已，幹麻用小括號包起來</li>
+<li>每行後面都要有分號</li>
+<li><code>console.log</code> 記得移除</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202018-01-01%20%E4%B8%8A%E5%8D%8810.13.43.png?alt=media&amp;token=4b68a13b-be7a-49f6-9343-d84bd5691977" alt=""></p>
+<p>修改完後當然提示文字也就會消失，而 console.log 上的提示是 <code>Unexpected console statement. (no-console)</code>，記得在發布前移除這個東西。</p>
+<h2 id="安裝-ESLint"><a href="#安裝-ESLint" class="headerlink" title="安裝 ESLint"></a>安裝 ESLint</h2><p>ESLint 可以運行在許多文字編輯器，而 VSCode 中非常容易整合這樣的工具，這邊提供兩個方法給大家參考，不過記得兩者不能混用，使用時請擇一即可。</p>
+<ul>
+<li>ESLint：比較正式的方法，有完整的文件規範，適合團隊使用</li>
+<li>JavaScript Standard Style 插件：比較簡單的方法。</li>
+</ul>
+<h3 id="方法一：ESLint"><a href="#方法一：ESLint" class="headerlink" title="方法一：ESLint"></a>方法一：ESLint</h3><p>先開啟 / 安裝 VSCode 中的 ESLint 套件，記得預設的 VSCode 是有安裝此套件的，套件中也有提到如何運行。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC9C74D6F-F88E-4799-846B-AF4AB6347E39.png?alt=media&amp;token=437a863a-3544-4ccd-a8d6-54fef6095d4e" alt=""></p>
+<p>安裝 ESLint  的 npm 套件，目的是可以使用 eslint 的指令，方便建立規範使用的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install -g eslint</div></pre></td></tr></table></figure></p>
+<p>開啟 Terminal 後，輸入 <code>eslint --init</code></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4A7B52F5-F115-42C9-835D-4AACEFEE9795.png?alt=media&amp;token=fc7f2c3e-0051-426f-a57e-acea42063a2b" alt=""></p>
+<p>接下來會出現一連串的問題，你想要怎麼建立 ESLint 的規範文件？<br>Q: How would you like to configure ESLint?</p>
+<ul>
+<li>Answer questions about your style</li>
+<li>Use a popular style guide</li>
+<li>Inspect your JavaScript file(s)</li>
+</ul>
+<p>建議選擇 使用主流的 Style Guide (第二個)，如果使用此選項，他會要求先建立 package.json，如果專案中沒有 package.json 可以輸入：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm init</div></pre></td></tr></table></figure></p>
+<p>其中的問題可以 Enter 到底即可，接下來再回到上一步 <code>eslint --init</code> 繼續選擇建立規範。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F862F1C82-5EAD-4538-9232-DB2FA3BD0710.png?alt=media&amp;token=aea5f737-3299-4c74-9075-6c00ac8b8e33" alt=""></p>
+<p>選擇 Use a popular style guide 後，會出現三個主流的規範。</p>
+<ul>
+<li>Google</li>
+<li>Airbnb：如果選擇此選項，會多問一個是否使用 React</li>
+<li>Standard</li>
+</ul>
+<p>接下來會選擇要哪一種格式 <code>YAML</code>、<code>js</code>、<code>json</code> 來儲存規範，這個規範是能夠讓其他專案使用的，只要團隊討論好即可。</p>
+<p>安裝完後，在專案內會增加一個 <code>eslint.js</code> (或者其他，依據上述選擇的而定)，此時可以先關閉 VSCode 專案再重啟一次，接下來選擇 “輸出” 可以看到 ESLint server is running.，並且沒有其他錯誤訊息表示已成功運行 (如下圖)。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_11_9_%E4%B8%8B%E5%8D%884_05.png?alt=media&amp;token=efd91747-f9b8-47f6-a622-d8ebaff47085" alt=""></p>
+<p>接下來會看到畫面上都了很多紅色提示，滑鼠移到紅底線上方會提示該如何修改。</p>
+<p>目標就是減少畫面上的紅字 T_T，如果有未定義的變數也會跳紅字，目標當然是去除專案中的紅字來符合規範。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5ACA71A6-A31F-4ECF-8309-B96E307B99BE.png?alt=media&amp;token=6f166e2c-5b69-41ce-ac0e-57ae1d3081f9" alt=""></p>
+<p>上圖選的是 Airbnb 的規範，相關可參考：<a href="https://github.com/airbnb/javascript" target="_blank" rel="external">GitHub - airbnb/javascript: JavaScript Style Guide</a></p>
+<p>其它注意事項：</p>
+<ul>
+<li>如果無法順利進行，可嘗試重新安裝 <code>node_modules</code> 試試看。</li>
+<li>如果有替換規範，也要重新安裝 <code>node_modules</code>。</li>
+<li>重開 VSCode、重裝 <code>node_modules</code> 都是解決問題的好方法。</li>
+</ul>
+<hr>
+<h3 id="方法二：JavaScript-Standard-Style"><a href="#方法二：JavaScript-Standard-Style" class="headerlink" title="方法二：JavaScript Standard Style"></a>方法二：JavaScript Standard Style</h3><p>這是使用 Standard JS 提供的 VSCode 套件，不要與 ESLint 混合使用，也可以直接在工作區關閉 ESLint 只執行 Standard JS</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2E7D2A5E-D945-4384-880B-ACFCF28F8E3A.png?alt=media&amp;token=72a6f452-0194-42dd-a891-5bc4ab2131f0" alt=""></p>
+<p>接下來安裝 JavaScript Standard Style 的 VSCode 套件，安裝完後直接重起就能使用了，沒有額外的設定檔。</p>
+<p>套件路徑：<a href="https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs" target="_blank" rel="external">https://marketplace.visualstudio.com/items?itemName=chenxsan.vscode-standardjs</a></p>
+<p>啟用後再右下方一樣會出現 JavaScript Standard Style 的字樣，Standard 相對於其他規範來說寬鬆很多，最大的特點是沒有分號。</p>
+<p>寫起來長得像這樣 (未定義或定義但未使用的仍然會跳錯)，另外還有繁體中文的文件 (<a href="https://github.com/standard/standard/blob/master/docs/README-zhtw.md" target="_blank" rel="external">standard/README-zhtw.md at master · standard/standard · GitHub</a>)。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F31102DE8-BBF0-48D5-AA08-8231D70B6899.png?alt=media&amp;token=ca226394-348f-4e14-ad77-8fec44d07b38" alt=""></p>
+<p>我自己是比較喜歡 Standard，但缺點就是沒有分號，如果用在教學中同學可能會誤以為 JavaScript 不用分號。Airbnb 比較不習慣的則是物件裡的逗號，一般物件的最後一個是沒有逗號，但在 Airbnb 則是逗號到底。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽：ES6 建構式語法糖]]></title>
+      <url>https://wcc723.github.io/javascript/2017/12/31/javascript-constructor/</url>
+      <content type="html"><![CDATA[<p>這一段與先前介紹的建構式概念接近<a href="https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/">連結</a>，單篇觀看可能無法理解為何 JavaScript 要加入 Class 的概念，而 Class 在 JavaScript 只是個語法糖，讓建構式及原型更容易被表現而已。</p>
+<h2 id="ES6-建構式"><a href="#ES6-建構式" class="headerlink" title="ES6 建構式"></a>ES6 建構式</h2><p>這裡我們先將先前章節的程式碼整理過來，除了順序有些調換外，觀念上是沒有差異的，最後產生的值包含了物件屬性及原型的方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">PhoneTemplate</span>(<span class="params">brand, modal, withCamera</span>) </span>&#123;</div><div class="line">  <span class="comment">// 定義基本屬性</span></div><div class="line">  <span class="keyword">this</span>.brand = brand;</div><div class="line">  <span class="keyword">this</span>.modal = modal;</div><div class="line">  <span class="keyword">this</span>.withCamera = withCamera || <span class="literal">false</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 原型方法</span></div><div class="line">PhoneTemplate.prototype.takePhoto = <span class="function"><span class="keyword">function</span> (<span class="params">someone</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (<span class="keyword">this</span>.withCamera) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 照相'</span>);</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 這台沒有照相功he能'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">PhoneTemplate.prototype.callSomeone = <span class="function"><span class="keyword">function</span> (<span class="params">someone</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'打通電話給 '</span> + someone)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Sony'</span>, <span class="string">'Z100'</span>, <span class="literal">true</span>);</div><div class="line"><span class="keyword">var</span> nokiaPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Nokia'</span>, <span class="string">'3310'</span>, <span class="literal">false</span>);</div></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F6B29F092-4FF7-4447-AEE7-CB731985B887.png?alt=media&amp;token=5758a083-e780-4bd5-bcde-52cf482efcff" alt=""></p>
+<p>接下來使用 <code>class</code> 來改寫，你可以對應著上方的原始碼與下方的一起看，僅有三個小地方要稍作修改：</p>
+<ol>
+<li><code>function PhoneTemplate</code> 定義名稱 -&gt; class PhoneTemplate</li>
+<li>初始化物件屬性寫在 <code>constructor ()</code>內，一個 class 也只能有一個 <code>constructor</code>。</li>
+<li>原型方法直接寫在 class 內就可以了</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ES6 Constructor</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PhoneTemplate</span> </span>&#123;</div><div class="line">  <span class="comment">// 定義基本屬性</span></div><div class="line">  <span class="keyword">constructor</span> (brand, modal, withCamera) &#123;</div><div class="line">    <span class="keyword">this</span>.brand = brand;</div><div class="line">    <span class="keyword">this</span>.modal = modal;</div><div class="line">    <span class="keyword">this</span>.withCamera = withCamera || <span class="literal">false</span>;</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="comment">// 原型方法</span></div><div class="line">  takePhoto () &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.withCamera) &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 照相'</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 這台沒有照相功he能'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  callSomeone (someone) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'打通電話給 '</span> + someone);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Sony'</span>, <span class="string">'Z100'</span>, <span class="literal">true</span>);</div><div class="line"><span class="keyword">var</span> nokiaPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Nokia'</span>, <span class="string">'3310'</span>, <span class="literal">false</span>);</div></pre></td></tr></table></figure>
+<p>結果：</p>
+<ul>
+<li><code>constructor</code> 定義了原本在物件內的屬性及值，其中也包含外部傳入的參數。</li>
+<li>原型原本是 <code>prototype</code> 的方法，在 Class 的類別方法是直接寫在 <code>constructor</code> 的後方，這樣的好處讓程式碼閱讀更為容易。</li>
+</ul>
+<h2 id="static-靜態方法"><a href="#static-靜態方法" class="headerlink" title="static 靜態方法"></a>static 靜態方法</h2><p>靜態方法屬於原型專屬的方法，它並不會繼承到物件上。像是陣列原型中有一個 <code>of()</code> 的方法，但一般陣列是無法使用專屬於原型的陣列方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Array</span>.of(<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>); <span class="comment">// [1, 3, 4, 5, 6]</span></div><div class="line">[<span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>].of();</div><div class="line">[<span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>].of is not a <span class="function"><span class="keyword">function</span></span></div></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c28.jpg?alt=media&amp;token=7625bfc5-04e2-4600-8740-5836e5ec1222" alt=""></p>
+<p>靜態方法只能被原型使用，無法在創立的物件上使用。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PhoneTemplate</span> </span>&#123;</div><div class="line">  <span class="comment">// 定義基本屬性</span></div><div class="line">  <span class="keyword">constructor</span>(brand, modal, withCamera) &#123;</div><div class="line">    <span class="keyword">this</span>.brand = brand;</div><div class="line">    <span class="keyword">this</span>.modal = modal;</div><div class="line">    <span class="keyword">this</span>.withCamera = withCamera || <span class="literal">false</span>;</div><div class="line">  &#125;</div><div class="line">  <span class="comment">// ...</span></div><div class="line"></div><div class="line">  <span class="comment">// 靜態方法</span></div><div class="line">  <span class="keyword">static</span> info() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'這是手機原型'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Sony'</span>, <span class="string">'Z100'</span>, <span class="literal">true</span>);</div><div class="line">sonyPhone.info();</div><div class="line"><span class="comment">// sonyPhone.info is not a function</span></div><div class="line"></div><div class="line">PhoneTemplate.info();</div><div class="line"><span class="comment">// 這是手機原型</span></div></pre></td></tr></table></figure>
+<h2 id="Setter-Getter"><a href="#Setter-Getter" class="headerlink" title="Setter, Getter"></a>Setter, Getter</h2><p>Getter, Setter 顧名思義，一者是傳入、另一則是讀出，兩者可以同時對 “相同的變數” 進行操作，如以下範例來說，我們可以傳入 1，但讀出為 2。set 同時修改傳入的變數，讓 get 的資料不同。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// ES6 Constructor</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PhoneTemplate</span> </span>&#123;</div><div class="line">  <span class="comment">// 定義基本屬性</span></div><div class="line">  <span class="keyword">constructor</span> (brand, modal, withCamera) &#123;</div><div class="line">    <span class="keyword">this</span>.brand = brand;</div><div class="line">    <span class="keyword">this</span>.modal = modal;</div><div class="line">    <span class="keyword">this</span>._core = <span class="number">1</span></div><div class="line">    <span class="keyword">this</span>.withCamera = withCamera || <span class="literal">false</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// get, set</span></div><div class="line">  get core () &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>._core</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  set core (coreNum) &#123;</div><div class="line">    <span class="keyword">let</span> num = <span class="built_in">Number</span>.parseInt(coreNum)</div><div class="line">    <span class="keyword">this</span>._core = num * <span class="number">2</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">// 其它原型方法</span></div><div class="line">  <span class="comment">// ...</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Sony'</span>, <span class="string">'Z100'</span>, <span class="literal">true</span>);</div><div class="line"><span class="built_in">console</span>.log(sonyPhone.core); <span class="comment">// 1，預設的 _core</span></div><div class="line">sonyPhone.core = <span class="number">4</span>;  <span class="comment">// 傳入 4</span></div><div class="line"><span class="built_in">console</span>.log(sonyPhone.core); <span class="comment">// 會透過 set core * 2，結果會是 8</span></div></pre></td></tr></table></figure>
+<p>另外特別是傳入的方式是使用 <code>等號</code>，而不是 function 的參數。</p>
+<ul>
+<li>如果只有 getter 則不能修改 </li>
+<li>setter 則只能傳入一個參數</li>
+</ul>
+<h3 id="ES6-建構式-extends"><a href="#ES6-建構式-extends" class="headerlink" title="ES6 建構式 + extends"></a>ES6 建構式 + extends</h3><p>先前已經使用一個建構式建立基本的原型，在先前我們也有提到，原型概念中還有一個是原型鍊。也就是原型可以不斷地繼承，但到目前為止的範例我們都只有創造一層原型。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F9617EE60-DD94-4F43-A027-D77318E4E74F.png?alt=media&amp;token=0bc1f431-45eb-409b-b599-4e500821fe48" alt=""></p>
+<p>手機模板是一個基本的原型，這個原型不夠使用時我們可以在上新增方法，但有些時候我們擔心會干擾到其它已建立的原型，我們可以使用 <code>extends</code> 來擴增新的方法。</p>
+<p>有個品牌總是要做出最屌最潮的手機，他可以以目前手機作為基礎再加以擴增。 </p>
+<p>這裡會看到兩個新的單字 <code>extends</code>、<code>super</code>：</p>
+<ul>
+<li><code>extends</code>: 繼承於另一個原型之下</li>
+<li><code>super</code> :  使用上層的值(屬性)<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 第一層</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">PhoneTemplate</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span> (brand, modal, withCamera) &#123;</div><div class="line">    <span class="keyword">this</span>.brand = brand;</div><div class="line">    <span class="keyword">this</span>.modal = modal;</div><div class="line">    <span class="keyword">this</span>.withCamera = withCamera || <span class="literal">false</span>;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  takePhoto () &#123;</div><div class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.withCamera) &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 照相'</span>);</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 這台沒有照相功能'</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  callSomeone (someone) &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'打通電話給 '</span> + someone);</div><div class="line">  &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="comment">// 利用上一個建構式作為延伸</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">ApplePhone</span> <span class="keyword">extends</span> <span class="title">PhoneTemplate</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span> (brand, modal) &#123;</div><div class="line">    <span class="keyword">super</span>(brand); <span class="comment">// 繼承原本的建構式中的變數</span></div><div class="line">    <span class="keyword">this</span>.modal = <span class="string">'iPhone'</span>; <span class="comment">// 直接賦予變數</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">	<span class="comment">// 直接寫入新的方法</span></div><div class="line">  hiSiri () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'hi Siri'</span>);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> iPhone = <span class="keyword">new</span> ApplePhone(<span class="string">'Apple'</span>);</div><div class="line"><span class="built_in">console</span>.log(iPhone); <span class="comment">// 這個與先前的建構式有接近的格式</span></div><div class="line">iPhone.takePhoto();  <span class="comment">// 由於沒有傳入相機功能，所以沒辦法</span></div><div class="line">iPhone.callSomeone(<span class="string">'小明'</span>); <span class="comment">// 能使用上一個建構式的方法</span></div><div class="line">iPhone.hiSiri();  <span class="comment">// 能使用新建構式方法</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>這個概念下也能夠繼承於現有的原型，如以下範例就是將 <code>MyPhones</code> 繼承於 Array 之下，這種繼承方法可以讓新的建構式擁有陣列的全部方法，也可以藉此增加新的方法。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyPhones</span> <span class="keyword">extends</span> <span class="title">Array</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(name, ...phones) &#123;</div><div class="line">    <span class="keyword">super</span>(...phones); <span class="comment">// 繼承原本陣列的值</span></div><div class="line">    <span class="keyword">this</span>.name = name;</div><div class="line">  &#125;</div><div class="line">  add (phone) &#123; <span class="comment">// 自訂的方法</span></div><div class="line">    <span class="keyword">this</span>.push(phone);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> JayPhones = <span class="keyword">new</span> MyPhones(<span class="string">'杰倫'</span>, &#123; <span class="attr">name</span>: <span class="string">'iPhone'</span> &#125;, &#123; <span class="attr">name</span>: <span class="string">'Z'</span> &#125;);</div><div class="line"><span class="built_in">console</span>.log(JayPhones.length); <span class="comment">// 傳入兩個值作為陣列，所以長度確實是 2</span></div><div class="line">JayPhones.add(&#123;<span class="attr">name</span>: <span class="string">'G'</span>&#125;); <span class="comment">// 再增加一個值</span></div><div class="line"><span class="built_in">console</span>.log(JayPhones.length); <span class="comment">// 陣列長度改為 3</span></div><div class="line"><span class="built_in">console</span>.log(JayPhones.name); <span class="comment">// '杰倫'：除了陣列外，名字也在裡面，因為陣列本質就是物件</span></div></pre></td></tr></table></figure>
+<p>JavaScript 中許多觀念很重要，其中之一則是原型。許多時候一些語法上的錯誤或是概念一時轉不過去，打開 console 看看物件的圓形，或許就能明白。</p>
+<p>另外…，剩兩篇了!?</p>
+]]></content>
+      
+        <categories>
+            
+            <category> javascript </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：JavaScript Await 與 Async]]></title>
       <url>https://wcc723.github.io/javascript/2017/12/30/javascript-async-await/</url>
       <content type="html"><![CDATA[<p>不知道上一篇大家對於 Promise 概念如何，本篇介紹的內容與 Promise 依然有相關性，因為這兩者就是建構於 Promise 之上的，如果直接從原始碼看可能不是很好瞭解這語法怎麼使用，不過可以先直接用 Google 翻譯了解大概意思：</p>
