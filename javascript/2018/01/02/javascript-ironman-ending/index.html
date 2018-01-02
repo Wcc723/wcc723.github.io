@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>鐵人賽：JavaScript 的魅力 | 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,js,ironman" />
+    
+    
+
+    <meta name="description" content="這次是第四次參加鐵人賽，先前參加的主題分別為兩次 CSS 及一次 JavaScript (D3.js)。
+因為原本是視覺設計師，在過去曾經打算專精於 CSS 就好，所以不斷專精 CSS 的表現模式以及他的開發模式，我還曾經開發過幾次的 CSS Framework (有實際運用過)，不過隨著時間發展這個概念有了改變 :D。
+撇開 CSS 不說，對於多變的 JavaScript 還是有一些自己的看法，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鐵人賽：JavaScript 的魅力">
+<meta property="og:url" content="https://wcc723.github.io/javascript/2018/01/02/javascript-ironman-ending/index.html">
+<meta property="og:site_name" content="前端，沒有極限">
+<meta property="og:description" content="這次是第四次參加鐵人賽，先前參加的主題分別為兩次 CSS 及一次 JavaScript (D3.js)。
+因為原本是視覺設計師，在過去曾經打算專精於 CSS 就好，所以不斷專精 CSS 的表現模式以及他的開發模式，我還曾經開發過幾次的 CSS Framework (有實際運用過)，不過隨著時間發展這個概念有了改變 :D。
+撇開 CSS 不說，對於多變的 JavaScript 還是有一些自己的看法，">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F18_ironman_cover_30.jpg?alt=media&token=78b9c963-1d50-4f34-b11b-a4b45fe832dc">
+<meta property="og:updated_time" content="2018-01-02T03:06:42.508Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="鐵人賽：JavaScript 的魅力">
+<meta name="twitter:description" content="這次是第四次參加鐵人賽，先前參加的主題分別為兩次 CSS 及一次 JavaScript (D3.js)。
+因為原本是視覺設計師，在過去曾經打算專精於 CSS 就好，所以不斷專精 CSS 的表現模式以及他的開發模式，我還曾經開發過幾次的 CSS Framework (有實際運用過)，不過隨著時間發展這個概念有了改變 :D。
+撇開 CSS 不說，對於多變的 JavaScript 還是有一些自己的看法，">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F18_ironman_cover_30.jpg?alt=media&token=78b9c963-1d50-4f34-b11b-a4b45fe832dc">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487'); // Insert your pixel ID here.
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <h1 class="logo-wrap">
+                        <a href="/" class="logo"></a>
+                    </h1>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/javascript/">javascript</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-javascript-ironman-ending" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        鐵人賽：JavaScript 的魅力
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/javascript/2018/01/02/javascript-ironman-ending/" class="article-date">
+    <time datetime="2018-01-01T16:00:00.000Z" itemprop="datePublished">2018-01-02</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F18_ironman_cover_30.jpg?alt=media&token=78b9c963-1d50-4f34-b11b-a4b45fe832dc" rel="gallery_cjbwwejwu00nzg4gahg85xglk">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F18_ironman_cover_30.jpg?alt=media&token=78b9c963-1d50-4f34-b11b-a4b45fe832dc" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>這次是第四次參加鐵人賽，先前參加的主題分別為兩次 CSS 及一次 JavaScript (D3.js)。</p>
+<p>因為原本是視覺設計師，在過去曾經打算專精於 CSS 就好，所以不斷專精 CSS 的表現模式以及他的開發模式，我還曾經開發過幾次的 CSS Framework (有實際運用過)，不過隨著時間發展這個概念有了改變 :D。</p>
+<p>撇開 CSS 不說，對於多變的 JavaScript 還是有一些自己的看法，在最後一篇就寫寫我對於此的一些看法。</p>
+<h2 id="目前還有持續學-CSS-嗎？"><a href="#目前還有持續學-CSS-嗎？" class="headerlink" title="目前還有持續學 CSS 嗎？"></a>目前還有持續學 CSS 嗎？</h2><p>CSS 很重要，但如果在良好的架構下，定義好的 CSS 基本上不太需要去做調整，一個專門的前端開發者 (需要包含 CSS、JavaScript 開發)，絕大多的時間都會把開發精神放在 JavaScript 上，且 CSS 的變化性不像是 JavaScript 那麼快，學個幾招夠用好幾年，所以就現在來說只會先略為研究新的語法 <code>CSS Grid</code>，但目前不會使用在主要的產品網站上，等有被實際運用在主要網站上後再觀察也不遲。</p>
+<p>以 Flex 來說，我在 4 ~ 5 年前就已經有研究了，2 ~ 3 年前已經有許多知名網站已經開始套用(我自己實際是在 2016 在產品頁面上套用 Flex，發生錯誤的回饋並不多)，但實際被接受也是近一兩年，CSS 變化挺慢的且應用變化不多，所以新語法研究一段時間後就把時間拿去研究 JavaScript 了。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F20161201.jpg?alt=media&amp;token=043c930d-ce81-43cb-bd0d-d09114671330" alt=""></p>
+<h2 id="先學-jQuery-還是先學-JavaScript"><a href="#先學-jQuery-還是先學-JavaScript" class="headerlink" title="先學 jQuery 還是先學 JavaScript"></a>先學 jQuery 還是先學 JavaScript</h2><p>先說，我是先學 ActionScript 的，後來開始工作後開始學 jQuery，後來才開始花更多的時間學習 JavaScript 。</p>
+<p>這個議題也是看過很多人討論，但就目前而言我會比較推薦先學「jQuery」，除了你可以啃得下 <a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide" target="_blank" rel="external">JavaScript 基本指南</a> 不會覺得難以閱讀(如果沒問題，可以跳過 jQuery)。會先說學習 jQuery 的原因在於它容易學習且容易有成就感，並不是所有人在學習 JavaScript 就有程式背景，而 jQuery 將許多複雜的概念用簡單的方式去執行。</p>
+<p>雖然如此，在了解 jQuery 後，還是需要精進 Native JavaScript 能力，畢竟糖吃太多對身體不太好。學了 JavaScript 後可以再回頭看看 <code>糖</code> 的成分是什麼，也會有所茅塞頓開的感覺。</p>
+<h2 id="要不要接觸後端"><a href="#要不要接觸後端" class="headerlink" title="要不要接觸後端"></a>要不要接觸後端</h2><p>我主要的工作是前後端均有參與的，雖然不到專精於後端的全端工程師，但基礎的 Router、API、部署 也都沒有問題，如果對於 JavaScript 掌握度有一定的朋友，或工作上有很長時間需要接觸 JavaScript 的開發者，非常建議花時間玩玩 Node.js，原因如下：</p>
+<h3 id="了解前後端協作的眉角"><a href="#了解前後端協作的眉角" class="headerlink" title="了解前後端協作的眉角"></a>了解前後端協作的眉角</h3><p>前端並不了解後端，也並非所有後端了解怎麼與前端配合，在這兩個專業領域之間就產生了一個隔閡，許多誤會、溝通成本就在此部分出現。所以身為前端如果了解後端的運作原理，自然也能夠多為對方著想。</p>
+<p>像是一個新的開發需求產生，如果前端在等待後端的 API 過程中就只能刻刻畫面、假裝研究新技術!?但如果有些經驗後，也可以先與後端先討論 資料欄位、API 發送時機、後端需配合的額外欄位 (很多是為了配合畫面而開的)，這樣的討論下，後端甚至能在腦中勾勒出：「啊，原來這樣做就好了喔～」(情境二：靠北，怎麼這麼麻煩)，然後預先產出可用的資料結構供前端先行運作，最後等待兩人完成的介接。</p>
+<h3 id="更豐富的運用"><a href="#更豐富的運用" class="headerlink" title="更豐富的運用"></a>更豐富的運用</h3><p>瀏覽器端的 JavaScript 通常稱為 “客戶端”，主要是讓使用者有更好體驗所存在的，但 Server 端就不僅僅是為了服務客戶端，除了服務公司外，也能成為自己的好幫手。</p>
+<p>像是 <a href="https://ithelp.ithome.com.tw/users/20107159/ironman/1325" target="_blank" rel="external">好想工作室的 Howard: 爬蟲始終來自於墮性</a> 就是一個例子，最近聽到一個學生看完他的爬蟲教學後，也嘗試來爬 <strong>PTT 表特版</strong> (優秀)。除此之外像是金流服務、Bot，甚至到個人創業的 idea 都可以執行。好後端，不試試嗎？</p>
+<h3 id="穩定的環境"><a href="#穩定的環境" class="headerlink" title="穩定的環境"></a>穩定的環境</h3><p>在瀏覽器端寫 ES6 (甚至部分 ES5) 都要不斷的注意相容性，有些語法寫得很開心，實際測試卻不能運行；不然就是要透過 <code>Babel</code> 來編譯，把純 JavaScript 都搞得像前置語言一樣 (<code>CoffeeScript</code>、<code>TypeScript</code>…)。在 Node.js 環境下，可以直接看 <a href="http://node.green/" target="_blank" rel="external">Node.js Support ES6</a> 了解目前的伺服器可以運行哪些語法，不行直接掛點，一翻兩瞪眼毫不囉唆。</p>
+<h2 id="JavaScript-多面向的運用情境"><a href="#JavaScript-多面向的運用情境" class="headerlink" title="JavaScript 多面向的運用情境"></a>JavaScript 多面向的運用情境</h2><p>JavaScript 可以被運用的層面相當廣，就目前所認識的程式語言來說，他是最廣的一種(很抱歉，這裡我就不去查相關資料囉)。從前面所介紹的前端、後端，他亦可運行在許多不同的環境下，如果地球上最多人使用的是印歐語系，那麼 JavaScript 就是開發界的印歐語系，搭配不同的工具，讓同一個語言到處都能通。</p>
+<h3 id="桌面應用程式"><a href="#桌面應用程式" class="headerlink" title="桌面應用程式"></a>桌面應用程式</h3><ul>
+<li>代表工具：<a href="https://electronjs.org/" target="_blank" rel="external">https://electronjs.org/</a></li>
+<li>應用程式：Slack、Atom、Github Desktop、VSCode</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202018-01-02%20%E4%B8%8A%E5%8D%8810.17.20.png?alt=media&amp;token=6db6acf9-f263-4e75-acd6-8b4c3b66b346" alt=""></p>
+<p>Electron 是基於 Chromium 和 Node.js (簡單來說就是一個 Chrome 的應用程式)，因此只要瀏覽器做得到的事情，基本上他都能辦到，並且可以與作業系統的環境整合(最近文件、自訂選單、縮圖、提示訊息…)，也有許多官方應用程式現在都是直接使用 Electron 做開發，透過此工具可以一次開發符合 Windows、Mac OS、Linux 等平台，相對能減少許多的開發成本。</p>
+<p>缺點：一個應用程式相當於一個 Chrome 分頁，資源相對消耗比較高。</p>
+<h3 id="行動應用程式"><a href="#行動應用程式" class="headerlink" title="行動應用程式"></a>行動應用程式</h3><ul>
+<li>代表工具：Crodova</li>
+<li>相關支援工具：Ionic、Adobe PhoneGap</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202018-01-02%20%E4%B8%8A%E5%8D%8810.18.09.png?alt=media&amp;token=0efd66f2-7fea-4f4c-8b09-18e45ad8cfe9" alt=""></p>
+<p>Crodova 與 Electron 類似，但亦有些不同。Electron 是基於 Chromium 上開發(運行在 Chrome 上)，而 Crodova 基於瀏覽器的 Web View(是使用裝置的瀏覽器)，另外 Electron 除了 Web 技術外，另外還包含 Node.js，而 Crodova 僅使用 Web 技術。</p>
+<p>使用 Web 技術開發行動應用程式發展許久，但因為每家的瀏覽器都略有些不同，要做到跨裝置的呈現還是有些困難，效能、呈現上也似乎還離原生應用還有段距離，</p>
+<h3 id="IOT"><a href="#IOT" class="headerlink" title="IOT"></a>IOT</h3><ul>
+<li>代表工具：Webduino</li>
+<li>相關教學：<a href="https://ithelp.ithome.com.tw/users/20091306/ironman/1161" target="_blank" rel="external">https://ithelp.ithome.com.tw/users/20091306/ironman/1161</a></li>
+</ul>
+<p>Webduino 是台灣所開發的應用服務，可以使用 Web JavaScript 呼叫雲服務的 API 控制 Arduino，也因為可以使用 Web 技術，無論是什麼框架都沒有限制(jQuery, polymer 都可使用)。先前有參加過他們活動，當第一次透過自己寫的程式碼控制燈泡亮起來是真的非常有成就感。</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kemcCLAseTg" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+
+<blockquote>
+<p>他們先前釋出的影片，透過 Web 操作氣球，就如同遙控飛機一樣。</p>
+</blockquote>
+<h2 id="鐵人賽結束"><a href="#鐵人賽結束" class="headerlink" title="鐵人賽結束"></a>鐵人賽結束</h2><p>當然，很開心在幾年前學到一個應用層面這麼廣的程式語言，到目前還有許多都還不斷的在學習中。除了開發以外，今年依然期許自己能夠有更多的發展(區塊鏈、智能合約等等)。</p>
+<p>那麼，感謝大家三十天來的觀看，有機會可以來我粉絲團聊聊喔 :D</p>
+<p>卡斯伯粉絲團：<a href="https://www.facebook.com/WccCasper" target="_blank" rel="external">https://www.facebook.com/WccCasper</a></p>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/javascript/2018/01/01/javascript-eslint/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">鐵人賽：透過 ESLint 學習 JavaScript ES6</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2018/01/02/javascript-ironman-ending/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F18_ironman_cover_30.jpg?alt=media&token=78b9c963-1d50-4f34-b11b-a4b45fe832dc)" alt="鐵人賽：JavaScript 的魅力" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2018/01/02/javascript-ironman-ending/" class="title">鐵人賽：JavaScript 的魅力</a></p>
+                            <p class="item-date"><time datetime="2018-01-01T16:00:00.000Z" itemprop="datePublished">2018-01-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2018/01/01/javascript-eslint/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201801%2F18_ironman_cover_29.jpg?alt=media&token=4b5020ab-4eda-4733-a985-c6a4c19e1c5b)" alt="鐵人賽：透過 ESLint 學習 JavaScript ES6" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2018/01/01/javascript-eslint/" class="title">鐵人賽：透過 ESLint 學習 JavaScript ES6</a></p>
+                            <p class="item-date"><time datetime="2017-12-31T16:00:00.000Z" itemprop="datePublished">2018-01-01</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/31/javascript-constructor/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&token=018210e4-496a-4b6a-b549-718c10988541)" alt="鐵人賽：ES6 建構式語法糖" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/31/javascript-constructor/" class="title">鐵人賽：ES6 建構式語法糖</a></p>
+                            <p class="item-date"><time datetime="2017-12-30T16:00:00.000Z" itemprop="datePublished">2017-12-31</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/30/javascript-async-await/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&token=018210e4-496a-4b6a-b549-718c10988541)" alt="鐵人賽：JavaScript Await 與 Async" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/30/javascript-async-await/" class="title">鐵人賽：JavaScript Await 與 Async</a></p>
+                            <p class="item-date"><time datetime="2017-12-29T16:00:00.000Z" itemprop="datePublished">2017-12-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/javascript/2017/12/29/javascript-proimse/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_26.jpg?alt=media&token=581d4746-f732-4aa6-a218-da1519d039dc)" alt="鐵人賽：使用 Promise 處理非同步" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
+                            <p class="item-title"><a href="/javascript/2017/12/29/javascript-proimse/" class="title">鐵人賽：使用 Promise 處理非同步</a></p>
+                            <p class="item-date"><time datetime="2017-12-28T16:00:00.000Z" itemprop="datePublished">2017-12-29</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.33px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 13.33px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.67px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 12px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.67px;">d3js</a> <a href="/tags/design/" style="font-size: 12.67px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.67px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.67px;">git</a> <a href="/tags/github/" style="font-size: 12.67px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 16px;">gulp</a> <a href="/tags/html/" style="font-size: 11.33px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.67px;">intro</a> <a href="/tags/ironman/" style="font-size: 18.67px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.33px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 14.67px;">jquery</a> <a href="/tags/js/" style="font-size: 17.33px;">js</a> <a href="/tags/life/" style="font-size: 12px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 12px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 14px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.67px;">promise</a> <a href="/tags/rails/" style="font-size: 10.67px;">rails</a> <a href="/tags/reactjs/" style="font-size: 12px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.67px;">ruby</a> <a href="/tags/sass/" style="font-size: 19.33px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.67px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 14px;">svg</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.67px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.33px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io/javascript/2018/01/02/javascript-ironman-ending/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
