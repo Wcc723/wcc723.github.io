@@ -63,7 +63,7 @@ angular.forEach(people, (person, i) => {
 // 結果同上
 ```
 
-除了以上兩個框架外，另外也有一個專門處理物件、陣列的框架 (underscore)[http://underscorejs.org/]，不管前後端都非常適合使用。
+除了以上兩個框架外，另外也有一個專門處理物件、陣列的框架 [underscore](http://underscorejs.org/)，不管前後端都非常適合使用。
 
 ```js
 _.forEach(people, (person, i) => {
