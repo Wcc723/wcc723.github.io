@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>鐵人賽：網頁設計 - 網路字體運用 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="design,ironman" />
+    
+    
+
+    <meta name="description" content="字體如果沒有授權問題，是否能夠直接嵌入於網頁之中呢？（請注意：大部分中文字體都會有授權的問題）
+當然是可以的，英文網站中許多都會使用自訂的字體，但中文字體可就沒有這麼容易。因為英文字體檔案小，直接寫入 CSS 即可運作，而中文字體動輒數十 MB，Noto Sans 整包甚至高達上百 MB，下載這些字體就會花去許多時間且非常消耗網路資源。
+英文網頁字體英文字體運用上僅需要注意授權，而最大宗的免費字體">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鐵人賽：網頁設計 - 網路字體運用">
+<meta property="og:url" content="https://wcc723.github.io/design/2018/10/26/web-fonts/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="字體如果沒有授權問題，是否能夠直接嵌入於網頁之中呢？（請注意：大部分中文字體都會有授權的問題）
+當然是可以的，英文網站中許多都會使用自訂的字體，但中文字體可就沒有這麼容易。因為英文字體檔案小，直接寫入 CSS 即可運作，而中文字體動輒數十 MB，Noto Sans 整包甚至高達上百 MB，下載這些字體就會花去許多時間且非常消耗網路資源。
+英文網頁字體英文字體運用上僅需要注意授權，而最大宗的免費字體">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2011.png?alt=media&token=6fca478b-8c0c-4c90-a90f-595f7349aa6c">
+<meta property="og:updated_time" content="2018-10-26T03:49:42.770Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="鐵人賽：網頁設計 - 網路字體運用">
+<meta name="twitter:description" content="字體如果沒有授權問題，是否能夠直接嵌入於網頁之中呢？（請注意：大部分中文字體都會有授權的問題）
+當然是可以的，英文網站中許多都會使用自訂的字體，但中文字體可就沒有這麼容易。因為英文字體檔案小，直接寫入 CSS 即可運作，而中文字體動輒數十 MB，Noto Sans 整包甚至高達上百 MB，下載這些字體就會花去許多時間且非常消耗網路資源。
+英文網頁字體英文字體運用上僅需要注意授權，而最大宗的免費字體">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2011.png?alt=media&token=6fca478b-8c0c-4c90-a90f-595f7349aa6c">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1762761817269554');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- Google Adsense -->
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8296684122088055",
+        enable_page_level_ads: true
+    });
+    </script>
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <a href="/">
+                        <img src="/images/casper_blog.svg" alt="">
+                    </a>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/design/">design</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-web-fonts" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        鐵人賽：網頁設計 - 網路字體運用
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/design/2018/10/26/web-fonts/" class="article-date">
+    <time datetime="2018-10-25T16:00:00.000Z" itemprop="datePublished">2018-10-26</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/design/">design</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2011.png?alt=media&token=6fca478b-8c0c-4c90-a90f-595f7349aa6c" rel="gallery_cjno04mwx00pct6ruxits2s7f">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2011.png?alt=media&token=6fca478b-8c0c-4c90-a90f-595f7349aa6c" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>字體如果沒有授權問題，是否能夠直接嵌入於網頁之中呢？（請注意：大部分中文字體都會有授權的問題）</p>
+<p>當然是可以的，英文網站中許多都會使用自訂的字體，但中文字體可就沒有這麼容易。因為英文字體檔案小，直接寫入 CSS 即可運作，而中文字體動輒數十 MB，Noto Sans 整包甚至高達上百 MB，下載這些字體就會花去許多時間且非常消耗網路資源。</p>
+<h3 id="英文網頁字體"><a href="#英文網頁字體" class="headerlink" title="英文網頁字體"></a>英文網頁字體</h3><p>英文字體運用上僅需要注意授權，而最大宗的免費字體就是 <a href="https://fonts.google.com/" target="_blank" rel="external">Google Fonts</a>，包含襯線、無襯線、裝飾、等寬、手寫等等風格，而這些字體都有完整的預覽及字重選擇。</p>
+<p>如果不是對於字體有極端要求者，這個網站已經可以滿足大部分的需求。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FDDACBFE9-652F-4BDA-97AF-8E02D50BE536.png?alt=media&amp;token=86b82c84-33d1-41a0-8308-70b1f1a5a8f8" alt=""></p>
+<p>選用特定字體後，也能自行調整所需要的字重，避免一次載入過多的字體導致下載速度變慢。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FC1C57D0E-88DA-4169-8E8E-2DAC691BFC2C.png?alt=media&amp;token=93ef2958-5a9d-4bd1-8b7f-039e8c76fcd6" alt=""></p>
+<h3 id="中文網頁字體"><a href="#中文網頁字體" class="headerlink" title="中文網頁字體"></a>中文網頁字體</h3><p>中文字的網頁字體就沒有那麼容易了，主要原因在於中文字太多導致檔案太大，另外就是中文字的廠商大多不會免費提供（畢竟字太多難以開發，很難免費授權），所以這些就要找專屬的線上字體供應商，如台灣知名的 <a href="https://dfo.dynacw.com.tw/" target="_blank" rel="external">華康</a>、<a href="https://ifontcloud.com/index/index.jsp" target="_blank" rel="external">文鼎</a> 到先前知名的金萱字體開發商 <a href="https://www.justfont.com/" target="_blank" rel="external">Justfont</a> 都有提供這樣得服務。</p>
+<p>這些服務是直接從網頁中透過 JavaScript 取得所用到的中文字體，再從伺服器重新下載這些字型，所以速度會比直接直接下載完整字體檔案快上非常多，但也因為如此這類型服務都需要另外付費才能使用。</p>
+<p>另外Google 也有推出 <a href="https://fonts.google.com/earlyaccess" target="_blank" rel="external">Early Access 的 Noto Sans</a>，在這之中也當然包含繁體中文的 Noto Sans。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202018-10-25%20%E4%B8%8A%E5%8D%8810.51.42.png?alt=media&amp;token=65dfb3a7-de70-4424-aa20-e0f56c10b99b" alt=""></p>
+<p>這段也有看到 Google 不斷的在優化這段服務，最近一次測試 Noto Sans Regular（中等字重）的下載大小僅需要 1.8MB，實際體驗上速度也比先前快上許多，但畢竟是屬於測試中的服務，使用時還是多虛注意。</p>
+<h2 id="網頁設計的注意事項"><a href="#網頁設計的注意事項" class="headerlink" title="網頁設計的注意事項"></a>網頁設計的注意事項</h2><p>因此，我們在設計網頁時盡可能使用系統預設的字體，系統預設字在網頁上都有經過優化，所以都有很好的閱讀性（大部分系統文字在 12px 都還有不錯的辨識性）。設計時也可以依據主要用戶群（桌面、行動版）、較多人使用的系統作為設計（如微軟的正黑體）。</p>
+<p>尤其在中文的部分，未搭配任何 Web fonts 服務時應避免使用特殊的字體，多利用系統的字體來進行設計。有搭配 Web fonts 服務時可多將字體利用在標題上以維持文字的辨識性，如果用在內文，須確保在不同的系統上辨識性依然是足夠的，如其它明體在小字時就不一定比「新細明體」辨識性還高（可參考：<a href="https://www.justfont.com/fonts）。" target="_blank" rel="external">https://www.justfont.com/fonts）。</a></p>
+<p>思源明體在 16px 左右的狀態<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202018-10-26%20%E4%B8%8A%E5%8D%8811.43.52.png?alt=media&amp;token=4654607b-caac-403c-8dee-dca36acf235f" alt=""></p>
+<p>系統字體 16px<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202018-10-26%20%E4%B8%8A%E5%8D%8811.43.52.png?alt=media&amp;token=4654607b-caac-403c-8dee-dca36acf235f" alt=""></p>
+<p>而在更小的字體上落差也會更為明顯，使用前可多利用該服務來做測試，並且選擇合適的字體運用。</p>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/design/2018/10/25/fonts/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">鐵人賽：系統字體介紹</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/26/web-fonts/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2011.png?alt=media&token=6fca478b-8c0c-4c90-a90f-595f7349aa6c)" alt="鐵人賽：網頁設計 - 網路字體運用" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/26/web-fonts/" class="title">鐵人賽：網頁設計 - 網路字體運用</a></p>
+                            <p class="item-date"><time datetime="2018-10-25T16:00:00.000Z" itemprop="datePublished">2018-10-26</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/25/fonts/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2011.png?alt=media&token=6fca478b-8c0c-4c90-a90f-595f7349aa6c)" alt="鐵人賽：系統字體介紹" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/25/fonts/" class="title">鐵人賽：系統字體介紹</a></p>
+                            <p class="item-date"><time datetime="2018-10-24T16:00:00.000Z" itemprop="datePublished">2018-10-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/24/button-color/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2010.png?alt=media&token=dc11531a-8085-4998-bf0d-771c9cda6c72)" alt="鐵人賽：色彩運用(3) - 按鈕的配色" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/24/button-color/" class="title">鐵人賽：色彩運用(3) - 按鈕的配色</a></p>
+                            <p class="item-date"><time datetime="2018-10-23T16:00:00.000Z" itemprop="datePublished">2018-10-24</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/23/link-color/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2009.png?alt=media&token=9c753bac-be7d-4ea9-b477-0453344de08d)" alt="鐵人賽：色彩運用(2) - 連結的配色" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/23/link-color/" class="title">鐵人賽：色彩運用(2) - 連結的配色</a></p>
+                            <p class="item-date"><time datetime="2018-10-22T16:00:00.000Z" itemprop="datePublished">2018-10-23</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/22/accessibility/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2008.png?alt=media&token=aa26b49e-bb7a-4b2c-b2e2-4a8790234223)" alt="鐵人賽：色彩運用(1) - 你的網頁文字是否足夠清楚呢？" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/22/accessibility/" class="title">鐵人賽：色彩運用(1) - 你的網頁文字是否足夠清楚呢？</a></p>
+                            <p class="item-date"><time datetime="2018-10-21T16:00:00.000Z" itemprop="datePublished">2018-10-22</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">11</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 17.06px;">d3js</a> <a href="/tags/design/" style="font-size: 16.47px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.18px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.24px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.59px;">promise</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.82px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io/design/2018/10/26/web-fonts/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
