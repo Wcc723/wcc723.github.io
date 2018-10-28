@@ -4,6 +4,150 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：網頁設計 - 圖片格式的運用]]></title>
+      <url>https://wcc723.github.io/design/2018/10/28/image-format/</url>
+      <content type="html"><![CDATA[<p>隨著裝置解析度越來越高，如果是以 1:1 的尺寸輸出圖示時，都會明顯地看到圖示邊緣出現鋸齒，這樣的情況下無疑是降低設計的品質，為了避免這樣問題，實作中通常會使用兩種方式來解決：</p>
+<ol>
+<li>輸出更高解析度的圖片</li>
+<li>輸出向量圖片</li>
+</ol>
+<p>更高解析度需要多高？對於網路速度是否有影響？向量圖的使用情境及限制為何？本篇將依據這些概念介紹。</p>
+<h2 id="格式選擇參考"><a href="#格式選擇參考" class="headerlink" title="格式選擇參考"></a>格式選擇參考</h2><p>網頁靜態圖片選擇主要有三種（還有另一種為 base64，這就不在我們討論範圍內）：</p>
+<ul>
+<li>jpg：是屬於破壞性的檔案壓縮方式，圖片可以大幅降低檔案尺寸，不過也會因此導致品質降低，壓縮的過程中可以依據需求調整壓縮比，藉此控制品質及檔案大小間的平衡。</li>
+<li>png：壓縮比較低的圖片格式，相對於 JPG 來說圖片檔案會大不少，但影像品質也相對較佳，除了有更好影像外還同時具有「透明」的特性。</li>
+<li>svg：向量的圖片格式，圖形定位皆是使用數學位置，且「沒有解析度」的限制，因此圖片無限放大都不會失真。另外 SVG 由於是一些文字標示而成，所以圖片尺寸普遍來說都很小。</li>
+</ul>
+<h3 id="使用情境"><a href="#使用情境" class="headerlink" title="使用情境"></a>使用情境</h3><h4 id="圖示、商標"><a href="#圖示、商標" class="headerlink" title="圖示、商標"></a>圖示、商標</h4><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F49591BFC-18AD-4195-8D8C-E581DA967837.png?alt=media&amp;token=d5f80c34-eb6b-4d12-a651-f73bb07d373b" alt=""></p>
+<blockquote>
+<p>SVG：可縮放向量圖形，圖片來源：<a href="https://zh.wikipedia.org/wiki/%E5%8F%AF%E7%B8%AE%E6%94%BE%E5%90%91%E9%87%8F%E5%9C%96%E5%BD%A2" target="_blank" rel="external">wiki</a></p>
+</blockquote>
+<p>由於商標會使用在許多情境，如網頁頁首、頁尾以及行動版等，在不同的尺寸變化下依然要維持高品質的清晰度來維持形象，過去大多都是使用 png 的縮放調整，但在目前的裝置解析度不斷提高的情況下，使用 svg 替代 png 是相對更好的解決方案。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F27DF021C-E955-4E8D-A4EB-16AF22CEC26C.png?alt=media&amp;token=79e400b9-8c1c-414b-8047-c8b1f7b862ba" alt=""></p>
+<blockquote>
+<p>範例網站：甜點電商的上方 Logo 就是使用 SVG 來呈現</p>
+</blockquote>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FD59CECDC-D8AD-416C-A20F-D490E2B853D9.png?alt=media&amp;token=b27f8a04-7faa-4d6e-8674-767abb44309e" alt=""></p>
+<blockquote>
+<p>目前大多網站均是使用 svg 作為商標顯示的格式。圖中為 <a href="https://sketchapp.com/" target="_blank" rel="external">Sketch 網站</a></p>
+</blockquote>
+<p>除了商標外，另一個很常使用 svg 格式則為圖示（icon），過去圖示也是同樣使用 png，但在高解析度的裝置下來說卻顯得不足。使用 svg 替代主要原因在於 icon：</p>
+<ul>
+<li>圖形單純 - 不會混用真實圖案</li>
+<li>高辨識性 - 需要高解析度</li>
+<li>大量使用 - 檔案要小</li>
+<li>需要可編輯性 - 依據情境重新賦予色彩</li>
+</ul>
+<p>在 Github 的網站中就可以看到大部分圖示均是使用 svg，且可依據情境重新調整色彩。如下圖選擇的 “Code” 選項的 icon 接近黑色，旁邊的 “Issue” 則是顯示淡灰色。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F1270BD49-B266-44C7-B47B-4F2FF5054C95.png?alt=media&amp;token=5a5040ce-3319-4d34-93eb-026d0bf8543f" alt=""></p>
+<p>在 Github 中的網站是透過前端工具處理，讓 svg 圖形的引用更為容易，但實戰中 svg 圖形在管理上是有些門檻的，下一個章節會介紹使用 icon fonts 來處理 svg 在圖示上的應用方法。</p>
+<h2 id="主要圖片"><a href="#主要圖片" class="headerlink" title="主要圖片"></a>主要圖片</h2><p>好的圖片能夠增加網站的豐富度，也同時能夠增加訊息傳的效益，現在鮮少有網站是不透過任何圖片來傳達訊息。舉凡是 頁首大圖、商品圖片、輪播、說明圖片等等，這些都是為了增加訊息傳達效益的圖片，會建議使用 png 來作為顯示的格式，主要是 png 具有以下的特性：</p>
+<ul>
+<li>高品質 - 確保顯示的品質</li>
+<li>點陣 - 增加畫面的真實性</li>
+<li>透明特性 - 可採用堆疊的方式呈現</li>
+</ul>
+<p>如下圖，為了確保圖片品質及精緻甜點的口感，png 是不錯的選擇。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F79389AC5-DF50-472E-B6BB-EB66043DED43.png?alt=media&amp;token=7d10d305-1d5d-4ad5-a23b-e9483232ae33" alt=""></p>
+<p>主要圖片除了有良好的呈現外，必要時還需要兼顧不同裝置的「顯示清晰度」，如一般的螢幕的 PPI 約落在 100 上下（<a href="https://zh.wikipedia.org/wiki/%E6%AF%8F%E8%8B%B1%E5%AF%B8%E5%83%8F%E7%B4%A0" target="_blank" rel="external">PPI 說明</a>），但到了部分裝置的 PPI 就會達到 320 甚至更高的 PPI（如 Apple 的 Retina Display），此時就會建議使用「雙倍」以上的尺寸做輸出。</p>
+<p>以 Sketch 為例，當輸出一張長寬為 <code>1200 * 628</code> 圖片時，如果調整為 2 倍尺寸則會輸出一張 <code>2400 * 1256</code> 的圖片。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F5EFA0D4C-D135-434F-A469-B633500148D3.png?alt=media&amp;token=b35e39f5-21b4-4f5a-9ac2-c531c5cfd200" alt=""></p>
+<p>此時也要特別注意，圖片的檔案大小將可能<strong>成長為四倍</strong>，如一張 700kb 的圖片輸出成 2 倍尺寸大小時，檔案可能成長為 2.4mb。因此實際運用時會建議隨需求調整圖片輸出的大小，設計師部分可以規劃不同尺寸的輸出，而前端在此就需要依據需求調整運用的倍數。</p>
+<p>使用 png 例外情況：</p>
+<ol>
+<li>圖片過多，需要兼顧網路速度時還是會建議轉用 jpg</li>
+<li>圖片是人工繪製，向量是更好的選項時會建議使用 svg</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FE8715E4D-6EE5-4B3D-9055-7C287F7EBC7B.png?alt=media&amp;token=90f4993b-f642-4789-a696-2de3aec64e28" alt=""></p>
+<blockquote>
+<p>手繪向量圖片 svg 依然是好選擇：圖片來源 <a href="https://github.com/" target="_blank" rel="external">Github</a></p>
+</blockquote>
+<h2 id="背景圖"><a href="#背景圖" class="headerlink" title="背景圖"></a>背景圖</h2><p>另外，背景圖片的運用也是很重要的，相對於主要圖片來說背景圖片的重要性降低很多，如果畫面同時是使用真實景色的圖片，會更建議使用 jpg 來做呈現，藉此降低檔案的尺寸。</p>
+<p>Yahoo 氣象的背景會使用當地的風景圖片，藉此來呈現符合情境的資訊，而這麼大張的圖片作為背景，如果使用 png 將會佔去不少流量，所以使用 jpg 將是一個好選項（原圖 1280 * 720，約 170kb）。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FBCFE2854-5958-480E-9523-EC5E74D312DD.png?alt=media&amp;token=c1bb9200-6ab3-4b81-a160-db7f2bfa2686" alt=""></p>
+<p>大多數來說，真實圖片的背景會使用 jpg 來呈現，這裡也介紹一個圖案類型的背景網站給大家參考，由於這個網站是使用「四方連續」的背景手法，這類型的圖片僅需要小小一張就能不斷重複使用，所以就直接使用 png 來維持背景圖的品質，網址：<a href="https://www.toptal.com/designers/subtlepatterns/" target="_blank" rel="external">https://www.toptal.com/designers/subtlepatterns/</a></p>
+<p>此網站的背景風格非常多，下載可同時選用 2 倍尺寸的圖案，網站的圖案都是可以免費使用，但請注意 <a href="https://www.toptal.com/designers/subtlepatterns/faq/" target="_blank" rel="external">使用條款及 FAQ</a></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F738F3A7C-38E1-4FDC-A413-139F44C18A75.png?alt=media&amp;token=2a065df3-0168-4a8d-98a8-bb69fce465b1" alt=""></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>現在工具輸出圖片也越來越方便，只要一鍵就可以大量輸出，因此設計師更需要了解各種圖片格式的差異，並且輸出符合需求的格式以便於工程師作為開發使用。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> design </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> design </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[鐵人賽：網頁設計 - 文字大小、行高與空間上的關係]]></title>
+      <url>https://wcc723.github.io/design/2018/10/27/fonts-family/</url>
+      <content type="html"><![CDATA[<p>一般平面設計師再進入網頁環境時，會不清楚網頁設計所用的單位數值，造成設計稿與開發的畫面有嚴重的落差；且網頁設計本身有許多「慣用的數值」，建議一開始也能先使用大家通用的數值，待了解所有數值對於畫面、軟體、技術上等影響後再做調整。</p>
+<h2 id="文字樣式屬性"><a href="#文字樣式屬性" class="headerlink" title="文字樣式屬性"></a>文字樣式屬性</h2><p>由於網頁並沒有像繪圖軟體那麼的自由，所以才會有許多文章提到「設計師需要學程式」，因為之中有許多技術限制需要設計師去理解，這會有助於設計執行上的可行性。</p>
+<h3 id="文字單位"><a href="#文字單位" class="headerlink" title="文字單位"></a>文字單位</h3><p>文字分為絕對單位及相對單位，絕對單位與平面設計概念一致，基本上是設定多少，畫面呈現就是固定大小；而相對單位則是沒有固定大小，所設定的數值會受到外層、HTML 設定、裝置畫面大小等等而定，相對來說靈活很多，但在掌握上也困難許多。</p>
+<p>絕對尺寸：</p>
+<ul>
+<li>px：最常使用的絕對單位，過去會使用略小的數值，目前是以預設的 16px 為主，請避免設定過小的字體導致閱讀上的困難。</li>
+<li>pt：很少用到的數值，請不要用印刷的 “pt” 作為「螢幕顯示」時的單位（另一種 pt 為 iOS 上所定義的 pt，是接近於 CSS 上的 px，這段確實很容易搞混，請謹記不要使用印刷及 CSS 的 pt 單位即可）。</li>
+</ul>
+<p>相對尺寸：</p>
+<ul>
+<li>em：<code>1em</code> = 一個字體大小，是相對於父層的單位，所以當父層為 <code>32px</code> 時， <code>1em</code> 則為 <code>32px</code> 大，而這個數值可以不斷疊加。</li>
+<li>rem：目前主流的單位尺寸，<code>1rem</code> = 一個字體大小，相對於 HTML 所定義的文字大小而定，可以在頁面呈現後調整設定值修改畫面的單位尺寸。</li>
+<li>%：類似 em，使用上沒有太大差異，細節可<a href="https://kyleschaeffer.com/development/css-font-size-em-vs-px-vs-pt-vs/" target="_blank" rel="external">參考</a>。</li>
+<li>vw, vh：1vw = 瀏覽器的寬度，1vh = 瀏覽器的高度，比較常用在畫面上，但也是有機會用在文字上，如：Header 的主要文字。<blockquote>
+<p>延伸介紹：<a href="https://www.hexschool.com/2016/01/02/2016-08-08-em-vs-rem/" target="_blank" rel="external">實際展示 EM 與 REM 的差異</a></p>
+</blockquote>
+</li>
+</ul>
+<h3 id="文字尺寸"><a href="#文字尺寸" class="headerlink" title="文字尺寸"></a>文字尺寸</h3><p>目前來說，網頁開發大多都是使用 16px 作為基準字，雖然設計訓練中都習慣將文字縮寫以增加質感，但請別忽略網頁本質是為了傳達訊息，且小字在行動版上閱讀上更為困難，盡可能維持預設值來製作網頁設計。</p>
+<p>由於 <code>rem</code> 的出現，我們不再需要行動版與桌面版完全統一相同的字體大小（雖然實作上還是同一為主）。設計時我們依然會以 <code>px</code> 為主，但為了配合開發上的方便，通常會使用固定級數的方式作為大小字的變換，範例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">設計師用的尺寸：   工程師所用的尺寸</div><div class="line">16px        :   1rem</div><div class="line">20px        :   1.25rem</div><div class="line">24px        :   1.5rem</div><div class="line">28px        :   1.75rem</div><div class="line">32px        :   2rem</div><div class="line">40px        :   2.5rem</div></pre></td></tr></table></figure>
+<p>同理，如果將預設尺寸改為 15px，相關的數值也會重新調整（15px = 1rem,30px = 2rem…）。</p>
+<h4 id="設計上注意事項"><a href="#設計上注意事項" class="headerlink" title="設計上注意事項"></a>設計上注意事項</h4><p>當如果使用 <code>rem</code> 為單位時且預設值為 16px 時，應避免出現 17px, 21px, 25px 這種尺寸造成轉換上的困擾（就算不使用 rem 也不該如此 :D），盡可能維持相同邏輯在執行網頁設計。</p>
+<h3 id="行高"><a href="#行高" class="headerlink" title="行高"></a>行高</h3><p>平面設計中，我們習慣使用固定的數值，例如 12pt 的文字大小搭配 16pt 的行高，但在網頁設計中則習慣使用相對的倍數來呈現；如 line-height: 1.5 來代表 1.5 倍的行高，此時文字大小如果設定為 16px，那麼行高則為 24px。</p>
+<p>並且行高的設定，通常會設置於網頁的 <code>body</code> 上，也就是全網站套用相同的預設行高，如果有例外再另外條整。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">如果 body 行高設定為 1.5</div><div class="line">其它文字大小的相對行高</div><div class="line">16px :   24px</div><div class="line">20px :   30px</div><div class="line">24px :   36px</div></pre></td></tr></table></figure>
+<p>除此之外，行高的設計也會影響到「空間的顯示」，平面設計中的文字空間與其它圖文基本上是毫無關聯性的，但在網頁設計中除了設定成絕對定位，其餘物件的空間都會有彼此的關連性。</p>
+<p>下方是行高 1.5 倍的文字段落，所佔用的區塊則使用橘色顯示，後方緊貼著一塊紫色方塊，這個方框並不會與文字產生空間上的交錯。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FDCFAF804-E52F-4560-94AB-BBC775DC2D39.png?alt=media&amp;token=b47371fc-c623-4a8b-a926-8ff265702059" alt=""></p>
+<p>以下分別使用行高 0.6、1、1.5、3 再呈現一次，如果行高使用 0.6 的情況，文字會超出橘色的空間範圍，並且與紫色產生些微的交錯；而在行高 3 時文字距離橘色邊框距離增加許多，並且會將紫色方框推向後方。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F96456BBA-EE79-4AE3-ADA8-F5DD602001A4.png?alt=media&amp;token=ae831135-0792-4934-ad79-3a49ae004b01" alt=""></p>
+<h4 id="設計上注意事項-1"><a href="#設計上注意事項-1" class="headerlink" title="設計上注意事項"></a>設計上注意事項</h4><p>因此在設計文字時，也要注意繪圖軟體所呈現的範圍，如下圖：當設計 line-height 為 3 倍時，繪圖軟體自然會使用正確的方框尺寸，此時應避免與其它元素產生交錯。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_10_13_%E4%B8%8B%E5%8D%883_57.png?alt=media&amp;token=8ef4e98d-5d96-4f29-9c64-d80bf5192291" alt=""></p>
+<h4 id="另一個常見的錯誤習慣"><a href="#另一個常見的錯誤習慣" class="headerlink" title="另一個常見的錯誤習慣"></a>另一個常見的錯誤習慣</h4><p>因為行高會影響到文字呈現的空間，因此會有不少網頁設計師透過 line-height 來製作垂直置中。這會導致文字再多行時也會使用到錯誤的行高，並且會降低 CSS 的設計彈性，因此非常不建議使用 <code>line-height</code> 的數值製作垂直置中。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="selector-class">.vertical-align</span> &#123;</div><div class="line">  <span class="attribute">line-height</span>: <span class="number">48px</span>;</div><div class="line">  <span class="attribute">height</span>: <span class="number">48px</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正確應使用 padding、flex 等方法來做垂直置中。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>本篇的文字設定在畫面上很難找到問題，但會影響該設計師是否易於與工程師配合，所以追求美感的同時，依然要注意畫面的邏輯及可行性。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> design </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> design </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：網頁設計 - 網路字體運用]]></title>
       <url>https://wcc723.github.io/design/2018/10/26/web-fonts/</url>
       <content type="html"><![CDATA[<p>字體如果沒有授權問題，是否能夠直接嵌入於網頁之中呢？（請注意：大部分中文字體都會有授權的問題）</p>
@@ -882,11 +1026,11 @@
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -972,11 +1116,11 @@
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1038,11 +1182,11 @@
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1102,11 +1246,11 @@
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1164,11 +1308,11 @@
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1247,11 +1391,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1307,11 +1451,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1355,11 +1499,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1407,11 +1551,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1458,11 +1602,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1496,11 +1640,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1537,11 +1681,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1596,11 +1740,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1668,11 +1812,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1713,11 +1857,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1771,11 +1915,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1819,11 +1963,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1862,11 +2006,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1914,11 +2058,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -1966,11 +2110,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2029,11 +2173,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2075,11 +2219,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2127,11 +2271,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2182,11 +2326,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2231,11 +2375,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2300,11 +2444,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2358,11 +2502,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2414,11 +2558,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2492,11 +2636,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
@@ -2537,11 +2681,11 @@ fetch(url)
         
         <tags>
             
+            <tag> ironman </tag>
+            
             <tag> javascript </tag>
             
             <tag> js </tag>
-            
-            <tag> ironman </tag>
             
         </tags>
         
