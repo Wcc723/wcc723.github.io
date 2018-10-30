@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>鐵人賽：網頁設計 - SVG 輸出注意事項 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="design,ironman" />
+    
+    
+
+    <meta name="description" content="向量工具、Adobe XD、Sketch 也都能夠輸出 SVG 圖片，但在輸出時有些小地方也需要注意一下，避免在本地端看似沒有問題，但用戶卻看到的卻與預期不同。
+首先瞭解一下 SVG 本身其實是 XML 格式的檔案，這是一個類似 HTML 格式的結構標記，如果要繪製一個方形，則會使用 &amp;lt;rect&amp;gt; 的標籤，並定義他的座標、尺寸、填色樣式等等。
+12345&amp;lt;!-- SVG tag">
+<meta property="og:type" content="article">
+<meta property="og:title" content="鐵人賽：網頁設計 - SVG 輸出注意事項">
+<meta property="og:url" content="https://wcc723.github.io/design/2018/10/30/image-svg/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="向量工具、Adobe XD、Sketch 也都能夠輸出 SVG 圖片，但在輸出時有些小地方也需要注意一下，避免在本地端看似沒有問題，但用戶卻看到的卻與預期不同。
+首先瞭解一下 SVG 本身其實是 XML 格式的檔案，這是一個類似 HTML 格式的結構標記，如果要繪製一個方形，則會使用 &amp;lt;rect&amp;gt; 的標籤，並定義他的座標、尺寸、填色樣式等等。
+12345&amp;lt;!-- SVG tag">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2016.png?alt=media&token=9b730f32-5a97-4e1e-a76a-a6d9a0ea67e9">
+<meta property="og:updated_time" content="2018-10-30T02:40:35.765Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="鐵人賽：網頁設計 - SVG 輸出注意事項">
+<meta name="twitter:description" content="向量工具、Adobe XD、Sketch 也都能夠輸出 SVG 圖片，但在輸出時有些小地方也需要注意一下，避免在本地端看似沒有問題，但用戶卻看到的卻與預期不同。
+首先瞭解一下 SVG 本身其實是 XML 格式的檔案，這是一個類似 HTML 格式的結構標記，如果要繪製一個方形，則會使用 &amp;lt;rect&amp;gt; 的標籤，並定義他的座標、尺寸、填色樣式等等。
+12345&amp;lt;!-- SVG tag">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2016.png?alt=media&token=9b730f32-5a97-4e1e-a76a-a6d9a0ea67e9">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1762761817269554');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <!-- Google Adsense -->
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8296684122088055",
+        enable_page_level_ads: true
+    });
+    </script>
+</head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <a href="/">
+                        <img src="/images/casper_blog.svg" alt="">
+                    </a>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/design/">design</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-image-svg" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        鐵人賽：網頁設計 - SVG 輸出注意事項
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/design/2018/10/30/image-svg/" class="article-date">
+    <time datetime="2018-10-29T16:00:00.000Z" itemprop="datePublished">2018-10-30</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/design/">design</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2016.png?alt=media&token=9b730f32-5a97-4e1e-a76a-a6d9a0ea67e9" rel="gallery_cjnv45shh00xh1gru7shsufot">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2016.png?alt=media&token=9b730f32-5a97-4e1e-a76a-a6d9a0ea67e9" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>向量工具、Adobe XD、Sketch 也都能夠輸出 SVG 圖片，但在輸出時有些小地方也需要注意一下，避免在本地端看似沒有問題，但用戶卻看到的卻與預期不同。</p>
+<p>首先瞭解一下 SVG 本身其實是 XML 格式的檔案，這是一個類似 HTML 格式的結構標記，如果要繪製一個方形，則會使用 <code>&lt;rect&gt;</code> 的標籤，並定義他的座標、尺寸、填色樣式等等。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- SVG tag --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"120"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 矩行 tag --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">"2"</span> <span class="attr">y</span>=<span class="string">"2"</span> <span class="attr">width</span>=<span class="string">"100"</span> <span class="attr">height</span>=<span class="string">"100"</span> <span class="attr">style</span>=<span class="string">"stroke: #333; stroke-width: 3; fill: MediumTurquoise;"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>接下來就會出現如下的矩形。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F3DA8CB58-04FC-44B8-8F52-BBC29CB9C825.png?alt=media&amp;token=cfd7c256-1a92-4d1a-a2dd-ec12ed0760a8" alt=""></p>
+<p>SVG 一些常見的圖形原始碼可以 <a href="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/">參考</a>。所以 SVG 輸出後與其它的圖片有很大的不同，他依然是透過一些文字標記組成，再有了基本了解後，我們再透過這些觀念了解輸出的圖片為什麼可能出錯，以及怎麽從輸出後的原始碼發現錯誤。</p>
+<h3 id="文字務必轉外框"><a href="#文字務必轉外框" class="headerlink" title="文字務必轉外框"></a>文字務必轉外框</h3><p>我們在印刷時，給予印刷廠檔案的文字都會外框筆畫，為的就是避免印刷廠沒有特定的字體，導致字體的顯示與預期並不同。</p>
+<p>以下圖來說，「Sweetaste」有分為上方的外框字體，下方則是純文字。上方的輸出後會以 “路徑” 的方式來繪製，從圖中可以看到文字周圍都是點與線的結合；而下方的文字則是純文字，只有一條下底線表示而已。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FB70A169A-DDAE-43C5-AD2E-DB078CA6ADAC.png?alt=media&amp;token=68cc3688-a2bf-4250-91ee-37afaf7fa13e" alt=""></p>
+<p>外框字體的原始碼如下，都是由 <code>path</code> 標示路徑組成（下述程式碼參考即考）：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">path</span> <span class="attr">class</span>=<span class="string">"cls-2"</span> <span class="attr">d</span>=<span class="string">"M55.48,40.91H56A6.11,6.11,0,0,0,55.48,43c0,3.28,3.49,5,6.15,5,4.22,0,6.66-2.34,6.66-5.76a5.72,5.72,0,0,0-2.16-4.46l-2.55-2.34c-2.27-2-3.56-3.93-3.56-6.55,0-3.93,4.17-7,9.32-7,3.13,0,4.68,1.3,6.3,1.3a1.28,1.28,0,0,0,1.29-.94l.54.11L75,29.25h-.43a7.21,7.21,0,0,0,.32-2.13c0-3.31-3.2-4.71-5.54-4.71-3.17,0-5.51,1.76-5.51,4.42,0,2.24,1.3,3.64,2.74,4.94l3.2,2.88c1.73,1.54,3,3.09,3,5.79,0,4.07-4,8.06-10.9,8.06-4,0-5.15-1.47-7-1.47a1.43,1.43,0,0,0-1.37,1.15l-.51-.11Z"</span>/&gt;</span><span class="tag">&lt;<span class="name">path</span> <span class="attr">class</span>=<span class="string">"cls-2"</span> <span class="attr">d</span>=<span class="string">"M90.54,48.22A3.24,3.24,0,0,0,91,46.56a4.9,4.9,0,0,0-.64-2l-.94-2c-.22-.47-.43-.94-.61-1.41-.69.65-1.4,1.23-2.09,1.77l-1.8,1.47c-1.11.94-1.73,1.48-2.45,2.2a10.23,10.23,0,0,0-1.58,1.91l-.43-.25a3.34,3.34,0,0,0,.43-1.66,4.76,4.76,0,0,0-.65-2l-.93-2a8.76,8.76,0,0,1-1-3.35c0-2.52,1.88-4.75,4.4-6.77l.72-.57.32.39a5.58,5.58,0,0,0-2.12,4.5c0,1.62,1,4,1.8,5.62a5.76,5.76,0,0,1,.68,2c3.49-2.84,4.75-4.79,4.75-7,0-1.47-.83-2.05-.83-3.49a1.86,1.86,0,0,1,2-1.8,1.92,1.92,0,0,1,1.83,1.12l.94-.8.72-.57.32.39a5.58,5.58,0,0,0-2.12,4.5c0,1.62,1,4,1.8,5.62a5.56,5.56,0,0,1,.68,2c3.5-2.84,4.54-4.79,4.54-7,0-1.47-.83-2.05-.83-3.49a1.86,1.86,0,0,1,2-1.8c1.62,0,2.19,1.44,2.19,2.81,0,3.27-2.88,6-5.32,8L95,44.36c-1.12.94-1.73,1.48-2.45,2.2A10.35,10.35,0,0,0,91,48.47Z"</span>/&gt;</span><span class="comment">&lt;!-- 省略 --&gt;</span></div></pre></td></tr></table></figure></p>
+<p>純文字的程式碼，僅有直接標示「Sweetaste」的文字，並透過 <code>cls-1</code> 來替換成特定字體，<strong>這個情況下如果用戶沒有該字體，那麼就僅會用系統字體顯示</strong>，所以請特別注意，盡可能外框所有字體。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"cls-1"</span> <span class="attr">transform</span>=<span class="string">"translate(54.65 130)"</span>&gt;</span>Sweetaste<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h3 id="注意輸出後的原始碼是否正確"><a href="#注意輸出後的原始碼是否正確" class="headerlink" title="注意輸出後的原始碼是否正確"></a>注意輸出後的原始碼是否正確</h3><p>先前不斷地說明使用工具的重要性，因為輸出原始碼時結果也會不同，如下原始碼是透過 Illustrator 所輸出，圖片是一個正方形，僅有透過 <code>.cls-1</code> 調整色彩。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">id</span>=<span class="string">"圖層_1"</span> <span class="attr">data-name</span>=<span class="string">"圖層 1"</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 73 73"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">defs</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">      .cls-1 &#123;</div><div class="line">        fill: #3f5d45;</div><div class="line">      &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">defs</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>tester<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">rect</span> <span class="attr">class</span>=<span class="string">"cls-1"</span> <span class="attr">width</span>=<span class="string">"73"</span> <span class="attr">height</span>=<span class="string">"73"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F896A6B79-2A8B-4266-8EFA-9C9EC9CE66B7.png?alt=media&amp;token=9100e8a0-5def-4607-9598-189a47fb768c" alt=""></p>
+<p>接下來透過 Illustrator 加上陰影。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F8725EFED-1900-474A-9EE5-CCCA6C38DBD8.png?alt=media&amp;token=db3f0885-df0c-4838-9a9c-72378f684006" alt=""></p>
+<p>然後再重新輸出一次，會出現 <code>data:image/png;base64....</code> 的 base64 原始碼，也就是說整個陰影都是透過 “點陣圖” 的方式來呈現，這會導致：</p>
+<ul>
+<li>SVG 檔案大小會增加不少</li>
+<li>尚失向量圖的特性（縮放、再編輯等）</li>
+</ul>
+<p>SVG 檔案普遍來說都非常小，如果檔案有不正常的增大時（明顯比其他同類型檔案大數倍），那麼請透過文字編輯工具打開 SVG 檔案（注意 <code>image</code> 那行），確實了解檔案是否有問題。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">xmlns:xlink</span>=<span class="string">"http://www.w3.org/1999/xlink"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 73 73"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">defs</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">      .cls-1 &#123;</div><div class="line">        isolation: isolate;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      .cls-2 &#123;</div><div class="line">        mix-blend-mode: darken;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      .cls-3 &#123;</div><div class="line">        opacity: 0.75;</div><div class="line">        mix-blend-mode: multiply;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      .cls-4 &#123;</div><div class="line">        fill: #3f5d45;</div><div class="line">      &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">defs</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>tester<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">g</span> <span class="attr">class</span>=<span class="string">"cls-1"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">g</span> <span class="attr">id</span>=<span class="string">"圖層_1"</span> <span class="attr">data-name</span>=<span class="string">"圖層 1"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">g</span> <span class="attr">class</span>=<span class="string">"cls-2"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">image</span> <span class="attr">class</span>=<span class="string">"cls-3"</span> <span class="attr">width</span>=<span class="string">"103"</span> <span class="attr">height</span>=<span class="string">"103"</span> <span class="attr">transform</span>=<span class="string">"translate(-8 -8)"</span> <span class="attr">xlink:href</span>=<span class="string">"data:image/png;base64,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"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">rect</span> <span class="attr">class</span>=<span class="string">"cls-4"</span> <span class="attr">width</span>=<span class="string">"73"</span> <span class="attr">height</span>=<span class="string">"73"</span> /&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">g</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">g</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">g</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>先前就有聽過 <code>svg</code> 輸出時檔案居然要數 mb，仔細一問才發現是 Illustrator 輸出帶有了漸層、濾鏡等效果（目前版本漸層不會出錯，但濾鏡、陰影還是會有問題），如果 svg 輸出時發生這樣的問題時，會建議直接改用 png 不要使用有問題的 svg，因為已經失去 svg 原有的特色（檔案小、無縮放限制等）。</p>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/design/2018/10/29/image-opti/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">鐵人賽：網頁設計 - 圖片壓縮方法</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/30/image-svg/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2016.png?alt=media&token=9b730f32-5a97-4e1e-a76a-a6d9a0ea67e9)" alt="鐵人賽：網頁設計 - SVG 輸出注意事項" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/30/image-svg/" class="title">鐵人賽：網頁設計 - SVG 輸出注意事項</a></p>
+                            <p class="item-date"><time datetime="2018-10-29T16:00:00.000Z" itemprop="datePublished">2018-10-30</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/29/image-opti/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2015.png?alt=media&token=e343d0d7-27ba-493f-941d-f1d5a6ddf21a)" alt="鐵人賽：網頁設計 - 圖片壓縮方法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/29/image-opti/" class="title">鐵人賽：網頁設計 - 圖片壓縮方法</a></p>
+                            <p class="item-date"><time datetime="2018-10-28T16:00:00.000Z" itemprop="datePublished">2018-10-29</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/28/image-format/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2014.png?alt=media&token=4fe9ce9e-e087-4356-a773-2007849a0ecd)" alt="鐵人賽：網頁設計 - 圖片格式的運用" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/28/image-format/" class="title">鐵人賽：網頁設計 - 圖片格式的運用</a></p>
+                            <p class="item-date"><time datetime="2018-10-27T16:00:00.000Z" itemprop="datePublished">2018-10-28</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/27/fonts-family/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2013.png?alt=media&token=1001f386-7eba-49ac-8dad-c7f1af812b58)" alt="鐵人賽：網頁設計 - 文字大小、行高與空間上的關係" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/27/fonts-family/" class="title">鐵人賽：網頁設計 - 文字大小、行高與空間上的關係</a></p>
+                            <p class="item-date"><time datetime="2018-10-26T16:00:00.000Z" itemprop="datePublished">2018-10-27</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/design/2018/10/26/web-fonts/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2011.png?alt=media&token=6fca478b-8c0c-4c90-a90f-595f7349aa6c)" alt="鐵人賽：網頁設計 - 網路字體運用" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/design/">design</a></p>
+                            <p class="item-title"><a href="/design/2018/10/26/web-fonts/" class="title">鐵人賽：網頁設計 - 網路字體運用</a></p>
+                            <p class="item-date"><time datetime="2018-10-25T16:00:00.000Z" itemprop="datePublished">2018-10-26</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">歸檔</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 17.06px;">d3js</a> <a href="/tags/design/" style="font-size: 16.47px;">design</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.18px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.24px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.59px;">promise</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.82px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2018 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_shortname = 'ashare';
+    
+    
+    var disqus_url = 'https://wcc723.github.io/design/2018/10/30/image-svg/';
+    
+    (function() {
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+    </script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>

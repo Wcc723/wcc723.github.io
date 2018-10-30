@@ -4,6 +4,51 @@
   
     
     <entry>
+      <title><![CDATA[鐵人賽：網頁設計 - SVG 輸出注意事項]]></title>
+      <url>https://wcc723.github.io/design/2018/10/30/image-svg/</url>
+      <content type="html"><![CDATA[<p>向量工具、Adobe XD、Sketch 也都能夠輸出 SVG 圖片，但在輸出時有些小地方也需要注意一下，避免在本地端看似沒有問題，但用戶卻看到的卻與預期不同。</p>
+<p>首先瞭解一下 SVG 本身其實是 XML 格式的檔案，這是一個類似 HTML 格式的結構標記，如果要繪製一個方形，則會使用 <code>&lt;rect&gt;</code> 的標籤，並定義他的座標、尺寸、填色樣式等等。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- SVG tag --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">width</span>=<span class="string">"100%"</span> <span class="attr">height</span>=<span class="string">"120"</span>&gt;</span></div><div class="line">	<span class="comment">&lt;!-- 矩行 tag --&gt;</span></div><div class="line">	<span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">"2"</span> <span class="attr">y</span>=<span class="string">"2"</span> <span class="attr">width</span>=<span class="string">"100"</span> <span class="attr">height</span>=<span class="string">"100"</span> <span class="attr">style</span>=<span class="string">"stroke: #333; stroke-width: 3; fill: MediumTurquoise;"</span>/&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>接下來就會出現如下的矩形。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F3DA8CB58-04FC-44B8-8F52-BBC29CB9C825.png?alt=media&amp;token=cfd7c256-1a92-4d1a-a2dd-ec12ed0760a8" alt=""></p>
+<p>SVG 一些常見的圖形原始碼可以 <a href="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/">參考</a>。所以 SVG 輸出後與其它的圖片有很大的不同，他依然是透過一些文字標記組成，再有了基本了解後，我們再透過這些觀念了解輸出的圖片為什麼可能出錯，以及怎麽從輸出後的原始碼發現錯誤。</p>
+<h3 id="文字務必轉外框"><a href="#文字務必轉外框" class="headerlink" title="文字務必轉外框"></a>文字務必轉外框</h3><p>我們在印刷時，給予印刷廠檔案的文字都會外框筆畫，為的就是避免印刷廠沒有特定的字體，導致字體的顯示與預期並不同。</p>
+<p>以下圖來說，「Sweetaste」有分為上方的外框字體，下方則是純文字。上方的輸出後會以 “路徑” 的方式來繪製，從圖中可以看到文字周圍都是點與線的結合；而下方的文字則是純文字，只有一條下底線表示而已。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FB70A169A-DDAE-43C5-AD2E-DB078CA6ADAC.png?alt=media&amp;token=68cc3688-a2bf-4250-91ee-37afaf7fa13e" alt=""></p>
+<p>外框字體的原始碼如下，都是由 <code>path</code> 標示路徑組成（下述程式碼參考即考）：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">path</span> <span class="attr">class</span>=<span class="string">"cls-2"</span> <span class="attr">d</span>=<span class="string">"M55.48,40.91H56A6.11,6.11,0,0,0,55.48,43c0,3.28,3.49,5,6.15,5,4.22,0,6.66-2.34,6.66-5.76a5.72,5.72,0,0,0-2.16-4.46l-2.55-2.34c-2.27-2-3.56-3.93-3.56-6.55,0-3.93,4.17-7,9.32-7,3.13,0,4.68,1.3,6.3,1.3a1.28,1.28,0,0,0,1.29-.94l.54.11L75,29.25h-.43a7.21,7.21,0,0,0,.32-2.13c0-3.31-3.2-4.71-5.54-4.71-3.17,0-5.51,1.76-5.51,4.42,0,2.24,1.3,3.64,2.74,4.94l3.2,2.88c1.73,1.54,3,3.09,3,5.79,0,4.07-4,8.06-10.9,8.06-4,0-5.15-1.47-7-1.47a1.43,1.43,0,0,0-1.37,1.15l-.51-.11Z"</span>/&gt;</span><span class="tag">&lt;<span class="name">path</span> <span class="attr">class</span>=<span class="string">"cls-2"</span> <span class="attr">d</span>=<span class="string">"M90.54,48.22A3.24,3.24,0,0,0,91,46.56a4.9,4.9,0,0,0-.64-2l-.94-2c-.22-.47-.43-.94-.61-1.41-.69.65-1.4,1.23-2.09,1.77l-1.8,1.47c-1.11.94-1.73,1.48-2.45,2.2a10.23,10.23,0,0,0-1.58,1.91l-.43-.25a3.34,3.34,0,0,0,.43-1.66,4.76,4.76,0,0,0-.65-2l-.93-2a8.76,8.76,0,0,1-1-3.35c0-2.52,1.88-4.75,4.4-6.77l.72-.57.32.39a5.58,5.58,0,0,0-2.12,4.5c0,1.62,1,4,1.8,5.62a5.76,5.76,0,0,1,.68,2c3.49-2.84,4.75-4.79,4.75-7,0-1.47-.83-2.05-.83-3.49a1.86,1.86,0,0,1,2-1.8,1.92,1.92,0,0,1,1.83,1.12l.94-.8.72-.57.32.39a5.58,5.58,0,0,0-2.12,4.5c0,1.62,1,4,1.8,5.62a5.56,5.56,0,0,1,.68,2c3.5-2.84,4.54-4.79,4.54-7,0-1.47-.83-2.05-.83-3.49a1.86,1.86,0,0,1,2-1.8c1.62,0,2.19,1.44,2.19,2.81,0,3.27-2.88,6-5.32,8L95,44.36c-1.12.94-1.73,1.48-2.45,2.2A10.35,10.35,0,0,0,91,48.47Z"</span>/&gt;</span><span class="comment">&lt;!-- 省略 --&gt;</span></div></pre></td></tr></table></figure></p>
+<p>純文字的程式碼，僅有直接標示「Sweetaste」的文字，並透過 <code>cls-1</code> 來替換成特定字體，<strong>這個情況下如果用戶沒有該字體，那麼就僅會用系統字體顯示</strong>，所以請特別注意，盡可能外框所有字體。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">text</span> <span class="attr">class</span>=<span class="string">"cls-1"</span> <span class="attr">transform</span>=<span class="string">"translate(54.65 130)"</span>&gt;</span>Sweetaste<span class="tag">&lt;/<span class="name">text</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h3 id="注意輸出後的原始碼是否正確"><a href="#注意輸出後的原始碼是否正確" class="headerlink" title="注意輸出後的原始碼是否正確"></a>注意輸出後的原始碼是否正確</h3><p>先前不斷地說明使用工具的重要性，因為輸出原始碼時結果也會不同，如下原始碼是透過 Illustrator 所輸出，圖片是一個正方形，僅有透過 <code>.cls-1</code> 調整色彩。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">id</span>=<span class="string">"圖層_1"</span> <span class="attr">data-name</span>=<span class="string">"圖層 1"</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 73 73"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">defs</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">      .cls-1 &#123;</div><div class="line">        fill: #3f5d45;</div><div class="line">      &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">defs</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>tester<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">rect</span> <span class="attr">class</span>=<span class="string">"cls-1"</span> <span class="attr">width</span>=<span class="string">"73"</span> <span class="attr">height</span>=<span class="string">"73"</span> /&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F896A6B79-2A8B-4266-8EFA-9C9EC9CE66B7.png?alt=media&amp;token=9100e8a0-5def-4607-9598-189a47fb768c" alt=""></p>
+<p>接下來透過 Illustrator 加上陰影。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F8725EFED-1900-474A-9EE5-CCCA6C38DBD8.png?alt=media&amp;token=db3f0885-df0c-4838-9a9c-72378f684006" alt=""></p>
+<p>然後再重新輸出一次，會出現 <code>data:image/png;base64....</code> 的 base64 原始碼，也就是說整個陰影都是透過 “點陣圖” 的方式來呈現，這會導致：</p>
+<ul>
+<li>SVG 檔案大小會增加不少</li>
+<li>尚失向量圖的特性（縮放、再編輯等）</li>
+</ul>
+<p>SVG 檔案普遍來說都非常小，如果檔案有不正常的增大時（明顯比其他同類型檔案大數倍），那麼請透過文字編輯工具打開 SVG 檔案（注意 <code>image</code> 那行），確實了解檔案是否有問題。<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">xmlns</span>=<span class="string">"http://www.w3.org/2000/svg"</span> <span class="attr">xmlns:xlink</span>=<span class="string">"http://www.w3.org/1999/xlink"</span> <span class="attr">viewBox</span>=<span class="string">"0 0 73 73"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">defs</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line">      .cls-1 &#123;</div><div class="line">        isolation: isolate;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      .cls-2 &#123;</div><div class="line">        mix-blend-mode: darken;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      .cls-3 &#123;</div><div class="line">        opacity: 0.75;</div><div class="line">        mix-blend-mode: multiply;</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      .cls-4 &#123;</div><div class="line">        fill: #3f5d45;</div><div class="line">      &#125;</div><div class="line">    <span class="tag">&lt;/<span class="name">style</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">defs</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>tester<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">g</span> <span class="attr">class</span>=<span class="string">"cls-1"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">g</span> <span class="attr">id</span>=<span class="string">"圖層_1"</span> <span class="attr">data-name</span>=<span class="string">"圖層 1"</span>&gt;</span></div><div class="line">      <span class="tag">&lt;<span class="name">g</span> <span class="attr">class</span>=<span class="string">"cls-2"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">image</span> <span class="attr">class</span>=<span class="string">"cls-3"</span> <span class="attr">width</span>=<span class="string">"103"</span> <span class="attr">height</span>=<span class="string">"103"</span> <span class="attr">transform</span>=<span class="string">"translate(-8 -8)"</span> <span class="attr">xlink:href</span>=<span class="string">"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGcAAABnCAYAAAAdQVz5AAAACXBIWXMAAAsSAAALEgHS3X78AAAHIUlEQVR4Xu2dW5ebOBCEC49zmczu//+jm8wd9gGXKcotJM+QRGDVOX2EMdiiP6ol/GB1wzCgqU4dcgc0/T0dcwfk1HVdlzvmVjV8six1156fgdFAAcmEXgurGE4ARV9HUG4JVJRE3Td7vxRSERwBk2t9W7UnWKmkRUDCtgTQ4phjbukwh9El9kFa396bUjB820EMzO0SpCSchFs0DontCFD0esu6SLa0jD6xPTuv67ouBSg3W9NEH4LWwwHuEVAExqO36GS/ttwfKoQTlLMIxJ3EEij9nL3Iy1kEpAfwLkFI/ek8AkLKPRdwrJw5GAVyPMWdtA4qVeL2IC1lEZA3ad9kv4qgwvKWKmtemhTMEcAXiaO0hLR3QEtgCONV2sOp9c/QnCw7J/Eso645AviKEcZXAN/s9VEiGof2omh8eZN4wQjjBXGJ9zEKwGV5u9Y5dMt3jGDYMhQQneaftXV5YrWMEczzKfQm1XN1osCc5McczMuQu0Ydc2/x/fQenaQd0/JGbQmUJ87LGcvXyymeADxiujmB+Uytl9eMDvY9Jc5xOHTMPYAHAD8kFFDKPVtXyjUK5gumsZfnLM3gLsAAAicx3igcHXPonB8A/jnFD0wO+oapg4TDjm4ZEBPIu55JfsVYxp4w3Zi8Xp0ovGI+q724YXXcSZU1nqBlSWdpDudfjC56wARH3RN1ZEuQ9K7WcUNdQzi8KSHHsOR9OW1zBnc4vR+6Z+kXAnWOz9ZY2ljOHjAB0vLmU+stjjtL443CIRg6Rt3yLOH5SObA4fidHY07BPQV87HnAaOL6B6fGKTGnZoBRWDUOToRUDC97H/E5Sw2lY+Ze5YmBGwj9zgguojOucc07kTPPFuVT4XVGQ7mO9JgPBdhTnJlja2PPT6tZpmjkzgxuBU4DuYJ8wd05kzzuAgGSE8IdNvd4w4iJIY+nOrMZa9wHIw/67ljikoasOwcKgJ0J62DYmgHk1PHjclnaryWHvPfGnnNmqclMKFKyprvU1B3FsdE7BFOJ/v8WjVyQK4qaylpjSScqOR5+Vt86NqYCEfBvCO+9ihPwBXXn4LjH+Rg3EHepuLqDlYkQhnkdXR93npgoZ2pxDnRiSXQUqHnbVW5ayxJfjYHJXBy0i/JdTY6vnbRKZ1tX3OdH9IacEoV3VFbEPvqY81v1yF3wIJWvUt2plVy8xk4rtJOlB5Xm0r7XXpcVmvCAVbs2Ea16vWvDadpRTU4FavBqVgNTsVqcCpWg1OxGpyK1eBUrAanYjU4FavBqVgNTsVqcCpWg1OxGpyK1eBUrAanYjU4FavBqVgNTsVqcCpWg1OxGpyK1eBUrAanYjU4FavBqVgNTsVqcCpWg1OxGpyK1eBUrAanYjU4FavBqVgNTsVqcCpWg1Ox1obzR/7ZomKtev1rwintWOlxtam036XHZfUZONqJ1Tq0E62Smz/5x0Spf1+qXZ7oDyf7Wq0BJ+p8FH/t35dWUul1Rsd/SCVwoi8ZgrYktqyPXKu3qmw+UnBSHx51og9aD/2fNS1rW5NecxRRPkqghfkocQ7lgHrbjkL/3nfA5b/5bU16vbrMSgqU5wnSZrUEJ/oQd8y7xZuFgjlgf3D8enXhPIXnzlElYZU4x4GwYwpHF5HTJUh4Pv/ed09weszXZ2M4JM1XDtRMERw9KQLjd40uh8V1ZAimx/7/Lp9rFzxjngcHFZU8z/VMJWXNwTgUrgvj68f0uJ2FJp4xrvjxhAkUYSkkBwQEUKiS2ZqXM36RrlEWgXnFba2f8wTgJ4BfmHLCHEUOUueEgBzOgPkgrh1JgeGCEg7mFlee+oUR0E9MTkoBypa2XFlLdUTLGAEAExhdWO7W1mwjnF+YXMQSt+SeC6UmBDzBxxrOSFhjmXhg/FKuuHTLqx0+YoTy36l9PL2nsznNKz/3AtIZzjAMgy1H6XeI3iXqCGCC52uUKZytTwYoLUeeFy1vDMJR53hpmz68YPnj1HijSygy0Xz/FROYtsLumAsGSxudU/Jwmixr/P2rP20TDpPsD5i0dVubev54wVLn02ofdyDtWddMpQlBHaPljAtlM/zZZg9gKK8szIMC0udAvn5F7Jq8cxLjjrpH9/M9Ps8QTrR4HLA/OGy1vPkvJzqJWnLN+GEy3gB553C7x1zqpjuMX6zLf+0ZDLUEiJAU1rvE9c4BZu7hCSkwDueASzBbfa7JyW9eB+Sg3hPvn8G4awCgC/aNb4yA9M4/BG0KSGqc2QMgT5g7IAVqCFpg5FLmHNOAy5lbtC8a+PcIhooAsVVA0fbZLdKGSjoHOLvn/BLzxEcwIjB7guLS5Dkg3Y72jS8WACzCOR80Qcq1vq3aE6RU0lKwLtolKFQRHODCRUAeyJ5g5BQlMQI1vihMejEcKoA0e3vhvVtRMqGlUKir4bgysG5a18JwfRpO0+/TAU3V6n9/TR8I3kWSrAAAAABJRU5ErkJggg=="</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">rect</span> <span class="attr">class</span>=<span class="string">"cls-4"</span> <span class="attr">width</span>=<span class="string">"73"</span> <span class="attr">height</span>=<span class="string">"73"</span> /&gt;</span></div><div class="line">      <span class="tag">&lt;/<span class="name">g</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">g</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">g</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>先前就有聽過 <code>svg</code> 輸出時檔案居然要數 mb，仔細一問才發現是 Illustrator 輸出帶有了漸層、濾鏡等效果（目前版本漸層不會出錯，但濾鏡、陰影還是會有問題），如果 svg 輸出時發生這樣的問題時，會建議直接改用 png 不要使用有問題的 svg，因為已經失去 svg 原有的特色（檔案小、無縮放限制等）。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> design </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> design </tag>
+            
+            <tag> ironman </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[鐵人賽：網頁設計 - 圖片壓縮方法]]></title>
       <url>https://wcc723.github.io/design/2018/10/29/image-opti/</url>
       <content type="html"><![CDATA[<p>了解基本的格式後，接下來設計師還需要「正確的」輸出圖片並壓縮，網頁上輸出圖片雖然沒有印刷中那麼複雜，但依然有許多眉角需要注意，像是用什麼工具壓縮就很常被詢問到，本篇介紹我再壓縮上常用的一些技巧。</p>
@@ -6081,9 +6126,9 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
             
             <tag> gulp </tag>
             
-            <tag> bootstrap </tag>
-            
             <tag> compass </tag>
+            
+            <tag> bootstrap </tag>
             
         </tags>
         
@@ -13242,9 +13287,9 @@ line.l2{
         
         <tags>
             
-            <tag> svg </tag>
-            
             <tag> css </tag>
+            
+            <tag> svg </tag>
             
         </tags>
         
@@ -15180,62 +15225,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -15318,6 +15307,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
@@ -21003,11 +21048,11 @@ table.table3
         
         <tags>
             
-            <tag> html </tag>
-            
             <tag> sass </tag>
             
             <tag> css </tag>
+            
+            <tag> html </tag>
             
         </tags>
         
