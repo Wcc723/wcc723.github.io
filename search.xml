@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[JavaScript This 系列文：this 與物件的關係]]></title>
-      <url>https://wcc723.github.io/design/2019/03/18/JS-THIS/</url>
+      <url>https://wcc723.github.io/javascript/2019/03/18/JS-THIS/</url>
       <content type="html"><![CDATA[<p>本篇是接續先前的：<a href="/javascript/2017/12/12/javascript-this/">鐵人賽：JavaScript 的 this 到底是誰？</a>，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。</p>
 <h2 id="物件的方法調用-As-an-object-method"><a href="#物件的方法調用-As-an-object-method" class="headerlink" title="物件的方法調用 (As an object method)"></a>物件的方法調用 (As an object method)</h2><p>「物件的方法調用」是最常見改變 this 的方法，只要搞懂這一部份就能了解決大部分的 this 運作，大部分的文件介紹此部分說明為：在函式內的 <code>this</code> 值取決於該函式如何被呼叫。而如何被呼叫實在難以被定義，如：callback、閉包、函式內的函式等等其實都與 this 沒有關聯性。</p>
 <p>提供另一個比較易懂的中文說明：this 大部分取決於 <strong>它在哪個物件下被呼叫</strong>，也就是本段落主要介紹的「物件的方法調用」這個觀念佔了 <strong>絕大部分</strong> 的 JavaScript 實作時的 this 運作（接下來幾篇會陸續介紹其它幾種），版頭圖則是說明這一類型的 This 運作模式，只要找到上層物件就搞定了整個觀念，下述文中產生了一個函式，透過兩個不同的方式取用則有不同的結果：</p>
@@ -32,7 +32,7 @@
       
         <categories>
             
-            <category> design </category>
+            <category> javascript </category>
             
         </categories>
         
@@ -16053,62 +16053,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -16191,6 +16135,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
