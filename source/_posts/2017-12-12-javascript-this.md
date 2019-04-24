@@ -86,7 +86,7 @@ callThisName()                  // '全域阿婆'
 
 #### DOM 物件調用 (As a DOM event handler) 同此方法
 
-DOM 調用 function 就如同物件調用 function，所以此 this 所指向的則是該 DOM。以下這段程式碼可以貼在任何網頁下的 Console，接下來點擊畫面上任何一區域，該區域則會加上紅線。
+DOM 搭配 addEventListener 時，此 this 所指向的則是該 DOM。以下這段程式碼可以貼在任何網頁下的 Console，接下來點擊畫面上任何一區域，該區域則會加上紅線。
 
 ```js
 var elements = document.getElementsByTagName('div');
