@@ -4,6 +4,61 @@
   
     
     <entry>
+      <title><![CDATA[免費申請屬於自己的 SSL 憑證(手把手帶你加上 https 綠色鎖頭)]]></title>
+      <url>https://wcc723.github.io/ssl/2019/04/24/free-ssl/</url>
+      <content type="html"><![CDATA[<h2 id="SSL-For-Free"><a href="#SSL-For-Free" class="headerlink" title="SSL For Free"></a>SSL For Free</h2><p>為了讓更多網站可以加上綠鎖頭(https)，並且提高網路的安全性，此服務免費提供網站 SSL 憑證，同時憑證不僅是免費的，還是屬於萬用憑證（包含所有子網域），雖然每次的憑證效期僅有三個月，但可以不斷的續約，對於每年需花個幾千、幾萬才能購買一個萬用憑證來說，算是節省不少。本篇將會一步一步介紹如何申請到此憑證。</p>
+<p>開發環境說明：</p>
+<ul>
+<li>主機 Digital Ocean：Ubuntu 16</li>
+<li>後端語言：Node.js </li>
+</ul>
+<p>另外，憑證的金鑰綁定是由開發者來完成，但這個服務是直接在網站上完成，開發者僅需要直接下載做好的憑證即可。</p>
+<h3 id="申請憑證"><a href="#申請憑證" class="headerlink" title="申請憑證"></a>申請憑證</h3><p>透過以下網站申請：<a href="https://www.sslforfree.com/" target="_blank" rel="external">SSL For Free</a> ，直接輸入要申請的網域即可。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F4DB860CA-9F37-423E-B3BD-7FB05B3B04F4.png?alt=media&amp;token=cb06bce7-5568-46e1-9ace-3baf54c7263f" alt=""></p>
+<p>申請後，他會要求認證網域是否由<strong>申請者</strong>管理，接下來會有以下的認證步驟(三選一)：</p>
+<ol>
+<li>透過 FTP 上傳驗證檔</li>
+<li>手動上傳驗證，本教學會使用此流程，順便說明一些細項</li>
+<li>DNS 驗證，這是最簡單的流程，直接在 DNS TXT Record 補上驗證訊息即可</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FDB669936-3447-42EA-8992-838D273A7E8E.png?alt=media&amp;token=f5649ebc-9606-4d21-ad9a-572cf17feede" alt=""></p>
+<h3 id="手動驗證流程"><a href="#手動驗證流程" class="headerlink" title="手動驗證流程"></a>手動驗證流程</h3><p>選擇手動驗證會出現以下流程說明，接下來在我們的 Ubuntu 伺服器端先安裝好 node.js 及 express 環境後繼續以下動作。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FE397329A-D05D-4EC0-BECE-3BDAA4DCB818.png?alt=media&amp;token=48f342f1-2171-4b51-abdf-d437789c30c8" alt=""></p>
+<ol>
+<li>開啟 express 框架中的 <code>bin/www</code> 將 port 改為 80 port，並且將 DNS 指向此主機（需與 SSL 申請的網址同一個）。</li>
+<li>下載該手動驗證的檔案。</li>
+<li>在 <code>public</code> 資料夾下，建立該資料夾  <code>/.well-known/acme-challenge/</code> 並且把該檔案上傳上去(上傳方式可參考後方說明)</li>
+<li>須確保網址上的這個檔案能夠被開啟 </li>
+</ol>
+<p>上傳驗證檔案的說明：<br>方法 1: 可以直接透過指令上傳驗證檔案，需要在本地端輸入以下指令，並且對應遠端的路徑。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">scp &#123;&#123;檔名&#125;&#125; root@&#123;&#123;主機&#125;&#125;:~&#123;&#123;資料夾路徑&#125;&#125;</div><div class="line"></div><div class="line">// 範例：</div><div class="line">scp xxx root@12.3.45.678:~/website</div></pre></td></tr></table></figure></p>
+<p>方法 2: 直接手動新增 <code>vi { 檔名 }</code>，將下載檔案的內容貼入</p>
+<h3 id="按下-Download-ssl"><a href="#按下-Download-ssl" class="headerlink" title="按下 Download ssl"></a>按下 Download ssl</h3><p>確保上述流程完成後，就可以按下 <code>Download SSL</code>，失敗也會提供訊息，<strong>但如果發生錯誤，請重新上述的步驟</strong>。</p>
+<p>接下來會核發 90 天的憑證，並且已經生成了憑證、私鑰等檔案。接下來下載這些檔案，其中 <code>certificate.crt</code>、<code>private.key</code> 這兩隻需要上傳到 server 上。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F42D626D8-4A32-4289-B667-2DD477AE3B33.png?alt=media&amp;token=d0fb72fd-2453-4371-959b-2ec66629dd70" alt=""></p>
+<h2 id="express-with-https"><a href="#express-with-https" class="headerlink" title="express with https"></a>express with https</h2><p>步驟 1: 上傳 <code>certificate.crt</code>、<code>private.key</code> 到伺服器上，直接放到專案中方便存取的路徑即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">scp certificate.crt root@0.0.0.0:~/&#123;&#123; 專案路徑 &#125;&#125;/ssl/</div><div class="line">scp private.key root@0.0.0.0:~/&#123;&#123; 專案路徑 &#125;&#125;/ssl/</div></pre></td></tr></table></figure></p>
+<p>步驟 2: 透過 <code>npm install https --save</code> 安裝 <code>https</code> 套件<br>步驟 3: 打開 <code>bin/www</code>，並且將檔案修改成以下（後方有完整的程式碼）</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_17_%E4%B8%8B%E5%8D%884_25.png?alt=media&amp;token=5ac2f823-951e-4ee0-916c-0c457cb63dc1" alt=""></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</div><div class="line"><span class="keyword">var</span> app = <span class="built_in">require</span>(<span class="string">'../app'</span>);</div><div class="line"><span class="keyword">var</span> debug = <span class="built_in">require</span>(<span class="string">'debug'</span>)(<span class="string">'website:server'</span>);</div><div class="line"><span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);</div><div class="line"><span class="keyword">var</span> https = <span class="built_in">require</span>(<span class="string">'https'</span>);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Get port from environment and store in Express.</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">var</span> privateKey  = fs.readFileSync(__dirname + <span class="string">'/../ssl/private.key'</span>);</div><div class="line"><span class="keyword">var</span> certificate = fs.readFileSync(__dirname + <span class="string">'/../ssl/certificate.crt'</span>);</div><div class="line"><span class="keyword">var</span> credentials = &#123; <span class="attr">key</span>: privateKey, <span class="attr">cert</span>: certificate &#125;;</div><div class="line"></div><div class="line"><span class="keyword">var</span> port = normalizePort(process.env.PORT || <span class="string">'443'</span>);</div><div class="line">app.set(<span class="string">'port'</span>, port);</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Create HTTP server.</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">var</span> server = https.createServer(credentials, app);</div></pre></td></tr></table></figure>
+<p>完成後就可以直接連線至該網址，加上憑證後預設也會自動連線至 443 port，所以就可以直接使用當時的網址連線即可。</p>
+<p>簽核的認證範例：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F704EAA52-5D36-4E0C-9630-A992D5FD5347.png?alt=media&amp;token=70bd9b1c-f89c-425e-96d5-e854d5a7571e" alt=""></p>
+]]></content>
+      
+        <categories>
+            
+            <category> ssl </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> ssl </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[JavaScript This 系列文：this 為什麼指向 window]]></title>
       <url>https://wcc723.github.io/javascript/2019/03/21/this-why-window/</url>
       <content type="html"><![CDATA[<p>本篇是接續先前的：<a href="/javascript/2017/12/12/javascript-this/">鐵人賽：JavaScript 的 this 到底是誰？</a>，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。</p>
@@ -16116,62 +16171,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -16254,6 +16253,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="external">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="external">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
