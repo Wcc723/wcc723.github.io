@@ -208,12 +208,12 @@ ga('send', 'pageview');
                 </div>
             
             <div class="need-gallery">
-                <p>Just font中的字型學文章都相當有意思，而有一篇是關於<a href="http://blog.justfont.com/2013/12/popular-typography" target="_blank" rel="external">中英文字搭配</a>的問題；這篇雖然是以windows word為例，但裡面的概念在網頁上也是很有幫助，而其中一段”<em>以 Windows 內建的三種字型為例，表現最好的是微軟正黑體，英文部分採用了微軟的 Segoe UI，粗細與中文較一致</em>“，在目前web中當然也可以有這樣的設定，只要用CSS3的<code>unicode-range</code>，就能夠在中文字中套用”微軟正黑體”，英文套用”Segoe UI”。</p>
+                <p>Just font中的字型學文章都相當有意思，而有一篇是關於<a href="http://blog.justfont.com/2013/12/popular-typography" target="_blank" rel="noopener">中英文字搭配</a>的問題；這篇雖然是以windows word為例，但裡面的概念在網頁上也是很有幫助，而其中一段”<em>以 Windows 內建的三種字型為例，表現最好的是微軟正黑體，英文部分採用了微軟的 Segoe UI，粗細與中文較一致</em>“，在目前web中當然也可以有這樣的設定，只要用CSS3的<code>unicode-range</code>，就能夠在中文字中套用”微軟正黑體”，英文套用”Segoe UI”。</p>
 <a id="more"></a>
 <h4 id="本篇參考"><a href="#本篇參考" class="headerlink" title="本篇參考"></a>本篇參考</h4><ol>
-<li><a href="http://blog.yorkxin.org/posts/2012/06/17/assign-fonts-for-specific-characters" target="_blank" rel="external">利用 CSS 分別設定中文字、英數、注音、假名的字體：使用 CSS3 @font-face</a></li>
-<li><a href="http://blogorg.justfont.com/2013/12/popular-typography/" target="_blank" rel="external">大眾字型學(3)：Word 預設中英搭配有什麼問題？</a></li>
-<li><a href="http://unicode-table.com/cn/" target="_blank" rel="external">Uni-code 字符百科</a></li>
+<li><a href="http://blog.yorkxin.org/posts/2012/06/17/assign-fonts-for-specific-characters" target="_blank" rel="noopener">利用 CSS 分別設定中文字、英數、注音、假名的字體：使用 CSS3 @font-face</a></li>
+<li><a href="http://blogorg.justfont.com/2013/12/popular-typography/" target="_blank" rel="noopener">大眾字型學(3)：Word 預設中英搭配有什麼問題？</a></li>
+<li><a href="http://unicode-table.com/cn/" target="_blank" rel="noopener">Uni-code 字符百科</a></li>
 </ol>
 <h2 id="本篇重點"><a href="#本篇重點" class="headerlink" title="本篇重點"></a>本篇重點</h2><p>了解<code>unicode-range</code>的使用方法。</p>
 <h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><p><code>unicode-range</code>部分效果在Mac OS上測試有問題，不管是Chrome、Safari、Firefox都有點問題…。</p>
@@ -224,15 +224,15 @@ ga('send', 'pageview');
 	</div>
 </div>
 
-<p><img src="/images/2014-02-23_180951.png" alt=""></p>
+<p><img src="/images/2014-02-23_180951.png" alt></p>
 <p>以上面這一段文字為例，在windows內，”我”這一個文字會被替換成微軟正黑體，而其他文字沒有變化。</p>
-<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range" target="_blank" rel="external">https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range</a></p>
+<p><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range</a></p>
 <p>如果參考Mozilla 的MDN可以了解到，</p>
 <pre><code>unicode-range: U+26               /* 單一字符 */
 unicode-range: U+0025-00FF        /* 範圍字符 */
 unicode-range: U+4??              /* 萬用字符 */
 unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
-</code></pre><p><a href="http://unicode-table.com/cn/" target="_blank" rel="external">http://unicode-table.com/cn/</a></p>
+</code></pre><p><a href="http://unicode-table.com/cn/" target="_blank" rel="noopener">http://unicode-table.com/cn/</a></p>
 <p>再參考uni code的表，可以查詢各文字的unicode。</p>
 <p>用這樣的方式就能夠選取特定的文字，或是語系等等。</p>
 <pre><code>@font-face
@@ -250,7 +250,7 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
 	</div>
 </div>
 
-<p><img src="/images/2014-02-23_182250.png" alt=""></p>
+<p><img src="/images/2014-02-23_182250.png" alt></p>
 <p>中文的語系的unicode-range為<code>U+4E00-9FFF</code>，英語系為<code>U+00-024F</code>，將這個值加入到@font-face內，就能為特定語系換字體。如下範例中文還是’Mac OS 黑體-繁’、’Windows 微軟正黑體’，但英文的部份已經替換成’Helvetica’、’Segoe UI’，範例如下。</p>
 
 <div class="demo d0218">
@@ -259,7 +259,7 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
 	</div>
 </div>
 
-<p><img src="/images/2014-02-23_182302.png" alt=""></p>
+<p><img src="/images/2014-02-23_182302.png" alt></p>
 <p>在css內只要將兩者的font-family皆設定相同名稱，但指向不同的<code>unicode-range</code>，就可以達到這樣的效果。</p>
 <pre><code>@font-face
     font-family: custom-sans-serif
@@ -293,7 +293,7 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
 
 .custom-serif
     font-family: custom-serif
-</code></pre><h2 id="延伸發現"><a href="#延伸發現" class="headerlink" title="延伸發現"></a>延伸發現</h2><p>在<a href="http://unicode-table.com/cn/" target="_blank" rel="external">字符百科</a>中，不僅可以查詢的文字的unicode 編號，其實還可以查到許多符號性的文字，這些文字其實可以直接當作web font使用，還免載入外部的字型檔，就像下方的幾個不同雪花一樣。</p>
+</code></pre><h2 id="延伸發現"><a href="#延伸發現" class="headerlink" title="延伸發現"></a>延伸發現</h2><p>在<a href="http://unicode-table.com/cn/" target="_blank" rel="noopener">字符百科</a>中，不僅可以查詢的文字的unicode 編號，其實還可以查到許多符號性的文字，這些文字其實可以直接當作web font使用，還免載入外部的字型檔，就像下方的幾個不同雪花一樣。</p>
 
 <div class="demo d0218">
 	❄❅❆
@@ -459,6 +459,28 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/ironman/2019/09/17/design-to-developer/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201909%2Firon2.png?alt=media&token=404501a8-20e0-4b24-8117-fe171cc29e7f)" alt="鐵人賽：從設計轉開發者的思維改變" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/ironman/">ironman</a></p>
+                            <p class="item-title"><a href="/ironman/2019/09/17/design-to-developer/" class="title">鐵人賽：從設計轉開發者的思維改變</a></p>
+                            <p class="item-date"><time datetime="2019-09-16T16:00:00.000Z" itemprop="datePublished">2019-09-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/ironman/2019/09/16/what-is-your-vision/" class="thumbnail">
     
     
@@ -544,28 +566,6 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/javascript/2019/03/18/JS-THIS/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F57A365E4-97F6-447F-81FD-64F14313628F.png?alt=media&token=2a9e436b-3096-4f40-a337-7f37ce30a4e4)" alt="JavaScript This 系列文：this 與物件的關係" class="thumbnail-image"></span>
-    
-    
-</a>
-
-
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
-                            <p class="item-title"><a href="/javascript/2019/03/18/JS-THIS/" class="title">JavaScript This 系列文：this 與物件的關係</a></p>
-                            <p class="item-date"><time datetime="2019-03-17T16:00:00.000Z" itemprop="datePublished">2019-03-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -583,7 +583,7 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">歸檔</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
         </div>
     </div>
 

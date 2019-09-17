@@ -212,58 +212,58 @@ ga('send', 'pageview');
 <p>Rails不是要打算精通後端，而是希望了解，以便往後再配合後端時能更有效率的處理問題。</p>
 <a id="more"></a>
 <h2 id="安裝環境"><a href="#安裝環境" class="headerlink" title="安裝環境"></a>安裝環境</h2><ul>
-<li>參考的書籍：Rails 101 <a href="https://leanpub.com/rails-101" target="_blank" rel="external">https://leanpub.com/rails-101</a></li>
+<li>參考的書籍：Rails 101 <a href="https://leanpub.com/rails-101" target="_blank" rel="noopener">https://leanpub.com/rails-101</a></li>
 <li>硬體：Macbook pro retina 2013</li>
 <li>系統版本：OSX 10.9.3</li>
 </ul>
-<p><img src="/images/rails_base/rails_install/screen_shot_rails00.png" alt=""></p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails00.png" alt></p>
 <h2 id="安裝Homebrew"><a href="#安裝Homebrew" class="headerlink" title="安裝Homebrew"></a>安裝Homebrew</h2><p>在PDF書上第一個要安裝的，會想要記錄也是以下這原因…。</p>
-<p><img src="/images/rails_base/rails_install/screen_shot_rails01.png" alt=""></p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails01.png" alt></p>
 <p>以上的圖是書上的範例，直接複製會得到以下的結果…，沒有空白鍵啊!!!重點是我找不到原因還卡很久…</p>
 <pre><code>ruby-e&quot;$(curl-fsSLhttps://raw.github.com/Homebrew/homebrew/go/install)&quot;
 </code></pre><p>所以沒意外的話應該是以下指令</p>
 <pre><code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails02.png" alt=""><br><img src="/images/rails_base/rails_install/screen_shot_rails03.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails02.png" alt><br><img src="/images/rails_base/rails_install/screen_shot_rails03.png" alt></p>
 <p>想說我有裝git了，跳過<code>brew install git</code>，直接升級。</p>
 <pre><code>brew update
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails04.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails04.png" alt></p>
 <pre><code>brew tap homebrew/dupes
 </code></pre><p><code>brew install apple-gcc42</code>怎好像沒截到圖<br>…。</p>
-<p><img src="/images/rails_base/rails_install/screen_shot_rails05.png" alt=""></p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails05.png" alt></p>
 <h2 id="安裝-XQuartz"><a href="#安裝-XQuartz" class="headerlink" title="安裝 XQuartz"></a>安裝 XQuartz</h2><p>安裝XQuartz。</p>
-<p><img src="/images/rails_base/rails_install/screen_shot_rails06.png" alt=""></p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails06.png" alt></p>
 <p>安裝完後登出在登入。</p>
-<p><img src="/images/rails_base/rails_install/screen_shot_rails07.png" alt=""></p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails07.png" alt></p>
 <h2 id="安裝-ImageMagick-MySQL"><a href="#安裝-ImageMagick-MySQL" class="headerlink" title="安裝 ImageMagick / MySQL"></a>安裝 ImageMagick / MySQL</h2><p>別懷疑，這邊我完全不懂，只知道MySQL是資料庫。</p>
 <pre><code>brew install imagemagick
 </code></pre><p><em>透過brew安裝時，圖示都變成啤酒了…</em></p>
-<p><img src="/images/rails_base/rails_install/screen_shot_rails08.png" alt=""><br><!-- ![](/images/rails_base/rails_install/screen_shot_rails09.png) --></p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails08.png" alt><br><!-- ![](/images/rails_base/rails_install/screen_shot_rails09.png) --></p>
 <pre><code>Installing mysql
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails10.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails10.png" alt></p>
 <pre><code>unset TMDIR
 </code></pre><p>這個用了沒感覺(跳過…)</p>
 <pre><code>mysql_install_db --verbose --user=`whoami` --basedir=&quot;$(brew--prefixmysql)&quot; -\
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails11.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails11.png" alt></p>
 <pre><code>sudo mysqladmin -u root password &apos;123456&apos;
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails12.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails12.png" alt></p>
 <pre><code>mkdir -p ~/Library/LaunchAgents
 </code></pre><p>這個用了沒感覺(跳過…)</p>
-<p><img src="/images/rails_base/rails_install/screen_shot_rails13.png" alt=""></p>
+<p><img src="/images/rails_base/rails_install/screen_shot_rails13.png" alt></p>
 <pre><code>find /usr/local/Cellar/mysql/ -name &quot;homebrew.mxcl.mysql.plist&quot; -exec cp {} ~/Library/LaunchAgents/ \;
 
 
 launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails14.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails14.png" alt></p>
 <h2 id="安裝-RVM"><a href="#安裝-RVM" class="headerlink" title="安裝 RVM"></a>安裝 RVM</h2><p>透過rvm就可以執行特定版本的ruby及gems，rails的版本演進相當快，所以必須透過RVM來切換不同的rails版本。</p>
 <pre><code>bash -s stable &lt; &lt;(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails14.5.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails14.5.png" alt></p>
 <pre><code>. ~/.profile
 $source ~/.profile
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails15.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails15.png" alt></p>
 <h2 id="安裝-Ruby-2-0"><a href="#安裝-Ruby-2-0" class="headerlink" title="安裝 Ruby 2.0"></a>安裝 Ruby 2.0</h2><pre><code>brew install libyaml
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails16.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails16.png" alt></p>
 <pre><code>rvm pkg install openssl
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails17.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails17.png" alt></p>
 <pre><code>rvm install 2.0.0
 --with-openssl-dir=$HOME/.rvm/usr
 --verify-downloads 1
@@ -272,20 +272,20 @@ $source ~/.profile
 <pre><code>source ~/.rvm/scripts/rvm
 type rvm | head -n 1
 rvm use 2.0.0
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails18.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails18.png" alt></p>
 <h2 id="安裝必要-Ruby-gems"><a href="#安裝必要-Ruby-gems" class="headerlink" title="安裝必要 Ruby gems"></a>安裝必要 Ruby gems</h2><pre><code>gem install rails --version 4.0.0
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails19.png" alt=""><br><!-- ![](/images/rails_base/rails_install/screen_shot_rails20.png) --></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails19.png" alt><br><!-- ![](/images/rails_base/rails_install/screen_shot_rails20.png) --></p>
 <pre><code>gem install mysql2
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails21.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails21.png" alt></p>
 <pre><code>gem install capistrano
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails22.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails22.png" alt></p>
 <pre><code>gem install capistrano-ext
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails23.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails23.png" alt></p>
 <h2 id="設定-HTTP-Server-使用-Pow"><a href="#設定-HTTP-Server-使用-Pow" class="headerlink" title="設定 HTTP Server (使用 Pow)"></a>設定 HTTP Server (使用 Pow)</h2><p>簡單來說，就是看<code>localhost:3000</code>不爽，要換掉的意思!?</p>
 <pre><code>curl get.pow.cx | sh
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails24.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails24.png" alt></p>
 <pre><code>gem install powder
-</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails25.png" alt=""></p>
+</code></pre><p><img src="/images/rails_base/rails_install/screen_shot_rails25.png" alt></p>
 <p>Pow用法，方法一</p>
 <blockquote>
 <p>   cd ~/.pow/<br>   ln -s ~/projects/wiki</p>
@@ -456,6 +456,28 @@ rvm use 2.0.0
                     <li>
                         
                         <div class="item-thumbnail">
+                            <a href="/ironman/2019/09/17/design-to-developer/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201909%2Firon2.png?alt=media&token=404501a8-20e0-4b24-8117-fe171cc29e7f)" alt="鐵人賽：從設計轉開發者的思維改變" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/ironman/">ironman</a></p>
+                            <p class="item-title"><a href="/ironman/2019/09/17/design-to-developer/" class="title">鐵人賽：從設計轉開發者的思維改變</a></p>
+                            <p class="item-date"><time datetime="2019-09-16T16:00:00.000Z" itemprop="datePublished">2019-09-17</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
                             <a href="/ironman/2019/09/16/what-is-your-vision/" class="thumbnail">
     
     
@@ -541,28 +563,6 @@ rvm use 2.0.0
                         </div>
                     </li>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/javascript/2019/03/18/JS-THIS/" class="thumbnail">
-    
-    
-        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F57A365E4-97F6-447F-81FD-64F14313628F.png?alt=media&token=2a9e436b-3096-4f40-a337-7f37ce30a4e4)" alt="JavaScript This 系列文：this 與物件的關係" class="thumbnail-image"></span>
-    
-    
-</a>
-
-
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"><a class="article-category-link" href="/categories/javascript/">javascript</a></p>
-                            <p class="item-title"><a href="/javascript/2019/03/18/JS-THIS/" class="title">JavaScript This 系列文：this 與物件的關係</a></p>
-                            <p class="item-date"><time datetime="2019-03-17T16:00:00.000Z" itemprop="datePublished">2019-03-18</time></p>
-                        </div>
-                    </li>
-                
             </ul>
         </div>
     </div>
@@ -580,7 +580,7 @@ rvm use 2.0.0
     <div class="widget-wrap widget-list">
         <h3 class="widget-title">歸檔</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">四月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">三月 2019</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">十一月 2018</a><span class="archive-list-count">13</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/10/">十月 2018</a><span class="archive-list-count">17</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">七月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">五月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">二月 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">一月 2018</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">十二月 2017</a><span class="archive-list-count">28</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">十一月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/07/">七月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/06/">六月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">五月 2017</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">四月 2017</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">三月 2017</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">十二月 2016</a><span class="archive-list-count">30</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">十月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">四月 2016</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/02/">二月 2016</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">一月 2016</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">十二月 2015</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">十一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/10/">十月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">八月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">七月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">五月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/04/">四月 2015</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">三月 2015</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/02/">二月 2015</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">一月 2015</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/12/">十二月 2014</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/11/">十一月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/10/">十月 2014</a><span class="archive-list-count">29</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/09/">九月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/07/">七月 2014</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/06/">六月 2014</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/05/">五月 2014</a><span class="archive-list-count">6</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/04/">四月 2014</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/03/">三月 2014</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/01/">一月 2014</a><span class="archive-list-count">10</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/12/">十二月 2013</a><span class="archive-list-count">7</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/11/">十一月 2013</a><span class="archive-list-count">5</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">21</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/09/">九月 2013</a><span class="archive-list-count">18</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/08/">八月 2013</a><span class="archive-list-count">8</span></li></ul>
         </div>
     </div>
 
