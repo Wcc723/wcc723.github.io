@@ -4,6 +4,111 @@
   
     
     <entry>
+      <title><![CDATA[CSS 技巧：精簡語法操作暗色主題 - CSS Dark Mode]]></title>
+      <url>https://wcc723.github.io/css/2019/12/22/css-dark-mode/</url>
+      <content type="html"><![CDATA[<p>Mac 暗色主題推出後，就讓黑色控非常喜愛，而且這樣的暗色佈景使用起來更不傷眼。以我來說是比較喜歡在亮色的佈景下工作的，但暗主題的對於長期需要在電腦面前工作來說，真的相對輕鬆很多。雖然如此，也並非所有的介面都是有提供暗主題，以網頁來說就需要開發者另外定義暗主題才會進行切換（不使用任何瀏覽器插件的情況下）。</p>
+<p>好在，暗色主題的語法相當容易，以下介紹如何作切換，並且會提供一個小技巧，只要透過短短的幾行就能操控整個網站所有元件的主題色彩。</p>
+<h2 id="支援度"><a href="#支援度" class="headerlink" title="支援度"></a>支援度</h2><p>先附上大家所在意的支援度，但其實暗色主題本身就是由 Apple 先提出的，所以 Mac OS、iOS 的支援度會比較高，其它的瀏覽器也正在持續跟進中。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_12_22_%E4%B8%8A%E5%8D%8811_50.png?alt=media&amp;token=3090bbfe-cf0d-4a7a-8b97-23243cdd106a" alt></p>
+<h2 id="語法"><a href="#語法" class="headerlink" title="語法"></a>語法</h2><p>MDN 上的介紹：<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme</a></p>
+<p>暗色主題的 CSS 是透過 @media 取得裝置的主題模式，就如同取得裝置的形式一樣（尺寸、橫向或垂直、是否為螢幕等等…），相信對於撰寫過響應式的開發者都不陌生。</p>
+<p>語法上使用 prefers-color-scheme 來監測是亮色或暗色的主題，相對應的值也就是 <code>dark</code> or <code>light</code>。<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">media</span> (prefers-color-scheme: $&#123;<span class="selector-tag">dark</span> <span class="selector-tag">or</span> <span class="selector-tag">light</span>&#125;) &#123;</span><br><span class="line">  // ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>實際演示範例範例：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="css"><span class="selector-class">.mode</span> &#123;</span></span><br><span class="line"><span class="css">  <span class="selector-tag">background-color</span>: <span class="selector-id">#eee</span>;</span></span><br><span class="line"><span class="css">  <span class="selector-tag">color</span>: <span class="selector-id">#333</span>;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.text-mode</span><span class="selector-pseudo">:after</span> &#123;</span></span><br><span class="line">  content: "light";</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css">@<span class="keyword">media</span> (prefers-color-scheme: dark) &#123;</span></span><br><span class="line"><span class="css">  <span class="selector-class">.mode</span> &#123;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">background-color</span>: <span class="selector-id">#333</span>;</span></span><br><span class="line"><span class="css">    <span class="selector-tag">color</span>: <span class="selector-id">#eee</span>;</span></span><br><span class="line">  &#125;</span><br><span class="line"><span class="css">  <span class="selector-class">.text-mode</span><span class="selector-pseudo">:after</span> &#123;</span></span><br><span class="line">    content: "dark";</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo mode"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>本區塊會隨著暗色與亮色主題切換<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>您目前的是 <span class="tag">&lt;<span class="name">span</span> <span class="attr">class</span>=<span class="string">"text-mode"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span> 主題<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>請透過切換你的暗色、亮色主題來改變下方的範例（暗色主題為深色背景，亮色則反之）。</p>
+
+<style>
+.mode {
+  background-color: #eee;
+  color: #333;
+}
+.text-mode:after {
+  content: "light";
+}
+
+@media (prefers-color-scheme: dark) {
+  .mode {
+    background-color: #333;
+    color: #eee;
+  }
+  .text-mode:after {
+    content: "dark";
+  }
+}
+</style>
+<div class="demo mode">
+  <p>本區塊會隨著暗色與亮色主題切換</p>
+  <p>您目前的是 <span class="text-mode"></span> 主題</p>
+</div>
+
+<h2 id="使用變數快速切換網頁的主題色"><a href="#使用變數快速切換網頁的主題色" class="headerlink" title="使用變數快速切換網頁的主題色"></a>使用變數快速切換網頁的主題色</h2><p>暗色系與亮色中的色彩並不是黑白兩色互相切換，以 Material Design 來說，如果亮色的主色色彩為 <code>#6222ee</code>，在暗色系並不會使用相同色，而是會改變為 <code>#bb85fc</code> 藉此來增加辨識度，而整個網頁中所需要套用色彩的區塊非常多，從按鈕到元件都會不斷地引用，如果透過一個個的 @media 設定將會增加開發及管理的困難度。</p>
+<p><img src="https://storage.googleapis.com/spec-host/mio-staging%2Fmio-design%2F1576174064000%2Fassets%2F11xwGmImm24QEBIRv6a0NzhW-wTc9rFh6%2Fdarktheme-darktheme-usage-availability-toggle.png" alt></p>
+<blockquote>
+<p>Material Design 中的暗色、亮色切換範例，兩者的主色（紫色）在不同的主題下色彩也會改變。</p>
+</blockquote>
+<p>因此，在開發時可以將暗色、亮色的佈景主題色彩以 CSS 變數的方式作定義，避免直接將色彩寫入 CSS 元素上，接下來在 @media 中僅需要改變 CSS 的變數就能夠完整切換所有元件的主題色彩。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">--theme-primary</span>: <span class="number">#6222ee</span>;</span><br><span class="line">  <span class="attribute">--theme-background</span>: <span class="number">#eee</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="comment">/* ... */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">var</span>(--theme-background);</span><br><span class="line">  <span class="attribute">color</span>: <span class="built_in">var</span>(--theme-primary);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">media</span> (prefers-color-scheme: dark) &#123;</span><br><span class="line">  <span class="selector-class">.card</span> &#123;</span><br><span class="line">    <span class="attribute">--theme-primary</span>: <span class="number">#bb85fc</span>;</span><br><span class="line">    <span class="attribute">--theme-background</span>: <span class="number">#111</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<style>
+.card {
+  --theme-primary: #6222ee;
+  --theme-background: #eee;
+}
+
+.card {
+  margin: 0 auto;
+  padding: 15px;
+  text-align: center;
+  max-width: 320px;
+  border-radius: 3px;
+  border: 1px solid #777;
+  background-color: var(--theme-background);
+  color: var(--theme-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    --theme-primary: #bb85fc;
+    --theme-background: #111;
+  }
+}
+</style>
+<div class="demo mode">
+  <div class="card">
+    <p>本卡片會隨著暗色與亮色主題切換</p>
+  </div>
+</div>
+
+<p>本文中還有利用到 CSS Variables，有興趣可參閱本篇文「<a href="https://w3c.hexschool.com/blog/21985acb" target="_blank" rel="noopener">原生 CSS 變數運用技巧（CSS Variables）</a>」。</p>
+<h4 id="設計規範"><a href="#設計規範" class="headerlink" title="設計規範"></a>設計規範</h4><p>目前在 Apple 及 Material Design 中也都有針對亮色、暗色的佈景主題提供規範，在完整投入之前，也不妨先參考看看。</p>
+<p>Material Design</p>
+<ul>
+<li>Material Design：<a href="https://design.google/library/material-design-dark-theme/" target="_blank" rel="noopener">https://design.google/library/material-design-dark-theme/</a></li>
+</ul>
+<p>Apple</p>
+<ul>
+<li>Mac：<a href="https://developer.apple.com/design/human-interface-guidelines/macos/visual-design/dark-mode/" target="_blank" rel="noopener">https://developer.apple.com/design/human-interface-guidelines/macos/visual-design/dark-mode/</a></li>
+<li>iOS：<a href="https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/dark-mode/" target="_blank" rel="noopener">https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/dark-mode/</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> css </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> develop </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[一分鐘切換成中文版 VSCode（完整圖文版）]]></title>
       <url>https://wcc723.github.io/development/2019/12/01/vscode-chinese/</url>
       <content type="html"><![CDATA[<p>雖然開發者都具有一定的英文閱讀能力，但如果在不熟悉的情況下，就比較難以快速上手一個新工具。如果要快速掌握一個完整的工具或技術，最好的方式還是先切換成熟悉的語言。</p>
@@ -22,7 +127,7 @@
 <li>選擇安裝的語系 “zh-tw” 即可安裝</li>
 </ol>
 <p>以下附上影片供參考</p>
-<video width="1920" height="1080" class="img-fluid" controls><br>  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2Fvscode%20%E4%B8%AD%E6%96%87%E5%8C%96.mp4?alt=media&token=f6634ca2-33ac-46bc-9f83-50bedad602ae" type="video/mp4"><br></video>
+<video width="1920" height="1080" class="img-fluid" controls><source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2Fvscode%20%E4%B8%AD%E6%96%87%E5%8C%96.mp4?alt=media&token=f6634ca2-33ac-46bc-9f83-50bedad602ae" type="video/mp4"></video>
 
 ]]></content>
       
@@ -35,9 +140,9 @@
         
         <tags>
             
-            <tag> develop </tag>
-            
             <tag> vscode </tag>
+            
+            <tag> develop </tag>
             
         </tags>
         
@@ -248,9 +353,9 @@
         
         <tags>
             
-            <tag> markdown </tag>
-            
             <tag> develop </tag>
+            
+            <tag> markdown </tag>
             
         </tags>
         
@@ -2976,9 +3081,9 @@
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3066,9 +3171,9 @@
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3132,9 +3237,9 @@
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3196,9 +3301,9 @@
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3258,9 +3363,9 @@
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3341,9 +3446,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3401,9 +3506,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3449,9 +3554,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3501,9 +3606,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3552,9 +3657,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3590,9 +3695,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3631,9 +3736,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3690,9 +3795,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3762,9 +3867,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3807,9 +3912,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3865,9 +3970,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3913,9 +4018,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -3956,9 +4061,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4008,9 +4113,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4060,9 +4165,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4123,9 +4228,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4169,9 +4274,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4221,9 +4326,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4276,9 +4381,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4325,9 +4430,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4394,9 +4499,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4452,9 +4557,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4508,9 +4613,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4586,9 +4691,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -4631,9 +4736,9 @@ fetch(url)
             
             <tag> javascript </tag>
             
-            <tag> ironman </tag>
-            
             <tag> js </tag>
+            
+            <tag> ironman </tag>
             
         </tags>
         
@@ -17096,6 +17201,62 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="noopener">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="noopener">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -17178,62 +17339,6 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="noopener">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="noopener">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
             
         </tags>
         
