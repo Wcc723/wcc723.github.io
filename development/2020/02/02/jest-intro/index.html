@@ -10,19 +10,19 @@
     
     
 
-    <meta name="description" content="隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。 前端的測試常見的有兩大類別：  Unit Test：中文稱為單元測試，是以 function 作為單位">
+    <meta name="description" content="隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。 前端的測試常見的有兩大類別：  Unit Test：中文稱為單元測試，是以一個行為進行測試，可驗證運行">
 <meta name="keywords" content="test,jest">
 <meta property="og:type" content="article">
 <meta property="og:title" content="十分鐘上手前端單元測試 - 使用 Jest">
 <meta property="og:url" content="https://wcc723.github.io/development/2020/02/02/jest-intro/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。 前端的測試常見的有兩大類別：  Unit Test：中文稱為單元測試，是以 function 作為單位">
+<meta property="og:description" content="隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。 前端的測試常見的有兩大類別：  Unit Test：中文稱為單元測試，是以一個行為進行測試，可驗證運行">
 <meta property="og:locale" content="zh-TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest.png?alt=media&token=1809e129-03de-4f61-9a13-f8753ddf1786">
-<meta property="og:updated_time" content="2020-02-02T02:35:21.567Z">
+<meta property="og:updated_time" content="2020-02-02T13:42:15.029Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="十分鐘上手前端單元測試 - 使用 Jest">
-<meta name="twitter:description" content="隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。 前端的測試常見的有兩大類別：  Unit Test：中文稱為單元測試，是以 function 作為單位">
+<meta name="twitter:description" content="隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。 前端的測試常見的有兩大類別：  Unit Test：中文稱為單元測試，是以一個行為進行測試，可驗證運行">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest.png?alt=media&token=1809e129-03de-4f61-9a13-f8753ddf1786">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -206,7 +206,7 @@ ga('send', 'pageview');
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest.png?alt=media&token=1809e129-03de-4f61-9a13-f8753ddf1786" rel="gallery_ck64eslsq010r3fru0peugx0i">
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest.png?alt=media&token=1809e129-03de-4f61-9a13-f8753ddf1786" rel="gallery_ck652rzxf012g7srupffjeng9">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest.png?alt=media&token=1809e129-03de-4f61-9a13-f8753ddf1786" itemprop="image" />
     </a>
     
@@ -231,7 +231,7 @@ ga('send', 'pageview');
                 <p>隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。</p>
 <p>前端的測試常見的有兩大類別：</p>
 <ol>
-<li>Unit Test：中文稱為單元測試，是以 <code>function</code> 作為單位進行測試，可驗證函式運行的結果是否符合結果。</li>
+<li>Unit Test：中文稱為單元測試，是以一個行為進行測試，可驗證運行是否符合結果。</li>
 <li>E2E Test：直接模擬使用者在瀏覽器上的行為做測試</li>
 </ol>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_2_2_%E4%B8%8A%E5%8D%889_40.png?alt=media&amp;token=251f2e66-b504-4c1e-904f-d07c0f33ce23" alt="Unit 是小單位的測試，而 E2E 則是完整的應用測試"></p>
