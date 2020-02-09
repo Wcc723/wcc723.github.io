@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    <title>單元測試 - 非同步及 Ajax | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="test,jest">
+    
+    
+
+    <meta name="description" content="本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 JavaScript。 另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch">
+<meta name="keywords" content="test,jest">
+<meta property="og:type" content="article">
+<meta property="og:title" content="單元測試 - 非同步及 Ajax">
+<meta property="og:url" content="https://wcc723.github.io/development/2020/02/09/jest-async/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 JavaScript。 另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a">
+<meta property="og:updated_time" content="2020-02-09T06:22:08.215Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="單元測試 - 非同步及 Ajax">
+<meta name="twitter:description" content="本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 JavaScript。 另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8296684122088055",
+        enable_page_level_ads: true
+    });
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+</head>
+</html>
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <a href="/">
+                        <img src="/images/casper_blog.svg" alt="">
+                    </a>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/categories/life">生活</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about">關於</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/development/">development</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-jest-async" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        單元測試 - 非同步及 Ajax
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/development/2020/02/09/jest-async/" class="article-date">
+    <time datetime="2020-02-08T16:00:00.000Z" itemprop="datePublished">2020-02-09</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jest/">jest</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/">test</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a" rel="gallery_ck6eg5bxw00009qrufriorp9d">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>本篇延續上一篇：<a href="/development/2020/02/02/jest-intro/">十分鐘上手前端單元測試 - 使用 Jest</a></p>
+<p>JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章<a href="https://wcc723.github.io/javascript/2017/12/07/javascript-event-queue/">一次只能做一件事情的 JavaScript</a>。</p>
+<p>另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch 及許多遠端請求的套件亦是使用 Promise 作為基礎。因此在撰寫 Jest 撰寫非同步測試時也會使用到相關的概念，至於 Promise 可參考 <a href="https://wcc723.github.io/javascript/2017/12/29/javascript-proimse/">使用 Promise 處理非同步</a></p>
+<h2 id="範例函式"><a href="#範例函式" class="headerlink" title="範例函式"></a>範例函式</h2><p>這次的測試目標是使用 Ajax Get 取得遠端資料，並且確保遠端的資料是符合預期的。<a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">JSONPlaceholder</a> 此服務可以供前端模擬 Ajax 行為，包含 GET、POST、PUT、DELETE 都可以練習，同時也可以使用 id 的方式取得固定的資料內容。</p>
+<p>使用的遠端資料 API 路徑（最後一個數字則是 id，可確保取得固定資料）：<br><a href="https://jsonplaceholder.typicode.com/todos/1" target="_blank" rel="noopener">https://jsonplaceholder.typicode.com/todos/1</a></p>
+<p>該路徑取得的格式及值如下，本次將會驗證 <code>title</code> 的值是否為 “delectus aut autem”：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  userId: 1,</span><br><span class="line">  id: 1,</span><br><span class="line">  title: "delectus aut autem",</span><br><span class="line">  completed: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>除此之外，我們還會使用 axios 此套件來取得遠端資料，這是一個基於 Promise 開發的 HTTP 請求工具，可運用於瀏覽器或 Node.js 上（<a href="https://github.com/axios/axios" target="_blank" rel="noopener">axios</a>），使用以下指令安裝 axios：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install axios</span><br></pre></td></tr></table></figure></p>
+<p>接下來在範例專案引入 axios，並且取得遠端資料。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fns = &#123;</span><br><span class="line">  fetchData: <span class="function">(<span class="params">num = <span class="number">1</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> axios</span><br><span class="line">      .get(<span class="string">`https://jsonplaceholder.typicode.com/todos/<span class="subst">$&#123;num&#125;</span>`</span>)</span><br><span class="line">      .then(<span class="function"><span class="params">res</span> =&gt;</span> res.data)</span><br><span class="line">      .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="string">'error'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果透過 <code>console.log()</code> 檢視此段函式，可以發現他所回傳的是 Promise 函式，並非遠端的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(fns.fetchData())</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2F11509BFB-F255-4C09-8A79-F12EDB14D609.png?alt=media&amp;token=0c0b0157-1e19-4e20-b5ff-ab25a86309e7" alt></p>
+<p>如果要正確取得遠端值，則必需使用 <code>then</code> 這個方法。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fn.fetchData(<span class="number">1</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="錯誤範例"><a href="#錯誤範例" class="headerlink" title="錯誤範例"></a>錯誤範例</h2><p>JavaScript 特性是同步的，它會依序執行所有的程式碼，但遇到「非同步的事件」則會將事件移動到事件佇列內最後執行。因此，測試的預期結果如果是直接放到非同步的後方，則會無法正確取得資料。</p>
+<p>以下範例來說：</p>
+<ol>
+<li><code>fn.fetchData(1)</code> 是屬於非同步事件，因此<strong>會最後才執行</strong>。</li>
+<li>因為 fn.fetchData(1)  是最後執行，所以 <code>expect(data.title)</code> 中的 data 是一開始定義的 <code>{}</code></li>
+<li>所以結果必定為 <code>failed</code>（<code>fn.fetchData(1)</code> 不可能先執行完）。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">'should 返回值必定為 "delectus aut autem"（沒有正確套用 Promise）'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 非同步必定需要加上 return，才能正確驗證結果</span></span><br><span class="line">  <span class="keyword">let</span> data = &#123;&#125;;</span><br><span class="line">  </span><br><span class="line">  fn.fetchData(<span class="number">1</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    data = res;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// expect 無法正確取得值</span></span><br><span class="line">  expect(data.title).toEqual(<span class="string">'delectus aut autem'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="非同步"><a href="#非同步" class="headerlink" title="非同步"></a>非同步</h2><p>Promise 是常見的非同步的方法，基於 Promise 上還可以使用 Async、Await，這兩種寫法在 Node.js 中都可以運行，因此也都可以導入 Jest 中撰寫。</p>
+<h3 id="使用-Promise"><a href="#使用-Promise" class="headerlink" title="使用 Promise"></a>使用 Promise</h3><p>由於上述提到 <code>fn.fetchData</code> 會直接回傳 Promise 函式，Promise 執行完後回傳的值則必須使用 then 來取出，測試的期望及匹配也就必須寫在 then 之內，確保 Promise 已經執行完成。</p>
+<p>所以只要將先前範例中的 <code>expect()</code> 移動到 <code>then</code> 內部基本上就能運作。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 非同步：Promise 寫法</span></span><br><span class="line">test(<span class="string">'should 返回值必定為 "delectus aut autem"'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 斷言，確保非同步有正確取得資料</span></span><br><span class="line">  expect.assertions(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 當有使用 assertions 則必需加上 return，才能正確驗證結果</span></span><br><span class="line">  <span class="comment">// The assertion for a promise must be returned.</span></span><br><span class="line">  <span class="keyword">return</span> fn.fetchData(<span class="number">1</span>).then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    expect(data.title).toEqual(<span class="string">'delectus aut autem'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="斷言"><a href="#斷言" class="headerlink" title="斷言"></a>斷言</h3><p>在前面的範例中，如果移除 <code>expect.assertions</code> 還是可以正確運作，而 <code>assertions</code> 的目的是確保有完整取得 Promise 資料，可以將程式碼改為如下將得到不同結果：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此段範例中，Promise 直接進入 Catch 則會通過驗證</span></span><br><span class="line"><span class="comment">// 因為 catch 回傳的 'error' 與期望值一致</span></span><br><span class="line">test(<span class="string">'assertions 驗證'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> fn.fetchData(<span class="number">1</span>).catch(<span class="function"><span class="params">e</span> =&gt;</span> expect(e).toMatch(<span class="string">'error'</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>如果要確保程式碼正確取得 Promise Resolve 的結果，就可以使用 <code>expect.assertions(num)</code>（num 表示斷言的數量）。</p>
+<p>當補上 <code>expect.assertions(1)</code> 就必須使用 resolve 的結果才能通過驗證，<code>expect.assertions</code> 在 async 的寫法上也會更顯得重要。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">'assertions 驗證'</span>, () =&gt; &#123;</span><br><span class="line">  expect.assertions(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> fn.fetchData(<span class="number">1</span>).catch(<span class="function"><span class="params">e</span> =&gt;</span> expect(e).toMatch(<span class="string">'error'</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用-ES6-Async-Await"><a href="#使用-ES6-Async-Await" class="headerlink" title="使用 ES6 Async, Await"></a>使用 ES6 Async, Await</h3><p>JavaScript 特性是同步的，它會依序執行所有的程式碼。但在 ES6 中，只要將函式轉為 Async 函式，就可以使用 <code>await</code> 來接受 Promise 回傳的結果，相對於 Promise 來說，await 不需要另外使用 then 或函式的巢狀結構，並且會<strong>依序執行</strong> Promise 的事件，也因為這個特性使非同步原始碼不需要寫得很 “巢”。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">'should 回傳值必定為 "delectus aut autem"（async）'</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  expect.assertions(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// async 函式下，await 會確保取得遠端資料後才繼續往下運行</span></span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> fn.fetchData(<span class="number">1</span>);</span><br><span class="line">  expect(data.title).toEqual(<span class="string">'delectus aut autem'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="驗證特定屬性是否存在"><a href="#驗證特定屬性是否存在" class="headerlink" title="驗證特定屬性是否存在"></a>驗證特定屬性是否存在</h3><p>除此之外，遠端資料相對於本地端是更不可預期的，因為蝴蝶效應的關係，後端改了程式碼可能沒有知會前端，導致前端程式碼發生不可預期的錯誤（但開發者可能找不到原因），測試中也可以導入特定欄位是否存在的驗證。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">'驗證非同步 特定屬性是否已被定義'</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  expect.assertions(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> fn.fetchData(<span class="number">1</span>);</span><br><span class="line">  expect(data.title1).toBeDefined();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>參考資料：<br>參考：</p>
+<ul>
+<li>官方文件：<a href="https://jestjs.io/en/" target="_blank" rel="noopener">https://jestjs.io/en/</a></li>
+<li>影片：<a href="https://www.youtube.com/watch?v=7r4xVDI2vho" target="_blank" rel="noopener">https://www.youtube.com/watch?v=7r4xVDI2vho</a></li>
+</ul>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2020/02/09/jest-async/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/development/2020/02/02/jest-intro/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">十分鐘上手前端單元測試 - 使用 Jest</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/02/09/jest-async/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a)" alt="單元測試 - 非同步及 Ajax" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/02/09/jest-async/" class="title">單元測試 - 非同步及 Ajax</a></p>
+                            <p class="item-date"><time datetime="2020-02-08T16:00:00.000Z" itemprop="datePublished">2020-02-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/02/02/jest-intro/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest.png?alt=media&token=1809e129-03de-4f61-9a13-f8753ddf1786)" alt="十分鐘上手前端單元測試 - 使用 Jest" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/02/02/jest-intro/" class="title">十分鐘上手前端單元測試 - 使用 Jest</a></p>
+                            <p class="item-date"><time datetime="2020-02-01T16:00:00.000Z" itemprop="datePublished">2020-02-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/01/04/image-common-mistakes/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202001%2Fimg-mistake.png?alt=media&token=860cf55e-b433-44a0-925b-07849ad65d5f)" alt="前端開發者，圖片常犯的五個粗心錯誤" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/01/04/image-common-mistakes/" class="title">前端開發者，圖片常犯的五個粗心錯誤</a></p>
+                            <p class="item-date"><time datetime="2020-01-03T16:00:00.000Z" itemprop="datePublished">2020-01-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2019/12/22/css-dark-mode/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2Fcss-dark-mode.png?alt=media&token=21ebdd56-5e42-4e4f-ab8d-c63e35d29637)" alt="CSS 技巧：精簡語法操作暗色主題 - CSS Dark Mode" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2019/12/22/css-dark-mode/" class="title">CSS 技巧：精簡語法操作暗色主題 - CSS Dark Mode</a></p>
+                            <p class="item-date"><time datetime="2019-12-21T16:00:00.000Z" itemprop="datePublished">2019-12-22</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2019/12/01/vscode-chinese/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2Fvscode_chinese.png?alt=media&token=296ca914-6acb-4817-86d1-ec4c54240648)" alt="一分鐘切換成中文版 VSCode（完整圖文版）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2019/12/01/vscode-chinese/" class="title">一分鐘切換成中文版 VSCode（完整圖文版）</a></p>
+                            <p class="item-date"><time datetime="2019-11-30T16:00:00.000Z" itemprop="datePublished">2019-12-01</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.47px;">d3js</a> <a href="/tags/design/" style="font-size: 17.06px;">design</a> <a href="/tags/develop/" style="font-size: 11.18px;">develop</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.76px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.24px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jest/" style="font-size: 10.59px;">jest</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.59px;">promise</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.82px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/test/" style="font-size: 10.59px;">test</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://www.hexschool.com/">六角學院</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>

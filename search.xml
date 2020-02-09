@@ -4,6 +4,62 @@
   
     
     <entry>
+      <title><![CDATA[單元測試 - 非同步及 Ajax]]></title>
+      <url>https://wcc723.github.io/development/2020/02/09/jest-async/</url>
+      <content type="html"><![CDATA[<p>本篇延續上一篇：<a href="/development/2020/02/02/jest-intro/">十分鐘上手前端單元測試 - 使用 Jest</a></p>
+<p>JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章<a href="https://wcc723.github.io/javascript/2017/12/07/javascript-event-queue/">一次只能做一件事情的 JavaScript</a>。</p>
+<p>另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch 及許多遠端請求的套件亦是使用 Promise 作為基礎。因此在撰寫 Jest 撰寫非同步測試時也會使用到相關的概念，至於 Promise 可參考 <a href="https://wcc723.github.io/javascript/2017/12/29/javascript-proimse/">使用 Promise 處理非同步</a></p>
+<h2 id="範例函式"><a href="#範例函式" class="headerlink" title="範例函式"></a>範例函式</h2><p>這次的測試目標是使用 Ajax Get 取得遠端資料，並且確保遠端的資料是符合預期的。<a href="https://jsonplaceholder.typicode.com/" target="_blank" rel="noopener">JSONPlaceholder</a> 此服務可以供前端模擬 Ajax 行為，包含 GET、POST、PUT、DELETE 都可以練習，同時也可以使用 id 的方式取得固定的資料內容。</p>
+<p>使用的遠端資料 API 路徑（最後一個數字則是 id，可確保取得固定資料）：<br><a href="https://jsonplaceholder.typicode.com/todos/1" target="_blank" rel="noopener">https://jsonplaceholder.typicode.com/todos/1</a></p>
+<p>該路徑取得的格式及值如下，本次將會驗證 <code>title</code> 的值是否為 “delectus aut autem”：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  userId: 1,</span><br><span class="line">  id: 1,</span><br><span class="line">  title: "delectus aut autem",</span><br><span class="line">  completed: false</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>除此之外，我們還會使用 axios 此套件來取得遠端資料，這是一個基於 Promise 開發的 HTTP 請求工具，可運用於瀏覽器或 Node.js 上（<a href="https://github.com/axios/axios" target="_blank" rel="noopener">axios</a>），使用以下指令安裝 axios：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install axios</span><br></pre></td></tr></table></figure></p>
+<p>接下來在範例專案引入 axios，並且取得遠端資料。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> axios = <span class="built_in">require</span>(<span class="string">'axios'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> fns = &#123;</span><br><span class="line">  fetchData: <span class="function">(<span class="params">num = <span class="number">1</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> axios</span><br><span class="line">      .get(<span class="string">`https://jsonplaceholder.typicode.com/todos/<span class="subst">$&#123;num&#125;</span>`</span>)</span><br><span class="line">      .then(<span class="function"><span class="params">res</span> =&gt;</span> res.data)</span><br><span class="line">      .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="string">'error'</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果透過 <code>console.log()</code> 檢視此段函式，可以發現他所回傳的是 Promise 函式，並非遠端的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(fns.fetchData())</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2F11509BFB-F255-4C09-8A79-F12EDB14D609.png?alt=media&amp;token=0c0b0157-1e19-4e20-b5ff-ab25a86309e7" alt></p>
+<p>如果要正確取得遠端值，則必需使用 <code>then</code> 這個方法。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">fn.fetchData(<span class="number">1</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="錯誤範例"><a href="#錯誤範例" class="headerlink" title="錯誤範例"></a>錯誤範例</h2><p>JavaScript 特性是同步的，它會依序執行所有的程式碼，但遇到「非同步的事件」則會將事件移動到事件佇列內最後執行。因此，測試的預期結果如果是直接放到非同步的後方，則會無法正確取得資料。</p>
+<p>以下範例來說：</p>
+<ol>
+<li><code>fn.fetchData(1)</code> 是屬於非同步事件，因此<strong>會最後才執行</strong>。</li>
+<li>因為 fn.fetchData(1)  是最後執行，所以 <code>expect(data.title)</code> 中的 data 是一開始定義的 <code>{}</code></li>
+<li>所以結果必定為 <code>failed</code>（<code>fn.fetchData(1)</code> 不可能先執行完）。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">'should 返回值必定為 "delectus aut autem"（沒有正確套用 Promise）'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 非同步必定需要加上 return，才能正確驗證結果</span></span><br><span class="line">  <span class="keyword">let</span> data = &#123;&#125;;</span><br><span class="line">  </span><br><span class="line">  fn.fetchData(<span class="number">1</span>).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    data = res;</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// expect 無法正確取得值</span></span><br><span class="line">  expect(data.title).toEqual(<span class="string">'delectus aut autem'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="非同步"><a href="#非同步" class="headerlink" title="非同步"></a>非同步</h2><p>Promise 是常見的非同步的方法，基於 Promise 上還可以使用 Async、Await，這兩種寫法在 Node.js 中都可以運行，因此也都可以導入 Jest 中撰寫。</p>
+<h3 id="使用-Promise"><a href="#使用-Promise" class="headerlink" title="使用 Promise"></a>使用 Promise</h3><p>由於上述提到 <code>fn.fetchData</code> 會直接回傳 Promise 函式，Promise 執行完後回傳的值則必須使用 then 來取出，測試的期望及匹配也就必須寫在 then 之內，確保 Promise 已經執行完成。</p>
+<p>所以只要將先前範例中的 <code>expect()</code> 移動到 <code>then</code> 內部基本上就能運作。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 非同步：Promise 寫法</span></span><br><span class="line">test(<span class="string">'should 返回值必定為 "delectus aut autem"'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 斷言，確保非同步有正確取得資料</span></span><br><span class="line">  expect.assertions(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 當有使用 assertions 則必需加上 return，才能正確驗證結果</span></span><br><span class="line">  <span class="comment">// The assertion for a promise must be returned.</span></span><br><span class="line">  <span class="keyword">return</span> fn.fetchData(<span class="number">1</span>).then(<span class="function"><span class="params">data</span> =&gt;</span> &#123;</span><br><span class="line">    expect(data.title).toEqual(<span class="string">'delectus aut autem'</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="斷言"><a href="#斷言" class="headerlink" title="斷言"></a>斷言</h3><p>在前面的範例中，如果移除 <code>expect.assertions</code> 還是可以正確運作，而 <code>assertions</code> 的目的是確保有完整取得 Promise 資料，可以將程式碼改為如下將得到不同結果：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此段範例中，Promise 直接進入 Catch 則會通過驗證</span></span><br><span class="line"><span class="comment">// 因為 catch 回傳的 'error' 與期望值一致</span></span><br><span class="line">test(<span class="string">'assertions 驗證'</span>, () =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> fn.fetchData(<span class="number">1</span>).catch(<span class="function"><span class="params">e</span> =&gt;</span> expect(e).toMatch(<span class="string">'error'</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>如果要確保程式碼正確取得 Promise Resolve 的結果，就可以使用 <code>expect.assertions(num)</code>（num 表示斷言的數量）。</p>
+<p>當補上 <code>expect.assertions(1)</code> 就必須使用 resolve 的結果才能通過驗證，<code>expect.assertions</code> 在 async 的寫法上也會更顯得重要。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">'assertions 驗證'</span>, () =&gt; &#123;</span><br><span class="line">  expect.assertions(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> fn.fetchData(<span class="number">1</span>).catch(<span class="function"><span class="params">e</span> =&gt;</span> expect(e).toMatch(<span class="string">'error'</span>));</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h3 id="使用-ES6-Async-Await"><a href="#使用-ES6-Async-Await" class="headerlink" title="使用 ES6 Async, Await"></a>使用 ES6 Async, Await</h3><p>JavaScript 特性是同步的，它會依序執行所有的程式碼。但在 ES6 中，只要將函式轉為 Async 函式，就可以使用 <code>await</code> 來接受 Promise 回傳的結果，相對於 Promise 來說，await 不需要另外使用 then 或函式的巢狀結構，並且會<strong>依序執行</strong> Promise 的事件，也因為這個特性使非同步原始碼不需要寫得很 “巢”。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">'should 回傳值必定為 "delectus aut autem"（async）'</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  expect.assertions(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// async 函式下，await 會確保取得遠端資料後才繼續往下運行</span></span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> fn.fetchData(<span class="number">1</span>);</span><br><span class="line">  expect(data.title).toEqual(<span class="string">'delectus aut autem'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="驗證特定屬性是否存在"><a href="#驗證特定屬性是否存在" class="headerlink" title="驗證特定屬性是否存在"></a>驗證特定屬性是否存在</h3><p>除此之外，遠端資料相對於本地端是更不可預期的，因為蝴蝶效應的關係，後端改了程式碼可能沒有知會前端，導致前端程式碼發生不可預期的錯誤（但開發者可能找不到原因），測試中也可以導入特定欄位是否存在的驗證。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">test(<span class="string">'驗證非同步 特定屬性是否已被定義'</span>, <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  expect.assertions(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> data = <span class="keyword">await</span> fn.fetchData(<span class="number">1</span>);</span><br><span class="line">  expect(data.title1).toBeDefined();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>參考資料：<br>參考：</p>
+<ul>
+<li>官方文件：<a href="https://jestjs.io/en/" target="_blank" rel="noopener">https://jestjs.io/en/</a></li>
+<li>影片：<a href="https://www.youtube.com/watch?v=7r4xVDI2vho" target="_blank" rel="noopener">https://www.youtube.com/watch?v=7r4xVDI2vho</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> test </tag>
+            
+            <tag> jest </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[十分鐘上手前端單元測試 - 使用 Jest]]></title>
       <url>https://wcc723.github.io/development/2020/02/02/jest-intro/</url>
       <content type="html"><![CDATA[<p>隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。</p>
@@ -138,6 +194,7 @@
 <p>參考：</p>
 <ul>
 <li>官方文件：<a href="https://jestjs.io/en/" target="_blank" rel="noopener">https://jestjs.io/en/</a></li>
+<li>單元測試和整合測試的涵蓋範圍：<a href="https://ithelp.ithome.com.tw/m/articles/10229734" target="_blank" rel="noopener">https://ithelp.ithome.com.tw/m/articles/10229734</a></li>
 <li>影片：<a href="https://www.youtube.com/watch?v=7r4xVDI2vho" target="_blank" rel="noopener">https://www.youtube.com/watch?v=7r4xVDI2vho</a></li>
 <li>神 Q 超人簡報：<a href="https://hackmd.io/@ei_7gAIeSEq2x9U-cH1WoQ/r1FoTHClL" target="_blank" rel="noopener">https://hackmd.io/@ei_7gAIeSEq2x9U-cH1WoQ/r1FoTHClL</a></li>
 </ul>
@@ -417,9 +474,9 @@
         
         <tags>
             
-            <tag> vscode </tag>
-            
             <tag> develop </tag>
+            
+            <tag> vscode </tag>
             
         </tags>
         
