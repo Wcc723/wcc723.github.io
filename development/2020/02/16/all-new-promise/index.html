@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    <title>JavaScript Promise 全介紹 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="test,jest">
+    
+    
+
+    <meta name="description" content="最近直播介紹如何串接開源資料，也剛好許多朋友詢問到 Ajax、Promise 相關的問題，因此重新撰寫一篇文來介紹 Promise，這篇文章也與過去形勢不太一樣，試著先將常見的問題放在前頭，接下來才開始介紹 Promise。 另外本文的內容較多，Promise 想看簡易版可參考：/javascript/2017/12/29/javascript-proimse/。     使用 Vuejs 結合">
+<meta name="keywords" content="test,jest">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript Promise 全介紹">
+<meta property="og:url" content="https://wcc723.github.io/development/2020/02/16/all-new-promise/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="最近直播介紹如何串接開源資料，也剛好許多朋友詢問到 Ajax、Promise 相關的問題，因此重新撰寫一篇文來介紹 Promise，這篇文章也與過去形勢不太一樣，試著先將常見的問題放在前頭，接下來才開始介紹 Promise。 另外本文的內容較多，Promise 想看簡易版可參考：/javascript/2017/12/29/javascript-proimse/。     使用 Vuejs 結合">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-Saint-Seiya.png?alt=media&token=6efc3208-ad24-41f7-a20d-bc8ddabaeef9">
+<meta property="og:updated_time" content="2020-02-16T02:30:18.411Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript Promise 全介紹">
+<meta name="twitter:description" content="最近直播介紹如何串接開源資料，也剛好許多朋友詢問到 Ajax、Promise 相關的問題，因此重新撰寫一篇文來介紹 Promise，這篇文章也與過去形勢不太一樣，試著先將常見的問題放在前頭，接下來才開始介紹 Promise。 另外本文的內容較多，Promise 想看簡易版可參考：/javascript/2017/12/29/javascript-proimse/。     使用 Vuejs 結合">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-Saint-Seiya.png?alt=media&token=6efc3208-ad24-41f7-a20d-bc8ddabaeef9">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8296684122088055",
+        enable_page_level_ads: true
+    });
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+</head>
+</html>
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <a href="/">
+                        <img src="/images/casper_blog.svg" alt="">
+                    </a>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/categories/life">生活</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about">關於</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/development/">development</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-all-new-promise" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        JavaScript Promise 全介紹
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/development/2020/02/16/all-new-promise/" class="article-date">
+    <time datetime="2020-02-15T16:00:00.000Z" itemprop="datePublished">2020-02-16</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jest/">jest</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/test/">test</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-Saint-Seiya.png?alt=media&token=6efc3208-ad24-41f7-a20d-bc8ddabaeef9" rel="gallery_ck6ocjzm70123q0rubm7aao3o">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-Saint-Seiya.png?alt=media&token=6efc3208-ad24-41f7-a20d-bc8ddabaeef9" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>最近直播介紹如何串接開源資料，也剛好許多朋友詢問到 Ajax、Promise 相關的問題，因此重新撰寫一篇文來介紹 Promise，這篇文章也與過去形勢不太一樣，試著先將常見的問題放在前頭，接下來才開始介紹 Promise。</p>
+<p>另外本文的內容較多，Promise 想看簡易版可參考：<a href="/javascript/2017/12/29/javascript-proimse/">/javascript/2017/12/29/javascript-proimse/</a>。</p>
+
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/7CXnNMVMXeo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<blockquote>
+<p>使用 Vuejs 結合 Open Street Map 製作口罩地圖</p>
+</blockquote>
+<h2 id="關於-Promise-常見問題"><a href="#關於-Promise-常見問題" class="headerlink" title="關於 Promise 常見問題"></a>關於 Promise 常見問題</h2><p>Q: Promise 跟 Ajax 有什麼關係？</p>
+<p>關於 Ajax 可以先參考這份：<a href="https://zh.wikipedia.org/wiki/AJAX" target="_blank" rel="noopener">https://zh.wikipedia.org/wiki/AJAX</a></p>
+<p>以目前來說，Ajax 可以向伺服器傳送及取得資料，並且不需要重新整理瀏覽器畫面，這樣可以大幅提升使用者體驗並且減少伺服器負擔（僅處理資料，畫面由前端處理）。</p>
+<p>Ajax 是屬於一個透過 JavaScript 技術名稱，用於取得遠端資料；而 Promise 則是一個語法，專門用來處理非同步行為，並不是專門用來處理 Ajax 使用，所以兩者是不同的。</p>
+<p>Q: Promise 與 Async、Await 有什麼關係？</p>
+<p>Promise 是用來優化非同步的語法，而 Async、Await 可以<strong>基於 Promise</strong> 讓非同步的語法的結構類似於 “同步語言”，更易讀且好管理。</p>
+<p>Async、Await 參考：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank" rel="noopener">https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Statements/async_function</a></p>
+<p>Q: 請問 Promise 很常用到嗎？是否一定要學呢？</p>
+<p>使用頻率高，必學。</p>
+<h2 id="非同步的問題"><a href="#非同步的問題" class="headerlink" title="非同步的問題"></a>非同步的問題</h2><p>Promise 本身是用來改善 JavaScript 非同步的語法結構。</p>
+<p>在過去的文章中有提到，JavaScript 是屬於同步的程式語言，因此<a href="https://wcc723.github.io/javascript/2017/12/07/javascript-event-queue/">一次僅能做一件事情</a>，但遇到非同步的事件時，就會將非同步的事件移動到程式碼的最後方，等到所有的原始碼運行完以後才會執行非同步的事件。</p>
+<p>以下列的程式碼來說，在 console 中依序的會出現的順序為：</p>
+<ol>
+<li><code>開始</code></li>
+<li><code>程式碼結束</code></li>
+<li><code>非同步事件</code> &lt;- 最後執行</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">'開始'</span>);</span><br><span class="line"></span><br><span class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'非同步事件'</span>);</span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'程式碼結束'</span>);</span><br></pre></td></tr></table></figure>
+<p>雖然在上段的原始碼中，setTimeout 所定義的時間為 0，但因為是屬於非同步事件，因此還是會在其他原始碼運行完以後才執行。</p>
+<p>在 Ajax 的行為中也是一樣，當需要<strong>確保擷取到遠端資料才繼續往下執行時</strong>，如果程式碼是依序撰寫的方式，就會無法正確呈現資料，以下範例我們使用 Promise base 的 Ajax 函式庫 axios 進行一下錯誤的示範：</p>
+<p>與上述的概念是相同的，Ajax 本身也是屬於非同步的行為。在一開始先定義了一個 data 物件，中間段落使用 axios 嘗試取得遠端資料，後面的緊接的 <code>console.log(data);</code> 呈現的依然是一開始定義的物件，並不會是 Ajax 取得的資料。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> data = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'開始'</span>);</span><br><span class="line"></span><br><span class="line">axios.get(<span class="string">'https://randomuser.me/api/'</span>).then(<span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</span><br><span class="line">  data = response;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(data);</span><br></pre></td></tr></table></figure>
+<p>在上述的範例中，data 正確的賦值位置在以下片段，如果預期在取得資料後進行其它的行為，了解整個 Promise 的運作將非常的重要。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">then(<span class="function"><span class="keyword">function</span>(<span class="params">response</span>) </span>&#123;</span><br><span class="line">  data = response;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<h2 id="Promise-的結構及狀態"><a href="#Promise-的結構及狀態" class="headerlink" title="Promise 的結構及狀態"></a>Promise 的結構及狀態</h2><h3 id="結構"><a href="#結構" class="headerlink" title="結構"></a>結構</h3><p>Promise 本身是一個建構<strong>函式</strong>，函式也是屬於物件的一種，因此可以附加其它屬性方法在上，透過 console 的結果可以看到 Promise 可以直接使用 all、race、resolve、reject 的方法，寫法如下（後面再介紹運用方式）：</p>
+<ul>
+<li>Promise.all</li>
+<li>Promise.race</li>
+<li>Promise.resolve</li>
+<li>Promise.reject</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2F8EDE3272-824E-4C1B-AE12-0B4913740853.png?alt=media&amp;token=3bff6e31-60b0-4683-a4d9-b09d4d1a00b0" alt="Promise 建構函式展開後的結構"></p>
+<p>Promise 建構函式 <strong>new 出的物件</strong>，則可以使用其中的原型方法（在 <code>prototype</code> 內），其中就包含 <code>then</code>、<code>catch</code>、<code>finally</code>，這些方法則必須在新產生的物件下才能呼叫。</p>
+<p>透過 <code>new Promise()</code> 的方式建立 <code>p</code> 物件，此時 p 就能使用 Promise 的原型方法：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> p = <span class="keyword">new</span> <span class="built_in">Promise</span>();</span><br><span class="line"></span><br><span class="line">p.then();    <span class="comment">// Promise 回傳正確</span></span><br><span class="line">p.catch();   <span class="comment">// Promise 回傳失敗</span></span><br><span class="line">p.finally(); <span class="comment">// 非同步執行完畢（無論是否正確完成）</span></span><br></pre></td></tr></table></figure></p>
+<p>除此之外，Promise 建構函式建立同時，必須傳入一個函式作為參數（executor function），此函式的參數包含 resolve, reject，這兩個方法分別代表成功與失敗的回傳結果，特別注意這兩個僅能回傳其中之一，回傳後表示此 Promise 事件結束。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>) </span>&#123; </span><br><span class="line">	resolve(); <span class="comment">// 正確完成的回傳方法</span></span><br><span class="line">	reject();  <span class="comment">// 失敗的回傳方法</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p><code>resolve</code> 及 <code>reject</code> 的名稱可以自定義，但在開發上大多數開發者習慣維持此名稱。</p>
+<h3 id="狀態"><a href="#狀態" class="headerlink" title="狀態"></a>狀態</h3><p>Promise 的關鍵在處理非同步的事件，而非同步的過程中也包含著不同的進度狀態，在 Promise 的執行過程中，可以看到以下狀態。</p>
+<ul>
+<li>pending：事件已經運行中，尚未取得結果</li>
+<li>resolved：事件已經執行完畢且成功操作，回傳 <code>resolve</code> 的結果（該沈諾已經被實現 fulfilled）</li>
+<li>rejected：事件已經執行完畢但操作失敗，回傳 <code>rejected</code> 的結果</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-pending.png?alt=media&amp;token=f5a5607b-4436-44e6-ab1f-0d8dd4bf59b3" alt></p>
+<blockquote>
+<p>進入 fulfilled 或 rejected 就算完成後不會再改變，Promise 中會使用 resolve 或 reject 回傳結果，並在調用時使用 then 或 catch 取得值。</p>
+</blockquote>
+<p>如果要判斷 Promise 是否完成，可依據 Promise 事件中的 <code>resolve</code> 及 <code>reject</code> 是否有被調用，以下範例來說在沒有調用兩個方法時，Promise 的結果則會停留在 pending。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promise</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.dir(promise());</span><br></pre></td></tr></table></figure></p>
+<p>在 Promise 的執行函式中，可以看到以下兩個屬性：</p>
+<ul>
+<li><em>[[PromiseStatus]]</em>: <code>&quot;pending&quot;</code> -&gt; 表示目前的進度狀態</li>
+</ul>
+<ul>
+<li><em>[[PromiseValue]]</em>: <code>undefined</code>  -&gt; 表示 <code>resolve</code> 或 <code>reject</code> 回傳的值</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2FA14E1FA8-23ED-4317-B421-F0555976FE69.png?alt=media&amp;token=a5199945-3cc6-4f06-8050-218ab1eeee91" alt></p>
+<p>以下範例來說，執行完函式直接 <code>reject(&#39;失敗&#39;)</code>，最終也能取得 rejected 的狀態及值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promise</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;reject(<span class="string">'失敗'</span>);&#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.dir(promise());</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2FFC09AAC0-B91B-41FA-862C-0966731A2B18.png?alt=media&amp;token=552d26ae-9e63-4d1b-8d07-4e9c3a05e53a" alt></p>
+<h2 id="建立自己的-Promise"><a href="#建立自己的-Promise" class="headerlink" title="建立自己的 Promise"></a>建立自己的 Promise</h2><p>如果要熟悉 Promise，最好的方式莫過於自己撰寫一次 Promise。</p>
+<p>Promise 預設會帶入 resolve, reject 的參數（可自訂名稱，但大家習慣 resolve 及 reject），resolve 代表成功；reject 代表失敗，而兩者必定只能回傳其中之一，且必定只能回傳一次。</p>
+<p>函式陳述式建立以後，直接透過 <code>return new Promise</code> 回傳並建立一個 Promise 物件，並且在內部加入一個執行函式且帶上 <code>resolve, reject</code> 的參數，到這個階段就是常見的 Promise 結構，接下來在依據執行的結果來透過 <code>resolve, reject</code> 回傳值即可（以下範例會隨機調用 resovle 及 reject）。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promise</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 隨機取得 0 or 1</span></span><br><span class="line">    <span class="keyword">const</span> num = <span class="built_in">Math</span>.random() &gt; <span class="number">0.5</span> ? <span class="number">1</span> : <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 1 則執行 resolve，否則執行 reject</span></span><br><span class="line">    <span class="keyword">if</span> (num) &#123; </span><br><span class="line">      resolve(<span class="string">'成功'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    reject(<span class="string">'失敗'</span>)</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>在呼叫前 Promise 前回顧一下 Promise 會有三個狀態：</p>
+<ul>
+<li>Pending -&gt; 尚未得到結果</li>
+<li>Resolved：事件已經執行完畢且成功操作，回傳 <code>resolve</code> 的結果</li>
+<li>Rejected：事件已經執行完畢但操作失敗，回傳 <code>rejected</code> 的結果</li>
+</ul>
+<p>上列的三種狀態每次執行必定會經過 Pending，接下來進入 Fulfilled 或 Rejected 的其中之一，並且可以使用 <code>then()</code> 及 <code>catch()</code> 取得成功或失敗的結果。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-resovle_reject.png?alt=media&amp;token=88067e09-92d4-4c67-9455-d13e4c5f22cc" alt></p>
+<p>在 <code>.then(onFulfilled, onRejected)</code>中可帶入兩個回呼函式，兩者分別又可以帶入各自的參數：</p>
+<ul>
+<li><code>onFulfilled</code>：執行成功的函式，所帶入參數表示 Promise 函式中 <code>resolve</code> 所帶入的值。</li>
+<li><code>onRejected</code>：執行失敗的函式，帶入參數表示 Promise 函式中 <code>reject</code> 所帶入的值。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// promise.then(onFulfilled, onRejected);</span></span><br><span class="line"><span class="comment">// 前者為 resolve callback，後者則為 reject</span></span><br><span class="line">promise()</span><br><span class="line">  .then(<span class="function">(<span class="params">success</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(success);</span><br><span class="line">  &#125;, (fail) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(fail);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<p>在大部分情況下，開發者習慣僅使用 <code>.then()</code> 來取得成功的結果，失敗的部分交由 <code>catch(onRejected)</code> 來處理，這兩種寫法差異很小。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// promise.then(onFulfilled);</span></span><br><span class="line"><span class="comment">// promise.catch(onRejected)</span></span><br><span class="line">promise()</span><br><span class="line">  .then(<span class="function"><span class="params">success</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(success);</span><br><span class="line">  &#125;)</span><br><span class="line">	<span class="comment">// 失敗的行為一律交給了 catch</span></span><br><span class="line">  .catch(<span class="function"><span class="params">fail</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(fail);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<h3 id="鏈接"><a href="#鏈接" class="headerlink" title="鏈接"></a>鏈接</h3><p>為了確保非同步完成後才執行另一個方法，過去都只能不斷的透過 callback 的方式來確保下一個方法正確執行，網路上如果搜尋 callback hell 也可以看到相關的文章及程式碼波動拳的圖片。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2FE555E697-1EA5-460A-86BF-C640B2E568CF.png?alt=media&amp;token=06affb69-e3bb-4733-b783-537779c0a741" alt></p>
+<p>Promise 另一個特點在於 <code>then</code>、<code>catch</code> 都可以使用鏈接的方式不斷的進行下一個任務，在此範例中我們修改 Promise 的結果，改成傳入 <code>0</code> 則會調用 <code>reject</code>，其它數值則會調用 <code>resolve</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promise</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    num ? resolve(<span class="string">`<span class="subst">$&#123;num&#125;</span>, 成功`</span>) : reject(<span class="string">'失敗'</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>接下來，當我們要進行確保 Promise 任務結束後在進行下一個任務時，就可以使用 <code>return</code> 的方式進入下一個 then，此 return 也有以下特點：</p>
+<ul>
+<li>方法不限於 promise 函式，任何表達式（expression）都可進行回傳</li>
+<li>如果是 promise 函式，則會繼續遵循 then 及 catch 的運作</li>
+<li>如果不是  promise 函式，在下一個 then 則可以取得結果<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">promise(<span class="number">1</span>)</span><br><span class="line">  .then(<span class="function"><span class="params">success</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(success);</span><br><span class="line">    <span class="keyword">return</span> promise(<span class="number">2</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(<span class="function"><span class="params">success</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(success);</span><br><span class="line">    <span class="keyword">return</span> promise(<span class="number">0</span>); <span class="comment">// 這個階段會進入 catch</span></span><br><span class="line">  &#125;)</span><br><span class="line">  .then(<span class="function"><span class="params">success</span> =&gt;</span> &#123;   <span class="comment">// 由於上一個階段結果是 reject，所以此段不執行</span></span><br><span class="line">    <span class="built_in">console</span>.log(success);</span><br><span class="line">    <span class="keyword">return</span> promise(<span class="number">3</span>);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function"><span class="params">fail</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(fail);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Then-VS-Catch-的失敗回呼差異"><a href="#Then-VS-Catch-的失敗回呼差異" class="headerlink" title="Then VS Catch 的失敗回呼差異"></a>Then VS Catch 的失敗回呼差異</h3><p><code>then</code>、<code>catch</code> 都可以透過進行鏈接，上述也有提到 <code>then</code> 同時也能接收失敗的結果，在此用圖示表示兩者在執行上不同的結果。</p>
+<p>不使用 <code>then</code> 接收失敗：無論在哪一個階段遇到 reject 時，接下來會直接跳到 <code>catch</code>，在其後的 <code>then</code> 都不會執行。另外提一下：<code>catch</code> 依然可以使用 <code>return</code> 繼續串接（實戰中很少這樣寫）。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2F3484D2DC-3CF9-4292-B019-C7D76C448F13.png?alt=media&amp;token=3e68ed68-cbc0-4be2-88ca-c24d31c5e07e" alt></p>
+<p>使用 <code>then</code> 接收失敗：<code>then</code> 中的兩個函式必定執行其中一個（onFulfilled, onRejected），可以用此方式確保所有的鏈接都能夠被執行。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2FE4D3FA80-B070-4B23-9E3C-A58CE60C3C8C.png?alt=media&amp;token=ba0ccc0b-13ba-4425-a878-eeaeddc30ed9" alt></p>
+<h3 id="Finally-完成"><a href="#Finally-完成" class="headerlink" title="Finally 完成"></a>Finally 完成</h3><p>最後方可以使用 finally 來確認工作結束，<code>finally</code> 不帶有任何參數。這個方法適合用來作為 Ajax 已經讀取完成，透過 <code>finally</code> 來關閉讀取的效果。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">promise(<span class="number">1</span>)</span><br><span class="line">  .then(<span class="function"><span class="params">success</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(success);</span><br><span class="line">  &#125;).finally(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'done'</span>);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="使用-Promise-改寫-XMLHttpRequest"><a href="#使用-Promise-改寫-XMLHttpRequest" class="headerlink" title="使用 Promise 改寫 XMLHttpRequest"></a>使用 Promise 改寫 XMLHttpRequest</h2><p>Promise 很大一部份是用來處理 Ajax 行為，此段透過改寫的形式了解使用 Promise 及傳統的寫法有哪些差異。</p>
+<p>傳統上，需透過 <code>XMLHttpRequest</code> 建構式來產生可進行遠端請求的物件，並且依序定義方法(<code>GET</code>)及狀態(<code>onload</code>)並送出請求(<code>send</code>)，取得結果後的其它行為則需要撰寫在 <code>onload</code> 內，程式碼結構如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> url = <span class="string">'https://jsonplaceholder.typicode.com/todos/1'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定義 Http request</span></span><br><span class="line"><span class="keyword">var</span> req = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定義方法</span></span><br><span class="line">req.open(<span class="string">'GET'</span>, url);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 當請求完成，則進行函式的結果</span></span><br><span class="line">req.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (req.status == <span class="number">200</span>) &#123;</span><br><span class="line">    <span class="comment">// 成功直接列出結果</span></span><br><span class="line">    <span class="built_in">console</span>.log(req.response);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 失敗的部分</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 送出請求</span></span><br><span class="line">req.send();</span><br></pre></td></tr></table></figure></p>
+<p>接下來將以上的行為封裝至 <code>get</code> 函式內，此函式包含 Promise 及上述的 <code>XMLHttpRequest</code> 行為，運用時只要直接使用 <code>get(url)...</code>，接下來的運用方式則是符合 Promise 的結構，重複運用的情況下程式碼可以大幅提高易讀性。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">get</span>(<span class="params">url</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>)=&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 定義 Http request</span></span><br><span class="line">    <span class="keyword">var</span> req = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line">    req.open(<span class="string">'GET'</span>, url);</span><br><span class="line">    req.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="keyword">if</span> (req.status == <span class="number">200</span>) &#123;</span><br><span class="line">        <span class="comment">// 使用 resolve 回傳成功的結果，也可以在此直接轉換成 JSON 格式</span></span><br><span class="line">        resolve(<span class="built_in">JSON</span>.parse(req.response));</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 使用 reject 自訂失敗的結果</span></span><br><span class="line">        reject(<span class="keyword">new</span> <span class="built_in">Error</span>(req))</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    req.send();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 往後的 HTTP 直接就能透過 get 函式取得</span></span><br><span class="line"><span class="keyword">get</span>('https://jsonplaceholder.typicode.com/todos/1')</span><br><span class="line">  .then((res) =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.error(res)</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="Promise-方法"><a href="#Promise-方法" class="headerlink" title="Promise 方法"></a>Promise 方法</h2><p>最後，介紹 Promise 中其它的方法，就 Promise 的物件下，展開後可以看到以下方法：</p>
+<ul>
+<li>Promise API<ul>
+<li>all -&gt; 多個 Promise 行為同時執行，全部完成後統一回傳。</li>
+<li>race -&gt; 多個 Promise 同時執行，但僅回傳第一個完成的。</li>
+<li>Promise.reject, Promise.resolve -&gt; 定義 Fulfilled 或 Rejected 的 Promise 物件。</li>
+</ul>
+</li>
+</ul>
+<p>此段用下方定義的 promise 函式做說明，可以傳入兩個參數：</p>
+<ul>
+<li>num: 此 Promise 執行成功與否</li>
+<li>time: 此 Promise 所執行的時間長度<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">promise</span>(<span class="params">num, time = <span class="number">500</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> &#123;</span><br><span class="line">      num ? resolve(<span class="string">`<span class="subst">$&#123;num&#125;</span>, 成功`</span>) : reject(<span class="string">'失敗'</span>);</span><br><span class="line">    &#125;, time);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all"></a>Promise.all</h3><p>透過陣列的形式傳入多個 promise 函式，在全部執行完成後回傳<strong>陣列結果</strong>，陣列的結果順序與一開始傳入的一致。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.all([promise(<span class="number">1</span>), promise(<span class="number">2</span>), promise(<span class="number">3</span>, <span class="number">3000</span>)])</span><br><span class="line">  .then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<p>這個方法很適合用在多支 API 要一起執行，並確保全部完成後才進行其他工作時。</p>
+<h3 id="Promise-race"><a href="#Promise-race" class="headerlink" title="Promise.race"></a>Promise.race</h3><p>透過陣列的形式傳入多個 promise 函式，在全部執行完成後回傳<strong>單一結果</strong>，結果為第一個運行完成的，以下範例來說就會回傳 <code>promise(1)</code> 的結果。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Promise</span>.race([promise(<span class="number">1</span>), promise(<span class="number">2</span>), promise(<span class="number">3</span>, <span class="number">3000</span>)]).then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>這個方法可以用在站點不穩定，同時發送多支同行為 API 確保可行性使用，但實作中使用率並不高。</p>
+<h3 id="Promise-reject-Promise-resolve"><a href="#Promise-reject-Promise-resolve" class="headerlink" title="Promise.reject, Promise.resolve"></a>Promise.reject, Promise.resolve</h3><p>這兩個方法是直接定義 Promise 物件已經完成的狀態（resolve, reject），與 new Promise 一樣會產生一個新的 Promise 物件，但其結果是已經確定的，以下提供範例說明：</p>
+<p>使用 <code>Promise.resolve</code> 產生一個新的 Promise 物件，此物件可以使用 then 取得 resolve 的結果。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2FF06BCD1A-091F-401C-98F5-EAA6AD629530.png?alt=media&amp;token=284edbcc-4466-42bc-960d-ffd91c73bee0" alt></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="built_in">Promise</span>.resolve(<span class="string">'result'</span>);</span><br><span class="line">result.then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'resolved'</span>, res); <span class="comment">// 成功部分可以正確接收結果</span></span><br><span class="line">&#125;, res =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'rejected'</span>, res); <span class="comment">// 失敗部分不會取得結果</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>改為 <code>Promise.reject</code> 產生 Promise 物件，此物件必定呈現 rejected 的結果。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> result = <span class="built_in">Promise</span>.reject(<span class="string">'result'</span>);</span><br><span class="line">result.then(<span class="function"><span class="params">res</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;, res =&gt; &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(res); <span class="comment">// 只有此段會出現結果</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// rejected result</span></span><br></pre></td></tr></table></figure></p>
+<p>注意：<code>Promise.reject</code>、<code>Promise.resolve</code> 是直接定義結果，無論傳入的是否為 Promise 物件。</p>
+<p>參考文章：</p>
+<ul>
+<li>Google 開發者文件：<a href="https://developers.google.com/web/fundamentals/primers/promises" target="_blank" rel="noopener">https://developers.google.com/web/fundamentals/primers/promises</a></li>
+<li>MDN Promise：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="noopener">https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise</a></li>
+</ul>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2020/02/16/all-new-promise/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/development/2020/02/09/jest-async/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">單元測試 - 非同步及 Ajax</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/02/16/all-new-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-Saint-Seiya.png?alt=media&token=6efc3208-ad24-41f7-a20d-bc8ddabaeef9)" alt="JavaScript Promise 全介紹" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/02/16/all-new-promise/" class="title">JavaScript Promise 全介紹</a></p>
+                            <p class="item-date"><time datetime="2020-02-15T16:00:00.000Z" itemprop="datePublished">2020-02-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/02/09/jest-async/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a)" alt="單元測試 - 非同步及 Ajax" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/02/09/jest-async/" class="title">單元測試 - 非同步及 Ajax</a></p>
+                            <p class="item-date"><time datetime="2020-02-08T16:00:00.000Z" itemprop="datePublished">2020-02-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/02/02/jest-intro/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest.png?alt=media&token=1809e129-03de-4f61-9a13-f8753ddf1786)" alt="十分鐘上手前端單元測試 - 使用 Jest" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/02/02/jest-intro/" class="title">十分鐘上手前端單元測試 - 使用 Jest</a></p>
+                            <p class="item-date"><time datetime="2020-02-01T16:00:00.000Z" itemprop="datePublished">2020-02-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/01/04/image-common-mistakes/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202001%2Fimg-mistake.png?alt=media&token=860cf55e-b433-44a0-925b-07849ad65d5f)" alt="前端開發者，圖片常犯的五個粗心錯誤" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/01/04/image-common-mistakes/" class="title">前端開發者，圖片常犯的五個粗心錯誤</a></p>
+                            <p class="item-date"><time datetime="2020-01-03T16:00:00.000Z" itemprop="datePublished">2020-01-04</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2019/12/22/css-dark-mode/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2Fcss-dark-mode.png?alt=media&token=21ebdd56-5e42-4e4f-ab8d-c63e35d29637)" alt="CSS 技巧：精簡語法操作暗色主題 - CSS Dark Mode" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2019/12/22/css-dark-mode/" class="title">CSS 技巧：精簡語法操作暗色主題 - CSS Dark Mode</a></p>
+                            <p class="item-date"><time datetime="2019-12-21T16:00:00.000Z" itemprop="datePublished">2019-12-22</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.47px;">d3js</a> <a href="/tags/design/" style="font-size: 17.06px;">design</a> <a href="/tags/develop/" style="font-size: 11.18px;">develop</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.76px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.24px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jest/" style="font-size: 11.18px;">jest</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 10.59px;">promise</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.82px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/test/" style="font-size: 11.18px;">test</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://www.hexschool.com/">六角學院</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
