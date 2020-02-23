@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    
+    <title>CSS Border 運用技巧（手繪框線、三角形、空間運用） | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="css,border">
+    
+    
+
+    <meta name="description" content="CSS Border 大部份來說是用在裝飾上，卡片的邊線、hover 的視覺效果、物件之間的間隔等等，這些視覺效果除了 Border 以外亦有其它方式可以達到；雖然如此，Border 的使用率還是比較高，因為相對來說更為簡單方便，不過也別這樣小看它，透過一些小技巧時，Border 還有很多靈活運用的方式。 基本觀念介紹先了解 Border 基本的觀念，有助於接下來的靈活運用。 Border 具有空">
+<meta name="keywords" content="css,border">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS Border 運用技巧（手繪框線、三角形、空間運用）">
+<meta property="og:url" content="https://wcc723.github.io/css/2020/02/21/css-border/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="CSS Border 大部份來說是用在裝飾上，卡片的邊線、hover 的視覺效果、物件之間的間隔等等，這些視覺效果除了 Border 以外亦有其它方式可以達到；雖然如此，Border 的使用率還是比較高，因為相對來說更為簡單方便，不過也別這樣小看它，透過一些小技巧時，Border 還有很多靈活運用的方式。 基本觀念介紹先了解 Border 基本的觀念，有助於接下來的靈活運用。 Border 具有空">
+<meta property="og:locale" content="zh-TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-border.png?alt=media&token=a2b06e55-8ca4-4e1a-a52d-f19aa0942437">
+<meta property="og:updated_time" content="2020-02-23T03:27:20.055Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS Border 運用技巧（手繪框線、三角形、空間運用）">
+<meta name="twitter:description" content="CSS Border 大部份來說是用在裝飾上，卡片的邊線、hover 的視覺效果、物件之間的間隔等等，這些視覺效果除了 Border 以外亦有其它方式可以達到；雖然如此，Border 的使用率還是比較高，因為相對來說更為簡單方便，不過也別這樣小看它，透過一些小技巧時，Border 還有很多靈活運用的方式。 基本觀念介紹先了解 Border 基本的觀念，有助於接下來的靈活運用。 Border 具有空">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-border.png?alt=media&token=a2b06e55-8ca4-4e1a-a52d-f19aa0942437">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8296684122088055",
+        enable_page_level_ads: true
+    });
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+</head>
+</html>
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <a href="/">
+                        <img src="/images/casper_blog.svg" alt="">
+                    </a>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/categories/life">生活</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about">關於</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/css/">css</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-css-border" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        CSS Border 運用技巧（手繪框線、三角形、空間運用）
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/css/2020/02/21/css-border/" class="article-date">
+    <time datetime="2020-02-20T16:00:00.000Z" itemprop="datePublished">2020-02-21</time>
+</a>
+                
+    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/border/">border</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-border.png?alt=media&token=a2b06e55-8ca4-4e1a-a52d-f19aa0942437" rel="gallery_ck6vlehy8013cp4rubhrf37hv">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-border.png?alt=media&token=a2b06e55-8ca4-4e1a-a52d-f19aa0942437" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>CSS Border 大部份來說是用在裝飾上，卡片的邊線、hover 的視覺效果、物件之間的間隔等等，這些視覺效果除了 Border 以外亦有其它方式可以達到；雖然如此，Border 的使用率還是比較高，因為相對來說更為簡單方便，不過也別這樣小看它，透過一些小技巧時，Border 還有很多靈活運用的方式。</p>
+<h2 id="基本觀念介紹"><a href="#基本觀念介紹" class="headerlink" title="基本觀念介紹"></a>基本觀念介紹</h2><p>先了解 Border 基本的觀念，有助於接下來的靈活運用。</p>
+<h4 id="Border-具有空間"><a href="#Border-具有空間" class="headerlink" title="Border 具有空間"></a>Border 具有空間</h4><p>這是很多新手常遇到的問題，border 本身是具有空間的，因此元素如果增加了 border 以後會導致整體元素空間增大。因此元素如果要維持原有的尺寸，則必須將 border 所增加的空間給扣除。</p>
+<p>以下範例來說，左方的方框增加了額外 border 時，就導致元素尺寸大於右方的方框。</p>
+
+<div class="demo d-flex">
+  <div class="border-2 box bg-gray"></div>
+  <div class="box bg-gray"></div>
+</div>
+<style>
+.d-flex {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.box {
+  height: 80px;
+  width: 80px;
+  margin: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.bg-gray {
+  background-color: #ccc;
+}
+.border-2 {
+  border: 2px solid #00cc99;
+}
+</style>
+
+<h4 id="Border-可以搭配圓角"><a href="#Border-可以搭配圓角" class="headerlink" title="Border 可以搭配圓角"></a>Border 可以搭配圓角</h4><p>CSS 中的圓角 <code>border-radius</code> 是一個偉大的發明，他並不會使元素的邊緣被裁切，而是能夠產生滑順的圓角。除此之外，雖然名稱為 <strong>border</strong>-radius 但運用上並不只限於 border，在大部分的元素上都可以運用 border-radius，而 border-radius 運用上具有以下的技巧：</p>
+<ul>
+<li>不需要所有角都使用等距空間，每個角可自訂獨立的數值（左二範例）</li>
+<li>當圓角數值超過元素空間時，將會以 <strong>較短的邊線距離產生正圓角</strong>，這樣的特性下可以在元素的邊緣套用正圓形（左三範例）</li>
+<li>當圓角數值採用百分比且超過 50% 時，將會以 <strong>邊線距離的一半產生圓角</strong>，此特性在非正方形的情況下可能會變成橢圓形。</li>
+</ul>
+<p>大多數情況來說，我都會將圓角數值設為極大值，來產生更好看圓邊，避免會出現橢圓形的狀況。</p>
+
+<div class="demo d-flex">
+  <div class="border-4 box bg-gray radius"></div>
+  <div class="border-4 box bg-gray radius-6-12-24-48"></div>
+  <div class="border-4 box bg-gray radius-circle" style="width: 120px"></div>
+  <div class="border-4 box bg-gray radius-oval" style="width: 120px"></div>
+</div>
+<style>
+.radius {
+  border-radius: 24px
+}
+.radius-6-12-24-48 {
+  border-radius: 6px 12px 24px 48px;
+}
+.radius-circle {
+  border-radius: 200px;
+}
+.radius-oval {
+  border-radius: 50%;
+}
+</style>
+
+<h4 id="不同的樣式"><a href="#不同的樣式" class="headerlink" title="不同的樣式"></a>不同的樣式</h4><p>大部分來說 border 運用都是以 <code>solid</code> 為大宗，其次為 <code>dashed</code> 及 <code>dotted</code>，以下列出所有的 border 樣式，除此之外 border 的樣式還可以混合使用喔。</p>
+
+<div class="demo d-flex">
+  <div class="border-4 border-dotted box bg-gray">dotted</div>
+  <div class="border-4 border-dashed box bg-gray">dashed</div>
+  <div class="border-4 border-solid box bg-gray">solid</div>
+  <div class="border-4 border-double box bg-gray">double</div>
+  <div class="border-4 border-groove box bg-gray">groove</div>
+  <div class="border-4 border-ridge box bg-gray">ridge</div>
+  <div class="border-4 border-inset box bg-gray">inset</div>
+  <div class="border-4 border-outset box bg-gray">outset</div>
+  <div class="border-4 border-mix box bg-gray">混合</div>
+</div>
+<style>
+.border-4 {
+  border: 4px solid #00cc99;
+}
+.border-dotted {border-style: dotted;}
+.border-dashed {border-style: dashed;}
+.border-solid {border-style: solid;}
+.border-double {border-style: double;}
+.border-groove {border-style: groove;}
+.border-ridge {border-style: ridge;}
+.border-inset {border-style: inset;}
+.border-outset {border-style: outset;}
+.border-mix {border-style: dotted dashed solid double;}
+</style>
+
+<hr>
+<h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><h3 id="空間運用"><a href="#空間運用" class="headerlink" title="空間運用"></a>空間運用</h3><p>Border 很常運用在選單的 hover 或 active 的視覺效果，但如果沒有注意到就可能因為 border 的空間讓選單產生位移，如以下範例來說，滑鼠移入選單時就會造成選單位移。</p>
+<p>關鍵程式碼：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">a</span><span class="selector-class">.demo-item</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">border-bottom</span>: <span class="number">3px</span> solid <span class="number">#00cc99</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+<div class="demo d-flex">
+  <div class="demo-navbar d-flex">
+    <a href="#" class="demo-item">選單 1</a>
+    <a href="#" class="demo-item">選單 2</a>
+  </div>
+</div>
+<style>
+.demo-navbar {
+  background-color: #fff;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, .16);
+  padding: 0 30px;
+  justify-content: center;
+}
+a.demo-item {
+  display: block;
+  padding: 10px 15px;
+}
+a.demo-item:hover {
+  border-bottom: 3px solid #00cc99;
+  text-decoration: none;
+}
+</style>
+
+<p>會造成這樣的原因在於「Border 本身是具有空間的」，因此直接在 hover 上新增 border 時就會發生此問題，其中一種解決方法則是預先加入 “透明的 border 空間”，在 hover 或其它的行為時再來切換 border 的色彩。</p>
+<p>關鍵程式碼：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.demo-navbar</span> &#123;</span><br><span class="line">  <span class="comment">/* 將部分的空間先扣除 */</span></span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0</span> <span class="number">27px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.demo-navbar</span> <span class="selector-class">.demo-item</span> &#123;</span><br><span class="line">  <span class="comment">/* 加入下方透明的 Border */</span></span><br><span class="line">  <span class="attribute">border-bottom</span>: <span class="number">3px</span> solid transparent;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+<div class="demo d-flex">
+  <div class="demo-navbar demo-navbar-update d-flex">
+    <a href="#" class="demo-item">選單 1</a>
+    <a href="#" class="demo-item">選單 2</a>
+  </div>
+</div>
+<style>
+.demo-navbar-update {
+  padding: 0 27px;
+}
+.demo-navbar-update .demo-item {
+  border-bottom: 3px solid transparent;
+}
+</style>
+
+<p>由於 Border 本身是佔有空間的，所以也可以使用其它不含空間的視覺效果來達到此效果，以下範例則是使用 <code>box-shadow</code> 做到類似的效果。</p>
+<p>關鍵程式碼：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">a</span><span class="selector-class">.demo-item</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0</span> -<span class="number">3px</span> <span class="number">#00cc99</span> inset; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+<div class="demo d-flex">
+  <div class="demo-navbar demo-navbar-update2 d-flex">
+    <a href="#" class="demo-item">選單 1</a>
+    <a href="#" class="demo-item">選單 2</a>
+  </div>
+</div>
+<style>
+.demo-navbar-update2 a.demo-item:hover {
+  border-bottom: 0;
+  box-shadow: 0 -3px #00cc99 inset; 
+}
+</style>
+
+<h3 id="三角形"><a href="#三角形" class="headerlink" title="三角形"></a>三角形</h3><p>接續一開始所提到 border 本身是佔有空間的，當有兩個邊線的 border 重疊的部分就會產生 “實體的交疊”，這個實體的交疊就會產生三角形的視覺效果。</p>
+<p>下方的範例來說，上者是下邊、右邊的 border 產生，下者則是四邊的 border 產生。</p>
+
+<div class="demo">
+  <div class="left-border"></div>
+  <div class="arrow"></div>
+</div>
+<style>
+.left-border {
+  width: 0;
+  height: 0;
+  margin: 0 auto;
+  border-right: orange 20px solid;
+  border-bottom: blue 20px solid;
+}
+.arrow {
+  width: 0;
+  height: 0;
+  margin: 0 auto;
+  border-top: red 20px solid;
+  border-right: orange 20px solid;
+  border-bottom: blue 20px solid;
+  border-left: green 20px solid;
+}
+</style>
+
+<p>當四邊均為 border 時，就能產生四個三角形，當如果僅需要一個方向的三角時，就可以使用到前一個段落所提到的技巧 “透明 border”。</p>
+<p>關鍵程式碼：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.message-box</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">""</span>;</span><br><span class="line">  <span class="comment">/* 四邊透明的 border */</span></span><br><span class="line">  <span class="attribute">border</span>: transparent <span class="number">10px</span> solid;</span><br><span class="line">  <span class="comment">/* 將其中一補上色彩 */</span></span><br><span class="line">  <span class="attribute">border-top-color</span>: <span class="number">#00cc99</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>透過此方法就能做到類似訊息框的視覺效果。</p>
+
+<div class="demo d-flex">
+  <div class="message-box">歐拉歐拉歐拉歐拉歐拉！</div>
+</div>
+<style>
+.message-box {
+  background: #00cc99;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  position: relative;
+}
+.message-box:after {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 10px;
+  bottom: -20px;
+  border: transparent 10px solid;
+  border-top-color: #00cc99;
+}
+</style>
+
+<h3 id="多層次"><a href="#多層次" class="headerlink" title="多層次"></a>多層次</h3><p>除了 Border 以外，有很多方法可以做到類似的視覺效果，而其中一個很常利用的就是 <code>box-shadow</code>，與 border 最大不同之處就是 <code>box-shadow</code> 不佔有任何空間。兩者在此也可以作為好朋友產生多層次的邊框效果。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.border-multi</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">5px</span> solid red;</span><br><span class="line">  <span class="attribute">box-shadow</span>: </span><br><span class="line">    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">5px</span> orange, </span><br><span class="line">    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">10px</span> yellow,</span><br><span class="line">    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">15px</span> green,</span><br><span class="line">    <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">20px</span> blue;</span><br><span class="line">  <span class="attribute">margin</span>: <span class="number">25px</span>  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="demo d-flex">
+  <div class="border-multi box bg-gray"></div>
+</div>
+<style>
+.border-multi {
+  border: 5px solid red;
+  box-shadow: 
+    0 0 0 5px orange, 
+    0 0 0 10px yellow,
+    0 0 0 15px green,
+    0 0 0 20px blue;
+  margin: 25px  
+}
+</style>
+
+<h3 id="手繪邊框"><a href="#手繪邊框" class="headerlink" title="手繪邊框"></a>手繪邊框</h3><p>最後，展示比較特別的視覺風格 “手繪邊框”，前幾個範例都是圍繞在 border-radius 上，這個也不例外，最重要的關鍵點在於 border-radius 可以在同一個角設定兩個以上的參數。</p>
+<p>如以兩個範例</p>
+<ul>
+<li>範例一：設定左上的圓角，前者的數值是左上圓角<strong>靠上方</strong>邊線的圓半徑，後者的數值則是左上圓角<strong>靠左方</strong>邊線的圓半徑，原始碼 如下：</li>
+<li>範例二：縮寫方法，可以一次設定四個圓角不同的形式。</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 範例一 */</span></span><br><span class="line"><span class="selector-class">.border-top-left-radius</span> &#123;</span><br><span class="line">  <span class="attribute">border-top-left-radius</span>: <span class="number">10px</span> <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">/* 範例二 */</span></span><br><span class="line"><span class="selector-class">.border-2-size</span> &#123;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">15px</span> / <span class="number">100px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="demo d-flex">
+  <div class="border-4 box bg-gray border-top-left-radius"></div>
+  <div class="border-4 box bg-gray border-2-size"></div>
+</div>
+<style>
+.border-top-left-radius {
+  border-top-left-radius: 10px 100px;
+}
+.border-2-size {
+  border-radius: 15px / 100px;
+}
+</style>
+
+<p>最後也補充此風格的技巧說明：</p>
+<ul>
+<li>border-width：可設定不同的粗細變化，做出手繪過程中的不同粗細變化</li>
+<li>transform：手繪過程中通常不會過於水平或垂直，所以外層都可以補上 transform 製作出傾斜的效果<ul>
+<li>內層也同樣需要補上 transform 將文字內容給予補正</li>
+</ul>
+</li>
+<li>border-style：也可試著加入不同樣式的邊線，做出不同的手繪視覺效果</li>
+</ul>
+<p>關鍵程式碼：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.ink-box</span> &#123;</span><br><span class="line">  <span class="attribute">border-width</span>: <span class="number">2px</span> <span class="number">3px</span> <span class="number">2px</span> <span class="number">5px</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">90%</span> <span class="number">6%</span> <span class="number">93%</span> <span class="number">5%</span> / <span class="number">5%</span> <span class="number">94%</span> <span class="number">7%</span> <span class="number">95%</span>;</span><br><span class="line">  <span class="comment">/* 做出傾斜的視覺感 */</span></span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">rotate</span>(2deg);</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.ink-box-double</span> &#123;</span><br><span class="line">  <span class="attribute">border</span>: dashed black <span class="number">2px</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.box-inner</span> &#123;</span><br><span class="line">  <span class="comment">/* 將傾斜的部分修正 */</span></span><br><span class="line">  <span class="attribute">transform</span>: <span class="built_in">rotate</span>(-2deg);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+<div class="demo d-flex">
+  <div class="ink-box">
+    <div class="box-inner">Handwriting style</div>
+  </div>
+  <div class="ink-box ink-box-double">
+    <div class="box-inner">Handwriting style</div>
+  </div>
+</div>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Caveat&display=swap');
+.ink-box {
+  width: 150px;
+  height: 150px;
+  background:#fff;
+  border: solid black 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* 紙風格 */
+  border-width: 2px 3px 2px 5px;
+  border-radius: 90% 6% 93% 5% / 5% 94% 7% 95%;
+  font-family: 'Caveat';
+  transform: rotate(2deg);
+}
+.ink-box-double {
+  border: dashed black 2px;
+}
+.box-inner {
+  transform: rotate(-2deg);
+}
+</style>
+
+<p>參考文件：</p>
+<ul>
+<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-radius" target="_blank" rel="noopener">https://developer.mozilla.org/zh-CN/docs/Web/CSS/border-radius</a></li>
+<li><a href="https://code.tutsplus.com/tutorials/css-refreshers-borders--net-24655" target="_blank" rel="noopener">https://code.tutsplus.com/tutorials/css-refreshers-borders--net-24655</a></li>
+<li><a href="https://freefrontend.com/css-border-examples/" target="_blank" rel="noopener">https://freefrontend.com/css-border-examples/</a></li>
+</ul>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/css/2020/02/21/css-border/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/development/2020/02/16/all-new-promise/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">JavaScript Promise 全介紹</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2020/02/21/css-border/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-border.png?alt=media&token=a2b06e55-8ca4-4e1a-a52d-f19aa0942437)" alt="CSS Border 運用技巧（手繪框線、三角形、空間運用）" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2020/02/21/css-border/" class="title">CSS Border 運用技巧（手繪框線、三角形、空間運用）</a></p>
+                            <p class="item-date"><time datetime="2020-02-20T16:00:00.000Z" itemprop="datePublished">2020-02-21</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/02/16/all-new-promise/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-Saint-Seiya.png?alt=media&token=6efc3208-ad24-41f7-a20d-bc8ddabaeef9)" alt="JavaScript Promise 全介紹" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/02/16/all-new-promise/" class="title">JavaScript Promise 全介紹</a></p>
+                            <p class="item-date"><time datetime="2020-02-15T16:00:00.000Z" itemprop="datePublished">2020-02-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/02/09/jest-async/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a)" alt="單元測試 - 非同步及 Ajax" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/02/09/jest-async/" class="title">單元測試 - 非同步及 Ajax</a></p>
+                            <p class="item-date"><time datetime="2020-02-08T16:00:00.000Z" itemprop="datePublished">2020-02-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/02/02/jest-intro/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest.png?alt=media&token=1809e129-03de-4f61-9a13-f8753ddf1786)" alt="十分鐘上手前端單元測試 - 使用 Jest" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/02/02/jest-intro/" class="title">十分鐘上手前端單元測試 - 使用 Jest</a></p>
+                            <p class="item-date"><time datetime="2020-02-01T16:00:00.000Z" itemprop="datePublished">2020-02-02</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/01/04/image-common-mistakes/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202001%2Fimg-mistake.png?alt=media&token=860cf55e-b433-44a0-925b-07849ad65d5f)" alt="前端開發者，圖片常犯的五個粗心錯誤" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/01/04/image-common-mistakes/" class="title">前端開發者，圖片常犯的五個粗心錯誤</a></p>
+                            <p class="item-date"><time datetime="2020-01-03T16:00:00.000Z" itemprop="datePublished">2020-01-04</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/border/" style="font-size: 10px;">border</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.47px;">d3js</a> <a href="/tags/design/" style="font-size: 17.06px;">design</a> <a href="/tags/develop/" style="font-size: 11.18px;">develop</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.76px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.24px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jest/" style="font-size: 10.59px;">jest</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 11.18px;">promise</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.82px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/test/" style="font-size: 10.59px;">test</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="https://www.hexschool.com/">六角學院</a>
+                    </li>
+                
+                    <li>
+                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
