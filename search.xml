@@ -4,6 +4,99 @@
   
     
     <entry>
+      <title><![CDATA[爬蟲、E2E 測試兩相宜的好工具 - Puppeteer]]></title>
+      <url>https://wcc723.github.io/development/2020/03/01/puppeteer/</url>
+      <content type="html"><![CDATA[<p>Puppeteer 是 Node.js 的函式庫，它提供各種 API 來控制 Chrome 或 Chromium 瀏覽器，而此瀏覽器也是目前主流的瀏覽器，用來做為測試、爬蟲都相當合適，並且所提供的 API 語法淺顯易懂，只要具有 jQuery 的使用經驗就可以很快速地上手。</p>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>官方提供兩個版本，一個包含 Chromium，另一個則無，如果有安裝 Chrome 的情況下可以不需要另外下載 Chromium，直接運行本機的應用程式即可（選擇輕量 headless 模式運行一樣很快）。</p>
+<p>所以可以採用以下語法加入設定後跳過下載（或者也可以直接使用 puppeteer-core）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config set puppeteer_skip_chromium_download true</span><br></pre></td></tr></table></figure></p>
+<p>下載 Puppepeer<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm i puppeteer</span><br></pre></td></tr></table></figure></p>
+<p>接下來可以新增一個檔案 <code>test.js</code>，使用官方提供的範例：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer'</span>);</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch();</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage();</span><br><span class="line">  <span class="keyword">await</span> page.goto(<span class="string">'https://example.com'</span>);</span><br><span class="line">  <span class="keyword">await</span> page.screenshot(&#123; <span class="attr">path</span>: <span class="string">'example.png'</span> &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> browser.close();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
+<p>執行 <code>node test.js</code> 則會出現錯誤，主要原因是沒有下載 Chromium，這部分可以手動設置自己的 Chrome 使用。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2FD4B77A61-3F06-4F76-8B5E-2D91D9BFE0D9.png?alt=media&amp;token=225e5015-189e-4933-bbf3-1960d22196b2" alt></p>
+<p>接下來將上述原始碼中的 <code>browser</code> 變數改為如下即可運行，<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch(&#123;</span><br><span class="line">    executablePath:</span><br><span class="line">      <span class="string">'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'</span>,</span><br><span class="line">    headless: <span class="literal">false</span></span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>Windows 路徑可參考：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&apos;C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe&apos;</span><br></pre></td></tr></table></figure></p>
+<p>重新執行一次上述的原始碼，則可以發現快速打開了 Chrome 後就關閉了瀏覽器，打開你的專案資料夾可以發現多了一張圖片，在這個過程中 Chrome 已經依據腳本完成了流程，因此來看一下剛剛發生了什麼事：</p>
+<ol>
+<li>打開瀏覽器</li>
+<li>開啟新的分頁</li>
+<li>進入特定的網址</li>
+<li>截圖，並把圖片存到特定的路徑</li>
+</ol>
+<p>在這個流程下大致就能體會到 Puppeteer 是怎樣的工具，它可以模擬用戶的行為對瀏覽器操作，因此只要熟悉的它的語法做到爬蟲、測試都不會有太大的問題。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer-core'</span>);</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 使用自訂的 Chrome</span></span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch(&#123;</span><br><span class="line">    executablePath:</span><br><span class="line">      <span class="string">'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'</span>,</span><br><span class="line">    headless: <span class="literal">false</span> <span class="comment">// 無外殼的 Chrome，有更佳的效能</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage(); <span class="comment">// 開啟新分頁</span></span><br><span class="line">  <span class="keyword">await</span> page.goto(<span class="string">'https://example.com'</span>); <span class="comment">// 進入指定頁面</span></span><br><span class="line">  <span class="keyword">await</span> page.screenshot(&#123; <span class="attr">path</span>: <span class="string">'example.png'</span> &#125;); <span class="comment">// 截圖，並且存在...</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">await</span> browser.close(); <span class="comment">// 關閉瀏覽器</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2F5E922289-CABB-4762-87E7-FC088B2C80E3.png?alt=media&amp;token=0e75f79e-b0ad-44e0-a591-b2bb527f09c7" alt="資料夾內可以看到執行截圖的畫面"></p>
+<h2 id="基礎方法說明"><a href="#基礎方法說明" class="headerlink" title="基礎方法說明"></a>基礎方法說明</h2><p>中文文件：<a href="https://zhaoqize.github.io/puppeteer-api-zh_CN/#/" target="_blank" rel="noopener">https://zhaoqize.github.io/puppeteer-api-zh_CN/#/</a></p>
+<p>Puppeteer 大部分的行為都是非同步的（都是 Promise 的方法），因為無法確認網頁點擊後多久後開啟，也無法確認輸入文字需要多長的時間，而 Promise 搭配 async、await 就能將程式碼轉成類似於同步的語言。</p>
+<p>所以使用 Puppeteer 時會看到很多 <code>await ...</code>，目的是要確保原始碼可以依序執行，因此以下介紹的方式也都建議都加上 await。</p>
+<h3 id="常見方法"><a href="#常見方法" class="headerlink" title="常見方法"></a>常見方法</h3><p>可以先思考下載網頁中通常會進行哪些行為，不外乎就是：</p>
+<ul>
+<li>點擊連結</li>
+<li>填寫表單</li>
+<li>進入特定頁面，確保資訊有出現</li>
+</ul>
+<p>這些方法在文件中都是在文件中的 <code>page</code> 找到（所有的頁面行為基本上都在這），以下列出常見的方法給大家參考：</p>
+<ul>
+<li><code>page.goto(url[, options])</code>：直接進入特定的連結頁面</li>
+<li><code>page.$(selector)</code>：選取特定元素，等同於 document.querySelector</li>
+<li><code>page.$$(selector)</code>：前者的複數型，等同於 document.querySelectorAll</li>
+<li><code>page.$eval(selector, pageFunction[, ...args])</code>：對於選取的元素進行特定行為，如取出元素的 HTML 屬性值。</li>
+<li><code>page.$$eval(selector, pageFunction[, ...args])</code>：前者的複數型</li>
+<li><code>page.click(selector[, options])</code>：點擊特定的元素</li>
+<li><code>page.type(selector, text[, options])</code>：在特定的元素上輸入文字內容，通常是 input 上輸入</li>
+<li><code>page.select(selector, ...values)</code>：在 select 元素上選取特定的值</li>
+<li><code>page.waitForSelector(selector[, options])</code>：等待頁面上的特定元素出現，在非同步的過程中很實用。</li>
+</ul>
+<p>方法中可以看到 selector 不斷的出現，selector 即是畫面上的元素選取方式，因為它可以模擬用戶的行為，所以 selector 的選取技巧在此工具中是非常重要的。</p>
+<h3 id="Selector-技巧"><a href="#Selector-技巧" class="headerlink" title="Selector 技巧"></a>Selector 技巧</h3><p>選取器是遵循 <code>document.querySelector</code> 的規則，基本上就是與撰寫 CSS 時的方式一致（所以才會提到熟悉 jQuery 會非常有幫助），在選擇元素的過程中，最準確的是 id（一個網頁原則上只有一個 id），所以直接的方式就是使用 id 選擇該元素。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">page.click(<span class="string">'#button'</span>); <span class="comment">// 點擊網頁中 id 為 button 的元素</span></span><br></pre></td></tr></table></figure>
+<p>但許多時候網頁元素是沒有 id 的，那麼就可以搭配 Chrome 的開發者工具直接抓出特定元素選取器。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_2_27_%E4%B8%8A%E5%8D%8811_11.png?alt=media&amp;token=d56adac1-47a2-45e4-85c6-4dac5bab5965" alt></p>
+<p>如上圖，在特定的元素上按下右鍵 &gt; Copy &gt; Copy selector，接下來就可以取得絕對的元素路徑（頁面必須維持在固定的狀態）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#tsf &gt; div:nth-child(2) &gt; div.A8SBwf &gt; div.RNNXgb &gt; div &gt; div.a4bIc &gt; input</span><br></pre></td></tr></table></figure></p>
+<p>另外一種方式，如果確定元素具有特定的 HTML 屬性時，也可以使用以下的方式選取，這種寫法是使用 CSS 的屬性選取器。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">await</span> page.$(<span class="string">'input[title="Google 搜尋"]'</span>)); <span class="comment">// 可以選到標籤屬性為 title="Google 搜尋" 的項目</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="流程實戰"><a href="#流程實戰" class="headerlink" title="流程實戰"></a>流程實戰</h2><p>最後，透過 Google 搜尋特定的文字，並且進入特定頁面的方式，規劃一個簡單的流程，來測試是否可以正確運行，流程如下：</p>
+<ol>
+<li>開啟 Google 頁面</li>
+<li>搜尋 <code>flex</code> 文字並送出</li>
+<li>轉址進入搜尋結果頁面</li>
+<li>點選具有 <code>https://wcc723.github.io</code> 的頁面</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> puppeteer = <span class="built_in">require</span>(<span class="string">'puppeteer-core'</span>);</span><br><span class="line"></span><br><span class="line">(<span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="comment">// 使用自訂的 Chrome</span></span><br><span class="line">  <span class="keyword">const</span> browser = <span class="keyword">await</span> puppeteer.launch(&#123;</span><br><span class="line">    executablePath:</span><br><span class="line">      <span class="string">'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'</span>,</span><br><span class="line">    headless: <span class="literal">false</span> <span class="comment">// 無外殼的 Chrome，有更佳的效能</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="keyword">const</span> page = <span class="keyword">await</span> browser.newPage(); <span class="comment">// 開啟新分頁</span></span><br><span class="line">  <span class="keyword">await</span> page.waitFor(<span class="number">10000</span>); <span class="comment">// 等待十秒鐘（給我開錄影工具用的）</span></span><br><span class="line">  <span class="keyword">await</span> page.goto(<span class="string">'https://www.google.com.tw'</span>); <span class="comment">// 進入指定頁面</span></span><br><span class="line">  <span class="keyword">await</span> page.type(<span class="string">'input[title="Google 搜尋"]'</span>, <span class="string">'flex'</span>); <span class="comment">// Google 搜尋特定項目</span></span><br><span class="line">  <span class="keyword">await</span> (<span class="keyword">await</span> page.$(<span class="string">'input[title="Google 搜尋"]'</span>)).press(<span class="string">'Enter'</span>); <span class="comment">// 特定元素上按下 Enter</span></span><br><span class="line">  <span class="keyword">await</span> page.waitFor(<span class="number">1000</span>); <span class="comment">// 等待一秒</span></span><br><span class="line">  <span class="keyword">await</span> page.waitForSelector(<span class="string">'#gsr'</span>); <span class="comment">// 確定網頁的元素出現</span></span><br><span class="line">  <span class="keyword">await</span> page.click( <span class="comment">// 點擊網址中包含以下的連結...</span></span><br><span class="line">    <span class="string">'a[href*="https://wcc723.github.io"]'</span>);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 接下來也可插入 await browser.close(); 關閉瀏覽器</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p>在上述的範例中 <code>href*=&quot;https://wcc723.github.io&quot;]</code> 是選取網址中<strong>包含</strong> <code>https://wcc723.github.io</code> 的連結，</p>
+
+<video width="320" height="240" controls autoplay>
+  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2FMar-01-2020%2013-26-52.mp4?alt=media&token=d586a299-a888-4084-932b-cfbf569bfb5a" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+<blockquote>
+<p>運行中的畫面</p>
+</blockquote>
+<p>參考資料：</p>
+<ul>
+<li>Google 提供的範例：<a href="https://developers.google.com/web/tools/puppeteer/examples" target="_blank" rel="noopener">https://developers.google.com/web/tools/puppeteer/examples</a></li>
+<li>中文文件：<a href="https://zhaoqize.github.io/puppeteer-api-zh_CN/#/" target="_blank" rel="noopener">https://zhaoqize.github.io/puppeteer-api-zh_CN/#/</a></li>
+<li>Chrome 與 Chromium 差異：<a href="https://www.howtogeek.com/202825/what%E2%80%99s-the-difference-between-chromium-and-chrome/" target="_blank" rel="noopener">https://www.howtogeek.com/202825/what%E2%80%99s-the-difference-between-chromium-and-chrome/</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> test </tag>
+            
+            <tag> puppeteer </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[CSS Border 運用技巧（手繪框線、三角形、空間運用）]]></title>
       <url>https://wcc723.github.io/css/2020/02/21/css-border/</url>
       <content type="html"><![CDATA[<p>CSS Border 大部份來說是用在裝飾上，卡片的邊線、hover 的視覺效果、物件之間的間隔等等，這些視覺效果除了 Border 以外亦有其它方式可以達到；雖然如此，Border 的使用率還是比較高，因為相對來說更為簡單方便，不過也別這樣小看它，透過一些小技巧時，Border 還有很多靈活運用的方式。</p>
@@ -947,9 +1040,9 @@ a.demo-item:hover {
         
         <tags>
             
-            <tag> vscode </tag>
-            
             <tag> develop </tag>
+            
+            <tag> vscode </tag>
             
         </tags>
         
@@ -5853,7 +5946,8 @@ fetch(url)
     <entry>
       <title><![CDATA[JavaScript ES6 Promise]]></title>
       <url>https://wcc723.github.io/life/2017/05/25/promise/</url>
-      <content type="html"><![CDATA[<p>Promise 一直都是 JavaScript 夢寐以求的功能，非同步的處理如果沒有使用 Promise 經常導致函式或資料無法正常的運作。本篇避開許多深度的詞彙，直接透過範例來瞭解怎麼運行。</p>
+      <content type="html"><![CDATA[<p><strong>本文章有提供新的版本，可參考：<a href="/development/2020/02/16/all-new-promise/">JavaScript Promise 全介紹</a></strong></p>
+<p>Promise 一直都是 JavaScript 夢寐以求的功能，非同步的處理如果沒有使用 Promise 經常導致函式或資料無法正常的運作。本篇避開許多深度的詞彙，直接透過範例來瞭解怎麼運行。</p>
 <p>簡單的 Promise 範例：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 宣告 promise 建構式</span></span><br><span class="line"><span class="keyword">let</span> newPromise = <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 傳入 resolve 與 reject，表示資料成功與失敗</span></span><br><span class="line">  <span class="keyword">let</span> ran = <span class="built_in">parseInt</span>(<span class="built_in">Math</span>.random() * <span class="number">2</span>); <span class="comment">// 隨機成功或失敗</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'Promise 開始'</span>)</span><br><span class="line">  <span class="keyword">if</span> (ran) &#123;</span><br><span class="line">    setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">      <span class="comment">// 3 秒時間後，透過 resolve 來表示完成</span></span><br><span class="line">      resolve(<span class="string">'3 秒時間(fulfilled)'</span>);</span><br><span class="line">    &#125;, <span class="number">3000</span>);</span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="comment">// 回傳失敗</span></span><br><span class="line">    reject(<span class="string">'失敗中的失敗(rejected)'</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">newPromise.then(<span class="function">(<span class="params">data</span>)=&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 成功訊息 (需要 3 秒)</span></span><br><span class="line">  <span class="built_in">console</span>.log(data);</span><br><span class="line">&#125;).catch(<span class="function">(<span class="params">err</span>)=&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 失敗訊息 (立即)</span></span><br><span class="line">  <span class="built_in">console</span>.log(err)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>以上就是一個基本的 Promise 範例，執行 Promise 建構式時還會再帶入 resolve 與 reject 的 callback function。</p>
@@ -16059,9 +16153,9 @@ line.l2{
         
         <tags>
             
-            <tag> svg </tag>
-            
             <tag> css </tag>
+            
+            <tag> svg </tag>
             
         </tags>
         
@@ -18008,62 +18102,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="noopener">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="noopener">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -18146,6 +18184,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480"> </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/" target="_blank" rel="noopener">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg" target="_blank" rel="noopener">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
@@ -23831,11 +23925,11 @@ table.table3
         
         <tags>
             
-            <tag> html </tag>
-            
             <tag> sass </tag>
             
             <tag> css </tag>
+            
+            <tag> html </tag>
             
         </tags>
         
