@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：JavaScript 的 this 到底是誰？ | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
     <meta name="description" content="This 的在 JS 使用上非常頻繁，但一個 this 每個 function 都各自表示，這裡就直接用範例說明 This 有哪些情境，不過請注意一點，影響 this 的是在於函式的呼叫方法，並非宣告的時機： 純粹的調用 (Simple call)如果直接調用函式，此函式的 this 會指向 window，以下兩個範例都是直接調用含式，所以都是指向 window。 12345678window.a">
-<meta name="keywords" content="javascript,js,ironman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：JavaScript 的 this 到底是誰？">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/12/javascript-this/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="This 的在 JS 使用上非常頻繁，但一個 this 每個 function 都各自表示，這裡就直接用範例說明 This 有哪些情境，不過請注意一點，影響 this 的是在於函式的呼叫方法，並非宣告的時機： 純粹的調用 (Simple call)如果直接調用函式，此函式的 this 會指向 window，以下兩個範例都是直接調用含式，所以都是指向 window。 12345678window.a">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c9-01.jpg?alt=media&token=9dc270e8-68a3-4cb3-b732-ebdcaf14e0f7">
-<meta property="og:updated_time" content="2019-03-19T06:23:45.687Z">
+<meta property="article:published_time" content="2017-12-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-03-19T06:23:45.687Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：JavaScript 的 this 到底是誰？">
-<meta name="twitter:description" content="This 的在 JS 使用上非常頻繁，但一個 this 每個 function 都各自表示，這裡就直接用範例說明 This 有哪些情境，不過請注意一點，影響 this 的是在於函式的呼叫方法，並非宣告的時機： 純粹的調用 (Simple call)如果直接調用函式，此函式的 this 會指向 window，以下兩個範例都是直接調用含式，所以都是指向 window。 12345678window.a">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c9-01.jpg?alt=media&token=9dc270e8-68a3-4cb3-b732-ebdcaf14e0f7">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-11T16:00:00.000Z" itemprop="datePublished">2017-12-12</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c9-01.jpg?alt=media&token=9dc270e8-68a3-4cb3-b732-ebdcaf14e0f7" rel="gallery_ck870gcis00l5mtrumbl7uo29">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c9-01.jpg?alt=media&token=9dc270e8-68a3-4cb3-b732-ebdcaf14e0f7" rel="gallery_ckdo9wd6e00mhy9ru1uzr1bi2 noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c9-01.jpg?alt=media&token=9dc270e8-68a3-4cb3-b732-ebdcaf14e0f7" itemprop="image" />
     </a>
     
@@ -230,25 +251,25 @@ ga('send', 'pageview');
             <div class="need-gallery">
                 <p>This 的在 JS 使用上非常頻繁，但一個 this 每個 function 都各自表示，這裡就直接用範例說明 This 有哪些情境，不過請注意一點，影響 this 的是在於<strong>函式的呼叫方法</strong>，並非宣告的時機：</p>
 <h2 id="純粹的調用-Simple-call"><a href="#純粹的調用-Simple-call" class="headerlink" title="純粹的調用 (Simple call)"></a>純粹的調用 (Simple call)</h2><p>如果直接調用函式，此函式的 this 會指向 window，以下兩個範例都是直接調用含式，所以都是指向 window。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.auntie = <span class="string">'漂亮阿姨'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'call:'</span>, <span class="keyword">this</span>.auntie);</span><br><span class="line">  <span class="comment">// this == window</span></span><br><span class="line">  <span class="comment">// 所以此時的 this.auntie 一樣可以取得 window 下的 auntie</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callAuntie();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.auntie = <span class="string">&#x27;漂亮阿姨&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;call:&#x27;</span>, <span class="built_in">this</span>.auntie);</span><br><span class="line">  <span class="comment">// this == window</span></span><br><span class="line">  <span class="comment">// 所以此時的 this.auntie 一樣可以取得 window 下的 auntie</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callAuntie();</span><br></pre></td></tr></table></figure>
 <p>這裡將 function 內在包覆著 function，但只要是直接呼叫，this 都是屬於全域。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.auntie = <span class="string">'漂亮阿姨'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'call:'</span>, <span class="keyword">this</span>.auntie);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// function 內的 function</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">callAgainAuntie</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'call again:'</span>, <span class="keyword">this</span>.auntie);</span><br><span class="line">  &#125;</span><br><span class="line">  callAgainAuntie();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callAuntie();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.auntie = <span class="string">&#x27;漂亮阿姨&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;call:&#x27;</span>, <span class="built_in">this</span>.auntie);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// function 內的 function</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">callAgainAuntie</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;call again:&#x27;</span>, <span class="built_in">this</span>.auntie);</span><br><span class="line">  &#125;</span><br><span class="line">  callAgainAuntie();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callAuntie();</span><br></pre></td></tr></table></figure>
 <p>無論在哪一層，純粹的調用方式 <code>this</code> 都會指向 window。</p>
 <h2 id="物件的方法調用-As-an-object-method"><a href="#物件的方法調用-As-an-object-method" class="headerlink" title="物件的方法調用 (As an object method)"></a>物件的方法調用 (As an object method)</h2><p>如果 function 是在物件下調用，那麼 this 則會指向此物件，無論 function 是在哪裡宣告。以下的範例中一個是純粹的調用，另一個則是使用物件的方法調用，物件的方法調用時 <code>this</code> 會指向調用的物件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'全域阿婆'</span>;</span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">'漂亮阿姨'</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 function，但不重要</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callName()        <span class="comment">// '全域阿婆'</span></span><br><span class="line">auntie.callName() <span class="comment">// '漂亮阿姨'，呼叫是在物件下調用，那麼 this 則是該物件</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域阿婆&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">&#x27;漂亮阿姨&#x27;</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 function，但不重要</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callName()        <span class="comment">// &#x27;全域阿婆&#x27;</span></span><br><span class="line">auntie.callName() <span class="comment">// &#x27;漂亮阿姨&#x27;，呼叫是在物件下調用，那麼 this 則是該物件</span></span><br></pre></td></tr></table></figure>
 <p>相同的道理，宣告的位置不重要，重要的是呼叫的方法。如果將物件內的<code>函式</code>賦予在一個純粹的變數上並調用它時，這個 <code>this</code> 將會指向全域。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'全域阿婆'</span>;</span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">'漂亮阿姨'</span>,</span><br><span class="line">  callName: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將 function 指向物件內的 function，不過不重要</span></span><br><span class="line">callThisName = auntie.callName; </span><br><span class="line">callThisName()                  <span class="comment">// '全域阿婆'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域阿婆&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">&#x27;漂亮阿姨&#x27;</span>,</span><br><span class="line">  callName: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 將 function 指向物件內的 function，不過不重要</span></span><br><span class="line">callThisName = auntie.callName; </span><br><span class="line">callThisName()                  <span class="comment">// &#x27;全域阿婆&#x27;</span></span><br></pre></td></tr></table></figure>
 <h4 id="DOM-物件調用-As-a-DOM-event-handler-同此方法"><a href="#DOM-物件調用-As-a-DOM-event-handler-同此方法" class="headerlink" title="DOM 物件調用 (As a DOM event handler) 同此方法"></a>DOM 物件調用 (As a DOM event handler) 同此方法</h4><p>DOM 搭配 addEventListener 時，此 this 所指向的則是該 DOM。以下這段程式碼可以貼在任何網頁下的 Console，接下來點擊畫面上任何一區域，該區域則會加上紅線。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> elements = <span class="built_in">document</span>.getElementsByTagName(<span class="string">'div'</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeDOM</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">// 指向當前的 DOM</span></span><br><span class="line">  <span class="keyword">this</span>.style.border = <span class="string">'1px solid red'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</span><br><span class="line">  elements[i].addEventListener(<span class="string">'click'</span>, changeDOM, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> elements = <span class="built_in">document</span>.getElementsByTagName(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeDOM</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>); <span class="comment">// 指向當前的 DOM</span></span><br><span class="line">  <span class="built_in">this</span>.style.border = <span class="string">&#x27;1px solid red&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; elements.length; i++) &#123;</span><br><span class="line">  elements[i].addEventListener(<span class="string">&#x27;click&#x27;</span>, changeDOM, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="建構式的調用-As-a-constructor"><a href="#建構式的調用-As-a-constructor" class="headerlink" title="建構式的調用 (As a constructor)"></a>建構式的調用 (As a constructor)</h2><p>在建構式下會 new 一個新物件，此時的 this 會指向新的物件。建構式在後續的章節會介紹，此部分只要了解建構式的 <code>this</code> 也是指像物件本身即可。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FamilyConstructor</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.mom = <span class="string">'老媽'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myFamily = <span class="keyword">new</span> FamilyConstructor();</span><br><span class="line"><span class="built_in">console</span>.log(myFamily.mom);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FamilyConstructor</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.mom = <span class="string">&#x27;老媽&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myFamily = <span class="keyword">new</span> FamilyConstructor();</span><br><span class="line"><span class="built_in">console</span>.log(myFamily.mom);</span><br></pre></td></tr></table></figure>
 <p>這一個 this 不會是全域且可以在生成的物件上重新定義 (所以他指向的是該生成的物件)。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mom = <span class="string">'全域老媽'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FamilyConstructor</span>(<span class="params">newMom</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.mom = newMom || <span class="string">'老媽'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myFamily = <span class="keyword">new</span> FamilyConstructor(<span class="string">'希望是漂亮阿姨'</span>);</span><br><span class="line"><span class="keyword">var</span> realFamily = <span class="keyword">new</span> FamilyConstructor();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'我的'</span>, myFamily.mom);    <span class="comment">// 我的 希望是漂亮阿姨</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'現實'</span>, realFamily.mom);  <span class="comment">// 現實 老媽</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mom = <span class="string">&#x27;全域老媽&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">FamilyConstructor</span>(<span class="params">newMom</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.mom = newMom || <span class="string">&#x27;老媽&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myFamily = <span class="keyword">new</span> FamilyConstructor(<span class="string">&#x27;希望是漂亮阿姨&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> realFamily = <span class="keyword">new</span> FamilyConstructor();</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;我的&#x27;</span>, myFamily.mom);    <span class="comment">// 我的 希望是漂亮阿姨</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;現實&#x27;</span>, realFamily.mom);  <span class="comment">// 現實 老媽</span></span><br></pre></td></tr></table></figure>
 <h2 id="使用-Call-來呼叫-function"><a href="#使用-Call-來呼叫-function" class="headerlink" title="使用 Call 來呼叫 function"></a>使用 Call 來呼叫 function</h2><p><code>call</code> 調用的函式可以直接傳入新的物件，使其作為 this 所指向的物件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'全域阿婆'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callName();                        <span class="comment">// '全域阿婆'</span></span><br><span class="line">callName.call(&#123;<span class="attr">name</span>: <span class="string">'漂亮阿姨'</span>&#125;);  <span class="comment">// '漂亮阿姨'</span></span><br></pre></td></tr></table></figure>
-<p>call, bind, apply 這三者均可，都可以傳入新的 <code>this</code> 給予函式使用，三者僅是使用方法不同，可參考：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/apply" target="_blank" rel="noopener">Function.prototype.apply() - JavaScript | MDN</a>。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域阿婆&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callName();                        <span class="comment">// &#x27;全域阿婆&#x27;</span></span><br><span class="line">callName.call(&#123;<span class="attr">name</span>: <span class="string">&#x27;漂亮阿姨&#x27;</span>&#125;);  <span class="comment">// &#x27;漂亮阿姨&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>call, bind, apply 這三者均可，都可以傳入新的 <code>this</code> 給予函式使用，三者僅是使用方法不同，可參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/apply">Function.prototype.apply() - JavaScript | MDN</a>。</p>
 <h2 id="重新指向-this"><a href="#重新指向-this" class="headerlink" title="重新指向 this"></a>重新指向 this</h2><p>在實際運作時，立即函式 (IIFE) 或是非同步的事件 (setTimeout) 大多都會指向全域，如果需調用的則是物件本身的話，可以先用一個變數指向 <code>this</code>，等到調用後再重新使用它。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'區域'</span>, <span class="keyword">this</span>.name);</span><br><span class="line">  <span class="keyword">var</span> that = <span class="keyword">this</span>;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'全域'</span>, <span class="keyword">this</span>.name);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'區域'</span>, that.name);</span><br><span class="line">  &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'全域阿婆'</span>;</span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">'漂亮阿姨'</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 function，但不重要</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">auntie.callName();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;區域&#x27;</span>, <span class="built_in">this</span>.name);</span><br><span class="line">  <span class="keyword">var</span> that = <span class="built_in">this</span>;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;全域&#x27;</span>, <span class="built_in">this</span>.name);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;區域&#x27;</span>, that.name);</span><br><span class="line">  &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域阿婆&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">&#x27;漂亮阿姨&#x27;</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 function，但不重要</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">auntie.callName();</span><br></pre></td></tr></table></figure>
 <p>這個變數名稱可以自己定義，常見有 <code>that</code>、<code>vm</code>、<code>self</code> 等等，可以使用自己或團隊習慣的為主即可。</p>
 
             </div>
@@ -280,7 +301,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -530,7 +551,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -551,11 +572,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -600,20 +621,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

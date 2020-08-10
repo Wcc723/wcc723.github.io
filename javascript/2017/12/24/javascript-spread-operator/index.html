@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：JavaScript 展開與其餘 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
     <meta name="description" content="這兩個分別稱為 展開運算子(spread operator) 及 其餘運算子 (rest operator，也可稱為其餘參數)，這兩個運算符有個兩個特點，就是都與陣列有關係，除此之外他都是 ...；第一次看到這樣的符號出現在 JavaScript 中，我還認為這是哪個預處理器的語法，不過在此他真的是 ES6 語法，以下內容一樣可以貼到 Chrome 運行。  預處理器：像是 CSS 的 Sass，">
-<meta name="keywords" content="javascript,js,ironman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：JavaScript 展開與其餘">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/24/javascript-spread-operator/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="這兩個分別稱為 展開運算子(spread operator) 及 其餘運算子 (rest operator，也可稱為其餘參數)，這兩個運算符有個兩個特點，就是都與陣列有關係，除此之外他都是 ...；第一次看到這樣的符號出現在 JavaScript 中，我還認為這是哪個預處理器的語法，不過在此他真的是 ES6 語法，以下內容一樣可以貼到 Chrome 運行。  預處理器：像是 CSS 的 Sass，">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_21.jpg?alt=media&token=dc0c2214-73bf-4ad6-be70-257e52f337e7">
-<meta property="og:updated_time" content="2017-12-24T02:22:55.633Z">
+<meta property="article:published_time" content="2017-12-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-24T02:22:55.633Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：JavaScript 展開與其餘">
-<meta name="twitter:description" content="這兩個分別稱為 展開運算子(spread operator) 及 其餘運算子 (rest operator，也可稱為其餘參數)，這兩個運算符有個兩個特點，就是都與陣列有關係，除此之外他都是 ...；第一次看到這樣的符號出現在 JavaScript 中，我還認為這是哪個預處理器的語法，不過在此他真的是 ES6 語法，以下內容一樣可以貼到 Chrome 運行。  預處理器：像是 CSS 的 Sass，">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_21.jpg?alt=media&token=dc0c2214-73bf-4ad6-be70-257e52f337e7">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-23T16:00:00.000Z" itemprop="datePublished">2017-12-24</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_21.jpg?alt=media&token=dc0c2214-73bf-4ad6-be70-257e52f337e7" rel="gallery_ck870gcmk00usmtrupm4arf5o">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_21.jpg?alt=media&token=dc0c2214-73bf-4ad6-be70-257e52f337e7" rel="gallery_ckdo9wd6s00nky9ruh461fi0c noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_21.jpg?alt=media&token=dc0c2214-73bf-4ad6-be70-257e52f337e7" itemprop="image" />
     </a>
     
@@ -233,26 +254,26 @@ ga('send', 'pageview');
 <p>預處理器：像是 CSS 的 Sass，在編譯前無法直接被讀取，需要透過編譯為 <code>.css</code> 或 <code>.js</code> 才能被瀏覽器使用，常見的 JavaScript 預處理器有 <code>CoffeeScript</code>、<code>TypeScript</code>。</p>
 </blockquote>
 <h2 id="展開"><a href="#展開" class="headerlink" title="展開"></a>展開</h2><p>展開非常的好用，我們先來看一個簡單的範例，這裡有兩組的陣列，我們想把他合併到同一個變數上，那麼我們可以直接用以下方法接起來。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> groupA = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>];</span><br><span class="line"><span class="keyword">let</span> groupB = [<span class="string">'老媽'</span>, <span class="string">'老爸'</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> groupAll = [...groupA, ...groupB];</span><br><span class="line"><span class="comment">// ['小明', '杰倫', '阿姨', '老媽', '老爸'];</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> groupA = [<span class="string">&#x27;小明&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;阿姨&#x27;</span>];</span><br><span class="line"><span class="keyword">let</span> groupB = [<span class="string">&#x27;老媽&#x27;</span>, <span class="string">&#x27;老爸&#x27;</span>];</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> groupAll = [...groupA, ...groupB];</span><br><span class="line"><span class="comment">// [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;阿姨&#x27;, &#x27;老媽&#x27;, &#x27;老爸&#x27;];</span></span><br></pre></td></tr></table></figure>
 <p>誒…，看到這裡是不是有似懂非懂的感覺，看似那麼容易卻不太容易理解，<code>...</code> 到底做了什麼事情!? 它其實一次又一次的 return 陣列中的值。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(...groupA); </span><br><span class="line"><span class="comment">// 小明 </span></span><br><span class="line"><span class="comment">// 杰倫 </span></span><br><span class="line"><span class="comment">// 阿姨</span></span><br></pre></td></tr></table></figure>
 <p>順帶一提，以上的概念如果用傳統的寫法會像是這樣。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> groupA = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>];</span><br><span class="line"><span class="keyword">let</span> groupB = [<span class="string">'老媽'</span>, <span class="string">'老爸'</span>];</span><br><span class="line"><span class="keyword">const</span> groupAll = groupA.concat(groupB);</span><br><span class="line"><span class="comment">// ['小明', '杰倫', '阿姨', '老媽', '老爸'];</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> groupA = [<span class="string">&#x27;小明&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;阿姨&#x27;</span>];</span><br><span class="line"><span class="keyword">let</span> groupB = [<span class="string">&#x27;老媽&#x27;</span>, <span class="string">&#x27;老爸&#x27;</span>];</span><br><span class="line"><span class="keyword">const</span> groupAll = groupA.concat(groupB);</span><br><span class="line"><span class="comment">// [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;阿姨&#x27;, &#x27;老媽&#x27;, &#x27;老爸&#x27;];</span></span><br></pre></td></tr></table></figure>
 <h3 id="淺層複製"><a href="#淺層複製" class="headerlink" title="淺層複製"></a>淺層複製</h3><p>另外陣列與物件相同都有著傳參考的特性，所以當把陣列賦予到另一個值上時，修改其中一個另一個也會跟著變動。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 由於傳參考的關係，所以將一個陣列傳到另一個上時</span></span><br><span class="line"><span class="comment">// 兩個的值其實是一樣的</span></span><br><span class="line"><span class="keyword">let</span> groupA = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>];</span><br><span class="line"><span class="keyword">let</span> groupB = groupA;</span><br><span class="line">groupB.push(<span class="string">'阿明'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(groupA); <span class="comment">// ['小明', '杰倫', '阿姨', '阿明'];</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 由於傳參考的關係，所以將一個陣列傳到另一個上時</span></span><br><span class="line"><span class="comment">// 兩個的值其實是一樣的</span></span><br><span class="line"><span class="keyword">let</span> groupA = [<span class="string">&#x27;小明&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;阿姨&#x27;</span>];</span><br><span class="line"><span class="keyword">let</span> groupB = groupA;</span><br><span class="line">groupB.push(<span class="string">&#x27;阿明&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(groupA); <span class="comment">// [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;阿姨&#x27;, &#x27;阿明&#x27;];</span></span><br></pre></td></tr></table></figure>
 <p>由於 展開運算子 它是一個一個將值寫入，所以他也有淺層的複製(<code>shallow copy</code>) 。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這個屬於淺拷貝，所以不會影響到另一個物件</span></span><br><span class="line"><span class="keyword">let</span> groupA = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>];</span><br><span class="line"><span class="keyword">let</span> groupB = [...groupA];</span><br><span class="line">groupB.push(<span class="string">'阿明'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(groupA); <span class="comment">// ['小明', '杰倫', '阿姨'];</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這個屬於淺拷貝，所以不會影響到另一個物件</span></span><br><span class="line"><span class="keyword">let</span> groupA = [<span class="string">&#x27;小明&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;阿姨&#x27;</span>];</span><br><span class="line"><span class="keyword">let</span> groupB = [...groupA];</span><br><span class="line">groupB.push(<span class="string">&#x27;阿明&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(groupA); <span class="comment">// [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;阿姨&#x27;];</span></span><br></pre></td></tr></table></figure>
 <h3 id="類陣列轉成純陣列"><a href="#類陣列轉成純陣列" class="headerlink" title="類陣列轉成純陣列"></a>類陣列轉成純陣列</h3><p>JavaScript 中有許多類陣列，這類陣列有著陣列的外皮，但卻不能使用陣列的方法，相信先前有參考過原型章節的文章有發現這點，這類陣列由於原型不同，所以 “不能” 使用許多的陣列方法，如： <code>map()</code>, <code>concat()</code> 等等。</p>
 <p>其中一種很常見的就是 DOM 陣列，這也可以透過展開運算子轉為純陣列。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以將類陣列轉成陣列</span></span><br><span class="line"><span class="keyword">let</span> doms = <span class="built_in">document</span>.querySelectorAll(<span class="string">'p'</span>);</span><br><span class="line"><span class="built_in">console</span>.log(doms);</span><br><span class="line"><span class="keyword">let</span> spreadDom = [...doms];</span><br><span class="line"><span class="built_in">console</span>.log(spreadDom);</span><br></pre></td></tr></table></figure>
-<p>在先前小明儲值的故事中，悠遊卡的儲值是使用 <code>for...in</code>，原因也在於他不是真正的陣列，不過當他如果轉成真正的陣列後，就多了很多方法可以用了 (嘿嘿嘿)。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 同樣道理，arguments 不是真正的陣列，也可以透過 ... 來轉成純陣列</span></span><br><span class="line"><span class="keyword">var</span> originCash = <span class="number">1000</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> arg = [...arguments]</span><br><span class="line">  <span class="keyword">let</span> sum = arg.reduce(<span class="function"><span class="keyword">function</span> (<span class="params">accumulator, currentValue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 分別為前一個回傳值, 當前值</span></span><br><span class="line">    <span class="keyword">return</span> accumulator + currentValue;  <span class="comment">// 與前一個值相加</span></span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line">  <span class="comment">// 如果使用 arguments 則會出現 `arguments.reduce is not a function`</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'我有 '</span> + sum + <span class="string">' 元'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">updateEasyCard(<span class="number">0</span>); <span class="comment">// 我有 1000 元</span></span><br><span class="line"><span class="comment">// arguments = [];</span></span><br><span class="line"></span><br><span class="line">updateEasyCard(<span class="number">10</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">500</span>); <span class="comment">// 我有 718 元</span></span><br><span class="line"><span class="comment">// arguments = [10, 50, 100, 50, 5, 1, 1, 1, 500];</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 可以將類陣列轉成陣列</span></span><br><span class="line"><span class="keyword">let</span> doms = <span class="built_in">document</span>.querySelectorAll(<span class="string">&#x27;p&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(doms);</span><br><span class="line"><span class="keyword">let</span> spreadDom = [...doms];</span><br><span class="line"><span class="built_in">console</span>.log(spreadDom);</span><br></pre></td></tr></table></figure>
+<p>在先前小明儲值的故事中，悠遊卡的儲值是使用 <code>for...in</code>，原因也在於他不是真正的陣列，不過當他如果轉成真正的陣列後，就多了很多方法可以用了 (嘿嘿嘿)。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 同樣道理，arguments 不是真正的陣列，也可以透過 ... 來轉成純陣列</span></span><br><span class="line"><span class="keyword">var</span> originCash = <span class="number">1000</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> arg = [...arguments]</span><br><span class="line">  <span class="keyword">let</span> sum = arg.reduce(<span class="function"><span class="keyword">function</span> (<span class="params">accumulator, currentValue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 分別為前一個回傳值, 當前值</span></span><br><span class="line">    <span class="keyword">return</span> accumulator + currentValue;  <span class="comment">// 與前一個值相加</span></span><br><span class="line">  &#125;, <span class="number">0</span>);</span><br><span class="line">  <span class="comment">// 如果使用 arguments 則會出現 `arguments.reduce is not a function`</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;我有 &#x27;</span> + sum + <span class="string">&#x27; 元&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">updateEasyCard(<span class="number">0</span>); <span class="comment">// 我有 1000 元</span></span><br><span class="line"><span class="comment">// arguments = [];</span></span><br><span class="line"></span><br><span class="line">updateEasyCard(<span class="number">10</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">500</span>); <span class="comment">// 我有 718 元</span></span><br><span class="line"><span class="comment">// arguments = [10, 50, 100, 50, 5, 1, 1, 1, 500];</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="其餘參數"><a href="#其餘參數" class="headerlink" title="其餘參數"></a>其餘參數</h2><p>其餘參數，顧名思義就是傳入的參數，用途類似 <code>arguments</code>，但不同的是：</p>
 <ul>
 <li><code>arguments</code> 不是真的陣列，其餘參數則是</li>
 <li><code>arguments</code> 不能混用自訂傳入的參數</li>
 </ul>
 <p>以下就是使用其餘參數改寫以上範例。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mingCard = &#123;</span><br><span class="line">  name: <span class="string">'小明'</span>,</span><br><span class="line">  value: <span class="number">0</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params">mingCard, ...money</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(money); <span class="comment">// 其餘參數的陣列</span></span><br><span class="line">  mingCard.value = money.reduce(<span class="function"><span class="keyword">function</span> (<span class="params">accumulator, currentValue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 分別為前一個回傳值, 當前值</span></span><br><span class="line">    <span class="keyword">return</span> accumulator + currentValue;  <span class="comment">// 與前一個值相加</span></span><br><span class="line">  &#125;, mingCard.value);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;mingCard.name&#125;</span> 的卡現在有 <span class="subst">$&#123;mingCard.value&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> money = [<span class="number">10</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">500</span>]</span><br><span class="line">updateEasyCard(mingCard, ...money); <span class="comment">// 718</span></span><br><span class="line"></span><br><span class="line">updateEasyCard(mingCard, <span class="number">50</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">70</span>, <span class="number">200</span>); <span class="comment">// 小明 的卡現在有 1188</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mingCard = &#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  value: <span class="number">0</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">updateEasyCard</span>(<span class="params">mingCard, ...money</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(money); <span class="comment">// 其餘參數的陣列</span></span><br><span class="line">  mingCard.value = money.reduce(<span class="function"><span class="keyword">function</span> (<span class="params">accumulator, currentValue</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 分別為前一個回傳值, 當前值</span></span><br><span class="line">    <span class="keyword">return</span> accumulator + currentValue;  <span class="comment">// 與前一個值相加</span></span><br><span class="line">  &#125;, mingCard.value);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;mingCard.name&#125;</span> 的卡現在有 <span class="subst">$&#123;mingCard.value&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> money = [<span class="number">10</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">500</span>]</span><br><span class="line">updateEasyCard(mingCard, ...money); <span class="comment">// 718</span></span><br><span class="line"></span><br><span class="line">updateEasyCard(mingCard, <span class="number">50</span>, <span class="number">100</span>, <span class="number">50</span>, <span class="number">70</span>, <span class="number">200</span>); <span class="comment">// 小明 的卡現在有 1188</span></span><br></pre></td></tr></table></figure>
 <p>透過其餘參數，我們還能混用其他的變數像是 <code>mingCard</code>，讓這個儲值函式彈性更高，而不受 <code>arguments</code> 依序傳入的限制。</p>
 <p>看到目前為止，你會跟我一樣覺得 ES6 的程式碼看起來不像 JavaScript 嗎？</p>
 
@@ -285,7 +306,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -535,7 +556,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -556,11 +577,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -605,20 +626,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

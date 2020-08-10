@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>Flex 空間計算規則 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="css">
+        <meta name="keywords" content="css" />
     
     
 
     <meta name="description" content="此篇是延續先前的 Flex 的文章（圖解：CSS Flex 屬性一點也不難），本篇則是著重在 flex 中的 flex-grow、flex-shrink 和 flex-basis 這三個屬性，如果對於 Flex 基礎尚不熟悉的可先閱讀前一篇文章。 首先，回顧下先前的三個屬性介紹： flex 是縮寫，裡面依序包含三個屬性 flex-grow、flex-shrink 和 flex-basis。  fl">
-<meta name="keywords" content="css">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Flex 空間計算規則">
 <meta property="og:url" content="https://wcc723.github.io/css/2020/03/08/flex-size/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="此篇是延續先前的 Flex 的文章（圖解：CSS Flex 屬性一點也不難），本篇則是著重在 flex 中的 flex-grow、flex-shrink 和 flex-basis 這三個屬性，如果對於 Flex 基礎尚不熟悉的可先閱讀前一篇文章。 首先，回顧下先前的三個屬性介紹： flex 是縮寫，裡面依序包含三個屬性 flex-grow、flex-shrink 和 flex-basis。  fl">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-cover.png?alt=media&token=ce7a29ec-255b-40b3-a724-33dd4407ee2c">
-<meta property="og:updated_time" content="2020-03-08T05:42:31.104Z">
+<meta property="article:published_time" content="2020-03-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-08T05:42:31.104Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Flex 空間計算規則">
-<meta name="twitter:description" content="此篇是延續先前的 Flex 的文章（圖解：CSS Flex 屬性一點也不難），本篇則是著重在 flex 中的 flex-grow、flex-shrink 和 flex-basis 這三個屬性，如果對於 Flex 基礎尚不熟悉的可先閱讀前一篇文章。 首先，回顧下先前的三個屬性介紹： flex 是縮寫，裡面依序包含三個屬性 flex-grow、flex-shrink 和 flex-basis。  fl">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-cover.png?alt=media&token=ce7a29ec-255b-40b3-a724-33dd4407ee2c">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +31,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +82,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +102,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +173,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +189,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/css/">css</a>
@@ -199,14 +218,14 @@ ga('send', 'pageview');
     <time datetime="2020-03-07T16:00:00.000Z" itemprop="datePublished">2020-03-08</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-cover.png?alt=media&token=ce7a29ec-255b-40b3-a724-33dd4407ee2c" rel="gallery_ck870gcq0012ymtrus56lzko2">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-cover.png?alt=media&token=ce7a29ec-255b-40b3-a724-33dd4407ee2c" rel="gallery_ckdo9wd9100uay9ru6ro6fn09 noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-cover.png?alt=media&token=ce7a29ec-255b-40b3-a724-33dd4407ee2c" itemprop="image" />
     </a>
     
@@ -242,9 +261,9 @@ ga('send', 'pageview');
 <p>下方的介面中，可以自行開啟 HTML, CSS 來檢視、調整原始碼，如果看到的結果不符合預期可以點選右下角的 <code>rerun</code>。</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="jOPGBPq" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則 - 1">
-  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/jOPGBPq" target="_blank" rel="noopener">
-  Flex 寬度計算規則 - 1</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>)
-  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span>
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/jOPGBPq">
+  Flex 寬度計算規則 - 1</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
@@ -257,17 +276,17 @@ ga('send', 'pageview');
 <p>到這個階段會看到以下的結果，三個方框的寬度依然是一致的（都是 200px）。</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="mdJBWJg" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則 - 2">
-  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/mdJBWJg" target="_blank" rel="noopener">
-  Flex 寬度計算規則 - 2</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>)
-  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span>
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/mdJBWJg">
+  Flex 寬度計算規則 - 2</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
 <p>接下來，將最右方的元素 flex-grow 改為 2，則可以看到以下的結果。</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="GRJMrbe" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則">
-  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/GRJMrbe" target="_blank" rel="noopener">
-  Flex 寬度計算規則 - 3</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>)
-  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span>
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/GRJMrbe">
+  Flex 寬度計算規則 - 3</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
 <p>由於 Flex 是按比例分配剩餘空間，因此在前面的範例中，兩者 flex-grow 都是 1 的情況下，會呈現 1:1 的結果，這次改為 1:2 那麼寬度的計算上也會改為 1:2，重點如下：</p>
@@ -292,9 +311,9 @@ ga('send', 'pageview');
 </ul>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="css,result" data-user="Wcc723" data-slug-hash="poJdOrb" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則 - 8">
-  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/poJdOrb" target="_blank" rel="noopener">
-  Flex 寬度計算規則 - 8</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>)
-  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span>
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/poJdOrb">
+  Flex 寬度計算規則 - 8</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
 <p>此段的計算邏輯：</p>
@@ -316,25 +335,25 @@ ga('send', 'pageview');
 <p>以下範例透過三個 <code>flex-basis: 250px</code> 來超出範圍，並且統一設定 <code>flex-shrink</code> 與 <code>flex-grow</code> 皆為 0（禁止伸展、收縮），可以得到以下的結果：內元素超出了外容器。</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="WNvXjaz" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則 - 4">
-  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/WNvXjaz" target="_blank" rel="noopener">
-  Flex 寬度計算規則 - 4</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>)
-  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span>
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/WNvXjaz">
+  Flex 寬度計算規則 - 4</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
 <p>接下來，將右邊兩個元素 <code>flex-shrink</code> 設為 <code>1</code>，會看到兩個元素多餘的內容收縮到外容器內部並維持相同的寬度，最左方的元素則維持原本的寬度不變。</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="WNvXjYz" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則 - 5">
-  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/WNvXjYz" target="_blank" rel="noopener">
-  Flex 寬度計算規則 - 5</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>)
-  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span>
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/WNvXjYz">
+  Flex 寬度計算規則 - 5</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
 <p>接下來，一樣進行 2:1 的 shrink 設置實驗，左方為 <code>flex-shrink: 1</code>，右方為 <code>flex-shrink: 1</code>，接下來你可能會猜想兩者的尺寸應為 <code>2: 1</code> 吧！</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="LYVOyXV" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則 - 6">
-  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/LYVOyXV" target="_blank" rel="noopener">
-  Flex 寬度計算規則 - 6</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>)
-  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span>
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/LYVOyXV">
+  Flex 寬度計算規則 - 6</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
 <p>實際結果：當然不是～</p>
@@ -346,12 +365,12 @@ ga('send', 'pageview');
 <p>以下範例來說，將 Flex 主軸線切換為 <code>flex-direction: column;</code>，內層元素依然可依據垂直的方式重新分配空間大小，且計算邏輯一致。</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="LYVOyqp" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則 - 3 - cloumn">
-  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/LYVOyqp" target="_blank" rel="noopener">
-  Flex 寬度計算規則 - 3 - cloumn</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>)
-  on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</span>
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/LYVOyqp">
+  Flex 寬度計算規則 - 3 - cloumn</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
-<p>如果透過文字還是不容易理解，可以看我過去線上教學的<a href="https://www.youtube.com/watch?v=0QjOO-M2gs8" target="_blank" rel="noopener">影片 - Flex 寬度計算方法</a>，或是<a href="https://www.youtube.com/watch?v=lmBM7_OTDBQ" target="_blank" rel="noopener">Flex 完整教學</a></p>
+<p>如果透過文字還是不容易理解，可以看我過去線上教學的<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=0QjOO-M2gs8">影片 - Flex 寬度計算方法</a>，或是<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lmBM7_OTDBQ">Flex 完整教學</a></p>
 
             </div>
             <div style="margin: 15px 0;">
@@ -382,7 +401,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -632,7 +651,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -653,11 +672,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -702,20 +721,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

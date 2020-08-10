@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>d3.js 再看更多layout前，先來轉換json結構 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="ironman,d3js">
+        <meta name="keywords" content="ironman,d3js" />
     
     
 
     <meta name="description" content="上次提到d3.js有包含許多的layout，但是每種layout都有些結構上的限制，就比如說 Tree Map，這樣的layout就需要巢狀結構的json才可以製作，D3js也有提供巢狀結構的轉換，這邊就來介紹最常用的轉換方式。">
-<meta name="keywords" content="ironman,d3js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="d3.js 再看更多layout前，先來轉換json結構">
 <meta property="og:url" content="https://wcc723.github.io/d3js/2014/10/26/Ironman-30-days-27/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="上次提到d3.js有包含許多的layout，但是每種layout都有些結構上的限制，就比如說 Tree Map，這樣的layout就需要巢狀結構的json才可以製作，D3js也有提供巢狀結構的轉換，這邊就來介紹最常用的轉換方式。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/d3js/2014/10/26/Ironman-30-days-27/2014ironman/day26_04.png">
-<meta property="og:updated_time" content="2016-10-13T02:47:29.000Z">
+<meta property="article:published_time" content="2014-10-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-10-13T02:47:29.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="ironman">
+<meta property="article:tag" content="d3js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="d3.js 再看更多layout前，先來轉換json結構">
-<meta name="twitter:description" content="上次提到d3.js有包含許多的layout，但是每種layout都有些結構上的限制，就比如說 Tree Map，這樣的layout就需要巢狀結構的json才可以製作，D3js也有提供巢狀結構的轉換，這邊就來介紹最常用的轉換方式。">
 <meta name="twitter:image" content="https://wcc723.github.io/d3js/2014/10/26/Ironman-30-days-27/2014ironman/day26_04.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/d3js/">d3js</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2014-10-25T16:00:00.000Z" itemprop="datePublished">2014-10-26</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d3js/">d3js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d3js/" rel="tag">d3js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li></ul>
 
             </div>
         
@@ -220,22 +240,22 @@ ga('send', 'pageview');
                 </div>
             
             <div class="need-gallery">
-                <p>上次提到d3.js有包含許多的layout，但是每種layout都有些結構上的限制，就比如說 <a href="http://bl.ocks.org/mbostock/4063582" target="_blank" rel="noopener">Tree Map</a>，這樣的layout就需要巢狀結構的json才可以製作，D3js也有提供巢狀結構的轉換，這邊就來介紹最常用的轉換方式。</p>
+                <p>上次提到d3.js有包含許多的layout，但是每種layout都有些結構上的限制，就比如說 <a target="_blank" rel="noopener" href="http://bl.ocks.org/mbostock/4063582">Tree Map</a>，這樣的layout就需要巢狀結構的json才可以製作，D3js也有提供巢狀結構的轉換，這邊就來介紹最常用的轉換方式。</p>
 <a id="more"></a>
 <h2 id="資料來源"><a href="#資料來源" class="headerlink" title="資料來源"></a>資料來源</h2><p>這次的資料又是柯P的，他的資料真的很好用…，不過今天不看圖，今天都來看console.log。</p>
 <p>首先透過柯P的API，可以抓到以下的資料，在寫這篇文章時，總共有408筆資料，每一筆資料都是獨立的。</p>
-<p><img src="/images/2014ironman/day26_01.png" alt></p>
+<p><img src="/images/2014ironman/day26_01.png" alt=""></p>
 <p>我打算將他分類，以Type(支出、收入)、account(帳戶)作為分類。</p>
-<p><img src="/images/2014ironman/day26_02.png" alt></p>
+<p><img src="/images/2014ironman/day26_02.png" alt=""></p>
 <h2 id="D3-js巢狀結構"><a href="#D3-js巢狀結構" class="headerlink" title="D3.js巢狀結構"></a>D3.js巢狀結構</h2><p>只要透過d3.js巢狀的函式，就能輕鬆達到剛剛的需求，如下：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">kpPath = <span class="string">'http://api.kptaipei.tw/v1/financial/all'</span>; <span class="comment">//KP資料路徑</span></span><br><span class="line"></span><br><span class="line">d3.json(kpPath, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">  dataset = d.data;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(dataset, <span class="string">"原始資料"</span>); <span class="comment">//顯示原始資料</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> nodesByType = d3.nest() <span class="comment">//轉換成巢狀架構</span></span><br><span class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.type; &#125;) <span class="comment">//回傳type</span></span><br><span class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.account; &#125;) <span class="comment">//回傳account</span></span><br><span class="line">    .entries(dataset); <span class="comment">//輸入的資料</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(nodesByType, <span class="string">"基本d3.js巢狀結構轉換"</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">kpPath = <span class="string">&#x27;http://api.kptaipei.tw/v1/financial/all&#x27;</span>; <span class="comment">//KP資料路徑</span></span><br><span class="line"></span><br><span class="line">d3.json(kpPath, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">  dataset = d.data;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(dataset, <span class="string">&quot;原始資料&quot;</span>); <span class="comment">//顯示原始資料</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> nodesByType = d3.nest() <span class="comment">//轉換成巢狀架構</span></span><br><span class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.type; &#125;) <span class="comment">//回傳type</span></span><br><span class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.account; &#125;) <span class="comment">//回傳account</span></span><br><span class="line">    .entries(dataset); <span class="comment">//輸入的資料</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(nodesByType, <span class="string">&quot;基本d3.js巢狀結構轉換&quot;</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>透過這個函式，就能完成最基本的巢狀資料的轉換，比自幹簡單很多吧…，結果會像下面這樣：</p>
-<p><img src="/images/2014ironman/day26_04.png" alt></p>
+<p><img src="/images/2014ironman/day26_04.png" alt=""></p>
 <p>剛剛所設定的type會被轉成第一層的key，而account則會被轉成第二層的key，資料責會被轉成value。</p>
-<h2 id="轉換Key"><a href="#轉換Key" class="headerlink" title="轉換Key"></a>轉換Key</h2><p>還有一些麻煩的事情要處理，就以剛剛介紹的<a href="http://bl.ocks.org/mbostock/4063582" target="_blank" rel="noopener">Tree Map</a>為例，他們所需要的Json格式是像下圖這樣，用的是name、children，並不是剛剛的key、value，所以還要再轉換一下。</p>
-<p><img src="/images/2014ironman/day26_05.png" alt></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">kpPath = <span class="string">'http://api.kptaipei.tw/v1/financial/all'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// --- 轉換巢狀結構的key ---</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reSortRoot</span>(<span class="params">root,value_key</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> root) &#123;</span><br><span class="line">      <span class="keyword">if</span> (key == <span class="string">"key"</span>) &#123;</span><br><span class="line">        root.name = root.key;</span><br><span class="line">        <span class="keyword">delete</span> root.key;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (key == <span class="string">"values"</span>) &#123;</span><br><span class="line">        root.children = [];</span><br><span class="line">        <span class="keyword">for</span> (item <span class="keyword">in</span> root.values) &#123;</span><br><span class="line">          root.children.push(reSortRoot(root.values[item],value_key));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">delete</span> root.values;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (key == value_key) &#123;</span><br><span class="line">        root.value = <span class="built_in">parseFloat</span>(root[value_key]);</span><br><span class="line">        <span class="keyword">delete</span> root[value_key];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">// --- 轉換巢狀結構的key ---</span></span><br><span class="line"></span><br><span class="line">d3.json(kpPath, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">  dataset = d.data;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(dataset, <span class="string">"原始資料"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> nodesByType = d3.nest() <span class="comment">//轉換成巢狀架構</span></span><br><span class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.type; &#125;)</span><br><span class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.account; &#125;)</span><br><span class="line">    .entries(dataset);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(nodesByType, <span class="string">"基本d3.js巢狀結構轉換"</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> root = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將資料命名</span></span><br><span class="line">  root.key = <span class="string">"Data"</span>;</span><br><span class="line">  root.values = nodesByType;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 修改資料的的key, children名稱，並且依指定規則套用。</span></span><br><span class="line">  root = reSortRoot(root,<span class="string">"KpData"</span>); <span class="comment">//layout用巢狀架構</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(root, <span class="string">"layout用巢狀架構"</span>)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p><img src="/images/2014ironman/day26_03.png" alt></p>
+<h2 id="轉換Key"><a href="#轉換Key" class="headerlink" title="轉換Key"></a>轉換Key</h2><p>還有一些麻煩的事情要處理，就以剛剛介紹的<a target="_blank" rel="noopener" href="http://bl.ocks.org/mbostock/4063582">Tree Map</a>為例，他們所需要的Json格式是像下圖這樣，用的是name、children，並不是剛剛的key、value，所以還要再轉換一下。</p>
+<p><img src="/images/2014ironman/day26_05.png" alt=""></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">kpPath = <span class="string">&#x27;http://api.kptaipei.tw/v1/financial/all&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// --- 轉換巢狀結構的key ---</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reSortRoot</span>(<span class="params">root,value_key</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> root) &#123;</span><br><span class="line">      <span class="keyword">if</span> (key == <span class="string">&quot;key&quot;</span>) &#123;</span><br><span class="line">        root.name = root.key;</span><br><span class="line">        <span class="keyword">delete</span> root.key;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (key == <span class="string">&quot;values&quot;</span>) &#123;</span><br><span class="line">        root.children = [];</span><br><span class="line">        <span class="keyword">for</span> (item <span class="keyword">in</span> root.values) &#123;</span><br><span class="line">          root.children.push(reSortRoot(root.values[item],value_key));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">delete</span> root.values;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (key == value_key) &#123;</span><br><span class="line">        root.value = <span class="built_in">parseFloat</span>(root[value_key]);</span><br><span class="line">        <span class="keyword">delete</span> root[value_key];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="comment">// --- 轉換巢狀結構的key ---</span></span><br><span class="line"></span><br><span class="line">d3.json(kpPath, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;</span><br><span class="line">  dataset = d.data;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(dataset, <span class="string">&quot;原始資料&quot;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> nodesByType = d3.nest() <span class="comment">//轉換成巢狀架構</span></span><br><span class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.type; &#125;)</span><br><span class="line">    .key(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123; <span class="keyword">return</span> d.account; &#125;)</span><br><span class="line">    .entries(dataset);</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(nodesByType, <span class="string">&quot;基本d3.js巢狀結構轉換&quot;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">var</span> root = &#123;&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 將資料命名</span></span><br><span class="line">  root.key = <span class="string">&quot;Data&quot;</span>;</span><br><span class="line">  root.values = nodesByType;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 修改資料的的key, children名稱，並且依指定規則套用。</span></span><br><span class="line">  root = reSortRoot(root,<span class="string">&quot;KpData&quot;</span>); <span class="comment">//layout用巢狀架構</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(root, <span class="string">&quot;layout用巢狀架構&quot;</span>)</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/images/2014ironman/day26_03.png" alt=""></p>
 <p>接下來就換看到KP的資料都轉成d3.js layout所需的巢狀json，這樣有助於直接套用許多的樣式。</p>
 
 <script>
@@ -320,7 +340,7 @@ d3.json(kpPath, function(d){
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -570,7 +590,7 @@ d3.json(kpPath, function(d){
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -591,11 +611,11 @@ d3.json(kpPath, function(d){
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -640,20 +660,40 @@ d3.json(kpPath, function(d){
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

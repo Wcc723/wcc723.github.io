@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：另一種方式介紹 JavaScript 閉包 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
     <meta name="description" content="閉包解釋非常多，這裡先透過幾個方式說明一下閉包是什麼：  運作原理：就是呼叫 Function 內的 Function 這樣有什麼用：內層 Function 作用域變數只會存在內層 然後勒：內層 Function 變數可以不被釋放，重複使用 卡斯伯會常用此方法嗎：沒注意，好像會不經意的使出來 那幹麻學：理解作用域  範例這個範例用花錢的概念來說明，我們每次都會傳入不同的金額，並且把剩餘的金額存在內">
-<meta name="keywords" content="javascript,js,ironman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：另一種方式介紹 JavaScript 閉包">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/13/javascript-closure/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="閉包解釋非常多，這裡先透過幾個方式說明一下閉包是什麼：  運作原理：就是呼叫 Function 內的 Function 這樣有什麼用：內層 Function 作用域變數只會存在內層 然後勒：內層 Function 變數可以不被釋放，重複使用 卡斯伯會常用此方法嗎：沒注意，好像會不經意的使出來 那幹麻學：理解作用域  範例這個範例用花錢的概念來說明，我們每次都會傳入不同的金額，並且把剩餘的金額存在內">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c10-01.jpg?alt=media&token=a508d994-46b9-48dd-bda9-696ec6438e03">
-<meta property="og:updated_time" content="2017-12-13T01:52:01.860Z">
+<meta property="article:published_time" content="2017-12-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-13T01:52:01.860Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：另一種方式介紹 JavaScript 閉包">
-<meta name="twitter:description" content="閉包解釋非常多，這裡先透過幾個方式說明一下閉包是什麼：  運作原理：就是呼叫 Function 內的 Function 這樣有什麼用：內層 Function 作用域變數只會存在內層 然後勒：內層 Function 變數可以不被釋放，重複使用 卡斯伯會常用此方法嗎：沒注意，好像會不經意的使出來 那幹麻學：理解作用域  範例這個範例用花錢的概念來說明，我們每次都會傳入不同的金額，並且把剩餘的金額存在內">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c10-01.jpg?alt=media&token=a508d994-46b9-48dd-bda9-696ec6438e03">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-12T16:00:00.000Z" itemprop="datePublished">2017-12-13</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c10-01.jpg?alt=media&token=a508d994-46b9-48dd-bda9-696ec6438e03" rel="gallery_ck870gcir00l1mtrudu0hdlsa">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c10-01.jpg?alt=media&token=a508d994-46b9-48dd-bda9-696ec6438e03" rel="gallery_ckdo9wd6c00mey9ru8mc2bc6t noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c10-01.jpg?alt=media&token=a508d994-46b9-48dd-bda9-696ec6438e03" itemprop="image" />
     </a>
     
@@ -238,7 +259,7 @@ ga('send', 'pageview');
 </ol>
 <h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>這個範例用花錢的概念來說明，我們每次都會傳入不同的金額，並且把剩餘的金額存在內部作用域。</p>
 <h4 id="直接呼叫內層函示"><a href="#直接呼叫內層函示" class="headerlink" title="直接呼叫內層函示"></a>直接呼叫內層函示</h4><p>閉包就是存取內部的函式，所以直接使用 <code>buyItem()(100)</code> 兩個括號就是呼叫內部的函式。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buyItem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> myMoney = <span class="number">1000</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;   <span class="comment">// 這裡就是一個閉包，不過目前只會使用一次</span></span><br><span class="line">	  myMoney = myMoney - price;</span><br><span class="line">    <span class="keyword">return</span> myMoney;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> balance = buyItem()(<span class="number">100</span>);  <span class="comment">// 存取內部函式的變數</span></span><br><span class="line"><span class="built_in">console</span>.log(balance);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buyItem</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> myMoney = <span class="number">1000</span>;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;   <span class="comment">// 這裡就是一個閉包，不過目前只會使用一次</span></span><br><span class="line">      myMoney = myMoney - price;</span><br><span class="line">    <span class="keyword">return</span> myMoney;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> balance = buyItem()(<span class="number">100</span>);  <span class="comment">// 存取內部函式的變數</span></span><br><span class="line"><span class="built_in">console</span>.log(balance);</span><br></pre></td></tr></table></figure>
 <p>幹麻要這樣？</p>
 <ol>
 <li>外層 <code>myMoney</code> 此時的變數可以被內層的 function 存取</li>
@@ -260,7 +281,7 @@ ga('send', 'pageview');
 <h4 id="多個具私有變數的函式"><a href="#多個具私有變數的函式" class="headerlink" title="多個具私有變數的函式"></a>多個具私有變數的函式</h4><blockquote>
 <p>小明拜訪完漂亮阿姨以後，接著遇到 Rich 的朋友 “杰倫哥”，杰倫哥與小明去四處揮霍，小明也想趁此機會計算一下杰倫哥的花費狀況。透過閉包的方法，小明可以用同一個公式算出兩個人剩餘多少錢。</p>
 </blockquote>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用閉包產生兩個作用域</span></span><br><span class="line"><span class="comment">// 這裡的 money 代表身上帶的錢</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buyItem</span>(<span class="params">money</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> myMoney = money;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="keyword">this</span>);          <span class="comment">// 趁機偷問，此地的 this 指向誰？</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);        <span class="comment">// 趁機偷問，此地的 this 指向誰？</span></span><br><span class="line">    <span class="comment">// myMoney 第一次由外部傳入，接下來在這個 function 內不斷更新</span></span><br><span class="line">    myMoney = myMoney - price;</span><br><span class="line">    <span class="keyword">return</span> myMoney;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> MingCost = buyItem(<span class="number">1000</span>); <span class="comment">// 存取內部函式的變數，這個是小明錢包內的錢</span></span><br><span class="line"><span class="keyword">let</span> JayCost = buyItem(<span class="number">10000</span>); <span class="comment">// 杰哥拿出的小錢</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 小明的內層作用域變數，也就是小明剩的錢</span></span><br><span class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 900</span></span><br><span class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 800</span></span><br><span class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 700</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 杰哥的內層作用域變數，這裡是杰哥剩的錢</span></span><br><span class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 9000</span></span><br><span class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 8000</span></span><br><span class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 7000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用閉包產生兩個作用域</span></span><br><span class="line"><span class="comment">// 這裡的 money 代表身上帶的錢</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">buyItem</span>(<span class="params">money</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> myMoney = money;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>);          <span class="comment">// 趁機偷問，此地的 this 指向誰？</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> (<span class="params">price</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>);        <span class="comment">// 趁機偷問，此地的 this 指向誰？</span></span><br><span class="line">    <span class="comment">// myMoney 第一次由外部傳入，接下來在這個 function 內不斷更新</span></span><br><span class="line">    myMoney = myMoney - price;</span><br><span class="line">    <span class="keyword">return</span> myMoney;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> MingCost = buyItem(<span class="number">1000</span>); <span class="comment">// 存取內部函式的變數，這個是小明錢包內的錢</span></span><br><span class="line"><span class="keyword">let</span> JayCost = buyItem(<span class="number">10000</span>); <span class="comment">// 杰哥拿出的小錢</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 小明的內層作用域變數，也就是小明剩的錢</span></span><br><span class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 900</span></span><br><span class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 800</span></span><br><span class="line"><span class="built_in">console</span>.log(MingCost(<span class="number">100</span>)); <span class="comment">// 700</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 杰哥的內層作用域變數，這裡是杰哥剩的錢</span></span><br><span class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 9000</span></span><br><span class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 8000</span></span><br><span class="line"><span class="built_in">console</span>.log(JayCost(<span class="number">1000</span>)); <span class="comment">// 7000</span></span><br></pre></td></tr></table></figure>
 <p>以上片段建議分段執行，更能理解其中的過程：</p>
 <ol>
 <li><code>let MingCost = buyItem(1000);</code> 此時 <code>buyItem</code> 已經執行過一次，並且 <code>myMoney</code> 的變數已經依傳入的變數做調整。</li>
@@ -297,7 +318,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -547,7 +568,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -568,11 +589,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -617,20 +638,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

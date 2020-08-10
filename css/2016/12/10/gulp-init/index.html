@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽 10 - Gulp 與 Sass 開發環境 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="css,gulp">
+        <meta name="keywords" content="css,gulp" />
     
     
 
     <meta name="description" content="Gulp 是我目前最使用的自動化工具，在先前一篇也有介紹有哪些自動化工具，這篇開始會介紹 Gulp 自動化工具如何使用、有哪些推薦的工具以及一些經驗上的分享。而本次系列文都是著重在 CSS 的開發，所以不會介紹 Javascript 的自動化工具。">
-<meta name="keywords" content="css,gulp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽 10 - Gulp 與 Sass 開發環境">
 <meta property="og:url" content="https://wcc723.github.io/css/2016/12/10/gulp-init/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="Gulp 是我目前最使用的自動化工具，在先前一篇也有介紹有哪些自動化工具，這篇開始會介紹 Gulp 自動化工具如何使用、有哪些推薦的工具以及一些經驗上的分享。而本次系列文都是著重在 CSS 的開發，所以不會介紹 Javascript 的自動化工具。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/css/2016/12/10/gulp-init/2016_ironman/10_gulp_header.jpg">
-<meta property="og:updated_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:published_time" content="2016-12-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
+<meta property="article:tag" content="gulp">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽 10 - Gulp 與 Sass 開發環境">
-<meta name="twitter:description" content="Gulp 是我目前最使用的自動化工具，在先前一篇也有介紹有哪些自動化工具，這篇開始會介紹 Gulp 自動化工具如何使用、有哪些推薦的工具以及一些經驗上的分享。而本次系列文都是著重在 CSS 的開發，所以不會介紹 Javascript 的自動化工具。">
 <meta name="twitter:image" content="https://wcc723.github.io/css/2016/12/10/gulp-init/2016_ironman/10_gulp_header.jpg">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/css/">css</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2016-12-09T16:00:00.000Z" itemprop="datePublished">2016-12-10</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li></ul>
 
             </div>
         
@@ -235,22 +255,22 @@ ga('send', 'pageview');
 <p>簡而言之，我們使用 Node.js 的服務以及透過 npm 管理工具。</p>
 <p>這一部分網路上有相當多的文章，本篇就不再贅述。</p>
 <h2 id="透過範例來了解如何運行"><a href="#透過範例來了解如何運行" class="headerlink" title="透過範例來了解如何運行"></a>透過範例來了解如何運行</h2><p>這邊我準備了一個很簡單的 Gulp Sass 案例：</p>
-<p><a href="https://github.com/Wcc723/ironman-gulp-sass/tree/v0.1.sass" target="_blank" rel="noopener">https://github.com/Wcc723/ironman-gulp-sass/tree/v0.1.sass</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Wcc723/ironman-gulp-sass/tree/v0.1.sass">https://github.com/Wcc723/ironman-gulp-sass/tree/v0.1.sass</a></p>
 <p>下載後，在 Terminal 打開這個專案，並輸入以下指令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install gulp -g</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
 <p>這就是透過 npm 來安裝相關所需的套件，<code>npm install gulp -g</code> 會在全域環境下安裝 <code>gulp</code>，<code>npm install</code> 則是會安裝專案內的 <code>package.json</code> 所列出的需要元件。</p>
 <p>package json 如下，這範例中只會安裝 gulp、gulp-sass。</p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"gulp-sass"</span>,</span><br><span class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</span><br><span class="line">  <span class="attr">"description"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="attr">"main"</span>: <span class="string">"index.js"</span>,</span><br><span class="line">  <span class="attr">"scripts"</span>: &#123;</span><br><span class="line">    <span class="attr">"test"</span>: <span class="string">"echo \"Error: no test specified\" &amp;&amp; exit 1"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">"author"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="attr">"license"</span>: <span class="string">"ISC"</span>,</span><br><span class="line">  <span class="attr">"dependencies"</span>: &#123;</span><br><span class="line">    <span class="attr">"gulp"</span>: <span class="string">"^3.9.1"</span>,</span><br><span class="line">    <span class="attr">"gulp-sass"</span>: <span class="string">"^2.3.2"</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;gulp-sass&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;version&quot;</span>: <span class="string">&quot;1.0.0&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;description&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;main&quot;</span>: <span class="string">&quot;index.js&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;test&quot;</span>: <span class="string">&quot;echo \&quot;Error: no test specified\&quot; &amp;&amp; exit 1&quot;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">&quot;author&quot;</span>: <span class="string">&quot;&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;license&quot;</span>: <span class="string">&quot;ISC&quot;</span>,</span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span>: &#123;</span><br><span class="line">    <span class="attr">&quot;gulp&quot;</span>: <span class="string">&quot;^3.9.1&quot;</span>,</span><br><span class="line">    <span class="attr">&quot;gulp-sass&quot;</span>: <span class="string">&quot;^2.3.2&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>接下來在執行：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gulp sass</span><br></pre></td></tr></table></figure>
-<p><img src="/images/2016_ironman/10_gulp_sass_01.png" alt></p>
+<p><img src="/images/2016_ironman/10_gulp_sass_01.png" alt=""></p>
 <p>執行後就會將 <code>source/scss/all.scss</code> 編譯到 <code>public/stylesheets/all.css</code> ，此時整個範例流程也就結束。</p>
 <h2 id="解說"><a href="#解說" class="headerlink" title="解說"></a>解說</h2><p>在一開始下載時檔案結構如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|- /source/scss   # 專案資料夾 (sass 位置)</span><br><span class="line">|- .gitignore</span><br><span class="line">|- gulpfile.js    # gulp 腳本檔案</span><br><span class="line">|- package.json   # 套件管理 json</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">|- &#x2F;source&#x2F;scss   # 專案資料夾 (sass 位置)</span><br><span class="line">|- .gitignore</span><br><span class="line">|- gulpfile.js    # gulp 腳本檔案</span><br><span class="line">|- package.json   # 套件管理 json</span><br></pre></td></tr></table></figure>
 <p>執行完以上步驟後，資料夾結構會如下，<code>node_modules</code> 是運行 gulp 的套件資料工具資料夾，<code>public</code> 就是前端匯出的專案資料夾，在這個範例中我們可以將 public 指定任何的資料夾名稱與後端結構配合。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|- /source/scss   # 專案資料夾 (sass 位置)</span><br><span class="line">|- /mode_modules  # node.js 套件資料夾</span><br><span class="line">|- /public        # 專案匯出的資料夾</span><br><span class="line">|- .gitignore</span><br><span class="line">|- gulpfile.js    # gulp 腳本檔案</span><br><span class="line">|- package.json   # 套件管理 json</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">|- &#x2F;source&#x2F;scss   # 專案資料夾 (sass 位置)</span><br><span class="line">|- &#x2F;mode_modules  # node.js 套件資料夾</span><br><span class="line">|- &#x2F;public        # 專案匯出的資料夾</span><br><span class="line">|- .gitignore</span><br><span class="line">|- gulpfile.js    # gulp 腳本檔案</span><br><span class="line">|- package.json   # 套件管理 json</span><br></pre></td></tr></table></figure>
 <p><code>gulpfile.js</code> 是整個 gulp 的核心，相當於一齣戲的劇本，開發者可以在腳本中定義自動化的運行流程，這邊用相當簡單的 gulp-sass 來介紹怎麼撰寫一份 gulpfile。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>);  <span class="comment">// 將 node_modules 的檔案載入</span></span><br><span class="line"><span class="keyword">var</span> sass = <span class="built_in">require</span>(<span class="string">'gulp-sass'</span>);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'sass'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;     <span class="comment">// 定義 sass 的任務名稱</span></span><br><span class="line">  <span class="keyword">return</span> gulp.src(<span class="string">'./source/scss/**/*.scss'</span>) <span class="comment">// sass 的來源資料夾</span></span><br><span class="line">    .pipe(sass(                     <span class="comment">// 編譯 sass</span></span><br><span class="line">      &#123;<span class="attr">outputStyle</span>: <span class="string">'expanded'</span>&#125;     <span class="comment">// sass 的輸出格式</span></span><br><span class="line">    ).on(<span class="string">'error'</span>, sass.logError))</span><br><span class="line">    .pipe(gulp.dest(<span class="string">'./public/stylesheets'</span>)); <span class="comment">// sass 編譯完成後的匯出資料夾</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'sass:watch'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.watch(<span class="string">'./source/scss/**/*.scss'</span>, [<span class="string">'sass'</span>]); </span><br><span class="line">  <span class="comment">// 監控資料夾，當有變化時執行 'sass' 任務</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>);  <span class="comment">// 將 node_modules 的檔案載入</span></span><br><span class="line"><span class="keyword">var</span> sass = <span class="built_in">require</span>(<span class="string">&#x27;gulp-sass&#x27;</span>);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&#x27;sass&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;     <span class="comment">// 定義 sass 的任務名稱</span></span><br><span class="line">  <span class="keyword">return</span> gulp.src(<span class="string">&#x27;./source/scss/**/*.scss&#x27;</span>) <span class="comment">// sass 的來源資料夾</span></span><br><span class="line">    .pipe(sass(                     <span class="comment">// 編譯 sass</span></span><br><span class="line">      &#123;<span class="attr">outputStyle</span>: <span class="string">&#x27;expanded&#x27;</span>&#125;     <span class="comment">// sass 的輸出格式</span></span><br><span class="line">    ).on(<span class="string">&#x27;error&#x27;</span>, sass.logError))</span><br><span class="line">    .pipe(gulp.dest(<span class="string">&#x27;./public/stylesheets&#x27;</span>)); <span class="comment">// sass 編譯完成後的匯出資料夾</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&#x27;sass:watch&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.watch(<span class="string">&#x27;./source/scss/**/*.scss&#x27;</span>, [<span class="string">&#x27;sass&#x27;</span>]); </span><br><span class="line">  <span class="comment">// 監控資料夾，當有變化時執行 &#x27;sass&#x27; 任務</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>範例中的 watch 資料夾有誤，請稍做調整如本文</p>
 </blockquote>
@@ -286,7 +306,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -536,7 +556,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -557,11 +577,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -606,20 +626,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

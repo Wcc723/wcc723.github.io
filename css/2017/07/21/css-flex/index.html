@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>圖解：CSS Flex 屬性一點也不難 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="css">
+        <meta name="keywords" content="css" />
     
     
 
     <meta name="description" content="前幾篇有介紹過 CSS Grid Layout 的使用方法，當我們學習排版類型的 CSS 時，最好的方式是先作分類，以 Flex 與 Grid Layout 來說都有共同的特徵，就是他們有分為外容器屬性與內元件屬性。">
-<meta name="keywords" content="css">
 <meta property="og:type" content="article">
 <meta property="og:title" content="圖解：CSS Flex 屬性一點也不難">
 <meta property="og:url" content="https://wcc723.github.io/css/2017/07/21/css-flex/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="前幾篇有介紹過 CSS Grid Layout 的使用方法，當我們學習排版類型的 CSS 時，最好的方式是先作分類，以 Flex 與 Grid Layout 來說都有共同的特徵，就是他們有分為外容器屬性與內元件屬性。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-cover.png?alt=media&token=d7ec42c3-d953-4aeb-813f-8069116de341">
-<meta property="og:updated_time" content="2020-03-08T05:46:17.807Z">
+<meta property="article:published_time" content="2017-07-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-08T05:46:17.807Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="圖解：CSS Flex 屬性一點也不難">
-<meta name="twitter:description" content="前幾篇有介紹過 CSS Grid Layout 的使用方法，當我們學習排版類型的 CSS 時，最好的方式是先作分類，以 Flex 與 Grid Layout 來說都有共同的特徵，就是他們有分為外容器屬性與內元件屬性。">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-cover.png?alt=media&token=d7ec42c3-d953-4aeb-813f-8069116de341">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +31,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +82,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +102,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +173,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +189,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/css/">css</a>
@@ -199,14 +218,14 @@ ga('send', 'pageview');
     <time datetime="2017-07-20T16:00:00.000Z" itemprop="datePublished">2017-07-21</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-cover.png?alt=media&token=d7ec42c3-d953-4aeb-813f-8069116de341" rel="gallery_ck870gcm600tymtrur3ag2g16">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-cover.png?alt=media&token=d7ec42c3-d953-4aeb-813f-8069116de341" rel="gallery_ckdo9wd5u00lay9ru3zxrefj5 noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-cover.png?alt=media&token=d7ec42c3-d953-4aeb-813f-8069116de341" itemprop="image" />
     </a>
     
@@ -231,7 +250,7 @@ ga('send', 'pageview');
                 <p>前幾篇有介紹過 CSS Grid Layout 的使用方法，當我們學習排版類型的 CSS 時，最好的方式是先作分類，以 Flex 與 Grid Layout 來說都有共同的特徵，就是他們有分為外容器屬性與內元件屬性。</p>
 <a id="more"></a>
 <h2 id="Flex-的外容器與內元件"><a href="#Flex-的外容器與內元件" class="headerlink" title="Flex 的外容器與內元件"></a>Flex 的外容器與內元件</h2><p>屬性放錯地方就沒有作用(廢話)，學習的過程中如果可以先了解正確的擺放位置，可以減少許多除錯的時間；Flex 中分為外容器與內元件，下方這張圖就是解釋這兩個的差異。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex.png?alt=media&amp;token=5b96522f-5cd4-46c7-9dc3-ca358c24a40e" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex.png?alt=media&amp;token=5b96522f-5cd4-46c7-9dc3-ca358c24a40e" alt=""></p>
 <p>Flex 外容器屬性：</p>
 <ul>
 <li>display</li>
@@ -258,41 +277,41 @@ ga('send', 'pageview');
 <h2 id="外容器"><a href="#外容器" class="headerlink" title="外容器"></a>外容器</h2><h3 id="display"><a href="#display" class="headerlink" title="display"></a>display</h3><p>一開始要宣告為 <code>flex</code> 才能使用，如果沒有宣告為 <code>flex</code>，本篇大部分的屬性都無法作用，不過除了 <code>flex</code> 外，還有一個 <code>inline-flex</code>，作用類似於 <code>inline-block</code> + <code>flex</code>。</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex | inline-flex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="flex-direction"><a href="#flex-direction" class="headerlink" title="flex-direction"></a>flex-direction</h3><p>Flex 決定內元件排序方向的重要屬性，這也直接影響了 flex 的軸線 (主軸及交錯軸)，flex 中的對齊屬性都與此有很大的相關聯，下圖中是預設狀態的軸線方向。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-axis.png?alt=media&amp;token=bbc40f8c-5622-4f54-a638-2124588db30d" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-axis.png?alt=media&amp;token=bbc40f8c-5622-4f54-a638-2124588db30d" alt=""></p>
 <p><code>flex-direction</code> 就是來改變上圖中的軸線方向，可以將軸線做水平反轉、轉為垂直、垂直反轉等，下圖是四種軸線排列的示意圖：</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-direction.png?alt=media&amp;token=d0870c9f-3829-4b35-badc-35fa80b64873" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-direction.png?alt=media&amp;token=d0870c9f-3829-4b35-badc-35fa80b64873" alt=""></p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-direction</span>: row | row-reverse | column | column-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>這個範例則是將主軸線設定為垂直的方向，所以 flex 的內容都是以垂直做排列。</p>
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
-<p data-height="381" data-theme-id="0" data-slug-hash="yXdVXz" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-direction)" class="codepen">See the Pen <a href="https://codepen.io/Wcc723/pen/yXdVXz/" target="_blank" rel="noopener">Flex 介紹 (flex-direction)</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="381" data-theme-id="0" data-slug-hash="yXdVXz" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-direction)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/yXdVXz/">Flex 介紹 (flex-direction)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
 <h3 id="flex-wrap"><a href="#flex-wrap" class="headerlink" title="flex-wrap"></a>flex-wrap</h3><p>超出範圍時是否換行的屬性，分為換行、不換行、換行時反轉。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-wrap.png?alt=media&amp;token=75e11355-aa11-43b0-96ea-9b0c272c39be" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-wrap.png?alt=media&amp;token=75e11355-aa11-43b0-96ea-9b0c272c39be" alt=""></p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-wrap</span>: nowrap | wrap | wrap-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
-<p data-height="378" data-theme-id="0" data-slug-hash="xroRaB" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-wrap)" class="codepen">See the Pen <a href="https://codepen.io/Wcc723/pen/xroRaB/" target="_blank" rel="noopener">Flex 介紹 (flex-wrap)</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="378" data-theme-id="0" data-slug-hash="xroRaB" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-wrap)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/xroRaB/">Flex 介紹 (flex-wrap)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
 <h3 id="flex-flow"><a href="#flex-flow" class="headerlink" title="flex-flow"></a>flex-flow</h3><p>這僅僅是 <code>flex-direction</code> 與 <code>flex-wrap</code> 的縮寫，所以只要在這前後帶上相對應的值即可。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-flow</span>: &lt;<span class="string">'flex-direction'</span>&gt; || &lt;<span class="string">'flex-wrap'</span>&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">flex-flow</span>: &lt;<span class="string">&#x27;flex-direction&#x27;</span>&gt; || &lt;<span class="string">&#x27;flex-wrap&#x27;</span>&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="justify-content"><a href="#justify-content" class="headerlink" title="justify-content"></a>justify-content</h3><p>這個屬性和下方屬性很像，很接近水平對齊的設定，但嚴格說來是稱為主軸對齊，主軸的設定是上方的 <code>flex-direction</code>；所以實際是水平或垂直，要依主軸的方向而定喔。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fjustify-content.png?alt=media&amp;token=4d03f04e-6357-44d9-b571-c21bc5f03cc1" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fjustify-content.png?alt=media&amp;token=4d03f04e-6357-44d9-b571-c21bc5f03cc1" alt=""></p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">justify-content</span>: flex-start | flex-end | center | space-between | space-around;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="align-items"><a href="#align-items" class="headerlink" title="align-items"></a>align-items</h3><p>相對於上一個屬性，這是交錯軸的對齊設定。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Falign-items.png?alt=media&amp;token=8cba0693-c9bc-4bcd-8d92-0055efa1a83c" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Falign-items.png?alt=media&amp;token=8cba0693-c9bc-4bcd-8d92-0055efa1a83c" alt=""></p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">align-items</span>: flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
-<p data-height="381" data-theme-id="0" data-slug-hash="VWJPaa" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-justify)" class="codepen">See the Pen <a href="https://codepen.io/Wcc723/pen/VWJPaa/" target="_blank" rel="noopener">Flex 介紹 (flex-justify)</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="381" data-theme-id="0" data-slug-hash="VWJPaa" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-justify)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/VWJPaa/">Flex 介紹 (flex-justify)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
 <h3 id="align-content"><a href="#align-content" class="headerlink" title="align-content"></a>align-content</h3><p>上一個屬性的多行版本，排列方式也有多一些，但注意 <code>stretch</code> 在高度被限制的情況下不會正常伸展。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Falign-content.png?alt=media&amp;token=6f30e2fd-f839-4ae7-87e3-1bf4702ddfb4" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Falign-content.png?alt=media&amp;token=6f30e2fd-f839-4ae7-87e3-1bf4702ddfb4" alt=""></p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.flex-container</span> &#123;</span><br><span class="line">  <span class="attribute">align-content</span>: flex-start | flex-end | center | space-between | space-around | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
-<p data-height="375" data-theme-id="0" data-slug-hash="JJQEOY" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (align-content)" class="codepen">See the Pen <a href="https://codepen.io/Wcc723/pen/JJQEOY/" target="_blank" rel="noopener">Flex 介紹 (align-content)</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="375" data-theme-id="0" data-slug-hash="JJQEOY" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (align-content)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/JJQEOY/">Flex 介紹 (align-content)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
 <h2 id="內元件"><a href="#內元件" class="headerlink" title="內元件"></a>內元件</h2><p>內元件的設定其中之一 <code>flex</code> 是這當中最特別的，只要搞懂 <code>flex</code> 的設定就了解了 flex 最困難的部分，所以我們就從這部份開始介紹喔。</p>
 <h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><p>flex 是縮寫，裡面依序包含三個屬性 <code>flex-grow</code>、<code>flex-shrink</code> 和 <code>flex-basis</code>，如果只設定一個則是 <code>flex-grow</code>。</p>
@@ -302,20 +321,20 @@ ga('send', 'pageview');
 <li>flex-basis: 元件的基準值，可使用不同的單位值。</li>
 </ul>
 <p>以下圖為例，伸展值為 2 的空間會佔更多。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-grow.png?alt=media&amp;token=34aaa57a-8cfb-433f-98a3-0f3f05b7d940" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fflex-grow.png?alt=media&amp;token=34aaa57a-8cfb-433f-98a3-0f3f05b7d940" alt=""></p>
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
-<p data-height="383" data-theme-id="0" data-slug-hash="BZqrVW" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex)" class="codepen">See the Pen <a href="https://codepen.io/Wcc723/pen/BZqrVW/" target="_blank" rel="noopener">Flex 介紹 (flex)</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="383" data-theme-id="0" data-slug-hash="BZqrVW" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/BZqrVW/">Flex 介紹 (flex)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
 <h2 id="align-self"><a href="#align-self" class="headerlink" title="align-self"></a>align-self</h2><p><code>align-self</code> 可以調整內元件交錯軸的對齊設定(主軸線則不能另外做設定)，且可以個別設定單一元件的值。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Falign-self.png?alt=media&amp;token=971ae92f-16a1-459b-950e-a8c137eebf1e" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Falign-self.png?alt=media&amp;token=971ae92f-16a1-459b-950e-a8c137eebf1e" alt=""></p>
 
-<p data-height="381" data-theme-id="0" data-slug-hash="pwMBem" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (align-self)" class="codepen">See the Pen <a href="https://codepen.io/Wcc723/pen/pwMBem/" target="_blank" rel="noopener">Flex 介紹 (align-self)</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="381" data-theme-id="0" data-slug-hash="pwMBem" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (align-self)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/pwMBem/">Flex 介紹 (align-self)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
 <h2 id="Order"><a href="#Order" class="headerlink" title="Order"></a>Order</h2><p>這是一個相當特別的屬性，可以重新定義元件的排列順序，順序會依據數值的大小排列。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Forder.png?alt=media&amp;token=a8475d21-abde-4311-a0e9-ebc132f538fe" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Forder.png?alt=media&amp;token=a8475d21-abde-4311-a0e9-ebc132f538fe" alt=""></p>
 
-<p data-height="381" data-theme-id="0" data-slug-hash="OgKGjw" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (order)" class="codepen">See the Pen <a href="https://codepen.io/Wcc723/pen/OgKGjw/" target="_blank" rel="noopener">Flex 介紹 (order)</a> by Wcc723 (<a href="https://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="https://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="381" data-theme-id="0" data-slug-hash="OgKGjw" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (order)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/OgKGjw/">Flex 介紹 (order)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
 <p>和過去不同，Flex 已經是主流的 CSS 屬性，現在許多 CSS 框架也都是使用 Flex 來作網格排版。搭配著範例，動手玩玩看能夠更快速的了解 Flex 喔。</p>
 <p>延伸介紹：<a href="/css/2020/03/08/flex-size/">Flex 空間計算規則</a></p>
@@ -349,7 +368,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -599,7 +618,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -620,11 +639,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -669,20 +688,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

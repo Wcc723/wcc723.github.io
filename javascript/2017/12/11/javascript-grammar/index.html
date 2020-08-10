@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：JavaScript 的文法學 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
-    <meta name="description" content="大多數國家的語言都是由左到右、由上而下的閱讀方式，中文、拉丁語系就是屬於這類型，但也有部分國家是由右到左的，像是阿拉伯語系就是如此。而 JavaScript 是由左到右，還是由右到左呢？大多情況下我們會認為 JavaScript 是由左到右，但部份時候則會由右到左的喔。 運算子用簡單的一點的方式說明， +、=、==  都是運算子，本身這也是屬於函式的一種，是用來將它本身 前後方的值 做計算，然後回">
-<meta name="keywords" content="javascript,js,ironman">
+    <meta name="description" content="大多數國家的語言都是由左到右、由上而下的閱讀方式，中文、拉丁語系就是屬於這類型，但也有部分國家是由右到左的，像是阿拉伯語系就是如此。而 JavaScript 是由左到右，還是由右到左呢？大多情況下我們會認為 JavaScript 是由左到右，但部份時候則會由右到左的喔。 運算子用簡單的一點的方式說明， +、&#x3D;、&#x3D;&#x3D;  都是運算子，本身這也是屬於函式的一種，是用來將它本身 前後方的值 做計算，然後回">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：JavaScript 的文法學">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/11/javascript-grammar/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="大多數國家的語言都是由左到右、由上而下的閱讀方式，中文、拉丁語系就是屬於這類型，但也有部分國家是由右到左的，像是阿拉伯語系就是如此。而 JavaScript 是由左到右，還是由右到左呢？大多情況下我們會認為 JavaScript 是由左到右，但部份時候則會由右到左的喔。 運算子用簡單的一點的方式說明， +、=、==  都是運算子，本身這也是屬於函式的一種，是用來將它本身 前後方的值 做計算，然後回">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:description" content="大多數國家的語言都是由左到右、由上而下的閱讀方式，中文、拉丁語系就是屬於這類型，但也有部分國家是由右到左的，像是阿拉伯語系就是如此。而 JavaScript 是由左到右，還是由右到左呢？大多情況下我們會認為 JavaScript 是由左到右，但部份時候則會由右到左的喔。 運算子用簡單的一點的方式說明， +、&#x3D;、&#x3D;&#x3D;  都是運算子，本身這也是屬於函式的一種，是用來將它本身 前後方的值 做計算，然後回">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c8-01.jpg?alt=media&token=9f7d7ddf-070b-4a6f-a850-701943dae095">
-<meta property="og:updated_time" content="2017-12-11T01:31:47.506Z">
+<meta property="article:published_time" content="2017-12-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-11T01:31:47.506Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：JavaScript 的文法學">
-<meta name="twitter:description" content="大多數國家的語言都是由左到右、由上而下的閱讀方式，中文、拉丁語系就是屬於這類型，但也有部分國家是由右到左的，像是阿拉伯語系就是如此。而 JavaScript 是由左到右，還是由右到左呢？大多情況下我們會認為 JavaScript 是由左到右，但部份時候則會由右到左的喔。 運算子用簡單的一點的方式說明， +、=、==  都是運算子，本身這也是屬於函式的一種，是用來將它本身 前後方的值 做計算，然後回">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c8-01.jpg?alt=media&token=9f7d7ddf-070b-4a6f-a850-701943dae095">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-10T16:00:00.000Z" itemprop="datePublished">2017-12-11</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c8-01.jpg?alt=media&token=9f7d7ddf-070b-4a6f-a850-701943dae095" rel="gallery_ck870gcio00kymtrum6o5pzsw">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c8-01.jpg?alt=media&token=9f7d7ddf-070b-4a6f-a850-701943dae095" rel="gallery_ckdo9wd6700may9ru6mr3f703 noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c8-01.jpg?alt=media&token=9f7d7ddf-070b-4a6f-a850-701943dae095" itemprop="image" />
     </a>
     
@@ -230,8 +251,8 @@ ga('send', 'pageview');
             <div class="need-gallery">
                 <p>大多數國家的語言都是由左到右、由上而下的閱讀方式，中文、拉丁語系就是屬於這類型，但也有部分國家是由右到左的，像是阿拉伯語系就是如此。而 JavaScript 是由左到右，還是由右到左呢？大多情況下我們會認為 JavaScript 是由左到右，但部份時候則會由右到左的喔。</p>
 <h2 id="運算子"><a href="#運算子" class="headerlink" title="運算子"></a>運算子</h2><p>用簡單的一點的方式說明， <code>+</code>、<code>=</code>、<code>==</code>  都是運算子，本身這也是屬於函式的一種，是用來將它本身 <strong>前後方的值</strong> 做計算，然後回傳一個新的值。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3 + 3; // 回傳 6</span><br></pre></td></tr></table></figure>
-<p>所以中間的 <code>+</code> 即是運算子，這些運算子都屬於一個函式，但他只要寫在兩個值的中間(或是前、後的其中一方)，不需要完整函式即可運作，所以稱為運算子。運算子可以用來賦予值、數學運算、比較等等，如果想知道有哪些運算子可看：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Expressions_and_Operators" target="_blank" rel="noopener">運算式與運算子 - JavaScript | MDN</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3 + 3; &#x2F;&#x2F; 回傳 6</span><br></pre></td></tr></table></figure>
+<p>所以中間的 <code>+</code> 即是運算子，這些運算子都屬於一個函式，但他只要寫在兩個值的中間(或是前、後的其中一方)，不需要完整函式即可運作，所以稱為運算子。運算子可以用來賦予值、數學運算、比較等等，如果想知道有哪些運算子可看：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Guide/Expressions_and_Operators">運算式與運算子 - JavaScript | MDN</a></p>
 <h2 id="方向及優先性"><a href="#方向及優先性" class="headerlink" title="方向及優先性"></a>方向及優先性</h2><p>我們在寫 JavaScript 時也是習慣由左到右撰寫，但其實 JavaScript 文法並不是只有由左到右，而是依據 <code>結合性</code> (Associativity) 決定它是由左至右，還是由右至左閱讀。</p>
 <p>一個簡單的例子：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = b = <span class="number">5</span>;</span><br><span class="line"><span class="built_in">console</span>.log(a);</span><br></pre></td></tr></table></figure>
@@ -240,10 +261,10 @@ ga('send', 'pageview');
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span> + <span class="number">3</span> * <span class="number">3</span> <span class="comment">// 得到 12，因為 * 的優先值高於 +</span></span><br><span class="line">(<span class="number">3</span> + <span class="number">3</span>) * <span class="number">3</span> <span class="comment">// 得到 18，因為 () 內的優先計算</span></span><br></pre></td></tr></table></figure>
 <p>我們都了解先乘除後加減，所以乘號的優先值基本上是高於加的；而如果括號則是括號內的優先計算，所以很好理解。</p>
 <p>所以下方兩個 a 分別會是什麼？哪一個運算子會先被執行？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = 3 * 3</span><br><span class="line">a = 9 === 3 * 0 || 3</span><br></pre></td></tr></table></figure>
-<p>所以這段只要了解優先性就可以知道答案，MDN 有提供完整的表可以參考：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Operators/Operator_Precedence" target="_blank" rel="noopener">運算子優先等級</a>，表中的 Precedence 數值越高代表優先度高，也會被優先執行，而 Associativity 則是文法閱讀的順序，大家也可以直接貼到 Chrome Console 看看以上答案。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a &#x3D; 3 * 3</span><br><span class="line">a &#x3D; 9 &#x3D;&#x3D;&#x3D; 3 * 0 || 3</span><br></pre></td></tr></table></figure>
+<p>所以這段只要了解優先性就可以知道答案，MDN 有提供完整的表可以參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Operators/Operator_Precedence">運算子優先等級</a>，表中的 Precedence 數值越高代表優先度高，也會被優先執行，而 Associativity 則是文法閱讀的順序，大家也可以直接貼到 Chrome Console 看看以上答案。</p>
 <p>第二個 a 的說明</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">9 === 3 * 0 // 得到 false</span><br><span class="line">false || 3  // 由於前者是 false，所以用 3 取代</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">9 &#x3D;&#x3D;&#x3D; 3 * 0 &#x2F;&#x2F; 得到 false</span><br><span class="line">false || 3  &#x2F;&#x2F; 由於前者是 false，所以用 3 取代</span><br></pre></td></tr></table></figure>
 <h2 id="陷阱"><a href="#陷阱" class="headerlink" title="陷阱"></a>陷阱</h2><p>因為綜合性 (閱讀順序)及優先性的關係，就會產生一些怪異的問題，以下兩個案例非常接近，但卻出現相反的結果，以正確來說以下兩者應該都出現 false，但卻出現一個 true，另一個 false 的結果 (正常專案盡可能不要做連續的判斷)。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> &gt; <span class="number">2</span> &gt; <span class="number">3</span>  <span class="comment">// false</span></span><br><span class="line"><span class="number">3</span> &lt; <span class="number">2</span> &lt; <span class="number">1</span>  <span class="comment">// true</span></span><br></pre></td></tr></table></figure>
 <p>上面的後者來說，他會依據以下方式來執行：</p>
@@ -286,7 +307,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -536,7 +557,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -557,11 +578,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -606,20 +627,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

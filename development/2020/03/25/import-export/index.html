@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>完全解析 JavaScript import、export | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,modules">
+        <meta name="keywords" content="javascript,js,modules" />
     
     
 
     <meta name="description" content="import、export 是 JavaScript 模組管理的方法，可以將每個檔案視為一個獨立的模組匯出，並在另一個檔案匯入使用。透過此方式每個檔案更能專注在特定的功能上，且能避免單一檔案過度龐大。 相容性介紹此方法前，還是要了解一下相容性，目前來說許多主流瀏覽器都是可以運行的，但是寫法需要稍做調整，而 Node.js 則是要到 13.2 才可直接運行模組化。  瀏覽器中運行如果要在瀏覽器運行模">
-<meta name="keywords" content="javascript,js,modules">
 <meta property="og:type" content="article">
 <meta property="og:title" content="完全解析 JavaScript import、export">
 <meta property="og:url" content="https://wcc723.github.io/development/2020/03/25/import-export/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="import、export 是 JavaScript 模組管理的方法，可以將每個檔案視為一個獨立的模組匯出，並在另一個檔案匯入使用。透過此方式每個檔案更能專注在特定的功能上，且能避免單一檔案過度龐大。 相容性介紹此方法前，還是要了解一下相容性，目前來說許多主流瀏覽器都是可以運行的，但是寫法需要稍做調整，而 Node.js 則是要到 13.2 才可直接運行模組化。  瀏覽器中運行如果要在瀏覽器運行模">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-import-export.png?alt=media&token=b0833260-7033-4045-bd6d-4e74df3f6ad5">
-<meta property="og:updated_time" content="2020-03-25T07:54:53.289Z">
+<meta property="article:published_time" content="2020-03-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-25T07:54:53.289Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="modules">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="完全解析 JavaScript import、export">
-<meta name="twitter:description" content="import、export 是 JavaScript 模組管理的方法，可以將每個檔案視為一個獨立的模組匯出，並在另一個檔案匯入使用。透過此方式每個檔案更能專注在特定的功能上，且能避免單一檔案過度龐大。 相容性介紹此方法前，還是要了解一下相容性，目前來說許多主流瀏覽器都是可以運行的，但是寫法需要稍做調整，而 Node.js 則是要到 13.2 才可直接運行模組化。  瀏覽器中運行如果要在瀏覽器運行模">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-import-export.png?alt=media&token=b0833260-7033-4045-bd6d-4e74df3f6ad5">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/development/">development</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2020-03-24T16:00:00.000Z" itemprop="datePublished">2020-03-25</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/modules/">modules</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/modules/" rel="tag">modules</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-import-export.png?alt=media&token=b0833260-7033-4045-bd6d-4e74df3f6ad5" rel="gallery_ck870gcq20133mtruqaljxh0y">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-import-export.png?alt=media&token=b0833260-7033-4045-bd6d-4e74df3f6ad5" rel="gallery_ckdo9wd9200udy9ru1wm86zlt noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-import-export.png?alt=media&token=b0833260-7033-4045-bd6d-4e74df3f6ad5" itemprop="image" />
     </a>
     
@@ -230,10 +251,10 @@ ga('send', 'pageview');
             <div class="need-gallery">
                 <p><code>import</code>、<code>export</code> 是 JavaScript 模組管理的方法，可以將每個檔案視為一個獨立的模組匯出，並在另一個檔案匯入使用。透過此方式每個檔案更能專注在特定的功能上，且能避免單一檔案過度龐大。</p>
 <h3 id="相容性"><a href="#相容性" class="headerlink" title="相容性"></a>相容性</h3><p>介紹此方法前，還是要了解一下相容性，目前來說許多主流瀏覽器都是可以運行的，但是寫法需要稍做調整，而 Node.js 則是要到 13.2 才可直接運行模組化。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2F5B469D68-AD4B-49D2-866B-C1E911087024.png?alt=media&amp;token=1d606513-ef7a-4cc3-b4b2-9da142f9027b" alt></p>
-<h3 id="瀏覽器中運行"><a href="#瀏覽器中運行" class="headerlink" title="瀏覽器中運行"></a>瀏覽器中運行</h3><p>如果要在瀏覽器運行模組化，可以在 <code>&lt;script&gt;</code> 標籤加上 <code>type=&quot;module&quot;</code>，接下來無論是使用行內或是外部的 JS 都能運用模組功能。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"module"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<p>當然，這樣的模組功能並非所有瀏覽器都能夠運行，如果要同時兼顧新舊瀏覽器，可以改用以下做法：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 支援 module 語法的新瀏覽器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">"module"</span> <span class="attr">src</span>=<span class="string">"module.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 不支援 module 語法此段會被新型瀏覽器忽略 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nomodule</span> <span class="attr">src</span>=<span class="string">"IENotGood.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
-<h2 id="Export-匯出"><a href="#Export-匯出" class="headerlink" title="Export 匯出"></a>Export 匯出</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-export.png?alt=media&amp;token=4bd42d22-43d4-44aa-8801-a4149853a495" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2F5B469D68-AD4B-49D2-866B-C1E911087024.png?alt=media&amp;token=1d606513-ef7a-4cc3-b4b2-9da142f9027b" alt=""></p>
+<h3 id="瀏覽器中運行"><a href="#瀏覽器中運行" class="headerlink" title="瀏覽器中運行"></a>瀏覽器中運行</h3><p>如果要在瀏覽器運行模組化，可以在 <code>&lt;script&gt;</code> 標籤加上 <code>type=&quot;module&quot;</code>，接下來無論是使用行內或是外部的 JS 都能運用模組功能。<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>當然，這樣的模組功能並非所有瀏覽器都能夠運行，如果要同時兼顧新舊瀏覽器，可以改用以下做法：<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 支援 module 語法的新瀏覽器 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;module.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 不支援 module 語法此段會被新型瀏覽器忽略 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">nomodule</span> <span class="attr">src</span>=<span class="string">&quot;IENotGood.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="Export-匯出"><a href="#Export-匯出" class="headerlink" title="Export 匯出"></a>Export 匯出</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-export.png?alt=media&amp;token=4bd42d22-43d4-44aa-8801-a4149853a495" alt=""></p>
 <p><code>export</code> 可以將函式、物件甚至是純值匯出，大部分運用上都是匯出物件（函式）為主，畢竟純值作為模組意義並不大。</p>
 <p>export 又可區分為兩種，這兩種的匯出手法略有不同，也會影響到 import 的運用，所以在運用前請先明確區分這兩種的差異（非常重要）：</p>
 <ul>
@@ -244,32 +265,32 @@ ga('send', 'pageview');
 <h4 id="default-export（預設匯出）"><a href="#default-export（預設匯出）" class="headerlink" title="default export（預設匯出）"></a>default export（預設匯出）</h4><p><code>default export</code> 匯出時不需要預先賦予名稱，可以在 <code>import</code> 時另外賦予，但要特別注意 <code>export default</code> 每個檔案僅能有一個。</p>
 <p>直接匯出純值或表達式結果。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
 <p>預先定義一個變數並匯出，這種方式結果與上述的純值一樣。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="number">1</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> a;</span><br></pre></td></tr></table></figure></p>
-<p>export default 匯出物件是最常見的使用方式，此方法通常也會搭配物件的縮寫形式（Object shorthand）。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">'obj'</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> obj2 = &#123; <span class="attr">name</span>: <span class="string">'obj2'</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123; obj, obj2 &#125;;</span><br></pre></td></tr></table></figure></p>
-<p>上段介紹的具名匯出所匯出的函式必須使用<strong>函數陳述式</strong>，而 <code>export default</code> 則可以直接使用匿名函式的形式匯出，就不需要預先定義。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 匯出匿名函式</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'這是一段函式'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 匯出 class</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">    <span class="keyword">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">  callName() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>export default 匯出物件是最常見的使用方式，此方法通常也會搭配物件的縮寫形式（Object shorthand）。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> obj2 = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj2&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123; obj, obj2 &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>上段介紹的具名匯出所匯出的函式必須使用<strong>函數陳述式</strong>，而 <code>export default</code> 則可以直接使用匿名函式的形式匯出，就不需要預先定義。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 匯出匿名函式</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;這是一段函式&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 匯出 class</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> </span>&#123;</span><br><span class="line">  <span class="keyword">constructor</span>(name) &#123;</span><br><span class="line">    <span class="built_in">this</span>.name = name;</span><br><span class="line">  &#125;</span><br><span class="line">  callName() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h4 id="named-export（具名匯出）"><a href="#named-export（具名匯出）" class="headerlink" title="named export（具名匯出）"></a>named export（具名匯出）</h4><p><code>named export</code> 是將物件、函式等等預先賦予在特定的名稱上才能匯出，並且在 <code>import</code> 時也必須使用<strong>相同的名稱</strong>才能取到相同的變數或物件。</p>
-<p>方法 1：具名匯出是需要將變數、物件預先宣告後再進行匯出，因此可以在 <code>export</code> 後緊接 <code>let</code>、<code>const</code> 宣告後再進行匯出。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// let, const 純值</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> obj = &#123; <span class="attr">name</span>: <span class="string">'obj'</span>&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>方法 2（使用率高）：使用函式陳述式匯出，這種方式與上述概念是相近的，一樣是先宣告再匯出。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 具名方法</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'這是一段函式'</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>方法 3（使用率高）：使用物件縮寫的形式（Object shorthand）匯出物件，算是較為普遍運用的方式，可預先定義好所有的物件、方法後，在文件的結尾統一匯出。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> obj2 = &#123; <span class="attr">name</span>: <span class="string">'obj2'</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> obj3 = &#123; <span class="attr">name</span>: <span class="string">'obj3'</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; b, obj2, obj3 &#125;;</span><br></pre></td></tr></table></figure></p>
-<p>小技巧：再匯出前可另外使用 <code>as</code> 修改名稱。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj2 = &#123; <span class="attr">name</span>: <span class="string">'obj2'</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> &#123; obj2 <span class="keyword">as</span> objNewName &#125;;</span><br></pre></td></tr></table></figure></p>
-<h4 id="並存"><a href="#並存" class="headerlink" title="並存"></a>並存</h4><p>具名、預設匯出兩種方法可以並存在同一個檔案內，預設匯出僅能有一個。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">'obj'</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'這是一段函式'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="Import-匯入"><a href="#Import-匯入" class="headerlink" title="Import 匯入"></a>Import 匯入</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-import.png?alt=media&amp;token=19b37a20-45d3-4100-8b17-a9b8cd219b8d" alt></p>
+<p>方法 1：具名匯出是需要將變數、物件預先宣告後再進行匯出，因此可以在 <code>export</code> 後緊接 <code>let</code>、<code>const</code> 宣告後再進行匯出。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// let, const 純值</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> a = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> obj = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>方法 2（使用率高）：使用函式陳述式匯出，這種方式與上述概念是相近的，一樣是先宣告再匯出。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 具名方法</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;這是一段函式&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>方法 3（使用率高）：使用物件縮寫的形式（Object shorthand）匯出物件，算是較為普遍運用的方式，可預先定義好所有的物件、方法後，在文件的結尾統一匯出。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> b = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">const</span> obj2 = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj2&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">const</span> obj3 = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj3&#x27;</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> &#123; b, obj2, obj3 &#125;;</span><br></pre></td></tr></table></figure></p>
+<p>小技巧：再匯出前可另外使用 <code>as</code> 修改名稱。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> obj2 = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj2&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> &#123; obj2 <span class="keyword">as</span> objNewName &#125;;</span><br></pre></td></tr></table></figure></p>
+<h4 id="並存"><a href="#並存" class="headerlink" title="並存"></a>並存</h4><p>具名、預設匯出兩種方法可以並存在同一個檔案內，預設匯出僅能有一個。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;這是一段函式&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="Import-匯入"><a href="#Import-匯入" class="headerlink" title="Import 匯入"></a>Import 匯入</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-import.png?alt=media&amp;token=19b37a20-45d3-4100-8b17-a9b8cd219b8d" alt=""></p>
 <p>匯入的方式會與因為匯出方法不同而改變，因此必須清楚外部資源的匯出方式，如果是第三方資源則可以透過文件了解該如何匯入。</p>
-<h4 id="匯入-default-export-並賦予名稱"><a href="#匯入-default-export-並賦予名稱" class="headerlink" title="匯入 default export 並賦予名稱"></a>匯入 default export 並賦予名稱</h4><p>預設匯出每個檔案僅會有一個，並且不會給予名稱，這種匯入方式會將預設匯出的模組引入，並且重新賦予一個變數名稱。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export file</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'這是一段函式'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> fn <span class="keyword">from</span> <span class="string">'./defaultModule.js'</span>;</span><br><span class="line">fn(); <span class="comment">// 直接執行函式</span></span><br></pre></td></tr></table></figure></p>
-<h4 id="匯入-named-export"><a href="#匯入-named-export" class="headerlink" title="匯入 named export"></a>匯入 named export</h4><p>具名的匯出方式，則需要使用<strong>解構的語法</strong>將特定的模組取出（命名需與匯出的名稱一致），並且只有被匯入的原始碼片段才能夠被執行。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export file</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">'obj'</span>&#125;; <span class="comment">// 此段如果沒有被匯入，則無法運作</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'這是一段函式'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> &#123; fn &#125; <span class="keyword">from</span> <span class="string">'./module.js'</span>;</span><br><span class="line">fn();</span><br></pre></td></tr></table></figure></p>
-<p>也可以透過解構同時匯入多個物件、變數、函式等等。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> &#123; fn, obj &#125; <span class="keyword">from</span> <span class="string">'./module.js'</span>;</span><br><span class="line">fn();</span><br><span class="line"><span class="built_in">console</span>.log(obj)</span><br></pre></td></tr></table></figure></p>
+<h4 id="匯入-default-export-並賦予名稱"><a href="#匯入-default-export-並賦予名稱" class="headerlink" title="匯入 default export 並賦予名稱"></a>匯入 default export 並賦予名稱</h4><p>預設匯出每個檔案僅會有一個，並且不會給予名稱，這種匯入方式會將預設匯出的模組引入，並且重新賦予一個變數名稱。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export file</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;這是一段函式&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> fn <span class="keyword">from</span> <span class="string">&#x27;./defaultModule.js&#x27;</span>;</span><br><span class="line">fn(); <span class="comment">// 直接執行函式</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="匯入-named-export"><a href="#匯入-named-export" class="headerlink" title="匯入 named export"></a>匯入 named export</h4><p>具名的匯出方式，則需要使用<strong>解構的語法</strong>將特定的模組取出（命名需與匯出的名稱一致），並且只有被匯入的原始碼片段才能夠被執行。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export file</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>&#125;; <span class="comment">// 此段如果沒有被匯入，則無法運作</span></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;這是一段函式&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> &#123; fn &#125; <span class="keyword">from</span> <span class="string">&#x27;./module.js&#x27;</span>;</span><br><span class="line">fn();</span><br></pre></td></tr></table></figure></p>
+<p>也可以透過解構同時匯入多個物件、變數、函式等等。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> &#123; fn, obj &#125; <span class="keyword">from</span> <span class="string">&#x27;./module.js&#x27;</span>;</span><br><span class="line">fn();</span><br><span class="line"><span class="built_in">console</span>.log(obj)</span><br></pre></td></tr></table></figure></p>
 <h4 id="重新命名"><a href="#重新命名" class="headerlink" title="重新命名"></a>重新命名</h4><p>具名匯出的物件、變數本身就帶有固定的名稱，如果要避免與當前的作用域產生衝突，則可以使用 <code>as</code>(alias) 來重新命名匯入的名稱。</p>
-<p>可以在解構時針對單一的物件、變數重新賦予名稱：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export file</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">'obj'</span>&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'這是一段函式'</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> &#123; fn <span class="keyword">as</span> newFn &#125; <span class="keyword">from</span> <span class="string">'./module.js'</span>;</span><br><span class="line">newFn();</span><br></pre></td></tr></table></figure></p>
-<p>具名匯入亦可使用 <code>*</code> 來全部匯入，這時候就必須搭配 <code>as</code> 指向一個新的物件變數，此物件的屬性則會帶上所匯入的內容。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// import file 全部匯入並賦予至一個物件上</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> name <span class="keyword">from</span> <span class="string">'./module.js'</span>;</span><br><span class="line">name.fn();</span><br><span class="line"><span class="built_in">console</span>.log(name.obj);</span><br></pre></td></tr></table></figure></p>
-<h4 id="同時匯入預設、具名"><a href="#同時匯入預設、具名" class="headerlink" title="同時匯入預設、具名"></a>同時匯入預設、具名</h4><p>匯出時可同時存在兩種形式，因此匯入時也同樣支援。以下片段來說，在匯入時前者是帶入 <code>default export</code>，逗點後方則是帶入 <code>named export</code>：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> defaultExport, * <span class="keyword">as</span> name <span class="keyword">from</span> <span class="string">"module-name"</span>;</span><br></pre></td></tr></table></figure></p>
+<p>可以在解構時針對單一的物件、變數重新賦予名稱：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export file</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span>&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;這是一段函式&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> &#123; fn <span class="keyword">as</span> newFn &#125; <span class="keyword">from</span> <span class="string">&#x27;./module.js&#x27;</span>;</span><br><span class="line">newFn();</span><br></pre></td></tr></table></figure></p>
+<p>具名匯入亦可使用 <code>*</code> 來全部匯入，這時候就必須搭配 <code>as</code> 指向一個新的物件變數，此物件的屬性則會帶上所匯入的內容。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// import file 全部匯入並賦予至一個物件上</span></span><br><span class="line"><span class="keyword">import</span> * <span class="keyword">as</span> name <span class="keyword">from</span> <span class="string">&#x27;./module.js&#x27;</span>;</span><br><span class="line">name.fn();</span><br><span class="line"><span class="built_in">console</span>.log(name.obj);</span><br></pre></td></tr></table></figure></p>
+<h4 id="同時匯入預設、具名"><a href="#同時匯入預設、具名" class="headerlink" title="同時匯入預設、具名"></a>同時匯入預設、具名</h4><p>匯出時可同時存在兩種形式，因此匯入時也同樣支援。以下片段來說，在匯入時前者是帶入 <code>default export</code>，逗點後方則是帶入 <code>named export</code>：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> defaultExport, * <span class="keyword">as</span> name <span class="keyword">from</span> <span class="string">&quot;module-name&quot;</span>;</span><br></pre></td></tr></table></figure></p>
 <p>以下程式碼分別執行了：</p>
 <ol>
 <li>匯入 <code>default export</code> 並賦予 <code>fn</code> 的名稱</li>
-<li>匯入全部的 <code>named export</code>，並給賦予至 <code>named</code> 的物件上<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export file</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">'obj'</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'這是一段函式'</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> fn, * <span class="keyword">as</span> named <span class="keyword">from</span> <span class="string">'./defaultModule.js'</span>;</span><br><span class="line">fn();</span><br><span class="line"><span class="built_in">console</span>.log(named.obj);</span><br></pre></td></tr></table></figure>
+<li>匯入全部的 <code>named export</code>，並給賦予至 <code>named</code> 的物件上<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// export file</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> obj = &#123; <span class="attr">name</span>: <span class="string">&#x27;obj&#x27;</span> &#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;這是一段函式&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> fn, * <span class="keyword">as</span> named <span class="keyword">from</span> <span class="string">&#x27;./defaultModule.js&#x27;</span>;</span><br><span class="line">fn();</span><br><span class="line"><span class="built_in">console</span>.log(named.obj);</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <h4 id="匯入-Side-Effect-模組"><a href="#匯入-Side-Effect-模組" class="headerlink" title="匯入 Side Effect 模組"></a>匯入 Side Effect 模組</h4><p>有些模組並沒有實作 <code>export</code>，例如可直接執行的函式檔案，載入後會直接執行，不需要例外的呼叫即可作為  <strong>Side Effect 模組</strong>。</p>
 <p>常見案例如早期版本的框架，直接將方法綁定於 window，因此不需要另外呼叫即可運作，如：<code>jQuery</code>、<code>angularJs</code> 就屬於此類型。</p>
-<p>範例如下：模組檔案不需要進行匯出，直接 <code>import</code> 後就能運行。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// module file</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'IIFE'</span>);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">'./fn.js'</span>;</span><br></pre></td></tr></table></figure></p>
+<p>範例如下：模組檔案不需要進行匯出，直接 <code>import</code> 後就能運行。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// module file</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;IIFE&#x27;</span>);</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line"><span class="comment">// import file</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./fn.js&#x27;</span>;</span><br></pre></td></tr></table></figure></p>
 <h2 id="要用-default-或-named"><a href="#要用-default-或-named" class="headerlink" title="要用 default 或 named"></a>要用 <code>default</code> 或 <code>named</code></h2><p><code>default</code> 是非常易於使用的，針對只有單一元件、模組的檔案匯出上相對直覺很多，我自己開發上也多是利用 <code>default export</code>。</p>
 <p>但在針對此議題來說，也有查閱過部分的文件，許多都是提到 export default 有管理上的問題，如：</p>
 <ul>
@@ -279,9 +300,9 @@ ga('send', 'pageview');
 <p>因此在開發大型專案、開源套件、眾多模組時，大多都會推薦使用 <code>named export</code> 的形式，不過這並非強制性的要求，大家也可以是自己開發上的需求做選擇。</p>
 <p>相關文件：</p>
 <ul>
-<li><a href="https://jkchao.github.io/typescript-book-chinese/tips/avoidExportDefault.html#commonjs-%E4%BA%92%E7%94%A8" target="_blank" rel="noopener">深入理解 TypeScript - export default 被认为是有害的</a></li>
-<li><a href="https://humanwhocodes.com/blog/2019/01/stop-using-default-exports-javascript-module/" target="_blank" rel="noopener">Why I’ve stopped exporting defaults from my JavaScript modules</a><ul>
-<li><a href="https://juejin.im/post/5c4acd646fb9a049b5072f0e" target="_blank" rel="noopener"> (译) 为什么我不再使用 export default 来导出模块</a></li>
+<li><a target="_blank" rel="noopener" href="https://jkchao.github.io/typescript-book-chinese/tips/avoidExportDefault.html#commonjs-%E4%BA%92%E7%94%A8">深入理解 TypeScript - export default 被认为是有害的</a></li>
+<li><a target="_blank" rel="noopener" href="https://humanwhocodes.com/blog/2019/01/stop-using-default-exports-javascript-module/">Why I’ve stopped exporting defaults from my JavaScript modules</a><ul>
+<li><a target="_blank" rel="noopener" href="https://juejin.im/post/5c4acd646fb9a049b5072f0e"> (译) 为什么我不再使用 export default 来导出模块</a></li>
 </ul>
 </li>
 </ul>
@@ -315,7 +336,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -555,7 +576,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -576,11 +597,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -625,20 +646,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

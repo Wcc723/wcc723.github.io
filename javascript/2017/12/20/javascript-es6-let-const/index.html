@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：ES6 開始的新生活 let, const | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
-    <meta name="description" content="接下來本篇開始會介紹 ES6 語法，在很久之前聽到 ES6 這個名詞時我都是保持觀望的態度，裡面有許多語法讓我感覺的不是很真實，像是 ...、=&amp;gt;、class 等等，這些看起來與現有的 JavaScript 很不搭嘎 :(。 ES6 許多語法與現有的觀念有很大的關係，其中也很大一部分是為了改進現有的語法，就以本篇要介紹的 let、const 來說也是如此。這些語法改進目前很多問題，最大的感受">
-<meta name="keywords" content="javascript,js,ironman">
+    <meta name="description" content="接下來本篇開始會介紹 ES6 語法，在很久之前聽到 ES6 這個名詞時我都是保持觀望的態度，裡面有許多語法讓我感覺的不是很真實，像是 ...、&#x3D;&gt;、class 等等，這些看起來與現有的 JavaScript 很不搭嘎 :(。 ES6 許多語法與現有的觀念有很大的關係，其中也很大一部分是為了改進現有的語法，就以本篇要介紹的 let、const 來說也是如此。這些語法改進目前很多問題，最大的感受">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：ES6 開始的新生活 let, const">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/20/javascript-es6-let-const/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="接下來本篇開始會介紹 ES6 語法，在很久之前聽到 ES6 這個名詞時我都是保持觀望的態度，裡面有許多語法讓我感覺的不是很真實，像是 ...、=&amp;gt;、class 等等，這些看起來與現有的 JavaScript 很不搭嘎 :(。 ES6 許多語法與現有的觀念有很大的關係，其中也很大一部分是為了改進現有的語法，就以本篇要介紹的 let、const 來說也是如此。這些語法改進目前很多問題，最大的感受">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:description" content="接下來本篇開始會介紹 ES6 語法，在很久之前聽到 ES6 這個名詞時我都是保持觀望的態度，裡面有許多語法讓我感覺的不是很真實，像是 ...、&#x3D;&gt;、class 等等，這些看起來與現有的 JavaScript 很不搭嘎 :(。 ES6 許多語法與現有的觀念有很大的關係，其中也很大一部分是為了改進現有的語法，就以本篇要介紹的 let、const 來說也是如此。這些語法改進目前很多問題，最大的感受">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_17.png?alt=media&token=c2f9dfdc-35cc-4657-9ba7-b45388e126ff">
-<meta property="og:updated_time" content="2017-12-20T02:52:56.800Z">
+<meta property="article:published_time" content="2017-12-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-20T02:52:56.800Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：ES6 開始的新生活 let, const">
-<meta name="twitter:description" content="接下來本篇開始會介紹 ES6 語法，在很久之前聽到 ES6 這個名詞時我都是保持觀望的態度，裡面有許多語法讓我感覺的不是很真實，像是 ...、=&amp;gt;、class 等等，這些看起來與現有的 JavaScript 很不搭嘎 :(。 ES6 許多語法與現有的觀念有很大的關係，其中也很大一部分是為了改進現有的語法，就以本篇要介紹的 let、const 來說也是如此。這些語法改進目前很多問題，最大的感受">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_17.png?alt=media&token=c2f9dfdc-35cc-4657-9ba7-b45388e126ff">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-19T16:00:00.000Z" itemprop="datePublished">2017-12-20</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_17.png?alt=media&token=c2f9dfdc-35cc-4657-9ba7-b45388e126ff" rel="gallery_ck870gcmf00ujmtruuz65xfw7">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_17.png?alt=media&token=c2f9dfdc-35cc-4657-9ba7-b45388e126ff" rel="gallery_ckdo9wd6o00n6y9ru57qoes80 noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_17.png?alt=media&token=c2f9dfdc-35cc-4657-9ba7-b45388e126ff" itemprop="image" />
     </a>
     
@@ -232,7 +253,7 @@ ga('send', 'pageview');
 <p>ES6 許多語法與現有的觀念有很大的關係，其中也很大一部分是為了改進現有的語法，就以本篇要介紹的 <code>let</code>、<code>const</code> 來說也是如此。這些語法改進目前很多問題，最大的感受在於 <code>Promise()</code>，他可以把非同步的語法處理得更漂亮。</p>
 <p>至於該不該了解(或學習) ES6？當然要，這已經是可以用在伺服器端(Node.js)及瀏覽器(Chrome)，就如同 CSS 中的 Flex 是非常好用的語法，在各大主流網站都可以看到他的蹤影，與其不斷的觀望，不如實際體驗一次才能了解。</p>
 <blockquote>
-<p>注意：目前還不是所有語法支援，詳細可參考 MDN 或 <a href="https://caniuse.com/#feat=promises" target="_blank" rel="noopener">Can I use</a></p>
+<p>注意：目前還不是所有語法支援，詳細可參考 MDN 或 <a target="_blank" rel="noopener" href="https://caniuse.com/#feat=promises">Can I use</a></p>
 </blockquote>
 <h2 id="ES6-的變數：let"><a href="#ES6-的變數：let" class="headerlink" title="ES6 的變數：let"></a>ES6 的變數：let</h2><p>ES6 出現以後，為了潮，我自己也是想先從最容易改變的<code>變數</code>開始，如果不了解看文件大致可以了解：</p>
 <ul>
@@ -240,41 +261,41 @@ ga('send', 'pageview');
 <li><code>const</code> 是宣告常數，不能再作修改</li>
 </ul>
 <p>雖然還是有差異，但直接使用上確實感受不明顯，我們可以將先前的範例使用 <code>let</code> 來試試看：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原本的範例</span></span><br><span class="line"><span class="keyword">var</span> mom = <span class="string">'老媽'</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這是一個立即函式</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mom);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原本的範例</span></span><br><span class="line"><span class="keyword">var</span> mom = <span class="string">&#x27;老媽&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 這是一個立即函式</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mom);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
 <p>將以上的 <code>var</code> 修改成 <code>let</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 將 var 改成 let</span></span><br><span class="line"><span class="keyword">let</span> mom = <span class="string">'老媽'</span>;</span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mom);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 將 var 改成 let</span></span><br><span class="line"><span class="keyword">let</span> mom = <span class="string">&#x27;老媽&#x27;</span>;</span><br><span class="line"></span><br><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(mom);</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
 <p>和先前沒什麼不同，這個 <code>console.log</code> 的結果是 <code>老媽</code>，如果不去探究原理，其實還真的沒什麼感覺，不過現在在實戰上已經推薦多用 <code>let</code> 少用 <code>var</code>，接下來我們來看看差在哪裡。</p>
-<h3 id="let-與-var"><a href="#let-與-var" class="headerlink" title="let 與 var"></a><code>let</code> 與 <code>var</code></h3><p>先前提到 <code>var</code> 的重要觀念，在於變數的範圍在 <code>function</code>，而 <code>let</code> 的作用域在 <code>block</code>，block 意指 <code>{}</code> 這個符號(許多文件稱它為花括號，我自己則喜歡稱它大括號)，除了 <code>function</code> 以外 <code>if</code>、<code>for</code> 的 <code>{}</code> 都屬於 <code>let</code> 的作用域。</p>
-<p>下面的範例可以看到，小明這個變數在兩者的結尾是不同的，因為 <code>{}</code> 所定義的空間並不同。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">varMing</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ming = <span class="string">'小明'</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> ming = <span class="string">'杰哥'</span>;  </span><br><span class="line">    <span class="comment">// 這裡的 ming 依然是外層的小明，所以小明即將被取代</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(ming);  <span class="comment">// '杰哥'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">letMing</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> ming = <span class="string">'小明'</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> ming = <span class="string">'杰哥'</span>;  </span><br><span class="line">    <span class="comment">// 這裡的 ming 是不同的，只有在這個 if block 才有作用</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(ming);  <span class="comment">// '小明'</span></span><br><span class="line">&#125;</span><br><span class="line">varMing(); letMing();</span><br></pre></td></tr></table></figure>
+<h3 id="let-與-var"><a href="#let-與-var" class="headerlink" title="let 與 var"></a><code>let</code> 與 <code>var</code></h3><p>先前提到 <code>var</code> 的重要觀念，在於變數的範圍在 <code>function</code>，而 <code>let</code> 的作用域在 <code>block</code>，block 意指 <code>&#123;&#125;</code> 這個符號(許多文件稱它為花括號，我自己則喜歡稱它大括號)，除了 <code>function</code> 以外 <code>if</code>、<code>for</code> 的 <code>&#123;&#125;</code> 都屬於 <code>let</code> 的作用域。</p>
+<p>下面的範例可以看到，小明這個變數在兩者的結尾是不同的，因為 <code>&#123;&#125;</code> 所定義的空間並不同。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">varMing</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> ming = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> ming = <span class="string">&#x27;杰哥&#x27;</span>;  </span><br><span class="line">    <span class="comment">// 這裡的 ming 依然是外層的小明，所以小明即將被取代</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(ming);  <span class="comment">// &#x27;杰哥&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">letMing</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> ming = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line">  <span class="keyword">if</span> (<span class="literal">true</span>) &#123;</span><br><span class="line">    <span class="keyword">let</span> ming = <span class="string">&#x27;杰哥&#x27;</span>;  </span><br><span class="line">    <span class="comment">// 這裡的 ming 是不同的，只有在這個 if block 才有作用</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(ming);  <span class="comment">// &#x27;小明&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">varMing(); letMing();</span><br></pre></td></tr></table></figure>
 <h3 id="let-與-for-loop"><a href="#let-與-for-loop" class="headerlink" title="let 與 for loop"></a>let 與 for loop</h3><p>但我們知道，大多時候我們並不會這樣寫，常見的習慣中我們會將變數宣告放在 function 的前方，那麼我們再來看另一個情境：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i);</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'這執行第'</span> + i + <span class="string">'次'</span>);</span><br><span class="line">  &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i);</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;這執行第&#x27;</span> + i + <span class="string">&#x27;次&#x27;</span>);</span><br><span class="line">  &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果先不講結果，你會認為以上出現什麼樣的結果呢？</p>
 <ol>
 <li>這執行第 0 次, 這執行第 1 次, 這執行第 2 次… (延續 10 次)</li>
 <li>這執行第 10 次… (延續 10 次)</li>
 </ol>
 <p>我先前跟大家一樣都會猜 <code>1</code>，因為 for 幾次不就是幾次嗎 :D。但實際執行時會發現答案其實會是 <code>這執行第 10 次...</code> (延續 10 次)，因為 <code>var</code> 會直接將 <code>i</code> 宣告成全域變數，不斷透過 <code>for</code> 迴圈累加，在 <code>setTimeout</code> 實際執行時只會拿到 10 這個數字。</p>
-<p>所以此段要正確地執行，可以使用 <code>let</code> 宣告 <code>i</code> 這個變數，<code>i</code>會被緊緊的鎖在 for… 後方的 <code>{}</code> 內。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i);</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'這執行第'</span> + i + <span class="string">'次'</span>);</span><br><span class="line">  &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所以此段要正確地執行，可以使用 <code>let</code> 宣告 <code>i</code> 這個變數，<code>i</code>會被緊緊的鎖在 for… 後方的 <code>&#123;&#125;</code> 內。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i);</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;這執行第&#x27;</span> + i + <span class="string">&#x27;次&#x27;</span>);</span><br><span class="line">  &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>用此種方法，就會正確的出現，因為 let 是屬於 <code>block</code> 變數。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">這執行第0次</span><br><span class="line">這執行第1次</span><br><span class="line">這執行第2次</span><br><span class="line">這執行第3次</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>除此之外，在先前有介紹過，var 在全域下的變數會直接再 <code>window</code> 上，可以在這裡使用 <code>console.log()</code> 看看兩者之間的差異：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這段宣告擇一執行</span></span><br><span class="line"><span class="keyword">var</span> mom = <span class="string">"老媽"</span>;</span><br><span class="line"><span class="keyword">let</span> mom = <span class="string">"老媽"</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.mom);</span><br><span class="line"><span class="comment">// var 會出現 "老媽"</span></span><br><span class="line"><span class="comment">// let 會出現 undefined</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 這段宣告擇一執行</span></span><br><span class="line"><span class="keyword">var</span> mom = <span class="string">&quot;老媽&quot;</span>;</span><br><span class="line"><span class="keyword">let</span> mom = <span class="string">&quot;老媽&quot;</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="built_in">window</span>.mom);</span><br><span class="line"><span class="comment">// var 會出現 &quot;老媽&quot;</span></span><br><span class="line"><span class="comment">// let 會出現 undefined</span></span><br></pre></td></tr></table></figure>
 <p>這也是 let 的一大特性，他並不會讓整個 <code>window</code> 物件掛上在全域環境所宣告的變數，對於愛乾淨不喜歡污染全域的開發者會是一大福音。</p>
 <h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p><code>const</code> 是宣告一個常數，簡單來說就是不可以再做修改的變數(常數)，以下面這個範例來說，小明如果使用 <code>const</code> 做宣告，那麼就無法再使用 <code>let</code>、<code>const</code> 做調整了。 </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ming = <span class="string">'鐵錚錚男子漢'</span>;</span><br><span class="line"><span class="keyword">let</span> ming = <span class="string">'弱雞'</span>;</span><br><span class="line"><span class="comment">// 錯誤：Identifier 'ming' has already been declared</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ming = <span class="string">'弱雞'</span>;</span><br><span class="line"><span class="comment">// 錯誤：Identifier 'ming' has already been declared</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ming = <span class="string">&#x27;鐵錚錚男子漢&#x27;</span>;</span><br><span class="line"><span class="keyword">let</span> ming = <span class="string">&#x27;弱雞&#x27;</span>;</span><br><span class="line"><span class="comment">// 錯誤：Identifier &#x27;ming&#x27; has already been declared</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ming = <span class="string">&#x27;弱雞&#x27;</span>;</span><br><span class="line"><span class="comment">// 錯誤：Identifier &#x27;ming&#x27; has already been declared</span></span><br></pre></td></tr></table></figure>
 <h3 id="const-必須一定要有值"><a href="#const-必須一定要有值" class="headerlink" title="const 必須一定要有值"></a>const 必須一定要有值</h3><p>過去可以先宣告變數 (還記得吧，宣告變數未賦予值會是 undefined)，但 <code>const</code> 在宣告時一定要賦予值。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> ming;</span><br><span class="line"><span class="comment">// 錯誤：Missing initializer in const declaration</span></span><br></pre></td></tr></table></figure>
-<h3 id="物件依然是參考"><a href="#物件依然是參考" class="headerlink" title="物件依然是參考"></a>物件依然是參考</h3><p>使用 <code>const</code> 宣告的物件，其內層屬性依然可以做調整，因為物件是傳參考，所以在此依然可以修改屬性。(一家人的成員依然可以更動)<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> family = &#123;</span><br><span class="line">  mom: <span class="string">'老媽'</span>,</span><br><span class="line">  me: <span class="string">'小明'</span>,</span><br><span class="line">  sister: <span class="string">'小橙'</span></span><br><span class="line">&#125;;</span><br><span class="line">family.father = <span class="string">'爸爸'</span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="物件依然是參考"><a href="#物件依然是參考" class="headerlink" title="物件依然是參考"></a>物件依然是參考</h3><p>使用 <code>const</code> 宣告的物件，其內層屬性依然可以做調整，因為物件是傳參考，所以在此依然可以修改屬性。(一家人的成員依然可以更動)<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> family = &#123;</span><br><span class="line">  mom: <span class="string">&#x27;老媽&#x27;</span>,</span><br><span class="line">  me: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  sister: <span class="string">&#x27;小橙&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line">family.father = <span class="string">&#x27;爸爸&#x27;</span>;</span><br></pre></td></tr></table></figure></p>
 <p>承上，已經被明確宣告的物件，沒有辦法再調整其參考的物件(一家人的成員並不會被另一家取代)。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> jayFamily = &#123;</span><br><span class="line">  mom: <span class="string">'杰哥媽'</span>,</span><br><span class="line">  me: <span class="string">'杰哥'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">family = jayFamily <span class="comment">// 錯誤</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> jayFamily = &#123;</span><br><span class="line">  mom: <span class="string">&#x27;杰哥媽&#x27;</span>,</span><br><span class="line">  me: <span class="string">&#x27;杰哥&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">family = jayFamily <span class="comment">// 錯誤</span></span><br></pre></td></tr></table></figure>
 <h2 id="var-的額外問題"><a href="#var-的額外問題" class="headerlink" title="var 的額外問題"></a>var 的額外問題</h2><p>相信上述對於 <code>let</code>、<code>const</code>都有了基本的了解，那麼不管你有沒有開始寫 ES6，請問一下下述問題如何修正：</p>
 <p>沒有使用 <code>let</code> 的情況下要如何修正成可以依序執行？</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i);</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'這執行第'</span> + i + <span class="string">'次'</span>);</span><br><span class="line">  &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i);</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;這執行第&#x27;</span> + i + <span class="string">&#x27;次&#x27;</span>);</span><br><span class="line">  &#125;, <span class="number">10</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>答案在下方</p>
 <hr>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// for (var i = 0; i &lt; 10; i++) &#123;</span></span><br><span class="line"><span class="comment">//   (function (j) &#123;</span></span><br><span class="line"><span class="comment">//     setTimeout(function () &#123;</span></span><br><span class="line"><span class="comment">//       console.log('這執行第' + j + '次');</span></span><br><span class="line"><span class="comment">//     &#125;, 10);</span></span><br><span class="line"><span class="comment">//   &#125;)(i);</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// for (var i = 0; i &lt; 10; i++) &#123;</span></span><br><span class="line"><span class="comment">//   (function (j) &#123;</span></span><br><span class="line"><span class="comment">//     setTimeout(function () &#123;</span></span><br><span class="line"><span class="comment">//       console.log(&#x27;這執行第&#x27; + j + &#x27;次&#x27;);</span></span><br><span class="line"><span class="comment">//     &#125;, 10);</span></span><br><span class="line"><span class="comment">//   &#125;)(i);</span></span><br><span class="line"><span class="comment">// &#125;</span></span><br></pre></td></tr></table></figure>
 <p>成功了嗎!?或許你能想到更棒的解法喔～</p>
 
             </div>
@@ -306,7 +327,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -556,7 +577,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -577,11 +598,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -626,20 +647,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

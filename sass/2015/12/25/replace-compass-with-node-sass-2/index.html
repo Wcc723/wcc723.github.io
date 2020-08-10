@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>Compass 替代方案(2) - 透過 PostCSS，停止加入不必要的 prefix | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="sass,gulp,compass">
+        <meta name="keywords" content="sass,gulp,compass" />
     
     
 
     <meta name="description" content="承上篇，因為 compass 很久沒維護，所以在找替代方案。而這篇是要介紹很火紅的 post-css，主要是要解決 css3 prefix 的問題，post-css和 sass 不同的是，在 prefix 的方法不需要先定義成 @mixin ，可以在事後再決定是否加入 prefix，這讓不斷在更新改變的 prefix 流程簡化很多，並且可以有效減少 css 的檔案大小 (prefix 是很肥大的)">
-<meta name="keywords" content="sass,gulp,compass">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Compass 替代方案(2) - 透過 PostCSS，停止加入不必要的 prefix">
 <meta property="og:url" content="https://wcc723.github.io/sass/2015/12/25/replace-compass-with-node-sass-2/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="承上篇，因為 compass 很久沒維護，所以在找替代方案。而這篇是要介紹很火紅的 post-css，主要是要解決 css3 prefix 的問題，post-css和 sass 不同的是，在 prefix 的方法不需要先定義成 @mixin ，可以在事後再決定是否加入 prefix，這讓不斷在更新改變的 prefix 流程簡化很多，並且可以有效減少 css 的檔案大小 (prefix 是很肥大的)">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/sass/2015/12/25/replace-compass-with-node-sass-2/2015/12/screen_shot_2015-12-25-00.png">
-<meta property="og:updated_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:published_time" content="2015-12-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="sass">
+<meta property="article:tag" content="gulp">
+<meta property="article:tag" content="compass">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Compass 替代方案(2) - 透過 PostCSS，停止加入不必要的 prefix">
-<meta name="twitter:description" content="承上篇，因為 compass 很久沒維護，所以在找替代方案。而這篇是要介紹很火紅的 post-css，主要是要解決 css3 prefix 的問題，post-css和 sass 不同的是，在 prefix 的方法不需要先定義成 @mixin ，可以在事後再決定是否加入 prefix，這讓不斷在更新改變的 prefix 流程簡化很多，並且可以有效減少 css 的檔案大小 (prefix 是很肥大的)">
 <meta name="twitter:image" content="https://wcc723.github.io/sass/2015/12/25/replace-compass-with-node-sass-2/2015/12/screen_shot_2015-12-25-00.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/sass/">sass</a>
@@ -199,7 +220,7 @@ ga('send', 'pageview');
     <time datetime="2015-12-24T16:00:00.000Z" itemprop="datePublished">2015-12-25</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/compass/">compass</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sass/">sass</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/compass/" rel="tag">compass</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sass/" rel="tag">sass</a></li></ul>
 
             </div>
         
@@ -229,28 +250,28 @@ ga('send', 'pageview');
 <ul>
 <li>autoprefixer: 可以加入 css3 prefix，甚至自訂 prefix 時代版本，或者是特定瀏覽器</li>
 <li>lost: grid system 工具，直接在 CSS 內寫類似 susy 的 grid</li>
-<li>cssnext: css 界的 ES6，讓你可以寫下一代的 CSS (可參考：<a href="http://cssnext.io/features/" target="_blank" rel="noopener">http://cssnext.io/features/</a>)</li>
+<li>cssnext: css 界的 ES6，讓你可以寫下一代的 CSS (可參考：<a target="_blank" rel="noopener" href="http://cssnext.io/features/">http://cssnext.io/features/</a>)</li>
 <li>precss: 讓你可以在 css 內寫類似 sass 的語法 (例如：巢狀)</li>
 </ul>
-<p>相關的插件是非常非常多的，這篇只會介紹 prefix ，如果有興趣的可以看 <a href="https://github.com/postcss/postcss/blob/master/docs/plugins.md" target="_blank" rel="noopener">PostCSS Plugins</a>。仔細看他的插件…，其實說他是另一種 sass 也不為過了…。</p>
-<h2 id="使用-postcss-autoprefixer"><a href="#使用-postcss-autoprefixer" class="headerlink" title="使用 postcss autoprefixer"></a>使用 postcss autoprefixer</h2><p>持續更新的範例：<a href="https://github.com/Wcc723/gulp-node-sass" target="_blank" rel="noopener">https://github.com/Wcc723/gulp-node-sass</a></p>
+<p>相關的插件是非常非常多的，這篇只會介紹 prefix ，如果有興趣的可以看 <a target="_blank" rel="noopener" href="https://github.com/postcss/postcss/blob/master/docs/plugins.md">PostCSS Plugins</a>。仔細看他的插件…，其實說他是另一種 sass 也不為過了…。</p>
+<h2 id="使用-postcss-autoprefixer"><a href="#使用-postcss-autoprefixer" class="headerlink" title="使用 postcss autoprefixer"></a>使用 postcss autoprefixer</h2><p>持續更新的範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/gulp-node-sass">https://github.com/Wcc723/gulp-node-sass</a></p>
 <p>會選擇引入 <code>autoprefixer</code> 主要是因為 <code>compass</code> 很久沒更新，許多 prefix 已經沒在使用，如果要自己一個一個設定也需要花很多時間。像是 <code>Bootstrap 3</code> sass 版本，也是由開發團隊寫 prefix @mixin，這都面臨相同的問題 <strong>“專案的 CSS Prefix 到底是哪個時代啊!?”</strong> 。</p>
 <p><em>最近為了客制 Bootstrap 3 刪 Prefix 也是刪的很累啊…</em></p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</span><br><span class="line">  <span class="comment">// PostCSS</span></span><br><span class="line">  postcss = <span class="built_in">require</span>(<span class="string">'gulp-postcss'</span>),</span><br><span class="line">  autoprefixer = <span class="built_in">require</span>(<span class="string">'autoprefixer'</span>); <span class="comment">// postCSS 的套件原則上都是要一個一個載入</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> paths = &#123;</span><br><span class="line">  <span class="string">'source'</span>: <span class="string">'./source/'</span>,</span><br><span class="line">  <span class="string">'bower'</span> : <span class="string">'./bower_components/'</span>,</span><br><span class="line">  <span class="string">'sass'</span>: <span class="string">'./source/stylesheets/'</span>,</span><br><span class="line">  <span class="string">'img'</span>: <span class="string">'./source/images/'</span>,</span><br><span class="line">  <span class="string">'public'</span>: <span class="string">'./public/'</span>,</span><br><span class="line">  <span class="string">'tpls'</span>: <span class="string">'./gulp-tpls/'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// postCSS</span></span><br><span class="line">gulp.task(<span class="string">'css'</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 在 processors 內定義需要用哪些套件，這邊只有使用 autoprefixer</span></span><br><span class="line">  <span class="keyword">var</span> processors = [</span><br><span class="line">    autoprefixer(&#123;<span class="attr">browsers</span>: [<span class="string">'last 1 version'</span>]&#125;)</span><br><span class="line">  ];</span><br><span class="line">  watch(paths.public + <span class="string">'stylesheets/**/**.css'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    gulp.src(paths.public + <span class="string">'stylesheets/**/**.css'</span>)</span><br><span class="line">      .pipe(plumber())</span><br><span class="line">      .pipe(concat(<span class="string">'all.css'</span>))</span><br><span class="line">      .pipe(postcss(processors))</span><br><span class="line">      .pipe(gulp.dest(paths.public + <span class="string">'./css'</span>));</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'css'</span>]);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>),</span><br><span class="line">  <span class="comment">// PostCSS</span></span><br><span class="line">  postcss = <span class="built_in">require</span>(<span class="string">&#x27;gulp-postcss&#x27;</span>),</span><br><span class="line">  autoprefixer = <span class="built_in">require</span>(<span class="string">&#x27;autoprefixer&#x27;</span>); <span class="comment">// postCSS 的套件原則上都是要一個一個載入</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> paths = &#123;</span><br><span class="line">  <span class="string">&#x27;source&#x27;</span>: <span class="string">&#x27;./source/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;bower&#x27;</span> : <span class="string">&#x27;./bower_components/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;sass&#x27;</span>: <span class="string">&#x27;./source/stylesheets/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;img&#x27;</span>: <span class="string">&#x27;./source/images/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;public&#x27;</span>: <span class="string">&#x27;./public/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;tpls&#x27;</span>: <span class="string">&#x27;./gulp-tpls/&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// postCSS</span></span><br><span class="line">gulp.task(<span class="string">&#x27;css&#x27;</span>, <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 在 processors 內定義需要用哪些套件，這邊只有使用 autoprefixer</span></span><br><span class="line">  <span class="keyword">var</span> processors = [</span><br><span class="line">    autoprefixer(&#123;<span class="attr">browsers</span>: [<span class="string">&#x27;last 1 version&#x27;</span>]&#125;)</span><br><span class="line">  ];</span><br><span class="line">  watch(paths.public + <span class="string">&#x27;stylesheets/**/**.css&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    gulp.src(paths.public + <span class="string">&#x27;stylesheets/**/**.css&#x27;</span>)</span><br><span class="line">      .pipe(plumber())</span><br><span class="line">      .pipe(concat(<span class="string">&#x27;all.css&#x27;</span>))</span><br><span class="line">      .pipe(postcss(processors))</span><br><span class="line">      .pipe(gulp.dest(paths.public + <span class="string">&#x27;./css&#x27;</span>));</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&#x27;default&#x27;</span>, [<span class="string">&#x27;css&#x27;</span>]);</span><br></pre></td></tr></table></figure>
 <p>這段程式碼僅是局部，在我的範例內是由 <code>node-sass</code> 編譯完再由 <code>post-css</code> 處理。</p>
 <p>就已最新版的瀏覽器設定來說，其實大部分 <code>prefix</code> 其實都已經不用加入了，如：<code>flex</code>、<code>transform</code>、<code>backgroud</code>等，就下面的範例來說，只有 <code>filter</code> 需要 prefix。</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-25-00.png" alt></p>
+<p><img src="/images/2015/12/screen_shot_2015-12-25-00.png" alt=""></p>
 <p>如果說，產品的使用者客群略微廣些，只要大於一個百分比的使用者都需要重視，可以修改插件的設定檔，如下 (市佔率大於 1%，且連IE 7 都不放過)。</p>
 <pre><code>var processors = [
-    autoprefixer({browsers: [&apos;&gt; 1%&apos;, &apos;IE 7&apos;]})
+    autoprefixer(&#123;browsers: [&apos;&gt; 1%&apos;, &apos;IE 7&apos;]&#125;)
   ];
 </code></pre><p>那麼如果有支援的 prefix 他都會加入，會得到以下結果：</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-25-01.png" alt></p>
+<p><img src="/images/2015/12/screen_shot_2015-12-25-01.png" alt=""></p>
 <p>其實會發現，<code>-moz-</code>、<code>-o-</code>這些也不存在啊啊啊啊，<strong>Oprea</strong> 已經改用webkit，<strong>Firefox</strong> 強制更新，目前市面上的版本不需要 Prefix。</p>
-<h2 id="線上玩玩-PostCSS"><a href="#線上玩玩-PostCSS" class="headerlink" title="線上玩玩 PostCSS"></a>線上玩玩 PostCSS</h2><p>另外 <a href="http://codepen.io/pen/" target="_blank" rel="noopener">Codepen</a> 也有提供 post-css 的環境，只要在 CSS 的區域下選擇設定 &gt; <code>CSS Preprocessor</code> &gt; <code>PostCSS</code> 就可以使用 <code>@use</code> 加入想使用的 <code>post-css</code> 插件。</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-25-02.png" alt></p>
+<h2 id="線上玩玩-PostCSS"><a href="#線上玩玩-PostCSS" class="headerlink" title="線上玩玩 PostCSS"></a>線上玩玩 PostCSS</h2><p>另外 <a target="_blank" rel="noopener" href="http://codepen.io/pen/">Codepen</a> 也有提供 post-css 的環境，只要在 CSS 的區域下選擇設定 &gt; <code>CSS Preprocessor</code> &gt; <code>PostCSS</code> 就可以使用 <code>@use</code> 加入想使用的 <code>post-css</code> 插件。</p>
+<p><img src="/images/2015/12/screen_shot_2015-12-25-02.png" alt=""></p>
 <p>如下圖，透過 <code>@use cssnext;</code> 就可以使用 <code>cssnext</code> 插件。</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-25-03.png" alt></p>
+<p><img src="/images/2015/12/screen_shot_2015-12-25-03.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>Autoprefixer 是目前 post-css 看到最必須導入的工具，有效減少 prefix 的問題。其他的工具 <code>cssnext</code>、<code>lost</code>等等，目前僅會做測試或研究並不會導入。</p>
 
             </div>
@@ -282,7 +303,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -532,7 +553,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -553,11 +574,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -602,20 +623,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

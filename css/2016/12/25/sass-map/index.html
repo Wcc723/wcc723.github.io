@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽 25 - 實戰心法 - Sass Map 快出產出大量樣式 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="css,Sass">
+        <meta name="keywords" content="css,Sass" />
     
     
 
     <meta name="description" content="上一篇介紹了很短的程式碼產生一整組 Grid System，然後還提供變數讓 Grid 還有額外的參數可以設定，手寫的 CSS 如果要重新計算 12 組以上的計算也太苦了 T_T，這也就是 Sass 的魅力所在。 Sass 的運用上手法非常多，這次來介紹透過簡單的變數，即可大量產生相似的模組。">
-<meta name="keywords" content="css,Sass">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽 25 - 實戰心法 - Sass Map 快出產出大量樣式">
 <meta property="og:url" content="https://wcc723.github.io/css/2016/12/25/sass-map/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="上一篇介紹了很短的程式碼產生一整組 Grid System，然後還提供變數讓 Grid 還有額外的參數可以設定，手寫的 CSS 如果要重新計算 12 組以上的計算也太苦了 T_T，這也就是 Sass 的魅力所在。 Sass 的運用上手法非常多，這次來介紹透過簡單的變數，即可大量產生相似的模組。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/css/2016/12/25/sass-map/2016_ironman/25_heart_header.jpg">
-<meta property="og:updated_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:published_time" content="2016-12-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
+<meta property="article:tag" content="Sass">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽 25 - 實戰心法 - Sass Map 快出產出大量樣式">
-<meta name="twitter:description" content="上一篇介紹了很短的程式碼產生一整組 Grid System，然後還提供變數讓 Grid 還有額外的參數可以設定，手寫的 CSS 如果要重新計算 12 組以上的計算也太苦了 T_T，這也就是 Sass 的魅力所在。 Sass 的運用上手法非常多，這次來介紹透過簡單的變數，即可大量產生相似的模組。">
 <meta name="twitter:image" content="https://wcc723.github.io/css/2016/12/25/sass-map/2016_ironman/25_heart_header.jpg">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/css/">css</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2016-12-24T16:00:00.000Z" itemprop="datePublished">2016-12-25</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sass/">Sass</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Sass/" rel="tag">Sass</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li></ul>
 
             </div>
         
@@ -224,17 +244,17 @@ ga('send', 'pageview');
 <p>Sass 的運用上手法非常多，這次來介紹透過簡單的變數，即可大量產生相似的模組。</p>
 <a id="more"></a>
 <h2 id="Sass-Map"><a href="#Sass-Map" class="headerlink" title="Sass Map"></a>Sass Map</h2><p>Sass map 是類似 json 的一種變數，json 中包含的陣列、物件、屬性在 Sass map 都能有相似的寫法，所以首先要先使用 Sass Map 來定義基礎的元件變數。</p>
-<p><code>$btn-config</code> 裡面包覆的就是 Sass map，與 json 最大的差異是使用 <code>()</code> 取代 <code>{}</code>，這樣的手法可以大量的產生樣式的變數。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$gray-light:  #777;</span><br><span class="line">$brand-primary: #009AFF;</span><br><span class="line">$brand-accent: #D84315;</span><br><span class="line"></span><br><span class="line">$btn-config:(</span><br><span class="line">	default:(</span><br><span class="line">		class: &apos;default&apos;,</span><br><span class="line">		color: $gray-light,</span><br><span class="line">    bg: #fff,</span><br><span class="line">		border-color: #ccc</span><br><span class="line">	),</span><br><span class="line">	primary:(</span><br><span class="line">		class: &apos;primary&apos;,</span><br><span class="line">		color: #fff,</span><br><span class="line">		bg: $brand-primary,</span><br><span class="line">		border-color: $brand-primary</span><br><span class="line">	),</span><br><span class="line">	accent:(</span><br><span class="line">		class: &apos;accent&apos;,</span><br><span class="line">    color: #fff,</span><br><span class="line">		bg: $brand-accent,</span><br><span class="line">		border-color: $brand-accent</span><br><span class="line">	)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p><code>$btn-config</code> 裡面包覆的就是 Sass map，與 json 最大的差異是使用 <code>()</code> 取代 <code>&#123;&#125;</code>，這樣的手法可以大量的產生樣式的變數。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$gray-light:  #777;</span><br><span class="line">$brand-primary: #009AFF;</span><br><span class="line">$brand-accent: #D84315;</span><br><span class="line"></span><br><span class="line">$btn-config:(</span><br><span class="line">    default:(</span><br><span class="line">        class: &#39;default&#39;,</span><br><span class="line">        color: $gray-light,</span><br><span class="line">    bg: #fff,</span><br><span class="line">        border-color: #ccc</span><br><span class="line">    ),</span><br><span class="line">    primary:(</span><br><span class="line">        class: &#39;primary&#39;,</span><br><span class="line">        color: #fff,</span><br><span class="line">        bg: $brand-primary,</span><br><span class="line">        border-color: $brand-primary</span><br><span class="line">    ),</span><br><span class="line">    accent:(</span><br><span class="line">        class: &#39;accent&#39;,</span><br><span class="line">    color: #fff,</span><br><span class="line">        bg: $brand-accent,</span><br><span class="line">        border-color: $brand-accent</span><br><span class="line">    )</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 <p>接下來我們在製作 <code>@mixin</code> 與 button 的基本樣式，<code>@mixin</code> 可以將產出的 CSS 先寫成公式，在後續的流程在套用，這個公式我是直接抓 <code>Bootstrap</code> 所寫好的。</p>
 <p>另外 <code>.btn</code> 則是先前提過好幾次的結構，而這個結構是不包含樣式 (色彩、大小…)，樣式的部分是在 <code>@mixin</code> 內。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">// @mixin 運算</span><br><span class="line">@mixin button-variant($color, $background, $border) &#123;</span><br><span class="line">  color: $color;</span><br><span class="line">  background-color: $background;</span><br><span class="line">  transition: background-color .15s;</span><br><span class="line">  border-color: $border;</span><br><span class="line"></span><br><span class="line">  &amp;:hover,</span><br><span class="line">  &amp;:focus,</span><br><span class="line">  &amp;.focus,</span><br><span class="line">  &amp;:active,</span><br><span class="line">  &amp;.active,</span><br><span class="line">  .open &gt; &amp;.dropdown-toggle &#123;</span><br><span class="line">    color: $color;</span><br><span class="line">    background-color: darken($background, 6%);</span><br><span class="line">    border-color: darken($border, 8%);</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;:active,</span><br><span class="line">  &amp;.active,</span><br><span class="line">  .open &gt; &amp;.dropdown-toggle &#123;</span><br><span class="line">    background-image: none;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;.disabled,</span><br><span class="line">  &amp;[disabled],</span><br><span class="line">  fieldset[disabled] &amp; &#123;</span><br><span class="line">    &amp;,</span><br><span class="line">    &amp;:hover,</span><br><span class="line">    &amp;:focus,</span><br><span class="line">    &amp;.focus,</span><br><span class="line">    &amp;:active,</span><br><span class="line">    &amp;.active &#123;</span><br><span class="line">      background-color: $background;</span><br><span class="line">      border-color: $border;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  .badge &#123;</span><br><span class="line">    color: $background;</span><br><span class="line">    background-color: $color;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 基本 btn 結構</span><br><span class="line">.btn &#123;</span><br><span class="line">  // 結構</span><br><span class="line">  display: inline-block;</span><br><span class="line">  padding: 6px 12px;</span><br><span class="line">  margin-bottom: 0;</span><br><span class="line">  font-size: 14px;</span><br><span class="line">  text-align: center;</span><br><span class="line">  vertical-align: middle;</span><br><span class="line">  cursor: pointer;</span><br><span class="line">  user-select: none;</span><br><span class="line">  background-image: none;</span><br><span class="line">  border: 1px solid transparent;</span><br><span class="line">  border-radius: 4px;</span><br><span class="line">  &amp;:hover, &amp;:focus &#123;</span><br><span class="line">    color: #333;</span><br><span class="line">    background-color: #e6e6e6;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; @mixin 運算</span><br><span class="line">@mixin button-variant($color, $background, $border) &#123;</span><br><span class="line">  color: $color;</span><br><span class="line">  background-color: $background;</span><br><span class="line">  transition: background-color .15s;</span><br><span class="line">  border-color: $border;</span><br><span class="line"></span><br><span class="line">  &amp;:hover,</span><br><span class="line">  &amp;:focus,</span><br><span class="line">  &amp;.focus,</span><br><span class="line">  &amp;:active,</span><br><span class="line">  &amp;.active,</span><br><span class="line">  .open &gt; &amp;.dropdown-toggle &#123;</span><br><span class="line">    color: $color;</span><br><span class="line">    background-color: darken($background, 6%);</span><br><span class="line">    border-color: darken($border, 8%);</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;:active,</span><br><span class="line">  &amp;.active,</span><br><span class="line">  .open &gt; &amp;.dropdown-toggle &#123;</span><br><span class="line">    background-image: none;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;.disabled,</span><br><span class="line">  &amp;[disabled],</span><br><span class="line">  fieldset[disabled] &amp; &#123;</span><br><span class="line">    &amp;,</span><br><span class="line">    &amp;:hover,</span><br><span class="line">    &amp;:focus,</span><br><span class="line">    &amp;.focus,</span><br><span class="line">    &amp;:active,</span><br><span class="line">    &amp;.active &#123;</span><br><span class="line">      background-color: $background;</span><br><span class="line">      border-color: $border;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  .badge &#123;</span><br><span class="line">    color: $background;</span><br><span class="line">    background-color: $color;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 基本 btn 結構</span><br><span class="line">.btn &#123;</span><br><span class="line">  &#x2F;&#x2F; 結構</span><br><span class="line">  display: inline-block;</span><br><span class="line">  padding: 6px 12px;</span><br><span class="line">  margin-bottom: 0;</span><br><span class="line">  font-size: 14px;</span><br><span class="line">  text-align: center;</span><br><span class="line">  vertical-align: middle;</span><br><span class="line">  cursor: pointer;</span><br><span class="line">  user-select: none;</span><br><span class="line">  background-image: none;</span><br><span class="line">  border: 1px solid transparent;</span><br><span class="line">  border-radius: 4px;</span><br><span class="line">  &amp;:hover, &amp;:focus &#123;</span><br><span class="line">    color: #333;</span><br><span class="line">    background-color: #e6e6e6;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="Sass-each"><a href="#Sass-each" class="headerlink" title="Sass @each"></a>Sass <code>@each</code></h2><p>Sass <code>@each</code> 也是像 javascript 中的 each，將 <code>$btn-config</code> 中的物件一一讀出(使用 <code>map-get($value, value)</code>)，然後在 <code>@include</code> 上一段所產生的 <code>@mixin</code>。</p>
 <p>這樣就能一次產生出大量的 CSS 樣式，所依據的就是先前所設定好的 Sass map，這範例僅使用三種樣式，相同的觀念下我們可以用這方法產出更多的樣式在內，只需要修改 Sass map 即可，不需要改其他部分。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@each $name, $value in $btn-config &#123;</span><br><span class="line">  $class: map-get($value, class);</span><br><span class="line">  $color: map-get($value, color);</span><br><span class="line">  $bg: map-get($value, bg);</span><br><span class="line">  $border-color: map-get($value, border-color);</span><br><span class="line"></span><br><span class="line">  .btn-#&#123;$class&#125;&#123;</span><br><span class="line">    @include button-variant($color, $bg, $border-color);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>範例如下：</p>
 
-<p data-height="265" data-theme-id="0" data-slug-hash="qqwGdm" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="透過 Sass map 製作多個樣式" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/qqwGdm/" target="_blank" rel="noopener">透過 Sass map 製作多個樣式</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="265" data-theme-id="0" data-slug-hash="qqwGdm" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="透過 Sass map 製作多個樣式" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/qqwGdm/">透過 Sass map 製作多個樣式</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>現在的 CSS 大多會使用 Sass、Less、PostCSS 來做管理，使用哪一種語言倒是無所謂，但建議先從一種入門到熟悉，會發現省去許多不必要的時間，且在管理上會容易許多。</p>
@@ -268,7 +288,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -518,7 +538,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -539,11 +559,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -588,20 +608,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

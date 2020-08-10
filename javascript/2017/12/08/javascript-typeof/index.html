@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：動態型別的 JavaScript | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
     <meta name="description" content="JavaScript 是屬於動態型別，它定義了七種資料型別，分別為六種原始型別 (ES6 新增一種原始型別)及 Object 型別。在開始之前先用小明來說明一下型別是怎樣的東西。 故事說明： 承先前故事，小明每天早上醒來都會忘記所有事物，但會在睡覺前把要做的事情先記錄下來，筆記本上會分門別類寫出要做的事情。  小明有時會將要詢問的事情留空白，等到知道結果後再填上數值，像是某一個商品的價格如果再詢問">
-<meta name="keywords" content="javascript,js,ironman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：動態型別的 JavaScript">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/08/javascript-typeof/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="JavaScript 是屬於動態型別，它定義了七種資料型別，分別為六種原始型別 (ES6 新增一種原始型別)及 Object 型別。在開始之前先用小明來說明一下型別是怎樣的東西。 故事說明： 承先前故事，小明每天早上醒來都會忘記所有事物，但會在睡覺前把要做的事情先記錄下來，筆記本上會分門別類寫出要做的事情。  小明有時會將要詢問的事情留空白，等到知道結果後再填上數值，像是某一個商品的價格如果再詢問">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c5-01.jpg?alt=media&token=e784ba7d-8255-49e8-aa51-c1739a7bbf61">
-<meta property="og:updated_time" content="2017-12-08T03:15:28.037Z">
+<meta property="article:published_time" content="2017-12-07T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-08T03:15:28.037Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：動態型別的 JavaScript">
-<meta name="twitter:description" content="JavaScript 是屬於動態型別，它定義了七種資料型別，分別為六種原始型別 (ES6 新增一種原始型別)及 Object 型別。在開始之前先用小明來說明一下型別是怎樣的東西。 故事說明： 承先前故事，小明每天早上醒來都會忘記所有事物，但會在睡覺前把要做的事情先記錄下來，筆記本上會分門別類寫出要做的事情。  小明有時會將要詢問的事情留空白，等到知道結果後再填上數值，像是某一個商品的價格如果再詢問">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c5-01.jpg?alt=media&token=e784ba7d-8255-49e8-aa51-c1739a7bbf61">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-07T16:00:00.000Z" itemprop="datePublished">2017-12-08</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c5-01.jpg?alt=media&token=e784ba7d-8255-49e8-aa51-c1739a7bbf61" rel="gallery_ck870gcij00kkmtrucp0ievy3">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c5-01.jpg?alt=media&token=e784ba7d-8255-49e8-aa51-c1739a7bbf61" rel="gallery_ckdo9wd6300m0y9ru0o3r710u noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c5-01.jpg?alt=media&token=e784ba7d-8255-49e8-aa51-c1739a7bbf61" itemprop="image" />
     </a>
     
@@ -236,10 +257,10 @@ ga('send', 'pageview');
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> porkPrice;    <span class="comment">// Undefined</span></span><br></pre></td></tr></table></figure>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">porkPrice = <span class="number">200</span>;  <span class="comment">// Number</span></span><br></pre></td></tr></table></figure>
 <p>小明也不是嚴謹的人，常常在筆記本上塗抹修改的地方，像是亂加漂亮阿姨的姓名、年齡等。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> auntie = <span class="string">"漂亮阿姨"</span>;                <span class="comment">// String</span></span><br><span class="line">auntie = &#123; <span class="attr">name</span>: <span class="string">'陳小美'</span>, <span class="attr">ages</span>: <span class="number">22</span> &#125;;  <span class="comment">// Object</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> auntie = <span class="string">&quot;漂亮阿姨&quot;</span>;                <span class="comment">// String</span></span><br><span class="line">auntie = &#123; <span class="attr">name</span>: <span class="string">&#x27;陳小美&#x27;</span>, <span class="attr">ages</span>: <span class="number">22</span> &#125;;  <span class="comment">// Object</span></span><br></pre></td></tr></table></figure>
 <p>以上僅是說明動態型別，請不要學小明這樣做。</p>
 <p>如果要查看型別，可以使用 <code>typeof auntie</code> 來驗證型別，<strong>可以透過 <code>typeof</code> 看看以下變數分別屬於哪些型別</strong>，其中會發現有趣的事情。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> family = &#123;</span><br><span class="line">  mom: <span class="string">'老媽'</span>,</span><br><span class="line">  me: <span class="string">'小明'</span>,</span><br><span class="line">  sister: <span class="string">'小橙'</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> money = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">var</span> isEdge = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> attributes = <span class="string">'邊緣'</span>;</span><br><span class="line"><span class="keyword">var</span> variable;</span><br><span class="line"><span class="keyword">var</span> nullVariable = <span class="literal">null</span>; <span class="comment">// 猜猜這個是什麼型別</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> family = &#123;</span><br><span class="line">  mom: <span class="string">&#x27;老媽&#x27;</span>,</span><br><span class="line">  me: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  sister: <span class="string">&#x27;小橙&#x27;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> money = <span class="number">100</span>;</span><br><span class="line"><span class="keyword">var</span> isEdge = <span class="literal">true</span>;</span><br><span class="line"><span class="keyword">var</span> attributes = <span class="string">&#x27;邊緣&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> variable;</span><br><span class="line"><span class="keyword">var</span> nullVariable = <span class="literal">null</span>; <span class="comment">// 猜猜這個是什麼型別</span></span><br></pre></td></tr></table></figure>
 <h2 id="六種原始型別"><a href="#六種原始型別" class="headerlink" title="六種原始型別"></a>六種原始型別</h2><p>原始型別分別為以下六種：</p>
 <ul>
 <li>Boolean：僅有 true, false 兩個值</li>
@@ -260,11 +281,11 @@ ga('send', 'pageview');
 <li>null 是有效的 JSON 值，undefined 不是</li>
 </ul>
 <blockquote>
-<p>為什麼 null 是 Object，自從有 JavaScript 開始就是這樣了，而這個錯誤不能修正，他會導致不可預期的錯誤 (來源：<a href="http://2ality.com/2013/10/typeof-null.html" target="_blank" rel="noopener">The history of “typeof null”</a>)。</p>
+<p>為什麼 null 是 Object，自從有 JavaScript 開始就是這樣了，而這個錯誤不能修正，他會導致不可預期的錯誤 (來源：<a target="_blank" rel="noopener" href="http://2ality.com/2013/10/typeof-null.html">The history of “typeof null”</a>)。</p>
 <p>另外原本也預期在未來會給予 <code>typeof null === &#39;null&#39;</code> 的正確結果，但後來也被拒絕。</p>
 </blockquote>
 <h3 id="Number"><a href="#Number" class="headerlink" title="Number"></a>Number</h3><p>數字型別是一種 <a href="[雙精度浮點數 - 維基百科，自由的百科全書](https://zh.wikipedia.org/wiki/%E9%9B%99%E7%B2%BE%E5%BA%A6%E6%B5%AE%E9%BB%9E%E6%95%B8">浮點數</a>)，這種數值在極大值時會有精準度的問題，範例：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10000000000000000 - 1;  // 一樣是 10000000000000000</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">10000000000000000 - 1;  &#x2F;&#x2F; 一樣是 10000000000000000</span><br></pre></td></tr></table></figure>
 <p>所以有些文章會提到不要用 JavaScript 來算錢，可是也要先有這麼多錢再說啊 QQQQ。另外還有以下三種都屬於此 Number 型別。</p>
 <ul>
 <li>+Infinity</li>
@@ -303,7 +324,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -553,7 +574,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -574,11 +595,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -623,20 +644,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

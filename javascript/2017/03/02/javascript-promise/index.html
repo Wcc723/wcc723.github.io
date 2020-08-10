@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>Javascript Promise 範例 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="js,promise,es6">
+        <meta name="keywords" content="js,promise,es6" />
     
     
 
     <meta name="description" content="Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。">
-<meta name="keywords" content="js,promise,es6">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Javascript Promise 範例">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/03/02/javascript-promise/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42">
-<meta property="og:updated_time" content="2017-03-02T14:03:53.000Z">
+<meta property="article:published_time" content="2017-03-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-03-02T14:03:53.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="promise">
+<meta property="article:tag" content="es6">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Javascript Promise 範例">
-<meta name="twitter:description" content="Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-03-01T16:00:00.000Z" itemprop="datePublished">2017-03-02</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es6/">es6</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/promise/">promise</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/es6/" rel="tag">es6</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/promise/" rel="tag">promise</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42" rel="gallery_ck870gci300j6mtruyk1xpvb4">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42" rel="gallery_ckdo9wd5o00kmy9ru5d2u2nvm noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42" itemprop="image" />
     </a>
     
@@ -231,16 +252,16 @@ ga('send', 'pageview');
                 <p>Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。</p>
 <a id="more"></a>
 
-<p data-height="400" data-theme-id="0" data-slug-hash="qrbKNg" data-default-tab="js" data-user="Wcc723" data-embed-version="2" data-pen-title="ES6 Promise" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/qrbKNg/" target="_blank" rel="noopener">ES6 Promise</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="400" data-theme-id="0" data-slug-hash="qrbKNg" data-default-tab="js" data-user="Wcc723" data-embed-version="2" data-pen-title="ES6 Promise" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/qrbKNg/">ES6 Promise</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> epaAPI = <span class="string">"http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?"</span>;</span><br><span class="line">  <span class="keyword">let</span> errorUrl = <span class="string">"http://opendata.epa.gov.tw/ws/Data/UL/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?"</span>;</span><br><span class="line">  <span class="keyword">let</span> _DefaultContry = <span class="string">'臺北市'</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> getData = <span class="function">(<span class="params">url</span>)=&gt;</span> &#123; <span class="comment">// 傳入的 URL</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123; <span class="comment">// return promise</span></span><br><span class="line">      $.getJSON( url, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        format: <span class="string">"json"</span></span><br><span class="line">      &#125;).done(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (data) &#123;</span><br><span class="line">          resolve(data); <span class="comment">// 成功後透過 resolve 回傳值</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          reject(<span class="string">'Error'</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;).fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        reject(<span class="string">'Error'</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  getData(epaAPI) <span class="comment">// 傳入的 url</span></span><br><span class="line">    .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值</span></span><br><span class="line">      <span class="built_in">console</span>.log(data);</span><br><span class="line">      $.each( data, <span class="function"><span class="keyword">function</span>(<span class="params"> i, item </span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(item);</span><br><span class="line">        <span class="keyword">let</span> list = <span class="string">`&lt;li&gt;<span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.PublishTime&#125;</span> <span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span> </span><br><span class="line">        <span class="comment">//利用item.值，把每一個值取出，並寫成一個html存在list的變數內</span></span><br><span class="line">        $(<span class="string">'.itemlist'</span>).append(list);</span><br><span class="line">        <span class="comment">//最後把剛剛的html放到表格內</span></span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  </span><br><span class="line">  getData(errorUrl) <span class="comment">// 傳入錯誤的 url</span></span><br><span class="line">    .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span></span><br><span class="line">      <span class="built_in">console</span>.log(data);</span><br><span class="line">    &#125;)</span><br><span class="line">    .catch(<span class="function">(<span class="params">response</span>)=&gt;</span> &#123; <span class="comment">// 錯誤狀態的回傳</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">'errorUrl:'</span>, response);</span><br><span class="line">    &#125;);</span><br><span class="line">  </span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> epaAPI = <span class="string">&quot;http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?&quot;</span>;</span><br><span class="line">  <span class="keyword">let</span> errorUrl = <span class="string">&quot;http://opendata.epa.gov.tw/ws/Data/UL/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?&quot;</span>;</span><br><span class="line">  <span class="keyword">let</span> _DefaultContry = <span class="string">&#x27;臺北市&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">var</span> getData = <span class="function">(<span class="params">url</span>)=&gt;</span> &#123; <span class="comment">// 傳入的 URL</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123; <span class="comment">// return promise</span></span><br><span class="line">      $.getJSON( url, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">        format: <span class="string">&quot;json&quot;</span></span><br><span class="line">      &#125;).done(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (data) &#123;</span><br><span class="line">          resolve(data); <span class="comment">// 成功後透過 resolve 回傳值</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">          reject(<span class="string">&#x27;Error&#x27;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;).fail(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        reject(<span class="string">&#x27;Error&#x27;</span>);</span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  getData(epaAPI) <span class="comment">// 傳入的 url</span></span><br><span class="line">    .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值</span></span><br><span class="line">      <span class="built_in">console</span>.log(data);</span><br><span class="line">      $.each( data, <span class="function"><span class="keyword">function</span>(<span class="params"> i, item </span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(item);</span><br><span class="line">        <span class="keyword">let</span> list = <span class="string">`&lt;li&gt;<span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.PublishTime&#125;</span> <span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span> </span><br><span class="line">        <span class="comment">//利用item.值，把每一個值取出，並寫成一個html存在list的變數內</span></span><br><span class="line">        $(<span class="string">&#x27;.itemlist&#x27;</span>).append(list);</span><br><span class="line">        <span class="comment">//最後把剛剛的html放到表格內</span></span><br><span class="line">      &#125;);</span><br><span class="line">    &#125;);</span><br><span class="line">  </span><br><span class="line">  getData(errorUrl) <span class="comment">// 傳入錯誤的 url</span></span><br><span class="line">    .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span></span><br><span class="line">      <span class="built_in">console</span>.log(data);</span><br><span class="line">    &#125;)</span><br><span class="line">    .catch(<span class="function">(<span class="params">response</span>)=&gt;</span> &#123; <span class="comment">// 錯誤狀態的回傳</span></span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">&#x27;errorUrl:&#x27;</span>, response);</span><br><span class="line">    &#125;);</span><br><span class="line">  </span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
 <h2 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h2><h3 id="new-Promise"><a href="#new-Promise" class="headerlink" title="new Promise"></a>new Promise</h3><p><code>var getData()</code> 裡面包含非同步的 Ajax，如果直接套用 <code>getData()</code> 會無法確實取得資料後再執行其他 function，所以這時候在內部加上 <code>new Promise()</code> 確保 Ajax 完成後再回傳資料。<br><code>getData(epaAPI)</code> 套用時可以傳入 url，在後方的 <code>.then</code> 表示任務完成第一段後取得 <code>resolve()</code> 內的值，接下來就如同 jQuery Ajax 回傳後得處理方式一樣，。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> list = <span class="string">`&lt;li&gt;<span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.PublishTime&#125;</span> <span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span></span><br></pre></td></tr></table></figure>
-<p>題外話：這一段則是 ES6 中的字串處理方式，用 <code></code> 符號框住整個字串，再透過類似 jQuery 的 selector (<code>${}</code>) 就能帶入字串中的變數，取代過去使用 <code>&quot; &quot; + variable + &quot; &quot;</code> 撰寫起來輕便許多。</p>
-<h3 id="錯誤回傳"><a href="#錯誤回傳" class="headerlink" title="錯誤回傳"></a>錯誤回傳</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">getData(errorUrl) <span class="comment">// 傳入錯誤的 url</span></span><br><span class="line">  .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span></span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function">(<span class="params">response</span>)=&gt;</span> &#123; <span class="comment">// 錯誤狀態的回傳</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'errorUrl:'</span>, response);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> list = <span class="string">`&lt;li&gt;<span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.PublishTime&#125;</span> <span class="subst">$&#123;item.SiteName&#125;</span> <span class="subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span> </span><br></pre></td></tr></table></figure>
+<p>題外話：這一段則是 ES6 中的字串處理方式，用 <code></code> 符號框住整個字串，再透過類似 jQuery 的 selector (<code>$&#123;&#125;</code>) 就能帶入字串中的變數，取代過去使用 <code>&quot; &quot; + variable + &quot; &quot;</code> 撰寫起來輕便許多。</p>
+<h3 id="錯誤回傳"><a href="#錯誤回傳" class="headerlink" title="錯誤回傳"></a>錯誤回傳</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">getData(errorUrl) <span class="comment">// 傳入錯誤的 url</span></span><br><span class="line">  .then(<span class="function">(<span class="params">data</span>)=&gt;</span>&#123; <span class="comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span></span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">  &#125;)</span><br><span class="line">  .catch(<span class="function">(<span class="params">response</span>)=&gt;</span> &#123; <span class="comment">// 錯誤狀態的回傳</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;errorUrl:&#x27;</span>, response);</span><br><span class="line">  &#125;);</span><br></pre></td></tr></table></figure>
 <p>後面包含另一個 <code>getData(errorUrl)</code> 刻意傳入錯誤的連結使其產生錯誤，這時候的 <code>.then</code> 沒有辦法接受到資料，後方的 <code>.catch</code> 則可以接到由 <code>reject()</code> 回傳的訊息。</p>
-<p>參考文件：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="noopener">https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all</a></p>
+<p>參考文件：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all">https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all</a></p>
 
             </div>
             <div style="margin: 15px 0;">
@@ -271,7 +292,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -521,7 +542,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -542,11 +563,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -591,20 +612,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

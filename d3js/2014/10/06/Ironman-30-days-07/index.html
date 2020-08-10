@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>D3js 前置作業，製作簡易Server | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="ironman,d3js">
+        <meta name="keywords" content="ironman,d3js" />
     
     
 
     <meta name="description" content="部分情況下，直接點兩下index.html就可以打開網頁，而且js都可以正常運行，但某些瀏覽器會限制js載入本地端的檔案，主要是安全性考量，這也可能影響到d3js嘗試載入任何外部檔案(CSV、Json等等)，為了避免往後的範例有這樣的問題，所以必須要有個簡易的伺服器。">
-<meta name="keywords" content="ironman,d3js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="D3js 前置作業，製作簡易Server">
 <meta property="og:url" content="https://wcc723.github.io/d3js/2014/10/06/Ironman-30-days-07/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="部分情況下，直接點兩下index.html就可以打開網頁，而且js都可以正常運行，但某些瀏覽器會限制js載入本地端的檔案，主要是安全性考量，這也可能影響到d3js嘗試載入任何外部檔案(CSV、Json等等)，為了避免往後的範例有這樣的問題，所以必須要有個簡易的伺服器。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/d3js/2014/10/06/Ironman-30-days-07/2014ironman/day07_04.png">
-<meta property="og:updated_time" content="2016-10-13T02:19:39.000Z">
+<meta property="article:published_time" content="2014-10-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-10-13T02:19:39.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="ironman">
+<meta property="article:tag" content="d3js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="D3js 前置作業，製作簡易Server">
-<meta name="twitter:description" content="部分情況下，直接點兩下index.html就可以打開網頁，而且js都可以正常運行，但某些瀏覽器會限制js載入本地端的檔案，主要是安全性考量，這也可能影響到d3js嘗試載入任何外部檔案(CSV、Json等等)，為了避免往後的範例有這樣的問題，所以必須要有個簡易的伺服器。">
 <meta name="twitter:image" content="https://wcc723.github.io/d3js/2014/10/06/Ironman-30-days-07/2014ironman/day07_04.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/d3js/">d3js</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2014-10-05T16:00:00.000Z" itemprop="datePublished">2014-10-06</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d3js/">d3js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d3js/" rel="tag">d3js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li></ul>
 
             </div>
         
@@ -222,18 +242,18 @@ ga('send', 'pageview');
             <div class="need-gallery">
                 <p>部分情況下，直接點兩下index.html就可以打開網頁，而且js都可以正常運行，但某些瀏覽器會限制js載入本地端的檔案，主要是安全性考量，這也可能影響到d3js嘗試載入任何外部檔案(CSV、Json等等)，為了避免往後的範例有這樣的問題，所以必須要有個簡易的伺服器。</p>
 <a id="more"></a>
-<p>製作伺服器的方式相當多，像是windows也可以用IIS來建立，而我自己是直接購買Fire.app(<a href="http://fireapp.kkbox.com/" target="_blank" rel="noopener">http://fireapp.kkbox.com/</a>)，開啟專案後直接就會產生簡易的Server，除了Fire.app外，本篇提供兩個簡單的方式來製作簡易的Webserver。</p>
-<p><img src="http://fireapp.kkbox.com/images/logo.png?1377757375" alt></p>
+<p>製作伺服器的方式相當多，像是windows也可以用IIS來建立，而我自己是直接購買Fire.app(<a target="_blank" rel="noopener" href="http://fireapp.kkbox.com/">http://fireapp.kkbox.com/</a>)，開啟專案後直接就會產生簡易的Server，除了Fire.app外，本篇提供兩個簡單的方式來製作簡易的Webserver。</p>
+<p><img src="http://fireapp.kkbox.com/images/logo.png?1377757375" alt=""></p>
 <blockquote>
 <p>Fire.app</p>
 </blockquote>
 <h2 id="Python-Simple-Server"><a href="#Python-Simple-Server" class="headerlink" title="Python Simple Server"></a>Python Simple Server</h2><p>Mac 和 Linux 內建就有Python，打開Terminal(終端機)後，先輸入Python –version，如果版本是2.x，只要在對應的資料夾路徑下輸入以下指令，就可以使用簡易的webserver(我沒什麼用Python，所以我的版本是2.x)。</p>
 <pre><code>python -m SimpleHTTPServer 8888 &amp;
-</code></pre><p><img src="/images/2014ironman/day07_01.png" alt></p>
+</code></pre><p><img src="/images/2014ironman/day07_01.png" alt=""></p>
 <p>如果是更高的3.x版本，我手上的資料是輸入以下指令：</p>
 <pre><code>python -m http.server 8888 &amp;
 </code></pre><p>開啟python webserver後，在瀏覽器輸入<code>localhost:8888</code>就可以打開這網頁。</p>
-<p><img src="/images/2014ironman/day07_02.png" alt></p>
+<p><img src="/images/2014ironman/day07_02.png" alt=""></p>
 <h2 id="Node-Gulp-Webserver"><a href="#Node-Gulp-Webserver" class="headerlink" title="Node Gulp Webserver"></a>Node Gulp Webserver</h2><p>Node.js 有許多不錯的工具相當好用，而Gulp是其中一個，這是一個任務管理工具，可以編譯Sass、CoffeeScript等等(不久前我在Blog有介紹過，可以參考<a href="http://wcc723.github.io/gulp/2014/09/22/gulp-install/">http://wcc723.github.io/gulp/2014/09/22/gulp-install/</a>)。</p>
 <p>這次不會用相當多的功能，主題是要介紹D3.js，所以我已經有準備好Gulp Webserver所需要的簡易script，大家只要安裝好Node.js後，按照以下步驟即可(比Python略微複雜，但Windows也可使用，熟練的話也可以多運用Gulp)。</p>
 <h4 id="Gulp-環境安裝"><a href="#Gulp-環境安裝" class="headerlink" title="Gulp 環境安裝"></a>Gulp 環境安裝</h4><p>首先，先到官網下載，並安裝Node.js。</p>
@@ -242,19 +262,19 @@ ga('send', 'pageview');
 <pre><code>node -v
 npm -v
 </code></pre><p>預期會出現以下結果</p>
-<p><img src="/images/gulp/screen_shot_gulp04.png" alt></p>
+<p><img src="/images/gulp/screen_shot_gulp04.png" alt=""></p>
 <p>接下來安裝<code>Gulp</code>，輸入以下指令(我Mac懶得重裝&gt; &lt;)：</p>
 <pre><code>npm install -g gulp
-</code></pre><p><img src="/images/gulp/screen_shot_gulp05.png" alt></p>
+</code></pre><p><img src="/images/gulp/screen_shot_gulp05.png" alt=""></p>
 <p>到這邊環境就算安裝完成了。</p>
-<h4 id="執行Gulp"><a href="#執行Gulp" class="headerlink" title="執行Gulp"></a>執行Gulp</h4><p>到<a href="https://github.com/Wcc723/D3js_WebServer_Demo" target="_blank" rel="noopener">https://github.com/Wcc723/D3js_WebServer_Demo</a>下載我精心準備的簡易Webserver，裡面包含一個簡單的D3 範例以及Gulp Script。</p>
+<h4 id="執行Gulp"><a href="#執行Gulp" class="headerlink" title="執行Gulp"></a>執行Gulp</h4><p>到<a target="_blank" rel="noopener" href="https://github.com/Wcc723/D3js_WebServer_Demo">https://github.com/Wcc723/D3js_WebServer_Demo</a>下載我精心準備的簡易Webserver，裡面包含一個簡單的D3 範例以及Gulp Script。</p>
 <p>下載後解壓縮，Terminal或是命令提示字元進入該資料夾，並<br>輸入<code>npm install</code>，就會把Gulp所需要的模組安裝到這個資料夾。</p>
-<p><img src="/images/2014ironman/day07_03.png" alt></p>
+<p><img src="/images/2014ironman/day07_03.png" alt=""></p>
 <p>輸入<code>Gulp</code>，就會開啟Webserver同時將瀏覽器開啟，這個Demo我是抓柯P Api所提供的相簿，接下來大家也可以在自己的電腦上練習D3.js了。</p>
-<p><img src="/images/2014ironman/day07_04.png" alt></p>
+<p><img src="/images/2014ironman/day07_04.png" alt=""></p>
 <p>小Demo</p>
 
-<a class="jsbin-embed" href="http://jsbin.com/wipam/2/embed?js,output" target="_blank" rel="noopener">JS Bin</a> <script src="http://static.jsbin.com/js/embed.js"> </script>
+<a class="jsbin-embed" target="_blank" rel="noopener" href="http://jsbin.com/wipam/2/embed?js,output">JS Bin</a> <script src="http://static.jsbin.com/js/embed.js"> </script>
 
 
             </div>
@@ -286,7 +306,7 @@ npm -v
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -536,7 +556,7 @@ npm -v
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -557,11 +577,11 @@ npm -v
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -606,20 +626,40 @@ npm -v
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

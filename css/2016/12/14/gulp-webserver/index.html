@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽 14 - Gulp - Webserver | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="css,gulp">
+        <meta name="keywords" content="css,gulp" />
     
     
 
     <meta name="description" content="Gulp 很適合搭配任何其他的前後端結構，就先前介紹的幾個章節，只要略為修改輸入及輸出的路徑即可；除了搭配其他後端結構外，Gulp 也有適合直接開發的方法，本章會在介紹 Gulp Webserver，這樣就能夠直接在 Gulp 中開啟 Webserver。">
-<meta name="keywords" content="css,gulp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽 14 - Gulp - Webserver">
 <meta property="og:url" content="https://wcc723.github.io/css/2016/12/14/gulp-webserver/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="Gulp 很適合搭配任何其他的前後端結構，就先前介紹的幾個章節，只要略為修改輸入及輸出的路徑即可；除了搭配其他後端結構外，Gulp 也有適合直接開發的方法，本章會在介紹 Gulp Webserver，這樣就能夠直接在 Gulp 中開啟 Webserver。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/css/2016/12/14/gulp-webserver/2016_ironman/14_gulp_header.jpg">
-<meta property="og:updated_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:published_time" content="2016-12-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
+<meta property="article:tag" content="gulp">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽 14 - Gulp - Webserver">
-<meta name="twitter:description" content="Gulp 很適合搭配任何其他的前後端結構，就先前介紹的幾個章節，只要略為修改輸入及輸出的路徑即可；除了搭配其他後端結構外，Gulp 也有適合直接開發的方法，本章會在介紹 Gulp Webserver，這樣就能夠直接在 Gulp 中開啟 Webserver。">
 <meta name="twitter:image" content="https://wcc723.github.io/css/2016/12/14/gulp-webserver/2016_ironman/14_gulp_header.jpg">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/css/">css</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2016-12-13T16:00:00.000Z" itemprop="datePublished">2016-12-14</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li></ul>
 
             </div>
         
@@ -222,15 +242,15 @@ ga('send', 'pageview');
             <div class="need-gallery">
                 <p>Gulp 很適合搭配任何其他的前後端結構，就先前介紹的幾個章節，只要略為修改輸入及輸出的路徑即可；除了搭配其他後端結構外，Gulp 也有適合直接開發的方法，本章會在介紹 Gulp Webserver，這樣就能夠直接在 Gulp 中開啟 Webserver。</p>
 <a id="more"></a>
-<h2 id="gulp-webserver"><a href="#gulp-webserver" class="headerlink" title="gulp webserver"></a>gulp webserver</h2><p>範例程式碼：<a href="https://github.com/Wcc723/ironman-gulp-sass/tree/v0.4.icon-fonts" target="_blank" rel="noopener">https://github.com/Wcc723/ironman-gulp-sass/tree/v0.4.icon-fonts</a></p>
+<h2 id="gulp-webserver"><a href="#gulp-webserver" class="headerlink" title="gulp webserver"></a>gulp webserver</h2><p>範例程式碼：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/ironman-gulp-sass/tree/v0.4.icon-fonts">https://github.com/Wcc723/ironman-gulp-sass/tree/v0.4.icon-fonts</a></p>
 <p>Gulp webserver 能夠在 gulp 運行的期間開啟 webserver，並且包含著 Livereload 的功能，只要修改專案中的資料夾檔案，就能夠自動的更新瀏覽器上的畫面，讓開發更迅速。</p>
 <p>package.json: 僅有新增一個 gulp-webserver。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">"dependencies": &#123;</span><br><span class="line">  "async": "^2.1.4",</span><br><span class="line">  "autoprefixer": "^6.5.3",</span><br><span class="line">  "gulp": "^3.9.1",</span><br><span class="line">  "gulp-consolidate": "^0.2.0",</span><br><span class="line">  "gulp-iconfont": "^8.0.1",</span><br><span class="line">  "gulp-plumber": "^1.1.0",</span><br><span class="line">  "gulp-postcss": "^6.2.0",</span><br><span class="line">  "gulp-sass": "^2.3.2",</span><br><span class="line">  "gulp-webserver": "^0.9.1"</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&quot;dependencies&quot;: &#123;</span><br><span class="line">  &quot;async&quot;: &quot;^2.1.4&quot;,</span><br><span class="line">  &quot;autoprefixer&quot;: &quot;^6.5.3&quot;,</span><br><span class="line">  &quot;gulp&quot;: &quot;^3.9.1&quot;,</span><br><span class="line">  &quot;gulp-consolidate&quot;: &quot;^0.2.0&quot;,</span><br><span class="line">  &quot;gulp-iconfont&quot;: &quot;^8.0.1&quot;,</span><br><span class="line">  &quot;gulp-plumber&quot;: &quot;^1.1.0&quot;,</span><br><span class="line">  &quot;gulp-postcss&quot;: &quot;^6.2.0&quot;,</span><br><span class="line">  &quot;gulp-sass&quot;: &quot;^2.3.2&quot;,</span><br><span class="line">  &quot;gulp-webserver&quot;: &quot;^0.9.1&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><code>gulpfile.js</code> 可以依據以下的方法設定。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> webserver = <span class="built_in">require</span>(<span class="string">'gulp-webserver'</span>);  <span class="comment">// 載入 webserver</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// webserver</span></span><br><span class="line">gulp.task(<span class="string">'webserver'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    gulp.src(path.public)                   <span class="comment">// 預設開啟路徑</span></span><br><span class="line">      .pipe(webserver(&#123;                     <span class="comment">// 啟動 webserver</span></span><br><span class="line">        livereload: <span class="literal">true</span>,                   <span class="comment">// Livereload 的功能</span></span><br><span class="line">        open: <span class="literal">false</span>,                        <span class="comment">// 是否自動開啟 瀏覽器</span></span><br><span class="line">        host: <span class="string">'0.0.0.0'</span>,                    <span class="comment">// 如果使用 0.0.0.0 的 ip，還會另外開啟 wifi 等對外網路</span></span><br><span class="line">        port: <span class="number">10000</span>,                        <span class="comment">// 開放通訊埠</span></span><br><span class="line">      &#125;));</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'others'</span>, <span class="string">'sass'</span>, <span class="string">'iconfonts'</span>, <span class="string">'watch'</span>, <span class="string">'webserver'</span>]);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> webserver = <span class="built_in">require</span>(<span class="string">&#x27;gulp-webserver&#x27;</span>);  <span class="comment">// 載入 webserver</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// webserver</span></span><br><span class="line">gulp.task(<span class="string">&#x27;webserver&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    gulp.src(path.public)                   <span class="comment">// 預設開啟路徑</span></span><br><span class="line">      .pipe(webserver(&#123;                     <span class="comment">// 啟動 webserver</span></span><br><span class="line">        livereload: <span class="literal">true</span>,                   <span class="comment">// Livereload 的功能</span></span><br><span class="line">        open: <span class="literal">false</span>,                        <span class="comment">// 是否自動開啟 瀏覽器</span></span><br><span class="line">        host: <span class="string">&#x27;0.0.0.0&#x27;</span>,                    <span class="comment">// 如果使用 0.0.0.0 的 ip，還會另外開啟 wifi 等對外網路</span></span><br><span class="line">        port: <span class="number">10000</span>,                        <span class="comment">// 開放通訊埠</span></span><br><span class="line">      &#125;));</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&#x27;default&#x27;</span>, [<span class="string">&#x27;others&#x27;</span>, <span class="string">&#x27;sass&#x27;</span>, <span class="string">&#x27;iconfonts&#x27;</span>, <span class="string">&#x27;watch&#x27;</span>, <span class="string">&#x27;webserver&#x27;</span>]);</span><br></pre></td></tr></table></figure>
 <p>設定完成後，一樣輸入 <code>gulp</code> 就會依序執行先前所設定的內容，而 Webserver 放在做後是確保所有流程完成後再開啟 Webserver ，使第一次執行專案的開發者也能夠執行。</p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>Gulp 介紹的目前為止，其實已經掌握大部分 Gulp 所使用的手法，接下來僅需要調整到合適的搭配環境即可；如果在開發上遇到 Gulp 不足的地方，可以到 NPM 的網站上透過 <code>gulp</code> 作為關鍵字，搜尋是否有其他套件可以使用。</p>
-<p><img src="/images/2016_ironman/14_gulp_webserver_01.png" alt></p>
+<p><img src="/images/2016_ironman/14_gulp_webserver_01.png" alt=""></p>
 <p>到目前所介紹的內容，也都只要略作修改，觀念都可以運用在任何的套件上，如果遇到任何問題，也歡迎來詢問我喔～。</p>
 
             </div>
@@ -262,7 +282,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -512,7 +532,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -533,11 +553,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -582,20 +602,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

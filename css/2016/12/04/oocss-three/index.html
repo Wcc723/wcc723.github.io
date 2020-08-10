@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽 4 - OOCSS 容器與內容分離 (最佳實踐) | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="css,oocss">
+        <meta name="keywords" content="css,oocss" />
     
     
 
     <meta name="description" content="結構與樣式分離，對於網頁的樣式設計是一種解放，所有元件的樣式組合搭配及擴增變得更自由。 這篇要介紹的是容器與內容分離，簡單來說我們可以把元件分為兩大類型：  容器型元件：如 grid、card、form 內容型元件：如 button、input、progress-bar  而不同類型的元件設計上應當分離，避免混寫限制元件的搭配。">
-<meta name="keywords" content="css,oocss">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽 4 - OOCSS 容器與內容分離 (最佳實踐)">
 <meta property="og:url" content="https://wcc723.github.io/css/2016/12/04/oocss-three/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="結構與樣式分離，對於網頁的樣式設計是一種解放，所有元件的樣式組合搭配及擴增變得更自由。 這篇要介紹的是容器與內容分離，簡單來說我們可以把元件分為兩大類型：  容器型元件：如 grid、card、form 內容型元件：如 button、input、progress-bar  而不同類型的元件設計上應當分離，避免混寫限制元件的搭配。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/css/2016/12/04/oocss-three/2016_ironman/04_oocss_header.png">
-<meta property="og:updated_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:published_time" content="2016-12-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
+<meta property="article:tag" content="oocss">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽 4 - OOCSS 容器與內容分離 (最佳實踐)">
-<meta name="twitter:description" content="結構與樣式分離，對於網頁的樣式設計是一種解放，所有元件的樣式組合搭配及擴增變得更自由。 這篇要介紹的是容器與內容分離，簡單來說我們可以把元件分為兩大類型：  容器型元件：如 grid、card、form 內容型元件：如 button、input、progress-bar  而不同類型的元件設計上應當分離，避免混寫限制元件的搭配。">
 <meta name="twitter:image" content="https://wcc723.github.io/css/2016/12/04/oocss-three/2016_ironman/04_oocss_header.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/css/">css</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2016-12-03T16:00:00.000Z" itemprop="datePublished">2016-12-04</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oocss/">oocss</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/oocss/" rel="tag">oocss</a></li></ul>
 
             </div>
         
@@ -235,20 +255,20 @@ ga('send', 'pageview');
 <li>容器 B：這是一個單獨的容器，沒有額外的設定</li>
 <li>元件 B：這是一個單獨的元件(內容)，可以在任何容器下。</li>
 </ol>
-<p><img src="/images/2016_ironman/04_oocss_01.jpg" alt></p>
+<p><img src="/images/2016_ironman/04_oocss_01.jpg" alt=""></p>
 <p>在這個範例下，我們可以了解到 元件 B 不受到任何限制，可以自由的組裝在其他容器下，這也是 OOCSS 提到的元件就像是樂高一樣，可以依據任何需求做組裝，元件 B 正好符合這個概念。</p>
 <h2 id="Bootstrap-的容器與內容"><a href="#Bootstrap-的容器與內容" class="headerlink" title="Bootstrap 的容器與內容"></a>Bootstrap 的容器與內容</h2><p>Bootstrap 是相當好的案例可以來說明容器與內容。以下圖來說按鈕與頁籤都是屬於 內容，而卡片是屬於容器，在 Bootstrap 的設計中都是屬於個別的元件，這些元件不會互相干擾，而且可以依據需求去組合。</p>
-<p><img src="/images/2016_ironman/04_oocss_02.jpg" alt></p>
+<p><img src="/images/2016_ironman/04_oocss_02.jpg" alt=""></p>
 <p>接下來這張範例圖就是將按鈕、頁籤放到卡片這個容器內。</p>
-<p><img src="/images/2016_ironman/04_oocss_03.jpg" alt></p>
+<p><img src="/images/2016_ironman/04_oocss_03.jpg" alt=""></p>
 <p>所以在設計元素的時候，如果是用以下的方式繼承就會限定元件的可用性，就以 OOCSS 的概念是需要避免這樣的設計，盡可能不要讓元件被限制在特定的容器下。</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 盡量不要這麼做 */</span></span><br><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  …</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.card</span> <span class="selector-class">.btn</span> &#123;</span><br><span class="line">  …</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 好的作法 */</span></span><br><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  …</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.btn</span> &#123;</span><br><span class="line">  …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>上一回我們用結構與樣式分離的概念製作出一組按鈕，接下來在製作另一組模組 <code>card</code> ，按鈕模組除了可以獨立使用外，在 Card 內也是可正常運用。</p>
 
-<p data-height="300" data-theme-id="0" data-slug-hash="EKwQEJ" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="OOCSS (Demo 1)" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/EKwQEJ/" target="_blank" rel="noopener">OOCSS (Demo 1)</a> by Wcc723 (<a href="http://codepen.io/Wcc723" target="_blank" rel="noopener">@Wcc723</a>) on <a href="http://codepen.io" target="_blank" rel="noopener">CodePen</a>.</p>
+<p data-height="300" data-theme-id="0" data-slug-hash="EKwQEJ" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="OOCSS (Demo 1)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/EKwQEJ/">OOCSS (Demo 1)</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* card */</span></span><br><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">2rem</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ccc</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">3px</span> <span class="number">3px</span> <span class="number">3px</span> <span class="built_in">rgba</span>(black, .16);</span><br><span class="line">  .card-head &#123;</span><br><span class="line">    <span class="selector-tag">font-size</span>: 2<span class="selector-tag">rem</span>;</span><br><span class="line">    <span class="selector-tag">margin-bottom</span>: 1<span class="selector-tag">rem</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.card-body</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">list-style</span>: disc;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.card-body</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">100%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.card-footer</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: right;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* card */</span></span><br><span class="line"><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">2rem</span>;</span><br><span class="line">  <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#ccc</span>;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">2px</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">3px</span> <span class="number">3px</span> <span class="number">3px</span> <span class="built_in">rgba</span>(black, .<span class="number">16</span>);</span><br><span class="line">  .card-head &#123;</span><br><span class="line">    <span class="selector-tag">font-size</span>: 2<span class="selector-tag">rem</span>;</span><br><span class="line">    <span class="selector-tag">margin-bottom</span>: 1<span class="selector-tag">rem</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.card-body</span> <span class="selector-tag">ul</span> &#123;</span><br><span class="line">    <span class="attribute">margin-left</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">margin-right</span>: <span class="number">1em</span>;</span><br><span class="line">    <span class="attribute">list-style</span>: disc;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.card-body</span> <span class="selector-tag">img</span> &#123;</span><br><span class="line">    <span class="attribute">max-width</span>: <span class="number">100%</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="selector-class">.card-footer</span> &#123;</span><br><span class="line">    <span class="attribute">margin-top</span>: <span class="number">15px</span>;</span><br><span class="line">    <span class="attribute">text-align</span>: right;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>不過其中 <code>.card-body  ul</code> 這個 ul 就被限制住了，只有卡片內才能這樣顯示，此時就要思考是不是只有卡片內才需要這樣的 ul 顯示？或者將它拉出來更好？</p>
 <p>就當下這個設計，我們其實可以略作調整，將 <code>ul</code> 及 <code>img</code> 拉出來製作，然元件的容器與內容分離。</p>
 <p>這樣就學會了兩大 OOCSS 的觀念，而這兩個觀念下還有些細節可以注意，等到看完這幾天的介紹，就能掌握整個 CSS 模組的核心概念。</p>
@@ -282,7 +302,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -532,7 +552,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -553,11 +573,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -602,20 +622,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

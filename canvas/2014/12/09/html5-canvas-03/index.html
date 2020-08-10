@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>試試看Canvas (3)，Canvas 小畫家 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript">
+        <meta name="keywords" content="javascript" />
     
     
 
     <meta name="description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。 翻翻一年之前做的，才發現原來有很多很酷的東西，還好有寫成簡易的文章，讓現在再重新看可以很快瞭解，這篇是介紹用Canvas做小畫家，並且還可以下載下來的功能，有分為好幾段，這邊全部合併成一篇。">
-<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="試試看Canvas (3)，Canvas 小畫家">
 <meta property="og:url" content="https://wcc723.github.io/canvas/2014/12/09/html5-canvas-03/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。 翻翻一年之前做的，才發現原來有很多很酷的東西，還好有寫成簡易的文章，讓現在再重新看可以很快瞭解，這篇是介紹用Canvas做小畫家，並且還可以下載下來的功能，有分為好幾段，這邊全部合併成一篇。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/canvas/2014/12/09/html5-canvas-03/2014-12-09.png">
-<meta property="og:updated_time" content="2016-10-13T03:49:13.000Z">
+<meta property="article:published_time" content="2014-12-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-10-13T03:49:13.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="試試看Canvas (3)，Canvas 小畫家">
-<meta name="twitter:description" content="這篇也是前一個Blog的文章，最近在整理就一起拿出來。 翻翻一年之前做的，才發現原來有很多很酷的東西，還好有寫成簡易的文章，讓現在再重新看可以很快瞭解，這篇是介紹用Canvas做小畫家，並且還可以下載下來的功能，有分為好幾段，這邊全部合併成一篇。">
 <meta name="twitter:image" content="https://wcc723.github.io/canvas/2014/12/09/html5-canvas-03/2014-12-09.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,19 +31,31 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
     
-        <link href="/demoFile/css/2013-winter.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link href="/demoFile/css/2013-winter.css" rel="stylesheet" type="text/css" />
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -72,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -90,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -161,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -175,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/canvas/">canvas</a>
@@ -201,7 +220,7 @@ ga('send', 'pageview');
     <time datetime="2014-12-08T16:00:00.000Z" itemprop="datePublished">2014-12-09</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
 
             </div>
         
@@ -225,7 +244,7 @@ ga('send', 'pageview');
                 <p>這篇也是前一個Blog的文章，最近在整理就一起拿出來。</p>
 <p>翻翻一年之前做的，才發現原來有很多很酷的東西，還好有寫成簡易的文章，讓現在再重新看可以很快瞭解，這篇是介紹用Canvas做小畫家，並且還可以下載下來的功能，有分為好幾段，這邊全部合併成一篇。</p>
 <a id="more"></a>
-<p>參考：<a href="http://codepen.io/hossman/pen/AyaFl" target="_blank" rel="noopener">http://codepen.io/hossman/pen/AyaFl</a></p>
+<p>參考：<a target="_blank" rel="noopener" href="http://codepen.io/hossman/pen/AyaFl">http://codepen.io/hossman/pen/AyaFl</a></p>
 <h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>在開始介紹之前，先了解這個範例，這樣會更瞭解本篇所介紹的內容，Canvas範例的功能：</p>
 <ol>
 <li>繪製線段</li>
@@ -253,18 +272,18 @@ ga('send', 'pageview');
 </div>
 
 <h4 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h4><p>在看JS之前，先稍微看一下這個html，這HTML也和上面一樣，分為三個部分。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"demo"</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 調整色彩 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"color"</span>&gt;</span></span><br><span class="line">  R<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"red"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  G<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"green"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  B<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"blue"</span> <span class="attr">type</span>=<span class="string">"range"</span> <span class="attr">name</span>=<span class="string">"points"</span> <span class="attr">min</span>=<span class="string">"0"</span> <span class="attr">max</span>=<span class="string">"255"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"value"</span>&gt;</span></span><br><span class="line">    R<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"vred"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></span><br><span class="line">    G<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"vgreen"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></span><br><span class="line">    B<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"vblue"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">value</span>=<span class="string">"0"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 調整色彩end --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Canvas --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">"canvas"</span> <span class="attr">width</span>=<span class="string">"400"</span> <span class="attr">height</span>=<span class="string">"400"</span>&gt;</span></span><br><span class="line">    Sorry, your browser doesn't support the &amp;lt;canvas&amp;gt; element.</span><br><span class="line">  <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Canvas end --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 下載 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"save"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">download</span>=<span class="string">"aShareaDay.png"</span> <span class="attr">class</span>=<span class="string">"color-btn-green"</span>&gt;</span>Save Canvas<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 下載end --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h4 id="繪製線段"><a href="#繪製線段" class="headerlink" title="繪製線段"></a>繪製線段</h4><p>這篇是前幾篇的綜合，還有參考<a href="http://codepen.io/hossman/pen/AyaFl" target="_blank" rel="noopener">http://codepen.io/hossman/pen/AyaFl</a>所製作出來的。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;demo&quot;</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 調整色彩 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;color&quot;</span>&gt;</span></span><br><span class="line">  R<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;red&quot;</span> <span class="attr">type</span>=<span class="string">&quot;range&quot;</span> <span class="attr">name</span>=<span class="string">&quot;points&quot;</span> <span class="attr">min</span>=<span class="string">&quot;0&quot;</span> <span class="attr">max</span>=<span class="string">&quot;255&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  G<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;green&quot;</span> <span class="attr">type</span>=<span class="string">&quot;range&quot;</span> <span class="attr">name</span>=<span class="string">&quot;points&quot;</span> <span class="attr">min</span>=<span class="string">&quot;0&quot;</span> <span class="attr">max</span>=<span class="string">&quot;255&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span>&gt;</span></span><br><span class="line">  B<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;blue&quot;</span> <span class="attr">type</span>=<span class="string">&quot;range&quot;</span> <span class="attr">name</span>=<span class="string">&quot;points&quot;</span> <span class="attr">min</span>=<span class="string">&quot;0&quot;</span> <span class="attr">max</span>=<span class="string">&quot;255&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;value&quot;</span>&gt;</span></span><br><span class="line">    R<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;vred&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">    G<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;vgreen&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">    B<span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">&quot;vblue&quot;</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">value</span>=<span class="string">&quot;0&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 調整色彩end --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Canvas --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;canvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;400&quot;</span> <span class="attr">height</span>=<span class="string">&quot;400&quot;</span>&gt;</span></span><br><span class="line">    Sorry, your browser doesn&#x27;t support the <span class="symbol">&amp;lt;</span>canvas<span class="symbol">&amp;gt;</span> element.</span><br><span class="line">  <span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- Canvas end --&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 下載 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">&quot;save&quot;</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">download</span>=<span class="string">&quot;aShareaDay.png&quot;</span> <span class="attr">class</span>=<span class="string">&quot;color-btn-green&quot;</span>&gt;</span>Save Canvas<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!-- 下載end --&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="繪製線段"><a href="#繪製線段" class="headerlink" title="繪製線段"></a>繪製線段</h4><p>這篇是前幾篇的綜合，還有參考<a target="_blank" rel="noopener" href="http://codepen.io/hossman/pen/AyaFl">http://codepen.io/hossman/pen/AyaFl</a>所製作出來的。</p>
 <p>這一段的重點在於，取得滑鼠的座標<code>getMousePos(canvas, evt)</code>，先取得滑鼠在畫布上的座標，在每次滑鼠移動時，都會繪製在畫布上，然後再放開滑鼠時，離開偵聽的事件。</p>
 <h4 id="下載"><a href="#下載" class="headerlink" title="下載"></a>下載</h4><p>Html5 的 a 有新的屬性download，可以將此標籤預設為下載的功能，並且預設檔名，另外在canvas可以利用toDataURL()把canvas轉成data:image。。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- html5 新增download，可以用來預設下載檔名 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"save"</span> <span class="attr">href</span>=<span class="string">"#"</span> <span class="attr">download</span>=<span class="string">"dl.png"</span> &gt;</span>Save Canvas<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- html5 新增download，可以用來預設下載檔名 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">&quot;save&quot;</span> <span class="attr">href</span>=<span class="string">&quot;#&quot;</span> <span class="attr">download</span>=<span class="string">&quot;dl.png&quot;</span> &gt;</span>Save Canvas<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p><em>如果把產生出來的src貼在網址列，也能產生完整的圖片。</em></p>
-<p>data:image參考:<a href="http://rritw.com/a/bianchengyuyan/C__/20131018/434112.html" target="_blank" rel="noopener">http://rritw.com/a/bianchengyuyan/C__/20131018/434112.html</a></p>
+<p>data:image參考:<a target="_blank" rel="noopener" href="http://rritw.com/a/bianchengyuyan/C__/20131018/434112.html">http://rritw.com/a/bianchengyuyan/C__/20131018/434112.html</a></p>
 <h2 id="調整色彩"><a href="#調整色彩" class="headerlink" title="調整色彩"></a>調整色彩</h2><p>接下來在抓取那三個scroll bar的rgb值，將它直接寫入到<code>ctx.strokeStyle</code>，<code>strokeStyle</code>是Canvas上的筆畫樣式，這樣就大功告成了。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">'.color input'</span>).change(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    r = $(<span class="string">'#red'</span>).val();</span><br><span class="line">    g = $(<span class="string">'#green'</span>).val();</span><br><span class="line">    b = $(<span class="string">'#blue'</span>).val();</span><br><span class="line">    changeColor(r,g,b);</span><br><span class="line">    <span class="comment">//取出input中的數值</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params">r,g,b</span>)</span>&#123;</span><br><span class="line">  ctx.strokeStyle = <span class="string">"rgb("</span>+r+<span class="string">","</span>+g+<span class="string">","</span>+b+<span class="string">")"</span>  </span><br><span class="line">  <span class="comment">//將數值寫入到 strokeStyle內即可</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<h2 id="完整程式碼"><a href="#完整程式碼" class="headerlink" title="完整程式碼"></a>完整程式碼</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _canvas = <span class="built_in">document</span>.getElementById(<span class="string">'canvas'</span>);</span><br><span class="line"><span class="keyword">var</span> ctx = _canvas.getContext(<span class="string">'2d'</span>);  </span><br><span class="line"></span><br><span class="line">$(<span class="string">'.color input'</span>).change(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  r = $(<span class="string">'#red'</span>).val();</span><br><span class="line">  g = $(<span class="string">'#green'</span>).val();</span><br><span class="line">  b = $(<span class="string">'#blue'</span>).val();</span><br><span class="line">  changeColor(r,g,b);</span><br><span class="line">  <span class="comment">//取出input中的數值</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params">r,g,b</span>)</span>&#123;</span><br><span class="line">  colors = &#123;</span><br><span class="line">    red : r,</span><br><span class="line">    green : g,</span><br><span class="line">    blue : b</span><br><span class="line">  &#125;</span><br><span class="line">  $.each(colors, <span class="function"><span class="keyword">function</span>(<span class="params">_color, _value</span>) </span>&#123;</span><br><span class="line">    $(<span class="string">'#v'</span>+_color).val(_value);</span><br><span class="line">  &#125;);</span><br><span class="line">  ctx.strokeStyle = <span class="string">"rgb("</span>+r+<span class="string">","</span>+g+<span class="string">","</span>+b+<span class="string">")"</span> ;</span><br><span class="line">  <span class="comment">//將顏色的值寫到ctx.strokeStyle即可</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> y = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMousePos</span>(<span class="params">canvas, evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> rect = canvas.getBoundingClientRect();</span><br><span class="line">  <span class="comment">//getBoundingClientRect 取得物件完整座標資訊，包含寬高等</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    x: evt.clientX - rect.left,</span><br><span class="line">    y: evt.clientY - rect.top</span><br><span class="line">  &#125;;   </span><br><span class="line">  <span class="comment">//這個function將會傳回滑鼠在 _canvas上的座標</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mouseMove</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> mousePos = getMousePos(_canvas, evt);</span><br><span class="line">  <span class="comment">//透過getMousePos function 去取得滑鼠座標</span></span><br><span class="line">  <span class="comment">//mousePos 是一個物件，包含x和y的值</span></span><br><span class="line">  ctx.lineTo(mousePos.x, mousePos.y);</span><br><span class="line">  <span class="comment">//利用取回的值畫線</span></span><br><span class="line">  ctx.stroke();</span><br><span class="line">  <span class="comment">//畫!</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">canvas.addEventListener(<span class="string">'mousedown'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> mousePos = getMousePos(_canvas, evt);</span><br><span class="line">  <span class="comment">//從按下去就會執行第一次的座標取得</span></span><br><span class="line">  evt.preventDefault();</span><br><span class="line">  ctx.beginPath();</span><br><span class="line">  <span class="comment">//建立path物件</span></span><br><span class="line">  ctx.moveTo(mousePos.x, mousePos.y);  </span><br><span class="line">  <span class="comment">//每次的點用moveTo去區別開，如果用lineTo會連在一起  </span></span><br><span class="line">  canvas.addEventListener(<span class="string">'mousemove'</span>, mouseMove, <span class="literal">false</span>);</span><br><span class="line">  <span class="comment">//mousemove的偵聽也在按下去的同時開啟</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">canvas.addEventListener(<span class="string">'mouseup'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  canvas.removeEventListener(<span class="string">'mousemove'</span>, mouseMove, <span class="literal">false</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"><span class="comment">//如果滑鼠放開，將會停止mouseup的偵聽</span></span><br><span class="line"></span><br><span class="line">$(<span class="string">'#save'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _url = _canvas.toDataURL();</span><br><span class="line">  <span class="comment">//利用toDataURL() 把canvas轉成data:image</span></span><br><span class="line">  <span class="keyword">this</span>.href = _url;</span><br><span class="line">  <span class="comment">//再把href載入上面的Data:image</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">$(<span class="string">&#x27;.color input&#x27;</span>).change(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    r = $(<span class="string">&#x27;#red&#x27;</span>).val();</span><br><span class="line">    g = $(<span class="string">&#x27;#green&#x27;</span>).val();</span><br><span class="line">    b = $(<span class="string">&#x27;#blue&#x27;</span>).val();</span><br><span class="line">    changeColor(r,g,b);</span><br><span class="line">    <span class="comment">//取出input中的數值</span></span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params">r,g,b</span>)</span>&#123;</span><br><span class="line">  ctx.strokeStyle = <span class="string">&quot;rgb(&quot;</span>+r+<span class="string">&quot;,&quot;</span>+g+<span class="string">&quot;,&quot;</span>+b+<span class="string">&quot;)&quot;</span>  </span><br><span class="line">  <span class="comment">//將數值寫入到 strokeStyle內即可</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="完整程式碼"><a href="#完整程式碼" class="headerlink" title="完整程式碼"></a>完整程式碼</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> _canvas = <span class="built_in">document</span>.getElementById(<span class="string">&#x27;canvas&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> ctx = _canvas.getContext(<span class="string">&#x27;2d&#x27;</span>);  </span><br><span class="line"></span><br><span class="line">$(<span class="string">&#x27;.color input&#x27;</span>).change(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  r = $(<span class="string">&#x27;#red&#x27;</span>).val();</span><br><span class="line">  g = $(<span class="string">&#x27;#green&#x27;</span>).val();</span><br><span class="line">  b = $(<span class="string">&#x27;#blue&#x27;</span>).val();</span><br><span class="line">  changeColor(r,g,b);</span><br><span class="line">  <span class="comment">//取出input中的數值</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">changeColor</span>(<span class="params">r,g,b</span>)</span>&#123;</span><br><span class="line">  colors = &#123;</span><br><span class="line">    red : r,</span><br><span class="line">    green : g,</span><br><span class="line">    blue : b</span><br><span class="line">  &#125;</span><br><span class="line">  $.each(colors, <span class="function"><span class="keyword">function</span>(<span class="params">_color, _value</span>) </span>&#123;</span><br><span class="line">    $(<span class="string">&#x27;#v&#x27;</span>+_color).val(_value);</span><br><span class="line">  &#125;);</span><br><span class="line">  ctx.strokeStyle = <span class="string">&quot;rgb(&quot;</span>+r+<span class="string">&quot;,&quot;</span>+g+<span class="string">&quot;,&quot;</span>+b+<span class="string">&quot;)&quot;</span> ;</span><br><span class="line">  <span class="comment">//將顏色的值寫到ctx.strokeStyle即可</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> x = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">var</span> y = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMousePos</span>(<span class="params">canvas, evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> rect = canvas.getBoundingClientRect();</span><br><span class="line">  <span class="comment">//getBoundingClientRect 取得物件完整座標資訊，包含寬高等</span></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    x: evt.clientX - rect.left,</span><br><span class="line">    y: evt.clientY - rect.top</span><br><span class="line">  &#125;;   </span><br><span class="line">  <span class="comment">//這個function將會傳回滑鼠在 _canvas上的座標</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">mouseMove</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> mousePos = getMousePos(_canvas, evt);</span><br><span class="line">  <span class="comment">//透過getMousePos function 去取得滑鼠座標</span></span><br><span class="line">  <span class="comment">//mousePos 是一個物件，包含x和y的值</span></span><br><span class="line">  ctx.lineTo(mousePos.x, mousePos.y);</span><br><span class="line">  <span class="comment">//利用取回的值畫線</span></span><br><span class="line">  ctx.stroke();</span><br><span class="line">  <span class="comment">//畫!</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">canvas.addEventListener(<span class="string">&#x27;mousedown&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params">evt</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> mousePos = getMousePos(_canvas, evt);</span><br><span class="line">  <span class="comment">//從按下去就會執行第一次的座標取得</span></span><br><span class="line">  evt.preventDefault();</span><br><span class="line">  ctx.beginPath();</span><br><span class="line">  <span class="comment">//建立path物件</span></span><br><span class="line">  ctx.moveTo(mousePos.x, mousePos.y);  </span><br><span class="line">  <span class="comment">//每次的點用moveTo去區別開，如果用lineTo會連在一起  </span></span><br><span class="line">  canvas.addEventListener(<span class="string">&#x27;mousemove&#x27;</span>, mouseMove, <span class="literal">false</span>);</span><br><span class="line">  <span class="comment">//mousemove的偵聽也在按下去的同時開啟</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">canvas.addEventListener(<span class="string">&#x27;mouseup&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  canvas.removeEventListener(<span class="string">&#x27;mousemove&#x27;</span>, mouseMove, <span class="literal">false</span>);</span><br><span class="line">&#125;, <span class="literal">false</span>);</span><br><span class="line"><span class="comment">//如果滑鼠放開，將會停止mouseup的偵聽</span></span><br><span class="line"></span><br><span class="line">$(<span class="string">&#x27;#save&#x27;</span>).on(<span class="string">&#x27;click&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _url = _canvas.toDataURL();</span><br><span class="line">  <span class="comment">//利用toDataURL() 把canvas轉成data:image</span></span><br><span class="line">  <span class="built_in">this</span>.href = _url;</span><br><span class="line">  <span class="comment">//再把href載入上面的Data:image</span></span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p>在畫個小新，滑鼠挺有挑戰性的…。</p>
-<p><img src="/images/2014-12-09.png" alt></p>
+<p><img src="/images/2014-12-09.png" alt=""></p>
 <p>雖然是一些舊的文章，但現在回頭過來看，還是有許多有趣的點，甚至可以用這些概念，配合現在會的技術，發展出更有趣的玩具。</p>
 
 <script>
@@ -380,7 +399,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -630,7 +649,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -651,11 +670,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -700,20 +719,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

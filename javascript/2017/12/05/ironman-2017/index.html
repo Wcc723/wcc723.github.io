@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：執行環境與堆疊 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
     <meta name="description" content="JavaScript 一次只能做一件事情，他會依據 執行環境 (Execution Context) 來一一執行工作內容，本篇系列文會用舉例的方式，讓大家用簡單的方式瞭解這些艱深詞彙。 全域執行環境與函式在一開始會登記一個函式在全域環境下(global context)，然後這個全域環境下可以登記其他函式，然後每一段執行環境下會有屬於他的變數以及物件，如果找不到該執行環境的變數或物件，則會向外層尋">
-<meta name="keywords" content="javascript,js,ironman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：執行環境與堆疊">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/05/ironman-2017/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="JavaScript 一次只能做一件事情，他會依據 執行環境 (Execution Context) 來一一執行工作內容，本篇系列文會用舉例的方式，讓大家用簡單的方式瞭解這些艱深詞彙。 全域執行環境與函式在一開始會登記一個函式在全域環境下(global context)，然後這個全域環境下可以登記其他函式，然後每一段執行環境下會有屬於他的變數以及物件，如果找不到該執行環境的變數或物件，則會向外層尋">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-cover.jpg?alt=media&token=b19f2731-7567-4d4c-a809-df264b8f04ee">
-<meta property="og:updated_time" content="2017-12-05T01:49:59.820Z">
+<meta property="article:published_time" content="2017-12-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-05T01:49:59.820Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：執行環境與堆疊">
-<meta name="twitter:description" content="JavaScript 一次只能做一件事情，他會依據 執行環境 (Execution Context) 來一一執行工作內容，本篇系列文會用舉例的方式，讓大家用簡單的方式瞭解這些艱深詞彙。 全域執行環境與函式在一開始會登記一個函式在全域環境下(global context)，然後這個全域環境下可以登記其他函式，然後每一段執行環境下會有屬於他的變數以及物件，如果找不到該執行環境的變數或物件，則會向外層尋">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-cover.jpg?alt=media&token=b19f2731-7567-4d4c-a809-df264b8f04ee">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-04T16:00:00.000Z" itemprop="datePublished">2017-12-05</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-cover.jpg?alt=media&token=b19f2731-7567-4d4c-a809-df264b8f04ee" rel="gallery_ck870gcih00kdmtru7rdtc3pj">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-cover.jpg?alt=media&token=b19f2731-7567-4d4c-a809-df264b8f04ee" rel="gallery_ckdo9wd5z00lpy9ru3ycngwse noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-cover.jpg?alt=media&token=b19f2731-7567-4d4c-a809-df264b8f04ee" itemprop="image" />
     </a>
     
@@ -246,7 +267,7 @@ ga('send', 'pageview');
 </ul>
 </li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doMorningWork</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 從此 function 的大括號是另一個執行環境</span></span><br><span class="line">  <span class="keyword">var</span> mom = <span class="string">"老媽"</span>;</span><br><span class="line">  <span class="keyword">var</span> breakfast = <span class="string">"麵包"</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 說早安執行環境</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'hi '</span> + mom;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">eatBreakfast</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 吃早餐執行環境</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'吃 '</span> + breakfast;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'早安,'</span> + sayHi() + <span class="string">', '</span> + eatBreakfast());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">doMorningWork();   <span class="comment">// 執行</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">doMorningWork</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 從此 function 的大括號是另一個執行環境</span></span><br><span class="line">  <span class="keyword">var</span> mom = <span class="string">&quot;老媽&quot;</span>;</span><br><span class="line">  <span class="keyword">var</span> breakfast = <span class="string">&quot;麵包&quot;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 說早安執行環境</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;hi &#x27;</span> + mom;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">eatBreakfast</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 吃早餐執行環境</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;吃 &#x27;</span> + breakfast;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;早安,&#x27;</span> + sayHi() + <span class="string">&#x27;, &#x27;</span> + eatBreakfast());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">doMorningWork();   <span class="comment">// 執行</span></span><br></pre></td></tr></table></figure>
 <p>這個地方我們得到了三個執行環境(Execution Context)，其中一個是 (global context)，另外兩個則是在 global 下的 <code>doMorningWork</code> 內。</p>
 <blockquote>
 <p><strong>故事說明</strong>：小明得了一個症狀，每天早上都是全新的一天，他會忘記先前的人事物(簡直電影故事劇情，細節不重要)，他會將每天該做的事情記錄下來，也分為主要任務及主要任務下的次要任務，並且把任務的相關人等寫下，並且一件一件事情完成它 (小明只有一個，一次只能做一件事情)。</p>
@@ -268,14 +289,14 @@ ga('send', 'pageview');
 </ol>
 <p>要做的事情往後會越來越多，小明會把要做的事情存在腦內，然後依據順序來執行。</p>
 <p>糟糕的事情是，遇到他不知道該怎麼做下去的事情，他會卡在那邊一整天 (<code>xxx is not defined</code>)。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-01.jpg?alt=media&amp;token=012167a0-4b4d-4900-a5ca-48e8998ae819" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-01.jpg?alt=media&amp;token=012167a0-4b4d-4900-a5ca-48e8998ae819" alt=""></p>
 <blockquote>
 <p>小明的筆記本與 JavaScript 有著接近的邏輯，有著一件一件要做的事情等待他去完成。</p>
 </blockquote>
 <h2 id="執行堆疊"><a href="#執行堆疊" class="headerlink" title="執行堆疊"></a>執行堆疊</h2><p>在這個故事中也可以說明 JavaScript 的執行堆疊，一開始會先進入 global 執行環境，接下來再進入內層的環境，執行完的堆疊就會被釋放掉 (function 內的 return 即是完成)，然後逐步地完成所有堆疊，最後將控制權交還給 Global。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-02.jpg?alt=media&amp;token=e87ef86d-0ced-4556-b6f8-455ffa39dcb1" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-02.jpg?alt=media&amp;token=e87ef86d-0ced-4556-b6f8-455ffa39dcb1" alt=""></p>
 <p>每個執行堆疊都會一層一層地向內執行，等到都執行完以後才會回到外層執行下一個任務。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-03.jpg?alt=media&amp;token=38486c48-eb61-4096-a492-20a8cb240457" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-03.jpg?alt=media&amp;token=38486c48-eb61-4096-a492-20a8cb240457" alt=""></p>
 <p>這段概念影響了什麼？</p>
 <ol>
 <li>JavaScript 由外而內執行，執行完才會進行下一個動作</li>
@@ -312,7 +333,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -562,7 +583,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -583,11 +604,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -632,20 +653,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

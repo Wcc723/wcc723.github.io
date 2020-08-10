@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：JavaScript Await 與 Async | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
     <meta name="description" content="不知道上一篇大家對於 Promise 概念如何，本篇介紹的內容與 Promise 依然有相關性，因為這兩者就是建構於 Promise 之上的，如果直接從原始碼看可能不是很好瞭解這語法怎麼使用，不過可以先直接用 Google 翻譯了解大概意思：  await: 等待 async: 非同步  Await 等待Promise 中完成會透過 then 來回傳，在 await 中他則是會等待這段函式完成後在">
-<meta name="keywords" content="javascript,js,ironman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：JavaScript Await 與 Async">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/30/javascript-async-await/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="不知道上一篇大家對於 Promise 概念如何，本篇介紹的內容與 Promise 依然有相關性，因為這兩者就是建構於 Promise 之上的，如果直接從原始碼看可能不是很好瞭解這語法怎麼使用，不過可以先直接用 Google 翻譯了解大概意思：  await: 等待 async: 非同步  Await 等待Promise 中完成會透過 then 來回傳，在 await 中他則是會等待這段函式完成後在">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&token=018210e4-496a-4b6a-b549-718c10988541">
-<meta property="og:updated_time" content="2017-12-30T02:52:43.878Z">
+<meta property="article:published_time" content="2017-12-29T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-30T02:52:43.878Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：JavaScript Await 與 Async">
-<meta name="twitter:description" content="不知道上一篇大家對於 Promise 概念如何，本篇介紹的內容與 Promise 依然有相關性，因為這兩者就是建構於 Promise 之上的，如果直接從原始碼看可能不是很好瞭解這語法怎麼使用，不過可以先直接用 Google 翻譯了解大概意思：  await: 等待 async: 非同步  Await 等待Promise 中完成會透過 then 來回傳，在 await 中他則是會等待這段函式完成後在">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&token=018210e4-496a-4b6a-b549-718c10988541">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-29T16:00:00.000Z" itemprop="datePublished">2017-12-30</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&token=018210e4-496a-4b6a-b549-718c10988541" rel="gallery_ck870gcmp00v4mtru1hkj2rbc">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&token=018210e4-496a-4b6a-b549-718c10988541" rel="gallery_ckdo9wd6z00o5y9ru8d3u7uwu noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&token=018210e4-496a-4b6a-b549-718c10988541" itemprop="image" />
     </a>
     
@@ -238,7 +259,7 @@ ga('send', 'pageview');
 <blockquote>
 <p>小明開始跑後，並不會影響其它運行。</p>
 </blockquote>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> runPromise = <span class="function">(<span class="params">someone, timer, success = <span class="literal">true</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;someone&#125;</span> 開始跑開始`</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 傳入 resolve 與 reject，表示資料成功與失敗</span></span><br><span class="line">    <span class="keyword">if</span> (success) &#123;</span><br><span class="line">      setTimeout(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 3 秒時間後，透過 resolve 來表示完成</span></span><br><span class="line">        resolve(<span class="string">`<span class="subst">$&#123;someone&#125;</span> 跑 <span class="subst">$&#123;timer <span class="regexp">/ 1000&#125; 秒時間(fulfilled)`);</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">      &#125;, timer);</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">    &#125; else &#123;</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">      /</span><span class="regexp">/ 回傳失敗</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">      reject(`$&#123;someone&#125; 跌倒失敗(rejected)`)</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">    &#125;</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">  &#125;);</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">&#125;</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp"></span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">/</span><span class="regexp">/ 此段函式並不會影響其它函示的執行</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">runPromise('小明', 3000).then(someone =&gt; &#123;</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">  console.log('小明', someone)</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">&#125;);</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">/</span><span class="regexp">/ 以下這段 console 會在 promise 結束前就執行</span></span></span></span><br><span class="line"><span class="string"><span class="subst"><span class="regexp">console.log('這裡執行了一段 console');</span></span></span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> runPromise = <span class="function">(<span class="params">someone, timer, success = <span class="literal">true</span></span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;someone&#125;</span> 開始跑開始`</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 傳入 resolve 與 reject，表示資料成功與失敗</span></span><br><span class="line">    <span class="keyword">if</span> (success) &#123;</span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 3 秒時間後，透過 resolve 來表示完成</span></span><br><span class="line">        resolve(<span class="string">`<span class="subst">$&#123;someone&#125;</span> 跑 <span class="subst">$&#123;timer / <span class="number">1000</span>&#125;</span> 秒時間(fulfilled)`</span>);</span><br><span class="line">      &#125;, timer);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="comment">// 回傳失敗</span></span><br><span class="line">      reject(<span class="string">`<span class="subst">$&#123;someone&#125;</span> 跌倒失敗(rejected)`</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 此段函式並不會影響其它函示的執行</span></span><br><span class="line">runPromise(<span class="string">&#x27;小明&#x27;</span>, <span class="number">3000</span>).then(<span class="function"><span class="params">someone</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;小明&#x27;</span>, someone)</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 以下這段 console 會在 promise 結束前就執行</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;這裡執行了一段 console&#x27;</span>);</span><br></pre></td></tr></table></figure>
 <p>Await 顧名思義就是等待，在這個 Promise 結束前後面的程式碼都無法被執行。所以以下結果會出現：</p>
 <ul>
 <li>立即執行：小明 開始跑開始</li>
@@ -246,27 +267,27 @@ ga('send', 'pageview');
 <li>立即接續執行：漂亮阿姨 開始跑開始</li>
 <li>2.5 秒後：跑完了: 漂亮阿姨 跑 2.5 秒時間(fulfilled)</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此段函示會中斷其它函式的運行</span></span><br><span class="line"><span class="keyword">let</span> mingRun = <span class="keyword">await</span> runPromise(<span class="string">'小明'</span>, <span class="number">2000</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'跑完了:'</span>, mingRun);</span><br><span class="line"><span class="keyword">let</span> auntieRun = <span class="keyword">await</span> runPromise(<span class="string">'漂亮阿姨'</span>, <span class="number">2500</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'跑完了:'</span>, auntieRun);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 此段函示會中斷其它函式的運行</span></span><br><span class="line"><span class="keyword">let</span> mingRun = <span class="keyword">await</span> runPromise(<span class="string">&#x27;小明&#x27;</span>, <span class="number">2000</span>)</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;跑完了:&#x27;</span>, mingRun);</span><br><span class="line"><span class="keyword">let</span> auntieRun = <span class="keyword">await</span> runPromise(<span class="string">&#x27;漂亮阿姨&#x27;</span>, <span class="number">2500</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;跑完了:&#x27;</span>, auntieRun);</span><br></pre></td></tr></table></figure>
 <p>以上範例並不是像 Promise 中的 <code>race()</code> 或 <code>all()</code> 的全部一起執行的方式，而是一段執行後才執行下一段。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&amp;token=018210e4-496a-4b6a-b549-718c10988541" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27.jpg?alt=media&amp;token=018210e4-496a-4b6a-b549-718c10988541" alt=""></p>
 <blockquote>
 <p>在 await 特性下，會等 promise 任務完成後才會讓程式繼續往下執行，所以小明沒有跑完以前，漂亮阿姨都會在原地等待。</p>
 </blockquote>
 <h3 id="同時進行"><a href="#同時進行" class="headerlink" title="同時進行"></a>同時進行</h3><p>雖然 <code>await</code> 是逐一執行的概念，不過它也是能夠與 <code>Promise.all()</code> 同時使用。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> allRun = <span class="keyword">await</span> <span class="built_in">Promise</span>.all([runPromise(<span class="string">'小明'</span>, <span class="number">3000</span>), runPromise(<span class="string">'漂亮阿姨'</span>, <span class="number">2500</span>)]);</span><br><span class="line"><span class="built_in">console</span>.log(allRun);</span><br><span class="line"><span class="comment">// ["小明 跑 3 秒時間(fulfilled)", "漂亮阿姨 跑 2.5 秒時間(fulfilled)"]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> allRun = <span class="keyword">await</span> <span class="built_in">Promise</span>.all([runPromise(<span class="string">&#x27;小明&#x27;</span>, <span class="number">3000</span>), runPromise(<span class="string">&#x27;漂亮阿姨&#x27;</span>, <span class="number">2500</span>)]);</span><br><span class="line"><span class="built_in">console</span>.log(allRun);</span><br><span class="line"><span class="comment">// [&quot;小明 跑 3 秒時間(fulfilled)&quot;, &quot;漂亮阿姨 跑 2.5 秒時間(fulfilled)&quot;]</span></span><br></pre></td></tr></table></figure>
 <h3 id="錯誤"><a href="#錯誤" class="headerlink" title="錯誤"></a>錯誤</h3><p>出錯了會怎樣？</p>
 <blockquote>
 <p>小明如果跌倒，漂亮阿姨會無法得知他完成，於是在原地苦苦的等待。</p>
 </blockquote>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27_1.jpg?alt=media&amp;token=c29abc73-2520-4aac-a49f-8892534675fb" alt></p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mingRun = <span class="keyword">await</span> runPromise(<span class="string">'小明'</span>, <span class="number">2000</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="comment">// 小明 開始跑開始</span></span><br><span class="line"><span class="comment">// 小明 跌倒失敗(rejected)</span></span><br><span class="line"><span class="comment">// 以下錯誤不執行</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">'跑完了:'</span>, mingRun);</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27_1.jpg?alt=media&amp;token=c29abc73-2520-4aac-a49f-8892534675fb" alt=""></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> mingRun = <span class="keyword">await</span> runPromise(<span class="string">&#x27;小明&#x27;</span>, <span class="number">2000</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="comment">// 小明 開始跑開始</span></span><br><span class="line"><span class="comment">// 小明 跌倒失敗(rejected)</span></span><br><span class="line"><span class="comment">// 以下錯誤不執行</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;跑完了:&#x27;</span>, mingRun);</span><br></pre></td></tr></table></figure>
 <p>喔嗚，如果遇到錯誤就會造成停止讓後方程式碼不執行，這樣的話 await 還挺危險的 :(。但其實我們可以從許多文件發現 <code>await/async</code> 都是同時使用的，await 的錯誤會讓 async 拋出錯誤，而不會造成終止。</p>
 <h2 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h2><p>在解決上述問題之前，我們先來了解一下 <code>async</code>，它的結構非常類似 Promise，只不過他能夠將 await 包在裡面，被包在裡面的 await 就如同先前的結構一樣，他會依序地執行。</p>
 <p><code>async</code> 本身也是類似 Promise，在正確執行的情況下 return 會傳回 resolved 的狀態，也可以使用 then 來接收正確的資料。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> asyncRun = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> mingRun = <span class="keyword">await</span> runPromise(<span class="string">'小明'</span>, <span class="number">2000</span>);</span><br><span class="line">  <span class="keyword">let</span> auntieRun = <span class="keyword">await</span> runPromise(<span class="string">'漂亮阿姨'</span>, <span class="number">2500</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;mingRun&#125;</span>, <span class="subst">$&#123;auntieRun&#125;</span>`</span></span><br><span class="line">&#125;</span><br><span class="line">asyncRun().then(<span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(string)</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(string)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> asyncRun = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> mingRun = <span class="keyword">await</span> runPromise(<span class="string">&#x27;小明&#x27;</span>, <span class="number">2000</span>);</span><br><span class="line">  <span class="keyword">let</span> auntieRun = <span class="keyword">await</span> runPromise(<span class="string">&#x27;漂亮阿姨&#x27;</span>, <span class="number">2500</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;mingRun&#125;</span>, <span class="subst">$&#123;auntieRun&#125;</span>`</span></span><br><span class="line">&#125;</span><br><span class="line">asyncRun().then(<span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(string)</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(string)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <h3 id="錯誤-1"><a href="#錯誤-1" class="headerlink" title="錯誤"></a>錯誤</h3><p>當 <code>async</code> 被呼叫時他會回傳一個 <code>Promise</code>，如果正確的運行這個 Promise 會回傳一個 <code>resolved</code> (正確的運行)，<strong>如果函式無法正確地完成，則會拋出錯誤的 <code>rejected</code></strong>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> asyncRunFail = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> mingRun = <span class="keyword">await</span> runPromise(<span class="string">'小明'</span>, <span class="number">2000</span>, <span class="literal">false</span>);</span><br><span class="line">  <span class="keyword">let</span> auntieRun = <span class="keyword">await</span> runPromise(<span class="string">'漂亮阿姨'</span>, <span class="number">2500</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;mingRun&#125;</span>, <span class="subst">$&#123;auntieRun&#125;</span>`</span></span><br><span class="line">&#125;</span><br><span class="line">asyncRunFail().then(<span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(string);</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(response);</span><br><span class="line">  <span class="comment">// 小明 跌倒失敗(rejected)</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27_2.jpg?alt=media&amp;token=8187d38d-ad27-42e4-a31a-4a2a32d984cf" alt></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> asyncRunFail = <span class="keyword">async</span> () =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> mingRun = <span class="keyword">await</span> runPromise(<span class="string">&#x27;小明&#x27;</span>, <span class="number">2000</span>, <span class="literal">false</span>);</span><br><span class="line">  <span class="keyword">let</span> auntieRun = <span class="keyword">await</span> runPromise(<span class="string">&#x27;漂亮阿姨&#x27;</span>, <span class="number">2500</span>);</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`<span class="subst">$&#123;mingRun&#125;</span>, <span class="subst">$&#123;auntieRun&#125;</span>`</span></span><br><span class="line">&#125;</span><br><span class="line">asyncRunFail().then(<span class="function"><span class="params">string</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(string);</span><br><span class="line">&#125;).catch(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(response);</span><br><span class="line">  <span class="comment">// 小明 跌倒失敗(rejected)</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_27_2.jpg?alt=media&amp;token=8187d38d-ad27-42e4-a31a-4a2a32d984cf" alt=""></p>
 <p>這段錯誤就如同我們在使用 Promise 一樣，可以使用 <code>catch()</code> 得知小明跌倒了，且並不會影響到其他函式的運行，在這樣包裝下我們可以在 async 函式內做更多的 Promise 變化，並且程式碼更為精簡且容易閱讀。</p>
 
             </div>
@@ -298,7 +319,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -548,7 +569,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -569,11 +590,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -618,20 +639,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

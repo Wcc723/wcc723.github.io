@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>Compass 替代方案(1) - 更快速的 Sass | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="sass,gulp,compass">
+        <meta name="keywords" content="sass,gulp,compass" />
     
     
 
     <meta name="description" content="Compass 是一套非常優秀的 Sass 擴充套件，從剛開始學 Sass 就一直用到現在，許多優點是一般 CSS 或 Sass 較難達到的，如：  CSS Sprites：可以將圖片轉成Sprite，並提供 CSS class。 CSS3 mixin：prefix 啊～ Vertical Rhythm：CSS 文字排版的救星。 image-url, image-size：圖片路徑的取代以及取得圖">
-<meta name="keywords" content="sass,gulp,compass">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Compass 替代方案(1) - 更快速的 Sass">
 <meta property="og:url" content="https://wcc723.github.io/sass/2015/12/20/replace-compass-with-node-sass/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="Compass 是一套非常優秀的 Sass 擴充套件，從剛開始學 Sass 就一直用到現在，許多優點是一般 CSS 或 Sass 較難達到的，如：  CSS Sprites：可以將圖片轉成Sprite，並提供 CSS class。 CSS3 mixin：prefix 啊～ Vertical Rhythm：CSS 文字排版的救星。 image-url, image-size：圖片路徑的取代以及取得圖">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/sass/2015/12/20/replace-compass-with-node-sass/2015/12/screen_shot_2015-12-20-01.png">
-<meta property="og:updated_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:published_time" content="2015-12-19T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="sass">
+<meta property="article:tag" content="gulp">
+<meta property="article:tag" content="compass">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Compass 替代方案(1) - 更快速的 Sass">
-<meta name="twitter:description" content="Compass 是一套非常優秀的 Sass 擴充套件，從剛開始學 Sass 就一直用到現在，許多優點是一般 CSS 或 Sass 較難達到的，如：  CSS Sprites：可以將圖片轉成Sprite，並提供 CSS class。 CSS3 mixin：prefix 啊～ Vertical Rhythm：CSS 文字排版的救星。 image-url, image-size：圖片路徑的取代以及取得圖">
 <meta name="twitter:image" content="https://wcc723.github.io/sass/2015/12/20/replace-compass-with-node-sass/2015/12/screen_shot_2015-12-20-01.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/sass/">sass</a>
@@ -199,7 +220,7 @@ ga('send', 'pageview');
     <time datetime="2015-12-19T16:00:00.000Z" itemprop="datePublished">2015-12-20</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/compass/">compass</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sass/">sass</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/compass/" rel="tag">compass</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sass/" rel="tag">sass</a></li></ul>
 
             </div>
         
@@ -220,7 +241,7 @@ ga('send', 'pageview');
                 </div>
             
             <div class="need-gallery">
-                <p><a href="https://github.com/Compass/compass/" target="_blank" rel="noopener">Compass</a> 是一套非常優秀的 Sass 擴充套件，從剛開始學 Sass 就一直用到現在，許多優點是一般 CSS 或 Sass 較難達到的，如：</p>
+                <p><a target="_blank" rel="noopener" href="https://github.com/Compass/compass/">Compass</a> 是一套非常優秀的 Sass 擴充套件，從剛開始學 Sass 就一直用到現在，許多優點是一般 CSS 或 Sass 較難達到的，如：</p>
 <ol>
 <li>CSS Sprites：可以將圖片轉成Sprite，並提供 CSS class。</li>
 <li>CSS3 mixin：prefix 啊～</li>
@@ -246,10 +267,10 @@ ga('send', 'pageview');
 <li>clearfix, inline-block 等現成的mixin：還未解決，靠 Sass 的架構去處理。</li>
 </ol>
 <p>目前這些解決方案都還在研究中，也會分幾篇介紹這些方法的優缺點，這篇會先介紹 <code>node-sass</code>。</p>
-<h2 id="node-sass"><a href="#node-sass" class="headerlink" title="node-sass"></a>node-sass</h2><p>持續更新的範例：<a href="https://github.com/Wcc723/gulp-node-sass" target="_blank" rel="noopener">https://github.com/Wcc723/gulp-node-sass</a></p>
-<p>在Bootstrap 3的時候，開發團隊選擇 <code>Less</code> 作為開發環境，其中一個原因是 <code>Sass</code> 編譯速度太慢了，後來 sass 提供了 <a href="http://sass-lang.com/libsass" target="_blank" rel="noopener">lib-sass</a>，讓不同的環境都可以運行sass，其中也包含了 <code>node-sass</code> ，因此現在 <strong>Bootstrap 4</strong> 也改為 <code>sass</code> 開發。</p>
+<h2 id="node-sass"><a href="#node-sass" class="headerlink" title="node-sass"></a>node-sass</h2><p>持續更新的範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/gulp-node-sass">https://github.com/Wcc723/gulp-node-sass</a></p>
+<p>在Bootstrap 3的時候，開發團隊選擇 <code>Less</code> 作為開發環境，其中一個原因是 <code>Sass</code> 編譯速度太慢了，後來 sass 提供了 <a target="_blank" rel="noopener" href="http://sass-lang.com/libsass">lib-sass</a>，讓不同的環境都可以運行sass，其中也包含了 <code>node-sass</code> ，因此現在 <strong>Bootstrap 4</strong> 也改為 <code>sass</code> 開發。</p>
 <blockquote>
-<p><strong>Moved from Less to Sass.</strong> Bootstrap now compiles faster than ever thanks to Libsass, and we join an increasingly large community of Sass developers.<br><em><a href="http://blog.getbootstrap.com/2015/08/19/bootstrap-4-alpha/" target="_blank" rel="noopener">http://blog.getbootstrap.com/2015/08/19/bootstrap-4-alpha/</a></em></p>
+<p><strong>Moved from Less to Sass.</strong> Bootstrap now compiles faster than ever thanks to Libsass, and we join an increasingly large community of Sass developers.<br><em><a target="_blank" rel="noopener" href="http://blog.getbootstrap.com/2015/08/19/bootstrap-4-alpha/">http://blog.getbootstrap.com/2015/08/19/bootstrap-4-alpha/</a></em></p>
 </blockquote>
 <p>如果說不使用 Compass， <code>node-sass</code> 將是一個不錯的選擇，我也嘗試使用 <code>node-sass</code> 編譯與 <code>ruby-sass</code> 編譯做比較，是相當有感的…(有些較具規模的compass專案會到達10秒以上的編譯時間)。</p>
 
@@ -261,9 +282,9 @@ Your browser does not support the video tag.
 
 <p><em>影片中同時編譯 Bootstrap sass 版本，左邊是 <code>node-sass</code>，右方是 <code>ruby-sass</code>，都有包含sourcemaps，由於是同一個資料夾，所以是同時開始編譯。</em></p>
 <p>就編譯時間來看，大概都是 2 ~ 4，不過單位不同…，<code>node-sass</code>是 <strong>毫秒</strong>，<code>ruby-sass</code>是 <strong>秒</strong>。</p>
-<p>使用 <code>node-sass</code> 可以參考 <a href="https://www.npmjs.com/package/gulp-sass" target="_blank" rel="noopener">gulp-sass</a>，另外在監控可以使用 <a href="https://www.npmjs.com/package/gulp-watch" target="_blank" rel="noopener">gulp-watch</a>，讓新增刪除檔案時也會被監控到。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</span><br><span class="line">  plumber = <span class="built_in">require</span>(<span class="string">'gulp-plumber'</span>),</span><br><span class="line">  sass = <span class="built_in">require</span>(<span class="string">'gulp-sass'</span>),</span><br><span class="line">  watch = <span class="built_in">require</span>(<span class="string">'gulp-watch'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Paths</span></span><br><span class="line"><span class="keyword">var</span> paths = &#123;</span><br><span class="line">  <span class="string">'source'</span>: <span class="string">'./source/'</span>,</span><br><span class="line">  <span class="string">'bower'</span> : <span class="string">'./bower_components/'</span>,</span><br><span class="line">  <span class="string">'sass'</span>: <span class="string">'./source/stylesheets/'</span>,</span><br><span class="line">  <span class="string">'img'</span>: <span class="string">'./source/images/'</span>,</span><br><span class="line">  <span class="string">'public'</span>: <span class="string">'./public/'</span>,</span><br><span class="line">  <span class="string">'tpls'</span>: <span class="string">'./gulp-tpls/'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sass</span></span><br><span class="line">gulp.task(<span class="string">'sass'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.src([paths.sass + <span class="string">'**/**.scss'</span>])</span><br><span class="line">    .pipe(plumber())</span><br><span class="line">    .pipe(sass(&#123;<span class="attr">outputStyle</span>: <span class="string">'nested'</span>&#125;)</span><br><span class="line">    .on(<span class="string">'error'</span>, sass.logError))</span><br><span class="line">      .pipe(gulp.dest(paths.public + <span class="string">'./stylesheets'</span>))</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">watch([paths.sass + <span class="string">'**/**.scss'</span>], <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.start(<span class="string">'sass'</span>, <span class="string">'scss-lint'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'sass'</span>]);</span><br></pre></td></tr></table></figure>
-<p>持續更新的範例：<a href="https://github.com/Wcc723/gulp-node-sass" target="_blank" rel="noopener">https://github.com/Wcc723/gulp-node-sass</a></p>
+<p>使用 <code>node-sass</code> 可以參考 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-sass">gulp-sass</a>，另外在監控可以使用 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-watch">gulp-watch</a>，讓新增刪除檔案時也會被監控到。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>),</span><br><span class="line">  plumber = <span class="built_in">require</span>(<span class="string">&#x27;gulp-plumber&#x27;</span>),</span><br><span class="line">  sass = <span class="built_in">require</span>(<span class="string">&#x27;gulp-sass&#x27;</span>),</span><br><span class="line">  watch = <span class="built_in">require</span>(<span class="string">&#x27;gulp-watch&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// Paths</span></span><br><span class="line"><span class="keyword">var</span> paths = &#123;</span><br><span class="line">  <span class="string">&#x27;source&#x27;</span>: <span class="string">&#x27;./source/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;bower&#x27;</span> : <span class="string">&#x27;./bower_components/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;sass&#x27;</span>: <span class="string">&#x27;./source/stylesheets/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;img&#x27;</span>: <span class="string">&#x27;./source/images/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;public&#x27;</span>: <span class="string">&#x27;./public/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;tpls&#x27;</span>: <span class="string">&#x27;./gulp-tpls/&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Sass</span></span><br><span class="line">gulp.task(<span class="string">&#x27;sass&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.src([paths.sass + <span class="string">&#x27;**/**.scss&#x27;</span>])</span><br><span class="line">    .pipe(plumber())</span><br><span class="line">    .pipe(sass(&#123;<span class="attr">outputStyle</span>: <span class="string">&#x27;nested&#x27;</span>&#125;)</span><br><span class="line">    .on(<span class="string">&#x27;error&#x27;</span>, sass.logError))</span><br><span class="line">      .pipe(gulp.dest(paths.public + <span class="string">&#x27;./stylesheets&#x27;</span>))</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">watch([paths.sass + <span class="string">&#x27;**/**.scss&#x27;</span>], <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.start(<span class="string">&#x27;sass&#x27;</span>, <span class="string">&#x27;scss-lint&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&#x27;default&#x27;</span>, [<span class="string">&#x27;sass&#x27;</span>]);</span><br></pre></td></tr></table></figure>
+<p>持續更新的範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/gulp-node-sass">https://github.com/Wcc723/gulp-node-sass</a></p>
 <p>接下來還會介紹 <code>sass-lint</code>、<code>gulp-svg-sprites</code>、<code>gulp-postcss</code>，對於以上有其他建議也歡迎一起在下方留言。</p>
 <p>另外…<code>Webm</code>真是好物，中間的那個短片就是<code>webm</code>，不到1mb的影片甚至比<code>gif</code>還小。</p>
 
@@ -296,7 +317,7 @@ Your browser does not support the video tag.
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -546,7 +567,7 @@ Your browser does not support the video tag.
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -567,11 +588,11 @@ Your browser does not support the video tag.
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -616,20 +637,40 @@ Your browser does not support the video tag.
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

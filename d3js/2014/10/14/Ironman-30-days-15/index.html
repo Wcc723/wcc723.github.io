@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>D3.js 折線圖(Line Chart) | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="ironman,d3js">
+        <meta name="keywords" content="ironman,d3js" />
     
     
 
     <meta name="description" content="在開始有題到網頁互動式資料視覺化：使用D3這本書，整本大致上都看完了，但是裡面居然沒有折線圖！雖然這本書主要教的是觀念，不過折線圖還是很重要，所以還是另外找了折線圖的範例來仔細學習一下。">
-<meta name="keywords" content="ironman,d3js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="D3.js 折線圖(Line Chart)">
 <meta property="og:url" content="https://wcc723.github.io/d3js/2014/10/14/Ironman-30-days-15/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="在開始有題到網頁互動式資料視覺化：使用D3這本書，整本大致上都看完了，但是裡面居然沒有折線圖！雖然這本書主要教的是觀念，不過折線圖還是很重要，所以還是另外找了折線圖的範例來仔細學習一下。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/d3js/2014/10/14/Ironman-30-days-15/2014ironman/day14_01.png">
-<meta property="og:updated_time" content="2016-10-13T02:58:10.000Z">
+<meta property="article:published_time" content="2014-10-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-10-13T02:58:10.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="ironman">
+<meta property="article:tag" content="d3js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="D3.js 折線圖(Line Chart)">
-<meta name="twitter:description" content="在開始有題到網頁互動式資料視覺化：使用D3這本書，整本大致上都看完了，但是裡面居然沒有折線圖！雖然這本書主要教的是觀念，不過折線圖還是很重要，所以還是另外找了折線圖的範例來仔細學習一下。">
 <meta name="twitter:image" content="https://wcc723.github.io/d3js/2014/10/14/Ironman-30-days-15/2014ironman/day14_01.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/d3js/">d3js</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2014-10-13T16:00:00.000Z" itemprop="datePublished">2014-10-14</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d3js/">d3js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d3js/" rel="tag">d3js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li></ul>
 
             </div>
         
@@ -220,21 +240,21 @@ ga('send', 'pageview');
                 </div>
             
             <div class="need-gallery">
-                <p>在開始有題到<a href="http://www.books.com.tw/products/0010621239" target="_blank" rel="noopener">網頁互動式資料視覺化：使用D3</a>這本書，整本大致上都看完了，但是裡面居然沒有折線圖！雖然這本書主要教的是觀念，不過折線圖還是很重要，所以還是另外找了折線圖的範例來仔細學習一下。</p>
+                <p>在開始有題到<a target="_blank" rel="noopener" href="http://www.books.com.tw/products/0010621239">網頁互動式資料視覺化：使用D3</a>這本書，整本大致上都看完了，但是裡面居然沒有折線圖！雖然這本書主要教的是觀念，不過折線圖還是很重要，所以還是另外找了折線圖的範例來仔細學習一下。</p>
 <a id="more"></a>
 <h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>先前有介紹過SVG:Path，大概像下面這樣：</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">"M12,294.11764705882354L24,300L36,270.5882352941176L48,294.11764705882354L60,282.3529411764706L72,276.47058823529414L84.1,264.70588235294116L96,276.47058823529414L108,247.05882352941177L120,241.1764705882353L132,229.41176470588235L144,241.1764705882353L156,223.52941176470588L168.3,217.6470588235294L180,200L192,223.52941176470588L204.3,200L216,211.76470588235293L228,211.76470588235293L240,223.52941176470588L252,217.6470588235294L264,200L276,188.23529411764707L288,164.7058823529412L300,176.47058823529414L312,200L324,217.6470588235294L336.6,188.23529411764707L348,158.8235294117647L360,152.94117647058823L372,135.2941176470588L384,117.64705882352942L396,100L408.6,111.76470588235296L420.6,88.23529411764707L432,76.47058823529412L444,47.05882352941177L456,41.176470588235304L468,52.94117647058826L480,47.05882352941177L492.6,17.64705882352939L504,29.411764705882376L516,29.411764705882376L528,23.529411764705912L540,35.29411764705884L552,23.529411764705912L564,17.64705882352939L576,0L588,17.64705882352939L600,41.176470588235304"</span>&gt;</span><span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">&quot;M12,294.11764705882354L24,300L36,270.5882352941176L48,294.11764705882354L60,282.3529411764706L72,276.47058823529414L84.1,264.70588235294116L96,276.47058823529414L108,247.05882352941177L120,241.1764705882353L132,229.41176470588235L144,241.1764705882353L156,223.52941176470588L168.3,217.6470588235294L180,200L192,223.52941176470588L204.3,200L216,211.76470588235293L228,211.76470588235293L240,223.52941176470588L252,217.6470588235294L264,200L276,188.23529411764707L288,164.7058823529412L300,176.47058823529414L312,200L324,217.6470588235294L336.6,188.23529411764707L348,158.8235294117647L360,152.94117647058823L372,135.2941176470588L384,117.64705882352942L396,100L408.6,111.76470588235296L420.6,88.23529411764707L432,76.47058823529412L444,47.05882352941177L456,41.176470588235304L468,52.94117647058826L480,47.05882352941177L492.6,17.64705882352939L504,29.411764705882376L516,29.411764705882376L528,23.529411764705912L540,35.29411764705884L552,23.529411764705912L564,17.64705882352939L576,0L588,17.64705882352939L600,41.176470588235304&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br></pre></td></tr></table></figure>
 <p>雖然之前有介紹過自幹的方式…，可是用來上資料真的會有點痛，不過還好d3有一個function <code>d3.svg.line()</code>可以用來繪製svg “path”，只要給予<code>x</code>、<code>y</code>，剩下d3都會處理。</p>
-<p>本篇的範例參考自<a href="http://bl.ocks.org/benjchristensen/2579599" target="_blank" rel="noopener">http://bl.ocks.org/benjchristensen/2579599</a></p>
+<p>本篇的範例參考自<a target="_blank" rel="noopener" href="http://bl.ocks.org/benjchristensen/2579599">http://bl.ocks.org/benjchristensen/2579599</a></p>
 <p>範例我可是花了點時間調的比他漂亮呢！(挺</p>
 
 <div class="demo">
 
 </div>
 
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> margin = &#123;<span class="attr">top</span>: <span class="number">60</span>, <span class="attr">right</span>: <span class="number">40</span>, <span class="attr">bottom</span>: <span class="number">50</span>, <span class="attr">left</span>: <span class="number">60</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> w = <span class="number">580</span> ; <span class="comment">// 寬</span></span><br><span class="line"><span class="keyword">var</span> h = <span class="number">300</span> ; <span class="comment">// 高</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> dataset = []; <span class="comment">//建立空的資料陣列</span></span><br><span class="line"><span class="keyword">var</span> Num = <span class="number">20</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i &lt; <span class="number">50</span>; i++)&#123;</span><br><span class="line">	<span class="keyword">var</span> newNum = Num + (<span class="number">5</span> - <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">10</span>));</span><br><span class="line">	dataset.push(newNum);</span><br><span class="line">	Num = newNum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//隨機產生一組隨機的數字陣列，數字的值，每次加減不超過5</span></span><br><span class="line"><span class="comment">//X是資料的數量，Y則是資料的值</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(dataset)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Ymax = d3.max(dataset),</span><br><span class="line">	Ymin = d3.min(dataset);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> xScale = d3.scale.linear().domain([<span class="number">0</span>, dataset.length]).range([<span class="number">0</span>, w]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yScale = d3.scale.linear().domain([Ymin, Ymax]).range([h, <span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加一個line function，用來把資料轉為x, y</span></span><br><span class="line"><span class="keyword">var</span> line = d3.svg.line()</span><br><span class="line">	.x(<span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> xScale(i + <span class="number">1</span>); <span class="comment">//利用尺度運算資料索引，傳回x的位置</span></span><br><span class="line">	&#125;)</span><br><span class="line">	.y(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> yScale(d); <span class="comment">//利用尺度運算資料的值，傳回y的位置</span></span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//增加一個SVG元素</span></span><br><span class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">'.demo'</span>).append(<span class="string">'svg'</span>)</span><br><span class="line">	.attr(<span class="string">'width'</span>, w + margin.left + margin.right) <span class="comment">//將左右補滿</span></span><br><span class="line">	.attr(<span class="string">'height'</span>, h + margin.top + margin.bottom) <span class="comment">//上下補滿</span></span><br><span class="line">	.append(<span class="string">'g'</span>) <span class="comment">//增加一個群組g</span></span><br><span class="line">	.attr(<span class="string">'transform'</span>, <span class="string">'translate('</span> + margin.left + <span class="string">','</span> + margin.top + <span class="string">')'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加x軸線，tickSize是軸線的垂直高度，-h會往上拉高</span></span><br><span class="line"><span class="comment">// tickSubdivide不清楚是什麼用處</span></span><br><span class="line"><span class="keyword">var</span> xAxis = d3.svg.axis().scale(xScale).orient(<span class="string">'bottom'</span>).tickSize(-h).tickSubdivide(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// SVG加入x軸線</span></span><br><span class="line">svg.append(<span class="string">'g'</span>)</span><br><span class="line">	.attr(<span class="string">'class'</span>, <span class="string">'x axis'</span>)</span><br><span class="line">	.attr(<span class="string">'transform'</span>, <span class="string">'translate(0,'</span> + h + <span class="string">')'</span>)</span><br><span class="line">	.call(xAxis);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立y軸線，4個刻度，數字在左</span></span><br><span class="line"><span class="keyword">var</span> yAxisLeft = d3.svg.axis().scale(yScale).ticks(<span class="number">4</span>).orient(<span class="string">'left'</span>);</span><br><span class="line"><span class="comment">// SVG加入y軸線</span></span><br><span class="line">svg.append(<span class="string">'g'</span>)</span><br><span class="line">	.attr(<span class="string">'class'</span>, <span class="string">'y axis'</span>)</span><br><span class="line">	.attr(<span class="string">'transform'</span>, <span class="string">'translate(0,0)'</span>)</span><br><span class="line">	.call(yAxisLeft);</span><br><span class="line"></span><br><span class="line">svg.append(<span class="string">'path'</span>).attr(<span class="string">'d'</span>, line(dataset)); <span class="comment">//將資料套用d3.svg.line()</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> margin = &#123;<span class="attr">top</span>: <span class="number">60</span>, <span class="attr">right</span>: <span class="number">40</span>, <span class="attr">bottom</span>: <span class="number">50</span>, <span class="attr">left</span>: <span class="number">60</span>&#125;;</span><br><span class="line"><span class="keyword">var</span> w = <span class="number">580</span> ; <span class="comment">// 寬</span></span><br><span class="line"><span class="keyword">var</span> h = <span class="number">300</span> ; <span class="comment">// 高</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> dataset = []; <span class="comment">//建立空的資料陣列</span></span><br><span class="line"><span class="keyword">var</span> Num = <span class="number">20</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="number">0</span>; i &lt; <span class="number">50</span>; i++)&#123;</span><br><span class="line">    <span class="keyword">var</span> newNum = Num + (<span class="number">5</span> - <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * <span class="number">10</span>));</span><br><span class="line">    dataset.push(newNum);</span><br><span class="line">    Num = newNum;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//隨機產生一組隨機的數字陣列，數字的值，每次加減不超過5</span></span><br><span class="line"><span class="comment">//X是資料的數量，Y則是資料的值</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(dataset)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Ymax = d3.max(dataset),</span><br><span class="line">    Ymin = d3.min(dataset);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> xScale = d3.scale.linear().domain([<span class="number">0</span>, dataset.length]).range([<span class="number">0</span>, w]);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yScale = d3.scale.linear().domain([Ymin, Ymax]).range([h, <span class="number">0</span>]);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加一個line function，用來把資料轉為x, y</span></span><br><span class="line"><span class="keyword">var</span> line = d3.svg.line()</span><br><span class="line">    .x(<span class="function"><span class="keyword">function</span>(<span class="params">d,i</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> xScale(i + <span class="number">1</span>); <span class="comment">//利用尺度運算資料索引，傳回x的位置</span></span><br><span class="line">    &#125;)</span><br><span class="line">    .y(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> yScale(d); <span class="comment">//利用尺度運算資料的值，傳回y的位置</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//增加一個SVG元素</span></span><br><span class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">&#x27;.demo&#x27;</span>).append(<span class="string">&#x27;svg&#x27;</span>)</span><br><span class="line">    .attr(<span class="string">&#x27;width&#x27;</span>, w + margin.left + margin.right) <span class="comment">//將左右補滿</span></span><br><span class="line">    .attr(<span class="string">&#x27;height&#x27;</span>, h + margin.top + margin.bottom) <span class="comment">//上下補滿</span></span><br><span class="line">    .append(<span class="string">&#x27;g&#x27;</span>) <span class="comment">//增加一個群組g</span></span><br><span class="line">    .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="string">&#x27;translate(&#x27;</span> + margin.left + <span class="string">&#x27;,&#x27;</span> + margin.top + <span class="string">&#x27;)&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加x軸線，tickSize是軸線的垂直高度，-h會往上拉高</span></span><br><span class="line"><span class="comment">// tickSubdivide不清楚是什麼用處</span></span><br><span class="line"><span class="keyword">var</span> xAxis = d3.svg.axis().scale(xScale).orient(<span class="string">&#x27;bottom&#x27;</span>).tickSize(-h).tickSubdivide(<span class="literal">true</span>);</span><br><span class="line"><span class="comment">// SVG加入x軸線</span></span><br><span class="line">svg.append(<span class="string">&#x27;g&#x27;</span>)</span><br><span class="line">    .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;x axis&#x27;</span>)</span><br><span class="line">    .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="string">&#x27;translate(0,&#x27;</span> + h + <span class="string">&#x27;)&#x27;</span>)</span><br><span class="line">    .call(xAxis);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 建立y軸線，4個刻度，數字在左</span></span><br><span class="line"><span class="keyword">var</span> yAxisLeft = d3.svg.axis().scale(yScale).ticks(<span class="number">4</span>).orient(<span class="string">&#x27;left&#x27;</span>);</span><br><span class="line"><span class="comment">// SVG加入y軸線</span></span><br><span class="line">svg.append(<span class="string">&#x27;g&#x27;</span>)</span><br><span class="line">    .attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;y axis&#x27;</span>)</span><br><span class="line">    .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="string">&#x27;translate(0,0)&#x27;</span>)</span><br><span class="line">    .call(yAxisLeft);</span><br><span class="line"></span><br><span class="line">svg.append(<span class="string">&#x27;path&#x27;</span>).attr(<span class="string">&#x27;d&#x27;</span>, line(dataset)); <span class="comment">//將資料套用d3.svg.line()</span></span><br></pre></td></tr></table></figure>
 <p>CSS</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">path</span> &#123;</span><br><span class="line">	<span class="attribute">stroke</span>: DodgerBlue;</span><br><span class="line">	<span class="attribute">stroke-width</span>: <span class="number">1</span>;</span><br><span class="line">	<span class="attribute">fill</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.axis</span> &#123;</span><br><span class="line">	<span class="attribute">font-size</span>: <span class="number">11px</span>;</span><br><span class="line">	<span class="attribute">fill</span>: gray;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.x</span><span class="selector-class">.axis</span> <span class="selector-tag">line</span> &#123;</span><br><span class="line">  <span class="attribute">stroke</span>: lightgrey;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.x</span><span class="selector-class">.axis</span> <span class="selector-class">.minor</span> &#123;</span><br><span class="line">  <span class="attribute">stroke-opacity</span>: .<span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.x</span><span class="selector-class">.axis</span> <span class="selector-tag">path</span> &#123;</span><br><span class="line">  <span class="attribute">stroke</span>: <span class="number">#fafafa</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.y</span><span class="selector-class">.axis</span> <span class="selector-tag">line</span>, <span class="selector-class">.y</span><span class="selector-class">.axis</span> <span class="selector-tag">path</span> &#123;</span><br><span class="line">  <span class="attribute">fill</span>: none;</span><br><span class="line">  <span class="attribute">stroke</span>: lightgrey;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">path</span> &#123;</span><br><span class="line">    <span class="attribute">stroke</span>: DodgerBlue;</span><br><span class="line">    <span class="attribute">stroke-width</span>: <span class="number">1</span>;</span><br><span class="line">    <span class="attribute">fill</span>: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.axis</span> &#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">11px</span>;</span><br><span class="line">    <span class="attribute">fill</span>: gray;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.x</span><span class="selector-class">.axis</span> <span class="selector-tag">line</span> &#123;</span><br><span class="line">  <span class="attribute">stroke</span>: lightgrey;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.x</span><span class="selector-class">.axis</span> <span class="selector-class">.minor</span> &#123;</span><br><span class="line">  <span class="attribute">stroke-opacity</span>: .<span class="number">5</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.x</span><span class="selector-class">.axis</span> <span class="selector-tag">path</span> &#123;</span><br><span class="line">  <span class="attribute">stroke</span>: <span class="number">#fafafa</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="selector-class">.y</span><span class="selector-class">.axis</span> <span class="selector-tag">line</span>, <span class="selector-class">.y</span><span class="selector-class">.axis</span> <span class="selector-tag">path</span> &#123;</span><br><span class="line">  <span class="attribute">fill</span>: none;</span><br><span class="line">  <span class="attribute">stroke</span>: lightgrey;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>不知道大家對於到目前的範例難度感覺如何，對我而言還挺難的，尤其資料、json的處理我相當的不擅長，不過既然稱為D3.js，還是要來玩一些資料，明天開始來找資料玩玩吧～</p>
 
 <script>
@@ -361,7 +381,7 @@ path {
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -611,7 +631,7 @@ path {
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -632,11 +652,11 @@ path {
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -681,20 +701,40 @@ path {
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

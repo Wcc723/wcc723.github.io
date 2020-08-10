@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：ES6 原生 Fetch 遠端資料方法 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
-    <meta name="description" content="如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 XMLHttpRequest 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求： 本篇使用的是 https://randomuser.me/ 隨機用戶產生器，這很適合用來作為 AJAX G">
-<meta name="keywords" content="javascript,js,ironman">
+    <meta name="description" content="如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 XMLHttpRequest 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求： 本篇使用的是 https:&#x2F;&#x2F;randomuser.me&#x2F; 隨機用戶產生器，這很適合用來作為 AJAX G">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：ES6 原生 Fetch 遠端資料方法">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/28/javascript-fetch/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 XMLHttpRequest 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求： 本篇使用的是 https://randomuser.me/ 隨機用戶產生器，這很適合用來作為 AJAX G">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:description" content="如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 XMLHttpRequest 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求： 本篇使用的是 https:&#x2F;&#x2F;randomuser.me&#x2F; 隨機用戶產生器，這很適合用來作為 AJAX G">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a">
-<meta property="og:updated_time" content="2017-12-28T02:11:52.000Z">
+<meta property="article:published_time" content="2017-12-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-28T02:11:52.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：ES6 原生 Fetch 遠端資料方法">
-<meta name="twitter:description" content="如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 XMLHttpRequest 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求： 本篇使用的是 https://randomuser.me/ 隨機用戶產生器，這很適合用來作為 AJAX G">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-27T16:00:00.000Z" itemprop="datePublished">2017-12-28</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a" rel="gallery_ck870gcmr00v7mtruhvb7vqb3">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a" rel="gallery_ckdo9wd6x00nyy9ru6yj03zjz noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a" itemprop="image" />
     </a>
     
@@ -230,11 +251,11 @@ ga('send', 'pageview');
             <div class="need-gallery">
                 <p>如果不透過框架，要如何寫出一個 GET 請求呢？在 JavaScript 中可以使用 <code>XMLHttpRequest</code> 的方法，但其實我平常也不太會這樣寫，主要原因也是難以閱讀及撰寫，我們大多都會使用框架來處理這段，如 jQuery, Axios…，以下略為介紹如何製作一個原生的 GET 請求：</p>
 <p>本篇使用的是 <code>https://randomuser.me/</code> 隨機用戶產生器，這很適合用來作為 AJAX Get 的範例。 </p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reqOnload</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> data = <span class="built_in">JSON</span>.parse(<span class="keyword">this</span>.responseText);</span><br><span class="line">  <span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reqError</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'錯誤'</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 宣告一個 XHR 的物件</span></span><br><span class="line"><span class="keyword">var</span> Req = <span class="keyword">new</span> XMLHttpRequest(); </span><br><span class="line"><span class="comment">// 定義連線方式</span></span><br><span class="line">Req.open(<span class="string">'get'</span>, <span class="string">'https://randomuser.me/api/'</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 送出請求</span></span><br><span class="line">Req.send();</span><br><span class="line"><span class="comment">// 如果成功就執行 reqOnload()</span></span><br><span class="line">Req.onload = reqOnload; </span><br><span class="line"><span class="comment">// 失敗就 reqError()</span></span><br><span class="line">Req.onerror = reqError;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reqOnload</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> data = <span class="built_in">JSON</span>.parse(<span class="built_in">this</span>.responseText);</span><br><span class="line">  <span class="built_in">console</span>.log(data)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">reqError</span> (<span class="params">err</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;錯誤&#x27;</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 宣告一個 XHR 的物件</span></span><br><span class="line"><span class="keyword">var</span> Req = <span class="keyword">new</span> XMLHttpRequest(); </span><br><span class="line"><span class="comment">// 定義連線方式</span></span><br><span class="line">Req.open(<span class="string">&#x27;get&#x27;</span>, <span class="string">&#x27;https://randomuser.me/api/&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="comment">// 送出請求</span></span><br><span class="line">Req.send();</span><br><span class="line"><span class="comment">// 如果成功就執行 reqOnload()</span></span><br><span class="line">Req.onload = reqOnload; </span><br><span class="line"><span class="comment">// 失敗就 reqError()</span></span><br><span class="line">Req.onerror = reqError;</span><br></pre></td></tr></table></figure>
 <p>當然，在框架的時代我們已經習慣透過框架包裝以上的行為，讓程式碼的更為容易使用及閱讀，以 <code>randomuser</code> 網站所提供的範例來說，以上的行為可以寫成以下 (錯誤方法可參考 jQuery 文件)，不需要在另外自己包裝發送的物件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">  url: <span class="string">'https://randomuser.me/api/'</span>,</span><br><span class="line">  dataType: <span class="string">'json'</span>,</span><br><span class="line">  success: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">    <span class="comment">// 取得的遠端資料</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$.ajax(&#123;</span><br><span class="line">  url: <span class="string">&#x27;https://randomuser.me/api/&#x27;</span>,</span><br><span class="line">  dataType: <span class="string">&#x27;json&#x27;</span>,</span><br><span class="line">  success: <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(data);</span><br><span class="line">    <span class="comment">// 取得的遠端資料</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p><code>XMLHttpRequest</code> 在製作時每次都要新建一個請求的實體，而 AJAX 的網站，通常也不會只做一次請求而已，為了讓程式碼更容易維護及開發，大多開發者都會使用框架來包裝這類行為。</p>
-<h2 id="Fetch"><a href="#Fetch" class="headerlink" title="Fetch"></a>Fetch</h2><p>Fetch 在使用時看似與 jQuery <code>$.ajax</code> 挺相近的，所以在使用上也相對容易上手，不過兩者亦有不同概念之處(可<a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch" target="_blank" rel="noopener">參考</a>)。</p>
+<h2 id="Fetch"><a href="#Fetch" class="headerlink" title="Fetch"></a>Fetch</h2><p>Fetch 在使用時看似與 jQuery <code>$.ajax</code> 挺相近的，所以在使用上也相對容易上手，不過兩者亦有不同概念之處(可<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch">參考</a>)。</p>
 <p>這裡提供一個簡單的範例來取得遠端的資料，這裡與 $.ajax 不同點在於：</p>
 <ul>
 <li>fetch 會使用 ES6 的 Promise 作回應<ul>
@@ -244,12 +265,12 @@ ga('send', 'pageview');
 </li>
 <li>回傳的為 <code>ReadableStream</code> 物件，需要使用不同資料類型使用對應方法，才能正確取得資料物件。</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fetch(<span class="string">'https://randomuser.me/api/'</span>, &#123;&#125;)</span><br><span class="line">  .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 這裡會得到一個 ReadableStream 的物件</span></span><br><span class="line">    <span class="built_in">console</span>.log(response);</span><br><span class="line">    <span class="comment">// 可以透過 blob(), json(), text() 轉成可用的資訊</span></span><br><span class="line">    <span class="keyword">return</span> response.json(); </span><br><span class="line">  &#125;).then(<span class="function">(<span class="params">jsonData</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(jsonData);</span><br><span class="line">  &#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'錯誤:'</span>, err);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">fetch(<span class="string">&#x27;https://randomuser.me/api/&#x27;</span>, &#123;&#125;)</span><br><span class="line">  .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 這裡會得到一個 ReadableStream 的物件</span></span><br><span class="line">    <span class="built_in">console</span>.log(response);</span><br><span class="line">    <span class="comment">// 可以透過 blob(), json(), text() 轉成可用的資訊</span></span><br><span class="line">    <span class="keyword">return</span> response.json(); </span><br><span class="line">  &#125;).then(<span class="function">(<span class="params">jsonData</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(jsonData);</span><br><span class="line">  &#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;錯誤:&#x27;</span>, err);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <p><code>fetch</code> 後方會接 <code>then()</code>，這是 Promise 的特性，資料取得後可在 then 裡面接收。<code>return response.json();</code> 的資料則會傳到下一個 <code>then()</code>，至於詳細的 Promise 方法我們會留下一個章節介紹。</p>
 <p>這裡如果刻意將網址打錯，會出現以下錯誤訊息。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetch(<span class="string">'https://randomuserkkk.me/api/'</span>, &#123;&#125;)</span><br></pre></td></tr></table></figure>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F25102432-129A-45C6-B96D-BECE11E3499B.png?alt=media&amp;token=f75552cf-4cee-4b95-9804-05e5f7a0177f" alt></p>
-<h3 id="ReadableStream"><a href="#ReadableStream" class="headerlink" title="ReadableStream"></a>ReadableStream</h3><p>Fetch API 的 Response 物件中的 body 屬性提供了一個 ReadableStream 的實體，這個階段我們無法直接讀取資料內容，而 ReadableStream 物件中可用以下對應的方法來取得資料 (<a href="https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：" target="_blank" rel="noopener">https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：</a></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fetch(<span class="string">&#x27;https://randomuserkkk.me/api/&#x27;</span>, &#123;&#125;)</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F25102432-129A-45C6-B96D-BECE11E3499B.png?alt=media&amp;token=f75552cf-4cee-4b95-9804-05e5f7a0177f" alt=""></p>
+<h3 id="ReadableStream"><a href="#ReadableStream" class="headerlink" title="ReadableStream"></a>ReadableStream</h3><p>Fetch API 的 Response 物件中的 body 屬性提供了一個 ReadableStream 的實體，這個階段我們無法直接讀取資料內容，而 ReadableStream 物件中可用以下對應的方法來取得資料 (<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：">https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：</a></p>
 <ul>
 <li>arrayBuffer()</li>
 <li>blob()</li>
@@ -257,9 +278,9 @@ ga('send', 'pageview');
 <li>json()</li>
 <li>text()</li>
 </ul>
-<h4 id="text"><a href="#text" class="headerlink" title="text()"></a>text()</h4><p>像是以上的範例，我們可以將 <code>response.json()</code> 改為 <code>response.text()</code>，那麼取得的資料格式將會是純字串。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F390506CF-1E4F-4D86-9D82-C1E76CE997EA.png?alt=media&amp;token=d0200785-8dc3-463c-bb04-79249d565e37" alt></p>
+<h4 id="text"><a href="#text" class="headerlink" title="text()"></a>text()</h4><p>像是以上的範例，我們可以將 <code>response.json()</code> 改為 <code>response.text()</code>，那麼取得的資料格式將會是純字串。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F390506CF-1E4F-4D86-9D82-C1E76CE997EA.png?alt=media&amp;token=d0200785-8dc3-463c-bb04-79249d565e37" alt=""></p>
 <h4 id="blob"><a href="#blob" class="headerlink" title="blob()"></a>blob()</h4><p>也可以將資料轉為 <code>blob</code> 物件，像是圖片就可以做這樣的轉換 (這裡的圖片並非指圖片路徑，而是圖片檔案本身)。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// unsplash 上的圖片</span></span><br><span class="line"><span class="keyword">let</span> url = <span class="string">'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&amp;fit=crop&amp;w=634&amp;q=80'</span></span><br><span class="line">fetch(url)</span><br><span class="line">  .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> response.blob();</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(<span class="function">(<span class="params">imageBlob</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> img = <span class="built_in">document</span>.createElement(<span class="string">'IMG'</span>)</span><br><span class="line">    <span class="built_in">document</span>.querySelector(<span class="string">'.newImg'</span>).appendChild(img);</span><br><span class="line">    <span class="comment">// 將 blog 物件轉為 url</span></span><br><span class="line">    img.src = URL.createObjectURL(imageBlob);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// unsplash 上的圖片</span></span><br><span class="line"><span class="keyword">let</span> url = <span class="string">&#x27;https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&amp;fit=crop&amp;w=634&amp;q=80&#x27;</span></span><br><span class="line">fetch(url)</span><br><span class="line">  .then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> response.blob();</span><br><span class="line">  &#125;)</span><br><span class="line">  .then(<span class="function">(<span class="params">imageBlob</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> img = <span class="built_in">document</span>.createElement(<span class="string">&#x27;IMG&#x27;</span>)</span><br><span class="line">    <span class="built_in">document</span>.querySelector(<span class="string">&#x27;.newImg&#x27;</span>).appendChild(img);</span><br><span class="line">    <span class="comment">// 將 blog 物件轉為 url</span></span><br><span class="line">    img.src = URL.createObjectURL(imageBlob);</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>URL 也是新的 API，可以將 blob 物件轉為網址</p>
 </blockquote>
@@ -285,7 +306,7 @@ fetch(url)
 </blockquote>
 <h3 id="POST-方法"><a href="#POST-方法" class="headerlink" title="POST 方法"></a>POST 方法</h3><p>六角的課程中有提供一個 <code>POST</code> 方法的練習(因為想不到哪裡可以測試 POST)，下方的程式碼就可以對測試的機器發送 <code>POST</code>，然後接受不同的結果 (這段 <code>POST</code> 並不會真的儲存帳密，只會將資料存在伺服器的記憶體，不久後會自動釋放)。</p>
 <p>使用 <code>fetch()</code> 做  <code>POST</code>時，由於它並沒有向一些框架一樣包那麼徹底，所以有些地方還是需要做調整，其中 <code>body</code> 所送出的資料必須先轉純字串後才能送出，以下範例就是一個簡單的 <code>POST</code>行為。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> url = <span class="string">'https://hexschool-tutorial.herokuapp.com/api/signup'</span>;</span><br><span class="line">fetch(url, &#123;</span><br><span class="line">  method: <span class="string">'POST'</span>,</span><br><span class="line">  <span class="comment">// headers 加入 json 格式</span></span><br><span class="line">  headers: &#123;</span><br><span class="line">    <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// body 將 json 轉字串送出</span></span><br><span class="line">  body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">    email: <span class="string">'lovef1232e@hexschool.com'</span>,</span><br><span class="line">    password: <span class="string">'12345678'</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> response.json(); </span><br><span class="line">  &#125;).then(<span class="function">(<span class="params">jsonData</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(jsonData);</span><br><span class="line">  &#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'錯誤:'</span>, err);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> url = <span class="string">&#x27;https://hexschool-tutorial.herokuapp.com/api/signup&#x27;</span>;</span><br><span class="line">fetch(url, &#123;</span><br><span class="line">  method: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="comment">// headers 加入 json 格式</span></span><br><span class="line">  headers: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// body 將 json 轉字串送出</span></span><br><span class="line">  body: <span class="built_in">JSON</span>.stringify(&#123;</span><br><span class="line">    email: <span class="string">&#x27;lovef1232e@hexschool.com&#x27;</span>,</span><br><span class="line">    password: <span class="string">&#x27;12345678&#x27;</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;).then(<span class="function">(<span class="params">response</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> response.json(); </span><br><span class="line">  &#125;).then(<span class="function">(<span class="params">jsonData</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(jsonData);</span><br><span class="line">  &#125;).catch(<span class="function">(<span class="params">err</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">&#x27;錯誤:&#x27;</span>, err);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>所以這是第 25 篇了(表示庫存已用完)。</p>
 
             </div>
@@ -317,7 +338,7 @@ fetch(url)
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -567,7 +588,7 @@ fetch(url)
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -588,11 +609,11 @@ fetch(url)
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -637,20 +658,40 @@ fetch(url)
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

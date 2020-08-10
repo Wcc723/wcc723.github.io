@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>D3.js 軸線(Axis) | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="ironman,d3js">
+        <meta name="keywords" content="ironman,d3js" />
     
     
 
     <meta name="description" content="到上一次為止，其實就可以畫出簡單的資料圖表，現在開始就要讓資料圖表更為豐富且好閱讀。 今天要介紹的軸線(Axis)，讓圖表上多一個可以閱讀的尺標，D3.js正好有提供這樣的函式，可以輕鬆的產出軸線。">
-<meta name="keywords" content="ironman,d3js">
 <meta property="og:type" content="article">
 <meta property="og:title" content="D3.js 軸線(Axis)">
 <meta property="og:url" content="https://wcc723.github.io/d3js/2014/10/13/Ironman-30-days-14/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="到上一次為止，其實就可以畫出簡單的資料圖表，現在開始就要讓資料圖表更為豐富且好閱讀。 今天要介紹的軸線(Axis)，讓圖表上多一個可以閱讀的尺標，D3.js正好有提供這樣的函式，可以輕鬆的產出軸線。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/d3js/2014/10/13/Ironman-30-days-14/2014ironman/day13_01.png">
-<meta property="og:updated_time" content="2016-10-13T03:07:37.000Z">
+<meta property="article:published_time" content="2014-10-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2016-10-13T03:07:37.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="ironman">
+<meta property="article:tag" content="d3js">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="D3.js 軸線(Axis)">
-<meta name="twitter:description" content="到上一次為止，其實就可以畫出簡單的資料圖表，現在開始就要讓資料圖表更為豐富且好閱讀。 今天要介紹的軸線(Axis)，讓圖表上多一個可以閱讀的尺標，D3.js正好有提供這樣的函式，可以輕鬆的產出軸線。">
 <meta name="twitter:image" content="https://wcc723.github.io/d3js/2014/10/13/Ironman-30-days-14/2014ironman/day13_01.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/d3js/">d3js</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2014-10-12T16:00:00.000Z" itemprop="datePublished">2014-10-13</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d3js/">d3js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/d3js/" rel="tag">d3js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li></ul>
 
             </div>
         
@@ -230,9 +250,9 @@ ga('send', 'pageview');
 
 </div>
 
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> w = <span class="number">600</span>,h = <span class="number">400</span>,padding = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//random data</span></span><br><span class="line"><span class="keyword">var</span> dataset = [];</span><br><span class="line"><span class="keyword">var</span> numDataPoints = <span class="number">100</span>; <span class="comment">//總共100個點</span></span><br><span class="line"><span class="keyword">var</span> xRange = <span class="built_in">Math</span>.random() * <span class="number">500</span>;</span><br><span class="line"><span class="keyword">var</span> yRange = <span class="built_in">Math</span>.random() * <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; numDataPoints; i++)&#123;</span><br><span class="line">	<span class="keyword">var</span> num1 = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * xRange);</span><br><span class="line">	<span class="keyword">var</span> num2 = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * yRange);</span><br><span class="line">	dataset.push([num1,num2])</span><br><span class="line">&#125;<span class="comment">//和更早之前一樣，我們用假的資料來做範例</span></span><br><span class="line"><span class="built_in">console</span>.table(dataset)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Xmax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</span><br><span class="line">	Xmin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</span><br><span class="line">	Ymax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;),</span><br><span class="line">	Ymin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;)</span><br><span class="line">	<span class="comment">//取得X,Y的最大及最小值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> xScale = d3.scale.linear() <span class="comment">//製作線性尺度</span></span><br><span class="line">	.domain([<span class="number">0</span>, Xmax]) <span class="comment">//輸入的範圍</span></span><br><span class="line">	.range([padding , w - padding]) <span class="comment">//輸出的範圍</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yScale = d3.scale.linear()</span><br><span class="line">	.domain([<span class="number">0</span>, Ymax])</span><br><span class="line">	.range([ h - padding ,padding])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">'.demo'</span>).append(<span class="string">'svg'</span>).attr(&#123;<span class="string">'width'</span>: w,<span class="string">'height'</span>: h&#125;) <span class="comment">//增加SVG容器</span></span><br><span class="line"></span><br><span class="line">	svg.selectAll(<span class="string">'circle'</span>).data(dataset).enter() <span class="comment">//插入資料</span></span><br><span class="line">	.append(<span class="string">'circle'</span>) <span class="comment">//增加圓形物件</span></span><br><span class="line">	.attr(&#123;</span><br><span class="line">		<span class="string">'cx'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> xScale(d[<span class="number">0</span>])&#125;, <span class="comment">//利用尺度算出圓心x位置</span></span><br><span class="line">		<span class="string">'cy'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> yScale(d[<span class="number">1</span>])&#125;, <span class="comment">//同上算出y</span></span><br><span class="line">		<span class="string">'r'</span>: <span class="string">'2px'</span>, <span class="comment">//圓心大小</span></span><br><span class="line">		<span class="string">'fill'</span>: <span class="string">'black'</span> <span class="comment">//填色</span></span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line">	svg.selectAll(<span class="string">'text'</span>).data(dataset).enter() <span class="comment">//插入資料</span></span><br><span class="line">	.append(<span class="string">'text'</span>) <span class="comment">//增加文字區塊</span></span><br><span class="line">	.text(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> d[<span class="number">0</span>]+ <span class="string">','</span> + d[<span class="number">1</span>]&#125;) <span class="comment">//補上坐標文字</span></span><br><span class="line">	.attr(&#123;</span><br><span class="line">		<span class="string">'x'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> xScale(d[<span class="number">0</span>])&#125;,</span><br><span class="line">		<span class="string">'y'</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> yScale(d[<span class="number">1</span>])&#125;,</span><br><span class="line">		<span class="string">'fill'</span>: <span class="string">'red'</span>, <span class="comment">//填滿紅色</span></span><br><span class="line">		<span class="string">'font-size'</span>: <span class="string">'10px'</span> <span class="comment">//文字大小</span></span><br><span class="line">	&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//Axis</span></span><br><span class="line"><span class="keyword">var</span> xAxis = d3.svg.axis().scale(xScale) <span class="comment">//增加軸線物件，並套用尺度(x)</span></span><br><span class="line">	.orient(<span class="string">"bottom"</span>) <span class="comment">//標示位置</span></span><br><span class="line">	.ticks(<span class="number">6</span>) <span class="comment">//刻度數量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yAxis = d3.svg.axis().scale(yScale) <span class="comment">//增加軸線物件，並套用尺度(y)</span></span><br><span class="line">	.orient(<span class="string">"left"</span>) <span class="comment">//標示位置</span></span><br><span class="line">	.ticks(<span class="number">10</span>) <span class="comment">//刻度數量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//刻度化標籤，這範例不使用</span></span><br><span class="line"><span class="comment">// var formatAsAxis = d3.format('.1%');</span></span><br><span class="line"><span class="comment">// xAxis.tickFormat(formatAsAxis);</span></span><br><span class="line"><span class="comment">//刻度化標籤</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">svg.append(<span class="string">'g'</span>).attr(<span class="string">'class'</span>, <span class="string">'axis'</span>) <span class="comment">//增加一個群組並加上class="axis"</span></span><br><span class="line">	.attr(<span class="string">'transform'</span>, <span class="string">'translate(0, '</span>+ (h - padding) +<span class="string">')'</span>) <span class="comment">//移動到下方</span></span><br><span class="line">	.call(xAxis); <span class="comment">//將軸線匯入</span></span><br><span class="line"></span><br><span class="line">svg.append(<span class="string">'g'</span>).attr(<span class="string">'class'</span>, <span class="string">'axis'</span>)</span><br><span class="line">	.attr(<span class="string">'transform'</span>, <span class="string">'translate('</span>+ (padding) +<span class="string">')'</span>, <span class="number">0</span>) <span class="comment">//移動到左方</span></span><br><span class="line">	.call(yAxis);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> w = <span class="number">600</span>,h = <span class="number">400</span>,padding = <span class="number">30</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//random data</span></span><br><span class="line"><span class="keyword">var</span> dataset = [];</span><br><span class="line"><span class="keyword">var</span> numDataPoints = <span class="number">100</span>; <span class="comment">//總共100個點</span></span><br><span class="line"><span class="keyword">var</span> xRange = <span class="built_in">Math</span>.random() * <span class="number">500</span>;</span><br><span class="line"><span class="keyword">var</span> yRange = <span class="built_in">Math</span>.random() * <span class="number">1000</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; numDataPoints; i++)&#123;</span><br><span class="line">    <span class="keyword">var</span> num1 = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * xRange);</span><br><span class="line">    <span class="keyword">var</span> num2 = <span class="built_in">Math</span>.floor(<span class="built_in">Math</span>.random() * yRange);</span><br><span class="line">    dataset.push([num1,num2])</span><br><span class="line">&#125;<span class="comment">//和更早之前一樣，我們用假的資料來做範例</span></span><br><span class="line"><span class="built_in">console</span>.table(dataset)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> Xmax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</span><br><span class="line">    Xmin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">0</span>]&#125;),</span><br><span class="line">    Ymax = d3.max(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;),</span><br><span class="line">    Ymin = d3.min(dataset, <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> d[<span class="number">1</span>]&#125;)</span><br><span class="line">    <span class="comment">//取得X,Y的最大及最小值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> xScale = d3.scale.linear() <span class="comment">//製作線性尺度</span></span><br><span class="line">    .domain([<span class="number">0</span>, Xmax]) <span class="comment">//輸入的範圍</span></span><br><span class="line">    .range([padding , w - padding]) <span class="comment">//輸出的範圍</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yScale = d3.scale.linear()</span><br><span class="line">    .domain([<span class="number">0</span>, Ymax])</span><br><span class="line">    .range([ h - padding ,padding])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> svg = d3.select(<span class="string">&#x27;.demo&#x27;</span>).append(<span class="string">&#x27;svg&#x27;</span>).attr(&#123;<span class="string">&#x27;width&#x27;</span>: w,<span class="string">&#x27;height&#x27;</span>: h&#125;) <span class="comment">//增加SVG容器</span></span><br><span class="line"></span><br><span class="line">    svg.selectAll(<span class="string">&#x27;circle&#x27;</span>).data(dataset).enter() <span class="comment">//插入資料</span></span><br><span class="line">    .append(<span class="string">&#x27;circle&#x27;</span>) <span class="comment">//增加圓形物件</span></span><br><span class="line">    .attr(&#123;</span><br><span class="line">        <span class="string">&#x27;cx&#x27;</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> xScale(d[<span class="number">0</span>])&#125;, <span class="comment">//利用尺度算出圓心x位置</span></span><br><span class="line">        <span class="string">&#x27;cy&#x27;</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> yScale(d[<span class="number">1</span>])&#125;, <span class="comment">//同上算出y</span></span><br><span class="line">        <span class="string">&#x27;r&#x27;</span>: <span class="string">&#x27;2px&#x27;</span>, <span class="comment">//圓心大小</span></span><br><span class="line">        <span class="string">&#x27;fill&#x27;</span>: <span class="string">&#x27;black&#x27;</span> <span class="comment">//填色</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    svg.selectAll(<span class="string">&#x27;text&#x27;</span>).data(dataset).enter() <span class="comment">//插入資料</span></span><br><span class="line">    .append(<span class="string">&#x27;text&#x27;</span>) <span class="comment">//增加文字區塊</span></span><br><span class="line">    .text(<span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123; <span class="keyword">return</span> d[<span class="number">0</span>]+ <span class="string">&#x27;,&#x27;</span> + d[<span class="number">1</span>]&#125;) <span class="comment">//補上坐標文字</span></span><br><span class="line">    .attr(&#123;</span><br><span class="line">        <span class="string">&#x27;x&#x27;</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> xScale(d[<span class="number">0</span>])&#125;,</span><br><span class="line">        <span class="string">&#x27;y&#x27;</span>: <span class="function"><span class="keyword">function</span>(<span class="params">d</span>)</span>&#123;<span class="keyword">return</span> yScale(d[<span class="number">1</span>])&#125;,</span><br><span class="line">        <span class="string">&#x27;fill&#x27;</span>: <span class="string">&#x27;red&#x27;</span>, <span class="comment">//填滿紅色</span></span><br><span class="line">        <span class="string">&#x27;font-size&#x27;</span>: <span class="string">&#x27;10px&#x27;</span> <span class="comment">//文字大小</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">//Axis</span></span><br><span class="line"><span class="keyword">var</span> xAxis = d3.svg.axis().scale(xScale) <span class="comment">//增加軸線物件，並套用尺度(x)</span></span><br><span class="line">    .orient(<span class="string">&quot;bottom&quot;</span>) <span class="comment">//標示位置</span></span><br><span class="line">    .ticks(<span class="number">6</span>) <span class="comment">//刻度數量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> yAxis = d3.svg.axis().scale(yScale) <span class="comment">//增加軸線物件，並套用尺度(y)</span></span><br><span class="line">    .orient(<span class="string">&quot;left&quot;</span>) <span class="comment">//標示位置</span></span><br><span class="line">    .ticks(<span class="number">10</span>) <span class="comment">//刻度數量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//刻度化標籤，這範例不使用</span></span><br><span class="line"><span class="comment">// var formatAsAxis = d3.format(&#x27;.1%&#x27;);</span></span><br><span class="line"><span class="comment">// xAxis.tickFormat(formatAsAxis);</span></span><br><span class="line"><span class="comment">//刻度化標籤</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">svg.append(<span class="string">&#x27;g&#x27;</span>).attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;axis&#x27;</span>) <span class="comment">//增加一個群組並加上class=&quot;axis&quot;</span></span><br><span class="line">    .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="string">&#x27;translate(0, &#x27;</span>+ (h - padding) +<span class="string">&#x27;)&#x27;</span>) <span class="comment">//移動到下方</span></span><br><span class="line">    .call(xAxis); <span class="comment">//將軸線匯入</span></span><br><span class="line"></span><br><span class="line">svg.append(<span class="string">&#x27;g&#x27;</span>).attr(<span class="string">&#x27;class&#x27;</span>, <span class="string">&#x27;axis&#x27;</span>)</span><br><span class="line">    .attr(<span class="string">&#x27;transform&#x27;</span>, <span class="string">&#x27;translate(&#x27;</span>+ (padding) +<span class="string">&#x27;)&#x27;</span>, <span class="number">0</span>) <span class="comment">//移動到左方</span></span><br><span class="line">    .call(yAxis);</span><br></pre></td></tr></table></figure>
 <p>剛剛最後還有加Class，別忘了…，記得補上喔。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.axis</span> <span class="selector-tag">path</span>, <span class="selector-class">.axis</span> <span class="selector-tag">line</span>&#123;</span><br><span class="line">	<span class="attribute">fill</span>: none;</span><br><span class="line">	<span class="attribute">stroke</span>: SlateGray;</span><br><span class="line">	<span class="attribute">shape-rendering</span>: cirspEdges;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.axis</span> <span class="selector-tag">text</span>&#123;</span><br><span class="line">	<span class="attribute">font-size</span>: <span class="number">11px</span>;</span><br><span class="line">	<span class="attribute">fill</span>: <span class="number">#999</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.axis</span> <span class="selector-tag">path</span>, <span class="selector-class">.axis</span> <span class="selector-tag">line</span>&#123;</span><br><span class="line">    <span class="attribute">fill</span>: none;</span><br><span class="line">    <span class="attribute">stroke</span>: SlateGray;</span><br><span class="line">    <span class="attribute">shape-rendering</span>: cirspEdges;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.axis</span> <span class="selector-tag">text</span>&#123;</span><br><span class="line">    <span class="attribute">font-size</span>: <span class="number">11px</span>;</span><br><span class="line">    <span class="attribute">fill</span>: <span class="number">#999</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <script>
 var w = 600,h = 400,padding = 30;
@@ -357,7 +377,7 @@ svg.append('g').attr('class', 'axis')
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -607,7 +627,7 @@ svg.append('g').attr('class', 'axis')
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -628,11 +648,11 @@ svg.append('g').attr('class', 'axis')
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -677,20 +697,40 @@ svg.append('g').attr('class', 'axis')
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

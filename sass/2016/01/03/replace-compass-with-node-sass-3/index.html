@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>Compass 替代方案(3) - 加入 SVG Sprites | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="sass,gulp,compass">
+        <meta name="keywords" content="sass,gulp,compass" />
     
     
 
     <meta name="description" content="Compass 的 CSS Sprites 是非常好用的工具，在以前有介紹過 compass 的 Sprites 作法，只要把圖片丟一丟就可以完成，而且也可以做 for Retina 版本，但是使用SVG 製作 Sprites 就沒有辦法。一直以來我都是以向量工具做設計，如果不能轉 SVG 這樣高品質的圖檔，對我來說也是挺困擾的。 這篇就要介紹如何使用 Gulp 來製作 SVG Sprites，並">
-<meta name="keywords" content="sass,gulp,compass">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Compass 替代方案(3) - 加入 SVG Sprites">
 <meta property="og:url" content="https://wcc723.github.io/sass/2016/01/03/replace-compass-with-node-sass-3/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="Compass 的 CSS Sprites 是非常好用的工具，在以前有介紹過 compass 的 Sprites 作法，只要把圖片丟一丟就可以完成，而且也可以做 for Retina 版本，但是使用SVG 製作 Sprites 就沒有辦法。一直以來我都是以向量工具做設計，如果不能轉 SVG 這樣高品質的圖檔，對我來說也是挺困擾的。 這篇就要介紹如何使用 Gulp 來製作 SVG Sprites，並">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/sass/2016/01/03/replace-compass-with-node-sass-3/2016/01/screen_shot_2016-01-03_02.png">
-<meta property="og:updated_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:published_time" content="2016-01-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="sass">
+<meta property="article:tag" content="gulp">
+<meta property="article:tag" content="compass">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Compass 替代方案(3) - 加入 SVG Sprites">
-<meta name="twitter:description" content="Compass 的 CSS Sprites 是非常好用的工具，在以前有介紹過 compass 的 Sprites 作法，只要把圖片丟一丟就可以完成，而且也可以做 for Retina 版本，但是使用SVG 製作 Sprites 就沒有辦法。一直以來我都是以向量工具做設計，如果不能轉 SVG 這樣高品質的圖檔，對我來說也是挺困擾的。 這篇就要介紹如何使用 Gulp 來製作 SVG Sprites，並">
 <meta name="twitter:image" content="https://wcc723.github.io/sass/2016/01/03/replace-compass-with-node-sass-3/2016/01/screen_shot_2016-01-03_02.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/sass/">sass</a>
@@ -199,7 +220,7 @@ ga('send', 'pageview');
     <time datetime="2016-01-02T16:00:00.000Z" itemprop="datePublished">2016-01-03</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/compass/">compass</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sass/">sass</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/compass/" rel="tag">compass</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gulp/" rel="tag">gulp</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sass/" rel="tag">sass</a></li></ul>
 
             </div>
         
@@ -242,18 +263,18 @@ ga('send', 'pageview');
 <li>同時提供 SVG 對應 HTML 說明文件。</li>
 <li>可自訂產生的 CSS 樣式表</li>
 </ul>
-<h2 id="使用-SVG-Sprites"><a href="#使用-SVG-Sprites" class="headerlink" title="使用 SVG Sprites"></a>使用 SVG Sprites</h2><p>持續更新的範例：<a href="https://github.com/Wcc723/gulp-node-sass" target="_blank" rel="noopener">https://github.com/Wcc723/gulp-node-sass</a></p>
-<p>這次用的套件是 <a href="https://www.npmjs.com/package/gulp-svg-sprites" target="_blank" rel="noopener">gulp-svg-sprites</a>，這個套件有個缺點就是 <strong>#NOTICE - NOT ACTIVELY MAINTAINED</strong> …。不過他滿足我所需的所有功能，所以本篇還是用這個套件。</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">'gulp'</span>),</span><br><span class="line">  <span class="comment">// svgSprite</span></span><br><span class="line">  svgSprite = <span class="built_in">require</span>(<span class="string">"gulp-svg-sprites"</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> paths = &#123;</span><br><span class="line">  <span class="string">'source'</span>: <span class="string">'./source/'</span>,</span><br><span class="line">  <span class="string">'bower'</span> : <span class="string">'./bower_components/'</span>,</span><br><span class="line">  <span class="string">'sass'</span>: <span class="string">'./source/stylesheets/'</span>,</span><br><span class="line">  <span class="string">'img'</span>: <span class="string">'./source/images/'</span>,</span><br><span class="line">  <span class="string">'public'</span>: <span class="string">'./public/'</span>,</span><br><span class="line">  <span class="string">'tpls'</span>: <span class="string">'./gulp-tpls/'</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SVG Sprite</span></span><br><span class="line">gulp.task(<span class="string">'svg-sprite'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.src(<span class="string">'./source/images/sprites/*.svg'</span>) <span class="comment">// 來源路徑</span></span><br><span class="line">    .pipe(plumber())</span><br><span class="line">    .pipe(svgSprite(&#123;</span><br><span class="line">      svg: &#123;</span><br><span class="line">        sprite: <span class="string">"images/sprites/sprite.svg"</span>  <span class="comment">// 輸出 svg 路徑</span></span><br><span class="line">      &#125;,</span><br><span class="line">      cssFile: <span class="string">'stylesheets/sprite.css'</span>, <span class="comment">//輸出 css 路徑</span></span><br><span class="line">      selector: <span class="string">"icons-%f"</span>,  <span class="comment">// 前綴詞</span></span><br><span class="line">      templates: &#123;</span><br><span class="line">        css: <span class="built_in">require</span>(<span class="string">"fs"</span>).readFileSync(paths.tpls + <span class="string">'svg-sprite.css'</span>, <span class="string">"utf-8"</span>) <span class="comment">// css 樣板</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;))</span><br><span class="line">    .pipe(gulp.dest(paths.public))</span><br><span class="line">    .pipe(filter(<span class="string">"**/*.svg"</span>))</span><br><span class="line">    .pipe(svg2png())</span><br><span class="line">    .pipe(gulp.dest(paths.public));</span><br><span class="line">&#125;);</span><br><span class="line">watch(<span class="string">'./source/images/sprites/*.svg'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.start(<span class="string">'svg-sprite'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">'default'</span>, [<span class="string">'svg-sprite'</span>]);</span><br></pre></td></tr></table></figure>
+<h2 id="使用-SVG-Sprites"><a href="#使用-SVG-Sprites" class="headerlink" title="使用 SVG Sprites"></a>使用 SVG Sprites</h2><p>持續更新的範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/gulp-node-sass">https://github.com/Wcc723/gulp-node-sass</a></p>
+<p>這次用的套件是 <a target="_blank" rel="noopener" href="https://www.npmjs.com/package/gulp-svg-sprites">gulp-svg-sprites</a>，這個套件有個缺點就是 <strong>#NOTICE - NOT ACTIVELY MAINTAINED</strong> …。不過他滿足我所需的所有功能，所以本篇還是用這個套件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> gulp = <span class="built_in">require</span>(<span class="string">&#x27;gulp&#x27;</span>),</span><br><span class="line">  <span class="comment">// svgSprite</span></span><br><span class="line">  svgSprite = <span class="built_in">require</span>(<span class="string">&quot;gulp-svg-sprites&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> paths = &#123;</span><br><span class="line">  <span class="string">&#x27;source&#x27;</span>: <span class="string">&#x27;./source/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;bower&#x27;</span> : <span class="string">&#x27;./bower_components/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;sass&#x27;</span>: <span class="string">&#x27;./source/stylesheets/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;img&#x27;</span>: <span class="string">&#x27;./source/images/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;public&#x27;</span>: <span class="string">&#x27;./public/&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;tpls&#x27;</span>: <span class="string">&#x27;./gulp-tpls/&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// SVG Sprite</span></span><br><span class="line">gulp.task(<span class="string">&#x27;svg-sprite&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.src(<span class="string">&#x27;./source/images/sprites/*.svg&#x27;</span>) <span class="comment">// 來源路徑</span></span><br><span class="line">    .pipe(plumber())</span><br><span class="line">    .pipe(svgSprite(&#123;</span><br><span class="line">      svg: &#123;</span><br><span class="line">        sprite: <span class="string">&quot;images/sprites/sprite.svg&quot;</span>  <span class="comment">// 輸出 svg 路徑</span></span><br><span class="line">      &#125;,</span><br><span class="line">      cssFile: <span class="string">&#x27;stylesheets/sprite.css&#x27;</span>, <span class="comment">//輸出 css 路徑</span></span><br><span class="line">      selector: <span class="string">&quot;icons-%f&quot;</span>,  <span class="comment">// 前綴詞</span></span><br><span class="line">      templates: &#123;</span><br><span class="line">        css: <span class="built_in">require</span>(<span class="string">&quot;fs&quot;</span>).readFileSync(paths.tpls + <span class="string">&#x27;svg-sprite.css&#x27;</span>, <span class="string">&quot;utf-8&quot;</span>) <span class="comment">// css 樣板</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;))</span><br><span class="line">    .pipe(gulp.dest(paths.public))</span><br><span class="line">    .pipe(filter(<span class="string">&quot;**/*.svg&quot;</span>))</span><br><span class="line">    .pipe(svg2png())</span><br><span class="line">    .pipe(gulp.dest(paths.public));</span><br><span class="line">&#125;);</span><br><span class="line">watch(<span class="string">&#x27;./source/images/sprites/*.svg&#x27;</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  gulp.start(<span class="string">&#x27;svg-sprite&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">gulp.task(<span class="string">&#x27;default&#x27;</span>, [<span class="string">&#x27;svg-sprite&#x27;</span>]);</span><br></pre></td></tr></table></figure>
 <p>這段程式碼僅是局部，在我的範例內產生的 CSS 會再由 PostCSS 合併。</p>
 <p>接下來準備一些 SVG ，其中還加入一張包含漸層的 Skype 圖示 (如果是 icon fonts 就無法直接使用漸層色或是更豐富的色彩)。</p>
-<p><img src="/images/2016/01/screen_shot_2016-01-03_01.png" alt></p>
+<p><img src="/images/2016/01/screen_shot_2016-01-03_01.png" alt=""></p>
 <p>輸入 <code>gulp</code> 編譯完會得到 <code>sprite.css</code>、<code>sprite.png</code>、<code>sprite.svg</code>以及<code>sprite.html</code>這些檔案，打開 sprite.html 會看到本次專案 sprites 的說明文件。</p>
-<p><img src="/images/2016/01/screen_shot_2016-01-03_02.png" alt></p>
+<p><img src="/images/2016/01/screen_shot_2016-01-03_02.png" alt=""></p>
 <p>這個範例檔可以看到有哪些 Sprites 可以用運用，並且可以切換背景色以及 html code 的提示。</p>
-<p><img src="/images/2016/01/screen_shot_2016-01-03_04.png" alt></p>
+<p><img src="/images/2016/01/screen_shot_2016-01-03_04.png" alt=""></p>
 <p>和 Compass 不同在於它是屬於另外產生的CSS，有時候和本身專案的 CSS 可能會有衝突，它也能透過 css template 客制屬於專案的範本。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;#common&#125;.&#123;common&#125; &#123;</span><br><span class="line">  font-size: &#123;baseSize&#125;px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.&#123;common&#125;:before &#123;</span><br><span class="line">  content:' ';</span><br><span class="line">  <span class="selector-tag">vertical-align</span><span class="selector-pseudo">:middle</span>;</span><br><span class="line">  <span class="selector-tag">display</span>: <span class="selector-tag">inline-block</span>;</span><br><span class="line">  background-image: url("&#123;svgPath&#125;");</span><br><span class="line">  <span class="selector-tag">background-repeat</span>: <span class="selector-tag">no-repeat</span>;</span><br><span class="line">  background-size: &#123;relWidth&#125;em &#123;relHeight&#125;em;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.no-svg .&#123;common&#125;:before &#123;</span><br><span class="line">  background-image: url("&#123;pngPath&#125;");</span><br><span class="line">&#125;&#123;/common&#125;</span><br><span class="line">&#123;#svg&#125;</span><br><span class="line">&#123;#common&#125;.&#123;common&#125;&#123;/common&#125;.&#123;name&#125;:before &#123;</span><br><span class="line">  background-position: &#123;relPositionX&#125;em &#123;relPositionY&#125;em;</span><br><span class="line">  width: &#123;relWidth&#125;em;</span><br><span class="line">  height: &#123;relHeight&#125;em;</span><br><span class="line">&#125;</span><br><span class="line">&#123;/svg&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">&#123;#common&#125;.&#123;common&#125; &#123;</span><br><span class="line">  font-size: &#123;baseSize&#125;px;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.&#123;common&#125;:before &#123;</span><br><span class="line">  content:&#x27; &#x27;;</span><br><span class="line">  <span class="selector-tag">vertical-align</span><span class="selector-pseudo">:middle</span>;</span><br><span class="line">  <span class="selector-tag">display</span>: <span class="selector-tag">inline-block</span>;</span><br><span class="line">  background-image: url(&quot;&#123;svgPath&#125;&quot;);</span><br><span class="line">  <span class="selector-tag">background-repeat</span>: <span class="selector-tag">no-repeat</span>;</span><br><span class="line">  background-size: &#123;relWidth&#125;em &#123;relHeight&#125;em;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">.no-svg .&#123;common&#125;:before &#123;</span><br><span class="line">  background-image: url(&quot;&#123;pngPath&#125;&quot;);</span><br><span class="line">&#125;&#123;/common&#125;</span><br><span class="line">&#123;#svg&#125;</span><br><span class="line">&#123;#common&#125;.&#123;common&#125;&#123;/common&#125;.&#123;name&#125;:before &#123;</span><br><span class="line">  background-position: &#123;relPositionX&#125;em &#123;relPositionY&#125;em;</span><br><span class="line">  width: &#123;relWidth&#125;em;</span><br><span class="line">  height: &#123;relHeight&#125;em;</span><br><span class="line">&#125;</span><br><span class="line">&#123;/svg&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>在製作 SVG 時，建議使用 <strong>Sketch</strong> 或 <strong>Affinity Designer</strong> 軟體，<strong>Adobe Illustrator</strong> 在轉 SVG 有可能會產生錯誤的格式造成無法製作 Sprites 。</p>
 <p><em>Illustrator 會將漸層轉成 Base64 ，並非 SVG的漸層</em></p>
 <p>本篇介紹的是 SVG Sprites，適合用在有色彩的圖案上，如果說專案只需要單色的圖示，建議可以使用 icon fonts 就可以了，icon fonts 的文章可以參考 <a href="http://wcc723.github.io/tools/2015/11/20/sketch-convert-to-web-icon-fonts/">將 Sketch icons 轉成 web icon fonts</a>。</p>
@@ -287,7 +308,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -537,7 +558,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -558,11 +579,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -607,20 +628,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

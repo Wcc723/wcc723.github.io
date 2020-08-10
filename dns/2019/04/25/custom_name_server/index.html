@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>自建 Name Server | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="dns">
+        <meta name="keywords" content="dns" />
     
     
 
     <meta name="description" content="本篇教學是延續「大神來六角」的 “網址管理與 DNS 託管全攻略”，目的是讓參與的學員更了解 DNS 在轉址的過程觀念。 對於 Name Serve 的概念可以參考 AWS 提供的架構圖：  擁有一個網域後，只要網域的供應商可以設定 NS Record，都可以用來自行建立 Name Server，並且可以自行代管該網域下的所有子網域。  本篇中的環境在教學結束後被釋放，所以無法再次連接。  參考文">
-<meta name="keywords" content="dns">
 <meta property="og:type" content="article">
 <meta property="og:title" content="自建 Name Server">
 <meta property="og:url" content="https://wcc723.github.io/dns/2019/04/25/custom_name_server/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="本篇教學是延續「大神來六角」的 “網址管理與 DNS 託管全攻略”，目的是讓參與的學員更了解 DNS 在轉址的過程觀念。 對於 Name Serve 的概念可以參考 AWS 提供的架構圖：  擁有一個網域後，只要網域的供應商可以設定 NS Record，都可以用來自行建立 Name Server，並且可以自行代管該網域下的所有子網域。  本篇中的環境在教學結束後被釋放，所以無法再次連接。  參考文">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FArtboard%20Copy%206.png?alt=media&token=c5d8c7a1-b5d4-459a-b3b1-958a16d16359">
-<meta property="og:updated_time" content="2019-04-24T07:13:59.984Z">
+<meta property="article:published_time" content="2019-04-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-04-24T07:13:59.984Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="dns">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="自建 Name Server">
-<meta name="twitter:description" content="本篇教學是延續「大神來六角」的 “網址管理與 DNS 託管全攻略”，目的是讓參與的學員更了解 DNS 在轉址的過程觀念。 對於 Name Serve 的概念可以參考 AWS 提供的架構圖：  擁有一個網域後，只要網域的供應商可以設定 NS Record，都可以用來自行建立 Name Server，並且可以自行代管該網域下的所有子網域。  本篇中的環境在教學結束後被釋放，所以無法再次連接。  參考文">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FArtboard%20Copy%206.png?alt=media&token=c5d8c7a1-b5d4-459a-b3b1-958a16d16359">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +31,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +82,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +102,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +173,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +189,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/dns/">dns</a>
@@ -199,14 +218,14 @@ ga('send', 'pageview');
     <time datetime="2019-04-24T16:00:00.000Z" itemprop="datePublished">2019-04-25</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dns/">dns</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dns/" rel="tag">dns</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FArtboard%20Copy%206.png?alt=media&token=c5d8c7a1-b5d4-459a-b3b1-958a16d16359" rel="gallery_ck870gcpt012emtruttfe6c4d">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FArtboard%20Copy%206.png?alt=media&token=c5d8c7a1-b5d4-459a-b3b1-958a16d16359" rel="gallery_ckdo9wd8900rry9rud19gdf7q noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FArtboard%20Copy%206.png?alt=media&token=c5d8c7a1-b5d4-459a-b3b1-958a16d16359" itemprop="image" />
     </a>
     
@@ -228,17 +247,17 @@ ga('send', 'pageview');
                 </div>
             
             <div class="need-gallery">
-                <p>本篇教學是延續「<a href="https://www.hexschool.com/2019/03/07/2019-03-07-interview/" target="_blank" rel="noopener">大神來六角</a>」的 “網址管理與 DNS 託管全攻略”，目的是讓參與的學員更了解 DNS 在轉址的過程觀念。</p>
-<p>對於 Name Serve 的概念可以參考 <a href="https://aws.amazon.com/tw/route53/what-is-dns/#DNS_%E5%A6%82%E4%BD%95%E5%B0%87%E6%B5%81%E9%87%8F%E8%B7%AF%E7%94%B1%E5%88%B0_Web_%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%EF%BC%9F" target="_blank" rel="noopener">AWS 提供的架構圖</a>：</p>
-<p><img src="https://d1.awsstatic.com/Route53/how-route-53-routes-traffic.8d313c7da075c3c7303aaef32e89b5d0b7885e7c.png" alt></p>
+                <p>本篇教學是延續「<a target="_blank" rel="noopener" href="https://www.hexschool.com/2019/03/07/2019-03-07-interview/">大神來六角</a>」的 “網址管理與 DNS 託管全攻略”，目的是讓參與的學員更了解 DNS 在轉址的過程觀念。</p>
+<p>對於 Name Serve 的概念可以參考 <a target="_blank" rel="noopener" href="https://aws.amazon.com/tw/route53/what-is-dns/#DNS_%E5%A6%82%E4%BD%95%E5%B0%87%E6%B5%81%E9%87%8F%E8%B7%AF%E7%94%B1%E5%88%B0_Web_%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%EF%BC%9F">AWS 提供的架構圖</a>：</p>
+<p><img src="https://d1.awsstatic.com/Route53/how-route-53-routes-traffic.8d313c7da075c3c7303aaef32e89b5d0b7885e7c.png" alt=""></p>
 <p>擁有一個網域後，只要網域的供應商可以設定 NS Record，都可以用來自行建立 Name Server，並且可以自行代管該網域下的所有子網域。</p>
 <blockquote>
 <p>本篇中的環境在教學結束後被釋放，所以無法再次連接。</p>
 </blockquote>
 <p>參考文章：</p>
 <ul>
-<li><a href="http://linux.vbird.org/linux_server/0350dns.php#DNS_Zones" target="_blank" rel="noopener">http://linux.vbird.org/linux_server/0350dns.php#DNS_Zones</a> </li>
-<li><a href="https://eric0806.blogspot.com/2014/06/ubuntu-bind9-dns-server.html" target="_blank" rel="noopener">https://eric0806.blogspot.com/2014/06/ubuntu-bind9-dns-server.html</a> </li>
+<li><a target="_blank" rel="noopener" href="http://linux.vbird.org/linux_server/0350dns.php#DNS_Zones">http://linux.vbird.org/linux_server/0350dns.php#DNS_Zones</a> </li>
+<li><a target="_blank" rel="noopener" href="https://eric0806.blogspot.com/2014/06/ubuntu-bind9-dns-server.html">https://eric0806.blogspot.com/2014/06/ubuntu-bind9-dns-server.html</a> </li>
 </ul>
 <h2 id="建立環境"><a href="#建立環境" class="headerlink" title="建立環境"></a>建立環境</h2><ul>
 <li>購買一個網域，並且該網域可以自訂 NameServer 的<ul>
@@ -248,25 +267,25 @@ ga('send', 'pageview');
 <li>準備一台主機，本次使用 Digital Ocean 的 Ubuntu 16</li>
 </ul>
 <h2 id="上層-Name-Server-設定"><a href="#上層-Name-Server-設定" class="headerlink" title="上層 Name Server 設定"></a>上層 Name Server 設定</h2><p>首先，必須先將給予自訂的 Name Server 一個網址，如果僅有 IP 的情況下將無法自訂 Name Server，在此先給予我的主機 dns 這個名稱：</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_21_%E4%B8%8B%E5%8D%882_59.png?alt=media&amp;token=39b0e838-7bf6-468f-85ef-4d5c0ae11543" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_21_%E4%B8%8B%E5%8D%882_59.png?alt=media&amp;token=39b0e838-7bf6-468f-85ef-4d5c0ae11543" alt=""></p>
 <p>接下來將 customdns 這個名稱交給予 dns.casper.tw 這個 Name Server 代管，因此：</p>
 <ul>
 <li><code>dns.casper.tw</code> 這是 Name Server 主機</li>
-<li><code>customdns.casper.tw</code> 這是 Name Server 主機所代管的網域，接下來可以自訂 <code>.customdns.casper.tw</code> 的網址在這個網域下。</li>
+<li><code>customdns.casper.tw</code> 這是 Name Server 主機所代管的網域，接下來可以自訂 <code>&#123;&#123; xxx &#125;&#125;.customdns.casper.tw</code> 的網址在這個網域下。</li>
 </ul>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F809515F0-8C63-4B53-A9BE-A688F68F0D19.png?alt=media&amp;token=91861918-2f76-4e8b-8a6f-a7923b0fb550" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F809515F0-8C63-4B53-A9BE-A688F68F0D19.png?alt=media&amp;token=91861918-2f76-4e8b-8a6f-a7923b0fb550" alt=""></p>
 <h2 id="Name-Server-設定"><a href="#Name-Server-設定" class="headerlink" title="Name Server 設定"></a>Name Server 設定</h2><p>在此，會使用 <strong>Bind</strong> 這一個 Name Server 工具，本工具有許多觀念需要理解，會在接下來的流程中一一的說明：</p>
 <p>安裝 Bind 工具：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install bind9 bind9-doc dnsutils</span><br></pre></td></tr></table></figure></p>
 <p>安裝完成後進入 <code>/etc/bind</code> 的套件下，輸入 <code>ll</code> 可以看到以下的資料結構：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> ll</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_16_%E4%B8%8B%E5%8D%8810_00.png?alt=media&amp;token=bb953ffd-a08f-4b0d-90eb-d88e289653f1" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_16_%E4%B8%8B%E5%8D%8810_00.png?alt=media&amp;token=bb953ffd-a08f-4b0d-90eb-d88e289653f1" alt=""></p>
 <p>主要調整檔案：</p>
 <ul>
 <li><code>named.conf.options</code>：主要的 DNS 工具的選項。</li>
 <li><code>named.conf.local</code>：設定管理的 IP、正反解的對應檔案路徑、次要 Name Server 的設定等等。</li>
 <li>自訂檔案：<ul>
-<li><code>/zones/.tw</code> 正解檔</li>
-<li><code>/zones/</code> 反解檔</li>
+<li><code>/zones/&#123;&#123;customdns.casper.tw&#125;&#125;.tw</code> 正解檔</li>
+<li><code>/zones/&#123;&#123; xxxip.rev &#125;&#125;</code> 反解檔</li>
 </ul>
 </li>
 <li>其它 <code>/etc/default/bind9</code>：修正 ipv4、ipv6 的問題</li>
@@ -277,10 +296,10 @@ ga('send', 'pageview');
 <li><code>/etc/init.d/bind9 status</code>：目前機器的狀態，必須要調整到沒有錯誤訊息為止。</li>
 </ul>
 <h3 id="設定-named-conf-options"><a href="#設定-named-conf-options" class="headerlink" title="設定 named.conf.options"></a>設定 named.conf.options</h3><p>透過編輯器設定 <code>named.conf.options</code>，這是 bind 工具的主要項目，按照預設也不會有太大關係，但本次是以 ipv4 為主，所以 v6 的功能可以先關閉，另外 Name Server 預設是 53 port，當上層網域指定過來後就會自動用 53 的接口，所以不要隨意調整。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">acl intra &#123; xx.xx.xx.xx; &#125;;</span><br><span class="line">// 自訂義變數 intra，可查詢的 DNS 主機，不設定也沒關係</span><br><span class="line">options &#123;</span><br><span class="line">        directory &quot;/var/cache/bind&quot;;</span><br><span class="line">        dnssec-validation auto;</span><br><span class="line"></span><br><span class="line">        auth-nxdomain no;    # conform to RFC1035</span><br><span class="line">        listen-on port 53 &#123; any; &#125;;</span><br><span class="line">        allow-query &#123; any; &#125;;</span><br><span class="line">        allow-query-cache &#123; none; &#125;;</span><br><span class="line">        recursion no; </span><br><span class="line">        // allow-recursion &#123; intra; &#125;;</span><br><span class="line">        also-notify &#123; &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">acl intra &#123; xx.xx.xx.xx; &#125;;</span><br><span class="line">&#x2F;&#x2F; 自訂義變數 intra，可查詢的 DNS 主機，不設定也沒關係</span><br><span class="line">options &#123;</span><br><span class="line">        directory &quot;&#x2F;var&#x2F;cache&#x2F;bind&quot;;</span><br><span class="line">        dnssec-validation auto;</span><br><span class="line"></span><br><span class="line">        auth-nxdomain no;    # conform to RFC1035</span><br><span class="line">        listen-on port 53 &#123; any; &#125;;</span><br><span class="line">        allow-query &#123; any; &#125;;</span><br><span class="line">        allow-query-cache &#123; none; &#125;;</span><br><span class="line">        recursion no; </span><br><span class="line">        &#x2F;&#x2F; allow-recursion &#123; intra; &#125;;</span><br><span class="line">        also-notify &#123; &#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 <h3 id="設定-named-conf-local"><a href="#設定-named-conf-local" class="headerlink" title="設定 named.conf.local"></a>設定 named.conf.local</h3><p>這是與配置檔案連接的檔案，算是主要的進入點，透過這個檔案與正解、反解配置檔案產生關聯。</p>
 <p>另外 Name Server 可以設定超過一台主要的為 Master，其它次要的為 Slave，在這個範例中僅設定一個主要，實作中會建議另外設定 Slave，避免主要的機器無法連接導致所有網址失聯。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">acl allow-trans-ip &#123; <span class="number">138.68</span><span class="number">.229</span><span class="number">.69</span>; &#125;;</span><br><span class="line"><span class="comment">// 定義允許取得配置的 ip ，如果有多個 ip 可以使用分號隔開</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// --- 正解的區域 ---</span></span><br><span class="line"><span class="comment">// 定義掌管的 Domain</span></span><br><span class="line">zone <span class="string">"customdns.casper.tw"</span> &#123;</span><br><span class="line">    type master; <span class="comment">// 定義 master 或 slave</span></span><br><span class="line">    file <span class="string">"/etc/bind/zones/customdns.casper.tw.fwd"</span>; <span class="comment">// 自訂義正解檔案的路徑，名稱可自訂</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 定義可以從主要機器取得配置的 ip，在此不設定也沒關係，但實作中建議加上</span></span><br><span class="line">    allow-transfer &#123;</span><br><span class="line">        allow-trans-ip; <span class="comment">// 上方定義的變數</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// --- 反解的區域 ---</span></span><br><span class="line">zone <span class="string">"229.68.138.in-addr.arpa"</span> &#123;</span><br><span class="line">    type master; <span class="comment">// 對應 master</span></span><br><span class="line">    file <span class="string">"/etc/bind/zones/138.68.229.rev"</span>; <span class="comment">// 反解配置檔案路徑</span></span><br><span class="line">    allow-transfer &#123; allow-trans-ip; &#125;; <span class="comment">// 同上</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 反解命名規則：</span></span><br><span class="line"><span class="comment">// ip 假設為 138.68.229.69</span></span><br><span class="line"><span class="comment">// 反解應設定為 229.68.138.in-addr.arpa</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">acl allow-trans-ip &#123; <span class="number">138.68</span><span class="number">.229</span><span class="number">.69</span>; &#125;;</span><br><span class="line"><span class="comment">// 定義允許取得配置的 ip ，如果有多個 ip 可以使用分號隔開</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// --- 正解的區域 ---</span></span><br><span class="line"><span class="comment">// 定義掌管的 Domain</span></span><br><span class="line">zone <span class="string">&quot;customdns.casper.tw&quot;</span> &#123;</span><br><span class="line">    type master; <span class="comment">// 定義 master 或 slave</span></span><br><span class="line">    file <span class="string">&quot;/etc/bind/zones/customdns.casper.tw.fwd&quot;</span>; <span class="comment">// 自訂義正解檔案的路徑，名稱可自訂</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 定義可以從主要機器取得配置的 ip，在此不設定也沒關係，但實作中建議加上</span></span><br><span class="line">    allow-transfer &#123;</span><br><span class="line">        allow-trans-ip; <span class="comment">// 上方定義的變數</span></span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// --- 反解的區域 ---</span></span><br><span class="line">zone <span class="string">&quot;229.68.138.in-addr.arpa&quot;</span> &#123;</span><br><span class="line">    type master; <span class="comment">// 對應 master</span></span><br><span class="line">    file <span class="string">&quot;/etc/bind/zones/138.68.229.rev&quot;</span>; <span class="comment">// 反解配置檔案路徑</span></span><br><span class="line">    allow-transfer &#123; allow-trans-ip; &#125;; <span class="comment">// 同上</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">// 反解命名規則：</span></span><br><span class="line"><span class="comment">// ip 假設為 138.68.229.69</span></span><br><span class="line"><span class="comment">// 反解應設定為 229.68.138.in-addr.arpa</span></span><br></pre></td></tr></table></figure>
 <h3 id="設定正反解配置檔案"><a href="#設定正反解配置檔案" class="headerlink" title="設定正反解配置檔案"></a>設定正反解配置檔案</h3><p>上方定義了 <code>named.conf.local</code>，其中又連向兩個配置檔案，分別為：</p>
 <ul>
 <li><code>/etc/bind/zones/customdns.casper.tw.fwd</code> 正解</li>
@@ -315,16 +334,15 @@ ga('send', 'pageview');
 <blockquote>
 <p>反解：一般網域查詢時是由右至左，如：.root &gt; .tw &gt; .casper &gt; .dns，而 ip 的運作是相反的，上述的 ip 中在運作時方向為 138 &gt; 68 &gt; 229 &gt; 69，用來從 ip 反向查詢到主機名稱。</p>
 </blockquote>
-<p>定義反解檔案 <code>138.68.229.rev</code>，反解檔案的 SOA 與正解檔一致，不同的是 Record 內容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$TTL    3600</span><br><span class="line">;</span><br><span class="line">@       IN      SOA     customdns.casper.tw. agito723.gmail.com. (</span><br><span class="line">                        2014062007;</span><br><span class="line">                        600;</span><br><span class="line">                        900;</span><br><span class="line">                        86400;</span><br><span class="line">                        120);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@       IN      NS      dns.casper.tw.</span><br><span class="line">;</span><br><span class="line">123.129.22.165.in-addr.arpa.     IN      PTR     dns.casper.tw. ;</span><br><span class="line">69       IN      PTR     www.customdns.casper.tw. ;</span><br></pre></td></tr></table></figure></p>
-<p>反解檔案與正解檔案設定差異不大，規則上定義為 <code>PTR</code>(反解 Record)，並且在 ip 需要使用反解的規則撰寫。到這個步驟基本上就算完成了，接下來就是進入測試、重啟與除錯。</p>
+<p>定義反解檔案 <code>138.68.229.rev</code>，反解檔案的 SOA 與正解檔一致，不同的是 Record 內容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">$TTL    3600</span><br><span class="line">;</span><br><span class="line">@       IN      SOA     customdns.casper.tw. agito723.gmail.com. (</span><br><span class="line">                        2014062007;</span><br><span class="line">                        600;</span><br><span class="line">                        900;</span><br><span class="line">                        86400;</span><br><span class="line">                        120);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@       IN      NS      dns.casper.tw.</span><br><span class="line">;</span><br><span class="line">123.129.22.165.in-addr.arpa.     IN      PTR     dns.casper.tw. ;</span><br><span class="line">69       IN      PTR     www.customdns.casper.tw. ;</span><br></pre></td></tr></table></figure><br>反解檔案與正解檔案設定差異不大，規則上定義為 <code>PTR</code>(反解 Record)，並且在 ip 需要使用反解的規則撰寫。到這個步驟基本上就算完成了，接下來就是進入測試、重啟與除錯。</p>
 <h2 id="重啟及除錯"><a href="#重啟及除錯" class="headerlink" title="重啟及除錯"></a>重啟及除錯</h2><p>接下來，輸入 <code>/etc/init.d/bind9 restart</code> 就可以重啟測試，重啟後建議再輸入 <code>/etc/init.d/bind9 status</code> 來除錯，以下列出常見的錯誤：</p>
 <p>遇到的問題：</p>
-<h4 id="network-unreachable-resolving"><a href="#network-unreachable-resolving" class="headerlink" title="network unreachable resolving"></a>network unreachable resolving</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">network unreachable resolving &apos;ns39.domaincontrol.com/AAAA/IN&apos;: 2001:503:d414::30#53</span><br></pre></td></tr></table></figure>
-<p>解法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#編輯 /etc/default/bind9</span><br><span class="line">gedit /etc/default/bind9</span><br><span class="line"></span><br><span class="line"># 如下，加上 -4</span><br><span class="line"># startup options for the server</span><br><span class="line">OPTIONS=&quot;-4 -u bind&quot;</span><br></pre></td></tr></table></figure></p>
+<h4 id="network-unreachable-resolving"><a href="#network-unreachable-resolving" class="headerlink" title="network unreachable resolving"></a>network unreachable resolving</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">network unreachable resolving &#39;ns39.domaincontrol.com&#x2F;AAAA&#x2F;IN&#39;: 2001:503:d414::30#53</span><br></pre></td></tr></table></figure>
+<p>解法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#編輯 &#x2F;etc&#x2F;default&#x2F;bind9</span><br><span class="line">gedit &#x2F;etc&#x2F;default&#x2F;bind9</span><br><span class="line"></span><br><span class="line"># 如下，加上 -4</span><br><span class="line"># startup options for the server</span><br><span class="line">OPTIONS&#x3D;&quot;-4 -u bind&quot;</span><br></pre></td></tr></table></figure></p>
 <h4 id="bad-dotted-quad"><a href="#bad-dotted-quad" class="headerlink" title="bad dotted quad"></a>bad dotted quad</h4><p>設定檔中包含了不正常的空格，這些空格有可能在分號後方，可依據錯誤訊息尋找是否有多餘的空格。</p>
-<p>正常的 status 運作應會出現以下訊息，並且沒有任何的紅色文字：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F548C775E-8362-4F11-BECE-74F54490082F.png?alt=media&amp;token=e0862396-afaf-45d1-a9a1-51d4bbf9e021" alt></p>
-<h2 id="Name-Server-開張"><a href="#Name-Server-開張" class="headerlink" title="Name Server 開張"></a>Name Server 開張</h2><p>如果沒有任何錯誤，正常來說就能直接連線至你的網址。接下來再透過 <code>dig +trace { 網址 }</code> 也能看到自建的 Name Server 相關訊息。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_21_%E4%B8%8B%E5%8D%884_05.png?alt=media&amp;token=c8447166-7010-463e-ba7d-bb02dc8e8118" alt></p>
+<p>正常的 status 運作應會出現以下訊息，並且沒有任何的紅色文字：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F548C775E-8362-4F11-BECE-74F54490082F.png?alt=media&amp;token=e0862396-afaf-45d1-a9a1-51d4bbf9e021" alt=""></p>
+<h2 id="Name-Server-開張"><a href="#Name-Server-開張" class="headerlink" title="Name Server 開張"></a>Name Server 開張</h2><p>如果沒有任何錯誤，正常來說就能直接連線至你的網址。接下來再透過 <code>dig +trace &#123; 網址 &#125;</code> 也能看到自建的 Name Server 相關訊息。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_21_%E4%B8%8B%E5%8D%884_05.png?alt=media&amp;token=c8447166-7010-463e-ba7d-bb02dc8e8118" alt=""></p>
 
             </div>
             <div style="margin: 15px 0;">
@@ -355,7 +373,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -605,7 +623,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -626,11 +644,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -675,20 +693,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>JavaScript This 系列文：this 為什麼指向 window | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript">
+        <meta name="keywords" content="javascript" />
     
     
 
     <meta name="description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 純粹的調用 (Simple call)直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。12345">
-<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript This 系列文：this 為什麼指向 window">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2019/03/21/this-why-window/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 純粹的調用 (Simple call)直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。12345">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F7365504D-FC60-4AD2-8135-D870D42E75A2.png?alt=media&token=0a518715-f7c0-4b41-9d4c-ab4d908c7855">
-<meta property="og:updated_time" content="2019-03-21T07:29:48.399Z">
+<meta property="article:published_time" content="2019-03-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-03-21T07:29:48.399Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript This 系列文：this 為什麼指向 window">
-<meta name="twitter:description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 純粹的調用 (Simple call)直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。12345">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F7365504D-FC60-4AD2-8135-D870D42E75A2.png?alt=media&token=0a518715-f7c0-4b41-9d4c-ab4d908c7855">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +31,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +82,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +102,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +173,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +189,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +218,14 @@ ga('send', 'pageview');
     <time datetime="2019-03-20T16:00:00.000Z" itemprop="datePublished">2019-03-21</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F7365504D-FC60-4AD2-8135-D870D42E75A2.png?alt=media&token=0a518715-f7c0-4b41-9d4c-ab4d908c7855" rel="gallery_ck870gcnz00y4mtrulrdyoa68">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F7365504D-FC60-4AD2-8135-D870D42E75A2.png?alt=media&token=0a518715-f7c0-4b41-9d4c-ab4d908c7855" rel="gallery_ckdo9wd8700rky9ruez6re91i noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F7365504D-FC60-4AD2-8135-D870D42E75A2.png?alt=media&token=0a518715-f7c0-4b41-9d4c-ab4d908c7855" itemprop="image" />
     </a>
     
@@ -229,45 +248,44 @@ ga('send', 'pageview');
             
             <div class="need-gallery">
                 <p>本篇是接續先前的：<a href="/javascript/2017/12/12/javascript-this/">鐵人賽：JavaScript 的 this 到底是誰？</a>，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。</p>
-<h2 id="純粹的調用-Simple-call"><a href="#純粹的調用-Simple-call" class="headerlink" title="純粹的調用 (Simple call)"></a>純粹的調用 (Simple call)</h2><p>直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'小明'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;;</span><br><span class="line">callSomeone(); <span class="comment">// 小明</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="純粹的調用-Simple-call"><a href="#純粹的調用-Simple-call" class="headerlink" title="純粹的調用 (Simple call)"></a>純粹的調用 (Simple call)</h2><p>直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">&#125;;</span><br><span class="line">callSomeone(); <span class="comment">// 小明</span></span><br></pre></td></tr></table></figure></p>
 <h3 id="IIFE、Callback、閉包也屬於此類別嗎？"><a href="#IIFE、Callback、閉包也屬於此類別嗎？" class="headerlink" title="IIFE、Callback、閉包也屬於此類別嗎？"></a>IIFE、Callback、閉包也屬於此類別嗎？</h3><p>上述的函式只有單一層級，為了加深大家的印象，我們透過各種改變 “函式” 作用域的方式看是否會改變 this 的結果。</p>
-<h4 id="IIFE"><a href="#IIFE" class="headerlink" title="IIFE"></a>IIFE</h4><p>立即函式，這算是直接在函式內直接在呼叫另一個函式，而這個結果下一樣與純粹的呼叫結果相同。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'小明'</span>;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">  &#125;;</span><br><span class="line">  callSomeone(); <span class="comment">// 小明</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
-<p>無論我們把函式宣告放在 IIFE 內與外結果都是一致的。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'小明'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  callSomeone(); <span class="comment">// 小明</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
-<h4 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h4><p>這樣結果依然相同，並不會因為獨立的作用域改變造成 this 的不同。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'小明'</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">easyCard</span>(<span class="params">base = <span class="number">100</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> money = base</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">update = <span class="number">10</span></span>) </span>&#123;</span><br><span class="line">    money = money + update</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, money)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MingEasyCard = easyCard(<span class="number">100</span>)</span><br><span class="line">MingEasyCard()</span><br><span class="line"><span class="comment">// '小明' 110</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="IIFE"><a href="#IIFE" class="headerlink" title="IIFE"></a>IIFE</h4><p>立即函式，這算是直接在函式內直接在呼叫另一個函式，而這個結果下一樣與純粹的呼叫結果相同。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">  &#125;;</span><br><span class="line">  callSomeone(); <span class="comment">// 小明</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
+<p>無論我們把函式宣告放在 IIFE 內與外結果都是一致的。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  callSomeone(); <span class="comment">// 小明</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
+<h4 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h4><p>這樣結果依然相同，並不會因為獨立的作用域改變造成 this 的不同。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">easyCard</span>(<span class="params">base = <span class="number">100</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> money = base</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">update = <span class="number">10</span></span>) </span>&#123;</span><br><span class="line">    money = money + update</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name, money)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MingEasyCard = easyCard(<span class="number">100</span>)</span><br><span class="line">MingEasyCard()</span><br><span class="line"><span class="comment">// &#x27;小明&#x27; 110</span></span><br></pre></td></tr></table></figure></p>
 <h4 id="Callback-function"><a href="#Callback-function" class="headerlink" title="Callback function"></a>Callback function</h4><p>callback function 也是一樣的結果，透過以上這些範例了解到，並不會因為作用域的改變導致 This 的不同，更重要的還是在於<strong>函式是不是與物件有扯上關係</strong>，至此為止我們實驗了各種函式呼叫方式，都可以知道函式再直接呼叫的情況下，this 都是指向 window。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myEasyCard</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> money = <span class="number">100</span></span><br><span class="line">  <span class="keyword">return</span> callback(money); <span class="comment">// window</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myEasyCard(<span class="function"><span class="keyword">function</span> (<span class="params">money</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>, money); <span class="comment">// window</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>而 callback function 會提到另一個常見的案例，就是陣列相關的處理方式，參考 MDN 的<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#%E8%AA%9E%E6%B3%95" target="_blank" rel="noopener">說明</a> forEach 的結構如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myEasyCard</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> money = <span class="number">100</span></span><br><span class="line">  <span class="keyword">return</span> callback(money); <span class="comment">// window</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myEasyCard(<span class="function"><span class="keyword">function</span> (<span class="params">money</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>, money); <span class="comment">// window</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>而 callback function 會提到另一個常見的案例，就是陣列相關的處理方式，參考 MDN 的<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#%E8%AA%9E%E6%B3%95">說明</a> forEach 的結構如下：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr.forEach(<span class="function"><span class="keyword">function</span> <span class="title">callback</span>(<span class="params">currentValue[, index[, array]]</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//your iterator</span></span><br><span class="line">&#125;[, thisArg]);</span><br></pre></td></tr></table></figure>
 <p>因此 forEach 中間的 callback 一樣是屬於直接呼叫，所以會 this 會指向 window 物件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">a.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>, item)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">a.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>, item)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 <h3 id="嚴謹模式"><a href="#嚴謹模式" class="headerlink" title="嚴謹模式"></a>嚴謹模式</h3><blockquote>
 <p>觀念說明開始，為什麼 this 會指向 window 物件</p>
 </blockquote>
 <p>這個階段我們加上 <code>&#39;use strict&#39;</code> 則會進入嚴謹模式，接下來直接呼叫的內容都會變成 <code>undefined</code>的奇特景象，可以理解這是為了避免不必要的錯誤提示，在此也建議別透過一般函式呼叫的 this 取用 <code>window</code>。</p>
-<p>直接套上嚴謹模式則會出現錯誤範例：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'小明'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>); <span class="comment">// 這裡改成了 this，因為沒辦法找到 name</span></span><br><span class="line">&#125;</span><br><span class="line">callSomeone(); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure></p>
+<p>直接套上嚴謹模式則會出現錯誤範例：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>); <span class="comment">// 這裡改成了 this，因為沒辦法找到 name</span></span><br><span class="line">&#125;</span><br><span class="line">callSomeone(); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure></p>
 <p>而 undefined 與 window 有什麼關係呢？我們可以先介紹另一個觀念 <code>call()</code>，<code>call</code> 是可將物件傳入並替代函式內的 this：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  name: <span class="string">'小明'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(Ming, <span class="number">2</span>); <span class="comment">// 小明, 2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(Ming, <span class="number">2</span>); <span class="comment">// 小明, 2</span></span><br></pre></td></tr></table></figure>
 <p>透過 <code>.call(Ming, 2)</code> 的方式，可將 Ming 傳入並取代 this，後面帶上一個參數 <code>2</code> 則是函式的參數。因此 <code>.call()</code> <strong>前者為套用 this 的物件，後者以後都是函式的參數</strong>。參考下圖：函式中的 <code>this</code> 為 call() 的第一個值，而函式參數為第二個(包含後續的值)。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FD776D6BE-46F9-433F-9D85-96291FD12F8A.png?alt=media&amp;token=cfb5fc9c-dc8b-4fe5-bc28-5bd555042183" alt></p>
-<p>接下來我們將 <code>Ming</code> 物件替換，直接定義一個 name 在全域之上，並且傳入 undefined 的值來替代 this，猜猜會發生什麼事!?<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">'全域魔王'</span> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="literal">undefined</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure></p>
-<p>此時會發現運作上依然沒有問題，<strong>傳入 undefined 進入後 this 會直接指向全域</strong>。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FCEBA40C7-690E-4422-B09E-3541AF207C63.png?alt=media&amp;token=aef490be-ecd9-4749-84f5-5bd4da8b2ce0" alt></p>
-<p>這麼神奇的狀態也算是 JavaScript 的 Feature，發生的理由可以參考：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/call#%E5%8F%83%E6%95%B8" target="_blank" rel="noopener">MDN</a> 的說明。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FD776D6BE-46F9-433F-9D85-96291FD12F8A.png?alt=media&amp;token=cfb5fc9c-dc8b-4fe5-bc28-5bd555042183" alt=""></p>
+<p>接下來我們將 <code>Ming</code> 物件替換，直接定義一個 name 在全域之上，並且傳入 undefined 的值來替代 this，猜猜會發生什麼事!?<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域魔王&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="literal">undefined</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure><br>此時會發現運作上依然沒有問題，<strong>傳入 undefined 進入後 this 會直接指向全域</strong>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FCEBA40C7-690E-4422-B09E-3541AF207C63.png?alt=media&amp;token=aef490be-ecd9-4749-84f5-5bd4da8b2ce0" alt=""></p>
+<p>這麼神奇的狀態也算是 JavaScript 的 Feature，發生的理由可以參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/call#%E5%8F%83%E6%95%B8">MDN</a> 的說明。</p>
 <blockquote>
-<p>MDN：若這個函數是在非嚴苛模式( <a href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/Strict_mode" target="_blank" rel="noopener">non-strict mode</a> ),null、undefined將會被置換成全域變數。</p>
+<p>MDN：若這個函數是在非嚴苛模式( <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Functions_and_function_scope/Strict_mode">non-strict mode</a> ),null、undefined將會被置換成全域變數。</p>
 </blockquote>
 <p>因此，上述程式碼在嚴謹模式下將無法正確運行，因為傳入 <code>undefined</code> 時將會正確以 <code>undefined</code> 作運行。同樣概念下，在一般全域環境套用 ‘use strict’ <code>this</code> 作為一般調用時，將會直接套用 undefined 而不會是 window。</p>
 <p>而上述程式碼於嚴謹模式下，將會正確的傳入 undefined。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'全域魔王'</span> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="literal">undefined</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域魔王&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="literal">undefined</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
 <p>接下來，可以將本文的上方的程式碼都加上 <code>&#39;use strict&#39;</code> 都會得到相同的結果，this 都會指向 undefined。</p>
 <hr>
 <h2 id="延伸閱讀：This-都是物件"><a href="#延伸閱讀：This-都是物件" class="headerlink" title="延伸閱讀：This 都是物件"></a>延伸閱讀：This 都是物件</h2><p>前一篇介紹到 「this 大部分取決於 <strong>它在哪個物件下被呼叫</strong>」，所以其中改變 this 的方法之一則是透過物件下呼叫函式：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">'漂亮阿姨'</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 callName function</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">auntie.callName() <span class="comment">// '漂亮阿姨'，呼叫是在物件下調用，那麼 this 則是該物件</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">&#x27;漂亮阿姨&#x27;</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 callName function</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">auntie.callName() <span class="comment">// &#x27;漂亮阿姨&#x27;，呼叫是在物件下調用，那麼 this 則是該物件</span></span><br></pre></td></tr></table></figure>
 <p>除此之外，還可以透過本文所介紹的 call 來改變 this 的值，先前範例都是傳入「物件」，此部分我們傳入數值來看看其型別：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="keyword">this</span>), <span class="keyword">typeof</span>(num));</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// object number</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="built_in">this</span>), <span class="keyword">typeof</span>(num));</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// object number</span></span><br></pre></td></tr></table></figure>
 <p>此部分的 this 我們使用數字 1，函式參數使用數字 2，結果會發生 this 的型別變成了 <code>object</code>!?</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FA398F871-CD13-48A1-9A9D-97B53B27196E.png?alt=media&amp;token=4336cc32-d8e5-4228-bee0-e0b500556e29" alt></p>
-<p>重新透過 console 查看 this 會得到以下的結果，這是透過建構式產生的數值(<code>new Number(1)</code>)，透過 call 所傳入的純值會被使用 new 建構式的方式產生，所以型別依然維持是「物件」（可參考：<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/call#%E5%8F%83%E6%95%B8" target="_blank" rel="noopener">MDN</a>），因此 this 終究為物件形式。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FA398F871-CD13-48A1-9A9D-97B53B27196E.png?alt=media&amp;token=4336cc32-d8e5-4228-bee0-e0b500556e29" alt=""></p>
+<p>重新透過 console 查看 this 會得到以下的結果，這是透過建構式產生的數值(<code>new Number(1)</code>)，透過 call 所傳入的純值會被使用 new 建構式的方式產生，所以型別依然維持是「物件」（可參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/call#%E5%8F%83%E6%95%B8">MDN</a>），因此 this 終究為物件形式。</p>
 <blockquote>
 <p>MDN：原生型態的值將會被封裝</p>
 </blockquote>
@@ -301,7 +319,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -551,7 +569,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -572,11 +590,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -621,20 +639,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

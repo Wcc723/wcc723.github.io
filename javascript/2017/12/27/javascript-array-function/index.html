@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：常用陣列方法 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
-    <meta name="description" content="除了 forEach 外還有非常多實用的陣列方法，上一篇介紹一些注意事項，本篇要來介紹其它常用的陣列方法，這些陣列方法在大部分瀏覽器也都可以運作了，除了少數舊款的 Android Browser, ie 9 等等不能用以外。 接下來都是使用這份資料來實作一些方法：  累加 比大小 分別運算 搜尋特定值等  123456789101112131415161718let people = [  &amp;#1">
-<meta name="keywords" content="javascript,js,ironman">
+    <meta name="description" content="除了 forEach 外還有非常多實用的陣列方法，上一篇介紹一些注意事項，本篇要來介紹其它常用的陣列方法，這些陣列方法在大部分瀏覽器也都可以運作了，除了少數舊款的 Android Browser, ie 9 等等不能用以外。 接下來都是使用這份資料來實作一些方法：  累加 比大小 分別運算 搜尋特定值等  123456789101112131415161718let people &#x3D; [  &amp;#1">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：常用陣列方法">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/27/javascript-array-function/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="除了 forEach 外還有非常多實用的陣列方法，上一篇介紹一些注意事項，本篇要來介紹其它常用的陣列方法，這些陣列方法在大部分瀏覽器也都可以運作了，除了少數舊款的 Android Browser, ie 9 等等不能用以外。 接下來都是使用這份資料來實作一些方法：  累加 比大小 分別運算 搜尋特定值等  123456789101112131415161718let people = [  &amp;#1">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:description" content="除了 forEach 外還有非常多實用的陣列方法，上一篇介紹一些注意事項，本篇要來介紹其它常用的陣列方法，這些陣列方法在大部分瀏覽器也都可以運作了，除了少數舊款的 Android Browser, ie 9 等等不能用以外。 接下來都是使用這份資料來實作一些方法：  累加 比大小 分別運算 搜尋特定值等  123456789101112131415161718let people &#x3D; [  &amp;#1">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_24.jpg?alt=media&token=7d52e71f-cce0-419a-a479-5fc1bdfe90a8">
-<meta property="og:updated_time" content="2017-12-27T03:30:01.088Z">
+<meta property="article:published_time" content="2017-12-26T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-27T03:30:01.088Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：常用陣列方法">
-<meta name="twitter:description" content="除了 forEach 外還有非常多實用的陣列方法，上一篇介紹一些注意事項，本篇要來介紹其它常用的陣列方法，這些陣列方法在大部分瀏覽器也都可以運作了，除了少數舊款的 Android Browser, ie 9 等等不能用以外。 接下來都是使用這份資料來實作一些方法：  累加 比大小 分別運算 搜尋特定值等  123456789101112131415161718let people = [  &amp;#1">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_24.jpg?alt=media&token=7d52e71f-cce0-419a-a479-5fc1bdfe90a8">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-26T16:00:00.000Z" itemprop="datePublished">2017-12-27</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_24.jpg?alt=media&token=7d52e71f-cce0-419a-a479-5fc1bdfe90a8" rel="gallery_ck870gcmo00v1mtru0sjlmm3y">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_24.jpg?alt=media&token=7d52e71f-cce0-419a-a479-5fc1bdfe90a8" rel="gallery_ckdo9wd6v00nuy9ru5t189qel noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_24.jpg?alt=media&token=7d52e71f-cce0-419a-a479-5fc1bdfe90a8" itemprop="image" />
     </a>
     
@@ -236,17 +257,17 @@ ga('send', 'pageview');
 <li>分別運算</li>
 <li>搜尋特定值等</li>
 </ul>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = [</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'小明'</span>,</span><br><span class="line">    money: <span class="number">500</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'漂亮阿姨'</span>,</span><br><span class="line">    money: <span class="number">3000</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'杰倫'</span>,</span><br><span class="line">    money: <span class="number">60000</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">'老媽'</span>,</span><br><span class="line">    money: <span class="literal">Infinity</span></span><br><span class="line">  &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> people = [</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">    money: <span class="number">500</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">&#x27;漂亮阿姨&#x27;</span>,</span><br><span class="line">    money: <span class="number">3000</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">&#x27;杰倫&#x27;</span>,</span><br><span class="line">    money: <span class="number">60000</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    name: <span class="string">&#x27;老媽&#x27;</span>,</span><br><span class="line">    money: <span class="literal">Infinity</span></span><br><span class="line">  &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
 <h2 id="ForEach-與其它不同之處"><a href="#ForEach-與其它不同之處" class="headerlink" title="ForEach 與其它不同之處"></a>ForEach 與其它不同之處</h2><p>除了 forEach 以外的幾個方法都會回傳陣列或一個值，在等號的左方如果放置一個變數，那麼此變數會是 <code>undefined</code> (沒有回傳任何值)。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> forEachLoop = people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(item, index, array); <span class="comment">// 物件, 索引, 全部陣列)</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(forEachLoop); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> forEachLoop = people.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(item, index, array); <span class="comment">// 物件, 索引, 全部陣列)</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(forEachLoop); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
 <p>其它的方法都會回傳一個值或陣列，以此來說就會回傳原本的陣列值。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> mapLoop = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(mapLoop); <span class="comment">// 與原本陣列資料相同</span></span><br></pre></td></tr></table></figure>
 <h3 id="Filter"><a href="#Filter" class="headerlink" title="Filter"></a>Filter</h3><p><code>filter</code> 可以用來過濾陣列中符合條件的物件，以下範例中搜尋符合大於 5000 元的，只要將該物件中的回傳為 true，那麼就會回傳完整的物件。 </p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Filter</span></span><br><span class="line"><span class="keyword">var</span> filterEmpty = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(filterEmpty);    <span class="comment">// 沒有條件，會是一個空陣列</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> filterMoneyThan5000 = people.filter(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">5000</span>;       <span class="comment">// 取得大於五千元</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(filterMoneyThan5000); <span class="comment">// 杰倫, 老媽 這兩個物件</span></span><br></pre></td></tr></table></figure>
 <h3 id="find"><a href="#find" class="headerlink" title="find"></a>find</h3><p><code>find</code> 是用來搜尋陣列中符合條件的物件，且<strong>僅能有一個</strong>，當回傳 <code>true</code> 數量超過兩者以上，那會以第一個為優先，通常會適合搜尋來搜尋特定 id。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> findEmpty = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(findEmpty);          <span class="comment">// 沒有條件，會是 undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> findMoneyThan5000 = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">5000</span>;      <span class="comment">// 取得大於五千元</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(findMoneyThan5000);  <span class="comment">// 雖然答案有兩個，但只會回傳 '杰倫' 這一個物件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> findJay = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.name === <span class="string">'杰倫'</span>;    <span class="comment">// 找到杰倫</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(findJay);            <span class="comment">// '杰倫'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> findEmpty = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(findEmpty);          <span class="comment">// 沒有條件，會是 undefined</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> findMoneyThan5000 = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">5000</span>;      <span class="comment">// 取得大於五千元</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(findMoneyThan5000);  <span class="comment">// 雖然答案有兩個，但只會回傳 &#x27;杰倫&#x27; 這一個物件</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> findJay = people.find(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.name === <span class="string">&#x27;杰倫&#x27;</span>;    <span class="comment">// 找到杰倫</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(findJay);            <span class="comment">// &#x27;杰倫&#x27;</span></span><br></pre></td></tr></table></figure>
 <h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><p><code>map</code> 會回傳 return 的物件、值，功用上是用來處理陣列回傳新值產生一個新陣列，要特別注意回傳的值數量與原始陣列長度相同，所以留空的 return 則會產生 <code>undefined</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 沒有 return 也會產生 undefined</span></span><br><span class="line"><span class="keyword">var</span> mapEmpty = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(mapEmpty);    <span class="comment">// [undefined, undefined, undefined, undefined]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> everyoneAdd = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  item.money = item.money + <span class="number">500</span>; <span class="comment">// 每個 money + 500</span></span><br><span class="line">  <span class="keyword">return</span> item;             <span class="comment">// 回傳物件</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(everyoneAdd);  <span class="comment">// 回傳每個處理後的數值，不過記得這是傳參考特性，會影響到原始的物件</span></span><br><span class="line"><span class="comment">// &#123;name: "小明", money: 1500&#125;</span></span><br><span class="line"><span class="comment">// &#123;name: "漂亮阿姨", money: 3500&#125;</span></span><br><span class="line"><span class="comment">// &#123;name: "杰倫", money: 60500&#125;</span></span><br><span class="line"><span class="comment">// &#123;name: "老媽", money: Infinity&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mapMoneyThan5000 = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 錯誤示範，長度不符合時</span></span><br><span class="line">  <span class="keyword">if</span> (item.money &gt; <span class="number">5000</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> item;              <span class="comment">// 取得大於五千元</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(mapMoneyThan5000);</span><br><span class="line"><span class="comment">// [undefined, undefined, &#123;name: "杰倫", money: 60000&#125;, &#123;name: "老媽", money: Infinity&#125; ]</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 沒有 return 也會產生 undefined</span></span><br><span class="line"><span class="keyword">var</span> mapEmpty = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(mapEmpty);    <span class="comment">// [undefined, undefined, undefined, undefined]</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> everyoneAdd = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  item.money = item.money + <span class="number">500</span>; <span class="comment">// 每個 money + 500</span></span><br><span class="line">  <span class="keyword">return</span> item;             <span class="comment">// 回傳物件</span></span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(everyoneAdd);  <span class="comment">// 回傳每個處理後的數值，不過記得這是傳參考特性，會影響到原始的物件</span></span><br><span class="line"><span class="comment">// &#123;name: &quot;小明&quot;, money: 1500&#125;</span></span><br><span class="line"><span class="comment">// &#123;name: &quot;漂亮阿姨&quot;, money: 3500&#125;</span></span><br><span class="line"><span class="comment">// &#123;name: &quot;杰倫&quot;, money: 60500&#125;</span></span><br><span class="line"><span class="comment">// &#123;name: &quot;老媽&quot;, money: Infinity&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> mapMoneyThan5000 = people.map(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 錯誤示範，長度不符合時</span></span><br><span class="line">  <span class="keyword">if</span> (item.money &gt; <span class="number">5000</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> item;              <span class="comment">// 取得大於五千元</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(mapMoneyThan5000);</span><br><span class="line"><span class="comment">// [undefined, undefined, &#123;name: &quot;杰倫&quot;, money: 60000&#125;, &#123;name: &quot;老媽&quot;, money: Infinity&#125; ]</span></span><br></pre></td></tr></table></figure>
 <h3 id="every"><a href="#every" class="headerlink" title="every"></a>every</h3><p>驗證全部的結果，當全部的值都為 true 時，則最終會得到 true；只要其中之一為 false，則回傳為 false。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> ans = people.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">10000</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(ans); <span class="comment">// false: 只要有部分不符合，則為 false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> ans2 = people.every(<span class="function"><span class="keyword">function</span>(<span class="params">item, index, array</span>)</span>&#123;</span><br><span class="line">  <span class="keyword">return</span> item.money &gt; <span class="number">300</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="built_in">console</span>.log(ans2); <span class="comment">// true: 大家錢都有超過 300</span></span><br></pre></td></tr></table></figure>
 <h3 id="some"><a href="#some" class="headerlink" title="some"></a>some</h3><p>與前者類似，但只要部分為 true，則回傳為 true；全部為 false 則才會為 false。</p>
@@ -262,7 +283,7 @@ ga('send', 'pageview');
 <p>可以透過與前一個相加的方式，累加陣列中所有的值。</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">people.pop(); <span class="comment">// 老媽的錢深不可測，先移除掉</span></span><br><span class="line"><span class="keyword">var</span> reducePlus = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</span><br><span class="line">  <span class="comment">// 分別為前一個回傳值, 目前值, 當前索引值</span></span><br><span class="line">  <span class="built_in">console</span>.log(accumulator, currentValue, currentIndex);</span><br><span class="line">  <span class="keyword">return</span> accumulator + currentValue.money;  <span class="comment">// 與前一個值相加</span></span><br><span class="line">&#125;, <span class="number">0</span>);                                      <span class="comment">// 傳入初始化值為 0</span></span><br><span class="line"><span class="built_in">console</span>.log(reducePlus);                    <span class="comment">// 總和為 63500</span></span><br></pre></td></tr></table></figure>
 <p>也可以相互比對，取出最高的值。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> reduceBestOne = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'reduce'</span>, accumulator, currentValue, currentIndex)</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.max(accumulator, currentValue.money); <span class="comment">// 與前一個值比較哪個大</span></span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(reduceBestOne);                  <span class="comment">// 最大值為 60000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> reduceBestOne = people.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">accumulator, currentValue, currentIndex, array</span>)</span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;reduce&#x27;</span>, accumulator, currentValue, currentIndex)</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">Math</span>.max(accumulator, currentValue.money); <span class="comment">// 與前一個值比較哪個大</span></span><br><span class="line">&#125;, <span class="number">0</span>);</span><br><span class="line"><span class="built_in">console</span>.log(reduceBestOne);                  <span class="comment">// 最大值為 60000</span></span><br></pre></td></tr></table></figure>
 <p>最近許多角色都沒機會出場，要來想點辦法了 :(。</p>
 
             </div>
@@ -294,7 +315,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -544,7 +565,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -565,11 +586,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -614,20 +635,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

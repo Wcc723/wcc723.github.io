@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>Sass 3.3 Source Maps | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="sass">
+        <meta name="keywords" content="sass" />
     
     
 
     <meta name="description" content="Sass 3.3 除了上次提到的$Map外，還有另一個很有特色的功能就是Source Maps，這功能主要是配合開發者工具，直接就可以看Sass原始碼在哪一個檔甚至是哪一段，而這篇會配合Chrome 開發者工具來介紹Source Maps。">
-<meta name="keywords" content="sass">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Sass 3.3 Source Maps">
 <meta property="og:url" content="https://wcc723.github.io/sass/2014/06/02/sass-source-maps/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="Sass 3.3 除了上次提到的$Map外，還有另一個很有特色的功能就是Source Maps，這功能主要是配合開發者工具，直接就可以看Sass原始碼在哪一個檔甚至是哪一段，而這篇會配合Chrome 開發者工具來介紹Source Maps。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/sass/2014/06/02/sass-source-maps/20140602_sass_source_maps05.png">
-<meta property="og:updated_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:published_time" content="2014-06-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="sass">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Sass 3.3 Source Maps">
-<meta name="twitter:description" content="Sass 3.3 除了上次提到的$Map外，還有另一個很有特色的功能就是Source Maps，這功能主要是配合開發者工具，直接就可以看Sass原始碼在哪一個檔甚至是哪一段，而這篇會配合Chrome 開發者工具來介紹Source Maps。">
 <meta name="twitter:image" content="https://wcc723.github.io/sass/2014/06/02/sass-source-maps/20140602_sass_source_maps05.png">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,19 +31,31 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
     
-        <link href="/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+        <link href="/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -72,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -90,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -161,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -175,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/sass/">sass</a>
@@ -201,7 +220,7 @@ ga('send', 'pageview');
     <time datetime="2014-06-01T16:00:00.000Z" itemprop="datePublished">2014-06-02</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sass/">sass</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/sass/" rel="tag">sass</a></li></ul>
 
             </div>
         
@@ -227,28 +246,28 @@ ga('send', 'pageview');
 <h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>請確認使用的Sass 版本為3.3以及Compass 1.0以上，如果不是，請參考<a href="/sass/2014/05/02/sass-3.3/">上次這篇文章</a>。</p>
 <h2 id="Chrome-設定"><a href="#Chrome-設定" class="headerlink" title="Chrome 設定"></a>Chrome 設定</h2><p>有點忘了Chrome版本要多少才能使用sass maps，而我目前的版本是<code>35.0.1916.114</code>是可以直接執行的，如果發現沒有以下設定，就煩請升級到我這版本以上。</p>
 <p>首先，打開開發者工具，右方有一個設定按鈕，按下它。</p>
-<p><img src="/images/20140602_sass_source_maps01.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps01.png" alt=""></p>
 <p>在General 內可以找到Source &gt; <code>Enable CSS source maps</code>，把它選起來後關掉開發者工具。</p>
-<p><img src="/images/20140602_sass_source_maps02.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps02.png" alt=""></p>
 <h2 id="Compass-設定"><a href="#Compass-設定" class="headerlink" title="Compass 設定"></a>Compass 設定</h2><p><em>這邊的範例是直接用上次那篇的(<a href="/sass/2014/05/02/sass-3.3/">上次文章</a>)。</em></p>
 <p>基本上我用Sass都會引用Compass，所以這邊直接介紹Compass的做法。打開專案資料夾，找到<code>config.rb</code>(沒有就自己加吧)，加入<code>sourcemap = true</code>。</p>
-<p><img src="/images/20140602_sass_source_maps03.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps03.png" alt=""></p>
 <p>接下來在terminal輸入<code>compass watch</code>，會出現兩個檔，一個是之前的screen.css，另一個是screen.css.map，<code>.map</code>就是等等要給Chrome看的，所以別太在意他的內容。</p>
-<p><img src="/images/20140602_sass_source_maps04.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps04.png" alt=""></p>
 <p>接下來回到Chrome使用開發者工具，隨意檢視一個物件，會發現screen.css改成用screen.sass了！</p>
 <p><code>**screen.sass:14**</code>也直接寫出在screen.sass這個檔案的第14行可以找到這段code，對於css開發者來說，就可以省去很多時間找css code了。</p>
-<p><img src="/images/20140602_sass_source_maps05.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps05.png" alt=""></p>
 <h2 id="如果使用的是其他工具"><a href="#如果使用的是其他工具" class="headerlink" title="如果使用的是其他工具"></a>如果使用的是其他工具</h2><p>再過不知道多久的時間，Fire.app應該會更新到sass 3.3，這些工具在使用時，都可以當做一個簡易的server，適合配合livereload等工具。但是這對於source map來說會有些問題，因為Chrome source map 會對應不到最原始的檔案位置，所以必須加入原始的sass檔位置。</p>
 <p>打開開發者工具，一樣到設定的位置，從workspace內找到Folders這選項，把原始的Sass檔案夾加入。</p>
-<p><img src="/images/20140602_sass_source_maps06.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps06.png" alt=""></p>
 <p>在開發者工具內的<code>Sources</code>內可以找到已經加入的資料夾。</p>
-<p><img src="/images/20140602_sass_source_maps07.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps07.png" alt=""></p>
 <p>對他點擊右鍵，選擇<code>Map to Network Resource</code>。</p>
-<p><img src="/images/20140602_sass_source_maps08.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps08.png" alt=""></p>
 <p>選擇對應的檔案。</p>
-<p><img src="/images/20140602_sass_source_maps09.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps09.png" alt=""></p>
 <p>接下來，按照原本的Chrome開發者工具使用方法，就可直接修改screen.sass這個檔案，配合著compass、livereload等等，畫面就會自動重整。</p>
-<p><img src="/images/20140602_sass_source_maps10.png" alt></p>
+<p><img src="/images/20140602_sass_source_maps10.png" alt=""></p>
 
             </div>
             <div style="margin: 15px 0;">
@@ -279,7 +298,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -529,7 +548,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -550,11 +569,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -599,20 +618,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

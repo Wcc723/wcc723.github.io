@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>JavaScript This 系列文：this 與物件的關係 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript">
+        <meta name="keywords" content="javascript" />
     
     
 
     <meta name="description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 物件的方法調用 (As an object method)「物件的方法調用」是最常見改變 this 的方法，只要搞懂這一部份就能了解決大部分的 this 運作，大部分的文件介紹此部分說明為：在函">
-<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript This 系列文：this 與物件的關係">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2019/03/18/JS-THIS/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 物件的方法調用 (As an object method)「物件的方法調用」是最常見改變 this 的方法，只要搞懂這一部份就能了解決大部分的 this 運作，大部分的文件介紹此部分說明為：在函">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F57A365E4-97F6-447F-81FD-64F14313628F.png?alt=media&token=2a9e436b-3096-4f40-a337-7f37ce30a4e4">
-<meta property="og:updated_time" content="2019-03-18T09:17:50.296Z">
+<meta property="article:published_time" content="2019-03-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-03-18T09:17:50.296Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript This 系列文：this 與物件的關係">
-<meta name="twitter:description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 物件的方法調用 (As an object method)「物件的方法調用」是最常見改變 this 的方法，只要搞懂這一部份就能了解決大部分的 this 運作，大部分的文件介紹此部分說明為：在函">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F57A365E4-97F6-447F-81FD-64F14313628F.png?alt=media&token=2a9e436b-3096-4f40-a337-7f37ce30a4e4">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +31,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +82,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +102,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +173,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +189,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +218,14 @@ ga('send', 'pageview');
     <time datetime="2019-03-17T16:00:00.000Z" itemprop="datePublished">2019-03-18</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F57A365E4-97F6-447F-81FD-64F14313628F.png?alt=media&token=2a9e436b-3096-4f40-a337-7f37ce30a4e4" rel="gallery_ck870gco000y7mtrut1789dg4">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F57A365E4-97F6-447F-81FD-64F14313628F.png?alt=media&token=2a9e436b-3096-4f40-a337-7f37ce30a4e4" rel="gallery_ckdo9wd8500rgy9rudq4g2hys noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F57A365E4-97F6-447F-81FD-64F14313628F.png?alt=media&token=2a9e436b-3096-4f40-a337-7f37ce30a4e4" itemprop="image" />
     </a>
     
@@ -231,24 +250,24 @@ ga('send', 'pageview');
                 <p>本篇是接續先前的：<a href="/javascript/2017/12/12/javascript-this/">鐵人賽：JavaScript 的 this 到底是誰？</a>，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。</p>
 <h2 id="物件的方法調用-As-an-object-method"><a href="#物件的方法調用-As-an-object-method" class="headerlink" title="物件的方法調用 (As an object method)"></a>物件的方法調用 (As an object method)</h2><p>「物件的方法調用」是最常見改變 this 的方法，只要搞懂這一部份就能了解決大部分的 this 運作，大部分的文件介紹此部分說明為：在函式內的 <code>this</code> 值取決於該函式如何被呼叫。而如何被呼叫實在難以被定義，如：callback、閉包、函式內的函式等等其實都與 this 沒有關聯性。</p>
 <p>提供另一個比較易懂的中文說明：this 大部分取決於 <strong>它在哪個物件下被呼叫</strong>，也就是本段落主要介紹的「物件的方法調用」這個觀念佔了 <strong>絕大部分</strong> 的 JavaScript 實作時的 this 運作（接下來幾篇會陸續介紹其它幾種），版頭圖則是說明這一類型的 This 運作模式，只要找到上層物件就搞定了整個觀念，下述文中產生了一個函式，透過兩個不同的方式取用則有不同的結果：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">'全域阿婆'</span>;</span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">'漂亮阿姨'</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 callName function</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callName()        <span class="comment">// '全域阿婆'</span></span><br><span class="line">auntie.callName() <span class="comment">// '漂亮阿姨'，呼叫是在物件下調用，那麼 this 則是該物件</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域阿婆&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">&#x27;漂亮阿姨&#x27;</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 callName function</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callName()        <span class="comment">// &#x27;全域阿婆&#x27;</span></span><br><span class="line">auntie.callName() <span class="comment">// &#x27;漂亮阿姨&#x27;，呼叫是在物件下調用，那麼 this 則是該物件</span></span><br></pre></td></tr></table></figure>
 <p>前者是稱為「純粹的呼叫」，此種情況相對單純下個段落會有完整介紹，而另一個物件呼叫 <code>auntie.callName()</code> 則會將 this 指向 “漂亮阿姨”，這個部分相信大家就能有基本的體會，物件下呼叫會影響 this 的指向。</p>
-<p>概念如同下圖，在物件下的函式 this 為前者物件。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F92E6BA08-EF5E-4287-98B4-E38ED2549D02.png?alt=media&amp;token=69407e80-c041-4861-8870-92db99a8d3a9" alt></p>
+<p>概念如同下圖，在物件下的函式 this 為前者物件。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F92E6BA08-EF5E-4287-98B4-E38ED2549D02.png?alt=media&amp;token=69407e80-c041-4861-8870-92db99a8d3a9" alt=""></p>
 <p>而 this 這個詞就可以思考成 <strong>這一個「物件」</strong>，它會隨著在哪一個物件下被調用而影響結果，在此情境下如果有更深層的 this 依然是當下這一個物件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">'漂亮阿姨'</span>,</span><br><span class="line">  callName: callName,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    name: <span class="string">'Magic Watch'</span>,</span><br><span class="line">    callName: callName</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">auntie.callName() <span class="comment">// '漂亮阿姨'</span></span><br><span class="line">auntie.watch.callName() <span class="comment">// 'Magic Watch'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">&#x27;漂亮阿姨&#x27;</span>,</span><br><span class="line">  callName: callName,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    name: <span class="string">&#x27;Magic Watch&#x27;</span>,</span><br><span class="line">    callName: callName</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">auntie.callName() <span class="comment">// &#x27;漂亮阿姨&#x27;</span></span><br><span class="line">auntie.watch.callName() <span class="comment">// &#x27;Magic Watch&#x27;</span></span><br></pre></td></tr></table></figure>
 <p>在這個概念下，每一層的函式的 this 都是上一層物件，很簡單吧，所以漂亮阿姨下的每一層物件函式 this，都是指向該上層物件。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F2D6C6680-DD7F-4CAF-982D-18D80F1EEB6B.png?alt=media&amp;token=4598a924-8c2a-445d-bf23-93a767ae9703" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F2D6C6680-DD7F-4CAF-982D-18D80F1EEB6B.png?alt=media&amp;token=4598a924-8c2a-445d-bf23-93a767ae9703" alt=""></p>
 <h3 id="Vue-js-下的概念"><a href="#Vue-js-下的概念" class="headerlink" title="Vue.js 下的概念"></a>Vue.js 下的概念</h3><p>使用 Vue.js 時運作的原理就與上述的接近，我們可以看到以下的程式碼運作時，物件第一層的內容均是指向 myCar 這一個物件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myCar = &#123;</span><br><span class="line">  name: <span class="string">'長大以後要當保時捷'</span>,</span><br><span class="line">  go: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">this</span>.go()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">myCar.init()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myCar = &#123;</span><br><span class="line">  name: <span class="string">&#x27;長大以後要當保時捷&#x27;</span>,</span><br><span class="line">  go: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">  init: <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.go()</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">myCar.init()</span><br></pre></td></tr></table></figure>
 <p>接下來看一下 Vue.js 的程式碼，你可能會思考這樣的結構比上述的多了一層，理論上 Vue 的 this 的運作會不太一樣才是。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    text: <span class="string">'這是一段話'</span></span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    go() &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.text) <span class="comment">// 這是一段話</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> app = <span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    text: <span class="string">&#x27;這是一段話&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    go() &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.text) <span class="comment">// 這是一段話</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  created() &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p>不過當 Vue 實際運作時，元件內的物件、函式等等均會被向上拉，methods, computed 等等均不會存在，所以並非以原始碼<strong>而是以實際運行的狀態</strong>為主，如下圖，methods 內的 <code>go()</code> 及 data 內的 text 均在元件物件頂層。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_3_16_%E4%B8%8B%E5%8D%883_40.png?alt=media&amp;token=b0c65c3c-0750-4f44-b522-77a661a41c51" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_3_16_%E4%B8%8B%E5%8D%883_40.png?alt=media&amp;token=b0c65c3c-0750-4f44-b522-77a661a41c51" alt=""></p>
 <p>接下來運行的概念如下，元件下的函式的 this 就會直接指向該元件，所以 <code>go()</code> 這個函式的 this 自然就能夠使用元件內的 text 資料囉。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F0DF4C4CC-0504-4870-B536-C93513478255.png?alt=media&amp;token=7b8adaf2-5ee3-43ea-8123-9747e2b801ec" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F0DF4C4CC-0504-4870-B536-C93513478255.png?alt=media&amp;token=7b8adaf2-5ee3-43ea-8123-9747e2b801ec" alt=""></p>
 <h3 id="延伸閱讀：陣列內插入函式"><a href="#延伸閱讀：陣列內插入函式" class="headerlink" title="延伸閱讀：陣列內插入函式"></a>延伸閱讀：陣列內插入函式</h3><p>在 JS 型別中，陣列也是屬於物件的一種，因此將函式插入陣列之中運行，this 的指向會如何呢？</p>
 <p>一般來說不會有人這樣寫，但我們可以從中獲得相同的結果：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'this is'</span>, <span class="keyword">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> MingFamily = [<span class="string">'小明'</span>, <span class="string">'爸'</span>, <span class="string">'媽'</span>, callSomeone]</span><br><span class="line">MingFamily[<span class="number">3</span>]()</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;this is&#x27;</span>, <span class="built_in">this</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> MingFamily = [<span class="string">&#x27;小明&#x27;</span>, <span class="string">&#x27;爸&#x27;</span>, <span class="string">&#x27;媽&#x27;</span>, callSomeone]</span><br><span class="line">MingFamily[<span class="number">3</span>]()</span><br></pre></td></tr></table></figure>
 <p>同上所述，callSomeone 這一個函式的運作也是接在 MingFamily 陣列後方，所以 this 將會指向 MingFamily 這一個陣列喔！</p>
 
             </div>
@@ -280,7 +299,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -530,7 +549,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -551,11 +570,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -600,20 +619,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

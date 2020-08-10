@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：ES6 解構賦值 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
     <meta name="description" content="解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。 解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。 陣列解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對">
-<meta name="keywords" content="javascript,js,ironman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：ES6 解構賦值">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/25/javascript-destructuring/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。 解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。 陣列解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478">
-<meta property="og:updated_time" content="2017-12-25T02:40:01.033Z">
+<meta property="article:published_time" content="2017-12-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-25T02:40:01.033Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：ES6 解構賦值">
-<meta name="twitter:description" content="解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。 解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。 陣列解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-24T16:00:00.000Z" itemprop="datePublished">2017-12-25</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" rel="gallery_ck870gcmi00upmtrug8bg3bpb">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" rel="gallery_ckdo9wd6t00nny9ru564ccgi5 noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" itemprop="image" />
     </a>
     
@@ -229,33 +250,33 @@ ga('send', 'pageview');
             
             <div class="need-gallery">
                 <p>解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。</p>
-<p>解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&amp;token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" alt></p>
+<p>解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&amp;token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" alt=""></p>
 <h2 id="陣列"><a href="#陣列" class="headerlink" title="陣列"></a>陣列</h2><p>解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對映。因此右方的的五個值(字串)直接對應左方陣列的五個變數。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> family = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>, <span class="string">'老媽'</span>, <span class="string">'老爸'</span>];</span><br><span class="line"><span class="keyword">let</span> ming = family[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">let</span> jay = family[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">let</span> auntie = family[<span class="number">2</span>];</span><br><span class="line"><span class="comment">// ... 略</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [ming, jay, auntie, mom, papa] = family;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> family = [<span class="string">&#x27;小明&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;阿姨&#x27;</span>, <span class="string">&#x27;老媽&#x27;</span>, <span class="string">&#x27;老爸&#x27;</span>];</span><br><span class="line"><span class="keyword">let</span> ming = family[<span class="number">0</span>];</span><br><span class="line"><span class="keyword">let</span> jay = family[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">let</span> auntie = family[<span class="number">2</span>];</span><br><span class="line"><span class="comment">// ... 略</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> [ming, jay, auntie, mom, papa] = family;</span><br></pre></td></tr></table></figure>
 <p>如果遇到空的變數，這些值也會跳過。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> family = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>, <span class="string">'老媽'</span>, <span class="string">'老爸'</span>];</span><br><span class="line"><span class="keyword">let</span> [ming, , , mom, papa] = family;</span><br><span class="line"><span class="comment">// ming: 小明</span></span><br><span class="line"><span class="comment">// mom: 老媽</span></span><br><span class="line"><span class="comment">// papa: 老爸</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> family = [<span class="string">&#x27;小明&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;阿姨&#x27;</span>, <span class="string">&#x27;老媽&#x27;</span>, <span class="string">&#x27;老爸&#x27;</span>];</span><br><span class="line"><span class="keyword">let</span> [ming, , , mom, papa] = family;</span><br><span class="line"><span class="comment">// ming: 小明</span></span><br><span class="line"><span class="comment">// mom: 老媽</span></span><br><span class="line"><span class="comment">// papa: 老爸</span></span><br></pre></td></tr></table></figure>
 <p>如果左方多於右方，左方的變數會出現 <code>undefined</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> family = [<span class="string">'小明'</span>, <span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>, <span class="string">'老媽'</span>, <span class="string">'老爸'</span>];</span><br><span class="line"><span class="keyword">let</span> [, , , , , who] = family;</span><br><span class="line"><span class="comment">// who: undefined</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> family = [<span class="string">&#x27;小明&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;阿姨&#x27;</span>, <span class="string">&#x27;老媽&#x27;</span>, <span class="string">&#x27;老爸&#x27;</span>];</span><br><span class="line"><span class="keyword">let</span> [, , , , , who] = family;</span><br><span class="line"><span class="comment">// who: undefined</span></span><br></pre></td></tr></table></figure>
 <p>至於傳值是否有順序性，在這個範例中直接將右邊的變數交換到左邊，可以看到是<strong>同時</strong>交換變數，所以在互換變數值時是非常方便的。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> Goku = <span class="string">'悟空'</span>;</span><br><span class="line"><span class="keyword">let</span> Ginyu = <span class="string">'基紐'</span>;</span><br><span class="line">[Goku, Ginyu] = [Ginyu, Goku];</span><br><span class="line"><span class="comment">// Goku: '基紐'</span></span><br><span class="line"><span class="comment">// Ginyu: '悟空'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> Goku = <span class="string">&#x27;悟空&#x27;</span>;</span><br><span class="line"><span class="keyword">let</span> Ginyu = <span class="string">&#x27;基紐&#x27;</span>;</span><br><span class="line">[Goku, Ginyu] = [Ginyu, Goku];</span><br><span class="line"><span class="comment">// Goku: &#x27;基紐&#x27;</span></span><br><span class="line"><span class="comment">// Ginyu: &#x27;悟空&#x27;</span></span><br></pre></td></tr></table></figure>
 <p>遇到字串則會將字串拆解成一個一個字元，賦予到左方的變數上。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">'基紐特攻隊'</span>;</span><br><span class="line">[a, b, c, d, e] = str;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> str = <span class="string">&#x27;基紐特攻隊&#x27;</span>;</span><br><span class="line">[a, b, c, d, e] = str;</span><br></pre></td></tr></table></figure>
 <h2 id="物件解構"><a href="#物件解構" class="headerlink" title="物件解構"></a>物件解構</h2><p>物件解構也是和陣列解構有著相同的概念，只不過陣列是使用順序的索引值對應，但物件則是使用物件的屬性名稱來做對應(因此沒有順序性)。在以下範例則是快速將物件值解構在變數上。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> family = &#123;</span><br><span class="line">  ming: <span class="string">'小明'</span>,</span><br><span class="line">  jay: <span class="string">'杰倫'</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一般會這樣寫</span></span><br><span class="line"><span class="keyword">let</span> ming = family.ming</span><br><span class="line"><span class="keyword">let</span> jay = family.jay</span><br><span class="line"></span><br><span class="line"><span class="comment">// 縮寫版</span></span><br><span class="line"><span class="keyword">let</span> &#123; ming, jay &#125; = family</span><br><span class="line"><span class="comment">// ming: 小明</span></span><br><span class="line"><span class="comment">// jay: 杰倫</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> family = &#123;</span><br><span class="line">  ming: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  jay: <span class="string">&#x27;杰倫&#x27;</span>,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 一般會這樣寫</span></span><br><span class="line"><span class="keyword">let</span> ming = family.ming</span><br><span class="line"><span class="keyword">let</span> jay = family.jay</span><br><span class="line"></span><br><span class="line"><span class="comment">// 縮寫版</span></span><br><span class="line"><span class="keyword">let</span> &#123; ming, jay &#125; = family</span><br><span class="line"><span class="comment">// ming: 小明</span></span><br><span class="line"><span class="comment">// jay: 杰倫</span></span><br></pre></td></tr></table></figure>
 <p>而物件的解構方法，還能重新賦予變數的名稱，如以下 <code>Ginyu</code> 在取得值後，將變數名稱改為 <code>Goku</code>，因此 <code>Goku === &#39;基紐&#39;</code>。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> GinyuTeam = &#123;</span><br><span class="line">  Ginyu: <span class="string">'基紐'</span>,</span><br><span class="line">  Jeice: <span class="string">'吉斯'</span>,</span><br><span class="line">  burter: <span class="string">'巴特'</span>,</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> &#123; <span class="attr">Ginyu</span>: Goku &#125; = GinyuTeam;</span><br><span class="line"><span class="comment">// Goku: '基紐'</span></span><br></pre></td></tr></table></figure>
-<h3 id="混合使用"><a href="#混合使用" class="headerlink" title="混合使用"></a>混合使用</h3><p>相同的觀念，只要了解以上的觀念，這題也能了解到最終會產生怎樣的變數。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; <span class="attr">ming</span>: Goku, <span class="attr">family</span>: [, mom] &#125; = &#123; <span class="attr">ming</span>: <span class="string">'小明'</span>, <span class="attr">family</span>: [<span class="string">'阿姨'</span>, <span class="string">'老媽'</span>, <span class="string">'老爸'</span>] &#125;</span><br><span class="line"><span class="built_in">console</span>.log(Goku, mom); <span class="comment">// 請問答案是什麼？</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> GinyuTeam = &#123;</span><br><span class="line">  Ginyu: <span class="string">&#x27;基紐&#x27;</span>,</span><br><span class="line">  Jeice: <span class="string">&#x27;吉斯&#x27;</span>,</span><br><span class="line">  burter: <span class="string">&#x27;巴特&#x27;</span>,</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">let</span> &#123; <span class="attr">Ginyu</span>: Goku &#125; = GinyuTeam;</span><br><span class="line"><span class="comment">// Goku: &#x27;基紐&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="混合使用"><a href="#混合使用" class="headerlink" title="混合使用"></a>混合使用</h3><p>相同的觀念，只要了解以上的觀念，這題也能了解到最終會產生怎樣的變數。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; <span class="attr">ming</span>: Goku, <span class="attr">family</span>: [, mom] &#125; = &#123; <span class="attr">ming</span>: <span class="string">&#x27;小明&#x27;</span>, <span class="attr">family</span>: [<span class="string">&#x27;阿姨&#x27;</span>, <span class="string">&#x27;老媽&#x27;</span>, <span class="string">&#x27;老爸&#x27;</span>] &#125;</span><br><span class="line"><span class="built_in">console</span>.log(Goku, mom); <span class="comment">// 請問答案是什麼？</span></span><br></pre></td></tr></table></figure></p>
 <p>說明：</p>
 <ul>
 <li><code>ming</code> 取得右方的 ‘小明’ 後，將變數名稱改為 <code>Goku</code></li>
 <li><code>family</code> 取得家庭陣列後，再將第二個值套用在 <code>mom</code> (第二個變數上。)</li>
 </ul>
 <h3 id="預設值"><a href="#預設值" class="headerlink" title="預設值"></a>預設值</h3><p>除了使用鏡射的概念外，為了避免值沒有賦予造成 <code>undefined</code>，可以使用預設值避免此問題。如以下左方的陣列都先賦予的預設值，當右方的陣列只有一個值時，左方的陣列剩餘內容將會採用預設值。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [ming = <span class="string">'小明'</span>, jay = <span class="string">'杰倫'</span>] = [<span class="string">'阿明'</span>] </span><br><span class="line"><span class="comment">// 第一個會被賦值，第二個會用預設</span></span><br><span class="line"><span class="comment">// ming: "阿明"</span></span><br><span class="line"><span class="comment">// jay: "杰倫"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> [ming = <span class="string">&#x27;小明&#x27;</span>, jay = <span class="string">&#x27;杰倫&#x27;</span>] = [<span class="string">&#x27;阿明&#x27;</span>] </span><br><span class="line"><span class="comment">// 第一個會被賦值，第二個會用預設</span></span><br><span class="line"><span class="comment">// ming: &quot;阿明&quot;</span></span><br><span class="line"><span class="comment">// jay: &quot;杰倫&quot;</span></span><br></pre></td></tr></table></figure>
 <p>物件的預設值也是相同的概念。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; <span class="attr">family</span>: ming = <span class="string">'小明'</span> &#125; = &#123;&#125;</span><br><span class="line"><span class="comment">// ming: '小明'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; <span class="attr">family</span>: ming = <span class="string">&#x27;小明&#x27;</span> &#125; = &#123;&#125;</span><br><span class="line"><span class="comment">// ming: &#x27;小明&#x27;</span></span><br></pre></td></tr></table></figure>
 <h2 id="函式"><a href="#函式" class="headerlink" title="函式"></a>函式</h2><p>除了以上的方法外，解構也能使用在函式的參數，使用方式如同將傳入的物件對應到函式參數上。這樣參數一樣能夠能夠自訂變數名稱、順序、預設值等。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span> (<span class="params">&#123;person = <span class="string">'小明'</span>, person2&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person&#125;</span> 呼叫 <span class="subst">$&#123;person2&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line">callSomeone(&#123; <span class="attr">person</span>: <span class="string">'杰倫'</span>, <span class="attr">person2</span>: <span class="string">'阿姨'</span> &#125;); <span class="comment">// 杰倫 呼叫 阿姨</span></span><br><span class="line">callSomeone(<span class="string">'杰倫'</span>, <span class="string">'阿姨'</span>); <span class="comment">// 小明 呼叫 undefined</span></span><br><span class="line">callSomeone(&#123; <span class="attr">person2</span>: <span class="string">'阿姨'</span> &#125;); <span class="comment">// 小明 呼叫 阿姨</span></span><br><span class="line">callSomeone(&#123; <span class="attr">person2</span>: <span class="string">'杰倫'</span>, <span class="attr">person</span>: <span class="string">'啊罵'</span> &#125;); <span class="comment">// 啊罵 呼叫 杰倫</span></span><br><span class="line">callSomeone(&#123;&#125;); <span class="comment">// 小明 呼叫 undefined</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span> (<span class="params">&#123;person = <span class="string">&#x27;小明&#x27;</span>, person2&#125;</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;person&#125;</span> 呼叫 <span class="subst">$&#123;person2&#125;</span>`</span>)</span><br><span class="line">&#125;</span><br><span class="line">callSomeone(&#123; <span class="attr">person</span>: <span class="string">&#x27;杰倫&#x27;</span>, <span class="attr">person2</span>: <span class="string">&#x27;阿姨&#x27;</span> &#125;); <span class="comment">// 杰倫 呼叫 阿姨</span></span><br><span class="line">callSomeone(<span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;阿姨&#x27;</span>); <span class="comment">// 小明 呼叫 undefined</span></span><br><span class="line">callSomeone(&#123; <span class="attr">person2</span>: <span class="string">&#x27;阿姨&#x27;</span> &#125;); <span class="comment">// 小明 呼叫 阿姨</span></span><br><span class="line">callSomeone(&#123; <span class="attr">person2</span>: <span class="string">&#x27;杰倫&#x27;</span>, <span class="attr">person</span>: <span class="string">&#x27;啊罵&#x27;</span> &#125;); <span class="comment">// 啊罵 呼叫 杰倫</span></span><br><span class="line">callSomeone(&#123;&#125;); <span class="comment">// 小明 呼叫 undefined</span></span><br></pre></td></tr></table></figure>
 
             </div>
             <div style="margin: 15px 0;">
@@ -286,7 +307,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -536,7 +557,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -557,11 +578,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -606,20 +627,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

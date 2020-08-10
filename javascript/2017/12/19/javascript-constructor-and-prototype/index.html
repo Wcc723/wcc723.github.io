@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：JavaScript 建構式與原型 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
     <meta name="description" content="還記得先前幾篇的原型鍊嗎？多個物件可以使用相同原型的那個章節，兩個不同的角色但是共用相同的原型，所以當原型增加新的功能，另一個角色一樣會獲得相同功能：  現在已經透過 JavaScript 建構式產生一個獨立的物件，我們接下來會使用原型鍊的概念來創造原型。 範例目前已經使用建構式製作一個簡單手機樣板，但我們會發現作為一個手機似乎少了一個重要的功能 打電話，這個功能是所有手機都具備個功能，無論他是何">
-<meta name="keywords" content="javascript,js,ironman">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：JavaScript 建構式與原型">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/19/javascript-constructor-and-prototype/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="還記得先前幾篇的原型鍊嗎？多個物件可以使用相同原型的那個章節，兩個不同的角色但是共用相同的原型，所以當原型增加新的功能，另一個角色一樣會獲得相同功能：  現在已經透過 JavaScript 建構式產生一個獨立的物件，我們接下來會使用原型鍊的概念來創造原型。 範例目前已經使用建構式製作一個簡單手機樣板，但我們會發現作為一個手機似乎少了一個重要的功能 打電話，這個功能是所有手機都具備個功能，無論他是何">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16_2.jpg?alt=media&token=13d99d56-3827-4b68-9a41-0c6181b1a853">
-<meta property="og:updated_time" content="2017-12-19T01:57:25.312Z">
+<meta property="article:published_time" content="2017-12-18T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-19T01:57:25.312Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：JavaScript 建構式與原型">
-<meta name="twitter:description" content="還記得先前幾篇的原型鍊嗎？多個物件可以使用相同原型的那個章節，兩個不同的角色但是共用相同的原型，所以當原型增加新的功能，另一個角色一樣會獲得相同功能：  現在已經透過 JavaScript 建構式產生一個獨立的物件，我們接下來會使用原型鍊的概念來創造原型。 範例目前已經使用建構式製作一個簡單手機樣板，但我們會發現作為一個手機似乎少了一個重要的功能 打電話，這個功能是所有手機都具備個功能，無論他是何">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16_2.jpg?alt=media&token=13d99d56-3827-4b68-9a41-0c6181b1a853">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-18T16:00:00.000Z" itemprop="datePublished">2017-12-19</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16_2.jpg?alt=media&token=13d99d56-3827-4b68-9a41-0c6181b1a853" rel="gallery_ck870gcmc00udmtru1vmgg3jc">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16_2.jpg?alt=media&token=13d99d56-3827-4b68-9a41-0c6181b1a853" rel="gallery_ckdo9wd6n00n2y9rug61261yc noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16_2.jpg?alt=media&token=13d99d56-3827-4b68-9a41-0c6181b1a853" itemprop="image" />
     </a>
     
@@ -229,26 +250,26 @@ ga('send', 'pageview');
             
             <div class="need-gallery">
                 <p>還記得先前幾篇的原型鍊嗎？多個物件可以使用相同原型的那個章節，兩個不同的角色但是共用相同的原型，所以當原型增加新的功能，另一個角色一樣會獲得相同功能：</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_2.jpg?alt=media&amp;token=d880e22d-0931-471c-a0cb-ccc587f8ea7e" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_2.jpg?alt=media&amp;token=d880e22d-0931-471c-a0cb-ccc587f8ea7e" alt=""></p>
 <p>現在已經透過 JavaScript 建構式產生一個獨立的物件，我們接下來會使用原型鍊的概念來創造原型。</p>
 <h2 id="範例"><a href="#範例" class="headerlink" title="範例"></a>範例</h2><p>目前已經使用建構式製作一個簡單手機樣板，但我們會發現作為一個手機似乎少了一個重要的功能 <code>打電話</code>，這個功能是所有手機都具備個功能，無論他是何種型號。因此，這裡要透過 <strong>原型</strong> 的概念將手機賦予 <code>打電話</code> 這個功能，無論是哪一種型號，都能直接繼承此功能。</p>
 <p>以下這段和上一個章節的程式碼是相同的，這裡已經透過手機範本 (<code>PhoneTemplate</code>)建立了兩隻手機。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">PhoneTemplate</span>(<span class="params">brand, modal, withCamera</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">this</span>.brand = brand;</span><br><span class="line">  <span class="keyword">this</span>.modal = modal;</span><br><span class="line">  <span class="keyword">this</span>.withCamera = withCamera || <span class="literal">false</span>;</span><br><span class="line">  <span class="keyword">this</span>.takePhoto = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">this</span>.withCamera) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 照相'</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="keyword">this</span>.modal + <span class="string">' 這台沒有照相功能'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Sony'</span>, <span class="string">'Z100'</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">var</span> nokiaPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">'Nokia'</span>, <span class="string">'3310'</span>, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">PhoneTemplate</span>(<span class="params">brand, modal, withCamera</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">this</span>.brand = brand;</span><br><span class="line">  <span class="built_in">this</span>.modal = modal;</span><br><span class="line">  <span class="built_in">this</span>.withCamera = withCamera || <span class="literal">false</span>;</span><br><span class="line">  <span class="built_in">this</span>.takePhoto = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="built_in">this</span>.withCamera) &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.modal + <span class="string">&#x27; 照相&#x27;</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.modal + <span class="string">&#x27; 這台沒有照相功能&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> sonyPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">&#x27;Sony&#x27;</span>, <span class="string">&#x27;Z100&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">var</span> nokiaPhone = <span class="keyword">new</span> PhoneTemplate(<span class="string">&#x27;Nokia&#x27;</span>, <span class="string">&#x27;3310&#x27;</span>, <span class="literal">false</span>);</span><br></pre></td></tr></table></figure>
 <p>接下來直接在 手機範本 上使用  <code>prototype</code> 的語法來加入撥打電話的功能 (<code>callSomeone</code>)，加入此功能後這兩隻手機都同時具有撥打電話的功能。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加入 prototype</span></span><br><span class="line">PhoneTemplate.prototype.callSomeone = <span class="function"><span class="keyword">function</span> (<span class="params">someone</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'打通電話給 '</span> + someone)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 兩者同時共用相同的原型</span></span><br><span class="line">sonyPhone.callSomeone(<span class="string">'小明'</span>); <span class="comment">// 打通電話給 小明</span></span><br><span class="line">nokiaPhone.callSomeone(<span class="string">'小明'</span>); <span class="comment">// 打通電話給 小明</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加入 prototype</span></span><br><span class="line">PhoneTemplate.prototype.callSomeone = <span class="function"><span class="keyword">function</span> (<span class="params">someone</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;打通電話給 &#x27;</span> + someone)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 兩者同時共用相同的原型</span></span><br><span class="line">sonyPhone.callSomeone(<span class="string">&#x27;小明&#x27;</span>); <span class="comment">// 打通電話給 小明</span></span><br><span class="line">nokiaPhone.callSomeone(<span class="string">&#x27;小明&#x27;</span>); <span class="comment">// 打通電話給 小明</span></span><br></pre></td></tr></table></figure>
 <p>發生什麼事了？可以透過 console.log() 來看看兩隻手機內有什麼樣的變化，此段的 <code>__proto__</code> 是 <code>PhoneTemplate</code> 的原型，在 <code>__proto__</code> 內可以看到 <code>callSomeone()</code> 的方法，我們直接在手機範本上加入就會使透過此建構式生成的物件套用這段原型。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FE6BF06FD-6127-4D14-80EC-E02CEF30A3BC.png?alt=media&amp;token=5bb695d4-f0f1-476f-83c5-6863a2fc3fc8" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FE6BF06FD-6127-4D14-80EC-E02CEF30A3BC.png?alt=media&amp;token=5bb695d4-f0f1-476f-83c5-6863a2fc3fc8" alt=""></p>
 <p>此時我們如果查看另一支手機也會有相同的功能。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F8C94B350-05D3-4F65-8664-E35EDC06054E.png?alt=media&amp;token=1577b749-9ca4-4dd6-a879-da08d52665c1" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F8C94B350-05D3-4F65-8664-E35EDC06054E.png?alt=media&amp;token=1577b749-9ca4-4dd6-a879-da08d52665c1" alt=""></p>
 <p>在概念上，這段的原型會如下圖顯示，兩者的上層皆是 <code>phoneTemplate</code>，並且共用相同的方法，這也像魂結一樣兩個連向共用的物件，當此物件新增了任何功能，兩個物件也能一起繼承。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16.jpg?alt=media&amp;token=b1c47a22-b452-4ce8-88ba-56b57672f3b6" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16.jpg?alt=media&amp;token=b1c47a22-b452-4ce8-88ba-56b57672f3b6" alt=""></p>
 <h2 id="記憶體概念"><a href="#記憶體概念" class="headerlink" title="記憶體概念"></a>記憶體概念</h2><p>除了共用的概念外，我們每次新增一個物件時，物件內的屬性、函式都會需要佔用記憶體空間。也就是一個物件內有 10 個屬性，生成 10 個則會佔用 100 單位的記憶體空間，如果適當地將 5 個屬性轉至原型內，則只會佔用 <code>(5*10) + 5 = 55</code> 的記憶體空間。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16_2.jpg?alt=media&amp;token=13d99d56-3827-4b68-9a41-0c6181b1a853" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c16_2.jpg?alt=media&amp;token=13d99d56-3827-4b68-9a41-0c6181b1a853" alt=""></p>
 <p>這點在開發 Node.js 應用程式時影響更大，由於伺服器端的記憶體不能像瀏覽器隨意關閉釋放，所以記憶體的控制更為重要。</p>
 <h2 id="原型觀念"><a href="#原型觀念" class="headerlink" title="原型觀念"></a>原型觀念</h2><p>如果你了解此段，很容易就能看到任何物件的根本，對於看懂 JavaScript 的文件也會更為容易，就如同以下是 “陣列” 的原型，所以所有陣列都與此原型產生魂結牽連，因此可以用以下的方法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2017-12-19_%E4%B8%8A%E5%8D%889_48_52.png?alt=media&amp;token=2a29ff7a-e28e-464e-8e1f-32e343d23f48" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7_2017-12-19_%E4%B8%8A%E5%8D%889_48_52.png?alt=media&amp;token=2a29ff7a-e28e-464e-8e1f-32e343d23f48" alt=""></p>
 <p>而為什麼 DOM 方法取得的陣列為什麼不能用很多陣列方法，原因他是屬於 <strong>array-like(類陣列)</strong>，我們可以從原型中得知它與陣列不是共用的。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-12-19%20%E4%B8%8A%E5%8D%889.54.32.png?alt=media&amp;token=dde5aae3-fe41-4dcf-a7f4-1d40ab7ebe41" alt></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-12-19%20%E4%B8%8A%E5%8D%889.54.32.png?alt=media&amp;token=dde5aae3-fe41-4dcf-a7f4-1d40ab7ebe41" alt=""></p>
 
             </div>
             <div style="margin: 15px 0;">
@@ -279,7 +300,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -529,7 +550,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -550,11 +571,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -599,20 +620,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

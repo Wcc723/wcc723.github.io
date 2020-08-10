@@ -1,28 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽：JavaScript 的嚴格模式 &quot;use strict&quot; | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="javascript,js,ironman">
+        <meta name="keywords" content="javascript,js,ironman" />
     
     
 
-    <meta name="description" content="JavaScript 不斷的演進下，許多不嚴謹的寫法都應該逐漸被修正，但哪些是需要修正的字詞呢!? &amp;#39;use strict&amp;#39; 則是新加入的標準，目的是為了讓編寫「具穩定性的 JavaScript 更容易」，在不穩定的語法或妨礙最佳化的語意都會跳出警告，讓開發者避開這些寫法。 而在傳統的瀏覽器下 &amp;#39;use strict&amp;#39; 僅會被視為沒有用處的字串，所以不會對舊有的瀏覽">
-<meta name="keywords" content="javascript,js,ironman">
+    <meta name="description" content="JavaScript 不斷的演進下，許多不嚴謹的寫法都應該逐漸被修正，但哪些是需要修正的字詞呢!? &#39;use strict&#39; 則是新加入的標準，目的是為了讓編寫「具穩定性的 JavaScript 更容易」，在不穩定的語法或妨礙最佳化的語意都會跳出警告，讓開發者避開這些寫法。 而在傳統的瀏覽器下 &#39;use strict&#39; 僅會被視為沒有用處的字串，所以不會對舊有的瀏覽">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：JavaScript 的嚴格模式 &quot;use strict&quot;">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2017/12/15/javascript-use-strict/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="JavaScript 不斷的演進下，許多不嚴謹的寫法都應該逐漸被修正，但哪些是需要修正的字詞呢!? &amp;#39;use strict&amp;#39; 則是新加入的標準，目的是為了讓編寫「具穩定性的 JavaScript 更容易」，在不穩定的語法或妨礙最佳化的語意都會跳出警告，讓開發者避開這些寫法。 而在傳統的瀏覽器下 &amp;#39;use strict&amp;#39; 僅會被視為沒有用處的字串，所以不會對舊有的瀏覽">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:description" content="JavaScript 不斷的演進下，許多不嚴謹的寫法都應該逐漸被修正，但哪些是需要修正的字詞呢!? &#39;use strict&#39; 則是新加入的標準，目的是為了讓編寫「具穩定性的 JavaScript 更容易」，在不穩定的語法或妨礙最佳化的語意都會跳出警告，讓開發者避開這些寫法。 而在傳統的瀏覽器下 &#39;use strict&#39; 僅會被視為沒有用處的字串，所以不會對舊有的瀏覽">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c12.jpg?alt=media&token=7471b24d-b970-4ed8-831d-5112ffa359d9">
-<meta property="og:updated_time" content="2017-12-15T02:34:01.454Z">
+<meta property="article:published_time" content="2017-12-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-12-15T02:34:01.454Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽：JavaScript 的嚴格模式 &quot;use strict&quot;">
-<meta name="twitter:description" content="JavaScript 不斷的演進下，許多不嚴謹的寫法都應該逐漸被修正，但哪些是需要修正的字詞呢!? &amp;#39;use strict&amp;#39; 則是新加入的標準，目的是為了讓編寫「具穩定性的 JavaScript 更容易」，在不穩定的語法或妨礙最佳化的語意都會跳出警告，讓開發者避開這些寫法。 而在傳統的瀏覽器下 &amp;#39;use strict&amp;#39; 僅會被視為沒有用處的字串，所以不會對舊有的瀏覽">
 <meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c12.jpg?alt=media&token=7471b24d-b970-4ed8-831d-5112ffa359d9">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +33,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +84,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +104,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +175,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +191,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
@@ -199,14 +220,14 @@ ga('send', 'pageview');
     <time datetime="2017-12-14T16:00:00.000Z" itemprop="datePublished">2017-12-15</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/">js</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ironman/" rel="tag">ironman</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
 
             </div>
         
         
 <div class="article-gallery">
     
-    <a class="gallery-item" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c12.jpg?alt=media&token=7471b24d-b970-4ed8-831d-5112ffa359d9" rel="gallery_ck870gcm900u4mtruxd8hs1rv">
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c12.jpg?alt=media&token=7471b24d-b970-4ed8-831d-5112ffa359d9" rel="gallery_ckdo9wd6i00moy9ru6eale0i0 noopener">
         <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c12.jpg?alt=media&token=7471b24d-b970-4ed8-831d-5112ffa359d9" itemprop="image" />
     </a>
     
@@ -231,12 +252,12 @@ ga('send', 'pageview');
                 <p>JavaScript 不斷的演進下，許多不嚴謹的寫法都應該逐漸被修正，但哪些是需要修正的字詞呢!? <code>&#39;use strict&#39;</code> 則是新加入的標準，目的是為了讓編寫「具穩定性的 JavaScript 更容易」，在不穩定的語法或妨礙最佳化的語意都會跳出警告，讓開發者避開這些寫法。</p>
 <p>而在傳統的瀏覽器下 <code>&#39;use strict&#39;</code> 僅會被視為沒有用處的字串，所以不會對舊有的瀏覽器產生影響。</p>
 <h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p><code>&#39;use strict&#39;</code> 直接加入在程式碼的前方就可以開始運作，特別值得注意的是它也可以單獨使用在 function 下，如果要靠 <code>&#39;use strict&#39;</code> 來修正目前語法上的問題，可以先針對部分的 function 來做調整。</p>
-<p>簡單示範一個錯誤 (未定義的變數不能直接賦予值)：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span>;</span><br><span class="line">auntie = <span class="string">'漂亮阿姨'</span>;</span><br><span class="line"><span class="comment">// Uncaught ReferenceError: auntie is not defined</span></span><br></pre></td></tr></table></figure></p>
+<p>簡單示範一個錯誤 (未定義的變數不能直接賦予值)：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>;</span><br><span class="line">auntie = <span class="string">&#x27;漂亮阿姨&#x27;</span>;</span><br><span class="line"><span class="comment">// Uncaught ReferenceError: auntie is not defined</span></span><br></pre></td></tr></table></figure></p>
 <p>嚴謹模式也能僅用在函式內，這樣將只有此函式套用。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span>;</span><br><span class="line">  auntie = <span class="string">'漂亮阿姨'</span>;</span><br><span class="line">  <span class="comment">// Uncaught ReferenceError: auntie is not defined</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  &#x27;use strict&#x27;</span>;</span><br><span class="line">  auntie = <span class="string">&#x27;漂亮阿姨&#x27;</span>;</span><br><span class="line">  <span class="comment">// Uncaught ReferenceError: auntie is not defined</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
 <p>如果使用在函式的開頭，那將只會在此函式套用 “嚴謹模式”，函式的外部將不受影響。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span>;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line">mom = <span class="string">'老媽管不到'</span>;</span><br><span class="line"><span class="comment">// 不會跳錯</span></span><br></pre></td></tr></table></figure>
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>只有將 <code>&#39;use strict&#39;</code> 放在函式開頭才會有作用。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> aa;</span><br><span class="line"><span class="meta">  'use strict'</span>;  <span class="comment">// 無效</span></span><br><span class="line">  auntie = <span class="string">'漂亮阿姨'</span>;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  &#x27;use strict&#x27;</span>;</span><br><span class="line">&#125;)();</span><br><span class="line"></span><br><span class="line">mom = <span class="string">&#x27;老媽管不到&#x27;</span>;</span><br><span class="line"><span class="comment">// 不會跳錯</span></span><br></pre></td></tr></table></figure>
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>只有將 <code>&#39;use strict&#39;</code> 放在函式開頭才會有作用。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> aa;</span><br><span class="line"><span class="meta">  &#x27;use strict&#x27;</span>;  <span class="comment">// 無效</span></span><br><span class="line">  auntie = <span class="string">&#x27;漂亮阿姨&#x27;</span>;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
 <h2 id="常見錯誤"><a href="#常見錯誤" class="headerlink" title="常見錯誤"></a>常見錯誤</h2><p>基本錯誤如下：</p>
 <ul>
 <li>不宣告直接賦予變數</li>
@@ -248,13 +269,13 @@ ga('send', 'pageview');
 <li>新增的保留字也不能被作為變數名稱 implements, interface, let, package, private, protected, public, static, yield，這些是為了 ES6 做得準備。</li>
 </ul>
 <p>如果嘗試修改 getter 則不會默默地沒改，而是直接地跳出錯誤：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span>;</span><br><span class="line">  <span class="keyword">var</span> family = &#123;</span><br><span class="line">    <span class="keyword">get</span> mom() &#123; <span class="keyword">return</span> <span class="string">'老媽'</span> &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(family.mom); <span class="comment">// 老媽</span></span><br><span class="line">  family.mom = <span class="string">'老爸'</span>; <span class="comment">// 跳錯</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  &#x27;use strict&#x27;</span>;</span><br><span class="line">  <span class="keyword">var</span> family = &#123;</span><br><span class="line">    <span class="keyword">get</span> <span class="title">mom</span>() &#123; <span class="keyword">return</span> <span class="string">&#x27;老媽&#x27;</span> &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="built_in">console</span>.log(family.mom); <span class="comment">// 老媽</span></span><br><span class="line">  family.mom = <span class="string">&#x27;老爸&#x27;</span>; <span class="comment">// 跳錯</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
 <p>不可以嘗試刪除一個不可刪除的屬性(此為原型，在後面的章節會介紹到)：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span>;</span><br><span class="line">  <span class="keyword">delete</span> <span class="built_in">Object</span>.prototype;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  &#x27;use strict&#x27;</span>;</span><br><span class="line">  <span class="keyword">delete</span> <span class="built_in">Object</span>.prototype;</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
 <h2 id="‘use-strict’-及-this"><a href="#‘use-strict’-及-this" class="headerlink" title="‘use strict’ 及 this"></a>‘use strict’ 及 this</h2><p>在先前介紹 this 的時有介紹到不同的呼叫方法，在 ‘use strict’ 的環境下的 <code>純粹的調用 (Simple call)</code> 的 this 不在是全域變數。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.auntie = <span class="string">'漂亮阿姨'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'call:'</span>, <span class="keyword">this</span>.auntie);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callAuntie.call(&#123; <span class="attr">auntie</span>: <span class="string">'叫阿姨'</span> &#125;); <span class="comment">// Ok</span></span><br><span class="line">callAuntie(); <span class="comment">// 錯誤，此呼叫會導致 this 為全域</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.auntie = <span class="string">&#x27;漂亮阿姨&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  &#x27;use strict&#x27;</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;call:&#x27;</span>, <span class="built_in">this</span>.auntie);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callAuntie.call(&#123; <span class="attr">auntie</span>: <span class="string">&#x27;叫阿姨&#x27;</span> &#125;); <span class="comment">// Ok</span></span><br><span class="line">callAuntie(); <span class="comment">// 錯誤，此呼叫會導致 this 為全域</span></span><br></pre></td></tr></table></figure>
 <p>但 this 依然可作為 window 的方式傳入。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.auntie = <span class="string">'漂亮阿姨'</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  'use strict'</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">'call:'</span>, <span class="keyword">this</span>.auntie);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callAuntie.call(<span class="keyword">this</span>); <span class="comment">// Ok，call: 漂亮阿姨</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">window</span>.auntie = <span class="string">&#x27;漂亮阿姨&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callAuntie</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line"><span class="meta">  &#x27;use strict&#x27;</span>;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;call:&#x27;</span>, <span class="built_in">this</span>.auntie);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">callAuntie.call(<span class="built_in">this</span>); <span class="comment">// Ok，call: 漂亮阿姨</span></span><br></pre></td></tr></table></figure>
 <p>現在會建議寫 JavaScript 的時候加入 <code>&#39;use strict&#39;</code>，這可以改正一些編寫時的不良習慣，但也有可以因此導致專案無法運作，此時可以考慮將 <code>&#39;use strict&#39;</code> 加在函式內，避免影響過去的程式碼及相關套件。</p>
 
             </div>
@@ -286,7 +307,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -536,7 +557,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -557,11 +578,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -606,20 +627,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

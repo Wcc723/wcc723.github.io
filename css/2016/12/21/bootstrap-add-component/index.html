@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>鐵人賽 21 - Bootstrap 透過 Sass 新增自定義元件 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="css,Bootstrap">
+        <meta name="keywords" content="css,Bootstrap" />
     
     
 
     <meta name="description" content="許多人在使用 Bootstrap 時，如果有需要新增、調整，都是寫在 CSS 的後方或是另開一個新檔透過 “覆蓋” 的特性來新增、調整。先前的文章已經介紹了如何調整 Bootstrap 的 CSS，透過變數的方式，我們可以調整整體的樣式設定，而 “新增” 我們也應該用相同的方法來製作，這樣的方法更有一致性，且能夠調用 Bootstrap 原有的變數及 @mixin。">
-<meta name="keywords" content="css,Bootstrap">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽 21 - Bootstrap 透過 Sass 新增自定義元件">
 <meta property="og:url" content="https://wcc723.github.io/css/2016/12/21/bootstrap-add-component/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="許多人在使用 Bootstrap 時，如果有需要新增、調整，都是寫在 CSS 的後方或是另開一個新檔透過 “覆蓋” 的特性來新增、調整。先前的文章已經介紹了如何調整 Bootstrap 的 CSS，透過變數的方式，我們可以調整整體的樣式設定，而 “新增” 我們也應該用相同的方法來製作，這樣的方法更有一致性，且能夠調用 Bootstrap 原有的變數及 @mixin。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/css/2016/12/21/bootstrap-add-component/2016_ironman/21_bootstrap_header.jpg">
-<meta property="og:updated_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:published_time" content="2016-12-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
+<meta property="article:tag" content="Bootstrap">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="鐵人賽 21 - Bootstrap 透過 Sass 新增自定義元件">
-<meta name="twitter:description" content="許多人在使用 Bootstrap 時，如果有需要新增、調整，都是寫在 CSS 的後方或是另開一個新檔透過 “覆蓋” 的特性來新增、調整。先前的文章已經介紹了如何調整 Bootstrap 的 CSS，透過變數的方式，我們可以調整整體的樣式設定，而 “新增” 我們也應該用相同的方法來製作，這樣的方法更有一致性，且能夠調用 Bootstrap 原有的變數及 @mixin。">
 <meta name="twitter:image" content="https://wcc723.github.io/css/2016/12/21/bootstrap-add-component/2016_ironman/21_bootstrap_header.jpg">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +32,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +83,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +103,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +174,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +190,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/css/">css</a>
@@ -199,7 +219,7 @@ ga('send', 'pageview');
     <time datetime="2016-12-20T16:00:00.000Z" itemprop="datePublished">2016-12-21</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bootstrap/">Bootstrap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Bootstrap/" rel="tag">Bootstrap</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li></ul>
 
             </div>
         
@@ -222,17 +242,17 @@ ga('send', 'pageview');
             <div class="need-gallery">
                 <p>許多人在使用 Bootstrap 時，如果有需要新增、調整，都是寫在 CSS 的後方或是另開一個新檔透過 “覆蓋” 的特性來新增、調整。先前的文章已經介紹了如何調整 Bootstrap 的 CSS，透過變數的方式，我們可以調整整體的樣式設定，而 “新增” 我們也應該用相同的方法來製作，這樣的方法更有一致性，且能夠調用 Bootstrap 原有的變數及 @mixin。</p>
 <a id="more"></a>
-<h2 id="新增一個元件"><a href="#新增一個元件" class="headerlink" title="新增一個元件"></a>新增一個元件</h2><p>範例連結<br><a href="https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component" target="_blank" rel="noopener">https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component</a></p>
+<h2 id="新增一個元件"><a href="#新增一個元件" class="headerlink" title="新增一個元件"></a>新增一個元件</h2><p>範例連結<br><a target="_blank" rel="noopener" href="https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component">https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component</a></p>
 <p>先前的文章介紹到 Sass 的架構，所以我們的專案結構會做些許的調整，目前已經有了 <code>all.scss</code> 以及 <code>helpers/_variables.scss</code> 這兩隻 .scss 檔案，接下來新增 <code>components</code> 資料夾，預計新增的元件就會放在這裡。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scss/</span><br><span class="line">|- all.scss</span><br><span class="line">|</span><br><span class="line">|– helpers/</span><br><span class="line">|   |– _variables.scss   # Sass Variables</span><br><span class="line">|</span><br><span class="line">|– components/</span><br><span class="line">|   |– _card.scss        # 預計新增的模組</span><br></pre></td></tr></table></figure>
-<p>元件來源：<a href="https://github.com/doabit/semantic-ui-sass/blob/master/app/assets/stylesheets/semantic-ui/views/_card.scss" target="_blank" rel="noopener">https://github.com/doabit/semantic-ui-sass/blob/master/app/assets/stylesheets/semantic-ui/views/_card.scss</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">scss&#x2F;</span><br><span class="line">|- all.scss</span><br><span class="line">|</span><br><span class="line">|– helpers&#x2F;</span><br><span class="line">|   |– _variables.scss   # Sass Variables</span><br><span class="line">|</span><br><span class="line">|– components&#x2F;</span><br><span class="line">|   |– _card.scss        # 預計新增的模組</span><br></pre></td></tr></table></figure>
+<p>元件來源：<a target="_blank" rel="noopener" href="https://github.com/doabit/semantic-ui-sass/blob/master/app/assets/stylesheets/semantic-ui/views/_card.scss">https://github.com/doabit/semantic-ui-sass/blob/master/app/assets/stylesheets/semantic-ui/views/_card.scss</a></p>
 <p>我在 Sematic UI 上找到了一個現成的 Card 模組，這個模組所使用的變數不多，刪除後面的段落後，就可以直接加入 <code>components/_card.scss</code> 內。</p>
-<p>參考加入內容：<a href="https://github.com/Wcc723/ironman-gulp-sass/blob/v.0.7.component/source/scss/components/_card.scss" target="_blank" rel="noopener">https://github.com/Wcc723/ironman-gulp-sass/blob/v.0.7.component/source/scss/components/_card.scss</a></p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*--------------</span></span><br><span class="line"><span class="comment">      Card</span></span><br><span class="line"><span class="comment">---------------*/</span></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.ui</span><span class="selector-class">.cards</span> &gt; <span class="selector-class">.card</span>,</span><br><span class="line"><span class="selector-class">.ui</span><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">max-width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">display</span>: -webkit-box;</span><br><span class="line">  <span class="attribute">display</span>: -webkit-flex;</span><br><span class="line">  <span class="attribute">display</span>: -ms-flexbox;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">-webkit-box-orient</span>: vertical;</span><br><span class="line">  <span class="attribute">-webkit-box-direction</span>: normal;</span><br><span class="line">  <span class="attribute">-webkit-flex-direction</span>: column;</span><br><span class="line">      <span class="attribute">-ms-flex-direction</span>: column;</span><br><span class="line">          <span class="attribute">flex-direction</span>: column;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">290px</span>;</span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">0px</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#FFFFFF</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0em</span>;</span><br><span class="line">  <span class="attribute">border</span>: none;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">0.28571429rem</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0px</span> <span class="number">1px</span> <span class="number">3px</span> <span class="number">0px</span> <span class="number">#D4D4D5</span>, <span class="number">0px</span> <span class="number">0px</span> <span class="number">0px</span> <span class="number">1px</span> <span class="number">#D4D4D5</span>;</span><br><span class="line">  <span class="attribute">-webkit-transition</span>: box-shadow <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</span><br><span class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</span><br><span class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, transform <span class="number">0.1s</span> ease;</span><br><span class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, transform <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="string">''</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 略 .. */</span></span><br></pre></td></tr></table></figure>
+<p>參考加入內容：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/ironman-gulp-sass/blob/v.0.7.component/source/scss/components/_card.scss">https://github.com/Wcc723/ironman-gulp-sass/blob/v.0.7.component/source/scss/components/_card.scss</a></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*--------------</span></span><br><span class="line"><span class="comment">      Card</span></span><br><span class="line"><span class="comment">---------------*/</span></span><br><span class="line"></span><br><span class="line"><span class="selector-class">.ui</span><span class="selector-class">.cards</span> &gt; <span class="selector-class">.card</span>,</span><br><span class="line"><span class="selector-class">.ui</span><span class="selector-class">.card</span> &#123;</span><br><span class="line">  <span class="attribute">max-width</span>: <span class="number">100%</span>;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="attribute">display</span>: -webkit-box;</span><br><span class="line">  <span class="attribute">display</span>: -webkit-flex;</span><br><span class="line">  <span class="attribute">display</span>: -ms-flexbox;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">-webkit-box-orient</span>: vertical;</span><br><span class="line">  <span class="attribute">-webkit-box-direction</span>: normal;</span><br><span class="line">  <span class="attribute">-webkit-flex-direction</span>: column;</span><br><span class="line">      <span class="attribute">-ms-flex-direction</span>: column;</span><br><span class="line">          <span class="attribute">flex-direction</span>: column;</span><br><span class="line">  <span class="attribute">width</span>: <span class="number">290px</span>;</span><br><span class="line">  <span class="attribute">min-height</span>: <span class="number">0px</span>;</span><br><span class="line">  <span class="attribute">background</span>: <span class="number">#FFFFFF</span>;</span><br><span class="line">  <span class="attribute">padding</span>: <span class="number">0em</span>;</span><br><span class="line">  <span class="attribute">border</span>: none;</span><br><span class="line">  <span class="attribute">border-radius</span>: <span class="number">0.28571429rem</span>;</span><br><span class="line">  <span class="attribute">box-shadow</span>: <span class="number">0px</span> <span class="number">1px</span> <span class="number">3px</span> <span class="number">0px</span> <span class="number">#D4D4D5</span>, <span class="number">0px</span> <span class="number">0px</span> <span class="number">0px</span> <span class="number">1px</span> <span class="number">#D4D4D5</span>;</span><br><span class="line">  <span class="attribute">-webkit-transition</span>: box-shadow <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</span><br><span class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</span><br><span class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, transform <span class="number">0.1s</span> ease;</span><br><span class="line">  <span class="attribute">transition</span>: box-shadow <span class="number">0.1s</span> ease, transform <span class="number">0.1s</span> ease, -webkit-transform <span class="number">0.1s</span> ease;</span><br><span class="line">  <span class="attribute">z-index</span>: <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 略 .. */</span></span><br></pre></td></tr></table></figure>
 <p>新增元件的心法在前面幾個章節有詳細的描述，本篇就直接運用半成品來說明，在 <code>_card.scss</code> 加入後，如果直接運行 <code>gulp</code> 是不會看到 card 加入至你的 CSS 內，所以必須要在 <code>all.scss</code> 補上以下內容確認載入才行。</p>
-<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@<span class="keyword">import</span> <span class="string">"helpers/variables"</span>;</span><br><span class="line">@<span class="keyword">import</span> <span class="string">"bootstrap"</span>;</span><br><span class="line"></span><br><span class="line">@<span class="keyword">import</span> <span class="string">"components/card"</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@import</span> <span class="string">&quot;helpers/variables&quot;</span>;</span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;bootstrap&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">@import</span> <span class="string">&quot;components/card&quot;</span>;</span><br></pre></td></tr></table></figure>
 <p>此時，執行 <code>gulp</code> 沒有出錯的情況下就會看到 Card 模組已經載入了。以下範例為調整後的按鈕色彩及卡片模組。</p>
-<p><img src="/images/2016_ironman/21_bootstrap_01.png" alt></p>
+<p><img src="/images/2016_ironman/21_bootstrap_01.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>透過這一段的教學，大家能夠更靈活的使用 Bootstrap，其實這段流程並沒有那麼複雜，只要稍作練習，就能夠彈性的運用這些技能，且能有效地增加工作效率。</p>
 
             </div>
@@ -264,7 +284,7 @@ ga('send', 'pageview');
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -514,7 +534,7 @@ ga('send', 'pageview');
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -535,11 +555,11 @@ ga('send', 'pageview');
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -584,20 +604,40 @@ ga('send', 'pageview');
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {

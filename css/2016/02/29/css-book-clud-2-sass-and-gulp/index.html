@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="utf-8">
     
     <title>第二次 CSS 讀書會 - Sass 環境建置 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
-        <meta name="keywords" content="css">
+        <meta name="keywords" content="css" />
     
     
 
     <meta name="description" content="這次是第二次的 CSS 讀書會，目標是要教大家 Sass 的環境建立，也算是比較大的挑戰，因為要在線上及現場教大家怎麼運行 Sass 的編譯環境，且主要的目標族群包含了設計師、網頁設計師，甚至是沒有碰過 command line 的開發者…。">
-<meta name="keywords" content="css">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第二次 CSS 讀書會 - Sass 環境建置">
 <meta property="og:url" content="https://wcc723.github.io/css/2016/02/29/css-book-clud-2-sass-and-gulp/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="這次是第二次的 CSS 讀書會，目標是要教大家 Sass 的環境建立，也算是比較大的挑戰，因為要在線上及現場教大家怎麼運行 Sass 的編譯環境，且主要的目標族群包含了設計師、網頁設計師，甚至是沒有碰過 command line 的開發者…。">
-<meta property="og:locale" content="zh-TW">
+<meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://wcc723.github.io/css/2016/02/29/css-book-clud-2-sass-and-gulp/2016/02/cssBookclub-gulp.jpg">
-<meta property="og:updated_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:published_time" content="2016-02-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="第二次 CSS 讀書會 - Sass 環境建置">
-<meta name="twitter:description" content="這次是第二次的 CSS 讀書會，目標是要教大家 Sass 的環境建立，也算是比較大的挑戰，因為要在線上及現場教大家怎麼運行 Sass 的編譯環境，且主要的目標族群包含了設計師、網頁設計師，甚至是沒有碰過 command line 的開發者…。">
 <meta name="twitter:image" content="https://wcc723.github.io/css/2016/02/29/css-book-clud-2-sass-and-gulp/2016/02/cssBookclub-gulp.jpg">
 <meta property="fb:app_id" content="556473851118881">
     
@@ -31,17 +31,29 @@
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/titillium-web/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="/css/style.css">
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
     
 
-    <script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
     
     
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
     
     
         <script type="text/javascript">
@@ -70,7 +82,9 @@ ga('send', 'pageview');
     fbq('init', '152520611964487');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"></noscript>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
     <!-- DO NOT MODIFY -->
     <!-- End Facebook Pixel Code -->
     <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -88,8 +102,8 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-</head>
-</html>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
 <body>
     <div id="wrap">
         <header id="header">
@@ -159,7 +173,9 @@ ga('send', 'pageview');
     window.INSIGHT_CONFIG = INSIGHT_CONFIG;
 })(window);
 </script>
+
 <script src="/js/insight.js"></script>
+
 
 </div>
                         </nav>
@@ -173,7 +189,10 @@ ga('send', 'pageview');
             <div class="main-body container-inner">
                 <div class="main-body-inner">
                     <section id="main">
-                        <div class="main-body-header">
+                        <a href="https://hex.school/d1S7E" target="_blank">
+    <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%AA%B2%E7%A8%8B%E5%9C%96blog_1020_300.png?alt=media&token=05dbf8ec-ad0c-4258-89ea-bc2dde210668" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
     <h1 class="header">
     
     <a class="page-title-link" href="/categories/css/">css</a>
@@ -199,7 +218,7 @@ ga('send', 'pageview');
     <time datetime="2016-02-28T16:00:00.000Z" itemprop="datePublished">2016-02-29</time>
 </a>
                 
-    <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/">css</a></li></ul>
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/css/" rel="tag">css</a></li></ul>
 
             </div>
         
@@ -222,17 +241,17 @@ ga('send', 'pageview');
             <div class="need-gallery">
                 <p>這次是第二次的 CSS 讀書會，目標是要教大家 Sass 的環境建立，<br>也算是比較大的挑戰，因為要在線上及現場教大家怎麼運行 Sass 的編譯環境，且主要的目標族群包含了設計師、網頁設計師，甚至是沒有碰過 command line 的開發者…。</p>
 <a id="more"></a>
-<p><img src="/images/2016/02/cssBookclub-gulp.jpg" alt></p>
-<h2 id="活動簡報"><a href="#活動簡報" class="headerlink" title="活動簡報"></a>活動簡報</h2><p>範例：<a href="https://github.com/Wcc723/gulp-web-designers" target="_blank" rel="noopener">https://github.com/Wcc723/gulp-web-designers</a></p>
+<p><img src="/images/2016/02/cssBookclub-gulp.jpg" alt=""></p>
+<h2 id="活動簡報"><a href="#活動簡報" class="headerlink" title="活動簡報"></a>活動簡報</h2><p>範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/gulp-web-designers">https://github.com/Wcc723/gulp-web-designers</a></p>
 <p>這次活動的簡報是用 Keynote 做的，有些部分是講解上為了呈現動態效果，所以在 slideshare 無法呈現的很完整。</p>
 
 <iframe src="//www.slideshare.net/slideshow/embed_code/key/kOQtobRIzX2xBr" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/chihchengwang3/sass-node-sass" title="建立 Sass 環境，透過 Node sass" target="blank">建立 Sass 環境，透過 Node sass</a> </strong> from <strong><a target="blank" href="//www.slideshare.net/chihchengwang3">Chih-cheng Wang</a></strong> </div>
 
 <p>也有準備了 Hackpad 提供共筆，很感謝前端朋友們熱情協助寫共筆文件。</p>
-<p><script src="https://csscollege.hackpad.com/5k6BVvbKYTf.js"></script><noscript><div>View <a href="https://csscollege.hackpad.com/5k6BVvbKYTf" target="_blank" rel="noopener">CSS 讀書會 2 (Sass 編譯環境)</a> on Hackpad.</div></noscript></p>
+<p><script src="https://csscollege.hackpad.com/5k6BVvbKYTf.js"></script><noscript><div>View <a target="_blank" rel="noopener" href="https://csscollege.hackpad.com/5k6BVvbKYTf">CSS 讀書會 2 (Sass 編譯環境)</a> on Hackpad.</div></noscript></p>
 <h2 id="其他問題"><a href="#其他問題" class="headerlink" title="其他問題"></a>其他問題</h2><p>這次有許多問題是 Hackpad 上沒有提到，是在問卷內提出的問題，這邊我就一一回覆：</p>
 <h3 id="問題：Sass-與-Scss"><a href="#問題：Sass-與-Scss" class="headerlink" title="問題：Sass 與 Scss"></a>問題：Sass 與 Scss</h3><p>在一開始寫 Sass 就是使用 <code>.sass</code> 的格式，前前後後也有一年多的時間，雖然看到許多開發者都是使用 <code>.scss</code>，大多數的文件及範例也都是使用 <code>.scss</code> ，但當時是想說只要有愛，就可以堅持下去 !?</p>
-<p>直到出現一個問題用 <code>.sass</code> 很難解決(讓我轉跳 <code>.scss</code> 的原因)，那就是 Sass Maps (範例：<a href="http://www.sitepoint.com/using-sass-maps/)，當時也正好在學" target="_blank" rel="noopener">http://www.sitepoint.com/using-sass-maps/)，當時也正好在學</a> Susy， Susy 一定要使用 Sass Maps，用 <code>.sass</code> 格式寫 Sass Maps 簡直地獄…。</p>
+<p>直到出現一個問題用 <code>.sass</code> 很難解決(讓我轉跳 <code>.scss</code> 的原因)，那就是 Sass Maps (範例：<a target="_blank" rel="noopener" href="http://www.sitepoint.com/using-sass-maps/)，當時也正好在學">http://www.sitepoint.com/using-sass-maps/)，當時也正好在學</a> Susy， Susy 一定要使用 Sass Maps，用 <code>.sass</code> 格式寫 Sass Maps 簡直地獄…。</p>
 <pre><code>// scss
 $map: (
   key: value,
@@ -245,15 +264,15 @@ $map: (key: value, other-key: other-value)
 <h3 id="問題：為何不再用-Susy"><a href="#問題：為何不再用-Susy" class="headerlink" title="問題：為何不再用 Susy"></a>問題：為何不再用 Susy</h3><p>關於 Susy 這個工具我用過 Susyone、Susy 2，後來確實有些偏見 (這部分是我該反省的點Q_Q，不該用自己的主觀來勸大家別用)，這邊還是要和大家分享為何我不再使用這樣的 Grid 工具。</p>
 <h4 id="第一階段"><a href="#第一階段" class="headerlink" title="第一階段"></a>第一階段</h4><p>這幾張圖我們就看有色彩的地方，假設需求是左邊有選單(4欄寬度)，右方的區域是文章內容(8欄寬度)，總共為 12 欄寬，一開始我們可能會使用 <code>.menu</code> 及 <code>.article</code> 來規劃 CSS 。</p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.menu</span> &#123;</span><br><span class="line">  <span class="comment">// 4 欄寬</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.article</span> &#123;</span><br><span class="line">  <span class="comment">// 8 欄寬</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/images/2016/02/step1.png" alt></p>
+<p><img src="/images/2016/02/step1.png" alt=""></p>
 <h4 id="第二階段"><a href="#第二階段" class="headerlink" title="第二階段"></a>第二階段</h4><p>但這兩個區域的實際內容可能不會只放文章，左邊也有可能是放廣告，所以就把側邊改成 <code>.side</code>，中間也改成了 <code>.content</code>，以符合以後的運用。</p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.side</span> &#123;</span><br><span class="line">  <span class="comment">// 4 欄寬</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">  <span class="comment">// 8 欄寬</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/images/2016/02/step2.png" alt></p>
+<p><img src="/images/2016/02/step2.png" alt=""></p>
 <h4 id="第三階段"><a href="#第三階段" class="headerlink" title="第三階段"></a>第三階段</h4><p>後來新增了一個區域 <code>.ad</code>，那個區域的寬度與 <code>.side</code>也都相同，但稱為 <code>.side</code> 的區域也不便直接套在 <code>.ad</code>，所有就新增一個 <code>.ad</code> 寬度也一樣是 4 欄寬。</p>
 <figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.side</span> &#123;</span><br><span class="line">  <span class="comment">// 4 欄寬</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.content</span> &#123;</span><br><span class="line">  <span class="comment">// 8 欄寬</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.ad</span> &#123;</span><br><span class="line">  <span class="comment">// 4 欄寬</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="/images/2016/02/step3.png" alt></p>
+<p><img src="/images/2016/02/step3.png" alt=""></p>
 <h4 id="第四階段"><a href="#第四階段" class="headerlink" title="第四階段"></a>第四階段</h4><p>我們會發現其實 <code>.side</code>、<code>.ad</code> 兩者 CSS 屬性差異不大，所以可以改用欄寬的方式來定義這個 class 名稱，於是乎就出現了 <code>.col-4</code>、<code>.col-8</code>，m…到了這步驟，是不是發現和 Bootstrap 2 有點像呢!?這樣的 CSS 設計模式是將網格系統模組化，增加了Class 的可複用性。</p>
-<p><img src="/images/2016/02/step4.png" alt></p>
+<p><img src="/images/2016/02/step4.png" alt=""></p>
 <p>Susy 的優點在於快速建立格線系統，但如果是 <code>col-size</code> 的 Grid-system 就失去了快速建立格線系統的特色，模組化的優點是增加了 Class 的可複用性，但換個方向去思考，其實它也限制了創意的發想(畢竟 grid 都已經規劃好)，不同的方法與技巧也建議去嘗試看看，這樣才能了解何者適合目前的專案。</p>
 <h3 id="問題：為何需要用-Scss-與-CSS-如何跟後端的結合"><a href="#問題：為何需要用-Scss-與-CSS-如何跟後端的結合" class="headerlink" title="問題：為何需要用 Scss 與 CSS 如何跟後端的結合"></a>問題：為何需要用 Scss 與 CSS 如何跟後端的結合</h3><p>為何需要用 Scss？理由挺多的，就個人這段時間的學習來說，有以下幾個理由：</p>
 <ol>
@@ -262,7 +281,7 @@ $map: (key: value, other-key: other-value)
 <li>進階的 CSS：Sass 在開發上多了變數、運算，可以去思考怎樣用簡單的方式做出豐富的效果，不過這也需要投資一定的時間去研究。</li>
 </ol>
 <p>如何與後端語言結合？</p>
-<p>其實我在專案上都是透過 Gulp 與後端結合，但這次的讀書會主要是讓新手可以入門 Sass 環境，所以沒仔細提到這段，如果是後端的開發者，可以參考<a href="https://github.com/Wcc723/gulp-web-designers" target="_blank" rel="noopener">範例</a>中的 <code>gulpfile.js</code>，抽離掉 webserver 模組後，就可以用來編譯給後端用的 Sass (也可以依據需求調整編譯路徑等)，或者私下敲<a href="https://www.facebook.com/chihcheng.wang.3" target="_blank" rel="noopener">我</a>，我們再來討論討論。</p>
+<p>其實我在專案上都是透過 Gulp 與後端結合，但這次的讀書會主要是讓新手可以入門 Sass 環境，所以沒仔細提到這段，如果是後端的開發者，可以參考<a target="_blank" rel="noopener" href="https://github.com/Wcc723/gulp-web-designers">範例</a>中的 <code>gulpfile.js</code>，抽離掉 webserver 模組後，就可以用來編譯給後端用的 Sass (也可以依據需求調整編譯路徑等)，或者私下敲<a target="_blank" rel="noopener" href="https://www.facebook.com/chihcheng.wang.3">我</a>，我們再來討論討論。</p>
 <p>前端的工具還相當多，這樣的一次性介紹還缺乏很多，以後我再多研究研究其他前端工具再與大家分享(近期內應該還會介紹 Bower)。</p>
 <h3 id="建議：講者說話太快"><a href="#建議：講者說話太快" class="headerlink" title="建議：講者說話太快"></a>建議：講者說話太快</h3><p>嗯…，這部分是我該多注意的，往後的課程也會更著重在單一的主題上介紹，不過大家有問題還是盡量可以在 Hackpad 或直播頻道發問，上面有許多高手會一起交流解答～。</p>
 <p>就票數上來說，下次會介紹 CSS 架構，希望這個連假可以準備差不多 Orz 。</p>
@@ -296,7 +315,7 @@ $map: (key: value, other-key: other-value)
 
 
     <div class="a2a_kit a2a_default_style">
-    <a class="a2a_dd" href="https://www.addtoany.com/share">Share</a>
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
     <span class="a2a_divider"></span>
     <a class="a2a_button_facebook"></a>
     <a class="a2a_button_twitter"></a>
@@ -546,7 +565,7 @@ $map: (key: value, other-key: other-value)
 <div class="widget-wrap widget-list">
     <h3 class="widget-title">粉絲專頁</h3>
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
 </div>
             
@@ -567,11 +586,11 @@ $map: (key: value, other-key: other-value)
             <ul>
                 
                     <li>
-                        <a href="https://www.hexschool.com/">六角學院</a>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
                     </li>
                 
                     <li>
-                        <a href="https://w3c.hexschool.com/">w3cHexschool</a>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
                     </li>
                 
             </ul>
@@ -616,20 +635,40 @@ $map: (key: value, other-key: other-value)
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
     
 
 
 <!-- Custom Scripts -->
+
 <script src="/js/main.js"></script>
+
 
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
