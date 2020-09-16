@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>JavaScript 開發中常見錯誤解決辦法 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,js" />
+    
+    
+
+    <meta name="description" content="身為一個開發者，當然都會了解經驗越多，除錯上會更為容易，這種事情你我都清楚。但對於一個新手來就是缺少錯誤上的經驗，所以當遇到紅字時會不知如何著手。 這一系列的文章是專門給剛入門新手的前端開發者觀看的，盡可能用白話的方式，並且提供簡單的範例程式碼以供驗證。 Chrome 開發者工具的常見錯誤排解Chrome 開發者工具的 Console 相當好用，最常使用的不外乎是透過console.log 呈現出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript 開發中常見錯誤解決辦法">
+<meta property="og:url" content="https://wcc723.github.io/development/2020/09/16/chrome-js-alert/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="身為一個開發者，當然都會了解經驗越多，除錯上會更為容易，這種事情你我都清楚。但對於一個新手來就是缺少錯誤上的經驗，所以當遇到紅字時會不知如何著手。 這一系列的文章是專門給剛入門新手的前端開發者觀看的，盡可能用白話的方式，並且提供簡單的範例程式碼以供驗證。 Chrome 開發者工具的常見錯誤排解Chrome 開發者工具的 Console 相當好用，最常使用的不外乎是透過console.log 呈現出">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_01.jpg?alt=media&token=3f3582ae-2f2f-44e2-8f8f-d1ca33a3a698">
+<meta property="article:published_time" content="2020-09-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-09-16T03:25:46.038Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_01.jpg?alt=media&token=3f3582ae-2f2f-44e2-8f8f-d1ca33a3a698">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8296684122088055",
+        enable_page_level_ads: true
+    });
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <a href="/">
+                        <img src="/images/casper_blog.svg" alt="">
+                    </a>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/categories/life">生活</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about">關於</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        
+<div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/development/">development</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-chrome-js-alert" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        JavaScript 開發中常見錯誤解決辦法
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/development/2020/09/16/chrome-js-alert/" class="article-date">
+    <time datetime="2020-09-15T16:00:00.000Z" itemprop="datePublished">2020-09-16</time>
+</a>
+                
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li></ul>
+
+            </div>
+        
+        
+<div class="article-gallery">
+    
+    <a class="gallery-item" target="_blank" href="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_01.jpg?alt=media&token=3f3582ae-2f2f-44e2-8f8f-d1ca33a3a698" rel="gallery_ckf4rmbmk0000umru6u8rcuco noopener">
+        <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_01.jpg?alt=media&token=3f3582ae-2f2f-44e2-8f8f-d1ca33a3a698" itemprop="image" />
+    </a>
+    
+</div>
+
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>身為一個開發者，當然都會了解經驗越多，除錯上會更為容易，這種事情你我都清楚。但對於一個新手來就是缺少錯誤上的經驗，所以當遇到紅字時會不知如何著手。</p>
+<p>這一系列的文章是專門給剛入門新手的前端開發者觀看的，盡可能用白話的方式，並且提供簡單的範例程式碼以供驗證。</p>
+<h2 id="Chrome-開發者工具的常見錯誤排解"><a href="#Chrome-開發者工具的常見錯誤排解" class="headerlink" title="Chrome 開發者工具的常見錯誤排解"></a>Chrome 開發者工具的常見錯誤排解</h2><p>Chrome 開發者工具的 Console 相當好用，最常使用的不外乎是透過<code>console.log</code> 呈現出變數或運算的結果，如果符合預期則皆大歡喜。</p>
+<p>但最討厭的則是出現紅色文字，看似<strong>帶有威脅的語氣說「你出錯了！」</strong>，對於新手來說不僅是一種挫折，紅字上的錯誤也不知如何著手排除的情況下，也只能反覆地檢視自己原始碼，看看是不是有奇怪的地方，但就算停在了錯誤地方也往往不知是什麼意思，也會因此花上許多時間在除錯上。</p>
+<p>本篇就來介紹 Chrome 開發者工具的常見錯誤回饋及排除技巧，讓你下次不再需要為了滿滿的紅字感到挫折，更能從中學習如何快速搜尋錯誤程式碼。</p>
+<blockquote>
+<p>注意：JavaScript 是屬於同步的程式語言，如果出現錯誤就會造成下方的程式碼導致無法運行，當<strong>紅字沒有解決，都可能造成接下來的程式碼運行錯誤或是無法繼續運行</strong>。</p>
+</blockquote>
+<h2 id="錯誤類型：SyntaxError"><a href="#錯誤類型：SyntaxError" class="headerlink" title="錯誤類型：SyntaxError"></a>錯誤類型：SyntaxError</h2><p><code>SyntaxError</code> 這類型錯誤通常是<strong>語法結構</strong>錯誤，遇到這類型錯誤建議透過 “文字編輯器”除錯，以 VSCode 來說會直接跳出這類型的錯誤提示。</p>
+<p>如下圖，VSCode 以紅字提示 family 物件有錯誤，當出現錯誤時會建議不要只檢查當行，錯誤可能會存在於前後文之中（有可能跨多行的錯誤），此範例中仔細檢查可以發現 ‘小明’ 後方缺少了一個逗點。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC710C627-CEF7-4DDC-84FE-EA9125EC9A9F.png?alt=media&amp;token=d3066ce1-5977-4ae1-b0b0-eebf18989805" alt=""></p>
+<blockquote>
+<p>除錯重點：使用主流的文字編輯器，如 “VSCode” 進行除錯</p>
+</blockquote>
+<h3 id="Uncaught-SyntaxError-Unexpected-identifier"><a href="#Uncaught-SyntaxError-Unexpected-identifier" class="headerlink" title="Uncaught SyntaxError: Unexpected identifier"></a>Uncaught SyntaxError: Unexpected identifier</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> person = &#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span></span><br><span class="line">  family: &#123;</span><br><span class="line">    name: <span class="string">&#x27;小明家&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_16_%E4%B8%8A%E5%8D%8810_34.png?alt=media&amp;token=a0ed1451-80c8-47d8-befe-dedc6a594636" alt="Uncaught SyntaxError: Unexpected identifier"></p>
+<p>語法解析錯誤，因為在物件結構中缺少一個逗點，除了透過 VSCode 查看外，也可以直接透過 Chrome Console 連結至 Source 頁面查看錯誤行數，並請檢查此行的前後文是否有語法結構上的錯誤。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F912950B6-4757-4F09-BDD8-21E9DDBD3D6E.png?alt=media&amp;token=7ab22f94-fd04-4589-b42c-0fb17d922a4b" alt="點擊連結就可到該錯誤位置"></p>
+<h3 id="Uncaught-SyntaxError-Unexpected-end-of-input"><a href="#Uncaught-SyntaxError-Unexpected-end-of-input" class="headerlink" title="Uncaught SyntaxError: Unexpected end of input"></a>Uncaught SyntaxError: Unexpected end of input</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;這是一段函式&#x27;</span>);</span><br><span class="line"><span class="built_in">console</span>.log(fn);</span><br></pre></td></tr></table></figure>
+<p>語法解析錯誤：未預期的結束，此範例中缺少結尾的 <code>&#125;</code>，會建議在撰寫程式碼時盡可能維持正確的縮排，將程式排整齊後比較容易正確找到錯誤。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_16_%E4%B8%8A%E5%8D%8810_36.png?alt=media&amp;token=9a690dbd-af76-4dd8-b5e3-277b40111727" alt="Uncaught SyntaxError: Unexpected identifier"></p>
+<h3 id="Uncaught-SyntaxError-Unexpected-token-‘-’"><a href="#Uncaught-SyntaxError-Unexpected-token-‘-’" class="headerlink" title="Uncaught SyntaxError: Unexpected token ‘}’"></a>Uncaught SyntaxError: Unexpected token ‘}’</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (name)</span><br><span class="line">  console.log(&#39;立即函式&#39;)</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_16_%E4%B8%8A%E5%8D%8810_38.png?alt=media&amp;token=1a4a6b05-fcae-4e40-897a-59dd55cf9ae2" alt="Uncaught SyntaxError: Unexpected token &#39;}&#39;"></p>
+<p>語法解析錯誤：未預期的符號 <code>&#125;</code>，程式碼多了 <code>&#125;</code> 結尾符號導致環境運行錯誤，此錯誤排除與上述相同，盡可能將程式碼排整齊且維持首尾符號的一致。</p>
+<p>除此之外再推薦一個 VSCode 工具，為你的首尾標籤加上對應的色彩：<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer">https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer</a></p>
+<p>範例：程式碼中的 <code>&#123;&#125;</code> 都會以一對的色彩呈現。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4EDE3D9B-8111-4BB2-9794-63A72D6352B1.png?alt=media&amp;token=b7af7db6-5bf6-4d18-b90a-bb266db94d48" alt=""></p>
+<h3 id="Uncaught-SyntaxError-Identifier-‘a’-has-already-been-declared"><a href="#Uncaught-SyntaxError-Identifier-‘a’-has-already-been-declared" class="headerlink" title="Uncaught SyntaxError: Identifier ‘a’ has already been declared"></a>Uncaught SyntaxError: Identifier ‘a’ has already been declared</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> a;</span><br><span class="line"><span class="keyword">let</span> a;</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_16_%E4%B8%8A%E5%8D%8810_39.png?alt=media&amp;token=a53cf16e-a7b9-4a18-bd64-15dd09b6e73f" alt="Uncaught SyntaxError: Identifier &#39;a&#39; has already been declared"></p>
+<p>語法解析錯誤：識別符號（在此指的是變數）已經被宣告，請避免重複宣告同一個變數，ES6 中都禁止 let、const 重複宣告，直接排除即可。</p>
+<h2 id="錯誤類型：ReferenceError"><a href="#錯誤類型：ReferenceError" class="headerlink" title="錯誤類型：ReferenceError"></a>錯誤類型：ReferenceError</h2><p><code>ReferenceError</code> 此類型錯誤通常是指「參考」找不到，當出現這類型錯誤時文字編輯器 “不一定” 出現錯誤（有裝 Linter 才會提示），所以時常會在執行階段才會看到這類型錯誤。</p>
+<blockquote>
+<p>除錯重點：</p>
+<ul>
+<li>透過 Chrome 的提示修正</li>
+<li>在 JavaScript 撰寫環境中<a href="https://wcc723.github.io/javascript/2018/01/01/javascript-eslint/">安裝 ESLint</a></li>
+</ul>
+</blockquote>
+<h3 id="ReferenceError-a-is-not-defined"><a href="#ReferenceError-a-is-not-defined" class="headerlink" title="ReferenceError: a is not defined"></a>ReferenceError: a is not defined</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ReferenceError: a is not defined</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_16_%E4%B8%8A%E5%8D%8810_40.png?alt=media&amp;token=9ca239f8-7700-438b-9697-87fbd26fbbf1" alt="ReferenceError: a is not defined"></p>
+<p>語法參考錯誤：由於 a 變數未定義，所以在取用該變數時會出現未定義的提示，只要預先定義此變數即可。</p>
+<p>不過還有另一種很常見的情況，當引用外部套件時出現「套件名稱 + <code>is not defined</code>」，這類型情況通常是外部資源沒有正確載入，請確保該資源有加入到此網站中。</p>
+<p>以下範例來說，就是屬於 jQuery 沒有正確導入。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Uncaught ReferenceError: $ is not defined</span><br></pre></td></tr></table></figure></p>
+<h2 id="錯誤類型：TypeError"><a href="#錯誤類型：TypeError" class="headerlink" title="錯誤類型：TypeError"></a>錯誤類型：TypeError</h2><p><code>TypeError</code> 則是型別上的錯誤，文字編輯器一樣不會預先提示有錯，必須在執行環境時才會看到，這類型的錯誤通常是以下幾種：</p>
+<ul>
+<li>在 undefined、null 嘗試取得其屬性（ex: undefined 中取得屬性值）</li>
+<li>嘗試呼叫非函式變數或表達式（ex: <code>&#39;text&#39;()</code>）</li>
+</ul>
+<blockquote>
+<p>除錯重點：在取得變數前方確認該變數當前的資料型別及結構</p>
+</blockquote>
+<h3 id="Uncaught-TypeError-Cannot-read-property-‘a’-of-undefined"><a href="#Uncaught-TypeError-Cannot-read-property-‘a’-of-undefined" class="headerlink" title="Uncaught TypeError: Cannot read property ‘a’ of undefined"></a>Uncaught TypeError: Cannot read property ‘a’ of undefined</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br><span class="line"><span class="built_in">console</span>.log(a.a);</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_16_%E4%B8%8A%E5%8D%8810_42.png?alt=media&amp;token=e4b19f41-82b5-4840-bdd1-040f357feb5c" alt="Uncaught TypeError: Cannot read property &#39;a&#39; of undefined"></p>
+<p>說明：該變數的值下無法找到特定的屬性，undefined、null 的值內無法在查找到其它的屬性，如果無法確認該變數是否為 <code>undefined</code>，可改寫其程式碼如下： </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">typeof</span> a !== <span class="string">&#x27;undefined&#x27;</span>) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(a.a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="Uncaught-TypeError-console-log-…-is-not-a-function"><a href="#Uncaught-TypeError-console-log-…-is-not-a-function" class="headerlink" title="Uncaught TypeError: console.log(…) is not a function"></a>Uncaught TypeError: console.log(…) is not a function</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;立即函式&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_16_%E4%B8%8A%E5%8D%8810_43.png?alt=media&amp;token=86695046-7354-4c6c-bc54-d86397573b91" alt="Uncaught TypeError: console.log(...) is not a function"></p>
+<p>說明：這段程式碼中看起來會是立即函式的錯誤，但卻出現了 <code>console.log(...) is not a function</code>。此錯誤主要是因為缺少了分號，因此將兩段程式碼合併為一行執行，運行的結果如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(&#39;a&#39;)(function() &#123; ... &#125;)()</span><br></pre></td></tr></table></figure>
+<p>當遇到此類型錯誤只要在兩者之間補上分號即可正常運作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;立即函式&#x27;</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<h2 id="錯誤類型-RangeError"><a href="#錯誤類型-RangeError" class="headerlink" title="錯誤類型 RangeError"></a>錯誤類型 RangeError</h2><p>這是建立了超過長度的陣列或過度的執行函式（產生過多執行堆疊）所造成的錯誤，這類型則需要重新檢視程式碼的邏輯，是否會造成過度的硬體資源消耗（記憶體或運算資源）。</p>
+<blockquote>
+<p>除錯重點：需重新檢視邏輯，如果必要可先刪除部分程式碼，先找出錯誤的片段後再進行除錯。</p>
+</blockquote>
+<h3 id="Uncaught-RangeError-Maximum-call-stack-size-exceeded"><a href="#Uncaught-RangeError-Maximum-call-stack-size-exceeded" class="headerlink" title="Uncaught RangeError: Maximum call stack size exceeded"></a>Uncaught RangeError: Maximum call stack size exceeded</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> <span class="title">a</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  a();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_16_%E4%B8%8A%E5%8D%8810_46.png?alt=media&amp;token=e5ea5575-bbf9-40ba-85af-3edf6eb933e2" alt=""></p>
+<p>說明：函式呼叫時會產生一個執行堆疊，如果堆疊的過程中超過最大數量則會產生錯誤（函式內呼叫自己）。</p>
+<p>此類錯誤也很常見，但卻不容易找到為何出錯，主要原因是執行堆疊超過環境的限制（運用框架中也很常見），如果遇到此錯誤建議改寫目前呼叫函式的方式。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>當 Chrome Console 出現錯誤時請維持正確的心態，新手常常會看到錯誤而緊張不知所措（畢竟從小紅被用紅字提醒就會感到緊張，深怕這個錯誤自己無法解決而影響到其他人）。</p>
+<p>錯誤在撰寫程式碼中常見的過程，資深開發者與新手的差異是<strong>面對錯誤的經驗</strong>，同一個錯誤前幾次不清楚沒關係，都是經驗的累積，只要往後再次遇到相同的錯誤自然而然就能輕鬆面對。</p>
+
+            </div>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2020/09/16/chrome-js-alert/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/development/2020/03/25/import-export/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <p class="article-nav-title">完全解析 JavaScript import、export</p>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/09/16/chrome-js-alert/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_01.jpg?alt=media&token=3f3582ae-2f2f-44e2-8f8f-d1ca33a3a698)" alt="JavaScript 開發中常見錯誤解決辦法" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/09/16/chrome-js-alert/" class="title">JavaScript 開發中常見錯誤解決辦法</a></p>
+                            <p class="item-date"><time datetime="2020-09-15T16:00:00.000Z" itemprop="datePublished">2020-09-16</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/03/25/import-export/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-import-export.png?alt=media&token=b0833260-7033-4045-bd6d-4e74df3f6ad5)" alt="完全解析 JavaScript import、export" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/03/25/import-export/" class="title">完全解析 JavaScript import、export</a></p>
+                            <p class="item-date"><time datetime="2020-03-24T16:00:00.000Z" itemprop="datePublished">2020-03-25</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/business/2020/03/18/how-to-register-a-company/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-register-company.png?alt=media&token=c128c4a8-c657-4ffe-a872-03238d3c793f)" alt="開公司的流程及雷點分享" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/business/">business</a></p>
+                            <p class="item-title"><a href="/business/2020/03/18/how-to-register-a-company/" class="title">開公司的流程及雷點分享</a></p>
+                            <p class="item-date"><time datetime="2020-03-17T16:00:00.000Z" itemprop="datePublished">2020-03-18</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/css/2020/03/08/flex-size/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-cover.png?alt=media&token=ce7a29ec-255b-40b3-a724-33dd4407ee2c)" alt="Flex 空間計算規則" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/css/">css</a></p>
+                            <p class="item-title"><a href="/css/2020/03/08/flex-size/" class="title">Flex 空間計算規則</a></p>
+                            <p class="item-date"><time datetime="2020-03-07T16:00:00.000Z" itemprop="datePublished">2020-03-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/development/2020/03/01/puppeteer/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-puppeteer.png?alt=media&token=42d44728-9eaf-42b3-8be2-fd62d0795dd0)" alt="爬蟲、E2E 測試兩相宜的好工具 - Puppeteer" class="thumbnail-image"></span>
+    
+    
+</a>
+
+
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"><a class="article-category-link" href="/categories/development/">development</a></p>
+                            <p class="item-title"><a href="/development/2020/03/01/puppeteer/" class="title">爬蟲、E2E 測試兩相宜的好工具 - Puppeteer</a></p>
+                            <p class="item-date"><time datetime="2020-02-29T16:00:00.000Z" itemprop="datePublished">2020-03-01</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 10px;">bootstrap</a> <a href="/tags/border/" style="font-size: 10px;">border</a> <a href="/tags/business/" style="font-size: 10px;">business</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.47px;">d3js</a> <a href="/tags/design/" style="font-size: 17.06px;">design</a> <a href="/tags/develop/" style="font-size: 11.18px;">develop</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.76px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.24px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jest/" style="font-size: 10.59px;">jest</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/modules/" style="font-size: 10px;">modules</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 11.18px;">promise</a> <a href="/tags/puppeteer/" style="font-size: 10px;">puppeteer</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.82px;">sass</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/test/" style="font-size: 11.18px;">test</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/vscode/" style="font-size: 10px;">vscode</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
