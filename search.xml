@@ -4,6 +4,95 @@
   
     
     <entry>
+      <title><![CDATA[JavaScript 表達式觀念及運用 - JS Expression]]></title>
+      <url>https://wcc723.github.io/development/2020/09/17/js-expression/</url>
+      <content type="html"><![CDATA[<p>JavaScript 分為兩大的語句類型，就像是我們日常語言中的動詞、名詞、連接詞等概念，但在 JS 中僅分為兩大類型，分別為「陳述式」及「表達式」，其中表達式更為重要，如果能夠熟練表達式更能解決許多開發上的問題，也更能活用各種語法。</p>
+<blockquote>
+<p>JavaScript 中的表達式原文為 「Expression」，翻譯上常見的有表達式、表示式、運算式等等。</p>
+</blockquote>
+<h2 id="表達式與陳述式的差異"><a href="#表達式與陳述式的差異" class="headerlink" title="表達式與陳述式的差異"></a>表達式與陳述式的差異</h2><p>表達式及陳述式在各文件上都有概略提到，但通常不會讓人覺得是重要的篇章，所以快速略過。不過在 JavaScript 的運用中，如果熟練「表達式」的觀念，將能增加許多運用的技巧且能避免許多不必要的錯誤。</p>
+<ul>
+<li>陳述式：會執行一些程式碼，可能是幾個單詞或是一個片段（但不會是單一個字母），但最大的特徵是<strong>不會回傳結果</strong>。</li>
+<li>表達式：最大的特徵在於<strong>會回傳結果</strong>。</li>
+</ul>
+<h3 id="陳述式-Statement"><a href="#陳述式-Statement" class="headerlink" title="陳述式 Statement"></a>陳述式 Statement</h3><p>陳述式有幾大分類，如：</p>
+<ul>
+<li>宣告（var、function）</li>
+<li>流程控制（block、if…else）</li>
+<li>迴圈（for、for…in）</li>
+<li>其它（import, export）</li>
+</ul>
+<p>完整分類可參考 <a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements">MDN</a></p>
+<p>陳述式可能是幾個單詞或是一個片段（但不會是單一個字母），其中也會混合到表達式的詞彙，所以當我們撰寫一段程式碼如下即可稱為陳述式（注意：是 <code>var a</code> ，而不是 <code>var</code> 也不是 <code>a</code>），用此語法即可宣告一個變數。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a;</span><br></pre></td></tr></table></figure>
+<p>相同的道理，如果我們僅有使用 <code>&#123;&#125;</code> 這個意思是「物件」，這不會是一個陳述式，必須在其中加入一些片段程式碼才會是陳述式，結構如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>陳述式先了解至此即可，我們先來看表達式。</p>
+<h3 id="表達式-Expression"><a href="#表達式-Expression" class="headerlink" title="表達式 Expression"></a>表達式 Expression</h3><p>表達式的特點就是會回傳一個結果，所以任何可<strong>回傳結果</strong>都可稱為表達式（這句話看起來就是一段廢話，但實際運作時卻常常讓人有錯誤的判斷）。常見如下：</p>
+<ul>
+<li>純值</li>
+<li>變數</li>
+<li>運算子</li>
+<li>執行函式</li>
+<li>正規表達式</li>
+<li>函式表達式</li>
+<li>…</li>
+</ul>
+<p>表達式的重點在於「回傳結果」，因此是否能夠<strong>回傳結果</strong>就能判斷該語句或詞是否為表達式，我們用數字 1 來解釋什麼是回傳結果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1</span><br></pre></td></tr></table></figure>
+<p>直接打開你的 Chrome 的開發者工具，將上面的數字 1 貼到開發者工具內後按下 Enter，你會看到兩個數字 1 分別如下顯示：</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_13_%E4%B8%8A%E5%8D%8811_19.png?alt=media&amp;token=5719c68e-6b42-4521-95d1-4daeb7687958" alt=""></p>
+<p>因此在這之中數字 <code>1</code> 就是表達式（是的，單一個純值就是表達式），接下來加入一些運算子增加這段程式的複雜度，使用兩個數字 1 來進行比對。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> === <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>接下來會得到 <code>true</code> 的結果，所以 <code>1 === 1</code> 是屬於表達式。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_13_%E4%B8%8A%E5%8D%8811_22.png?alt=media&amp;token=b5bd0ec0-44a8-44ce-abed-2e198a290dc6" alt=""></p>
+<p>相同的概念，如果定義了一個函式並運行它，那麼運行所回傳的結果也會稱為表達式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 函式陳述式宣告一個函式</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 呼叫函式</span></span><br><span class="line">fn();</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_13_%E4%B8%8A%E5%8D%8811_29.png?alt=media&amp;token=09aedf99-68ee-4bed-a100-6e6e4f373c1d" alt=""></p>
+<h3 id="容易搞混的地方"><a href="#容易搞混的地方" class="headerlink" title="容易搞混的地方"></a>容易搞混的地方</h3><p>“式” 這個字在中文通常表示為一段文字，所以我們常會誤解表達式、陳述式代表的是一個完整片段；而實際運作上陳述式大多是一個片段或詞彙沒錯，但表達式可以獨立出現，也可與陳述式混合使用。</p>
+<p>以下片段程式碼整體來說是屬於陳述式（運作上不會回傳結果），但其中會夾雜許多表達式的語句。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a) &#123;</span><br><span class="line">  fn(); <span class="comment">// 函式呼叫後會回傳結果，因此也屬於表達式</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>圖解案例：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_13_%E4%B8%8A%E5%8D%8811_34.png?alt=media&amp;token=5991b388-86cf-4eff-966d-f5db6940a474" alt=""></p>
+<p>當然，還有多個表達式混合的概念，如運算子本身就是由多個表達式組成，常見的「二元運算子」，就是由一個<strong>運算子</strong>加上前後的<strong>運算元</strong>所組成，而運算元也是屬於表達式的一種。關於運算子<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Operators">可參考</a>。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">運算元1 運算子 運算元2</span><br></pre></td></tr></table></figure>
+<p>範例如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> === <span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_13_%E4%B8%8A%E5%8D%8811_41.png?alt=media&amp;token=31b4c2c4-6297-4156-867d-dc99889c62ee" alt=""></p>
+<p>所以在此範例中，也可以將<strong>運算元</strong>替換成 “呼叫函式” 或 “任何的表達式”。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line">fn() === fn();</span><br></pre></td></tr></table></figure></p>
+<h2 id="哪邊可以看到表達式"><a href="#哪邊可以看到表達式" class="headerlink" title="哪邊可以看到表達式"></a>哪邊可以看到表達式</h2><p>相對於死板板的陳述式來說，表達式相當靈活且無所不在，當我們在查找文件中都可看到相對應的蹤影，在此先記得 “expression” 這個單字。</p>
+<p>記得：你可以將文件中的 expression 語句替換成任何喜歡的表達式來執行，但絕不能替換成陳述式（statement）。</p>
+<h4 id="案例：if-陳述式"><a href="#案例：if-陳述式" class="headerlink" title="案例：if 陳述式"></a>案例：if 陳述式</h4><p>文件：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else</a></p>
+<p>文件中說明 if 陳述式中的結構如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (condition)</span><br><span class="line">   statement1</span><br><span class="line">[else</span><br><span class="line">   statement2]</span><br></pre></td></tr></table></figure></p>
+<p>其中包含了 condition(條件式) 及 statement(陳述式) 這兩個語句，再往下可以看到針對這兩個語句的說明。</p>
+<blockquote>
+<p>condition: An <strong>expression</strong> that is considered to be either truthy or falsy.<br>判斷式：一個<strong>表達式</strong>，它的值會被判定為真值或假值。</p>
+</blockquote>
+<p>因此 if 後方的條件式可以使用任何的表達式進行替代，因此可以如下的方式替換（替換成呼叫函式、各種運算子都是沒有問題的）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="number">1</span> + <span class="number">1</span>) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;1 + 1 為真值&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>只要把握此原則就可以進行任何的替換，但絕對不能替換成陳述式，陳述式則會出現語法上的錯誤。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="keyword">var</span> a = <span class="number">1</span>) &#123;</span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD95BCC87-4451-46DB-B935-19E907924BA4.png?alt=media&amp;token=e448f56d-adbb-4234-9913-e7d223eb8c5e" alt=""></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>表達式在 JavaScript 是看似簡單的觀念，但了解以後可以更靈活運用許多語法，除此之外有許多的設計模式及觀念，也都是必須靈活運用表達式才可達成。</p>
+<p>本篇附上幾個題目，大家可試著猜看看該片段程式碼屬於 “陳述式” 或 “表達式” 喔</p>
+<p>題目 1：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> object;</span><br></pre></td></tr></table></figure></p>
+<p>題目 2：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">new</span> <span class="built_in">Object</span>(<span class="number">1</span>);</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[JavaScript 開發中常見錯誤解決辦法]]></title>
       <url>https://wcc723.github.io/development/2020/09/16/chrome-js-alert/</url>
       <content type="html"><![CDATA[<p>身為一個開發者，當然都會了解經驗越多，除錯上會更為容易，這種事情你我都清楚。但對於一個新手來就是缺少錯誤上的經驗，所以當遇到紅字時會不知如何著手。</p>
@@ -18553,62 +18642,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480" > </iframe>
-
-<a id="more"></a>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -18691,6 +18724,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480" > </iframe>
+
+<a id="more"></a>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
