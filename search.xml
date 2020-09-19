@@ -4,6 +4,94 @@
   
     
     <entry>
+      <title><![CDATA[開發過程總是沒問題，上線老是各種錯]]></title>
+      <url>https://wcc723.github.io/development/2020/09/19/js-expression-3/</url>
+      <content type="html"><![CDATA[<p>不果是新手或老手都可能遇過這樣的狀況，程式碼在測試時運作上看起來都很正常，雖然有一些些地方還不是很熟悉，不過<strong>打從心裡</strong>認定它是正確的，但麻煩卻上線後才發現出錯，仔細檢查也看不出任何問題，殊不知是表達式的觀念錯誤。</p>
+<p>程式碼的問題千萬種，本篇就持續在「表達式的觀念」挑出常見的問題，看看是否大家有遇到類似的狀況勒。</p>
+<h2 id="連續賦值這麼屌，為何文件都說這不好"><a href="#連續賦值這麼屌，為何文件都說這不好" class="headerlink" title="連續賦值這麼屌，為何文件都說這不好"></a>連續賦值這麼屌，為何文件都說這不好</h2><p>連續賦值（chain variable assignments）的結構如下：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = b = <span class="number">1</span>;</span><br></pre></td></tr></table></figure></p>
+<p>以上這段程式碼中最常見的問題為，<code>a</code> 的值是來自於？</p>
+<ol>
+<li>1 先賦予至 b，b 再將值賦予至 <code>a</code></li>
+<li>1 同時賦予至 <code>a</code> 與 <code>b</code> （賦予兩次）<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>以上兩者皆錯， 正確來說 1 的值來自於 <code>b = 1</code> 的回傳值，這時候你一定會想這什麼鬼，什麼叫做 <code>b = 1</code> 的回傳值，請再次回想表達式的特點「會回傳一個值」，<code>=</code> 屬於運算子的其中一種，它除了會賦予值以外也會同時回傳一個值。</li>
+</ol>
+<p>透過幾段程式碼來驗證這個觀念：</p>
+<h4 id="1-先賦予至-b，b-再將值賦予至-a"><a href="#1-先賦予至-b，b-再將值賦予至-a" class="headerlink" title="1 先賦予至 b，b 再將值賦予至 a"></a>1 先賦予至 b，b 再將值賦予至 <code>a</code></h4><p>這個邏輯的概念 b 會先取得 1 的值，並且 <strong>b 的值會轉為 1 再傳給 a</strong>，以下的範例程式碼用另一個邏輯呈現如下：</p>
+<ul>
+<li><strong>使 b 的值無法被賦予為 1</strong></li>
+<li>a 與 b 的值最終不相同</li>
+</ul>
+<p>範例中會使用到 <code>defineProperty</code> 的方法，並且調整 <code>writable</code> 的屬性讓值無法寫入，透過此方法 <code>b</code> 的值會被固定為 <code>2</code> 無法再被寫入。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Object</span>.defineProperty(<span class="built_in">window</span>, <span class="string">&#x27;b&#x27;</span>, &#123;</span><br><span class="line">  value: <span class="number">2</span>,</span><br><span class="line">  writable: <span class="literal">false</span></span><br><span class="line">&#125;);</span><br><span class="line">b = <span class="number">3</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;b&#x27;</span>, b); <span class="comment">// b 永遠為 2，無法再次被賦予值</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = b = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;a&#x27;</span>, a); <span class="comment">// 1</span></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;b&#x27;</span>, b); <span class="comment">// 2</span></span><br><span class="line"><span class="built_in">console</span>.log(a === b); <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<p>程式碼執行結果如下：</p>
+<ul>
+<li><code>b</code> 值始終為 2</li>
+<li><code>a</code> 值被賦予為 1</li>
+<li><code>a</code> 與 <code>b</code> 不相等</li>
+</ul>
+<p>所以結論，<code>a</code> 的值並不是來自於 <code>b</code>。</p>
+<h4 id="1-同時會賦予兩次"><a href="#1-同時會賦予兩次" class="headerlink" title="1 同時會賦予兩次"></a>1 同時會賦予兩次</h4><p>這個邏輯中 1 會將值賦予給 <code>a</code> 與 <code>b</code>，這個概念為<strong>數字 1 會被取值兩次</strong>，因此我們透過一個方法來記錄最右側的值被取得的次數。</p>
+<p>在此我們會使用到 <code>get</code> 的方法來進行紀錄，當變數每次被取值時，會記錄次數乙次。</p>
+<p>範例程式碼 1：驗證當每次被取值時 <code>num</code> 數值會增加 1，範例中被取值了兩次，因此結果為 2。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> objWithGetter = &#123;</span><br><span class="line">  num: <span class="number">0</span>,</span><br><span class="line">  <span class="keyword">get</span> <span class="title">variable</span>() &#123;</span><br><span class="line">    <span class="built_in">this</span>.num = <span class="built_in">this</span>.num + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;variable&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = objWithGetter.variable;</span><br><span class="line"><span class="keyword">var</span> b = objWithGetter.variable;</span><br><span class="line"><span class="built_in">console</span>.log(objWithGetter.num); <span class="comment">// 當變數被取得時， num 的值會增加 1，在此被取得兩次，所以結果為 2</span></span><br></pre></td></tr></table></figure></p>
+<p>範例程式碼 2：當連續賦值的時候，最終的結果也僅會有一次。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> objWithGetter = &#123;</span><br><span class="line">  num: <span class="number">0</span>,</span><br><span class="line">  <span class="keyword">get</span> <span class="title">variable</span>() &#123;</span><br><span class="line">    <span class="built_in">this</span>.num = <span class="built_in">this</span>.num + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;variable&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> a = b = objWithGetter.variable;</span><br><span class="line"><span class="built_in">console</span>.log(objWithGetter.num); <span class="comment">// 1</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F56E3F327-6DA0-49F6-8512-E0628F38B039.png?alt=media&amp;token=9b7e2cf8-eb14-46df-9861-634c65cb63f9" alt="實際連續賦值的運作"></p>
+<p>因此，在連續賦值的概念下中，兩個變數會被視為完全獨立的存在，在一些特殊情況時可能會有出乎意料的情況，就以 ESLint 的說明來說，最常見的即為在函式中使用連續賦值，導致<strong>其中轉為全域變數</strong>影響其它程式碼的運作。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = b = <span class="number">1</span>;</span><br><span class="line">&#125;)();</span><br><span class="line"><span class="built_in">console</span>.log(b); <span class="comment">// b 沒有被宣告，屬於全域屬性</span></span><br><span class="line"><span class="comment">// console.log(a); // 立即函式內的區域變數</span></span><br></pre></td></tr></table></figure>
+<p>ESLint 文件：<a href="https://eslint.org/docs/rules/no-multi-assign">https://eslint.org/docs/rules/no-multi-assign</a></p>
+<blockquote>
+<p>Chaining the assignment of variables can <strong>lead to unexpected results</strong> and be difficult to read.<br>連續賦值可能導致不可預期的結果，以及難以被閱讀</p>
+</blockquote>
+<p>Airbnb ESLint 文件：<a href="https://github.com/airbnb/javascript#variables--no-chain-assignment">https://github.com/airbnb/javascript#variables--no-chain-assignment</a></p>
+<blockquote>
+<p>Why? Chaining variable assignments <strong>creates implicit global variables</strong>.<br>為何不使用連續賦值？這會產生全域變數</p>
+</blockquote>
+<h2 id="不管輸入什麼，判斷式的結果總為-true"><a href="#不管輸入什麼，判斷式的結果總為-true" class="headerlink" title="不管輸入什麼，判斷式的結果總為 true"></a>不管輸入什麼，判斷式的結果總為 true</h2><p>請檢視以下程式碼，請問其中的 <code>console.log</code> 是否會執行呢？<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="literal">false</span>;</span><br><span class="line"><span class="keyword">if</span> (a = <span class="literal">true</span>) &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;請問此段是否會執行&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>.<br>.<br>.<br>.<br>.<br>.<br>.<br>答案：這段程式碼 “會” 執行。</p>
+<p>這段程式碼是新手常見的錯誤，就是將 <code>if</code> 中的判斷式寫成了 <code>=</code> 賦值，再來回顧一下 if 判斷式的結構。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (condition)</span><br><span class="line">   statement1</span><br><span class="line">[<span class="keyword">else</span></span><br><span class="line">   statement2]</span><br></pre></td></tr></table></figure>
+<p>其中的 <code>condition</code> 可以使用任何的表達式進行替代，而 <code>=</code> 不僅是 JS 中用來賦予值的語法，同時也是屬於運算子的其中一種，所以在此它<strong>不僅會賦予值，同時還會回傳一個結果</strong>，以此段程式碼來說，就發生了以下狀況：</p>
+<ul>
+<li><code>a</code> 的值與原始不同，在此被賦予成 <code>false</code></li>
+<li><code>=</code> 表達式會賦予值，同時會回傳一個值，在此總是會回傳 <code>true</code>（無論是否有成功賦予）</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F58B7B572-86B2-490D-BABC-186145A9B5A8.png?alt=media&amp;token=fe793296-afcc-4b4d-9455-74fcf5213ea7" alt="判斷結果為表達式的回傳"></p>
+<p>所以當下次的判斷式不如預期，除了檢查來源值以外，也要同時檢查其中的判斷式（表達式）結構是否符合預期喔。</p>
+<h2 id="1-還是-1-，兩個到底有什麼差"><a href="#1-還是-1-，兩個到底有什麼差" class="headerlink" title="++1 還是 1++，兩個到底有什麼差"></a>++1 還是 1++，兩個到底有什麼差</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(++num);</span><br><span class="line"><span class="built_in">console</span>.log(num++);</span><br><span class="line"><span class="built_in">console</span>.log(num);</span><br></pre></td></tr></table></figure>
+<p>請檢視以上程式碼，請問過程中的 num 的值分別為？</p>
+<ul>
+<li>1, 2, 3</li>
+<li>2, 2, 3</li>
+<li>2, 2, 2<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br><code>++</code> 是屬於一元運算子，所以前後只需要一個運算元即可運行，兩者的結果都會使變數值增加，但其中的過程卻大不同。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">運算元 運算子 num++</span><br><span class="line">運算子 運算元 ++1</span><br></pre></td></tr></table></figure>
+<h4 id="觀念"><a href="#觀念" class="headerlink" title="觀念"></a>觀念</h4><p>變數也是屬於表達式，因此會<strong>先回傳變數值</strong>後再進行運算。所以過程會先回傳原始值，最終再將 <code>num</code> 值增加 1。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">num++</span><br></pre></td></tr></table></figure></p>
+<p>運算子屬於表達式，因此 <code>++1</code> 會直接進行運算後回傳，因此會直接得到 2 的結果。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">++num</span><br><span class="line">&#96;&#96;&#96; </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">所以執行上還是回到了表達式的概念，如果熟悉回傳的時機點將會更容易看出以下題目的結果，請問 a 值為？</span><br><span class="line"></span><br><span class="line">- 1</span><br><span class="line">- 2</span><br><span class="line">&#96;&#96;&#96;js</span><br><span class="line">var b &#x3D; 1;</span><br><span class="line">var a &#x3D; b++;</span><br><span class="line">console.log(a);</span><br></pre></td></tr></table></figure></p>
+<p>回到初始的題目我們可以給予以下結論：</p>
+<ul>
+<li>無論是哪一種結果是不變的</li>
+<li>但過程會有很大的差異，如果過程中需要賦予值到其它變數，則會影響其它變數所接收的值。</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> num = <span class="number">1</span>;</span><br><span class="line"><span class="built_in">console</span>.log(++num); <span class="comment">// 回傳先 ++ 後的結果</span></span><br><span class="line"><span class="built_in">console</span>.log(num++); <span class="comment">// 先回傳 num，再進行 ++</span></span><br><span class="line"><span class="built_in">console</span>.log(num);</span><br></pre></td></tr></table></figure>
+<h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>JS 的知識分為應用及基礎兩大區塊，好的應用知識能夠增加開發效率，基礎知識則是能夠增加除錯的能量，兩者在實戰中缺一不可。再快的速度遇到錯誤無法排除，也是會耗去大量時間找問題；只有基礎知識缺乏應用技巧，技能也淪為紙上功夫。最好還是相輔相成，以對等的知識量進行成長，能夠獲得最有效的開發能力。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[JavaScript 利用表達式優化你的程式碼]]></title>
       <url>https://wcc723.github.io/development/2020/09/18/js-expression-2/</url>
       <content type="html"><![CDATA[<p>上一節介紹了表達式的基本概念「回傳結果」，那麼接下來你一定會想了解有哪些地方可以用到表達式，本篇就列出 JS 語法與常見框架的表達式運用，熟悉以後將會大幅增加 JS 語法的變化性。</p>
