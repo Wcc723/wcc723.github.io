@@ -4,6 +4,72 @@
   
     
     <entry>
+      <title><![CDATA[JS 加不加分號差在哪？]]></title>
+      <url>https://wcc723.github.io/development/2020/09/20/js-semi/</url>
+      <content type="html"><![CDATA[<p>這個議題許多論壇、文件都有討論，在 ESlint 的規範中也可從加不加分號區分為兩大派系，至於加不加分號關鍵點則需要了解分號對於 JavaScript 的影響，開始之前可以先看看以下題目。</p>
+<p>下方程式碼的運行預期為：</p>
+<ol>
+<li>宣告 <code>a</code> 的值為 1</li>
+<li>執行立即函式</li>
+<li>於 console 中呈現 2</li>
+</ol>
+<p>請問這段程式碼運行是否正確？<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure></p>
+<p>.<br>.<br>.<br>.<br>如果你嘗試運行這段程式碼，則會出現此錯誤：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Uncaught TypeError: 1 is not a function</span><br></pre></td></tr></table></figure></p>
+<p>什麼？ <code>1 is not a function</code> ？我們沒有打算運行數字 1，為何要說數字 1 不是函式，這種錯誤很難查找到原因，常常會在錯誤的行數上打轉。這個錯誤主要原因是上述程式碼運行時被視為同一行，概念如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">/* */</span> &#125;)()</span><br></pre></td></tr></table></figure>
+<p>因此立即函式的 <code>()</code> 附加在 1 上，這是一個呼叫函式的語法，所以會造成 <code>1 is not a function</code> 的錯誤，如果要避免此錯誤就需要使用分號將其隔開：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span> <span class="comment">// 用分號隔開就對了</span></span><br><span class="line">;(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="number">2</span>)</span><br><span class="line">&#125;)()</span><br></pre></td></tr></table></figure>
+<h2 id="ASI-自動加入分號"><a href="#ASI-自動加入分號" class="headerlink" title="ASI 自動加入分號"></a>ASI 自動加入分號</h2><p>ASI 是 「Automatic Semicolon Insertion」的縮寫，部分的斷行程式碼運行時會<strong>自動插入分號</strong>，這個機制可以部分程式碼如果沒有加入分號也能正確運行，如以下範例：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="number">1</span></span><br><span class="line">++b</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;b&#x27;</span>, b)</span><br></pre></td></tr></table></figure>
+<p>此範例中，由於 <code>++</code> 是屬於一元表達式，它在僅能在表達式的左方<strong>或</strong>右方置入運算元，如果沒有 ASI 的機制程式碼會轉為「<code>var b = 1 ++ b</code>」 的錯誤結構。不過好在有 ASI，實際運行時他會被加入分號如下，也就不會出現如上的錯誤。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> b = <span class="number">1</span>;</span><br><span class="line">++b;</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">&#x27;b&#x27;</span>, b); <span class="comment">// 2</span></span><br></pre></td></tr></table></figure>
+<h3 id="return-與分號的關係"><a href="#return-與分號的關係" class="headerlink" title="return 與分號的關係"></a>return 與分號的關係</h3><p>再來看一個有感的片段，以下程式碼中在 return 的後方空一行後再回傳值，請問運行結果是什麼呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> </span><br><span class="line">  <span class="string">&#x27;小明&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(fn())</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>這段程式碼因為 ASI 的修正，return 後方會被加上一個分號，也因為如此 return 與預期回傳的值被分了開來，所以 return 的內容為空值，最終函式也僅能接收到 <code>undefined</code> 的結果。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span>;</span><br><span class="line">  <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log(fn()); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure>
+<h2 id="所以，分號到底要怎麼處理呢？"><a href="#所以，分號到底要怎麼處理呢？" class="headerlink" title="所以，分號到底要怎麼處理呢？"></a>所以，分號到底要怎麼處理呢？</h2><p>ASI 是出自於善意，用來修正沒有加入分號的片段程式碼，但偏偏有些地方沒有發揮其用途（如本篇一開始所介紹到的立即函式），導致程式碼出現了錯誤；甚至有些程式碼不會出錯，但會讓你的程式碼運行結果不如預期。</p>
+<p>要解決 ASI 的問題，解決方式如下：</p>
+<ul>
+<li>無論如何都加入分號，自行決定程式碼的分段</li>
+<li>謹記「不會」自動加入分號的規則，當不會自動插入分號時則手動加入</li>
+</ul>
+<h3 id="不會自動加入分號的規則"><a href="#不會自動加入分號的規則" class="headerlink" title="不會自動加入分號的規則"></a><strong>不會</strong>自動加入分號的規則</h3><p>以下整理各種「不會」自動加入分號的規則：</p>
+<ol>
+<li>新的一行是 <code>(</code>、<code>[</code>、<code>/</code> 開始，這類型通常會直接出現「Uncaught TypeError」導致程式碼無法運行（其後方的程式碼也會無法運作）。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var a &#x3D; 1</span><br><span class="line">var b &#x3D; a</span><br><span class="line">(a + b).toString()</span><br><span class="line"></span><br><span class="line">var a &#x3D; 1</span><br><span class="line">[1,2,3].forEach(bar)</span><br><span class="line"> </span><br><span class="line">(function() &#123; &#125;)()</span><br><span class="line">(function() &#123; &#125;)()</span><br><span class="line"> </span><br><span class="line">var a &#x3D; 1</span><br><span class="line">var b &#x3D; a</span><br><span class="line">&#x2F;test&#x2F;.test(b)</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>新的一行以 <code>+</code>、<code>-</code>、<code>*</code>、<code>%</code> 作開始，這類型大多會影響運算結果，建議合併為一行撰寫（<code>+</code> 與 <code>++</code> 結果是不同的）。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var a &#x3D; 2</span><br><span class="line">var b &#x3D; a</span><br><span class="line">+a</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>新的一行以 <code>,</code>、<code>.</code> 作開始，這類型在實戰中很常會運用，主要是避免程式碼過長所加入的分段，並不會影響運行，多加善用可使程式碼更易於閱讀。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var a &#x3D; 2</span><br><span class="line">var b &#x3D; a</span><br><span class="line">  .toString()</span><br><span class="line">console.log(typeof b)</span><br><span class="line"> </span><br><span class="line">var a &#x3D; 1</span><br><span class="line">,b &#x3D; 2 &#x2F;&#x2F; b 一樣會 var 被宣告</span><br></pre></td></tr></table></figure>
+<p>因此，遇到以上的標點符號前方加入分號也是解決辦法</p>
+<p>如果需要加入分號的狀況，除了在語句的末端加入分號外，也可將分號改在「不會自動加入分號」的最前方，如 <code>()</code> 本身不會自動加入分號，當有此需求時可以將 <code>;</code> 加入至前方（<a href="https://standardjs.com/rules-zhtw.html#%E5%88%86%E8%99%9F">ESLint Standard JS</a> 規範就選擇此方法避免錯誤）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 執行錯誤</span><br><span class="line">(function() &#123; &#125;)()</span><br><span class="line">(function() &#123; &#125;)()</span><br><span class="line"> </span><br><span class="line">&#x2F;&#x2F; 正確</span><br><span class="line">;(function() &#123; &#125;)()</span><br><span class="line">;(function() &#123; &#125;)()</span><br></pre></td></tr></table></figure></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>不加入分號可以讓程式碼看起來更乾淨、精簡（對於習慣加入分號的開發者不這麼認為就是了），且在大部分正確的分段下並不會出現錯誤，僅有少部分的語句會出現執行上的錯誤（很少，大多都可避免），因此許多開發者也會選擇不加入分號，而我過去也是屬於這類型規範的愛好者。</p>
+<p>不過在教學上，我會更傾向選擇嚴格的規範提供範例給學員，所以近幾年開發都轉為選用加入分號的規則。至於選擇何種，只要清楚運行上的限制，只要團隊允許都是好的方法。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[開發總是沒問題，上線老是各種錯]]></title>
       <url>https://wcc723.github.io/development/2020/09/19/js-expression-3/</url>
       <content type="html"><![CDATA[<p>不果是新手或老手都可能遇過這樣的狀況，程式碼在測試時運作上看起來都很正常，雖然有一些些地方還不是很熟悉，不過<strong>打從心裡</strong>認定它是正確的，但麻煩卻上線後才發現出錯，仔細檢查也看不出任何問題，殊不知是表達式的觀念錯誤。</p>
