@@ -4,6 +4,439 @@
   
     
     <entry>
+      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
+      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
+      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
+<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
+<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
+<blockquote>
+<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> globalVariable = <span class="string">&#x27;全域變數&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  aFunction: <span class="function"><span class="keyword">function</span> (<span class="params">para</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> localVariables = <span class="string">&#x27;區域變數&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(para, localVariables, <span class="built_in">arguments</span>, <span class="built_in">this</span>, globalVariable);</span><br><span class="line">    <span class="comment">// 包含傳入的參數</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.aFunction(<span class="string">&#x27;一段描述&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
+<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
+<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
+<ul>
+<li><strong>para</strong>: 呼叫時傳入的參數。</li>
+<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
+<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
+<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
+<li>Global: 全域變數</li>
+</ul>
+<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
+<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
+<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
+<ol>
+<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
+<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(d, c, b, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
+<p>簡單的結論：</p>
+<ul>
+<li>參數名稱不會受到呼叫名稱影響</li>
+<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
+<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
+</ul>
+<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
+<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
+<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMoney</span>(<span class="params">money = <span class="number">1000</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`我有 <span class="subst">$&#123; money &#125;</span>`</span>); <span class="comment">// 我有 1000</span></span><br><span class="line">&#125;</span><br><span class="line">getMoney(); <span class="comment">// 不需要傳入參數</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
+<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
+<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
+<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
+<ul>
+<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
+<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
+</ul>
+<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callMore = <span class="function">(<span class="params">a, ...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
+<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
+<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
+<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionB</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">functionB(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可以試著看看其中的參數是如何傳遞的</p>
+</blockquote>
+<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班]]></title>
+      <url>https://wcc723.github.io/development/2020/09/22/javascript-training-1st/</url>
+      <content type="html"><![CDATA[<p>2020 年 9 月 20 日是 「JavaScript 作品實戰直播班」開班滿三個月的時間，也同時是本最後一天的繳交期限，同學們在家中努力趕工最終作品，而我在電腦前準備這份心得。</p>
+<p>昨天，還收到學員的感謝訊息，提到透過這次的直播班的作品以及履歷健檢服務順利找到工作，我也訝異有同學這麼早就能順利求職，畢竟直播班還未正式結束，許多同學還在家中趕作業啊～</p>
+<p>這次的直播班經歷不少波折，洧杰提到：「第一次上線的教學特別重要，會影響未來的成效」，過程中也是盡可能優化內容，當然也很開心招收到大量的優秀學生，讓我第一次經營直播班就達到超過 63% 的完課率。</p>
+<h2 id="數據分享：作業繳交率達到-63"><a href="#數據分享：作業繳交率達到-63" class="headerlink" title="數據分享：作業繳交率達到 63%"></a>數據分享：作業繳交率達到 63%</h2><p>在課程開始前定下本課程的重要指標：</p>
+<ul>
+<li>整體課程的作業繳交率</li>
+<li>最終作業的完成率<br>尤其是最終作業的完成率是更為重要的，是除了技術以外真正能夠讓學員感受到價值的項目，更是未來直播班招生時的主要指標；就以 「Vue 出一個電商」的課程來說，平均每個學員需要花一個月左右的時間完成作品，加上來會的溝通討論，則需要多花上二至三週的時間，直播班需經歷兩個月的主線外加只有一個月的實作時間，預期最終的達成率將會受到很大的挑戰。</li>
+</ul>
+<p>雖然這個課程中經歷了幾番波折，但最終還是有達到自己滿意的成果，以一般的線上課程完課率低下的環境，轉型為直播班的整體完課率依然有超過 63%。</p>
+<p>課程連結：<a href="https://www.hexschool.com/courses/js-training-1st.html">JavaScript 作品實戰直播班</a><br>課程時間：2020/6/19 ~ 8/7<br>作業繳交期限：9/19 （三個月）</p>
+<ul>
+<li>完成報到人數 234 人</li>
+<li>整體作業繳交份數 1185 份（共八週）</li>
+<li>整體作業繳交率 63.3%</li>
+<li>整體課程報到 1303 次（共八週）</li>
+<li>整體報到率 69%</li>
+<li>繳交份數最高的一週：第二週 課程 API 串接 - 206 份（88.03%）</li>
+<li>最終作業繳交份數 76 份</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F0C85AF02-EA53-4A66-9D8B-7BBB07B51A02.png?alt=media&amp;token=9bfda818-66fe-4a25-95ff-adf8aad2dc16" alt=""></p>
+<h2 id="站在六角的基礎上，推出更完善的直播課程"><a href="#站在六角的基礎上，推出更完善的直播課程" class="headerlink" title="站在六角的基礎上，推出更完善的直播課程"></a>站在六角的基礎上，推出更完善的直播課程</h2><p>推出「JavaScript 作品實戰班」（以下簡稱：JS 班）之前，我們的洧杰老師在這之前已經運行過一個完整直播課程：「網頁切版直播班」（以下簡稱切版班）。</p>
+<p>洧杰在運行切版班之前，已經有經營過實體教學、線上教學，切版班開始之前也請教許多教育前輩（<a href="https://medium.com/@gonsakon/%E6%88%91%E9%9D%A0%E9%81%8A%E6%88%B2%E5%8C%96%E8%A8%AD%E8%A8%88-%E6%89%93%E9%80%A0%E5%85%A8%E5%8F%B0%E6%9C%80%E5%BC%B7%E7%B7%9A%E4%B8%8A%E5%AE%8C%E8%AA%B2%E7%8E%87-cacbb2b2362f">可參考本文</a>），讓切版班在第一次運行就得到好的成績。</p>
+<p>因此在 JS 班開始前，我也就以助教身份開始從切版班學習該如何規劃一個完整的線上直播課程。所以從課程文件、課程規劃、活動內容、體驗流程許多部分都是以切版班進行優化改進而來。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F474BDDAB-27FE-4A80-A5A3-B2E8198AD23B.png?alt=media&amp;token=1bda47b8-0d92-4b41-91fe-8d6acede5fc8" alt="如出一轍的教學文件，內容大多改進自切版班後進行優化。"></p>
+<p>除此之外，為了讓課程的內容及課綱更符合直播班的步調，於課前幾個月就反覆重新規劃了整體課綱，並於 <strong>“火箭隊培訓營”</strong> 進行試教，透過試教的回饋再次進行課綱調整，每門課程從初版至正式課程至少經歷過三次的調整。</p>
+<p>其中較大的改變：在影音課程中的 “觀念” 介紹大多都是透過優美的簡報進行展示，講師依據簡報的內容進行說明。不過在實際的直播授課過程中，簡報教學相對枯燥，主要原因是簡報內容算是單方面的知識傳授，就算內容再豐富也會缺少互動。</p>
+<p>所以 JS 班就捨棄了大部分簡報內容（前幾週做的直接放棄），改為直接在螢幕上進行手繪，透過手繪並解說的方式，學員們可以在繪圖的過程中發問，並且隨時依據反饋調整說明方式，讓教學的內容更不枯燥（而且就實驗上來說，簡報的吸收也不如手繪）。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4389B43E-A46C-4E45-8DC1-C7C0C91571E9.png?alt=media&amp;token=d00fef39-e090-4dfb-86ad-6d719beab5b6" alt="課前須將教學內容轉為圖像化，並且使解說與圖片解說流程一致，確保學員可透過手繪理解觀念。"></p>
+<p>學員心得：</p>
+<ul>
+<li>冠逸：老師會用比較淺顯易懂的方式讓我們了解觀念，之前自己有去讀過 Vue.js 的文件，其實有些地方真的很生硬，都要來回看過好幾次才能了解。</li>
+</ul>
+<h2 id="一個直播班，到底包含多少內容"><a href="#一個直播班，到底包含多少內容" class="headerlink" title="一個直播班，到底包含多少內容"></a>一個直播班，到底包含多少內容</h2><p>直播班<strong>對於學員來說是長達一季時間的修煉場，更是講師的精神時光屋</strong>。</p>
+<p>直播班一開始所鎖定的學員是「六角學員（上過 JS 學徒試煉）」及「具備 JavaScript 基礎能力」的開發者，因此在開始時會提供一個簡單的<a href="https://forms.gle/wjicHZ3v2QQjAauz7">問卷</a>，確認學員是否具有基本的開發能力（也因為這個問卷，讓許多新手怯步，讓招收學生的速度較為緩慢）。</p>
+<p>相對於傳統的實體課程來說，除了一開始的購買訊息及課前通知以外，較少會與學員們會有深度的互動，由於 JS 相對於基礎課程來說，如果沒有先掌握學員的整體能力，可能上課上到一半時會有許多學員登出的狀況（聽不懂就直接下線），長達八週的課程內容更是一大挑戰，對於完課率將會有很大得衝擊。因此，在註冊後的隔天我們就會開始進行第一次的接觸「引導學員們加入 Slack 頻道」。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4C3E9854-349C-4859-A7E7-B0776DD83A05.png?alt=media&amp;token=f99f3295-029b-46fd-bd16-e1cb7743d289" alt=""></p>
+<p>接下來會希望同學們進行基本的自我介紹，透過自我介紹後也會了解每個學員的基本能力。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FXZIomIoif1UGtqITlqaAU4Dd38Uw1DRikmkbGuJMDfUGIVocf61AauBgXfuqai4KKZamcMMg3uOXayylqsHbtaSmDkWNJ1rGpZL5rVx5e3CI0oAYRywbVHUzVh0m42Nl.png?alt=media&amp;token=7acef041-3eef-4a2f-9aa5-7fe3e0c4a4cc" alt=""></p>
+<p>完成了報到以後，學員將會陸續開啟以下的服務：</p>
+<ul>
+<li>每日任務</li>
+<li>新手任務</li>
+<li>分組活動</li>
+<li>Slack 討論服務</li>
+<li>作業批改服務</li>
+<li>線上發表會</li>
+<li>作品牆</li>
+<li>履歷健檢</li>
+</ul>
+<p>除此之外還有包含課程應有的內容：</p>
+<ul>
+<li>主線任務</li>
+<li>額外的主線加碼</li>
+<li>課程 API</li>
+<li>設計觀念課程</li>
+<li>額外課前內容</li>
+</ul>
+<p>這些內容大部分都是在一開始就已經規劃到課程內，但也有部分是在課程的進行中依據學員的回饋，或是觀察課程內的數據變化進行調整才加入進去。這同時是直播課程的優勢，可獲得回饋的方式同時結合了實體課程、線上影音課程以及直播課程獨有的方式在收取回饋，因此也能更靈活調整課程內容。</p>
+<p>學員心得：</p>
+<ul>
+<li>JIN：我個人覺得自學一年都未必能夠達到直播班8週的技術水平</li>
+</ul>
+<h4 id="每日任務"><a href="#每日任務" class="headerlink" title="每日任務"></a>每日任務</h4><p>課前的兩週時間我們提前停止了 JavaScript 直播班的招生，比預期減少了數十位名額，主要原因也是為了提前提升所有學員的 JS 能力，並且不希望學員是在開課後才發現這門課程並不是自己所預期。所以開始舉辦每日任務的活動，此活動的主旨如下：</p>
+<ul>
+<li>提前認識這門課程的講師與助教，課前建立弱連結</li>
+<li>每天只需要花 5 ~ 10 分鐘可以練習一個觀念</li>
+<li>了解整體學員的技術水平</li>
+<li>提供片段的提示，讓學員們自行尋找答案</li>
+</ul>
+<p>活動每天會在 Slack 上公告，並且透過 HackMD 提交答案，同學們除了撰寫自己的回覆外，也可以看看同學們怎麼做。當然，大家都是抱著學習心來上這門課程，所以也不需要擔心同學們互相抄襲（就算抄襲也沒關係，至少也認識了不同的寫法）。</p>
+<p>題目範例：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F8849BD9E-47DF-452E-8165-59BB30D70A31.png?alt=media&amp;token=6735efab-185c-44a9-a82e-be8e49502ecb" alt=""></p>
+<p>每日任務開始一週以後，除了慢慢提升問題的難度，以及透過各種私訊發現了一些問題：</p>
+<ul>
+<li>部分學員想等到課程開始，再完成報到手續</li>
+<li>部分學員加入了 Slack，但沒有開啟此服務</li>
+<li>有三分之一的學員覺得每日任務太難</li>
+</ul>
+<p>前兩個問題就透過各種方式與學員們聯絡，包含 Email、電話、LINE 的方式提醒學員們可以加入此活動；部分學員覺得太困難的情況，我們則另外開立了「新手組」來進行不同的訓練。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD5096489-23A1-437D-9F6D-D8E5E06FE55D.png?alt=media&amp;token=ddf2c92b-e244-4ee8-8dc8-680bc47a79ba" alt=""></p>
+<p>學員心得：</p>
+<ul>
+<li>Johlmike：<strong>「習慣養成的關鍵不在於執行時間長短、而是執行頻率」</strong>，每天持續地執行才是養成習慣的關鍵，而六角學院確實地幫了我這一把。</li>
+<li>JIN：讓我印象最深刻的是初期的JS任務，那時還沒有教到箭頭函式，然後我寫了15行的code才完成所需的功能。後來聽老師說有人只用了一行就完成，好勝心強的我就覺得別人做得到的話我一定也可以，所以就開始詢問老師這是怎麼做到的，老師當下給了我一些關鍵字(例如: arrow function)，然後我就開始查找跟練習，最後將代碼精簡到只剩下4行，完成的當下真的覺得超有成就感。</li>
+<li>Yukun：尤其是 Vue 的 emit 和 props 上完課後，搭配每日任務又更加深我的印象，比以前自己看影片時還來的知道如何使用他們。</li>
+<li>Chloe：開始上課前，老師提供很多預習的教材，還有每日任務，新手任務，真的天天都有在進步。</li>
+</ul>
+<h4 id="新手任務"><a href="#新手任務" class="headerlink" title="新手任務"></a>新手任務</h4><p>新手組的訓練與每日任務不同，每日任務會著重在不同的 JS 知識學習，每一個或許不會花太多時間，但沒有一定基礎會覺得難以理解，如：表達式、ES6 語法、callback function 等等；新手任務則是著重在基礎的語法反覆練習，不求複雜，只要求用現有的知識完成小作品。</p>
+<p>新手組是獨立的組別並且有獨立的 Slack 頻道，任何學員都可自願加入此組別，我會在此公佈新的題目以及適當的鼓勵，讓同學們有意願並相信自己能夠完成實戰班的挑戰。在本直播班中有 69 名學員加入了新手組，並且最早完成最終作業挑戰的亦是新手組的同學。</p>
+<p>新手組題目共有五題連續觀念題，除了文字題目以外，並另有提供影片說明該題目的解題重點以及起手式的原始碼，讓學員們可以透過基礎的語法完成不同的題組。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FE8DE79BF-2C3F-4AD4-A4B6-1EB8F69CE653.png?alt=media&amp;token=213ef7c8-f069-448f-aca1-c2599f557f49" alt="新手任務引導影片"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_27_%E4%B8%8B%E5%8D%882_57.png?alt=media&amp;token=4e3b1f14-7087-4651-abdc-113920cfc647" alt="學員們的繳交以及助教回饋"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F36A9DC89-CEEE-46AB-8D8E-6499E3D9CE71.png?alt=media&amp;token=3b0882d3-2981-4321-a01f-d9f70c0148f0" alt="課程後期對於新手組的鼓勵"></p>
+<h4 id="分組活動"><a href="#分組活動" class="headerlink" title="分組活動"></a>分組活動</h4><p>分組活動延續自「網頁切版直播班」，會將學員依據職能特性區分成不同組別，組別拆分如下：</p>
+<ul>
+<li>全職鬥士 - 全職學習者</li>
+<li>轉職忍者 - 目標是轉職的開發者</li>
+<li>斜槓鍊金 - 已經有其它技能，想額外專研前端技能者</li>
+<li>設計魔劍 - 本身是設計師，想額外掌握前端技能者</li>
+<li>軟工盾坦 - 本身已經是工程師，想專精前端技能者</li>
+<li>學生劍士 - 還是學生</li>
+</ul>
+<p>分組活動的目的是為了：</p>
+<ul>
+<li>發揮同儕的壓力，增加學習的動力</li>
+<li>學習主線以外的技能：如 git、gh-pages</li>
+<li>與同組的學員們打好關係：透過活動增加互動性，讓接下來有議題時也勇於討論。</li>
+</ul>
+<p>在分組後也陸續帶上一些活動，讓學員們開始熟悉彼此，以每日任務來說就是以團隊為單位統一繳交，因為同學們背景接近，所以繳交的程度差異不會過大（前期可以避免學員有過大的壓力）。課程開始後會維持一週一個團隊任務的方式產生交流，任務內容就以主線外知識為主，偶爾會參雜交流性質的活動，如：「分享自己常用的筆記工具」。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F9414FBCD-800A-41F5-AEFF-29C75A06090B.png?alt=media&amp;token=15338022-b430-4128-a5a7-6c052c81dece" alt=""></p>
+<p>額外透露，完課率的高低與組別有很大的關係，整體看起來會是「有求職意願」的組別效益最好，如果是跨領域學習或是本身沒有相關背景投入會較為困難，會有這樣的結果也是不難理解，因為本課程是以求職為導向，並且是較為專精的課程，自然會有就業需求及前端知識者才有動力達成。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F0C85AF02-EA53-4A66-9D8B-7BBB07B51A02.png?alt=media&amp;token=9bfda818-66fe-4a25-95ff-adf8aad2dc16" alt=""></p>
+<p>學員心得：</p>
+<ul>
+<li>Hung Jason：最大的優勢在於不像一般的網路課程，是一個人學習，有非常多的人和你一起同時在學，也會有組員可以彼此詢問；也不像實體課程，若這週進度跟不上可能會後面都不會了，在這若有跟不上的，可隨時詢問，老師、助教都會在第一時間處理你的問題，這是實體課程所所沒有的。</li>
+<li>Jerry Huang：別忘記你的隊友們，前面除了選職業，再來就是分組了，你的組員們會是你最好討論的朋友，藉由這八週的課程也讓我認識了不少人，至少會讓我覺得我不是孤單一個人，之於你 RPG 遊戲要打 BOSS 需要組隊一樣。</li>
+<li>Ruta：在這邊也很感謝轉職忍者 2 組的同學們，不僅每週的小組討論很歡樂，在頻道上也常常互相解惑 &amp; 哭笑表符吶喊，更要大大感謝 Wendy 不厭其煩地幫忙。在學習的路上，有懂你辛苦的人跟你一起前進，感覺真的很好 : )</li>
+</ul>
+<h4 id="Slack-討論"><a href="#Slack-討論" class="headerlink" title="Slack 討論"></a>Slack 討論</h4><p>就問卷上的收集來說，這是滿意度最高的服務，學習的過程中有任何問題直接敲助教 / 講師，通常來說都會在一小時左右的時間獲得回覆（如果是晚上十點以後則會在隔天獲得回覆），從小到大都不一定有這麼好的學習服務啊…。</p>
+<p>Slack 討論主要分為兩大面向，一則是<strong>團體</strong>方面的討論，進入本直播班完成報到手續以後，就會加入「js作品實戰班-2020夏季」的頻道，學員們可以在這個頻道發問，教學團隊也會透過此頻道說明課程的內容即將主辦的活動；除了主頻道以外，另外每個小組也會有屬於該組的分組頻道，該頻道講師 / 助教就不會介入，同學們可以自行討論相關的議題。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_27_%E4%B8%8B%E5%8D%884_10.png?alt=media&amp;token=07c114de-828a-4d63-939c-cad80aec7f44" alt="於公開頻道發問的討論：Slack 好處是可以開 thread，讓同一個問題不會造成版面的混亂。"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_27_%E4%B8%8B%E5%8D%884_15.png?alt=media&amp;token=e4b9071f-2880-44db-b9c5-73fe47d14c4c" alt="直播班的精神：除了講師以外，還有許多同學們都是你的老師，大家都會互相回答問題。"></p>
+<p>另外還有<strong>私訊</strong>的服務，如果在學習的過程中有遇到任何的問題，都可以透過私訊的服務直接詢問講師 / 助教。當然也會有些學員會另外提出實戰中或是設計上的問題，只要問題能夠清楚描述，我們都會盡全力的回覆學員問題。當然，對於講師 / 助教們來說，除了回覆問題以外，更開心的是能收到來自學員們的鼓勵。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_27_%E4%B8%8B%E5%8D%884_20.png?alt=media&amp;token=aac14fb2-1eba-4e43-a3ec-bfc44557bf3d" alt=""><br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F62CC29BD-D8E8-4509-A9A2-693841FE3633.png?alt=media&amp;token=abcffb08-517d-4c9b-8d7d-fa97643cbf47" alt="課外實戰問題照樣回覆"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_27_%E4%B8%8B%E5%8D%884_13.png?alt=media&amp;token=49576fa3-153c-4b49-a8d8-56356fd93d7f" alt=""></p>
+<blockquote>
+<p>學員的鼓勵</p>
+</blockquote>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_27_%E4%B8%8B%E5%8D%883_48.png?alt=media&amp;token=f5d0f024-d8c0-4b01-b571-dcf01f8d8c8f" alt=""></p>
+<blockquote>
+<p>完成最終作業的心得</p>
+</blockquote>
+<p>學員心得：</p>
+<ul>
+<li>Chen：直播班比線上課程互動更好，而且有問題就能馬上獲得回覆，每週的作業任務也讓我慢慢進步。也很喜歡直播班的上課氣氛，真的很歡樂~</li>
+<li>Kuohua：直播的互動我也很喜歡，一直以為上課只是靜靜的聽老師所教的內容，然而直播的方式卻很有互動性，學員可以透過聊天群互動與回答問題，老師上到一半也會停下來看學員所提出的問題，比起自己看影片反而直播更有學習的動力。</li>
+<li>Yukun：Slack 可以看到大家都在努力，說不定會覺得自己不能那麼廢而上進XD，另外也把問題丟到上面，助教回覆的都蠻快的，但我覺得六角學院不管哪裡回答問題都蠻快的XD</li>
+<li>Siling：在這裡問老師、助教們不用擔心被白眼，有時思緒卡住，或是Google一小時了還是沒答案時，有人可以問，真的是非常感動的一件事 QQ</li>
+<li>JIN：老師也希望我們每天能夠給1~3個人的作業回饋，透過你自己的分享或是其他學員的分享，分享的人能夠將內容內化，而被分享的人能夠學習到新的知識。</li>
+</ul>
+<h4 id="作業批改服務"><a href="#作業批改服務" class="headerlink" title="作業批改服務"></a>作業批改服務</h4><p>六角最令人稱羨的不外乎是作業批改服務，在直播班的期間每天都有大量的作業需要批改，六日過後更是會有報復性的繳交。除了講師及六角本身就有的兩名固定助教外，我們也另外招募遠端助教來批改學員的作業。</p>
+<p>作業是正常上班日才有批改，平均每位助教每日需批改 3 ~ 5 份的作業，確保除了假日以外學員可以在兩天內收到作業的回覆。</p>
+<p>作業設計上是具有連貫性的，每週會有一個主題需要製作，從第二週至第八週結束最終可以完成完整的前端作品。每一週的難度也有不同的設計，從 Lv1 至 Lv3 不等，課程介紹的內容可以完成 Lv1 ~ Lv2，Lv3 則需要參考更多的資料才能完成。雖然如此，許多學員也會試著挑戰 Lv3 來充實自我。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_8_27_%E4%B8%8B%E5%8D%885_53.png?alt=media&amp;token=c8cd464f-1bf0-447d-827d-90000ec12a0c" alt=""></p>
+<p>學員回饋：</p>
+<ul>
+<li>Johlmike：我很喜歡做作業，但<strong>我更喜歡看別人的作業</strong>，破百位同學所繳交的作業根本是靈感庫，面試成品當然不能也不建議抄同學的，不過在參考同學們作業的排版、文案後，總是能激發右腦貧乏的我不少靈感，甚至有些業界同學們的程式碼更是值得學習</li>
+<li>Vic：感謝六角學院的卡斯伯老師授課與助教每周的作業批改，看到那第八周長到不行的建議回覆，就能知道直播班對於每個學員，都希望寫出具有一定水準的作品。</li>
+<li>Aiden：因為有問題就上 slack 發問，老師、助教、同學們一定給你問到會為止。甚至可以參考其他同學教的作業，助教的範例檔，不怕你抄，就怕你連抄都不想抄。只要能把別人寫的東西看懂，融會貫通，那就抄的有價值。</li>
+</ul>
+<h4 id="最終作業的批改"><a href="#最終作業的批改" class="headerlink" title="最終作業的批改"></a>最終作業的批改</h4><p>每週的作業會交由不同的助教批改，批改會著重於程式碼的觀念及邏輯，但到了最終作業時除了原有的程式碼審核，更會加入「視覺畫面」的檢視。</p>
+<p>在第七週的主線課程中，會請俊儀老師來介紹網頁設計的基本概念，如果同學們沒有設計基礎，依然可以了解「哪些設計問題是需要注意被注意」，避免<strong>程式碼有好品質，卻在畫面上吸引不了人</strong>的窘境。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F722CD4D1-780A-4424-B73F-8EFF6C5678DE.png?alt=media&amp;token=3506f613-9c07-48ab-b778-65508854b4d5" alt=""></p>
+<p>因此最終作業學生繳交作業時，除了會安排程式碼的助教批改外，也可以選擇要哪種等級的設計檢核。提交時可選擇專精於 UI 設計的俊儀老師，或是由我這位設計背景但轉為前端的工程師批改，無論是選擇哪位講師，設計上都會針對：</p>
+<ul>
+<li>整體設計風格：包含色彩、字體、格線、排版一致性、作品完整性</li>
+<li>細節設計：包含特定頁面、區塊給予建議</li>
+<li>行動版：目前網站決離不開行動版的網頁設計，因此 RWD 也是檢視的重點之一</li>
+<li>使用者體驗：為了讓網站更具有實戰臨場感，我們也會檢視學員們的作品使其符合主流的使用者體驗</li>
+</ul>
+<p>每一份最終作業每次都需要花上設計、前端助教各 30 ~ 40 分鐘的時間（總合約 1 小時左右的批改時間），每份作業來回會需要花上 3 至 5 次才會批改通過，也因為如此，同學們在製作這份最終作業後會在實戰層面有大幅度的成長。</p>
+<h4 id="線上發表會"><a href="#線上發表會" class="headerlink" title="線上發表會"></a>線上發表會</h4><p>線上發表會是六角系列直播課程首創的內容，主要原因是在於「Vue 出一個電商」的影音課程中，收到了許多品質優秀的作品，會想透過發表會的形式來用於：</p>
+<ul>
+<li>增加同學彼此之間的弱連結</li>
+<li>讓未完成作品的學員可以了解作業有哪些呈現形式</li>
+<li>提升學員對於作品的信心，讓實際求職時更能清楚描述自己的作品</li>
+</ul>
+<p>雖然本課程有提供分組，上課過程中同學也會透過文字聊天，但實際上本課程學員之間還是屬於陌生的，因為沒有見過面也沒有聽過彼此的聲音。在本次的發表會除了有許多令人驚嘆的作品外，同學們也提到</p>
+<ul>
+<li>「原來 XX 的聲音是這樣啊」～</li>
+<li>「我們這組的同學都會彼此激勵，所以就一起報名了線上發表會」</li>
+</ul>
+<p>許多平時幽默的同學在發表會中也會感受到他的緊張，也有平時未發言的學員在介紹自己作品時充滿了自信與幽默，這個過程都讓彼此之間拉近了距離。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F7CFEEDDA-8A52-4ABE-BB30-039B22198700.png?alt=media&amp;token=86ee81ae-2839-4faa-a9a1-87aba60b6cf0" alt=""></p>
+<p>學員心得：</p>
+<ul>
+<li>ABow：令人驚訝的是，發表會上的 13 個報名者中，竟然有 4 位是同組的組員，能跟戰友一起站上發表會舞台，真的很開心且驕傲！</li>
+<li>Siling：發表的同學可以模擬未來在面試時介紹自己作品的樣子，而當聽眾的同學(像我，還沒開始做最終作業😂)，也從中獲得了很多同學設計的理念及技法</li>
+</ul>
+<h2 id="履歷健檢"><a href="#履歷健檢" class="headerlink" title="履歷健檢"></a>履歷健檢</h2><p>許多開發者都有不錯的能力，但在求職上卻不一定很順利，常常投遞了數十封都沒有收到回應，以為是不是市場出現了問題，但其實只是履歷的規劃上出了小問題。</p>
+<p>因此在直播班中只要完成了最終作業，都會提供履歷健檢的服務，讓學員更清楚如何規劃屬於自己的履歷，讓實力不會被埋沒，讓求職的過程不是只有被公司選擇，更能夠選擇自己理想的工作。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_21_%E4%B8%8B%E5%8D%884_47.png?alt=media&amp;token=d5c8c827-796a-4f5b-92e6-92197805ee4a" alt=""></p>
+<h4 id="主線課程"><a href="#主線課程" class="headerlink" title="主線課程"></a>主線課程</h4><p>我在經營課程都是維持一個信念「讓大家做出一個<strong>作品</strong>」，希望大家最後獲得的不是只有作業或練習，而是獨一無二的作品。所以在「Vue 出一個電商」的課程中除了提供作業練習外，也提供了可高度客製的教學 API，同學可自由使用獨立的 API 及資料庫串接內容，藉此完成獨立的作品。</p>
+<p>其中也會具有許多風險，如：</p>
+<ul>
+<li>完課率降低（難度提升）</li>
+<li>缺少美感的練習，同學會不知如何經營最終作品</li>
+<li>影音課程溝通不足的情況下，學員會不知如何著手</li>
+</ul>
+<p>雖然在「Vue 出一個電商」算是我們一個指標性的課程，許多學員在完成最終作業後都可順利找到工作，而過程中也收到了許多不同回饋，因此在直播班中也重新規劃了課綱，保留最核心的「做出一個<strong>作品</strong>」概念外，亦也加入非常多的內容來增加課程豐富度。</p>
+<p>課程大綱規劃：</p>
+<ul>
+<li>第 1 ~ 2 週：重點 JavaScript 觀念介紹，如：this、物件參考、Promise、常用的 ES6 觀念等等。</li>
+<li>第 3 ~ 6 週：Vue 的核心內容介紹，包含：基礎指令、元件、生命週期、套件、Vue Cli、Vue Router 等等</li>
+<li>第 7 週：設計觀念介紹，讓大家使用基本觀念製作出不難看的作品</li>
+<li>第 8 週：觀念整合，總複習並示範如何透過本次課程所學完成最終作品</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F92653CE6-F1EE-4236-B740-548FC39BAB1B.png?alt=media&amp;token=d54367a6-2aca-4557-a75d-75cf8f5b8b83" alt=""></p>
+<blockquote>
+<p>課綱介紹：<a href="https://www.hexschool.com/courses/js-training-1st.html">https://www.hexschool.com/courses/js-training-1st.html</a></p>
+</blockquote>
+<p>在高密度的訓練下，同學們的學習壓力也會不斷提升，課程中也會鼓勵感到挫折的同學們，在覺得困難的同時先回頭看看自己在這段時間學習了多少，在到達第三週時，大多數同學已經學會了：</p>
+<ul>
+<li>This</li>
+<li>Promise</li>
+<li>Ajax</li>
+<li>陣列方法及 forEach</li>
+<li>箭頭函式</li>
+<li>物件參考</li>
+<li>…</li>
+</ul>
+<p>在學習以後，更重要的是不斷練習，隨著時間的推進，偶爾也會回頭練習其中的部分觀念，他們會發現過去<strong>很困難的部分，現在看起卻是輕而易舉</strong>，因為學習的當下總是痛苦、難以理解，但反覆的練習後自然駕輕就熟，對於掌控 JavaScript 也會更具有信心。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E7%A9%BA%E7%99%BD20200921_nfvbist.png?alt=media&amp;token=e7d7a2a5-a916-4e6e-a04e-4ef3a6809da4" alt="前期介紹抽象觀念，接下來持續投入具體的實戰。"></p>
+<p>同學心得：</p>
+<ul>
+<li>Miko：直播課最大的特點就是<strong>即時的互動與回饋</strong>，在每一週課程中，老師在講解觀念的同時，也會準備練習題，透過練習題的方式帶領我們一起思考</li>
+</ul>
+<h4 id="額外主線加碼"><a href="#額外主線加碼" class="headerlink" title="額外主線加碼"></a>額外主線加碼</h4><p>課程前三週都相當順利，課程報到及作業繳交量都非常穩定，而到了第四週以後開始略有下滑，尤其是在作業繳交上有明顯下降的趨勢（前三週隔週上課前可以有 70 ~ 80 份的作業繳交，第四週僅有 20 ~ 30 份），因此開始在 Slack 頻道詢問了解學員的狀況，也會透過私訊詢問還未繳交的學員問題（私訊學員更會透露自己的狀況），在廣泛收集資訊以後大致可歸納以下原因：</p>
+<ul>
+<li>元件在 Vue.js 中難度提升太高，尤其加入了 emit、props 等觀念</li>
+<li>每週觀念都是獨立的，不知如何進行整合</li>
+</ul>
+<p>所以課程後來決定進行「額外主線加碼」，主要是針對課程作業上的解說，但如果都只是解說，也會造成學員上只有照抄沒有練習的機會。因此，雖然課程是以引導的方式，說明製作上可用哪部分的觀念，由學員回答後再填寫至程式碼上，透過引導、回答，學員們不僅知道怎麼做，還知道為什麼。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_17_%E4%B8%8A%E5%8D%8810_22.png?alt=media&amp;token=17a82591-5978-474d-881a-e760f1c7096c" alt="透過引導、互動的方式，讓學員們不是只有聽，更會思考該怎麼做"></p>
+<p>學員心得：</p>
+<ul>
+<li>Kuohau：第四周的元件化，使用到 props、emit，又讓我對 Vue 感到生疏，畢竟是第一次用框架，對元件的瞭解還不夠深入，在挫折滿滿的時候，老師彷彿聽見聲音般，不僅額外開了課程，又錄影片加深我們的印象。怎麼會這麼佛心！！</li>
+<li>Manlu Tseng：知道賺錢不容易，看到提供的這些活動，都會想說六角開直播班真會賺錢嗎(x)，除了技術上的支援輔導，還像小精靈一樣完成學生的心願，還開了許願牆欸，裡面又是滿滿的資源了。</li>
+<li>Qingyu：我最喜歡的是在限定時間內完成某某階段就能得到加碼獎的部分了，因為我發現我會為了加碼而加速我的進步速度，有獎盃解鎖的感覺，然後get就會很有成就感。</li>
+</ul>
+<h4 id="課程-API"><a href="#課程-API" class="headerlink" title="課程 API"></a>課程 API</h4><p>前端開發者一個明顯的門檻在於是否「具有串接遠端資料」的經驗，許多學習資源雖然都有介紹到 Ajax，但大多都僅限於 GET 取得資料，無論是公開資料或是免費的開源隨機資料，這在練習上受到很大的侷限。以一個在實戰中的 Ajax 中就可能包以下問題：</p>
+<ul>
+<li>GET、POST、DELETE、PATCH 等不同的方法需要練習</li>
+<li>登入、授權等驗證方式</li>
+<li>資料格式處理</li>
+<li>遠端請求的錯誤閱讀及排除</li>
+</ul>
+<p>所以本課程延續「Vue 出一個電商」課程的經驗，重新開發了課程專屬 API，在這個 API 中同學們可以：</p>
+<ul>
+<li>練習實戰常見的 HTTP 方法</li>
+<li>學會如何排除錯誤（不止教你怎麼做，還帶你認識如何排除錯誤）</li>
+<li>將後端回饋訊息提供在畫面上，增加使用者體驗</li>
+<li>經營屬於自己的資料內容</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2673C781-F104-4356-A6B4-1BEB1ABBB500.png?alt=media&amp;token=ab9d36a0-5c0e-4935-b693-db9fcd789b5b" alt=""></p>
+<blockquote>
+<p>學員們可以建立自己的商店、品項、定價等等的，另外本次還有提供 “擴充欄位”，學員可自由新增自己想要的內容，讓每個作品從畫面至內容都是完全獨一無二的。</p>
+</blockquote>
+<p>同學心得：</p>
+<ul>
+<li>listennn：支線任務讓你練習如何串接 api 與處理從後端拿到的資料，加深你對非同步的實作方法！</li>
+<li>Lois：最大最大的賣點就是有提供後端API練習！(非常神之好)，有整份完整的API文件可以使用，其中還包含了需要驗證的後台API，若有額外需求也可以跟老師和助教討論。</li>
+<li>YU：沒想到六角學院竟然準備了商品資料的 API，不但能練習串接，也讓所有資料可以呈現於專案中</li>
+</ul>
+<h4 id="設計觀念課程"><a href="#設計觀念課程" class="headerlink" title="設計觀念課程"></a>設計觀念課程</h4><p>本課程<strong>完成一個完整作品</strong>為目標，完整作品包含：</p>
+<ul>
+<li>可進行完整瀏覽的網站</li>
+<li>不會讓人感覺像是 “作業” 的練習（網站中包含文案、描述、圖片皆需要經營）</li>
+<li>具標準美感的設計</li>
+<li>包含基本的使用者體驗</li>
+</ul>
+<p>如果作為一個完整的作品，僅注重程式碼、畫面、文案等等是不足夠的，所有的條件必須同時經營，才能成為一個<strong>夠具水準的 “作品”</strong>。但並非所有的學員都均具有設計背景，或是對於網站規劃有足夠的經驗，因此進行最終作業前額外加入了「設計觀念課程」，引導學員在規劃最終作業時，目標是做出一個具水準的作品。</p>
+<p>設計課程內容包含：</p>
+<ul>
+<li>基本設計準則（如何讓非美術相關背景製作出不難看的設計）</li>
+<li>主題發想技巧</li>
+<li>學員的主題建議</li>
+<li>設計細節說明：文字、版型、色彩、頁面規劃</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_19_%E4%B8%8B%E5%8D%882_43.png?alt=media&amp;token=c3d2a065-75cf-4f4c-8be5-2595961bb711" alt=""></p>
+<blockquote>
+<p>課程中針對表單的細節調整說明</p>
+</blockquote>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F9D7CFBD8-D97F-432A-99D7-E0BB47DEB022.png?alt=media&amp;token=25068e42-f6f6-4c7b-b564-8fccc42185ed" alt=""></p>
+<blockquote>
+<p>學員作品將會同時兼具開發、設計、使用者體驗</p>
+</blockquote>
+<p>學員心得：</p>
+<ul>
+<li>冠逸：請俊儀老師來跟我們講解設計，從對比、重複、對齊、相近這四個設計準則，再講到主題發想，有很多細節是自己沒有注意過的，除了畫面美觀之外也考慮了使用者的使用狀況。</li>
+</ul>
+<h4 id="額外課前內容"><a href="#額外課前內容" class="headerlink" title="額外課前內容"></a>額外課前內容</h4><p>學習，如果僅透過單一次的吸收是明顯不足夠的，尤其是在接觸一個新的知識、陌生的框架時，光是要認識這些新詞彙就會耗去許多心力，如果還要同時了解如何運作更是困難。因此課程在部分章節額外規劃了「課前內容」，目的是讓學員：</p>
+<ul>
+<li>在課前對於框架有基本的認識，別到直播中才一次看到許多的新詞彙。</li>
+<li>增加額外的每日任務，針對當週直播有再次的知識吸收（謎之音：相信同學有了課前文件也不一定有時間看，所以透過小遊戲讓大家認識）。</li>
+<li>課程中主要介紹課前內容的運作及觀念，在此才真正開始學習新內容。</li>
+<li>透過作業再次反覆練習，確保學員可以真正學會。</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F245CF6E2-A7AA-432F-98B5-8AFE69B84BEE.png?alt=media&amp;token=82091df5-0534-4448-bacd-464a2b136f55" alt=""></p>
+<blockquote>
+<p>課前著重於認識，不再深度的理解，文件中有許多範例可動手操作，不需要重頭自行輸入。</p>
+</blockquote>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_19_%E4%B8%8B%E5%8D%882_57.png?alt=media&amp;token=7e404757-a509-4f6f-a3f7-c4e3733eca6d" alt=""></p>
+<blockquote>
+<p>課程中實際講解觀念，並一次打通課前預習的所有觀念。</p>
+</blockquote>
+<h2 id="完課率如何增加的"><a href="#完課率如何增加的" class="headerlink" title="完課率如何增加的"></a>完課率如何增加的</h2><p>完課率經營除了主要的內容外，直播課程中還用了以下幾種 “手段” 來增加完課率：</p>
+<ul>
+<li>關懷：提前增加整體完課率</li>
+<li>補救：避免讓學員的挫折影響結果</li>
+<li>獎勵：期限前再推一把</li>
+</ul>
+<h4 id="關懷-提前增加整體完課率"><a href="#關懷-提前增加整體完課率" class="headerlink" title="關懷 - 提前增加整體完課率"></a>關懷 - 提前增加整體完課率</h4><p>因為直播課程的作業是具有連貫性的，為了確保學員中斷繳交，導致後續的作業進度趕不上。</p>
+<p>所以在特定的週數中（尤其是關鍵章節，如 API 串接），會請助教一一聯絡尚未繳交的學員，詢問其作業的繳交狀況以及了解目前遭遇的問題。在學員群組中還流傳著以下這張圖：</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F20200921_Grg9vragh-rrgreh.png?alt=media&amp;token=d14cc90e-7ebc-484e-aba9-4f5af11c42e0" alt=""><br>￼￼￼<br>學員們在前面幾週學員意願最高，隨著課程越來越困難，自然就會有更多的學員放棄，因此維持整體的繳交率是相當重要的事情。前期小小推一把及關懷，學員就會給予承諾並完成作業，這也是所有手段中成本最低的方法（只需要一一聯絡），但僅在前期意願高較為有效，後期則需要不同的方式來增加完課率。</p>
+<h4 id="補救-避免讓學員的挫折影響結果"><a href="#補救-避免讓學員的挫折影響結果" class="headerlink" title="補救 - 避免讓學員的挫折影響結果"></a>補救 - 避免讓學員的挫折影響結果</h4><p>前幾週的完課率相當高，每週結束後都可以很順利的達到 70 ~ 80 份的作業繳交數量，一直到最後來說前三週都數據也都是最好的。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21802179-8DC0-470B-964E-E4D16C40D160.png?alt=media&amp;token=26b8c3b2-4ad3-4741-bd26-a331cd2bf40f" alt=""></p>
+<p>接下來到第四週以後繳交率突然暴跌，直到隔週上課前繳交的數量都沒有突破 50 份，雖然有預期會遇到繳交率下降的情況，但總認為會再更後面的週數才會遇到此問題。</p>
+<p>接下來就透過私訊、投票的方式瞭解學員們所遇到的狀況，比較特別的是 “學員不一定清楚自己的問題”，而且在公眾投票時所得到的結果也會與私訊不同，因此我們就集結兩種取得的回饋，重新規劃了額外的教學內容。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F8CB8D322-AF31-4C9F-B4BE-7C78FBA7C252.png?alt=media&amp;token=ef6c4c83-6b2c-4966-8e3e-c30dfa714654" alt=""></p>
+<p>本次額外的教學內容上線以後，繳交率有大幅度的提升，第四週作業在最後期限時也拉到了 70% 以上的作業繳交率。</p>
+<h4 id="獎勵-期限前再推一把"><a href="#獎勵-期限前再推一把" class="headerlink" title="獎勵 - 期限前再推一把"></a>獎勵 - 期限前再推一把</h4><p>隨著影音課程越來越盛行，購買一門課程的成本也相較於過去越來越低，許多人買影音課程就像買 Steam 遊戲一樣放著沒去使用。也因為取得成本的下降，加上觀看影片沒有任何急迫性，所以人們買了許多服務沒有去使用。</p>
+<p>直播班相較於一般影音課程價格較為昂貴，另外有時間的限制，所以能有更高的完課率。但畢竟完成一個完整的作業需要相當長的時間，當逼近截止的時間發現自己還有很長的路要走也會導致放棄，因此在結束前一個月的時間我們陸續規劃了許多「獎勵活動」來刺激第六週的完課率，目的是讓學員的心態上有 <strong>“剩下的路不遠了”、“再堅持一下就能達到”</strong> 的感受。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FuFlMESY.png?alt=media&amp;token=87f48f30-ff86-4a1b-acae-65e1f58a0059" alt=""></p>
+<p>「菁英班」是屬於進階的內容，因此會要求學員們完成作業才能取得觀看權限，而這也是加碼內容中學員感到最有價值的部分。到了繳交期限前 20 天，前六週的繳交數量都已經超過了 120 份。</p>
+<h2 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h2><p>專業知識是一個技能，而教學也是屬於一個技能，一個具有豐富經驗的開發者不一定具有良好的教學技能。經營六角這段時間，我們很清楚學員的痛點，更清楚如何將複雜的技術知識簡化，避免艱澀難懂的詞彙搞得新手頭昏腦脹。我們的理念是：「線上帶你學到會」，會透過<strong>循序漸進</strong>進行教學，結合六角特有的<strong>社群交流</strong>讓學員在學習上不會感到孤單，讓更多人透過線上的方式達到自己心目中的目標。</p>
+<p>身處一個浪潮之中體驗到教育的規模變化，從過去由講師對學員的 1 對多教學，到了高互動的教學由助教、講師、學員們之間多對多的交流。也感謝洧杰規劃的教學架構「<strong>只要人數更多，就越能達到 *N 的吸收效果</strong>」，讓學習體驗從 1 ＊ N 進化成 N ＊ N。所以這次的教學不只是我傳授一個職業技能給予學員，助教、學員的反饋也加速我在此領域的成長；也因為如此，更有把握讓下一次的直播班有更好的成績，如果你對於 JavaScript 前端直播班有興趣，也歡迎訂閱通知，讓我們再次加速成長～</p>
+<p>JavaScript 作品直播班訂閱通知：<a href="https://rpg.hexschool.com/line/webhook">https://rpg.hexschool.com/line/webhook</a><br>第二屆預期時間：2021 年 4 ~ 6 月開始上課</p>
+<p>六角直播班特色包含：</p>
+<ul>
+<li>超高互動：透過 Slack 的互動，同學們互相交流，遠端學習也不會感到孤單。</li>
+<li>高度回饋：超過 1100 份作業繳交，所有作業都能收到回饋，確保學習狀況。</li>
+<li>極豐富的內容：表訂 8 堂直播課，實際加碼超過 16 堂，豐富學習資源讓學員不想鬆懈</li>
+<li>實戰作品：提供電商 API，帶你體驗實戰流程</li>
+<li>就業導向：學員回報 - 課後一個月內透過課堂作品找到前端工作！</li>
+</ul>
+<h2 id="更多學員心得"><a href="#更多學員心得" class="headerlink" title="更多學員心得"></a>更多學員心得</h2><ul>
+<li><a href="https://medium.com/@chloelo925/%E5%85%AD%E8%A7%92-js-%E5%AF%A6%E6%88%B0%E7%9B%B4%E6%92%AD%E7%8F%AD%E5%BF%83%E5%BE%97-42282ad94a2">Chloe</a>：實作真的差很多，以前聽線上課程都不會練習到這麼徹底，就像老師說的，看看兩個月前的自己，我們現在強很多，傳值傳參考我們都分得清楚了，who is this? <strong>This</strong> is me. 也搞懂 this 是誰了 XD，CRUD api 的操作我們也會了。</li>
+<li><a href="https://medium.com/@miko82290/%E5%85%AD%E8%A7%92%E5%AD%B8%E9%99%A2-js-%E4%BD%9C%E5%93%81%E5%AF%A6%E6%88%B0%E7%8F%AD%E5%BF%83%E5%BE%97-930debf84993">Miko</a>：最大也最意外的收穫，就是<strong>拆解程式流程</strong>的習慣。以往在寫程式的時候，只會在腦海裡大概規劃一下流程圖而已，幸好老師有加碼開課講解，不但仔細講解、引導大家作業的觀念，也在課程中示範拆解流程，跟著老師的腳步才發現原來好好的列出專案的流程，可以讓專案瞬間看起來簡化很多，可以更有條理的思考每一個步驟。</li>
+<li><a href="https://medium.com/@RUE503/2020-%E5%85%AD%E8%A7%92%E5%AD%B8%E9%99%A2-js-%E4%BD%9C%E5%93%81%E7%9B%B4%E6%92%AD%E7%8F%AD-%E7%B5%90%E6%A5%AD%E5%BF%83%E5%BE%97-69a2099a2cf4">Ruta</a>：如果你已經自學一年(或以上)但卻沒有踏實感或明顯成果，我非常推薦你來參加六角學院舉辦的直播班課程。兩個月結束後，會能很明顯感受到自己有所成長，甚至超過以前自己一年的學習成效</li>
+<li><a href="https://hackmd.io/ycag0mdHS0Ku7kuPQS-5mg?view">Lois</a>：還有一堆加碼加不停的東西，真的很物超所值，而且成長曲線真的遠遠打趴過去半年的自學，程度爆炸性增長，現在的我除了Vue框架的技巧以外，也已經不害怕看文件、願意挑戰使用各種套件、git也開始有點了解了，若你想快速提升自己的實力，這堂課真的很值得你報名！</li>
+<li><a href="https://hackmd.io/7kZXT6mRTiirIm6DV_BfQQ">ABow</a>：比較兩個月前剛加入直播班，及兩個月後正在逐步完成最終作業的自己，我比較不害怕看 Vue 的程式碼，而且能理解別人為什麼要這樣寫。</li>
+<li><a href="https://medium.com/@yuu_/%E4%BD%A0%E8%81%BD%E9%81%8E%E5%89%8D%E7%AB%AF%E5%AD%B5%E5%8C%96%E5%99%A8%E5%97%8E-%E5%A6%82%E6%9E%9C%E6%B2%92%E6%9C%89-%E9%82%A3%E5%8F%AF%E8%83%BD%E6%98%AF%E4%BD%A0%E9%82%84%E6%B2%92%E9%82%82%E9%80%85%E5%85%AD%E8%A7%92%E5%AD%B8%E9%99%A2-2966589d82bd">YU</a>：六角學院絕對是轉職路途中優美延綿的風景，但還是要繼續走下去，像是把後台做完才能繳交第八週作業 XDDD</li>
+<li><a href="https://medium.com/@think.sea/%E5%85%AD%E8%A7%92%E5%AD%B8%E9%99%A2-2020-javascript-%E4%BD%9C%E5%93%81%E5%AF%A6%E6%88%B0%E7%9B%B4%E6%92%AD%E7%8F%AD%E5%BF%83%E5%BE%97-1719d74f9108">Siling</a>：八週前的我還搞不清楚function(e)的這個e是啥東西，現在終於理解，並往前跨了一大步，雖然離可以行雲流水的用嘴寫程式還是有超大一段距離，但找到方向前進了，覺得很開心😀</li>
+<li><a href="https://www.notion.so/JS-36ffc74ae2f54d419d5c4a754c234a7a">Pandaa</a>：有很多跟你一起努力的同學，這跟買課程回來自己學是很不一樣的，我以前買過的課程都沒有看完過，但是直播班真的會讓自己有動力去跟大家一起進步</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> courses </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[JS 物件名詞解釋及常見觀念問題]]></title>
       <url>https://wcc723.github.io/development/2020/09/21/js-object/</url>
       <content type="html"><![CDATA[<p>接下來來到 JavaScript 另一個坑「物件」。</p>
