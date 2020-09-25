@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     
-    <title>JS 記憶體是怎麼釋放的 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <title>JS 記憶體釋放機制及驗證 | 卡斯伯 Blog - 前端，沒有極限</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
         <meta name="keywords" content="javascript,js" />
@@ -12,14 +12,14 @@
 
     <meta name="description" content="作用域JavaScript 的變數有作用域的範圍，意思是指「宣告的變數有作用的區域限制」，如果超出了作用域則變數無法再被取得，這樣的做法優點為：  可以避免所有變數轉為全域變數 有效限制變數的作用區域  而變數作用域也會依據宣告的方式不同，產生不同的作用域：  未宣告：全域變數 var 宣告：作用域在 函式 中 let、const 宣告：作用域在 &amp;#123;&amp;#125; 中  var 宣告的變數">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JS 記憶體是怎麼釋放的">
+<meta property="og:title" content="JS 記憶體釋放機制及驗證">
 <meta property="og:url" content="https://wcc723.github.io/development/2020/09/23/js-object/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="作用域JavaScript 的變數有作用域的範圍，意思是指「宣告的變數有作用的區域限制」，如果超出了作用域則變數無法再被取得，這樣的做法優點為：  可以避免所有變數轉為全域變數 有效限制變數的作用區域  而變數作用域也會依據宣告的方式不同，產生不同的作用域：  未宣告：全域變數 var 宣告：作用域在 函式 中 let、const 宣告：作用域在 &amp;#123;&amp;#125; 中  var 宣告的變數">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_08.jpg?alt=media&token=5559f38a-09aa-4a79-a232-ff9d3e3c9919">
 <meta property="article:published_time" content="2020-09-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-09-23T06:35:39.021Z">
+<meta property="article:modified_time" content="2020-09-23T06:38:23.104Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="js">
@@ -201,7 +201,7 @@ ga('send', 'pageview');
                 
     
         <h1 class="article-title" itemprop="name">
-        JS 記憶體是怎麼釋放的
+        JS 記憶體釋放機制及驗證
         </h1>
     
 
@@ -413,6 +413,16 @@ ga('send', 'pageview');
         
 <nav id="article-nav">
     
+        <a href="/development/2020/09/24/first-class-function/" id="article-nav-newer" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">下一篇</strong>
+        <p class="article-nav-title">
+        
+            JavaScript 一級函式 （First Class Functions）
+        
+        </p>
+        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
+    </a>
+    
     
         <a href="/development/2020/09/22/js-function/" id="article-nav-older" class="article-nav-link-wrap">
         <strong class="article-nav-caption">上一篇</strong>
@@ -437,7 +447,35 @@ ga('send', 'pageview');
                         
                         
                         <div class="item-inner">
-                            <p class="item-title"><a href="/development/2020/09/23/js-object/" class="title">JS 記憶體是怎麼釋放的</a></p>
+                            <p class="item-title"><a href="/development/2020/09/25/chrome-console/" class="title">Chrome Console 中的 undefined 到底是哪來的？</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-09-24T16:00:00.000Z" itemprop="datePublished">2020-09-25</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/09/24/first-class-function/" class="title">JavaScript 一級函式 （First Class Functions）</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-09-23T16:00:00.000Z" itemprop="datePublished">2020-09-24</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/09/23/js-object/" class="title">JS 記憶體釋放機制及驗證</a></p>
                             <p class="item-date">
                                 <time datetime="2020-09-22T16:00:00.000Z" itemprop="datePublished">2020-09-23</time>
                                 <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
@@ -468,34 +506,6 @@ ga('send', 'pageview');
                             <p class="item-title"><a href="/development/2020/09/22/javascript-training-1st/" class="title">讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班</a></p>
                             <p class="item-date">
                                 <time datetime="2020-09-21T16:00:00.000Z" itemprop="datePublished">2020-09-22</time>
-                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
-                                </span>
-                            </p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        
-                        
-                        <div class="item-inner">
-                            <p class="item-title"><a href="/development/2020/09/21/js-object/" class="title">JS 物件名詞解釋及常見觀念問題</a></p>
-                            <p class="item-date">
-                                <time datetime="2020-09-20T16:00:00.000Z" itemprop="datePublished">2020-09-21</time>
-                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
-                                </span>
-                            </p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        
-                        
-                        <div class="item-inner">
-                            <p class="item-title"><a href="/development/2020/09/20/js-semi/" class="title">JS 加不加分號差在哪？</a></p>
-                            <p class="item-date">
-                                <time datetime="2020-09-19T16:00:00.000Z" itemprop="datePublished">2020-09-20</time>
                                 <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
                                 </span>
                             </p>

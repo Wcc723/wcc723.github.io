@@ -4,7 +4,148 @@
   
     
     <entry>
-      <title><![CDATA[JS 記憶體是怎麼釋放的]]></title>
+      <title><![CDATA[Chrome Console 中的 undefined 到底是哪來的？]]></title>
+      <url>https://wcc723.github.io/development/2020/09/25/chrome-console/</url>
+      <content type="html"><![CDATA[<p>教學的過程中，有許多學員會盡可能的搞懂程式碼運行過程中的各種結果，其中一個比較特別的案例就是想搞懂為什麼 Chrome Console 下方的 <code>&lt;·</code> 會回傳 undefined。</p>
+<p>範例程式碼：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span></span><br></pre></td></tr></table></figure><br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_11_%E4%B8%8B%E5%8D%881_47.png?alt=media&amp;token=1c75bce2-a6be-46e6-82c6-a91451c57978" alt=""></p>
+<p>本篇屬於不知道也不會怎樣的冷知識，但如果了解，你則會更清楚 JS 中的表達式觀念。</p>
+<p>說明：本篇所介紹的環境都是在 Chrome Console 的直接輸入直接運行，並非透過原始碼運行的結果。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FE6201004-CF02-4B5B-8B85-6FC908D58B36.png?alt=media&amp;token=8849d2ba-959b-4ff4-b643-769dd32e547a" alt=""></p>
+<h2 id="Console-回傳的結果與表達式有關"><a href="#Console-回傳的結果與表達式有關" class="headerlink" title="Console 回傳的結果與表達式有關"></a>Console 回傳的結果與表達式有關</h2><p>如果要清楚的預測 Chrome Console 中所出現的值，就一定要搞清楚「表達式」的概念，前幾篇的文章有提到表達式的特徵就是 “<strong>一定會回傳值</strong>”，Chrome Console 中輸入程式碼後的下一行呈現的正是回傳結果。</p>
+<p>如果想多認識表達式，可參考本文：<a href="https://wcc723.github.io/development/2020/09/17/js-expression/">https://wcc723.github.io/development/2020/09/17/js-expression/</a></p>
+<h4 id="純值"><a href="#純值" class="headerlink" title="純值"></a>純值</h4><p>任何的純值都可以視為 「表達式」，因此輸入純值運行後的下一行回傳的結果就是該值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> <span class="comment">// 這行就只有數字 1</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_11_%E4%B8%8B%E5%8D%881_51.png?alt=media&amp;token=7eae7232-8e95-4d4e-a752-c32728df00f6" alt=""></p>
+<h4 id="陳述式"><a href="#陳述式" class="headerlink" title="陳述式"></a>陳述式</h4><p>與表達式不同的「陳述式」最大的特徵是 “<strong>不會回傳值</strong>”，因此陳述式輸入在 Chrome Console 後會帶出的是 <code>undefined</code> 的結果。</p>
+<p><code>var</code> 屬於宣告陳述式，因此不會回傳任何的結果。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F23D51B14-7756-42E5-832A-010E22D9F08B.png?alt=media&amp;token=e0ddc3d4-b494-45db-a170-973af5e63d59" alt=""></p>
+<p>一樣的概念，<code>if</code> 是屬於陳述式，因此執行結果為 <code>undefined</code>。 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (a === <span class="number">1</span>) &#123; &#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FE051247B-972A-4C40-8555-3A5C5385BB30.png?alt=media&amp;token=6164588a-1bbd-4b64-8c22-f17fc1ed8a1b" alt=""></p>
+<p><code>=</code> 是屬於運算子，運算子同樣屬於表達式，因此會回傳一個值，結果會不同於上方的 <code>var</code> 的宣告陳述式。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB1FDCE20-6152-4512-A64A-2B3F06F1BCD5.png?alt=media&amp;token=7cd9a826-7b06-403a-8665-e596766a0d8f" alt=""></p>
+<h4 id="多行程式碼"><a href="#多行程式碼" class="headerlink" title="多行程式碼"></a>多行程式碼</h4><p>當 Chrome Console 中輸入多行的程式碼時，回傳的值會是以程式碼中「排列最後方的表達式」為主，因此：</p>
+<ul>
+<li>當有多個表達式，會回傳最後一個表達式</li>
+<li>如果最後一個是陳述式，則會跳過僅回傳表達式</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a === <span class="number">1</span>;</span><br><span class="line">a = <span class="number">2</span>; <span class="comment">// 回傳此表達式結果</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="number">1</span>; <span class="comment">// 此為陳述式，因此跳過</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F03CAF7FC-BA6B-45AD-BF5C-BEC729CA000D.png?alt=media&amp;token=a2bc6ed6-60ea-4d8b-9f4c-59ba4091762e" alt=""></p>
+<h4 id="函式"><a href="#函式" class="headerlink" title="函式"></a>函式</h4><p>函式運行是屬於表達式的一種，因此 <code>&lt;·</code> 會帶出函式中 return 的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;function&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line">fn();</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_11_%E4%B8%8B%E5%8D%882_09.png?alt=media&amp;token=b4e3cd23-829e-4cb3-8c30-576fa4623cd1" alt=""></p>
+<p>如果函式中沒有 <code>return</code> 一個指定的結果，函式運行依然是屬於表達式，它則會帶入 <code>undefined</code>（未定義）的值。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn1</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">&#125;</span><br><span class="line">fn1(); <span class="comment">// 沒有指定回傳值，則會回傳 undefined</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F83B96A90-53A2-4F33-85CA-6405632ED5EA.png?alt=media&amp;token=c30ccce8-23f1-4085-bd4e-cd80f006c5a9" alt=""></p>
+<h4 id="console"><a href="#console" class="headerlink" title="console"></a>console</h4><p><code>console.log</code> 語法會直接在 Chrome Console 中印出指定表達式的結果，與直接輸入在 Chrome Console 中的回傳不同，在呈現的結果前方不會有  <code>&lt;·</code> 符號，僅會以空白的方式呈現。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">console.log(1)</span><br></pre></td></tr></table></figure>
+<p>要特別注意的是 <code>console.log()</code> 是運行一個函式，運行函式也會回傳一個結果，只不過 <code>console.log</code>運行時並沒有帶入回傳值，因此在下圖中最後一行  <code>&lt;·</code> 的後方會回傳 <code>undefined</code>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F33882037-2CEF-4725-97C7-A1EAD8D7AEFD.png?alt=media&amp;token=8e65e144-cf51-4f70-aa37-831e02647f27" alt=""></p>
+<p>問：下圖中的 <code>function1</code>、<code>&quot;function2&quot;</code> 兩行文字分別是什麼原因出現的呢？</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn2</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">&#x27;function1&#x27;</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;function2&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">fn2()</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FDBBCDB60-EDEA-446A-B13B-8A44D38E846C.png?alt=media&amp;token=272332b8-53b3-4222-9a18-b82e2d643a76" alt=""></p>
+<p>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.</p>
+<ul>
+<li>function1: console.log() 執行呈現的結果</li>
+<li>function2: 運行 fn2() 所回傳的結果</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[JavaScript 一級函式 （First Class Functions）]]></title>
+      <url>https://wcc723.github.io/development/2020/09/24/first-class-function/</url>
+      <content type="html"><![CDATA[<p>本篇重點是要介紹參數與函式的關係（尤其是常令人搞混的 callback function），但這個觀念又會扯到另一個常見的專有名詞（一級函式），因此在本篇就統一介紹。</p>
+<h2 id="一級函式"><a href="#一級函式" class="headerlink" title="一級函式"></a>一級函式</h2><p>一級函式並非是 JavaScript 專有的特性，只要該語言的「函式可被視為與其它變數一樣時」，就可以稱為該語言有一級函式的特性。</p>
+<blockquote>
+<p>functions in that language are treated like any other variable</p>
+</blockquote>
+<p>這些 JavaScript 的函式就具有以下特性：</p>
+<ul>
+<li>將函式指定到一個變數</li>
+<li>函式可作為參數來傳遞</li>
+<li>函式也可以被回傳（return）</li>
+<li>函式也是物件的物件（傳參考特性、具有屬性）</li>
+</ul>
+<p>範例：將函式指定到一個變數，這是函式表達式，建立匿名函式後指定到變數 <code>callSomeone</code> 上。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> callSomeone = <span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`呼叫 <span class="subst">$&#123;name&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone(<span class="string">&#x27;小明&#x27;</span>);</span><br></pre></td></tr></table></figure></p>
+<h2 id="函式作為參數來傳遞-回呼函式-Callback-function"><a href="#函式作為參數來傳遞-回呼函式-Callback-function" class="headerlink" title="函式作為參數來傳遞 - 回呼函式 Callback function"></a>函式作為參數來傳遞 - 回呼函式 Callback function</h2><p>因為一級函式的特性，函式可被視為變數一樣隨意使用，當然作為參數的傳遞也是沒有問題的。所以在呼叫變數時，也一樣可以將函式作為參數傳遞，而這也被稱為 callback function（函式傳入另一個函式後被呼叫）。</p>
+<p>以下範例就是將函式作為參數傳遞入另一個函式，由於函式本身結構就比較複雜，加上傳遞的過程可以改變名稱，因此會讓新手常常在查看程式碼中感到混亂。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sayHi</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">sayHi(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123; <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>); &#125;);</span><br></pre></td></tr></table></figure></p>
+<p>接下來，我們透過圖片加上文字說明解釋這段問題：</p>
+<ol>
+<li>呼叫 <code>sayHi</code> 函式同時傳入一個函式（在此我們先稱它為 <code>函式Ｂ</code>）</li>
+<li><code>函式Ｂ</code> 參數傳入後名稱是由函式定義名稱，因此傳入的參數名稱改為 <code>fn</code></li>
+<li>在 <code>sayHi</code> 函式內呼叫 <code>fn</code> 參數（原本的 <code>函式Ｂ</code>）</li>
+<li>呼叫 <code>fn</code> 參數時，傳入 ‘小明’ 作為參數傳遞至 <code>函式Ｂ</code></li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F084B07D1-2BAE-40CA-AA26-EC9EFAC6044B.png?alt=media&amp;token=4797bfc2-1332-475a-b883-251b027b7ee8" alt=""></p>
+<p>如果你接觸 JavaScript 還不是很久，或者是常常被 callback function 搞混，試著用以下的方法：</p>
+<ul>
+<li>從定義的函式開始找 callback 及參數名稱，callback 常用的名稱會如 <code>cb</code>、<code>callback</code>、<code>fn</code>。 -&gt; 本範例中使用 <code>fn</code> 的名稱。</li>
+<li>接下來請專注在傳入的參數結構上（像是上方範例中的 <code>函式Ｂ</code>），此函式是否有接收其它參數，如何運作等等。 -&gt; 外部傳入的參數另有接收 <code>name</code> 的參數。</li>
+<li>接下來思考兩個重點：<ul>
+<li>callback function 在函式中的哪裡被呼叫，並且傳入了哪些參數。 -&gt; 第一行就被呼叫，並且傳入 <code>&#39;小明&#39;</code> 作為參數。</li>
+<li>外部傳入的函式接收了參數做哪些事。 -&gt; 直接使用 <code>console.log()</code> 呈現值。</li>
+</ul>
+</li>
+</ul>
+<p>接下來，大家可以拆解看到的 callback function 或者用此觀念撰寫一個 callback function 將更能熟悉此觀念。</p>
+<h3 id="使用函式變數來傳遞"><a href="#使用函式變數來傳遞" class="headerlink" title="使用函式變數來傳遞"></a>使用函式變數來傳遞</h3><p>Callback function 除了直接在參數中撰寫一個函式外，也可以直接透過函式變數來傳遞（前面提到一級函式的特性，函式也可以指定到一個變數上）。</p>
+<p>如以下範例：<code>callSomeone</code> 函式可以視為一個變數，並且透過參數的方式來進行傳遞。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionB</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">functionB(callSomeone)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可試著用前面的拆解方式來了解此段是如何運作的</p>
+</blockquote>
+<h3 id="Callback-function-可以用來做什麼？"><a href="#Callback-function-可以用來做什麼？" class="headerlink" title="Callback function 可以用來做什麼？"></a>Callback function 可以用來做什麼？</h3><p>在 ES6 中的 <code>Promise</code> 語法還未能使用前，就很常使用 callback function 來接收非同步的資料（當資料取得後，繼續執行其它的函式）。</p>
+<p>以下範例是使用 <code>setTimeout</code> 取代 Ajax，當一秒時間過去以後，才能繼續執行 callback 的程式碼內容。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    callback(<span class="string">&#x27;非同步完成&#x27;</span>)</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone(<span class="function"><span class="keyword">function</span>(<span class="params">done</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(done);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h2 id="回傳一個函式-高階函式-Higher-Order-Function"><a href="#回傳一個函式-高階函式-Higher-Order-Function" class="headerlink" title="回傳一個函式 - 高階函式 Higher-Order Function"></a>回傳一個函式 - 高階函式 Higher-Order Function</h2><p>當函式可以回傳一個函式時，就可稱為高階函式（Higher-Order Function），JavaScript 中的函式因為沒有太多限制，就算作為變數回傳也是沒有問題的。</p>
+<p>以下範例中的函式會在回傳另一個函式，因此在呼叫 <code>method</code> 時，此函式具有以下特性：</p>
+<ul>
+<li>這是一個新的函式，同時保有 <code>method</code> 的作用域（可呼叫 method 的參數及變數）</li>
+<li>可以建立多個新函式，並且賦予到不同的變數上</li>
+<li>這些建立的新函式彼此並無關聯</li>
+</ul>
+<p>在此就建立了 <code>num1</code>、<code>num2</code> 兩個新函式，兩者都可以再次被呼叫。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">method</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`這是來自於編號 <span class="subst">$&#123;num&#125;</span> 的方法`</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> num1 = method(<span class="number">1</span>);</span><br><span class="line"><span class="built_in">console</span>.log(num1()); <span class="comment">// 這是來自於編號 1 的方法</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> num2 = method(<span class="number">2</span>);</span><br><span class="line"><span class="built_in">console</span>.log(num2()); <span class="comment">// 這是來自於編號 2 的方法</span></span><br></pre></td></tr></table></figure></p>
+<p>除了將回傳函式賦予到一個變數上以外，還可以直接使用雙括號 <code>()()</code> 的方式直接運行，這種運行方式運行後將會直接釋放記憶體。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">console</span>.log(method(<span class="number">3</span>)());</span><br></pre></td></tr></table></figure>
+<p>因為 JavaScript 函式的隨性（？）造就了此語言更多的彈性，這些專有名詞看似很複雜，但別忘了專有名詞只是方便說明一個特性，實際運行還是要看大家所轉寫的程式，並不會因為了解這些專有名詞寫的程式就跑得更起勁。</p>
+<p>另外，高階函式的觀念已經很接近 “閉包”，接下來整合這幾個篇章重新再介紹一次閉包給大家認識。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[JS 記憶體釋放機制及驗證]]></title>
       <url>https://wcc723.github.io/development/2020/09/23/js-object/</url>
       <content type="html"><![CDATA[<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p>JavaScript 的變數有作用域的範圍，意思是指「宣告的變數有作用的區域限制」，如果超出了作用域則變數無法再被取得，這樣的做法優點為：</p>
 <ul>
