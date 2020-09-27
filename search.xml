@@ -4,6 +4,72 @@
   
     
     <entry>
+      <title><![CDATA[學好 this 前，先搞清楚 this 做什麼]]></title>
+      <url>https://wcc723.github.io/development/2020/09/27/why-this/</url>
+      <content type="html"><![CDATA[<p>過去到現在寫了很多 <code>this</code> 相關的文章，如果沒有實際運用過 <code>this</code> 的開發者可能會有疑惑「this 是不是只有在面試考題用到？」、「this 在實戰中會用到嗎？」、「為什麼要學 this？」。</p>
+<p>其實 <code>this</code> 在實戰中的應用非常廣，已經有接觸框架的開發者對此較不陌生，基本上所有的檔案都會存在 <code>this</code>，而本篇也就針對 this 的應用情境進行介紹。</p>
+<h2 id="沒有使用元件的開發"><a href="#沒有使用元件的開發" class="headerlink" title="沒有使用元件的開發"></a>沒有使用元件的開發</h2><p>過去框架尚未盛行以前，開發上都是平鋪直述的概念在進行，當有一個需求如下時：</p>
+<ol>
+<li>建立資料</li>
+<li>將資料取出並繪製於畫面上</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">displayData</span>(<span class="params">data, target</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(data.string);</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`將 <span class="subst">$&#123; data.string &#125;</span> 繪製於 <span class="subst">$&#123; target &#125;</span> 上`</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> someData = &#123;</span><br><span class="line">  string: <span class="string">&#x27;用在卡片上的資料&#x27;</span>,</span><br><span class="line">  target: <span class="string">&#x27;卡片&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line">displayData(someData, <span class="string">&#x27;卡片&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>透過這樣的方式，我們定義了 資料、目標位置、渲染用的函式，此階段中沒有元件的概念，彼此之間再結構上沒有任何關聯性，當程式碼較少時相當好閱讀，但在日趨複雜的情況就可能會有以下的狀況：</p>
+<ul>
+<li><strong>函式與資料分離，函式的方法不一定能夠物件內資料</strong></li>
+<li>網站越來越複雜時，資料與函式可能散落在不同處</li>
+<li>函式命名可能會產生衝突</li>
+</ul>
+<h2 id="導入物件的概念"><a href="#導入物件的概念" class="headerlink" title="導入物件的概念"></a>導入物件的概念</h2><p>接下來導入物件的概念以後，可以將方法與資料整合在一起，這樣就可以解決上述所列出的問題，不僅可以避免資料與方法分離的狀況，命名上也可以更為簡易。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> card = &#123;</span><br><span class="line">  data: <span class="string">&#x27;卡片上的資料&#x27;</span>,</span><br><span class="line">  target: <span class="string">&#x27;卡片&#x27;</span>,</span><br><span class="line">  render: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`這個是 <span class="subst">$&#123;<span class="built_in">this</span>.data&#125;</span>，可以繪製於 <span class="subst">$&#123;<span class="built_in">this</span>.target&#125;</span>`</span>);</span><br><span class="line">    <span class="comment">// 這個元件是 卡片上的資料，可以繪製於 卡片</span></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  trigger: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.render();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">card.trigger();</span><br></pre></td></tr></table></figure>
+<p>當透過物件的形式進行開發時，就需要使用 <code>this</code> 來取得或呼叫物件中彼此之間的方法與資料。如果對於 <code>this</code> 觀念想補強可參考<a href="https://wcc723.github.io/javascript/2019/03/18/JS-THIS/">此文章</a>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF8518C6B-85DE-4791-9320-4C883D7EAE71.png?alt=media&amp;token=d2cbed40-01ca-4cd8-9f78-fc43eb7d0184" alt=""></p>
+<h4 id="額外問題：偏不使用-this，改用-card-不行嗎？"><a href="#額外問題：偏不使用-this，改用-card-不行嗎？" class="headerlink" title="額外問題：偏不使用 this，改用 card 不行嗎？"></a>額外問題：偏不使用 <code>this</code>，改用 <code>card</code> 不行嗎？</h4><p>這也是同學們常見的問題，在此範例中物件內的 <code>this</code> 等同於 <code>card</code> 物件，所以將上述程式碼中的 <code>this</code> 均替換為 <code>card</code> 也是可以運作的。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> card = &#123;</span><br><span class="line">  data: <span class="string">&#x27;卡片上的資料&#x27;</span>,</span><br><span class="line">  target: <span class="string">&#x27;卡片&#x27;</span>,</span><br><span class="line">  render: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`這個是 <span class="subst">$&#123;card.data&#125;</span>，可以繪製於 <span class="subst">$&#123;card.target&#125;</span>`</span>);</span><br><span class="line">    <span class="comment">// 這個元件是 卡片上的資料，可以繪製於 卡片</span></span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  trigger: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">    card.render();</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">card.trigger();</span><br></pre></td></tr></table></figure>
+<p>不過實戰中，以物件的方式建構元件時，會盡可能地增加其使用性，所以 <code>card</code> 在原始碼中並不會是唯一的存在，可能會有更多的相同或類似的結構來作為運用。</p>
+<p>如以下的物件可以延伸自 <code>card</code> 元件，如果使用同樣的名稱就會導致運作上的錯誤，維持 <code>this</code> 將是最好的做法。 </p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> navbar = &#123;</span><br><span class="line">  data: <span class="string">&#x27;導覽列的資料&#x27;</span>,</span><br><span class="line">    target: <span class="string">&#x27;導覽列&#x27;</span>,</span><br><span class="line">  render: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">`這個是 <span class="subst">$&#123;<span class="built_in">this</span>.data&#125;</span>，可以繪製於 <span class="subst">$&#123;<span class="built_in">this</span>.target&#125;</span>`</span>)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">  trigger: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">this</span>.render();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">navbar.trigger();</span><br></pre></td></tr></table></figure>
+<p>而實際上是如何建立兩個接近結構的元件呢？</p>
+<p>以目前來說兩者的結構是接近的，只有 data 的內容是不同的，這段在實戰中大多都是藉由 “框架” 的特性來完成，以下會繼續介紹框架是如何做到這樣的結構，並且如何管理物件中相同的方法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FBD7E171A-28D5-4FE8-9DF9-49D505720E5B.png?alt=media&amp;token=e142dd22-884b-4695-89cc-ee1523f46da6" alt=""></p>
+<h2 id="框架、原型與-this"><a href="#框架、原型與-this" class="headerlink" title="框架、原型與 this"></a>框架、原型與 this</h2><p>為了讓各個物件中會<strong>重複使用的方法統一管理</strong>，並且讓其又能定義屬於各自的方法，框架中大多會使用 JavaScript 中的一特性 “Prototype” 來進行管理，關於 Prototype 的觀念本篇不會多加敘述，如需了解可參考：</p>
+<ol>
+<li>原型繼承：<a href="https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/">https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/</a></li>
+<li>建構函式：<a href="https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/">https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/</a></li>
+</ol>
+<p>透過原型可以將物件中的方法集中定義，並且使兩者均可透過 <code>this.render()</code> 的方式呼叫此方法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB5EDA819-AB6C-40A0-ACB1-647FD8F61137.png?alt=media&amp;token=eca14715-2ab8-4ac8-935e-cf6af0019e70" alt=""></p>
+<p>需要定義原型，則必須運用到 “建構函式”，以下提供的建構函式範例可用來建立如上結構的物件，並且將 <code>render</code> 的方法預先定義為原型，而建構函式在此的目的為：</p>
+<ul>
+<li>定義物件的結構（方法會先放在 <code>methods</code> 內，此結構與 Vue 是接近的）</li>
+<li>將共用的方法使用原型來定義</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Component</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> vm = <span class="built_in">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 取出 methods 屬性內的物件，定義為各自的方法</span></span><br><span class="line">  <span class="keyword">var</span> methods = <span class="built_in">Object</span>.keys(obj.methods);</span><br><span class="line">  <span class="keyword">if</span> (methods.length) &#123;</span><br><span class="line">    methods.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">key</span>) </span>&#123;</span><br><span class="line">      vm[key] = obj.methods[key];</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  vm.data = obj.data;</span><br><span class="line">  vm.target = obj.target;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">Component.prototype.render = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`這個是 <span class="subst">$&#123;<span class="built_in">this</span>.data&#125;</span>，可以繪製於 <span class="subst">$&#123;<span class="built_in">this</span>.target&#125;</span>`</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下來，就可以透過上方定義的建構函式來建立相同的物件。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> navbar = <span class="keyword">new</span> Component(&#123;</span><br><span class="line">  data: <span class="string">&#x27;導覽列的資料&#x27;</span>,</span><br><span class="line">  target: <span class="string">&#x27;導覽列&#x27;</span>,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    trigger: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">this</span>.render();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">navbar.trigger(); <span class="comment">// 這個是 導覽列的資料，可以繪製於 導覽列</span></span><br></pre></td></tr></table></figure></p>
+<p>此結構透過 Chrome Console 可看到類似於先前所列的結構，僅不過將 render 改為在原型內，呼叫方式也一樣是使用 <code>this</code>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_19_%E4%B8%8B%E5%8D%882_24.png?alt=media&amp;token=cad254e9-dfe1-4f40-8a31-ae0fdbe4e287" alt=""></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> card = <span class="keyword">new</span> Component(&#123;</span><br><span class="line">  data: <span class="string">&#x27;卡片的資料&#x27;</span>,</span><br><span class="line">  target: <span class="string">&#x27;卡片&#x27;</span>,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    trigger: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;<span class="built_in">this</span>.data&#125;</span> 在這`</span>); <span class="comment">// 卡片的資料 在這</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line">card.trigger();</span><br></pre></td></tr></table></figure>
+<p>透過建構函式就可不斷建立相同結構的物件，也可定義屬於各自的資料、方法，而物件之中都依然是使用 <code>this</code> 來進行該物件內的所有資料、方法的調用。也因此 <code>this</code> 是一個取得本地元件屬性的方法，如果搞清楚為何使用，也能夠發現其實它並沒有那麼複雜（觀念非常多，但實戰中只會用到一招而已）。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[閉包，原來這就是閉包啊！]]></title>
       <url>https://wcc723.github.io/development/2020/09/26/js-closure/</url>
       <content type="html"><![CDATA[<p>閉包，是一個 JavaScript 很常聽到的觀念，雖然會在不知不覺應用到閉包的基本概念，進階的用法在實戰中不一定很常用到，但這卻是面試中非常常見的問題，主要原因是它牽扯到許多的觀念，如詞法作用域、記憶體等觀念。</p>
@@ -259,85 +325,6 @@
 <p>接下來回到 Memory 分頁按下 “Take snapshot” 重新取得記憶體的狀態，接下來會得到與上方不同的結果，此次僅占用 1.2MB 的記憶體（其中 5MB 被釋放掉了）</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF297D4D1-CEEB-449F-9D87-41750ECDAC9D.png?alt=media&amp;token=47628889-3661-4009-8d5e-e0e1cb367fe2" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>以目前範例，我們得知了作用域以及記憶體之間的關係，而記憶體管理也是前端工程師必要學習的一環（除了掌控用量，還要在必要時保留不被釋放），往後的章節還會介紹到如何透過保留函式記憶體的特性，建構特有的函式設計模式。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> development </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> javascript </tag>
-            
-            <tag> js </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
-      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
-      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
-<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
-<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
-<blockquote>
-<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> globalVariable = <span class="string">&#x27;全域變數&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  aFunction: <span class="function"><span class="keyword">function</span> (<span class="params">para</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> localVariables = <span class="string">&#x27;區域變數&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(para, localVariables, <span class="built_in">arguments</span>, <span class="built_in">this</span>, globalVariable);</span><br><span class="line">    <span class="comment">// 包含傳入的參數</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.aFunction(<span class="string">&#x27;一段描述&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
-<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
-<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
-<ul>
-<li><strong>para</strong>: 呼叫時傳入的參數。</li>
-<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
-<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
-<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
-<li>Global: 全域變數</li>
-</ul>
-<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
-<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
-<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
-<ol>
-<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
-<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(d, c, b, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
-<p>簡單的結論：</p>
-<ul>
-<li>參數名稱不會受到呼叫名稱影響</li>
-<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
-<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
-</ul>
-<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
-<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
-<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMoney</span>(<span class="params">money = <span class="number">1000</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`我有 <span class="subst">$&#123; money &#125;</span>`</span>); <span class="comment">// 我有 1000</span></span><br><span class="line">&#125;</span><br><span class="line">getMoney(); <span class="comment">// 不需要傳入參數</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
-<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
-<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
-<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
-<ul>
-<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
-<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
-</ul>
-<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callMore = <span class="function">(<span class="params">a, ...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
-<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
-<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
-<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionB</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">functionB(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>可以試著看看其中的參數是如何傳遞的</p>
-</blockquote>
-<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
 ]]></content>
       
         <categories>
@@ -708,6 +695,85 @@
             <tag> js </tag>
             
             <tag> courses </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
+      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
+      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
+<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
+<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
+<blockquote>
+<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> globalVariable = <span class="string">&#x27;全域變數&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  aFunction: <span class="function"><span class="keyword">function</span> (<span class="params">para</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> localVariables = <span class="string">&#x27;區域變數&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(para, localVariables, <span class="built_in">arguments</span>, <span class="built_in">this</span>, globalVariable);</span><br><span class="line">    <span class="comment">// 包含傳入的參數</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.aFunction(<span class="string">&#x27;一段描述&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
+<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
+<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
+<ul>
+<li><strong>para</strong>: 呼叫時傳入的參數。</li>
+<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
+<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
+<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
+<li>Global: 全域變數</li>
+</ul>
+<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
+<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
+<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
+<ol>
+<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
+<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(d, c, b, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
+<p>簡單的結論：</p>
+<ul>
+<li>參數名稱不會受到呼叫名稱影響</li>
+<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
+<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
+</ul>
+<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
+<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
+<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMoney</span>(<span class="params">money = <span class="number">1000</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`我有 <span class="subst">$&#123; money &#125;</span>`</span>); <span class="comment">// 我有 1000</span></span><br><span class="line">&#125;</span><br><span class="line">getMoney(); <span class="comment">// 不需要傳入參數</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
+<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
+<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
+<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
+<ul>
+<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
+<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
+</ul>
+<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callMore = <span class="function">(<span class="params">a, ...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
+<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
+<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
+<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionB</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">functionB(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可以試著看看其中的參數是如何傳遞的</p>
+</blockquote>
+<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
             
         </tags>
         
