@@ -4,6 +4,82 @@
   
     
     <entry>
+      <title><![CDATA[透過練習題，摸熟 This 的運作]]></title>
+      <url>https://wcc723.github.io/development/2020/09/28/this-homework/</url>
+      <content type="html"><![CDATA[<p>JavaScript 的 this 會隨著調用的方式不同影響其指向的不同（ES6 的箭頭函式定義也會影響指向），網路上已經提供相當多的資源介紹 <code>this</code> 指向的觀念，本篇只著重在<strong>最常運用</strong>的物件方法調用做介紹，並且透過練習題的方式，帶大家一步一步認識 this 的指向。</p>
+<p>關於「物件方法調用」可以查看本文章：<a href="https://wcc723.github.io/javascript/2019/03/18/JS-THIS/">https://wcc723.github.io/javascript/2019/03/18/JS-THIS/</a></p>
+<h2 id="物件的方法調用（As-an-object-method）"><a href="#物件的方法調用（As-an-object-method）" class="headerlink" title="物件的方法調用（As an object method）"></a>物件的方法調用（As an object method）</h2><p>當函式是使用傳統的定義方式時（<code>function</code> 而不是 <code>()=&gt;</code>），並且只有在物件下調用時，請謹記以下這張圖的概念：如果是在物件下調用方法，<code>this</code> 會<strong>指向前一個物件</strong>；如果不是，大多情況會指向 <code>window</code>，指向 window 的 <code>this</code> 實戰中也不太會去用它，所以請避免調用指向 window 的 <code>this</code>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F57A365E4-97F6-447F-81FD-64F14313628F.png?alt=media&amp;token=2a9e436b-3096-4f40-a337-7f37ce30a4e4" alt=""></p>
+<p>一開始，先使用傳統函式定義 <code>getName</code> 的函式，以及定義一個 <code>myName</code> 的全域變數，等等我們會不斷地使用此函式及變數。</p>
+<p>等等的題目都會詢問 <code>console.log(this.myName)</code> 的結果為何：</p>
+<ul>
+<li>如果是全域，結果會顯示 “全域”</li>
+<li>如果是物件，則會是物件定義的 myName</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myName = <span class="string">&#x27;全域&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>好的，讓我們開始練習吧。</p>
+<h4 id="題目-1："><a href="#題目-1：" class="headerlink" title="題目 1："></a>題目 1：</h4><p>請問，以下的 getName 執行結果為：</p>
+<ol>
+<li><code>&#39;全域&#39;</code></li>
+<li><code>&#39;小明&#39;</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> myName = <span class="string">&#x27;全域&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 主要程式碼</span></span><br><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  getName: getName</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Ming.getName();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>本題答案為 2. <code>&#39;小明&#39;</code>，請謹記一個概念，傳統函式如何定義不會影響 this 的指向，會影響指向的只有調用方式，在此是在 <code>Ming</code> 下調用 <code>getName</code> 的方法，因此 this 會指向 <code>Ming</code>。</li>
+</ol>
+<h4 id="題目-2："><a href="#題目-2：" class="headerlink" title="題目 2："></a>題目 2：</h4><p>請問，以下的 getName 執行結果為：</p>
+<ol>
+<li><code>&#39;全域&#39;</code></li>
+<li><code>&#39;小明&#39;</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  getName: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Ming.getName();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>這題將 <code>getName</code> 函式直接定義在 <code>Ming</code> 的物件下，概念也與先前相同，不管如何定義，直接看是如何調用，所以本題結果依然是 2. <code>&#39;小明&#39;</code>。</li>
+</ol>
+<h4 id="題目-3："><a href="#題目-3：" class="headerlink" title="題目 3："></a>題目 3：</h4><p>請問，以下的 getName 執行結果為：</p>
+<ol>
+<li><code>&#39;全域&#39;</code></li>
+<li><code>&#39;小明&#39;</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myName = <span class="string">&#x27;全域&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 主要程式碼</span></span><br><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    getName();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Ming.fn();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>這題在外層調用 <code>fn()</code> 方法，內部再 “<strong>直接呼叫 getName 函式</strong>”，所以 函式的 <code>this</code> 是直接由 <code>getName();</code> 這個調用方式而定（請注意，在此調用的前方沒有任何的物件），這種調用方式會稱為 “simple call”（簡易呼叫），<code>this</code> 的指向為 window，結果會是 1. <code>&#39;全域&#39;</code>。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F73669559-911A-496E-8530-20202227BCE0.png?alt=media&amp;token=afd9c08f-7fee-40b2-bc02-f9beccd11c4a" alt=""></p>
+<h4 id="題目-4："><a href="#題目-4：" class="headerlink" title="題目 4："></a>題目 4：</h4><p>請問，以下的 getName 執行結果為：</p>
+<ol>
+<li><code>&#39;全域&#39;</code></li>
+<li><code>&#39;小明&#39;</code></li>
+<li><code>&#39;小明家&#39;</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myName = <span class="string">&#x27;全域&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 主要程式碼</span></span><br><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  family: &#123;</span><br><span class="line">    myName: <span class="string">&#x27;小明家&#x27;</span>,</span><br><span class="line">    getName: getName</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">&#125;;</span><br><span class="line">Ming.family.getName();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>本題又回到 “物件的方法調用”，只要檢視 <code>getName</code> 調用時前方的物件為何就可確認 <code>this</code> 的指向（<code>family 物件</code>），因此 this 指向為 family 結果為 3. <code>&#39;小明家&#39;</code>。</li>
+</ol>
+<h4 id="題目-5："><a href="#題目-5：" class="headerlink" title="題目 5："></a>題目 5：</h4><p>請問，以下的執行結果為：</p>
+<ol>
+<li><code>&#39;全域&#39;</code></li>
+<li><code>&#39;小明&#39;</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myName = <span class="string">&#x27;全域&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 主要程式碼</span></span><br><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">    &#125;, <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Ming.fn();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>本題的結果為：1. <code>&#39;全域&#39;</code><br>這題算是許多新手會遇到的錯誤，在物件內呼叫時如果出現立即函式、回呼函式（callback function）結果會有什麼變化？絕大數的情況下這類型都會指向 window，所以不建議在此類型下直接調用 <code>this</code>。</li>
+</ol>
+<h6 id="延伸說明：callback-function-指向不是全域的情況"><a href="#延伸說明：callback-function-指向不是全域的情況" class="headerlink" title="延伸說明：callback function 指向不是全域的情況"></a>延伸說明：callback function 指向不是全域的情況</h6><p>大多情況下 <code>callback function</code> 的 <code>this</code> 都會指向全域，但如果回呼函式的調用是在物件下，也會同樣會改變 this 的指向。不過這種情況相當少見，還是會建議避免在回呼函式中使用 <code>this</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myName = <span class="string">&#x27;全域&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span>(<span class="params">cb</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> obj = &#123;</span><br><span class="line">    myName: <span class="string">&#x27;fn 內的物件&#x27;</span>,</span><br><span class="line">    cb</span><br><span class="line">  &#125;</span><br><span class="line">  obj.cb();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fn(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<h4 id="題目-6：延伸題目，箭頭函式的指向"><a href="#題目-6：延伸題目，箭頭函式的指向" class="headerlink" title="題目 6：延伸題目，箭頭函式的指向"></a>題目 6：延伸題目，箭頭函式的指向</h4><p>請問，以下的執行結果為：</p>
+<ol>
+<li><code>&#39;全域&#39;</code></li>
+<li><code>&#39;小明&#39;</code></li>
+<li><code>&#39;小明家&#39;</code><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myName = <span class="string">&#x27;全域&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 主要程式碼</span></span><br><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  family: &#123;</span><br><span class="line">    myName: <span class="string">&#x27;小明家&#x27;</span>,</span><br><span class="line">    fn: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">      <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">      &#125;, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Ming.family.fn();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.</li>
+</ol>
+<p>本題結果為：3. <code>&#39;小明家&#39;</code><br>當遇到箭頭函式時，我會跟大家記住一句話：「箭頭函式沒有自己的 <code>this</code>」，因此其指向會是對應外層作用域的 <code>this</code>。</p>
+<p>本題的箭頭函式外層為 <code>fn</code> 函式，該函式的 <code>this</code> 指向 <code>family</code>，所以箭頭函式的 <code>this</code> 也同樣指向 <code>family</code>。而接下來我們也會繼續介紹關於「箭頭函式」的 <code>this</code> 喔。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[學好 this 前，先搞清楚 this 做什麼]]></title>
       <url>https://wcc723.github.io/development/2020/09/27/why-this/</url>
       <content type="html"><![CDATA[<p>過去到現在寫了很多 <code>this</code> 相關的文章，如果沒有實際運用過 <code>this</code> 的開發者可能會有疑惑「this 是不是只有在面試考題用到？」、「this 在實戰中會用到嗎？」、「為什麼要學 this？」。</p>
