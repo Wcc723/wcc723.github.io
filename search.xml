@@ -4,6 +4,89 @@
   
     
     <entry>
+      <title><![CDATA[箭頭函式常見陷阱題]]></title>
+      <url>https://wcc723.github.io/development/2020/09/29/arrow-homework/</url>
+      <content type="html"><![CDATA[<p>JavaScript ES6 以後加入了 ”箭頭函式“，就外觀看來它就像是一個縮寫，也因此許多新手會認為它是屬於傳統函式的縮寫形式；但其實不然，箭頭函式與傳統函式大不同，本篇僅列出最常見的 <code>this</code> 差異，並透過大量的範例題，並透過範例的方式讓新手避免踩到箭頭函式最常見的雷。</p>
+<h2 id="傳統函式的-this-問題"><a href="#傳統函式的-this-問題" class="headerlink" title="傳統函式的 this 問題"></a>傳統函式的 this 問題</h2><p>JS 中很常利用物件、方法的形式來建構組件，在物件中的方法也可透過 this 來取得物件中的其它屬性。</p>
+<p>不過傳統函式中 this 的指向是隨著呼叫的方式不同而定，以下方的範例來說預期會一一列出 “XXX 是小明的朋友”，但因爲列出陣列是使用 <code>forEach</code> 方法，其中包含了一個 callback function，所以指向也因此有所變化。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  friends: [<span class="string">&#x27;漂亮阿姨&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;小美&#x27;</span>],</span><br><span class="line">  getFriends() &#123;</span><br><span class="line">    <span class="built_in">this</span>.friends.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">friend</span>) </span>&#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;friend&#125;</span> 是 <span class="subst">$&#123;<span class="built_in">this</span>.myName&#125;</span> 的朋友`</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Ming.getFriends();</span><br></pre></td></tr></table></figure>
+<p>this 的指向因為外層的 <code>callback function</code> 而轉為 <code>全域</code>，所以最終的都列出 <code>undefined</code> 的結果。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F738B9A26-A52F-4D95-9D8E-C83492DA23B6.png?alt=media&amp;token=241603b6-180d-4aac-b975-2df1dfb0431b" alt=""></p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">漂亮阿姨 是 <span class="literal">undefined</span> 的朋友</span><br><span class="line">杰倫 是 <span class="literal">undefined</span> 的朋友</span><br><span class="line">小美 是 <span class="literal">undefined</span> 的朋友</span><br></pre></td></tr></table></figure>
+<h4 id="箭頭函式的解決辦法"><a href="#箭頭函式的解決辦法" class="headerlink" title="箭頭函式的解決辦法"></a>箭頭函式的解決辦法</h4><p>箭頭函式最大的特點就是沒有自己的 <code>this</code>，因此當箭頭函式中出現了 <code>this</code>，它則會指向外層的作用域所對應的 <code>this</code>。</p>
+<p>以下範例來 <code>this.myName</code> 的值就能夠正確指向此物件，迴圈的值也會如預期產生。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  friends: [<span class="string">&#x27;漂亮阿姨&#x27;</span>, <span class="string">&#x27;杰倫&#x27;</span>, <span class="string">&#x27;小美&#x27;</span>],</span><br><span class="line">  getFriends() &#123;</span><br><span class="line">    <span class="built_in">this</span>.friends.forEach(<span class="function"><span class="params">friend</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="string">`<span class="subst">$&#123;friend&#125;</span> 是 <span class="subst">$&#123;<span class="built_in">this</span>.myName&#125;</span> 的朋友`</span>);</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">Ming.getFriends();</span><br></pre></td></tr></table></figure></p>
+<p><strong>重點</strong>：因為箭頭函式沒有自己的 <code>this</code>，所以要找到箭頭函式的 <code>this</code> 指向時，可<strong>直接參考其外層作用域的 <code>this</code> 指向</strong>。關於 this 的指向可參考 <a href="https://wcc723.github.io/javascript/2019/03/18/JS-THIS/">this 與物件的關係</a>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F03840F0E-FD5A-40A8-9251-0C8F436066C4.png?alt=media&amp;token=48122365-c128-412f-9266-b93b6a6d2351" alt=""></p>
+<p>透過箭頭函式可不需要調整太多結構，就能使 <code>this</code> 的指向符合預期。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">漂亮阿姨 是 小明 的朋友</span><br><span class="line">杰倫 是 小明 的朋友</span><br><span class="line">小美 是 小明 的朋友</span><br></pre></td></tr></table></figure></p>
+<h2 id="箭頭函式的相關測驗"><a href="#箭頭函式的相關測驗" class="headerlink" title="箭頭函式的相關測驗"></a>箭頭函式的相關測驗</h2><p>只有看介紹，難以確定觀念是否正確，所以以下補上相關題目給大家練習練習。</p>
+<p>首先，外層都會先宣告 <code>myName = &#39;全域&#39;</code>，所以以下題目需了解最終 <code>this</code> 是指向全域或區域的變數。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> myName = <span class="string">&#x27;全域&#x27;</span>;</span><br></pre></td></tr></table></figure></p>
+<h4 id="題目-1"><a href="#題目-1" class="headerlink" title="題目 1"></a>題目 1</h4><p>以下的結果為：</p>
+<ol>
+<li>小明</li>
+<li>全域<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  fn() &#123;</span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">    &#125;, <span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Ming.fn();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>這題結構與一開始所介紹的其實是相同的，請記得箭頭函式沒有自己的 <code>this</code>，請向外層作用域尋找，因此會找到 <code>fn()</code> 這個傳統函式，在對應到 <code>Ming.fn()</code>，所以 <code>this</code> 會指向 <code>Ming</code>，結果為  1. 小明。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB786A949-221F-44C0-8597-AA8BC74644AA.png?alt=media&amp;token=2ca71688-74b3-4451-892b-2e9bb8ccfd09" alt=""></p>
+<h4 id="題目-2"><a href="#題目-2" class="headerlink" title="題目 2"></a>題目 2</h4><p>以下的結果為：</p>
+<ol>
+<li>小明</li>
+<li>全域<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  fn:<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Ming.fn();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>實戰中，如果物件內的方法會用到 <code>this</code>，都會避免將該方法使用箭頭函式來建立，因為此時的 <code>this</code> 指向是外層的作用域，相對來說外層的作用域將更難以確立。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEF14357E-56A2-4951-A7A0-C0973884BF50.png?alt=media&amp;token=77b8a6b9-0562-48f1-800c-efa4c54bb0f8" alt=""></p>
+<p>在此外層的作用域是直接對應全域，所以此題的結果為 2. 全域。</p>
+<h4 id="題目-3"><a href="#題目-3" class="headerlink" title="題目 3"></a>題目 3</h4><p>以下的結果為：</p>
+<ol>
+<li>小明</li>
+<li>全域<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  family: &#123;</span><br><span class="line">    myName: <span class="string">&#x27;小明家&#x27;</span>,</span><br><span class="line">    fn: <span class="function">()=&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Ming.family.fn();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>此題的概念與上一題相同，雖然物件有多個層級，但在此也是直接查找最外層的最用域 <code>this</code> 指向，因此答案依然為 2. 全域。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2CD0BA86-0356-439F-8FD2-129C6658492C.png?alt=media&amp;token=5174c287-f3f8-4293-8ef7-e6bf720e83ef" alt=""></p>
+<h4 id="題目-4"><a href="#題目-4" class="headerlink" title="題目 4"></a>題目 4</h4><p>以下的結果為：</p>
+<ol>
+<li>小明</li>
+<li>全域</li>
+<li>立即函式作用域<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> myName = <span class="string">&#x27;立即函式作用域&#x27;</span>;</span><br><span class="line">  <span class="keyword">var</span> Ming = &#123;</span><br><span class="line">    myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">    fn:<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">  Ming.fn();</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>這題是陷阱題，立即函式屬於 <code>simple call</code>，<code>this</code> 是指向全域。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(function () &#123;</span><br><span class="line">  console.log(this &#x3D;&#x3D;&#x3D; window); &#x2F;&#x2F; 立即函式的 this 與全域相同</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>因此本題的答案依然為 2. 全域。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FA5F41EC5-2C94-475A-85DE-3D0974F6F5D4.png?alt=media&amp;token=a7579b9d-df70-4882-8cd8-880a5e3e6354" alt=""></p>
+<h4 id="題目-5"><a href="#題目-5" class="headerlink" title="題目 5"></a>題目 5</h4><p>以下的結果為：</p>
+<ol>
+<li>小明</li>
+<li>全域<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  myName: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  family: &#123;</span><br><span class="line">    myName: <span class="string">&#x27;小明家&#x27;</span>,</span><br><span class="line">    fn: <span class="function">()=&gt;</span> &#123;</span><br><span class="line">      (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="built_in">this</span>.myName);</span><br><span class="line">      &#125;)();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Ming.family.fn();</span><br></pre></td></tr></table></figure>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>如果這題會錯可能是題目做太多被搞混了，請仔細思考一下這題的 <code>this</code> 由誰而定。</li>
+</ol>
+<p>本題的 <code>this</code> 是由立即函式決定，因此是指向 2. 全域。</p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>實戰中通常也不會那麼的複雜，只要清楚箭頭沒有自己的 <code>this</code>，外層的作用域 this 是什麼，它就是什麼。</p>
+<p>為了避免箭頭函式在實戰中出錯，可以有以下幾個方法：</p>
+<ul>
+<li>物件內的屬性方法避免使用箭頭函式定義</li>
+<li>箭頭函式外層的函式越單純越好，避免過度巢狀</li>
+<li>當使用箭頭函式，請先確認外層的 <code>this</code> 指向</li>
+</ul>
+<p>只要搞懂箭頭函式的 <code>this</code>，也就盡情的使用箭頭函式，並嘗試使用其縮寫來大幅減少程式碼喔。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[透過練習題，摸熟 This 的運作]]></title>
       <url>https://wcc723.github.io/development/2020/09/28/this-homework/</url>
       <content type="html"><![CDATA[<p>JavaScript 的 this 會隨著調用的方式不同影響其指向的不同（ES6 的箭頭函式定義也會影響指向），網路上已經提供相當多的資源介紹 <code>this</code> 指向的觀念，本篇只著重在<strong>最常運用</strong>的物件方法調用做介紹，並且透過練習題的方式，帶大家一步一步認識 this 的指向。</p>
