@@ -4,6 +4,90 @@
   
     
     <entry>
+      <title><![CDATA[AJAX 完整解說系列：基礎觀念]]></title>
+      <url>https://wcc723.github.io/development/2020/09/30/about-ajax/</url>
+      <content type="html"><![CDATA[<p>AJAX 全名是「Asynchronous JavaScript and XML」，在網頁上的功能主要是用於網頁前端與後端伺服器溝通的技術，也如同名稱一樣是透過 JavaScript 的非同步技術，在前端工程師中算是一個挑戰門檻，如果沒有此技能則難與不同領域開發者溝通，也因此在前端求職市場中趨近於<strong>基本必備技能</strong>。</p>
+<p>相對於其它觀念來說，AJAX 因為需要與後端伺服器介接，許多開發者因為沒有此資源，也找尋不到合適的練習資源，所以難以透過網路文章、自行練習習得此技能，本篇則透過網路免費資源、六角課程資源與大家分享 AJAX 的實戰觀念。</p>
+<p>本系列會分成三篇：</p>
+<ul>
+<li>基礎觀念</li>
+<li>AJAX 到底夾帶了哪些資料</li>
+<li>實戰除錯</li>
+</ul>
+<h2 id="AJAX-圖解說明"><a href="#AJAX-圖解說明" class="headerlink" title="AJAX 圖解說明"></a>AJAX 圖解說明</h2><p>AJAX 網路上的文章非常多，本系列不會過多著墨在程式碼上的說明，主要原因是大多教學都是以 XHR 開始進行教學，對於基礎觀念來說非常不錯，但實戰中基本上不會看到 XHR 的字眼，也不會利用這個語法進行串接，而是依據不同的工具、框架選用合適的 AJAX 非同步套件進行運用。</p>
+<p>首先必須知道 AJAX 整體是由哪幾個部分組成的，這幾個角色中絕少不了前端網頁、後端伺服器以及不一定出場的資料庫。在這之中網頁僅需要與伺服器溝通，資料庫會由伺服器搞定，網頁前端可以佔不需要理會資料庫。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FFD0071B6-02B6-4655-8411-318E9D0EB079.png?alt=media&amp;token=dc001ccf-3682-400e-820c-2f3d8f15454d" alt=""></p>
+<p>除了前後端的實體以外，在進行 AJAX 之前再來認識幾個專有名詞，分別是 API、請求、回應。</p>
+<h4 id="API-接口："><a href="#API-接口：" class="headerlink" title="API 接口："></a>API 接口：</h4><p>所有的 AJAX 都會有對應的 API 接口，API 的接口就是一段網址，不同的網址也對應不同的「HTTP 請求方法」（請求方法會在後面的段落進行介紹），<strong>請求方法必須與網址</strong>完全對應才可運作。</p>
+<blockquote>
+<p>API 接口就如同點餐的櫃檯，依據用戶想要點的品項、餐點選擇不同的櫃檯。</p>
+</blockquote>
+<h4 id="網頁端請求"><a href="#網頁端請求" class="headerlink" title="網頁端請求"></a>網頁端請求</h4><p>AJAX 會統一由網頁端發出請求（無論是為了新增資源或取得資源都一律由網頁端發起），依據不同的接口、請求方法進行請求，而伺服器會依據請求的方法、內容來進行回應。</p>
+<blockquote>
+<p>請求就如同點餐的顧客，會先說明想要什麼樣的餐點、客製化需求、詢問品項細節等抖。</p>
+</blockquote>
+<h4 id="伺服器回應"><a href="#伺服器回應" class="headerlink" title="伺服器回應"></a>伺服器回應</h4><p>當收到請求後，伺服器會依據請求的方法、內容與資料庫取得資源並統整過濾後進行回應。</p>
+<blockquote>
+<p>回應是櫃台服務員對於顧客端的回應，如：點餐內容可被接受則加入購物車，如果點餐錯誤則給予顧客適當的回報。</p>
+</blockquote>
+<p>所有的 AJAX 行為都是由網頁端先發出，透過 API 的接口對後端進行請求，而後端會針對請求的內容進行回應，運作上可參考下圖：</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF28A52EE-54A6-4976-880E-B1141029419B.png?alt=media&amp;token=abcf266f-71fa-4381-8ac9-6a9bf70ee6b1" alt=""></p>
+<h2 id="關於-HTTP-請求方法"><a href="#關於-HTTP-請求方法" class="headerlink" title="關於 HTTP 請求方法"></a>關於 HTTP 請求方法</h2><p>所有的 API 都有對應的 HTTP 請求方法（request methods），方法與 API 完全一致時，後端才能依據請求回應資源；反之，方法與 API 無法對應時就會出現錯誤（404 找不到路徑）。</p>
+<p>常見的請求方法如下：</p>
+<ul>
+<li>GET：請求特定的資源，不會提交任何資源，伺服器僅會依據條件進行回應。</li>
+<li>POST：提交特定的資源，通常會用來新增資源或是用以改變狀態使用（登入、註冊等等）。 -&gt; 伺服器會回應新增或改變狀態的結果。</li>
+<li>PUT：取代指定的資源，通常用於完整更新。 -&gt; 伺服器會回應更新的結果。</li>
+<li>PATCH：更新指定資源，通常用於部分資源更新。 -&gt; 伺服器會回應更新的結果。</li>
+<li>DELETE：刪除特定的資源。 -&gt; 伺服器會回應刪除的結果。</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FDA26DC22-A234-48AC-BDE7-AF2B84BCC5B9.png?alt=media&amp;token=35324e0e-82bb-4c4b-a9a8-97063a27943d" alt=""></p>
+<p>HTTP 的方法雖然很多，每個方法功能也略有不同，但在此不需要熟記，API 的文件中大多都會詳述可用的方法，僅需要從字面概略了解其用途即可。</p>
+<h2 id="實際來發送一個請求試試看吧"><a href="#實際來發送一個請求試試看吧" class="headerlink" title="實際來發送一個請求試試看吧"></a>實際來發送一個請求試試看吧</h2><p>如同本文一開始所述，AJAX 雖然教學資源很多，但實際可用於練習的環境並不多，而本文章是使用 <a href="https://jsonplaceholder.typicode.com/">jsonplaceholder</a> 服務進行介紹，此服務有以下特點：</p>
+<ul>
+<li>具有公開 API 說明文件：<a href="https://jsonplaceholder.typicode.com/guide/">https://jsonplaceholder.typicode.com/guide/</a></li>
+<li>包含所有常見的 API 及 HTTP 方法（新增、修改、刪除皆有）</li>
+<li>提供範例程式碼</li>
+</ul>
+<p>雖然看似非常完整，但最<strong>美中不足：實際資料無法被更動</strong>（新增、修改、刪除無法作用，僅會回傳成功），所以在練習上會難以體驗到自己資料被寫入資料庫的成就 :(</p>
+<p>但就練習上來說，此 API 已經可作為基礎 AJAX 練習使用。</p>
+<p>接下來，我們會使用 <a href="https://github.com/axios/axios">axios</a> 以 Promise 為基礎的 AJAX 套件，因為 AJAX 屬於非同步行為，在 ES6 以後都會建議以 Promise 的語法進行串接，如果對於 Promise 有興趣可參考此 <a href="https://wcc723.github.io/development/2020/02/16/all-new-promise/">文章</a>。</p>
+<p>接下來我們就準備好要發出請求的資源：</p>
+<ul>
+<li>API 來源：<a href="https://jsonplaceholder.typicode.com">https://jsonplaceholder.typicode.com</a></li>
+<li>axios cdn：<code>https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js</code></li>
+</ul>
+<p>那麼，就開始著手來發出請求吧。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">axios.get(<span class="string">&#x27;https://jsonplaceholder.typicode.com/posts/1&#x27;</span>)</span><br><span class="line">  .then(<span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(res);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>寫完惹。</p>
+<p>雖然本系列文章很長，但其實 AJAX 複雜的並非是程式碼本身，而是其背後運作的原理，在上述的程式碼中就完整包含了：</p>
+<ul>
+<li>HTTP 請求方法：<code>get</code></li>
+<li>API 路徑：<code>https://jsonplaceholder.typicode.com/posts/1</code></li>
+<li>伺服器回應：<code>.then((res) =&gt; &#123; /* ... */ &#125;)</code></li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5E1504B8-B7D0-47BF-8497-9FFDCDE5D65A.png?alt=media&amp;token=9e4fdbd8-1184-4723-8e71-afebb37b540e" alt=""></p>
+<p>範例程式碼：<br><a href="https://codepen.io/Wcc723/pen/YzqMpNR?editors=1010">https://codepen.io/Wcc723/pen/YzqMpNR?editors=1010</a></p>
+<p>已經有了基礎觀念後，接下來要繼續了解更深入 AJAX 觀念，讓我們繼續往下吧～</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[箭頭函式常見陷阱題]]></title>
       <url>https://wcc723.github.io/development/2020/09/29/arrow-homework/</url>
       <content type="html"><![CDATA[<p>JavaScript ES6 以後加入了 ”箭頭函式“，就外觀看來它就像是一個縮寫，也因此許多新手會認為它是屬於傳統函式的縮寫形式；但其實不然，箭頭函式與傳統函式大不同，本篇僅列出最常見的 <code>this</code> 差異，並透過大量的範例題，並透過範例的方式讓新手避免踩到箭頭函式最常見的雷。</p>
@@ -504,6 +588,85 @@
     </entry>
     
     <entry>
+      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
+      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
+      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
+<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
+<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
+<blockquote>
+<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> globalVariable = <span class="string">&#x27;全域變數&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  aFunction: <span class="function"><span class="keyword">function</span> (<span class="params">para</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> localVariables = <span class="string">&#x27;區域變數&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(para, localVariables, <span class="built_in">arguments</span>, <span class="built_in">this</span>, globalVariable);</span><br><span class="line">    <span class="comment">// 包含傳入的參數</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.aFunction(<span class="string">&#x27;一段描述&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
+<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
+<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
+<ul>
+<li><strong>para</strong>: 呼叫時傳入的參數。</li>
+<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
+<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
+<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
+<li>Global: 全域變數</li>
+</ul>
+<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
+<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
+<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
+<ol>
+<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
+<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(d, c, b, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
+<p>簡單的結論：</p>
+<ul>
+<li>參數名稱不會受到呼叫名稱影響</li>
+<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
+<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
+</ul>
+<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
+<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
+<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMoney</span>(<span class="params">money = <span class="number">1000</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`我有 <span class="subst">$&#123; money &#125;</span>`</span>); <span class="comment">// 我有 1000</span></span><br><span class="line">&#125;</span><br><span class="line">getMoney(); <span class="comment">// 不需要傳入參數</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
+<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
+<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
+<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
+<ul>
+<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
+<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
+</ul>
+<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callMore = <span class="function">(<span class="params">a, ...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
+<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
+<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
+<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionB</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">functionB(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可以試著看看其中的參數是如何傳遞的</p>
+</blockquote>
+<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班]]></title>
       <url>https://wcc723.github.io/development/2020/09/22/javascript-training-1st/</url>
       <content type="html"><![CDATA[<p>2020 年 9 月 20 日是 「JavaScript 作品實戰直播班」開班滿三個月的時間，也同時是本課程最後一天的繳交期限，同學們在家中努力趕工最終作品，而我在電腦前準備這份心得。</p>
@@ -854,85 +1017,6 @@
             <tag> js </tag>
             
             <tag> courses </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
-      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
-      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
-<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
-<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
-<blockquote>
-<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> globalVariable = <span class="string">&#x27;全域變數&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  aFunction: <span class="function"><span class="keyword">function</span> (<span class="params">para</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> localVariables = <span class="string">&#x27;區域變數&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(para, localVariables, <span class="built_in">arguments</span>, <span class="built_in">this</span>, globalVariable);</span><br><span class="line">    <span class="comment">// 包含傳入的參數</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.aFunction(<span class="string">&#x27;一段描述&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
-<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
-<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
-<ul>
-<li><strong>para</strong>: 呼叫時傳入的參數。</li>
-<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
-<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
-<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
-<li>Global: 全域變數</li>
-</ul>
-<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
-<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
-<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
-<ol>
-<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
-<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(d, c, b, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
-<p>簡單的結論：</p>
-<ul>
-<li>參數名稱不會受到呼叫名稱影響</li>
-<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
-<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
-</ul>
-<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
-<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
-<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMoney</span>(<span class="params">money = <span class="number">1000</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`我有 <span class="subst">$&#123; money &#125;</span>`</span>); <span class="comment">// 我有 1000</span></span><br><span class="line">&#125;</span><br><span class="line">getMoney(); <span class="comment">// 不需要傳入參數</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
-<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
-<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
-<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
-<ul>
-<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
-<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
-</ul>
-<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callMore = <span class="function">(<span class="params">a, ...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
-<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
-<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
-<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionB</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">functionB(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>可以試著看看其中的參數是如何傳遞的</p>
-</blockquote>
-<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> development </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> javascript </tag>
-            
-            <tag> js </tag>
             
         </tags>
         
