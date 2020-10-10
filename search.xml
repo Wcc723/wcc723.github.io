@@ -4,6 +4,199 @@
   
     
     <entry>
+      <title><![CDATA[Bootstrap 5 格線的運作原理]]></title>
+      <url>https://wcc723.github.io/development/2020/10/10/bootstrap-5-grid-whats-new/</url>
+      <content type="html"><![CDATA[
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha2/css/bootstrap-grid.min.css">
+<style>
+.box {
+  height: 100px;
+  background-color: #69F0AE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+
+<p>Bootstrap 4 中我經常會建議學員不要自行調整水平間距，因為在不熟悉的情況下這可能會造成許多額外的問題，常見的情況有：</p>
+<ul>
+<li>整體的格線風格不一致</li>
+<li>格線左右無法對齊</li>
+<li>可能會產生水平捲軸</li>
+</ul>
+<p>這些錯誤容易被細心的使用者發現，對整體的網站造成不好的印象。而這個問題在 Bootstrap 5 獲得了改善，並且有大幅度的優化（僅產生少量的 CSS 就能達到數十種變化），如果熟悉自行編譯的方式，甚至可以自訂網站合適的間距，就讓我們來看看 BS5 的格線概念吧！</p>
+<h2 id="可自行調整的間距（gutters）"><a href="#可自行調整的間距（gutters）" class="headerlink" title="可自行調整的間距（gutters）"></a>可自行調整的間距（gutters）</h2><p>Bootstrap 4 中主要是透過 <code>.row</code>, <code>form-row</code> 以及加入 <code>no-gutters</code> 來控制格線的間距，在這幾個搭配下主要會產生三種間距的距離，分別是 <code>30px</code>、<code>10px</code>、<code>0px</code>，在大部分情境這幾種就已經足夠使用，但偏偏網站開發就是需要那些不足夠的部分。</p>
+<p>Bootstrap 5 加入新的 Gutters 概念，是使用 <code>g*-*</code> 來設定格線的間距（文檔可<a href="https://v5.getbootstrap.com/docs/5.0/layout/gutters/#row-columns-gutters">參考</a>），其中：</p>
+<ul>
+<li>前者的 *：標示 x 軸或 y 軸的水平或垂直空間，也可以省略表示 “垂直及水平”。</li>
+<li>後者的 *：標示 0 ~ 5 的數值表示距離，數值越大間距越大。</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_9_%E4%B8%8B%E5%8D%882_50.png?alt=media&amp;token=81fc250c-2b77-40ec-b947-1b2bea6f3018" alt=""></p>
+<p><code>g*-*</code> 只需要加入到格線中的 <code>.row</code> 層級，其內部的 <code>.col-*</code> 不需要另外的調整就可以運作；也因為新的 Gutters 概念，原有的 <code>.no-gutters</code> 及 <code>.form-row</code> 在第五版都被移除了，接下來就透過實際案例來介紹運用方法吧。</p>
+<p>開始前，先定義一個方塊作為內容，高度 100px、寬度不限，接下來由格線決定的方塊的寬度、位置，方塊的原始碼及實際呈現如下。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">height</span>: <span class="number">100px</span>;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#69F0AE</span>;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<div class="demo">
+  <div class="box"></div>
+</div>
+
+<blockquote>
+<p>等等會一直看到這個方塊，此<strong>方塊所代表的就是內容</strong>。</p>
+</blockquote>
+<p>過去，會定義 <code>.row &gt; .col-*</code> 的格線結構，Bootstrap 5 中只需要將上述的 <code>g*-*</code> 加入到 <code>.row</code> 即可，以下範例中就加入了水平(<code>x</code>)的間距，分別是 5 以及 1 兩種不同尺寸。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row gx-5&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row gx-1&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>gx-*</code> 所加入的間距不會像過去一樣影響格線的運作，並且能夠與不使用格線的物件左右對齊。</p>
+
+<div class="demo">
+<div class="box">沒有使用格線的物件</div>
+<hr>
+<div class="row gx-5">
+  <div class="col">
+    <div class="box">使用 gx-5 的區塊</div>
+  </div>
+  <div class="col">
+    <div class="box"></div>
+  </div>
+</div>
+<hr>
+<div class="row gx-1">
+  <div class="col">
+    <div class="box">使用 gx-1 的區塊</div>
+  </div>
+  <div class="col">
+    <div class="box"></div>
+  </div>
+</div>
+</div> 
+
+<h3 id="Bootstrap-5-如何實作這個概念？"><a href="#Bootstrap-5-如何實作這個概念？" class="headerlink" title="Bootstrap 5 如何實作這個概念？"></a>Bootstrap 5 如何實作這個概念？</h3><p>套用了 <code>g*-*</code> 概念以後，Bootstrap 會不會變得很肥大？</p>
+<p>在原有的 CSS 概念中，如果要調整外層、內層的樣式時，就需要每個元素都設定樣式才可運作，在此同時操作了 <code>.row</code> 及 <code>.col-*</code>，尤其是 <code>.col-*</code> 又有數十種變化型，一一套用的情況下檔案不就肥死。</p>
+<p>Bootstrap 5 在此巧妙了使用變數的技巧，透過變數的階層控制，就不需要一一覆蓋所有的樣式。</p>
+<p>在此提供另一個範例程式碼來進行介紹：</p>
+<ul>
+<li>外層由 <code>.casper</code>, <code>.ming</code> 來設定變數值。</li>
+<li>內層直接使用 <code>var(--bg-color)</code> <strong>取得外層的變數</strong>。</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.casper</span> &#123;</span><br><span class="line">  <span class="attribute">--bg-color</span>: orange;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.ming</span> &#123;</span><br><span class="line">  <span class="attribute">--bg-color</span>: skyblue;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.custom-box</span> <span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">var</span>(--bg-color);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>這種方式內層就不需要一一定義，僅需要調整外層的變數值即可套用至內層，當需要調整的樣式較多時就可使用此技巧。</p>
+
+<style>
+.casper {
+  --bg-color: orange;
+}
+.ming {
+  --bg-color: skyblue;
+}
+.custom-box .box {
+  background-color: var(--bg-color);
+}
+</style>
+<div class="demo">
+  <div class="box">原始的 .box</div>
+  <hr>
+  <div class="casper custom-box">
+    <div class="box">外層為 .casper 的 box</div>
+  </div>
+  <div class="ming custom-box">
+    <div class="box">外層為 .ming 的 box</div>
+  </div>
+</div>
+
+<h2 id="Gutters-更多的延伸運用"><a href="#Gutters-更多的延伸運用" class="headerlink" title="Gutters 更多的延伸運用"></a>Gutters 更多的延伸運用</h2><p>既然有了變數的加持，再多的間距也不用太擔心，因此 Bootstrap 5 所提供的預設間距變化型分別如下：</p>
+<p>方向性的調整：</p>
+<ul>
+<li><code>x</code>：水平空間</li>
+<li><code>y</code>：垂直空間</li>
+<li><code></code>：不填值的上右下左四個方向</li>
+</ul>
+<p>距離的調整：</p>
+<ul>
+<li>0：沒有間距</li>
+<li>1 ~ 5：由小至大的不同距離</li>
+</ul>
+<p>所以除了水平空間外，也可以統一為了所有元素加入垂直空間，參考如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row gy-2&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-6&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>透過此方式就不需要為內層的元素一一加上 <code>.my-2</code>（用過 Bootstrap 4 相信都能理解這是一件麻煩的事情）。</p>
+
+<div class="demo">
+  <div class="row gy-2">
+    <div class="col-6">
+      <div class="box"></div>
+    </div>
+    <div class="col-6">
+      <div class="box"></div>
+    </div>
+    <div class="col-6">
+      <div class="box"></div>
+    </div>
+    <div class="col-6">
+      <div class="box"></div>
+    </div>
+  </div>
+</div>
+
+<p>或者，可以直接為垂直、水平加入相同的間距。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row g-2&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-6&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span> </span><br></pre></td></tr></table></figure>
+<p>在過去要達到垂直、水平間距相同是相對麻煩的事情，但現在版本就簡單許多囉。</p>
+
+<div class="demo">
+  <div class="row g-2">
+    <div class="col-6">
+      <div class="box"></div>
+    </div>
+    <div class="col-6">
+      <div class="box"></div>
+    </div>
+    <div class="col-6">
+      <div class="box"></div>
+    </div>
+    <div class="col-6">
+      <div class="box"></div>
+    </div>
+  </div> 
+</div>
+
+<p>如果只需要格線但不要間距，就可套用 <code>g-0</code> 移除所有的間距。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;row g-0 border&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;col-sm-6 col-md-8&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  ...</span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>在此版本也移除了 <code>no-gutters</code>，直接使用 <code>g-0</code> 這個神奇的 className 進行取代。</p>
+
+<style>
+.border .box {
+  border: 1px solid #4bc187;
+}
+</style>
+<div class="demo">
+  <div class="row g-0 border">
+    <div class="col-sm-6 col-md-8"><div class="box">1</div></div>
+    <div class="col-6 col-md-4"><div class="box">2</div></div>
+  </div>
+</div>
+
+<h3 id="如果想要更多的間距怎麼辦"><a href="#如果想要更多的間距怎麼辦" class="headerlink" title="如果想要更多的間距怎麼辦"></a>如果想要更多的間距怎麼辦</h3><p>Bootstrap 4 以後都很強調自己是可以被客製的，在官方的文檔中也有提供調整 <code>Gutters</code> 的<a href="https://v5.getbootstrap.com/docs/5.0/layout/gutters/#change-the-gutters">說明文件</a>，如果覺得這些 Gutters 太多、太少、間距不夠大，都可以隨意地增減。</p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$grid-gutter-width</span>: <span class="number">1.5rem</span>;</span><br><span class="line"><span class="variable">$gutters</span>: (</span><br><span class="line">  <span class="number">0</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="number">1</span>: <span class="variable">$spacer</span> * .<span class="number">25</span>,</span><br><span class="line">  <span class="number">2</span>: <span class="variable">$spacer</span> * .<span class="number">5</span>,</span><br><span class="line">  <span class="number">3</span>: <span class="variable">$spacer</span>,</span><br><span class="line">  <span class="number">4</span>: <span class="variable">$spacer</span> * <span class="number">1.5</span>,</span><br><span class="line">  <span class="number">5</span>: <span class="variable">$spacer</span> * <span class="number">3</span>,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>如果對於客製化 Bootstrap 有興趣，也可以參考<a href="https://wcc723.github.io/development/2020/10/08/custom-bootstrap-style/">本篇文章</a>。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> bootstrap </tag>
+            
+            <tag> scss </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[怎樣也不會失手的 Bootstrap 格線運用技巧]]></title>
       <url>https://wcc723.github.io/development/2020/10/09/bootstrap-grid/</url>
       <content type="html"><![CDATA[
