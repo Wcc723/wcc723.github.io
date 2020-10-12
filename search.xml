@@ -4,6 +4,194 @@
   
     
     <entry>
+      <title><![CDATA[純 CSS 毛玻璃特效 - backdrop-filter 屬性介紹]]></title>
+      <url>https://wcc723.github.io/development/2020/10/12/frosted-glass/</url>
+      <content type="html"><![CDATA[<p>幾年前的 iOS、MacOS 更新以後，毛玻璃視覺效果越來越受到許多人喜愛，在使用毛玻璃以前，背景與主要的畫面區塊的風格整合是一件麻煩的事情，除了畫面的協調性外，還要維持資訊的傳達性。而毛玻璃可以讓背景的畫面霧化，凸顯上層的主要資訊，並讓背景與整體不致於產生衝突感。</p>
+<p>網頁在套用毛玻璃的特效流程近年有大幅的簡化，過去在線上有介紹過 <a href="https://www.youtube.com/watch?v=SmFxwLRSulM">純 CSS 的毛玻璃</a>的技法，是透過多層的偽元素搭配 <code>filter</code> 的模糊效果完成，開發的程式碼繁雜，運作上也有許多的限制。不過在 2019 推出了新的 CSS 語法，毛玻璃的特效僅需要一個短短屬性就可達成，讓我們一起來看看怎麼做吧。</p>
+
+<style>
+.demo {
+  padding: 30px
+}
+.box {
+  height: 400px !important;
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, .15);
+}
+.object-cover {
+  object-fit: cover;
+}
+.background-cover {
+  background-position: center center;
+  background-size: cover;
+}
+.object-bottom {
+  object-position: right bottom;
+}
+</style>
+
+<p>這是本文會使用到的圖片，圖片來自於 Unsplash，如果失連歡迎與我聯絡。</p>
+
+<img no-lazy src="https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80" alt=""> 
+
+<h2 id="偽元素-Filter-的做法"><a href="#偽元素-Filter-的做法" class="headerlink" title="偽元素 + Filter 的做法"></a>偽元素 + Filter 的做法</h2><p>在新的語法推出以前，純 CSS 製作毛玻璃特效僅有此方法，原理：</p>
+<ol>
+<li>將上層區塊中加入一個與背景相同的圖片</li>
+<li>上層區塊內的圖片尺寸需超過該區塊</li>
+<li>將區塊內的圖片轉為模糊</li>
+</ol>
+<p>原始碼及說明：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.filter</span><span class="selector-class">.box</span> &#123;</span><br><span class="line">  <span class="attribute">position</span>: relative;</span><br><span class="line">  <span class="comment">/* 裁切多餘區域 */</span></span><br><span class="line">  <span class="attribute">overflow</span>: hidden;</span><br><span class="line">  <span class="comment">/* 加入 z-index，區塊內的文字才能正確顯示 */</span></span><br><span class="line">  <span class="attribute">z-index</span>: <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.filter</span><span class="selector-class">.box</span><span class="selector-pseudo">:after</span>&#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="attribute">background-position</span>: center center;</span><br><span class="line">  <span class="attribute">background-size</span>: cover;</span><br><span class="line">  <span class="attribute">position</span>: absolute;</span><br><span class="line">  <span class="comment">/* 圖片需超過外層的區塊 */</span></span><br><span class="line">  <span class="attribute">top</span>: -<span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">bottom</span>: -<span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">left</span>: -<span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">right</span>: -<span class="number">30px</span>;</span><br><span class="line">  <span class="attribute">background-image</span>: <span class="built_in">url</span>(https://images.unsplash.com/photo-<span class="number">1602251627070</span>-<span class="number">6</span>a9bab4e420e?ixlib=rb-<span class="number">1.2</span>.<span class="number">1</span>&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=crop&amp;w=<span class="number">1355</span>&amp;q=<span class="number">80</span>);</span><br><span class="line">  <span class="comment">/* 加入模糊 */</span></span><br><span class="line">  <span class="attribute">filter</span>: <span class="built_in">blur</span>(<span class="number">5px</span>);</span><br><span class="line">  <span class="attribute">z-index</span>: -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+<style>
+.filter.box {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.filter.box:after{
+  content: "";
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  top: -30px;
+  bottom: -30px;
+  left: -30px;
+  right: -30px;
+  background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80);
+  filter: blur(5px);
+  z-index: -1;
+}
+</style>
+
+實際運作範例：
+
+<div class="demo background-cover" style="background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80)">
+  <div class="box filter">
+    毛玻璃特效 by filter
+  </div>
+</div>
+
+<p>這個手法兩層的圖片必須完全相同，所以作為背景的區塊無法有任何的其它元素。</p>
+<h2 id="backdrop-filter，一行就能搞定"><a href="#backdrop-filter，一行就能搞定" class="headerlink" title="backdrop-filter，一行就能搞定"></a>backdrop-filter，一行就能搞定</h2><p>在 Chrome 76 版加入的新屬性 <code>backdrop-filter</code>，此屬性能夠將區塊內的背景統一加入特效，此語法就不需要用到偽元素，僅需要短短的一行即可搞定。</p>
+<p>範例程式碼（就這樣而已）：<br><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.backdrop-blur</span> &#123;</span><br><span class="line">  <span class="attribute">backdrop-filter</span>: <span class="built_in">blur</span>(<span class="number">5px</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>實際範例，不管背景圖如何，區塊內的 <code>backdrop-filter</code> 都能夠將背景加入特效。<br>
+<style>
+.backdrop-blur {
+  backdrop-filter: blur(5px);
+}
+</style> 
+
+<div class="demo background-cover" style="background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80)">
+  <div class="box backdrop-blur">
+    毛玻璃特效 by backdrop-filter
+  </div>
+</div>
+</p>
+<p><code>backdrop-filter</code> 具有許多特點，除了能夠將圖片加上特效外，更嚴格來說它是將<strong>整個區塊</strong>加上特效，只要在套用的區塊下都能運作。以下範例來說，於底部加上了一段文字，在 <code>hover</code> 後的視覺效果也能套用 <code>backdrop-filter</code> 的特效（在此使用 <code>invert</code>）。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="selector-tag">style</span>&gt;</span><br><span class="line"><span class="selector-class">.backdrop-invert</span> &#123;</span><br><span class="line">  <span class="attribute">transition</span>: <span class="number">1s</span> all;</span><br><span class="line">&#125;</span><br><span class="line"><span class="selector-class">.backdrop-invert</span><span class="selector-pseudo">:hover</span> &#123;</span><br><span class="line">  <span class="attribute">background-color</span>: <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, .<span class="number">25</span>);</span><br><span class="line">  <span class="attribute">backdrop-filter</span>: <span class="built_in">invert</span>(<span class="number">80%</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<style>
+.absolute {
+  position: absolute;
+  color: white;
+  text-align: center;
+  left: 0;
+  right: 0;
+}
+.backdrop-invert {
+  transition: 1s all;
+}
+.backdrop-invert:hover {
+  background-color: rgba(0, 0, 0, .25);
+  backdrop-filter: invert(80%);
+}
+</style> 
+
+<div class="demo background-cover" style="background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80)">
+  <div class="absolute">
+  <h2>底層有其它的文字</h2>
+  </div>
+  <div class="box backdrop-invert">
+    請用滑鼠 Hover 過此區塊 
+  </div>
+</div>
+
+<h2 id="更多-backdrop-filter"><a href="#更多-backdrop-filter" class="headerlink" title="更多 backdrop-filter"></a>更多 backdrop-filter</h2><p><code>backdrop-filter</code> 除了毛玻璃以外，亦有包含非常多的特效（就如同 Photoshop 一樣），語法列表如下：</p>
+<ul>
+<li>blur: 模糊（毛玻璃就是你～）</li>
+<li>brightness: 明度</li>
+<li>contrast: 對比度</li>
+<li>drop-shadow: 陰影</li>
+<li>grayscale: 灰階</li>
+<li>hue-rotate: 色相</li>
+<li>invert: 反轉</li>
+<li>opacity: 透明度</li>
+<li>sepia: 棕褐色</li>
+<li>saturate: 飽和度</li>
+</ul>
+<p>這裡也提供簡單的工具，便於大家瀏覽所有的特效效果。</p>
+
+<label for="backdrop-filter">特效選單：</label>
+<select name="" id="backdrop-filter">
+  <option value="" disabled selected>-- 請選擇特效 --</option>
+  <option value="blur(5px)">模糊 blur</option>
+  <option value="brightness(60%)">明度 brightness</option>
+  <option value="contrast(80%)">對比度 contrast</option>
+  <option value="drop-shadow(4px 4px 10px black)">陰影 drop-shadow</option>
+  <option value="grayscale(50%)">灰階 grayscale</option>
+  <option value="hue-rotate(120deg)">色相 hue-rotate</option>
+  <option value="invert(70%)">反轉 invert</option>
+  <option value="opacity(60%)">透明度 opacity</option>
+  <option value="sepia(80%)">棕褐色 sepia</option>
+  <option value="saturate(80%)">飽和度 saturate</option>
+</select>
+<div class="demo background-cover" style="background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80)">
+  <div class="absolute">
+  <h2>底層有其它的文字</h2>
+  </div>
+  <div class="box" style="background-color: rgba(0, 0, 0, .3)" id="custom-backdrop">
+    目前套用的效果為：<span id="backdrop-text">無</span>
+  </div>
+</div>
+<script>
+const customBackdrop = document.querySelector('#custom-backdrop');
+const backdropSelect = document.querySelector('#backdrop-filter');
+const backdropText = document.querySelector('#backdrop-text')
+let backdrop = '';
+backdropSelect.addEventListener('change', function() {
+  const style = this.value;
+  console.log(style);
+  customBackdrop.style.backdropFilter = style;
+  backdropText.innerText = style;
+});
+</script>
+
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+            <tag> bootstrap </tag>
+            
+            <tag> scss </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[新手前端也不該犯的錯：圖片變形]]></title>
       <url>https://wcc723.github.io/development/2020/10/11/img-cover/</url>
       <content type="html"><![CDATA[<p>網頁常見錯誤的之一：圖片比例變形</p>
@@ -1472,6 +1660,85 @@
     </entry>
     
     <entry>
+      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
+      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
+      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
+<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
+<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
+<blockquote>
+<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> globalVariable = <span class="string">&#x27;全域變數&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  aFunction: <span class="function"><span class="keyword">function</span> (<span class="params">para</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> localVariables = <span class="string">&#x27;區域變數&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(para, localVariables, <span class="built_in">arguments</span>, <span class="built_in">this</span>, globalVariable);</span><br><span class="line">    <span class="comment">// 包含傳入的參數</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.aFunction(<span class="string">&#x27;一段描述&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
+<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
+<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
+<ul>
+<li><strong>para</strong>: 呼叫時傳入的參數。</li>
+<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
+<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
+<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
+<li>Global: 全域變數</li>
+</ul>
+<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
+<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
+<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
+<ol>
+<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
+<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(d, c, b, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
+<p>簡單的結論：</p>
+<ul>
+<li>參數名稱不會受到呼叫名稱影響</li>
+<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
+<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
+</ul>
+<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
+<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
+<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMoney</span>(<span class="params">money = <span class="number">1000</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`我有 <span class="subst">$&#123; money &#125;</span>`</span>); <span class="comment">// 我有 1000</span></span><br><span class="line">&#125;</span><br><span class="line">getMoney(); <span class="comment">// 不需要傳入參數</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
+<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
+<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
+<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
+<ul>
+<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
+<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
+</ul>
+<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callMore = <span class="function">(<span class="params">a, ...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
+<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
+<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
+<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionB</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">functionB(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>可以試著看看其中的參數是如何傳遞的</p>
+</blockquote>
+<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班]]></title>
       <url>https://wcc723.github.io/development/2020/09/22/javascript-training-1st/</url>
       <content type="html"><![CDATA[<p>2020 年 9 月 20 日是 「JavaScript 作品實戰直播班」開班滿三個月的時間，也同時是本課程最後一天的繳交期限，同學們在家中努力趕工最終作品，而我在電腦前準備這份心得。</p>
@@ -1822,85 +2089,6 @@
             <tag> js </tag>
             
             <tag> courses </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
-      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
-      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
-      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
-<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
-<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
-<blockquote>
-<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> globalVariable = <span class="string">&#x27;全域變數&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  aFunction: <span class="function"><span class="keyword">function</span> (<span class="params">para</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> localVariables = <span class="string">&#x27;區域變數&#x27;</span>;</span><br><span class="line">    <span class="built_in">console</span>.log(para, localVariables, <span class="built_in">arguments</span>, <span class="built_in">this</span>, globalVariable);</span><br><span class="line">    <span class="comment">// 包含傳入的參數</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">obj.aFunction(<span class="string">&#x27;一段描述&#x27;</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
-<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
-<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
-<ul>
-<li><strong>para</strong>: 呼叫時傳入的參數。</li>
-<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
-<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
-<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
-<li>Global: 全域變數</li>
-</ul>
-<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
-<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
-<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
-<ol>
-<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
-<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
-</ol>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(d, c, b, a);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
-<p>簡單的結論：</p>
-<ul>
-<li>參數名稱不會受到呼叫名稱影響</li>
-<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
-<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
-</ul>
-<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
-<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
-<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getMoney</span>(<span class="params">money = <span class="number">1000</span></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="string">`我有 <span class="subst">$&#123; money &#125;</span>`</span>); <span class="comment">// 我有 1000</span></span><br><span class="line">&#125;</span><br><span class="line">getMoney(); <span class="comment">// 不需要傳入參數</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
-<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callMore</span>(<span class="params">d, c, b, a</span>) </span>&#123;</span><br><span class="line">  <span class="comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span></span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">arguments</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
-<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
-<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
-<ul>
-<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
-<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
-</ul>
-<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> callMore = <span class="function">(<span class="params">a, ...args</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="built_in">console</span>.log(args);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">var</span> a = <span class="string">&#x27;a&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> b = <span class="string">&#x27;b&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> c = <span class="string">&#x27;c&#x27;</span>;</span><br><span class="line">callMore(a, b, c);</span><br></pre></td></tr></table></figure>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
-<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
-<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
-<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">functionB</span>(<span class="params">fn</span>) </span>&#123;</span><br><span class="line">  fn(<span class="string">&#x27;小明&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line">functionB(<span class="function"><span class="keyword">function</span>(<span class="params">name</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(name + <span class="string">&#x27; 您好&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>可以試著看看其中的參數是如何傳遞的</p>
-</blockquote>
-<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> development </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> javascript </tag>
-            
-            <tag> js </tag>
             
         </tags>
         
