@@ -19,15 +19,17 @@ published: true
 
 如果你對於 VSCode 有興趣，別因為 VSCode 預設開啟是英文版就急著關閉，預設雖然是使用英文版，也找不到語系切換的地方，但其實官方有提供中文版的套件安裝（為了讓 VSCode 輕量化，語系需要另外安裝）。
 
-![](https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2FEE9646DE-DC18-433C-833F-F4AEADDE4239.png?alt=media&token=e97eb33d-5681-4ec7-80d7-092818f614c9)
+<img no-lazy src="/images/2019/vscode/vscode_01.png" alt="">
 
 畫面的左方功能列表中，可以找到 Extensions，點選後輸入 "Chinese" 即可搜尋到中文的相關語系，選擇中文（繁體）後頁面的右方即會出現相關介紹，此時按下 "Install" 就會安裝中文語系套件。
 
-![](https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_11_24_%E4%B8%8A%E5%8D%8810_40.png?alt=media&token=8dd5eb78-208d-4b2b-ba7c-f1ca8040d4f1)
+<img no-lazy src="/images/2019/vscode/vscode_02.png" alt="">
+
 
 安裝後系統會自動跳出是否切換成該語系，按下 Yes 後就會套用成中文版囉～
 
-![](https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_11_24_%E4%B8%8A%E5%8D%8810_42.png?alt=media&token=b4200258-bccb-4005-8e99-c70022aef868)
+<img no-lazy src="/images/2019/vscode/vscode_02.png" alt="">
+
 
 不過人生中最怕的就是那個 "But"，如果沒有自動跳出右下方的提示該如何切換呢？另外 VSCode 如果更新時，可能也會再次切換為英文版，這時候就需要手動切換語系。
 
@@ -38,5 +40,5 @@ published: true
 
 以下附上影片供參考
 
-<video width="1920" height="1080" class="img-fluid" controls><source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201912%2Fvscode%20%E4%B8%AD%E6%96%87%E5%8C%96.mp4?alt=media&token=f6634ca2-33ac-46bc-9f83-50bedad602ae" type="video/mp4"></video>
+<video width="1920" height="1080" class="img-fluid" controls><source src="/images/2019/vscode/vscode_中文化.mp4" type="video/mp4"></video>
 

@@ -13,7 +13,7 @@ published: true
 我們推出了「JS 直播課程」讓你可以在 2 個月內確實掌握 JavaScript 技能。直播課程區分為以下的：
 
 - 連新手都能學會的：JavaScript 工程師養成直播班
-- 想求職但缺作品的：JavaScript 作品實戰班
+- 想求職但缺作品的：Vue 3 作品實戰班
 
 ## JavaScript 工程師養成直播班
 
@@ -39,14 +39,14 @@ published: true
 > 如果無法訂閱通知，可以把[連結](https://rpg.hexschool.com/line/webhook)貼到手機版 LINE 訊息。
 ----
 
-## JavaScript 作品實戰班
+## Vue 3 作品實戰班
 
 <img no-lazy src="/images/2020/2020_training_js_03.png" alt="">  
 
 
 #### 課程說明
 
-求職缺少獨立的作品嗎？或是想更精進前端的作品！？「JavaScript 作品實戰班」不僅教你實戰技巧，更帶你完成獨一無二的網站作品！
+求職缺少獨立的作品嗎？或是想更精進前端的作品！？「Vue 3 作品實戰班」不僅教你實戰技巧，更帶你完成獨一無二的網站作品！
 
 - 預計開課時間：2021 年 4 月 ～ 6 月 
 - 課程介紹頁面（2020 版本）：https://www.hexschool.com/courses/js-training-1st.html
@@ -60,7 +60,7 @@ published: true
 
 {% raw %}
 <a class="btn" href="https://hex.school/1PrJX" target="_blank">
-  點我預約通知「JavaScript 作品實戰班」
+  點我預約通知「Vue 3 作品實戰班」
 </a>
 {% endraw %}
 
