@@ -4,6 +4,63 @@
   
     
     <entry>
+      <title><![CDATA[Vue3 中使用 Event Bus]]></title>
+      <url>https://wcc723.github.io/development/2020/12/15/vue-3-mitt/</url>
+      <content type="html"><![CDATA[<p>Vue 2 中要進行跨元件通訊，除了 Vuex 以外的另一個常見手法是 Event Bus，對於小型專案來說 Event Bus 相當方便，僅需要 <code>$on</code>、<code>$emit</code> 兩個語法就能進行跨元件通訊。而 Vue 3 中移除了 <code>$on</code>、<code>$off</code> 等語法，因此 Event Bus 也等同於被移除。</p>
+<p>在 Vue 3 的官方文件中也有提如果有類似的功能需求，可以<a href="https://v3.vuejs.org/guide/migration/events-api.html#migration-strategy">參考相關的套件</a> <code>mitt</code> 或 <code>tiny-emitter</code>，兩者運作上差異不大，在此就針對 <code>mitt</code> 來進行介紹。</p>
+<h2 id="mitt"><a href="#mitt" class="headerlink" title="mitt"></a>mitt</h2><p><code>mitt</code> 套件可用於 Vue 3，但不僅限於在 Vue 應用中使用，當有跨模組的溝通功能時都可以引用此套件，優點是寫法及運用上都會與 Vue 2 的 Event bus 相當接近（而且不需要在 Vue 的 Prototype 上加入額外的方法）。</p>
+<p>mitt: <a href="https://github.com/developit/mitt">https://github.com/developit/mitt</a></p>
+<p><img src="https://camo.githubusercontent.com/9ad02d3d760df07fe6ed0428acd937ad8ffb871e4d825e4c435c4f195e872755/68747470733a2f2f692e696d6775722e636f6d2f42717358394e542e706e67" alt=""></p>
+<blockquote>
+<p>可愛的拳頭</p>
+</blockquote>
+<h3 id="範例程式碼："><a href="#範例程式碼：" class="headerlink" title="範例程式碼："></a>範例程式碼：</h3><ol>
+<li>匯入 mitt 的元件並調用它。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> emitter = mitt();</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>建立 HTML 結構，並且加入兩個元件，本範例中會將 <code>component-a</code> 的資料傳送至 <code>component-b</code>。</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">component-a</span>&gt;</span><span class="tag">&lt;/<span class="name">component-a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">component-b</span>&gt;</span><span class="tag">&lt;/<span class="name">component-b</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>元件 <code>component-a</code>，會使用 <code>emitter.emit</code> 的方法推送資料至另一個元件上。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">app.component(<span class="string">&#x27;component-a&#x27;</span>, &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      text: <span class="string">&#x27;這有一段話&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  template: <span class="string">`&lt;div&gt;&#123;&#123; text &#125;&#125; &lt;button type=&quot;button&quot; @click=&quot;pushData&quot;&gt;發送至另一個元件&lt;/button&gt;&lt;/div&gt;`</span>,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    pushData() &#123;</span><br><span class="line">      emitter.emit(<span class="string">&#x27;getData&#x27;</span>, <span class="built_in">this</span>.text);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>在 <code>component-b</code> 製作監聽，使用 <code>emitter.on</code> 接收來自於 <code>component-a</code> 的資料。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">app.component(<span class="string">&#x27;component-b&#x27;</span>, &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      text: <span class="string">&#x27;原始資料&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  template: <span class="string">`&lt;div&gt;&#123;&#123; text &#125;&#125;&lt;/div&gt;`</span>,</span><br><span class="line">  created() &#123;</span><br><span class="line">    emitter.on(<span class="string">&#x27;getData&#x27;</span>, <span class="function">(<span class="params">msg</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.text = msg;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="完整範例"><a href="#完整範例" class="headerlink" title="完整範例"></a>完整範例</h2>
+<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="js,result" data-user="Wcc723" data-slug-hash="JjREJNe" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Vue 3.x 使用 Event Bus">
+  <span>See the Pen <a href="https://codepen.io/Wcc723/pen/JjREJNe">
+  Vue 3.x 使用 Event Bus</a> by Wcc723 (<a href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+<p>可點擊畫面中的 「發送至另一個元件」，<code>component-a</code> 的 text 將會透過事件 <code>getData</code> 傳遞至 <code>component-b</code>。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+            <tag> vue </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[12 個前端愛用的 VSCode 擴充套件]]></title>
       <url>https://wcc723.github.io/development/2020/12/13/vscode-extension/</url>
       <content type="html"><![CDATA[<p>工欲善其事，缺乏好工具必定壞脾氣。</p>

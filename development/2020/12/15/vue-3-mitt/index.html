@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Vue3 中使用 Event Bus | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,js,vue" />
+    
+    
+
+    <meta name="description" content="Vue 2 中要進行跨元件通訊，除了 Vuex 以外的另一個常見手法是 Event Bus，對於小型專案來說 Event Bus 相當方便，僅需要 $on、$emit 兩個語法就能進行跨元件通訊。而 Vue 3 中移除了 $on、$off 等語法，因此 Event Bus 也等同於被移除。 在 Vue 3 的官方文件中也有提如果有類似的功能需求，可以參考相關的套件 mitt 或 tiny-emit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue3 中使用 Event Bus">
+<meta property="og:url" content="https://wcc723.github.io/development/2020/12/15/vue-3-mitt/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="Vue 2 中要進行跨元件通訊，除了 Vuex 以外的另一個常見手法是 Event Bus，對於小型專案來說 Event Bus 相當方便，僅需要 $on、$emit 兩個語法就能進行跨元件通訊。而 Vue 3 中移除了 $on、$off 等語法，因此 Event Bus 也等同於被移除。 在 Vue 3 的官方文件中也有提如果有類似的功能需求，可以參考相關的套件 mitt 或 tiny-emit">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fvue3_event_bus.jpg?alt=media&token=093fc9df-f971-4bb7-b6f4-bd45a7b57e0c">
+<meta property="article:published_time" content="2020-12-14T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-12-15T07:14:43.077Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fvue3_event_bus.jpg?alt=media&token=093fc9df-f971-4bb7-b6f4-bd45a7b57e0c">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8296684122088055",
+        enable_page_level_ads: true
+    });
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <a href="/">
+                        <img no-lazy src="/images/casper_blog.svg" alt="">
+                    </a>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/categories/life">生活</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about">關於</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <a href="/about/hexschool-traning.html">
+    <img no-lazy src="/images/2020/2020_training_js_01.png" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/development/">development</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-vue-3-mitt" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Vue3 中使用 Event Bus
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/development/2020/12/15/vue-3-mitt/" class="article-date">
+    <time datetime="2020-12-14T16:00:00.000Z" itemprop="datePublished">2020-12-15</time>
+</a>
+                
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/js/" rel="tag">js</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/vue/" rel="tag">vue</a></li></ul>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>Vue 2 中要進行跨元件通訊，除了 Vuex 以外的另一個常見手法是 Event Bus，對於小型專案來說 Event Bus 相當方便，僅需要 <code>$on</code>、<code>$emit</code> 兩個語法就能進行跨元件通訊。而 Vue 3 中移除了 <code>$on</code>、<code>$off</code> 等語法，因此 Event Bus 也等同於被移除。</p>
+<p>在 Vue 3 的官方文件中也有提如果有類似的功能需求，可以<a target="_blank" rel="noopener" href="https://v3.vuejs.org/guide/migration/events-api.html#migration-strategy">參考相關的套件</a> <code>mitt</code> 或 <code>tiny-emitter</code>，兩者運作上差異不大，在此就針對 <code>mitt</code> 來進行介紹。</p>
+<h2 id="mitt"><a href="#mitt" class="headerlink" title="mitt"></a>mitt</h2><p><code>mitt</code> 套件可用於 Vue 3，但不僅限於在 Vue 應用中使用，當有跨模組的溝通功能時都可以引用此套件，優點是寫法及運用上都會與 Vue 2 的 Event bus 相當接近（而且不需要在 Vue 的 Prototype 上加入額外的方法）。</p>
+<p>mitt: <a target="_blank" rel="noopener" href="https://github.com/developit/mitt">https://github.com/developit/mitt</a></p>
+<p><img src="https://camo.githubusercontent.com/9ad02d3d760df07fe6ed0428acd937ad8ffb871e4d825e4c435c4f195e872755/68747470733a2f2f692e696d6775722e636f6d2f42717358394e542e706e67" alt=""></p>
+<blockquote>
+<p>可愛的拳頭</p>
+</blockquote>
+<h3 id="範例程式碼："><a href="#範例程式碼：" class="headerlink" title="範例程式碼："></a>範例程式碼：</h3><ol>
+<li>匯入 mitt 的元件並調用它。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> emitter = mitt();</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li>建立 HTML 結構，並且加入兩個元件，本範例中會將 <code>component-a</code> 的資料傳送至 <code>component-b</code>。</li>
+</ol>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">component-a</span>&gt;</span><span class="tag">&lt;/<span class="name">component-a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">hr</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">component-b</span>&gt;</span><span class="tag">&lt;/<span class="name">component-b</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>元件 <code>component-a</code>，會使用 <code>emitter.emit</code> 的方法推送資料至另一個元件上。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">app.component(<span class="string">&#x27;component-a&#x27;</span>, &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      text: <span class="string">&#x27;這有一段話&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  template: <span class="string">`&lt;div&gt;&#123;&#123; text &#125;&#125; &lt;button type=&quot;button&quot; @click=&quot;pushData&quot;&gt;發送至另一個元件&lt;/button&gt;&lt;/div&gt;`</span>,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    pushData() &#123;</span><br><span class="line">      emitter.emit(<span class="string">&#x27;getData&#x27;</span>, <span class="built_in">this</span>.text);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>在 <code>component-b</code> 製作監聽，使用 <code>emitter.on</code> 接收來自於 <code>component-a</code> 的資料。</li>
+</ol>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">app.component(<span class="string">&#x27;component-b&#x27;</span>, &#123;</span><br><span class="line">  data() &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      text: <span class="string">&#x27;原始資料&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  template: <span class="string">`&lt;div&gt;&#123;&#123; text &#125;&#125;&lt;/div&gt;`</span>,</span><br><span class="line">  created() &#123;</span><br><span class="line">    emitter.on(<span class="string">&#x27;getData&#x27;</span>, <span class="function">(<span class="params">msg</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.text = msg;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<h2 id="完整範例"><a href="#完整範例" class="headerlink" title="完整範例"></a>完整範例</h2>
+<p class="codepen" data-height="265" data-theme-id="light" data-default-tab="js,result" data-user="Wcc723" data-slug-hash="JjREJNe" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Vue 3.x 使用 Event Bus">
+  <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/JjREJNe">
+  Vue 3.x 使用 Event Bus</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
+  on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
+</p>
+<script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
+
+<p>可點擊畫面中的 「發送至另一個元件」，<code>component-a</code> 的 text 將會透過事件 <code>getData</code> 傳遞至 <code>component-b</code>。</p>
+
+            </div>
+            
+<style>
+.article-entry .article-nav {
+    display: flex;
+    background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav a {
+    flex: 1;
+}
+</style>
+<nav class="article-nav">
+    
+        <a href="/development/2020/12/13/vscode-extension/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">12 個前端愛用的 VSCode 擴充套件</div>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+    
+</nav>
+
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2020/12/15/vue-3-mitt/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<style>
+.article-entry .article-nav {
+    display: flex;
+    background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav a {
+    flex: 1;
+}
+</style>
+<nav class="article-nav">
+    
+        <a href="/development/2020/12/13/vscode-extension/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">12 個前端愛用的 VSCode 擴充套件</div>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+            
+                
+    <div class="widget-wrap" style="position: sticky">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/12/15/vue-3-mitt/" class="title">Vue3 中使用 Event Bus</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-12-14T16:00:00.000Z" itemprop="datePublished">2020-12-15</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/12/13/vscode-extension/" class="title">12 個前端愛用的 VSCode 擴充套件</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-12-12T16:00:00.000Z" itemprop="datePublished">2020-12-13</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/10/16/async-await/" class="title">Async function / Await 深度介紹</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-10-15T16:00:00.000Z" itemprop="datePublished">2020-10-16</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/10/13/vscode-intellisense/" class="title">VSCode JS 註解就是你的文件</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-10-12T16:00:00.000Z" itemprop="datePublished">2020-10-13</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/10/12/frosted-glass/" class="title">純 CSS 毛玻璃特效 - backdrop-filter 屬性介紹</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-10-11T16:00:00.000Z" itemprop="datePublished">2020-10-12</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/async/" style="font-size: 10px;">async</a> <a href="/tags/await/" style="font-size: 10px;">await</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 13.53px;">bootstrap</a> <a href="/tags/border/" style="font-size: 10px;">border</a> <a href="/tags/business/" style="font-size: 10px;">business</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.47px;">d3js</a> <a href="/tags/design/" style="font-size: 17.06px;">design</a> <a href="/tags/develop/" style="font-size: 11.18px;">develop</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.76px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.82px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jest/" style="font-size: 10.59px;">jest</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/modules/" style="font-size: 10px;">modules</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 11.18px;">promise</a> <a href="/tags/puppeteer/" style="font-size: 10px;">puppeteer</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.24px;">sass</a> <a href="/tags/scss/" style="font-size: 12.94px;">scss</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/test/" style="font-size: 11.18px;">test</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/vscode/" style="font-size: 10.59px;">vscode</a> <a href="/tags/vue/" style="font-size: 10px;">vue</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2020 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
