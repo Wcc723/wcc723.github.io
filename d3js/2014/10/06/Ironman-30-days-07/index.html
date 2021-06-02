@@ -480,6 +480,91 @@ npm -v
     
     <div class="widgets-container">
         
+<div class="calendar_notification" id="calendar_notification-block" style="display: none">
+  <div class="calendar_notification-header">
+    今日活動通知
+  </div>
+  <div class="calendar_notification-body">
+    <div class="calendar_notification-content" id="calendar_notification-content"></div>
+  </div>
+  <div class="calendar_notification-footer">
+  </div>
+</div>
+
+<style>
+.calendar_notification {
+  max-width: 450px;
+  margin-right: 0;
+  border-radius: 5px;
+}
+.calendar_notification-header {
+  padding: 15px 30px;
+  background-color: #fe0605;
+  color: white;
+}
+.calendar_notification-body {
+  padding: 15px;
+  background-color: #eaeaea;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.calendar_notification-summary {
+  font-size: 1.15rem;
+  font-weight: bolder;
+  margin-bottom: .5rem;
+}
+.calendar_notification-card {
+  padding: 10px;
+  margin: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, .16);
+  border-radius: 5px;
+}
+.calendar_notification-description {
+  font-size: 0.9rem;
+  color: #333;
+}
+</style>
+
+
+<script>
+const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
+const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
+const query = '卡斯伯';
+
+const today = new Date();
+const fullYear = today.getFullYear();
+const month = today.getMonth();
+const date = today.getDate();
+const hours = today.getHours();
+const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
+const timeMax = new Date(fullYear, month, date, hours + 24).toISOString();
+
+const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
+
+const calendarNotificationBlock = document.querySelector('#calendar_notification-block');
+
+$.ajax({
+  url: api,
+  success: function(data) {
+    if (Array.isArray(data.items)) {
+      const context = data.items.map(item => `
+        <div class="calendar_notification-card">
+          <h3 class="calendar_notification-summary">${item.summary}</h3>
+          <div>活動時間：${new Date(item.start.dateTime).toLocaleString()}</div>
+          <div class="calendar_notification-description">${item.description}</div>
+        </div>
+        `
+      ).join('');
+      const calendarContentDom = document.querySelector('#calendar_notification-content');
+      
+      calendarNotificationBlock.style.display = 'block';
+      calendarContentDom.innerHTML = context;
+
+    }
+  }
+});
+</script>
+        
             
                 
     <div class="widget-wrap" style="position: sticky">
