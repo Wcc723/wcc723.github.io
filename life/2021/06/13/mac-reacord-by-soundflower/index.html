@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Mac 擷取系統音效 - 直播、錄影均適用 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="mac" />
+    
+    
+
+    <meta name="description" content="直播遊戲或是錄影希望搭配系統的聲音，如果沒有另外進行設定，就只能透過麥克風接收系統所播放的聲音，這樣的品質對於聽眾來說真的不太好，且如果太大聲也會影響直播者 &#x2F; 錄影者的思緒。 因此，本篇介紹如何使用「軟體」的方式擷取系統的聲音，如果直播或錄影工具可接收多個收音裝置，將可使用系統的聲音進行錄影 &#x2F; 直播，本篇所介紹的直播工具為 OBS，也是許多值播主所使用的軟體。  請注意，本篇不支援「M1」的作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac 擷取系統音效 - 直播、錄影均適用">
+<meta property="og:url" content="https://wcc723.github.io/life/2021/06/13/mac-reacord-by-soundflower/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="直播遊戲或是錄影希望搭配系統的聲音，如果沒有另外進行設定，就只能透過麥克風接收系統所播放的聲音，這樣的品質對於聽眾來說真的不太好，且如果太大聲也會影響直播者 &#x2F; 錄影者的思緒。 因此，本篇介紹如何使用「軟體」的方式擷取系統的聲音，如果直播或錄影工具可接收多個收音裝置，將可使用系統的聲音進行錄影 &#x2F; 直播，本篇所介紹的直播工具為 OBS，也是許多值播主所使用的軟體。  請注意，本篇不支援「M1」的作">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fmac_sound.jpg?alt=media&token=67c79d98-633e-4f38-a09d-895d839ef5f9">
+<meta property="article:published_time" content="2021-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-06-13T03:35:21.801Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="mac">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fmac_sound.jpg?alt=media&token=67c79d98-633e-4f38-a09d-895d839ef5f9">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/titillium-web/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        <script type="text/javascript">
+(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-43235390-2', 'auto');
+ga('send', 'pageview');
+
+</script>
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+        google_ad_client: "ca-pub-8296684122088055",
+        enable_page_level_ads: true
+    });
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+<meta name="generator" content="Hexo 5.0.2"></head>
+
+<body>
+    <div id="wrap">
+        <header id="header">
+    <div id="header-outer" class="outer">
+        <div class="container">
+            <div class="container-inner">
+                <div id="header-title">
+                    <a href="/">
+                        <img no-lazy src="/images/casper_blog.svg" alt="">
+                    </a>
+                    
+                </div>
+                <div id="header-inner" class="nav-container">
+                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
+                    <div class="nav-container-inner">
+                        <ul id="main-nav">
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/">首頁</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/categories/life">生活</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
+                                </li>
+                            
+                                <li class="main-nav-list-item" >
+                                    <a class="main-nav-list-link" href="/about">關於</a>
+                                </li>
+                            
+                        </ul>
+                        <nav id="sub-nav">
+                            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+        <div class="container">
+            <div class="main-body container-inner">
+                <div class="main-body-inner">
+                    <section id="main">
+                        <a target="_blank" rel="noopener" href="https://hex.school/5cYlz">
+    <img no-lazy src="/images/2021/blog-vue3-header.png" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
+    <h1 class="header">
+    
+    <a class="page-title-link" href="/categories/life/">life</a>
+    </h1>
+</div>
+                        <div class="main-body-content">
+                            <article id="post-mac-reacord-by-soundflower" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+        Mac 擷取系統音效 - 直播、錄影均適用
+        </h1>
+    
+
+            </header>
+        
+        
+            <div class="article-subtitle">
+                <a href="/life/2021/06/13/mac-reacord-by-soundflower/" class="article-date">
+    <time datetime="2021-06-12T16:00:00.000Z" itemprop="datePublished">2021-06-13</time>
+</a>
+                
+    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mac/" rel="tag">mac</a></li></ul>
+
+            </div>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+                </div>
+            
+            <div class="need-gallery">
+                <p>直播遊戲或是錄影希望搭配系統的聲音，如果沒有另外進行設定，就只能透過麥克風接收系統所播放的聲音，這樣的品質對於聽眾來說真的不太好，且如果太大聲也會影響直播者 / 錄影者的思緒。</p>
+<p>因此，本篇介紹如何使用「軟體」的方式擷取系統的聲音，如果直播或錄影工具可接收多個收音裝置，將可使用系統的聲音進行錄影 / 直播，本篇所介紹的直播工具為 OBS，也是許多值播主所使用的軟體。</p>
+<blockquote>
+<p>請注意，本篇不支援「M1」的作業系統。</p>
+</blockquote>
+<h2 id="第一步：安裝-Soundflower"><a href="#第一步：安裝-Soundflower" class="headerlink" title="第一步：安裝 Soundflower"></a>第一步：安裝 Soundflower</h2><p>先安裝 <a target="_blank" rel="noopener" href="https://github.com/mattingalls/Soundflower/releases">SoundFlower</a> 音效擷取工具，雖然它是 2014 的軟體，但到目前的 Intel Mac 主機均能正常運作。</p>
+<p>請注意，它目前並不支援「M1」的作業系統。</p>
+<p>打開下載的壓縮檔以後，可以看到 <code>Soundflower.pkg</code>，如果直接點擊兩下會無法安裝。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCE129C6F-51DC-41FE-B0D8-243DF0AB7DB3.png?alt=media&amp;token=49c8cee3-c5e5-4be0-b768-eb5751a2549c" alt=""></p>
+<p>請使用右鍵 &gt; 選擇打開的方式開啟來開啟這份安裝檔。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2564702B-BCA0-4093-8D84-8433BD361B3B.png?alt=media&amp;token=c417ff60-476d-4771-99b4-344f6d201e81" alt=""></p>
+<p>接下來選擇左方的打開，就可以開始進入安裝的流程。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F9318C0AA-6D02-45F0-91C6-70D105C9C7B3.png?alt=media&amp;token=8526644e-5ac4-43d7-9229-19b0db9b9172" alt=""></p>
+<p>安裝完 SoundFlower 以後，可以看到聲音的項目下增加了 <code>SoundFlower(2ch)</code>、<code>SoundFlower(64ch)</code>，到這個步驟就算是已經完成了（如果沒有，可以重開機試試看）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F9038CB03-975B-4843-8DB1-1970434E02C8.png?alt=media&amp;token=60eb2a78-49f3-4816-8e1c-ec99b9a5b73c" alt=""></p>
+<h2 id="第二步：OBS-設定"><a href="#第二步：OBS-設定" class="headerlink" title="第二步：OBS 設定"></a>第二步：OBS 設定</h2><p>回到 OBS，進入「設定 &gt; 音效」內可以選擇 <code>SoundFlower(64)</code>（如下圖的選擇方式），他會擷取系統的音效，而 <code>麥克風 / 輔助音效</code>可以選擇另一個麥克風，讓擷取聲音的同時也可以播放麥克風的聲音。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F8793EE69-6B16-4B87-9B37-D52294FF27DB.png?alt=media&amp;token=cd1c4dcc-572b-45d3-835f-afef1d9cc06e" alt=""></p>
+<p>可以看到，音效混音器增加了一個「擷取音效輸出」，如果要調整直播時的錄製聲音大小，一樣可以透過鍵盤上的聲音調整（如果沒有正確切換，也可以將目前的播放器改為 <code>SoundFlower(64)</code>）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4438447A-1C26-40CA-8EC4-7E02CE281970.png?alt=media&amp;token=e3e33c9a-387e-435e-8f82-6ac350c061e0" alt=""></p>
+<p>這麼做會只能透過 OBS 直播時，觀眾可聽到聲音但直播主聽不到，如果是播放音樂的話，直播 / 錄影也難以了解目前所播放的進度。</p>
+<h2 id="擷取-播放一起共存"><a href="#擷取-播放一起共存" class="headerlink" title="擷取 + 播放一起共存"></a>擷取 + 播放一起共存</h2><p>打開「音訊 MIDI 設定」，可以在畫面左下 + 號找到「製作多重輸出裝置」。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2021_6_13_%E4%B8%8A%E5%8D%8811_10.png?alt=media&amp;token=2150f29e-4a43-4925-9742-68f436068c41" alt=""></p>
+<p>下拉選單可以找到「製作多重輸出裝置」。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F85C9E2B3-3D8A-483F-90CE-7EFC46B405A1.png?alt=media&amp;token=59d5d8e3-aa0f-497d-b98a-6967223af129" alt=""></p>
+<p>選擇後加入「Macbook 揚聲器」及「SoundFlower(64ch)」，然後主裝置選擇 SoundFlower(64ch)，設定方式如下圖。揚聲器可以選擇外接的耳機，但 AirPods 設定上經常失敗；另外每次調整設定都可能導致擷取出現錯誤，會建議直接刪除重做一個新的「多重輸出裝置」。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F0CA07636-2347-47D9-BC4E-1B27A9B0C2B9.png?alt=media&amp;token=57e67a9e-6f56-4c4f-bfe8-1e4a9acc08e5" alt=""></p>
+<p>這段設定完，回到系統偏好設定 -&gt; 聲音 -&gt; 輸出 -&gt; 選擇「多重輸出裝置」<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2021_6_13_%E4%B8%8A%E5%8D%8811_13.png?alt=media&amp;token=25e12f80-c40d-4594-9782-1857430b9b60" alt=""></p>
+<p>如下圖，選擇「多重輸出裝置」。接下來回到 OBS 應該就能正確運作了（OBS 設定不需要另外調整）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FBCC7D952-17D0-4207-BFDF-3951C90075B3.png?alt=media&amp;token=93d58267-33cd-4b7c-bfdc-c764671575d1" alt=""></p>
+<p>接下來會有另一個問題：「多重輸出裝置」難以調整每個輸出裝置的聲音大小。因此，可以回到前面的「音訊 MIDI 設定」，進入輸出的裝置調整單獨的音量（SoundFlower 也可獨立設定）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF5B2D4E6-51AE-45E2-86D0-04D664700454.png?alt=media&amp;token=5796cf10-805f-44c6-a263-667bb149c5f9" alt=""></p>
+<p>接下來預計就可以設定出以麥克風音效為主，擷取音效為輔的設定。以 OBS 聲音的介面來說，目前測試麥克風可以到黃色的區塊（到紅色可能會破音或太大聲），而擷取的音效輸出上可以依據需求調整，如果要作為背景的音效建議可以低於 -35 左右的刻度。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FA453DFC5-8ADF-4498-841B-0E0C8941F568.png?alt=media&amp;token=08990ff2-b552-415e-9e5d-4e1dfe511a53" alt=""></p>
+<p>以上，祝大家錄影、直播順利～</p>
+
+            </div>
+            
+                <div>
+  <script type="text/javascript">
+    document.write(
+      "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/agito723/button?referrer=" +
+      encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+  </script>
+<div>
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+            
+<style>
+.article-entry .article-nav {
+    display: flex;
+    background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav a {
+    flex: 1;
+}
+</style>
+<nav class="article-nav">
+    
+        <a href="/development/2021/06/03/node-js-live/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">NODE.JS 開 API 不求人 - 教學影片</div>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+    
+</nav>
+
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            
+                <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+            
+            
+        </div>
+        <footer class="article-footer">
+            
+
+
+    <div class="a2a_kit a2a_default_style">
+    <a class="a2a_dd" target="_blank" rel="noopener" href="https://www.addtoany.com/share">Share</a>
+    <span class="a2a_divider"></span>
+    <a class="a2a_button_facebook"></a>
+    <a class="a2a_button_twitter"></a>
+    <a class="a2a_button_google_plus"></a>
+    <a class="a2a_button_pinterest"></a>
+    <a class="a2a_button_tumblr"></a>
+</div>
+<script type="text/javascript" src="//static.addtoany.com/menu/page.js"></script>
+<style>
+    .a2a_menu {
+        border-radius: 4px;
+    }
+    .a2a_menu a {
+        margin: 2px 0;
+        font-size: 14px;
+        line-height: 16px;
+        border-radius: 4px;
+        color: inherit !important;
+        font-family: 'Microsoft Yahei';
+    }
+    #a2apage_dropdown {
+        margin: 10px 0;
+    }
+    .a2a_mini_services {
+        padding: 10px;
+    }
+    a.a2a_i,
+    i.a2a_i {
+        width: 122px;
+        line-height: 16px;
+    }
+    a.a2a_i .a2a_svg,
+    a.a2a_more .a2a_svg {
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        vertical-align: top;
+        background-size: 16px;
+    }
+    a.a2a_i {
+        border: none !important;
+    }
+    a.a2a_menu_show_more_less {
+        margin: 0;
+        padding: 10px 0;
+        line-height: 16px;
+    }
+    .a2a_mini_services:after{content:".";display:block;height:0;clear:both;visibility:hidden}
+    .a2a_mini_services{*+height:1%;}
+</style>
+
+
+        </footer>
+    </div>
+</article>
+
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/life/2021/06/13/mac-reacord-by-soundflower/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+                        </div>
+                    </section>
+                    <aside id="sidebar">
+    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
+    <div class="sidebar-top">
+        <p>關注我 :</p>
+        <ul class="social-links">
+            
+                
+                <li>
+                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
+                        <i class="icon fa fa-facebook"></i>
+                    </a>
+                </li>
+                
+            
+                
+                <li>
+                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
+                        <i class="icon fa fa-github"></i>
+                    </a>
+                </li>
+                
+            
+        </ul>
+    </div>
+    
+        
+<style>
+.article-entry .article-nav {
+    display: flex;
+    background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav a {
+    flex: 1;
+}
+</style>
+<nav class="article-nav">
+    
+        <a href="/development/2021/06/03/node-js-live/" id="article-nav-older" class="article-nav-link-wrap">
+        <strong class="article-nav-caption">上一篇</strong>
+        <div class="article-nav-title">NODE.JS 開 API 不求人 - 教學影片</div>
+        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
+        </a>
+    
+    
+</nav>
+
+    
+    <div class="widgets-container">
+        
+<div class="calendar_notification" id="calendar_notification-block" style="display: none">
+  <div class="calendar_notification-header">
+    近期活動通知
+  </div>
+  <div class="calendar_notification-body">
+    <div class="calendar_notification-content" id="calendar_notification-content"></div>
+  </div>
+  <div class="calendar_notification-footer">
+  </div>
+</div>
+
+<style>
+.calendar_notification {
+  max-width: 450px;
+  margin-right: 0;
+  border-radius: 5px;
+}
+.calendar_notification-header {
+  padding: 15px 30px;
+  background-color: #fe0605;
+  color: white;
+}
+.calendar_notification-body {
+  padding: 15px;
+  background-color: #eaeaea;
+  max-height: 300px;
+  overflow-y: auto;
+}
+.calendar_notification-summary {
+  font-size: 1.15rem;
+  font-weight: bolder;
+  margin-bottom: .5rem;
+}
+.calendar_notification-card {
+  padding: 10px;
+  margin: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, .16);
+  border-radius: 5px;
+}
+.calendar_notification-description {
+  font-size: 0.9rem;
+  color: #333;
+}
+</style>
+
+
+<script>
+const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
+const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
+const query = '卡斯伯';
+
+const today = new Date();
+const fullYear = today.getFullYear();
+const month = today.getMonth();
+const date = today.getDate();
+const hours = today.getHours();
+const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
+const timeMax = new Date(fullYear, month, date + 3, hours).toISOString();
+
+const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
+
+const calendarNotificationBlock = document.querySelector('#calendar_notification-block');
+
+$.ajax({
+  url: api,
+  success: function(data) {
+    if (Array.isArray(data.items) && data.items.length) {
+      const context = data.items.map(item => `
+        <div class="calendar_notification-card">
+          <h3 class="calendar_notification-summary">${item.summary}</h3>
+          <div><strong>活動時間：${new Date(item.start.dateTime).toLocaleString()}</strong></div>
+          <div class="calendar_notification-description">${item.description}</div>
+        </div>
+        `
+      ).join('');
+      const calendarContentDom = document.querySelector('#calendar_notification-content');
+      
+      calendarNotificationBlock.style.display = 'block';
+      calendarContentDom.innerHTML = context;
+
+    }
+  }
+});
+</script>
+        
+            
+                
+    <div class="widget-wrap" style="position: sticky">
+        <h3 class="widget-title">最新文章</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/life/2021/06/13/mac-reacord-by-soundflower/" class="title">Mac 擷取系統音效 - 直播、錄影均適用</a></p>
+                            <p class="item-date">
+                                <time datetime="2021-06-12T16:00:00.000Z" itemprop="datePublished">2021-06-13</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/life/">life</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2021/06/03/node-js-live/" class="title">NODE.JS 開 API 不求人 - 教學影片</a></p>
+                            <p class="item-date">
+                                <time datetime="2021-06-02T16:00:00.000Z" itemprop="datePublished">2021-06-03</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2021/04/11/vscode-eslint-prettier/" class="title">VSCode Prettier 整合 ESLint 自動排版</a></p>
+                            <p class="item-date">
+                                <time datetime="2021-04-10T16:00:00.000Z" itemprop="datePublished">2021-04-11</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/12/15/vue-3-mitt/" class="title">Vue3 中使用 Event Bus</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-12-14T16:00:00.000Z" itemprop="datePublished">2020-12-15</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        
+                        
+                        <div class="item-inner">
+                            <p class="item-title"><a href="/development/2020/12/13/vscode-extension/" class="title">12 個前端愛用的 VSCode 擴充套件</a></p>
+                            <p class="item-date">
+                                <time datetime="2020-12-12T16:00:00.000Z" itemprop="datePublished">2020-12-13</time>
+                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
+                                </span>
+                            </p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+            
+                
+<div class="widget-wrap widget-list">
+    <h3 class="widget-title">粉絲專頁</h3>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+            
+                
+    <div class="widget-wrap widget-float">
+        <h3 class="widget-title">標籤雲</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/async/" style="font-size: 10px;">async</a> <a href="/tags/await/" style="font-size: 10px;">await</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 13.53px;">bootstrap</a> <a href="/tags/border/" style="font-size: 10px;">border</a> <a href="/tags/business/" style="font-size: 10px;">business</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.47px;">d3js</a> <a href="/tags/design/" style="font-size: 17.06px;">design</a> <a href="/tags/develop/" style="font-size: 11.18px;">develop</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.76px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.82px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jest/" style="font-size: 10.59px;">jest</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/mac/" style="font-size: 10px;">mac</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/modules/" style="font-size: 10px;">modules</a> <a href="/tags/node-js/" style="font-size: 10px;">node.js</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 11.18px;">promise</a> <a href="/tags/puppeteer/" style="font-size: 10px;">puppeteer</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.24px;">sass</a> <a href="/tags/scss/" style="font-size: 12.94px;">scss</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/test/" style="font-size: 11.18px;">test</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/vscode/" style="font-size: 10.59px;">vscode</a> <a href="/tags/vue/" style="font-size: 10.59px;">vue</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
+        </div>
+    </div>
+
+
+            
+                
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">連接</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+            
+        
+    </div>
+</aside>
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+    <div class="container">
+        <div class="container-inner">
+            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
+            <div class="credit">
+                <h1 class="logo-wrap">
+                    <a href="/" class="logo"></a>
+                </h1>
+                <p>&copy; 2021 Wang Casper</p>
+                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        
+    
+
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.8&appId=760173380749493";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+        <script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-8296684122088055",
+    enable_page_level_ads: true
+  });
+</script>
+
+    </div>
+</body>
+</html>
