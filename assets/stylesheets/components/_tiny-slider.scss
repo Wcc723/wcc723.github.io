@@ -1,0 +1,309 @@
+// 
+// tiny-slider.scss
+// Theme Component
+
+.tns-outer{
+  position: relative;
+}
+.tns-item{
+  touch-action: pan-y;
+  user-select: none;
+}
+.tiny-slider{
+  .item{
+    position: relative;
+  }
+}
+
+//
+// Slider arrow
+//
+.tns-controls{
+  [data-controls] {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: $border-radius;
+    display: block;
+    z-index: 9;
+    text-align: center;
+    transition: $transition-base;
+    background: rgba($white, .3);
+    color: $white;
+    border: none;
+    padding: 0;
+    margin: 0 10px;
+    &:hover{
+      background-color: $primary;
+      color: $white;
+    }
+    i{
+      line-height: inherit;
+    }
+  }
+}
+
+.tns-controls [data-controls='prev'] {
+  left: 0;
+}
+.tns-controls [data-controls='next'] {
+  right: 0;
+}
+
+/* rtl:raw:
+.tiny-slider .tns-controls [data-controls]{
+  transform: scaleX(-1) translateY(-50%);
+}
+*/
+
+// arrow dark
+.arrow-dark{
+  [data-controls] {
+    background: $dark;
+    color: $white;
+  }
+}
+.arrow-white{
+  [data-controls] {
+    background-color: $body-bg;
+    color: $body-color;
+  }
+}
+
+// arrow gray
+.arrow-gray{
+  [data-controls] {
+    background: $gray-300;
+    color: $dark;
+  }
+}
+
+// arrow round
+.arrow-round{
+  [data-controls] {
+    border-radius: 50%;
+  }
+}
+
+// arrow bordered
+.arrow-bordered{
+  [data-controls] {
+    background: transparent !important;
+    color: $gray-400;
+    border: 2px solid $gray-400;
+    box-sizing: initial;
+    &:hover{
+      border-color: $gray-600;
+      background: transparent;
+      color: $gray-600;
+    }
+  }
+}
+
+
+// arrow blur
+.arrow-blur{
+  [data-controls]{
+    backdrop-filter: blur(5px);
+    background: rgba(0, 0, 0, 0.4)!important;
+    &:hover{
+      backdrop-filter: blur(0px);
+      background: rgba(0, 0, 0, 0.4)!important;
+    }
+  }
+  &.arrow-white{
+    [data-controls]{
+      background-color: rgba($body-bg, 0.2)!important;
+      color: $white;
+    }
+  }
+}
+
+
+// arrow only
+.arrow-only{
+  [data-controls] {
+    background: transparent;
+    &:hover{
+      background: transparent;
+      color: $gray-800;
+    }
+  }
+}
+
+// arrow hover
+.arrow-hover{
+  overflow: hidden;
+  [data-controls='prev']{
+    left: -60px;
+  }
+  [data-controls='next']{
+    right: -60px;
+  }
+  &:hover{
+    [data-controls='prev']{
+    left: 0px;
+    }
+    [data-controls='next']{
+      right: 0px;
+    }
+  }
+}
+
+// arrow left
+.arrow-end{
+  .tns-controls [data-controls]{
+    bottom: 10px;
+  }
+  [data-controls='prev']{
+    right: 30px;
+    left: auto;
+  }
+  [data-controls='next']{
+    right: 0;
+  }
+}
+// arrow xs
+.arrow-xs{
+  .tns-controls [data-controls]{
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-size: 10px;
+    margin: 0;
+  }
+}
+
+// arrow md none
+@include media-breakpoint-down(md) {
+  .arrow-md-none [data-controls] {
+    display: none;
+  }
+}
+
+// 
+// Slider dots
+// 
+.tns-nav{
+  position: absolute;
+  top: 100%;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: auto;
+  text-align: center;
+  white-space: nowrap;
+  [data-nav] {
+    position: relative;
+    display: inline-block;
+    margin: 0 4px;
+    padding: 0;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: transparent;
+    box-shadow: inset 0 0 0 2px $gray-500;
+    transition: $transition-base;
+    border: 0;
+    &:after{
+      border-radius: 50%;
+      overflow: hidden;
+      content: '';
+      position: absolute;
+      bottom: 0;
+      height: 0;
+      left: 0;
+      width: 100%;
+      background-color: $gray-500;
+      box-shadow: 0 0 1px $gray-500;
+      -webkit-transition: height 0.3s ease-in-out;
+      transition: height 0.3s ease-in-out;
+    }
+  }
+  .tns-nav-active{
+    &:after{
+      height: 100%;
+    }
+  }
+}
+
+// Dots inside
+.dots-inside .tns-nav{
+  top: auto;
+  padding-bottom: 20px;
+}
+
+// Dots primary
+.dots-primary .tns-nav{
+  [data-nav] {
+    box-shadow: inset 0 0 0 2px $primary;
+    transition: $transition-base;
+    &:after{
+      background-color: $primary;
+      box-shadow: 0 0 1px $primary;
+    }
+  }
+}
+
+// Dots white
+.dots-white .tns-nav{
+  [data-nav] {
+    box-shadow: inset 0 0 0 2px $white;
+    transition: $transition-base;
+    &:after{
+      background-color: $white;
+      box-shadow: 0 0 1px $white;
+    }
+  }
+}
+
+// Dots dark
+.dots-dark .tns-nav{
+  [data-nav] {
+    box-shadow: inset 0 0 0 2px $dark-gray;
+    transition: $transition-base;
+    &:after{
+      background-color: $dark-gray;
+      box-shadow: 0 0 1px $dark-gray;
+    }
+  }
+}
+
+// dots creative
+.dots-creative .tns-nav{
+  [data-nav] {
+  background: $gray-300;
+  border: none;
+   width: 12px;
+   height: 12px;
+   border-radius: 10px;
+   box-shadow: none;
+    &:after{
+      content: none;
+    }
+  }
+  
+  .tns-nav-active{
+    background: $primary;
+    width: 24px;
+  }
+}
+
+// custom thumb
+.custom-thumb{
+  [data-nav]{
+    cursor: pointer;
+    opacity: 0.6;
+  }
+  [data-nav] *{
+    color: $white !important;
+  }
+  .tns-nav-active[data-nav]{
+    opacity: 1;
+  }
+}

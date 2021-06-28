@@ -1,0 +1,237 @@
+// 
+// general.scss
+// Theme general elements and helper styling
+
+
+// GLightbox controls theme
+.plyr__control--overlaid, .plyr--video .plyr__control.plyr__tab-focus, .plyr--video .plyr__control:hover, .plyr--video .plyr__control[aria-expanded=true]{
+  background: $primary;
+}
+.plyr--full-ui input[type=range]{
+  color: $primary;
+}
+
+/* rtl:raw:
+.glightbox-clean .gclose, .glightbox-modern .gclose{
+  right: auto !important;
+  left: 20px;
+}
+*/
+
+// Search
+.nav-search .dropdown-menu{
+  top: 120%;
+  visibility: hidden;
+  opacity: 0;
+  display: block;
+  transition: $transition-base;
+  width: 300px;
+  left: auto;
+  right: 0;
+}
+.nav-search .dropdown-menu.show{
+  top: 100%;
+  visibility: visible;
+  opacity: 1;
+}
+@include media-breakpoint-down(sm) {
+  .nav-search .dropdown-menu{
+    width: 100%;
+  }
+}
+
+// Back to top
+.back-top {
+  cursor: pointer;
+  position: fixed !important;
+  bottom: 40px;
+  right: 40px;
+  display: block;
+  z-index: 99;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(50%);
+  transition: $transition-base;
+  background: rgba($primary, $soft-alpha + 0.1);
+  color: $primary;
+  border-radius: 50%;
+  width: 52px;
+  height: 52px;
+  line-height: 52px;
+  text-align: center;
+  i{
+    font-size: 1.6rem;
+    vertical-align: middle;
+  }
+  &:hover{
+    background: $primary;
+    color: $white;
+  }
+  &.back-top-show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+@include media-breakpoint-down(md) {
+  .back-top {
+    bottom: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    i{
+      font-size: 1rem;
+    }
+  }
+}
+
+// sticky post (visible on scroll)
+.sticky-post{
+  position: fixed;
+  bottom: 100px;
+  right: 50px;
+  width: 300px;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateX(50%);
+  transition: $transition-base;
+}
+.sticky-post.sticky-post-sticked{
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(0%);
+
+}
+
+// To flip element in RTL
+/* rtl:raw:
+  .rtl-flip {
+    transform: scaleX(-1);
+  }
+  .rtl-flip.bi:before{
+    transform: inherit;
+  }
+*/
+
+// parallax
+.bg-parallax{
+  transform: translate3d(0, 0, 0);
+  &:before {
+    z-index: 0;
+  }
+}
+
+//  Footer fixed 
+@include media-breakpoint-up(md) {
+  footer.footer-sticky {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: -1 !important;
+  }
+}
+
+// pre loader
+.preloader {
+  background-color: $white;
+  position: fixed;
+  z-index: 1190;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+
+  .preloader-item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+  }
+}
+
+
+// Dark mode switch
+.dark-mode-switch{
+  margin: 0;
+  &.form-check{
+    min-height: auto;
+  }
+  .form-check-input, .form-check-label{
+    cursor: pointer !important;
+  }
+}
+
+// Dark mode item hide and show
+.dark-mode-item{
+  display: none !important;
+}
+body.dark-mode{
+  .dark-mode-item{
+    display: block !important;
+  }
+  .light-mode-item{
+    display: none !important;
+  }
+}
+
+// Dark mode switch
+.modeswitch {
+  width: 42px;
+  height: 12px;
+  background: $gray-600;
+  border-radius: 60px;
+  display: flex;
+  align-items: center;
+  margin: 0 16px;
+  transition: all 1s;
+  &:hover {
+    cursor: pointer;
+  }
+  .switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(-14%);
+    height: 26px;
+    width: 26px;
+    background: #d8831b;
+    border: 2px solid $white;
+    border-radius: 50%;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.4);
+    font-size: 14px;
+    color: $white;
+    transition: all 1s;
+
+    &:before {
+      content: "\f185";
+      font-family: 'Font Awesome 5 Free';
+      font-weight: 900;
+      border: none;
+      height: 26px;
+      width: 26px;
+      line-height: 26px;
+      text-align: center;
+      display: block;
+    }
+  }
+}
+
+.dark-mode .modeswitch {
+  .switch {
+    transform: translateX(18px) rotate(1turn);
+    background: $dark;
+    &:before {
+      content: "\f186";
+    }
+  }
+  background: $gray-400;
+}
+
+.navbar-dark{
+  .modeswitch{
+    background: $gray-500;
+  }
+}

@@ -20,7 +20,7 @@ module.exports = {
     // 輸出
     'sass_output': 'stylesheets/',
     'js_output': 'js/',
-    'public': './themes/hueman/source/',
+    'public': './themes/bootstrap-5/source/',
     // Bower
     'bower': './bower_components/'
   },
@@ -44,6 +44,7 @@ module.exports = {
     'autoprefixer': {browsers: ['last 1 version']}
   },
   sass: {
-    'output_style': 'compressed' // sass 輸出模式，可選 'nested', 'expanded', 'compact', 'compressed'
+    'output_style': 'compressed', // sass 輸出模式，可選 'nested', 'expanded', 'compact', 'compressed'
+    'includePaths': './node_modules/bootstrap/scss'
   }
 }
