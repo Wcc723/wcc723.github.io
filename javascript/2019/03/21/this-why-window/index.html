@@ -10,12 +10,12 @@
     
     
 
-    <meta name="description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 純粹的調用 (Simple call)直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。12345">
+    <meta name="description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 純粹的調用 (Simple call)直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。var n">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JavaScript This 系列文：this 為什麼指向 window">
 <meta property="og:url" content="https://wcc723.github.io/javascript/2019/03/21/this-why-window/index.html">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 純粹的調用 (Simple call)直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。12345">
+<meta property="og:description" content="本篇是接續先前的：鐵人賽：JavaScript 的 this 到底是誰？，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。 純粹的調用 (Simple call)直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。var n">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2F7365504D-FC60-4AD2-8135-D870D42E75A2.png?alt=media&token=0a518715-f7c0-4b41-9d4c-ab4d908c7855">
 <meta property="article:published_time" content="2019-03-20T16:00:00.000Z">
@@ -31,19 +31,8 @@
 
     
 
-    
-<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-
-    
-<link rel="stylesheet" href="/libs/titillium-web/styles.css">
-
-    
-<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
-
-
-    
-<link rel="stylesheet" href="/css/style.css">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" id="style-switch" href="/css/all.css">
     
 
     
@@ -102,55 +91,68 @@ ga('send', 'pageview');
 
     <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
     <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-<meta name="generator" content="Hexo 5.0.2"></head>
+<meta name="generator" content="Hexo 5.4.0"></head>
 
 <body>
-    <div id="wrap">
-        <header id="header">
-    <div id="header-outer" class="outer">
-        <div class="container">
-            <div class="container-inner">
-                <div id="header-title">
-                    <a href="/">
-                        <img no-lazy src="/images/casper_blog.svg" alt="">
-                    </a>
-                    
-                </div>
-                <div id="header-inner" class="nav-container">
-                    <a id="main-nav-toggle" class="nav-icon fa fa-bars"></a>
-                    <div class="nav-container-inner">
-                        <ul id="main-nav">
-                            
-                                <li class="main-nav-list-item" >
-                                    <a class="main-nav-list-link" href="/">首頁</a>
-                                </li>
-                            
-                                <li class="main-nav-list-item" >
-                                    <a class="main-nav-list-link" href="/categories/life">生活</a>
-                                </li>
-                            
-                                <li class="main-nav-list-item" >
-                                    <a class="main-nav-list-link" href="/archives">歸檔</a>
-                                </li>
-                            
-                                <li class="main-nav-list-item" >
-                                    <a class="main-nav-list-link" href="/about">關於</a>
-                                </li>
-                            
-                        </ul>
-                        <nav id="sub-nav">
-                            <div id="search-form-wrap">
+  <div>
+    <header class="container header">
+  <nav class="navbar navbar-expand-lg navbar-sticky">
+    <div class="container">
+      <!-- Logo START -->
+      <a class="navbar-brand" href="/">
+        <img class="navbar-brand-item light-mode-item" src="/images/blog_logo.svg" alt="卡斯伯的 Blog">			
+        <img class="navbar-brand-item dark-mode-item" src="/images/blog_logo_w.svg" alt="卡斯伯的 Blog">			
+      </a>
+      <!-- Logo END -->
 
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="搜尋" />
-        <button type="submit" class="search-form-submit"></button>
+      <!-- Responsive navbar toggler -->
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="text-body h6 d-none d-sm-inline-block">Menu</span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav navbar-nav-scroll ms-auto">
+        
+          <li class="nav-item" >
+            <a class="nav-link" href="/">首頁</a>
+          </li>
+        
+          <li class="nav-item" >
+            <a class="nav-link" href="/categories/life">生活</a>
+          </li>
+        
+          <li class="nav-item" >
+            <a class="nav-link" href="/archives">歸檔</a>
+          </li>
+        
+          <li class="nav-item" >
+            <a class="nav-link" href="/about">關於</a>
+          </li>
+        
+        <!-- Nav item 1 Demos -->
+      </ul>
+      <div class="my-3">
+        <div class="modeswitch" id="darkModeSwitch">
+          <div class="switch"></div>
+        </div>
+      </div>
+      <nav class="ms-3">
+        
+        <div id="search-form-wrap">
+
+    <form class="search-form input-group" style="width: 120px">
+        <input type="text" class="ins-search-input search-form-input form-control" placeholder="搜尋" />
+        <!-- <button type="submit" class="search-form-submit btn btn-outline-secondary">
+            <i class="bi bi-search fs-4"> </i>
+        </button> -->
     </form>
     <div class="ins-search">
     <div class="ins-search-mask"></div>
     <div class="ins-search-container">
         <div class="ins-input-wrapper">
             <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+            <span class="ins-close ins-selectable"><i class="bi bi-x"></i></span>
         </div>
         <div class="ins-section-wrapper">
             <div class="ins-section-container"></div>
@@ -178,49 +180,45 @@ ga('send', 'pageview');
 
 
 </div>
-                        </nav>
-                    </div>
-                </div>
-            </div>
-        </div>
+      </nav>
     </div>
+  </nav>
 </header>
-        <div class="container">
-            <div class="main-body container-inner">
-                <div class="main-body-inner">
-                    <section id="main">
-                        <a target="_blank" rel="noopener" href="https://hex.school/5cYlz">
-    <img no-lazy src="/images/2021/blog-vue3-header.png" style="max-width: 100%" alt="">
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+          <section id="main">
+            <a target="_blank" rel="noopener" href="https://hex.school/5cYlz">
+    <img no-lazy src="/images/2021/blog-vue3-header.png" class="rounded-3" style="max-width: 100%" alt="">
 </a>
 <div class="main-body-header">
-    <h1 class="header">
+    <h2 class="my-3">
     
     <a class="page-title-link" href="/categories/javascript/">javascript</a>
-    </h1>
+    </h2>
 </div>
-                        <div class="main-body-content">
-                            <article id="post-this-why-window" class="article article-single article-type-post" itemscope itemprop="blogPost">
+            <div id="sticky-space"></div>
+            <div class="main-body-content">
+              <article id="post-this-why-window" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
-            <header class="article-header">
+            <div class="article-subtitle">
                 
-    
-        <h1 class="article-title" itemprop="name">
-        JavaScript This 系列文：this 為什麼指向 window
-        </h1>
-    
+    <ul class="d-inline-block list-unstyled" itemprop="keywords"><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
+
+                
+<span class="ms-2 small"><time datetime="2019-03-20T16:00:00.000Z" itemprop="datePublished">2019-03-21</time></span>
+            </div>
+        
+        
+            <header class="article-header">
+                 
+<h1 class="display-5" itemprop="name">JavaScript This 系列文：this 為什麼指向 window</h1>
+ 
 
             </header>
         
-        
-            <div class="article-subtitle">
-                <a href="/javascript/2019/03/21/this-why-window/" class="article-date">
-    <time datetime="2019-03-20T16:00:00.000Z" itemprop="datePublished">2019-03-21</time>
-</a>
-                
-    <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/javascript/" rel="tag">javascript</a></li></ul>
-
-            </div>
         
         
         <div class="article-entry" itemprop="articleBody">
@@ -240,27 +238,82 @@ ga('send', 'pageview');
             
             <div class="need-gallery">
                 <p>本篇是接續先前的：<a href="/javascript/2017/12/12/javascript-this/">鐵人賽：JavaScript 的 this 到底是誰？</a>，會更深入的探討 JavaScript This 的運作及觀念，這一系列的文章順序上不會從基礎開始介紹，會建議先從先前文章開始閱讀。</p>
-<h2 id="純粹的調用-Simple-call"><a href="#純粹的調用-Simple-call" class="headerlink" title="純粹的調用 (Simple call)"></a>純粹的調用 (Simple call)</h2><p>直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">&#125;;</span><br><span class="line">callSomeone(); <span class="comment">// 小明</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="純粹的調用-Simple-call"><a href="#純粹的調用-Simple-call" class="headerlink" title="純粹的調用 (Simple call)"></a>純粹的調用 (Simple call)</h2><p>直接呼叫函式的情況下，this 會指向全域，在以下範例中可以取到 name 的值，但一般來說很不推薦這樣的寫法，後面會提到這樣的寫法是怎麼造成的。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;小明&#x27;</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callSomeone</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name)
+&#125;;
+callSomeone(); <span class="hljs-comment">// 小明</span></code></pre></p>
 <h3 id="IIFE、Callback、閉包也屬於此類別嗎？"><a href="#IIFE、Callback、閉包也屬於此類別嗎？" class="headerlink" title="IIFE、Callback、閉包也屬於此類別嗎？"></a>IIFE、Callback、閉包也屬於此類別嗎？</h3><p>上述的函式只有單一層級，為了加深大家的印象，我們透過各種改變 “函式” 作用域的方式看是否會改變 this 的結果。</p>
-<h4 id="IIFE"><a href="#IIFE" class="headerlink" title="IIFE"></a>IIFE</h4><p>立即函式，這算是直接在函式內直接在呼叫另一個函式，而這個結果下一樣與純粹的呼叫結果相同。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">  &#125;;</span><br><span class="line">  callSomeone(); <span class="comment">// 小明</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
-<p>無論我們把函式宣告放在 IIFE 內與外結果都是一致的。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name)</span><br><span class="line">&#125;</span><br><span class="line">(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  callSomeone(); <span class="comment">// 小明</span></span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></p>
-<h4 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h4><p>這樣結果依然相同，並不會因為獨立的作用域改變造成 this 的不同。<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">easyCard</span>(<span class="params">base = <span class="number">100</span></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> money = base</span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">update = <span class="number">10</span></span>) </span>&#123;</span><br><span class="line">    money = money + update</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="built_in">this</span>.name, money)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> MingEasyCard = easyCard(<span class="number">100</span>)</span><br><span class="line">MingEasyCard()</span><br><span class="line"><span class="comment">// &#x27;小明&#x27; 110</span></span><br></pre></td></tr></table></figure></p>
+<h4 id="IIFE"><a href="#IIFE" class="headerlink" title="IIFE"></a>IIFE</h4><p>立即函式，這算是直接在函式內直接在呼叫另一個函式，而這個結果下一樣與純粹的呼叫結果相同。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;小明&#x27;</span>;
+(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callSomeone</span>(<span class="hljs-params"></span>) </span>&#123;
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name)
+  &#125;;
+  callSomeone(); <span class="hljs-comment">// 小明</span>
+&#125;)();</code></pre></p>
+<p>無論我們把函式宣告放在 IIFE 內與外結果都是一致的。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;小明&#x27;</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callSomeone</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name)
+&#125;
+(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;
+  callSomeone(); <span class="hljs-comment">// 小明</span>
+&#125;)();</code></pre></p>
+<h4 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h4><p>這樣結果依然相同，並不會因為獨立的作用域改變造成 this 的不同。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;小明&#x27;</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">easyCard</span>(<span class="hljs-params">base = <span class="hljs-number">100</span></span>) </span>&#123;
+  <span class="hljs-keyword">var</span> money = base
+  <span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">update = <span class="hljs-number">10</span></span>) </span>&#123;
+    money = money + update
+    <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name, money)
+  &#125;
+&#125;
+
+<span class="hljs-keyword">var</span> MingEasyCard = easyCard(<span class="hljs-number">100</span>)
+MingEasyCard()
+<span class="hljs-comment">// &#x27;小明&#x27; 110</span></code></pre></p>
 <h4 id="Callback-function"><a href="#Callback-function" class="headerlink" title="Callback function"></a>Callback function</h4><p>callback function 也是一樣的結果，透過以上這些範例了解到，並不會因為作用域的改變導致 This 的不同，更重要的還是在於<strong>函式是不是與物件有扯上關係</strong>，至此為止我們實驗了各種函式呼叫方式，都可以知道函式再直接呼叫的情況下，this 都是指向 window。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">myEasyCard</span>(<span class="params">callback</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> money = <span class="number">100</span></span><br><span class="line">  <span class="keyword">return</span> callback(money); <span class="comment">// window</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">myEasyCard(<span class="function"><span class="keyword">function</span> (<span class="params">money</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>, money); <span class="comment">// window</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">myEasyCard</span>(<span class="hljs-params">callback</span>) </span>&#123;
+  <span class="hljs-keyword">var</span> money = <span class="hljs-number">100</span>
+  <span class="hljs-keyword">return</span> callback(money); <span class="hljs-comment">// window</span>
+&#125;
+
+myEasyCard(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">money</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>, money); <span class="hljs-comment">// window</span>
+&#125;)</code></pre>
 <p>而 callback function 會提到另一個常見的案例，就是陣列相關的處理方式，參考 MDN 的<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach#%E8%AA%9E%E6%B3%95">說明</a> forEach 的結構如下：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr.forEach(<span class="function"><span class="keyword">function</span> <span class="title">callback</span>(<span class="params">currentValue[, index[, array]]</span>) </span>&#123;</span><br><span class="line">    <span class="comment">//your iterator</span></span><br><span class="line">&#125;[, thisArg]);</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs js">arr.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callback</span>(<span class="hljs-params">currentValue[, index[, array]]</span>) </span>&#123;
+    <span class="hljs-comment">//your iterator</span>
+&#125;[, thisArg]);</code></pre>
 <p>因此 forEach 中間的 callback 一樣是屬於直接呼叫，所以會 this 會指向 window 物件。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>];</span><br><span class="line">a.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">item</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>, item)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs js"><span class="hljs-keyword">var</span> a = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];
+a.forEach(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">item</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>, item)
+&#125;);</code></pre>
 <h3 id="嚴謹模式"><a href="#嚴謹模式" class="headerlink" title="嚴謹模式"></a>嚴謹模式</h3><blockquote>
 <p>觀念說明開始，為什麼 this 會指向 window 物件</p>
 </blockquote>
 <p>這個階段我們加上 <code>&#39;use strict&#39;</code> 則會進入嚴謹模式，接下來直接呼叫的內容都會變成 <code>undefined</code>的奇特景象，可以理解這是為了避免不必要的錯誤提示，在此也建議別透過一般函式呼叫的 this 取用 <code>window</code>。</p>
-<p>直接套上嚴謹模式則會出現錯誤範例：<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;小明&#x27;</span>;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>); <span class="comment">// 這裡改成了 this，因為沒辦法找到 name</span></span><br><span class="line">&#125;</span><br><span class="line">callSomeone(); <span class="comment">// undefined</span></span><br></pre></td></tr></table></figure></p>
+<p>直接套上嚴謹模式則會出現錯誤範例：<br><pre><code class="hljs js"><span class="hljs-meta">&#x27;use strict&#x27;</span>
+<span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;小明&#x27;</span>;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callSomeone</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>); <span class="hljs-comment">// 這裡改成了 this，因為沒辦法找到 name</span>
+&#125;
+callSomeone(); <span class="hljs-comment">// undefined</span></code></pre></p>
 <p>而 undefined 與 window 有什麼關係呢？我們可以先介紹另一個觀念 <code>call()</code>，<code>call</code> 是可將物件傳入並替代函式內的 this：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> Ming = &#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(Ming, <span class="number">2</span>); <span class="comment">// 小明, 2</span></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs js"><span class="hljs-keyword">var</span> Ming = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;小明&#x27;</span>
+&#125;
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callSomeone</span>(<span class="hljs-params">num</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name, num);
+&#125;
+callSomeone.call(Ming, <span class="hljs-number">2</span>); <span class="hljs-comment">// 小明, 2</span></code></pre>
 <p>透過 <code>.call(Ming, 2)</code> 的方式，可將 Ming 傳入並取代 this，後面帶上一個參數 <code>2</code> 則是函式的參數。因此 <code>.call()</code> <strong>前者為套用 this 的物件，後者以後都是函式的參數</strong>。參考下圖：函式中的 <code>this</code> 為 call() 的第一個值，而函式參數為第二個(包含後續的值)。</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FD776D6BE-46F9-433F-9D85-96291FD12F8A.png?alt=media&amp;token=cfb5fc9c-dc8b-4fe5-bc28-5bd555042183" alt=""></p>
-<p>接下來我們將 <code>Ming</code> 物件替換，直接定義一個 name 在全域之上，並且傳入 undefined 的值來替代 this，猜猜會發生什麼事!?<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域魔王&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="literal">undefined</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure><br>此時會發現運作上依然沒有問題，<strong>傳入 undefined 進入後 this 會直接指向全域</strong>。</p>
+<p>接下來我們將 <code>Ming</code> 物件替換，直接定義一個 name 在全域之上，並且傳入 undefined 的值來替代 this，猜猜會發生什麼事!?<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;全域魔王&#x27;</span> 
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callSomeone</span>(<span class="hljs-params">num</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name, num);
+&#125;
+callSomeone.call(<span class="hljs-literal">undefined</span>, <span class="hljs-number">2</span>);</code></pre><br>此時會發現運作上依然沒有問題，<strong>傳入 undefined 進入後 this 會直接指向全域</strong>。</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FCEBA40C7-690E-4422-B09E-3541AF207C63.png?alt=media&amp;token=aef490be-ecd9-4749-84f5-5bd4da8b2ce0" alt=""></p>
 <p>這麼神奇的狀態也算是 JavaScript 的 Feature，發生的理由可以參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/call#%E5%8F%83%E6%95%B8">MDN</a> 的說明。</p>
 <blockquote>
@@ -268,13 +321,33 @@ ga('send', 'pageview');
 </blockquote>
 <p>因此，上述程式碼在嚴謹模式下將無法正確運行，因為傳入 <code>undefined</code> 時將會正確以 <code>undefined</code> 作運行。同樣概念下，在一般全域環境套用 ‘use strict’ <code>this</code> 作為一般調用時，將會直接套用 undefined 而不會是 window。</p>
 <p>而上述程式碼於嚴謹模式下，將會正確的傳入 undefined。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span></span><br><span class="line"><span class="keyword">var</span> name = <span class="string">&#x27;全域魔王&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>, num);</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="literal">undefined</span>, <span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+<pre><code class="hljs js"><span class="hljs-meta">&#x27;use strict&#x27;</span>
+<span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;全域魔王&#x27;</span> 
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callSomeone</span>(<span class="hljs-params">num</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>, num);
+&#125;
+callSomeone.call(<span class="hljs-literal">undefined</span>, <span class="hljs-number">2</span>);</code></pre>
 <p>接下來，可以將本文的上方的程式碼都加上 <code>&#39;use strict&#39;</code> 都會得到相同的結果，this 都會指向 undefined。</p>
 <hr>
 <h2 id="延伸閱讀：This-都是物件"><a href="#延伸閱讀：This-都是物件" class="headerlink" title="延伸閱讀：This 都是物件"></a>延伸閱讀：This 都是物件</h2><p>前一篇介紹到 「this 大部分取決於 <strong>它在哪個物件下被呼叫</strong>」，所以其中改變 this 的方法之一則是透過物件下呼叫函式：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callName</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="built_in">this</span>.name);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> auntie = &#123;</span><br><span class="line">  name: <span class="string">&#x27;漂亮阿姨&#x27;</span>,</span><br><span class="line">  callName: callName  </span><br><span class="line">  <span class="comment">// 這裡的 function 指向全域的 callName function</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">auntie.callName() <span class="comment">// &#x27;漂亮阿姨&#x27;，呼叫是在物件下調用，那麼 this 則是該物件</span></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callName</span>(<span class="hljs-params"></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">this</span>.name);
+&#125;
+
+<span class="hljs-keyword">var</span> auntie = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>,
+  <span class="hljs-attr">callName</span>: callName  
+  <span class="hljs-comment">// 這裡的 function 指向全域的 callName function</span>
+&#125;
+
+auntie.callName() <span class="hljs-comment">// &#x27;漂亮阿姨&#x27;，呼叫是在物件下調用，那麼 this 則是該物件</span></code></pre>
 <p>除此之外，還可以透過本文所介紹的 call 來改變 this 的值，先前範例都是傳入「物件」，此部分我們傳入數值來看看其型別：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">callSomeone</span>(<span class="params">num</span>) </span>&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(<span class="keyword">typeof</span>(<span class="built_in">this</span>), <span class="keyword">typeof</span>(num));</span><br><span class="line">&#125;</span><br><span class="line">callSomeone.call(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line"><span class="comment">// object number</span></span><br></pre></td></tr></table></figure>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callSomeone</span>(<span class="hljs-params">num</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">typeof</span>(<span class="hljs-built_in">this</span>), <span class="hljs-keyword">typeof</span>(num));
+&#125;
+callSomeone.call(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);
+<span class="hljs-comment">// object number</span></code></pre>
 <p>此部分的 this 我們使用數字 1，函式參數使用數字 2，結果會發生 this 的型別變成了 <code>object</code>!?</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201903%2FA398F871-CD13-48A1-9A9D-97B53B27196E.png?alt=media&amp;token=4336cc32-d8e5-4228-bee0-e0b500556e29" alt=""></p>
 <p>重新透過 console 查看 this 會得到以下的結果，這是透過建構式產生的數值(<code>new Number(1)</code>)，透過 call 所傳入的純值會被使用 new 建構式的方式產生，所以型別依然維持是「物件」（可參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/call#%E5%8F%83%E6%95%B8">MDN</a>），因此 this 終究為物件形式。</p>
@@ -298,35 +371,57 @@ ga('send', 'pageview');
             
             </div>
             
+
 <style>
 .article-entry .article-nav {
-    display: flex;
-    background-color: rgba(0,0,0,0.03);
+  display: flex;
+  background-color: rgba(0,0,0,0.03);
 }
-.article-entry .article-nav a {
-    flex: 1;
+.article-entry .article-nav .col-12 {
+  flex: 0 0 auto;
+  width: 50%;
 }
 </style>
-<nav class="article-nav">
-    
-        <a href="/javascript/2019/03/18/JS-THIS/" id="article-nav-older" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">JavaScript This 系列文：this 與物件的關係</div>
-        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
-        </a>
-    
-    
-        <a href="/ssl/2019/04/24/free-ssl/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">
-        
-            免費申請屬於自己的 SSL 憑證(手把手帶你加上 https 綠色鎖頭)
-        
+<div class="row g-0 mt-5 border-top border-bottom article-nav">
+  
+    <div class="col-12 py-3 py-md-4">
+      <div class="d-flex align-items-center position-relative">
+        <!-- Icon -->
+        <div class="bg-primary py-1">
+          <i class="bi bi-chevron-compact-left fs-3 text-white px-1 rtl-flip"></i>
         </div>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
-    
-</nav>
+        <!-- Title -->
+        <div class="ms-3">
+          <h5 class="m-0">
+            <a href="/javascript/2019/03/18/JS-THIS/" class="stretched-link btn-link text-reset"
+              >上一篇：JavaScript This 系列文：this 與物件的關係</a
+            >
+          </h5>
+        </div>
+      </div>
+    </div>
+  
+  
+  <div class="col-12 py-3 py-md-4 text-sm-end">
+    <div class="d-flex align-items-center position-relative justify-content-end">
+      <!-- Title -->
+      <div class="me-3">
+        <h5 class="m-0">
+          <a href="/ssl/2019/04/24/free-ssl/" class="stretched-link btn-link text-reset"
+            >下一篇： 免費申請屬於自己的 SSL 憑證(手把手帶你加上 https 綠色鎖頭) </a
+          >
+        </h5>
+      </div>
+      <!-- Icon -->
+      <div class="bg-primary py-1">
+        <i
+          class="bi bi-chevron-compact-right fs-3 text-white px-1 rtl-flip"
+        ></i>
+      </div>
+    </div>
+  </div>
+  
+</div>
 
             <div style="margin: 15px 0;">
                 <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
@@ -424,69 +519,95 @@ ga('send', 'pageview');
     </section>
 
 
-                        </div>
-                    </section>
-                    <aside id="sidebar">
-    <a class="sidebar-toggle" title="Expand Sidebar"><i class="toggle icon"></i></a>
-    <div class="sidebar-top">
-        <p>關注我 :</p>
-        <ul class="social-links">
-            
-                
-                <li>
-                    <a class="social-tooltip" title="facebook" href="https://www.facebook.com/WccCasper" target="_blank">
-                        <i class="icon fa fa-facebook"></i>
-                    </a>
-                </li>
-                
-            
-                
-                <li>
-                    <a class="social-tooltip" title="github" href="https://github.com/Wcc723" target="_blank">
-                        <i class="icon fa fa-github"></i>
-                    </a>
-                </li>
-                
-            
-        </ul>
-    </div>
-    
+            </div>
+          </section>
+        </div>
+        <div class="col-lg-3 mt-5 mt-lg-0">
+          <aside id="sidebar">
+  <a class="sidebar-toggle" title="Expand Sidebar"
+    ><i class="toggle icon"></i
+  ></a>
+  <div class="sidebar-top mb-3">
+    <h3 class="mb-3">關注我 :</h3>
+    <div class="row g-2">
+       
+      <div class="col">
+        <a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper" class="bg-facebook rounded text-center text-white-force p-3 d-block">
+          <h5>卡斯伯</h5>
+          <i class="fab fa-facebook-square fs-5 mb-2"></i>
+          <h6 class="m-0">4.5K</h6>
+          <span class="small">Fans</span>
+        </a>
+      </div>
         
+      <div class="col">
+        <a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA" class="bg-youtube rounded text-center text-white-force p-3 d-block">
+          <h5>六角學院</h5>
+          <i class="fab fa-youtube-square fs-5 mb-2"></i>
+          <h6 class="m-0">21K</h6>
+          <span class="small">Fans</span>
+        </a>
+      </div>
+       
+    </div>
+  </div>
+   
+
 <style>
 .article-entry .article-nav {
-    display: flex;
-    background-color: rgba(0,0,0,0.03);
+  display: flex;
+  background-color: rgba(0,0,0,0.03);
 }
-.article-entry .article-nav a {
-    flex: 1;
+.article-entry .article-nav .col-12 {
+  flex: 0 0 auto;
+  width: 50%;
 }
 </style>
-<nav class="article-nav">
-    
-        <a href="/javascript/2019/03/18/JS-THIS/" id="article-nav-older" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">JavaScript This 系列文：this 與物件的關係</div>
-        <i class="icon fa fa-chevron-left" id="icon-chevron-left"></i>
-        </a>
-    
-    
-        <a href="/ssl/2019/04/24/free-ssl/" id="article-nav-newer" class="article-nav-link-wrap">
-        <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">
-        
-            免費申請屬於自己的 SSL 憑證(手把手帶你加上 https 綠色鎖頭)
-        
+<div class="row g-0 mt-5 border-top border-bottom article-nav">
+  
+    <div class="col-12 py-3 py-md-4">
+      <div class="d-flex align-items-center position-relative">
+        <!-- Icon -->
+        <div class="bg-primary py-1">
+          <i class="bi bi-chevron-compact-left fs-3 text-white px-1 rtl-flip"></i>
         </div>
-        <i class="icon fa fa-chevron-right" id="icon-chevron-right"></i>
-    </a>
+        <!-- Title -->
+        <div class="ms-3">
+          <h5 class="m-0">
+            <a href="/javascript/2019/03/18/JS-THIS/" class="stretched-link btn-link text-reset"
+              >上一篇：JavaScript This 系列文：this 與物件的關係</a
+            >
+          </h5>
+        </div>
+      </div>
+    </div>
+  
+  
+  <div class="col-12 py-3 py-md-4 text-sm-end">
+    <div class="d-flex align-items-center position-relative justify-content-end">
+      <!-- Title -->
+      <div class="me-3">
+        <h5 class="m-0">
+          <a href="/ssl/2019/04/24/free-ssl/" class="stretched-link btn-link text-reset"
+            >下一篇： 免費申請屬於自己的 SSL 憑證(手把手帶你加上 https 綠色鎖頭) </a
+          >
+        </h5>
+      </div>
+      <!-- Icon -->
+      <div class="bg-primary py-1">
+        <i
+          class="bi bi-chevron-compact-right fs-3 text-white px-1 rtl-flip"
+        ></i>
+      </div>
+    </div>
+  </div>
+  
+</div>
+ 
+  <div class="widgets-container">
     
-</nav>
-
-    
-    <div class="widgets-container">
-        
-<div class="calendar_notification" id="calendar_notification-block" style="display: none">
-  <div class="calendar_notification-header">
+<div class="calendar_notification mb-3" id="calendar_notification-block" style="display: none">
+  <div class="calendar_notification-header rounded-top">
     近期活動通知
   </div>
   <div class="calendar_notification-body">
@@ -509,7 +630,7 @@ ga('send', 'pageview');
 }
 .calendar_notification-body {
   padding: 15px;
-  background-color: #eaeaea;
+  /* background-color: #eaeaea; */
   max-height: 300px;
   overflow-y: auto;
 }
@@ -526,7 +647,7 @@ ga('send', 'pageview');
 }
 .calendar_notification-description {
   font-size: 0.9rem;
-  color: #333;
+  /* color: #333; */
 }
 </style>
 
@@ -568,149 +689,231 @@ $.ajax({
     }
   }
 });
-</script>
-        
-            
-                
-    <div class="widget-wrap" style="position: sticky">
-        <h3 class="widget-title">最新文章</h3>
-        <div class="widget">
-            <ul id="recent-post" class="">
-                
-                    <li>
-                        
-                        
-                        
-                        <div class="item-inner">
-                            <p class="item-title"><a href="/life/2021/06/14/why-use-mac/" class="title">為什麼選擇使用 Mac 來進行開發</a></p>
-                            <p class="item-date">
-                                <time datetime="2021-06-13T16:00:00.000Z" itemprop="datePublished">2021-06-14</time>
-                                <span class="item-category"><a class="article-category-link" href="/categories/life/">life</a>
-                                </span>
-                            </p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        
-                        
-                        <div class="item-inner">
-                            <p class="item-title"><a href="/life/2021/06/13/mac-reacord-by-soundflower/" class="title">Mac 擷取系統音效 - 直播、錄影均適用</a></p>
-                            <p class="item-date">
-                                <time datetime="2021-06-12T16:00:00.000Z" itemprop="datePublished">2021-06-13</time>
-                                <span class="item-category"><a class="article-category-link" href="/categories/life/">life</a>
-                                </span>
-                            </p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        
-                        
-                        <div class="item-inner">
-                            <p class="item-title"><a href="/development/2021/06/03/node-js-live/" class="title">NODE.JS 開 API 不求人 - 教學影片</a></p>
-                            <p class="item-date">
-                                <time datetime="2021-06-02T16:00:00.000Z" itemprop="datePublished">2021-06-03</time>
-                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
-                                </span>
-                            </p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        
-                        
-                        <div class="item-inner">
-                            <p class="item-title"><a href="/development/2021/04/11/vscode-eslint-prettier/" class="title">VSCode Prettier 整合 ESLint 自動排版</a></p>
-                            <p class="item-date">
-                                <time datetime="2021-04-10T16:00:00.000Z" itemprop="datePublished">2021-04-11</time>
-                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
-                                </span>
-                            </p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        
-                        
-                        <div class="item-inner">
-                            <p class="item-title"><a href="/development/2020/12/15/vue-3-mitt/" class="title">Vue3 中使用 Event Bus</a></p>
-                            <p class="item-date">
-                                <time datetime="2020-12-14T16:00:00.000Z" itemprop="datePublished">2020-12-15</time>
-                                <span class="item-category"><a class="article-category-link" href="/categories/development/">development</a>
-                                </span>
-                            </p>
-                        </div>
-                    </li>
-                
-            </ul>
-        </div>
-    </div>
+</script>   
+<h4 class="mb-3">Recent post</h4>
+ 
+<div class="card mb-3">
+  <div class="row g-3">
+    <div class="col-4">
+       
+<a href="/life/2021/06/14/why-use-mac/" class="thumbnail">
+    
+    
+        <img class="rounded" src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fwhy_mac.png?alt=media&token=f51c313f-3617-42d6-a972-a10863802034" alt="" />
+    
+    
+</a>
 
-            
-                
-<div class="widget-wrap widget-list">
-    <h3 class="widget-title">粉絲專頁</h3>
+
+ 
+    </div>
+    <div class="col-8">
+      <h6>
+        <a
+          href="/life/2021/06/14/why-use-mac/"
+          class="btn-link stretched-link text-reset fw-bold"
+          >為什麼選擇使用 Mac 來進行開發</a
+        >
+      </h6>
+      <div class="small mt-1">
+        <time datetime="2021-06-13T16:00:00.000Z" itemprop="datePublished"
+          >2021-06-14</time
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="row g-3">
+    <div class="col-4">
+       
+<a href="/life/2021/06/13/mac-reacord-by-soundflower/" class="thumbnail">
+    
+    
+        <img class="rounded" src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fmac_sound.jpg?alt=media&token=67c79d98-633e-4f38-a09d-895d839ef5f9" alt="" />
+    
+    
+</a>
+
+
+ 
+    </div>
+    <div class="col-8">
+      <h6>
+        <a
+          href="/life/2021/06/13/mac-reacord-by-soundflower/"
+          class="btn-link stretched-link text-reset fw-bold"
+          >Mac 擷取系統音效 - 直播、錄影均適用</a
+        >
+      </h6>
+      <div class="small mt-1">
+        <time datetime="2021-06-12T16:00:00.000Z" itemprop="datePublished"
+          >2021-06-13</time
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="row g-3">
+    <div class="col-4">
+       
+<a href="/development/2021/06/03/node-js-live/" class="thumbnail">
+    
+    
+        <img class="rounded" src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FNode.js%20API.png?alt=media&token=0bab313e-7463-4b4c-803a-e614dc73f856" alt="" />
+    
+    
+</a>
+
+
+ 
+    </div>
+    <div class="col-8">
+      <h6>
+        <a
+          href="/development/2021/06/03/node-js-live/"
+          class="btn-link stretched-link text-reset fw-bold"
+          >NODE.JS 開 API 不求人 - 教學影片</a
+        >
+      </h6>
+      <div class="small mt-1">
+        <time datetime="2021-06-02T16:00:00.000Z" itemprop="datePublished"
+          >2021-06-03</time
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="row g-3">
+    <div class="col-4">
+       
+<a href="/development/2021/04/11/vscode-eslint-prettier/" class="thumbnail">
+    
+    
+        <img class="rounded" src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fvscode_eslint_prettier.jpg?alt=media&token=fb98775e-0bfe-4d52-8dfe-96caf43641f5" alt="" />
+    
+    
+</a>
+
+
+ 
+    </div>
+    <div class="col-8">
+      <h6>
+        <a
+          href="/development/2021/04/11/vscode-eslint-prettier/"
+          class="btn-link stretched-link text-reset fw-bold"
+          >VSCode Prettier 整合 ESLint 自動排版</a
+        >
+      </h6>
+      <div class="small mt-1">
+        <time datetime="2021-04-10T16:00:00.000Z" itemprop="datePublished"
+          >2021-04-11</time
+        >
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="row g-3">
+    <div class="col-4">
+       
+<a href="/development/2020/12/15/vue-3-mitt/" class="thumbnail">
+    
+    
+        <img class="rounded" src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fvue3_event_bus.jpg?alt=media&token=093fc9df-f971-4bb7-b6f4-bd45a7b57e0c" alt="" />
+    
+    
+</a>
+
+
+ 
+    </div>
+    <div class="col-8">
+      <h6>
+        <a
+          href="/development/2020/12/15/vue-3-mitt/"
+          class="btn-link stretched-link text-reset fw-bold"
+          >Vue3 中使用 Event Bus</a
+        >
+      </h6>
+      <div class="small mt-1">
+        <time datetime="2020-12-14T16:00:00.000Z" itemprop="datePublished"
+          >2020-12-15</time
+        >
+      </div>
+    </div>
+  </div>
+</div>
+ 
+  
+<div class="widget-wrap widget-list mb-3">
+    <h4 class="mb-3">粉絲專頁</h4>
     <div class="widget">
         <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
     </div>
+</div>  
+<div class="mb-3">
+  <h4 class="mb-3">標籤雲</h4>
+  <div class="widget tagcloud"><a href="/tags/Bootstrap/" style="font-size: 15.29px;" class="badge rounded-pill bg-light text-dark -5">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;" class="badge rounded-pill bg-light text-dark -3">Sass</a> <a href="/tags/async/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">async</a> <a href="/tags/await/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">await</a> <a href="/tags/beginner/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">beginner</a> <a href="/tags/bootstrap/" style="font-size: 13.53px;" class="badge rounded-pill bg-light text-dark -4">bootstrap</a> <a href="/tags/border/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">border</a> <a href="/tags/business/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">business</a> <a href="/tags/compass/" style="font-size: 11.76px;" class="badge rounded-pill bg-light text-dark -2">compass</a> <a href="/tags/courses/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">courses</a> <a href="/tags/css/" style="font-size: 20px;" class="badge rounded-pill bg-light text-dark -10">css</a> <a href="/tags/d3/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">d3</a> <a href="/tags/d3js/" style="font-size: 16.47px;" class="badge rounded-pill bg-light text-dark -6">d3js</a> <a href="/tags/design/" style="font-size: 17.06px;" class="badge rounded-pill bg-light text-dark -7">design</a> <a href="/tags/develop/" style="font-size: 11.18px;" class="badge rounded-pill bg-light text-dark -1">develop</a> <a href="/tags/dns/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">dns</a> <a href="/tags/emmet/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;" class="badge rounded-pill bg-light text-dark -3">git</a> <a href="/tags/github/" style="font-size: 12.35px;" class="badge rounded-pill bg-light text-dark -2">github</a> <a href="/tags/grid/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;" class="badge rounded-pill bg-light text-dark -6">gulp</a> <a href="/tags/html/" style="font-size: 11.76px;" class="badge rounded-pill bg-light text-dark -2">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;" class="badge rounded-pill bg-light text-dark -9">ironman</a> <a href="/tags/javascript/" style="font-size: 18.82px;" class="badge rounded-pill bg-light text-dark -9">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;" class="badge rounded-pill bg-light text-dark -5">jekyll</a> <a href="/tags/jest/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">jest</a> <a href="/tags/jquery/" style="font-size: 14.12px;" class="badge rounded-pill bg-light text-dark -4">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;" class="badge rounded-pill bg-light text-dark -8">js</a> <a href="/tags/life/" style="font-size: 11.76px;" class="badge rounded-pill bg-light text-dark -2">life</a> <a href="/tags/mac/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">mac</a> <a href="/tags/markdown/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">markdown</a> <a href="/tags/mobile/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">mobile</a> <a href="/tags/modules/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">modules</a> <a href="/tags/node-js/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">node.js</a> <a href="/tags/nodejs/" style="font-size: 11.76px;" class="badge rounded-pill bg-light text-dark -2">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;" class="badge rounded-pill bg-light text-dark -4">oocss</a> <a href="/tags/project/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">project</a> <a href="/tags/promise/" style="font-size: 11.18px;" class="badge rounded-pill bg-light text-dark -1">promise</a> <a href="/tags/puppeteer/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">puppeteer</a> <a href="/tags/rails/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;" class="badge rounded-pill bg-light text-dark -2">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">ruby</a> <a href="/tags/sass/" style="font-size: 18.24px;" class="badge rounded-pill bg-light text-dark -8">sass</a> <a href="/tags/scss/" style="font-size: 12.94px;" class="badge rounded-pill bg-light text-dark -3">scss</a> <a href="/tags/sketch/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">sketch</a> <a href="/tags/ssl/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">ssl</a> <a href="/tags/study/" style="font-size: 12.35px;" class="badge rounded-pill bg-light text-dark -2">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;" class="badge rounded-pill bg-light text-dark -4">svg</a> <a href="/tags/test/" style="font-size: 11.18px;" class="badge rounded-pill bg-light text-dark -1">test</a> <a href="/tags/tool/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;" class="badge rounded-pill bg-light text-dark -5">tools</a> <a href="/tags/vscode/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">vscode</a> <a href="/tags/vue/" style="font-size: 10.59px;" class="badge rounded-pill bg-light text-dark -1">vue</a> <a href="/tags/web/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;" class="badge rounded-pill bg-light text-dark -1">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;" class="badge rounded-pill bg-light text-dark -0">zeplin</a></div>
 </div>
-            
-                
-    <div class="widget-wrap widget-float">
-        <h3 class="widget-title">標籤雲</h3>
-        <div class="widget tagcloud">
-            <a href="/tags/Bootstrap/" style="font-size: 15.29px;">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 12.94px;">Sass</a> <a href="/tags/async/" style="font-size: 10px;">async</a> <a href="/tags/await/" style="font-size: 10px;">await</a> <a href="/tags/beginner/" style="font-size: 10.59px;">beginner</a> <a href="/tags/bootstrap/" style="font-size: 13.53px;">bootstrap</a> <a href="/tags/border/" style="font-size: 10px;">border</a> <a href="/tags/business/" style="font-size: 10px;">business</a> <a href="/tags/compass/" style="font-size: 11.76px;">compass</a> <a href="/tags/courses/" style="font-size: 10px;">courses</a> <a href="/tags/css/" style="font-size: 20px;">css</a> <a href="/tags/d3/" style="font-size: 10px;">d3</a> <a href="/tags/d3js/" style="font-size: 16.47px;">d3js</a> <a href="/tags/design/" style="font-size: 17.06px;">design</a> <a href="/tags/develop/" style="font-size: 11.18px;">develop</a> <a href="/tags/dns/" style="font-size: 10px;">dns</a> <a href="/tags/emmet/" style="font-size: 10px;">emmet</a> <a href="/tags/es6/" style="font-size: 10.59px;">es6</a> <a href="/tags/fire-app/" style="font-size: 10px;">fire.app</a> <a href="/tags/git/" style="font-size: 12.94px;">git</a> <a href="/tags/github/" style="font-size: 12.35px;">github</a> <a href="/tags/grid/" style="font-size: 10px;">grid</a> <a href="/tags/gulp/" style="font-size: 15.88px;">gulp</a> <a href="/tags/html/" style="font-size: 11.76px;">html</a> <a href="/tags/icon-fonts/" style="font-size: 10px;">icon fonts</a> <a href="/tags/icons/" style="font-size: 10px;">icons</a> <a href="/tags/intro/" style="font-size: 10.59px;">intro</a> <a href="/tags/ironman/" style="font-size: 19.41px;">ironman</a> <a href="/tags/javascript/" style="font-size: 18.82px;">javascript</a> <a href="/tags/jekyll/" style="font-size: 15.29px;">jekyll</a> <a href="/tags/jest/" style="font-size: 10.59px;">jest</a> <a href="/tags/jquery/" style="font-size: 14.12px;">jquery</a> <a href="/tags/js/" style="font-size: 17.65px;">js</a> <a href="/tags/life/" style="font-size: 11.76px;">life</a> <a href="/tags/mac/" style="font-size: 10.59px;">mac</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/mobile/" style="font-size: 10px;">mobile</a> <a href="/tags/modules/" style="font-size: 10px;">modules</a> <a href="/tags/node-js/" style="font-size: 10px;">node.js</a> <a href="/tags/nodejs/" style="font-size: 11.76px;">nodejs</a> <a href="/tags/npm/" style="font-size: 10px;">npm</a> <a href="/tags/oocss/" style="font-size: 13.53px;">oocss</a> <a href="/tags/project/" style="font-size: 10px;">project</a> <a href="/tags/promise/" style="font-size: 11.18px;">promise</a> <a href="/tags/puppeteer/" style="font-size: 10px;">puppeteer</a> <a href="/tags/rails/" style="font-size: 10.59px;">rails</a> <a href="/tags/reactjs/" style="font-size: 11.76px;">reactjs</a> <a href="/tags/ruby/" style="font-size: 10.59px;">ruby</a> <a href="/tags/sass/" style="font-size: 18.24px;">sass</a> <a href="/tags/scss/" style="font-size: 12.94px;">scss</a> <a href="/tags/sketch/" style="font-size: 10px;">sketch</a> <a href="/tags/ssl/" style="font-size: 10px;">ssl</a> <a href="/tags/study/" style="font-size: 12.35px;">study</a> <a href="/tags/sublime-text/" style="font-size: 10px;">sublime text</a> <a href="/tags/svg/" style="font-size: 13.53px;">svg</a> <a href="/tags/test/" style="font-size: 11.18px;">test</a> <a href="/tags/tool/" style="font-size: 10px;">tool</a> <a href="/tags/tools/" style="font-size: 14.71px;">tools</a> <a href="/tags/vscode/" style="font-size: 10.59px;">vscode</a> <a href="/tags/vue/" style="font-size: 10.59px;">vue</a> <a href="/tags/web/" style="font-size: 10px;">web</a> <a href="/tags/workshop/" style="font-size: 11.18px;">workshop</a> <a href="/tags/zeplin/" style="font-size: 10px;">zeplin</a>
-        </div>
-    </div>
 
+  
+<div class="mb-3">
+  <h4 class="mb-3">連接</h4>
+  <div class="widget">
+    <ul>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
+      </li>
+      
+    </ul>
+  </div>
+</div>
 
-            
-                
-    <div class="widget-wrap widget-list">
-        <h3 class="widget-title">連接</h3>
-        <div class="widget">
-            <ul>
-                
-                    <li>
-                        <a target="_blank" rel="noopener" href="https://www.hexschool.com/">六角學院</a>
-                    </li>
-                
-                    <li>
-                        <a target="_blank" rel="noopener" href="https://w3c.hexschool.com/">w3cHexschool</a>
-                    </li>
-                
-            </ul>
-        </div>
-    </div>
-
-
-            
-        
-    </div>
+  
+  </div>
 </aside>
-                </div>
-            </div>
+
         </div>
-        <footer id="footer">
-    <div class="container">
-        <div class="container-inner">
-            <a id="back-to-top" href="javascript:;"><i class="icon fa fa-angle-up"></i></a>
-            <div class="credit">
-                <h1 class="logo-wrap">
-                    <a href="/" class="logo"></a>
-                </h1>
-                <p>&copy; 2021 Wang Casper</p>
-                <p>Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by <a href="//github.com/ppoffice" target="_blank">PPOffice</a></p>
-            </div>
-        </div>
+      </div>
     </div>
+    <footer class="bg-dark py-5 mt-4 text-muted">
+  <div class="container">
+    <div class="container-inner">
+      <a id="back-to-top" href="javascript:;"
+        ><i class="icon fa fa-angle-up"></i
+      ></a>
+      <div class="credit">
+        <h1 class="logo-wrap">
+          <a href="/" class="logo"></a>
+        </h1>
+        <p>
+          &copy; 2021 Wang Casper
+        </p>
+        <p>
+          Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by
+          <a href="https://bootstrap5.hexschool.com/" target="_blank"
+            >Bootstrap</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
 </footer>
-        
+
+    
     
 
 <script>(function(d, s, id) {
@@ -758,7 +961,8 @@ $.ajax({
 
 <!-- Custom Scripts -->
 
-<script src="/js/main.js"></script>
+
+<script src="/js/bs-layout-functions.js"></script>
 
 
 <div id="fb-root"></div>
@@ -775,13 +979,13 @@ $.ajax({
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 
-        <script>
+    <script>
   (adsbygoogle = window.adsbygoogle || []).push({
     google_ad_client: "ca-pub-8296684122088055",
     enable_page_level_ads: true
   });
 </script>
 
-    </div>
+  </div>
 </body>
 </html>
