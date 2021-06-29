@@ -70,15 +70,9 @@ gulp.task('others', function(){
 
 
 gulp.task('watch', function() {
-  gulp.watch([config.paths.coffee + '**/**.coffee'], function() {
-    return gulp.series('coffee');
-  });
-  gulp.watch(objs, function() {
-    return gulp.series('others');
-  });
-  gulp.watch([config.paths.sass + '**/*.scss'], function() {
-    return gulp.series('sass');
-  });
+  gulp.watch([config.paths.coffee + '**/**.coffee'], gulp.series('coffee'));
+  gulp.watch(objs, gulp.series('others'));
+  gulp.watch([config.paths.sass + '**/*.scss'], gulp.series('sass'));
   
 })
 

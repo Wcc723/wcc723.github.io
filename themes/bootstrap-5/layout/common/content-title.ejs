@@ -1,0 +1,37 @@
+<a href="https://hex.school/5cYlz">
+    <img no-lazy src="/images/2021/blog-vue3-header.png" class="rounded-3" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
+    <h2 class="my-3">
+    <%
+        var title = page.title;
+        if (page.archive) {
+            title = __('index.archive');
+            if (page.month) {
+                title += ': ' + page.year + '/' + page.month;
+            } else if (page.year) {
+                title += ': ' + page.year;
+            }
+            title = '<i class="icon fa fa-archive"></i>' + title;
+        } else if (page.category) {
+            title = '<i class="icon fa fa-folder-open"></i>' + __('index.category') + ': <span class="page-title-link">' + page.category + '</span>';
+        } else if (page.tag) {
+            title = '<i class="icon fa fa-tag"></i>' + __('index.tag') + ': <span>' + page.tag + '</span>';
+        } else if (is_post()) {
+            title = list_categories(page.categories, {show_count: false, style: 'none', class: 'page-title', separator: '<i class="icon fa fa-angle-right"></i>'});
+            if (title == "") {
+                title = __('index.uncategorized');
+            }
+        } else if (is_home()) {
+            title = '<span class="page-title-link" data-url="home">' + __('index.home') + '</span>';
+        } else if (page.subtitle) {
+            title = '<span class="page-title-link" data-url="' + url_for(page.path) + '">' + page.subtitle + '</span>';
+        } else if (page.title) {
+            title = '<span class="page-title-link" data-url="' + url_for(page.path) + '">' + page.title + '</span>';
+        } else {
+            title = config.title;
+        }
+    %>
+    <%- title %>
+    </h2>
+</div>

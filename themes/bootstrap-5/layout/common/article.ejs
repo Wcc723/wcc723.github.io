@@ -1,0 +1,49 @@
+<article id="<%= post.layout %>-<%= post.slug %>" class="article article-single article-type-<%= post.layout %>" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        <% if (post.layout != 'page') { %>
+            <div class="article-subtitle">
+                <%- partial('post/tag') %>
+                <%- partial('post/date', { class_name: 'article-date', date_format: null }) %>
+            </div>
+        <% } %>
+        <% if (post.link || post.title) { %>
+            <header class="article-header">
+                <%- partial('post/title', { class_name: 'article-title' }) %>
+            </header>
+        <% } %>
+        
+        <% /* partial('post/gallery') */ %>
+        <div class="article-entry" itemprop="articleBody">
+            <% if (theme.google_adsense) { %>
+                <div style="margin: 15px 0;">
+                    <%- partial('../widget/google_adsense') %>
+                </div>
+            <% } %>
+            <div class="need-gallery">
+                <%- post.content %>
+            </div>
+            <% if (theme.liker_btn ){ %>
+                <%- partial('../widget/liker') %>
+            <% } %>
+            <div style="overflow: hidden; margin: 15px 0;">
+            <% if (theme.facebook_like_btn ){ %>
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            <% } %>
+            </div>
+            <%- partial('post/nav') %>
+            <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div>
+            <% if (theme.google_adsense) { %>
+                <%- partial('../widget/google_adsense') %>
+            <% } %>
+            
+        </div>
+        <footer class="article-footer">
+            <%- partial('share/index', { post: post }) %>
+        </footer>
+    </div>
+</article>
+<%- partial('comment/index') %>

@@ -1,0 +1,18 @@
+
+<a href="<%- url_for(post.link ? post.link : post.path) %>" class="thumbnail">
+    <% var thumbnailUrl = thumbnail(post) %>
+    <% if (post.thumbnail) { %>
+        <img class="<%- className || 'rounded' %>" src="/images/<%- post.thumbnail %>" alt="" />
+    <% } else if (post.photos && post.photos.length) { %>
+        <img class="<%- className || 'rounded' %>" src="<%- post.photos[0] %>" alt="" />
+    <% } else if (thumbnailUrl) { %>
+        <img class="<%- className || 'rounded' %>" src="<%- thumbnailUrl %>" alt="" />
+    <% } else { %>
+        <span class="thumbnail-image thumbnail-none"> </span>
+    <% } %>
+    <% if (typeof(counter) !== 'undefined' && counter) { %>
+        <%- partial('comment/counter') %>
+    <% } %>
+</a>
+
+
