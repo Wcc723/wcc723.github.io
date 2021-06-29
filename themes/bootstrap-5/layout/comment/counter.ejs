@@ -1,0 +1,12 @@
+<% if (post.comments) { %>
+<span class="comment-counter">
+    <i class="fa fa-comments-o"></i>
+    <% if (theme.comment.disqus) { %>
+        <span class="disqus-comment-count" data-disqus-identifier="<%= post.disqusId || '' %>" data-disqus-url="<%= post.permalink %>">0</span>
+    <% } else if (theme.comment.duoshuo) { %>
+        <span class="ds-thread-count" data-thread-key="<%= post.path %>">0</span>
+    <% } else if (theme.comment.isso) { %>
+        <span><a href="/<%= post.path %>#isso-thread"></a></span>
+    <% } %>
+</span>
+<% } %>

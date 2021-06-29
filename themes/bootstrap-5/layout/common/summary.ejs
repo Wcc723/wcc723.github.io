@@ -1,0 +1,44 @@
+<!-- Card item START -->
+<div class="card mb-4">
+  <div class="row gx-3">
+    <div class="col-md-5">
+      <% if (theme.customize.thumbnail === true) { %> <%-
+            partial('common/thumbnail', { counter: true, className: 'rounded-3' }) %> <% } %>
+    </div>
+    <div class="col-md-7 mt-3 mt-md-0">
+      <%- list_categories(post.categories, { depth:2, style: 'none',
+      show_count: false, class: 'badge bg-secondary mb-2 ', separator: '', }) %>
+      <%- partial('post/title', { class_name: 'article-title', linkable: true })
+      %>
+      <p>
+        <%- excerpt(post) %>
+      </p>
+      <!-- Card info -->
+      <ul class="nav nav-divider align-items-center d-none d-sm-inline-block">
+        <% /*<li class="nav-item">
+          <div class="nav-link">
+            <div class="d-flex align-items-center position-relative">
+              <div class="avatar avatar-xs">
+                <img
+                  class="avatar-img rounded-circle"
+                  src=""
+                  alt="avatar"
+                />
+              </div>
+              <span class="ms-3"
+                >by
+                <a href="#" class="stretched-link text-reset btn-link"
+                  >Judy</a
+                ></span
+              >
+            </div>
+          </div>
+        </li> */%>
+        <li class="nav-item"><time datetime="<%= date_xml(post.date) %>" itemprop="datePublished"
+          ><%= date(post.date) %></time
+        ></li>
+      </ul>
+    </div>
+  </div>
+</div>
+<!-- Card item END -->

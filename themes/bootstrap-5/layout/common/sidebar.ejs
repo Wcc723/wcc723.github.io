@@ -1,0 +1,27 @@
+<aside id="sidebar">
+  <a class="sidebar-toggle" title="Expand Sidebar"
+    ><i class="toggle icon"></i
+  ></a>
+  <div class="sidebar-top mb-3">
+    <h3 class="mb-3"><%= __('sidebar.follow') %>:</h3>
+    <div class="row g-2">
+      <% for (var i in theme.customize.social_links) { %> <% if
+        (theme.customize.social_links[i]) { %>
+      <div class="col">
+        <a href="<%- url_for(theme.customize.social_links[i].like) %>" class="bg-<%= i %> rounded text-center text-white-force p-3 d-block">
+          <h5><%- theme.customize.social_links[i].name %></h5>
+          <i class="fab fa-<%= i %>-square fs-5 mb-2"></i>
+          <h6 class="m-0"><%- theme.customize.social_links[i].fans %>K</h6>
+          <span class="small">Fans</span>
+        </a>
+      </div>
+      <% } %> <% } %>
+    </div>
+  </div>
+  <% if (is_post()) { %> <%- partial('post/nav', {post: page}) %> <% } %>
+  <div class="widgets-container">
+    <%- partial('../widget/canlendar_notification.ejs') %> <% if (theme.widgets)
+    { %> <% theme.widgets.forEach(function(widget) { %> <%- partial('widget/' +
+    widget) %> <% }) %> <% } %>
+  </div>
+</aside>

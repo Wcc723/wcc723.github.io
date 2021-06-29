@@ -1,0 +1,197 @@
+// 
+// card.scss
+// Extended from Bootstrap
+//
+
+// Quick fix for border radius issue in safari
+.card, .overflow-hidden{
+  will-change: transform;
+}
+
+// 
+// Additional styles for theme
+// 
+
+// Hovering on card to show element
+.card{
+  .card-element-hover{
+    visibility: hidden;
+    margin-top: 30px;
+    opacity: 0;
+    transition: $transition-base;
+    z-index: 9;
+  }
+  &:hover{
+    .card-element-hover{
+      visibility: visible;
+      margin-top: 0px;
+      opacity: 1;
+    }
+  }
+}
+
+// Hovering on card to show hover overlay on bottom
+.card{
+  &.card-overlay-bottom{
+    overflow: hidden;
+    &:before {
+      content: "";
+      position: absolute;
+      height: 50%;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba($black, 1)));
+      background-image: linear-gradient(180deg, transparent, rgba($black, 1));
+      z-index: 1;
+    }
+  }
+  .card-img-overlay{
+    z-index: 2;
+  }
+}
+
+// Hovering on card to show hover overlay on top
+.card{
+  &.card-overlay-top{
+    overflow: hidden;
+    &:before {
+      content: "";
+      position: absolute;
+      height: 50%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba($black, 1)));
+      background-image: linear-gradient(0deg, transparent, rgba($black, 1));
+    }
+  }
+}
+
+// Card hover image scale
+.card-img-scale{
+  .card-img {
+    transition: $transition-base;
+    transform: scale(1);
+  } 
+  &:hover .card-img{
+    transform: scale(1.08);
+  }
+}
+
+// Card hover bg image scale
+.card-bg-scale{
+  z-index: 99;
+}
+.card-bg-scale::after { 
+  content:"";
+  position:absolute; 
+  top:0;
+  right:0;
+  bottom:0;
+  left:0;
+  background: inherit;
+  transition: all 1s !important;
+  z-index: -2;
+}
+.card-bg-scale:hover::after { 
+  transform: scale(1.1);
+  transition: all 1s !important;
+}
+
+// card featured
+.card-featured {
+  position: absolute;
+  z-index: 99;
+  background: $primary;
+  color: $white;
+  transform: rotate(45deg);
+  text-align: center;
+  top: -8px;
+  right: -48px;
+  width: 120px;
+  padding: 16px 0 3px 0;
+}
+
+// Flash overlay on card hover
+.card-img-flash {
+  position: relative;
+  overflow: hidden;
+}
+.card-img-flash::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  left: -80%;
+  width: 50%;
+  height: 100%;
+  display: block;
+  background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,.3) 100%);
+  transform: skewX(-25deg);
+}
+.card-img-flash:hover::before {
+  animation: imgflash 1s;
+}
+@-webkit-keyframes imgflash {
+  100% {
+    left: 125%;
+  }
+}
+@keyframes imgflash {
+  100% {
+    left: 125%;
+  }
+}
+
+// card grid for fix height
+.card-grid {
+  .card-grid-lg{
+    height: 560px;
+  }
+  .card-grid-sm{
+    height: calc(280px - calc(var(--bs-gutter-y) / 2));
+  }
+}
+@include media-breakpoint-down(md) {
+  .card-grid .card-grid-lg{
+    height: 400px;
+  }
+}
+
+// Card fold style on hover
+.card-fold {
+  position: relative;
+  transform: translateZ(0);
+  box-shadow: 0 0 1px rgba($black, 0);
+}
+.card-fold:after {
+  position: absolute;
+  content: '';
+  height: 0;
+  width: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(-45deg, $body-bg 45%, $body-bg 45%, $gray-400 50%, $white 70%);
+  box-shadow: -5px -5px 5px rgba($black, 0.4);
+  transition: 0.3s;
+  border-radius: $card-border-radius 0px 0px 0px;
+}
+.card:hover .card-fold:after,
+.card:focus .card-fold:after,
+.card:active .card-fold:after,
+.card:hover.card-fold:after,
+.card:focus.card-fold:after,
+.card:active.card-fold:after  {
+  width: 40px;
+  height: 40px;
+}
+
+.bg-dark .card-fold{
+  &:after{
+    background: linear-gradient(-45deg, $dark 45%, $black 45%, $gray-400 50%, $white 70%);
+  }
+}
