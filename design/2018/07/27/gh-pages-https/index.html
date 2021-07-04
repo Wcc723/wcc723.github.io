@@ -41,16 +41,37 @@
     
     
     
-        <script type="text/javascript">
-(function(i,s,o,g,r,a,m) {i['GoogleAnalyticsObject']=r;i[r]=i[r]||function() {
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43235390-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-ga('create', 'UA-43235390-2', 'auto');
-ga('send', 'pageview');
-
+  gtag('config', 'UA-43235390-2');
 </script>
+<script>
+  (() => {
+    let gtagViewContentSent = false;
+
+    setTimeout(() => {
+      const endViewDom = document.querySelector('#endView');
+      if (endViewDom) {
+        const endViewDomOffsetTop = endViewDom.offsetTop;
+        window.addEventListener('scroll', () => {
+          const windowHeight = window.innerHeight;
+          const windowY = window.screenY;
+          if ((windowHeight + windowY) > endViewDomOffsetTop && !gtagViewContentSent) {
+            gtagViewContentSent = true;
+            gtag('event', 'view_item');
+          }
+        });
+      }
+    }, 500);
+  })();
+</script>
+
     
     
 
@@ -263,7 +284,6 @@ ga('send', 'pageview');
         
           <div class="col-lg-2 d-none d-lg-block">
             <div class="sticky-top pt-3" style="top: 50px; z-index: 1000">
-  
   <div class="text-center">
     <img
       src="/images/2021/avatar.png"
@@ -283,17 +303,23 @@ ga('send', 'pageview');
       ><i class="bi bi-chat-text"></i
     ></a>
   </div>
-  <hr />
-  <div class="d-flex justify-content-center">
-    <div
-      class="fb-like"
-      data-layout="box_count"
-      data-action="like"
-      data-size="large"
-      data-share="true"
-    ></div>
+  <hr>
+  <div class="toc-component">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-text">需要注意的地方</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Domain-%E6%8C%87%E5%90%91%E7%9A%84-ip-%E6%9B%BF%E6%8F%9B"><span class="toc-text">Domain 指向的 ip 替換</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B6%B2%E9%A0%81%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89%E8%B3%87%E6%BA%90%EF%BC%8C%E9%83%BD%E5%BF%85%E9%A0%88%E6%98%AF-https"><span class="toc-text">網頁中的所有資源，都必須是 https</span></a></li></ol></li></ol>
   </div>
+
   
+    <hr />
+    <div class="d-flex justify-content-center">
+      <div
+        class="fb-like"
+        data-layout="box_count"
+        data-action="like"
+        data-size="large"
+        data-share="true"
+      ></div>
+    </div>
+    
 </div>
 
           </div>
@@ -329,7 +355,7 @@ ga('send', 'pageview');
 
             </header>
         
-        
+        <div id="endView"></div><!-- google analytics -->
         
         <div class="article-entry" itemprop="articleBody">
             
@@ -494,7 +520,7 @@ ga('send', 'pageview');
   
 </div>
 
-            
+
         </div>
         <footer class="article-footer">
             
@@ -519,6 +545,7 @@ ga('send', 'pageview');
 
     </div>
 </article>
+
               </div>
             </section>
           </div>
@@ -1356,6 +1383,101 @@ ga('send', 'pageview');
 
 
   <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+
+<script>
+  /***
+   * 側欄選單滾動行為
+   */
+  ;(() => {
+    const h2 = [...document.querySelectorAll('.article-inner h2')];
+    const h3 = [...document.querySelectorAll('.article-inner h3')];
+    let currentHeading = '';
+    let currentHeadingLv3 = '';
+    // 確保至少有 h2 文章列表才運行
+    if (h2.length) {
+      const tocListLevel3 = [...document.querySelectorAll('.toc-level-2 > ol')]
+      const tocListLink = [...document.querySelectorAll('.toc-level-2 a')]
+      const tocListLinkLv3 = [...document.querySelectorAll('.toc-level-3 a')]
+      tocListLevel3.forEach(item => item.classList.add('d-none'));
+
+      window.addEventListener('scroll', function () {
+        const headings = h2.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse(); // 由後往前找
+        const headingsLevel3 = h3.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse();
+
+        const windowY = window.scrollY;
+        // console.log(headings, windowY);
+        const findTarget = headings.find(item => windowY + 60 > item.offsetTop);
+        const findTargetLv3 = headingsLevel3.find(item => windowY + 60 > item.offsetTop);
+        // console.log(findTarget);
+        if (findTarget && findTarget.id !== currentHeading) {
+          currentHeading = findTarget.id;
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTarget.uri}"]`);
+          tocListLevel3.forEach(item => item.classList.add('d-none'));
+          tocListLink.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          location.hash = findTarget.uri;
+        }
+        if (findTargetLv3 && findTargetLv3.id !== currentHeadingLv3) {
+          // console.log('findTargetLv3', findTargetLv3);
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTargetLv3.uri}"]`);
+          tocListLinkLv3.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          location.hash = findTarget.uri;
+        }
+
+
+      });
+    }
+  })();
+</script>
+
+<style>
+    .toc-component ol {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .toc-component > ol > li {
+        margin-bottom: .5rem;
+    }
+
+    a.toc-link {
+        color: var(--bs-gray);
+    }
+
+    a.toc-link.active {
+        font-weight: bolder;
+        color: var(--bs-primary);
+    }
+
+    .toc-link.active + ol {
+        display: block !important;
+    }
+
+    .toc-component ol ol {
+        margin-left: 1rem;
+    }
+
+    .toc-component ol ol li {
+        padding-left: 1rem;
+    }
+
+    .toc-component ol ol li::before {
+        content: "-";
+        color: var(--bs-gray);
+        position: absolute;
+        margin-left: -1rem;
+    }
+</style>
 
 
   </div>
