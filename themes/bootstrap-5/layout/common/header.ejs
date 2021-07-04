@@ -1,45 +1,97 @@
-<header class="container header">
-  <nav class="navbar navbar-expand-lg navbar-sticky">
+<header>
+  <nav class="navbar navbar-expand-lg navbar-sticky bg-white shadow-sm">
     <div class="container">
       <!-- Logo START -->
       <a class="navbar-brand" href="<%- url_for() %>">
-        <img class="navbar-brand-item light-mode-item" src="/images/blog_logo.svg" alt="卡斯伯的 Blog">			
-        <img class="navbar-brand-item dark-mode-item" src="/images/blog_logo_w.svg" alt="卡斯伯的 Blog">			
+        <img
+          class="navbar-brand-item light-mode-item"
+          src="/images/blog_logo.svg"
+          alt="卡斯伯的 Blog"
+        />
+        <img
+          class="navbar-brand-item dark-mode-item"
+          src="/images/blog_logo_w.svg"
+          alt="卡斯伯的 Blog"
+        />
       </a>
       <!-- Logo END -->
 
       <!-- Responsive navbar toggler -->
-      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="text-body h6 d-none d-sm-inline-block">Menu</span>
         <span class="navbar-toggler-icon"></span>
       </button>
-    </div>
-    <div class="collapse navbar-collapse" id="navbarCollapse">
-      <ul class="navbar-nav navbar-nav-scroll ms-auto">
-        <% for (var i in theme.menu) {
-            if (i == 'Categories') { %>
-              <%- list_categories({
-                depth: 2,
-                style: 'list',
-                class: 'nav',
-                show_count: false,
-              }) %>
-            <% } else { %>
-          <li class="nav-item" >
-            <a class="nav-link" href="<%- url_for(theme.menu[i]) %>"><%= __('index.' + i.toLowerCase()) %></a>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav navbar-nav-scroll ms-auto">
+          <% for (var i in theme.menu) { if (i == 'Categories') { %> <%-
+          list_categories({ depth: 2, style: 'list', class: 'nav', show_count:
+          false, }) %> <% } else { %>
+          <li class="nav-item">
+            <a class="nav-link" href="<%- url_for(theme.menu[i]) %>"
+              ><%= __('index.' + i.toLowerCase()) %></a
+            >
           </li>
-        <% }} %>
-        <!-- Nav item 1 Demos -->
-      </ul>
-      <div class="my-3">
-        <div class="modeswitch" id="darkModeSwitch">
-          <div class="switch"></div>
-        </div>
-      </div>
-      <nav class="ms-3">
+          <% }} %>
+          <!-- Nav item 1 Demos -->
+        </ul>
+        <!-- <div class="my-3">
+          <div class="modeswitch" id="darkModeSwitch">
+            <div class="switch"></div>
+          </div>
+        </div> -->
+        <nav class="mx-3"><%- partial('search/index') %></nav>
         
-        <%- partial('search/index') %>
-      </nav>
+      </div>
+      <div class="nav-item">
+        <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasMenu" role="button" aria-controls="offcanvasMenu">
+          <i class="fs-5 bi bi-list"></i>
+        </a>
+      </div>
     </div>
   </nav>
 </header>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+  <div class="offcanvas-header">
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column pt-0">
+    <div>
+      <img
+        class="light-mode-item my-3"
+        src="/images/blog_logo.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <img
+        class="dark-mode-item my-3"
+        src="/images/blog_logo_w.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <!-- Nav START -->
+      <ul class="nav d-block flex-column my-4">
+        <% for (var i in theme.menu) { if (i == 'Categories') { %> <%-
+          list_categories({ depth: 2, style: 'list', class: 'nav', show_count:
+          false, }) %> <% } else { %>
+          <li class="nav-item my-3">
+            <a class="nav-link" href="<%- url_for(theme.menu[i]) %>"
+              ><%= __('index.' + i.toLowerCase()) %></a
+            >
+          </li>
+          <% }} %>
+      </ul>
+    </div>
+  </div>
+</div>

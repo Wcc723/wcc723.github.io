@@ -205,19 +205,19 @@
         }
     }
 
-    $.getJSON(CONFIG.CONTENT_URL, function (json) {
-        if (location.hash.trim() === '#ins-search') {
-            $main.addClass('show');
-        }
-        $input.on('input', function () {
-            var keywords = $(this).val();
-            searchResultToDOM(search(json, keywords));
-        });
-        $input.trigger('input');
-    });
-
-
     $(document).on('click focus', '.search-form-input', function () {
+        // 改為點擊後，才觸發取得
+        $.getJSON(CONFIG.CONTENT_URL, function (json) {
+            if (location.hash.trim() === '#ins-search') {
+                $main.addClass('show');
+            }
+            $input.on('input', function () {
+                var keywords = $(this).val();
+                searchResultToDOM(search(json, keywords));
+            });
+            $input.trigger('input');
+        });
+
         $main.addClass('show');
         $main.find('.ins-search-input').focus();
     }).on('click', '.ins-search-item', function () {

@@ -1,0 +1,32 @@
+
+<div class="row mt-5">
+  <div class="col-lg-3 mb-3">
+    <h4>相似文章</h4>
+    <div class="list-group bg-white">
+      <% let count = 0; const pageCategory = page?.categories?.data[0]?.name %>
+        <% site.posts.each((post, i) => { %>
+          <% if (post.categories.data.find((category) => category.name === pageCategory) && count < 4) { %>
+          <a href="<%- url_for(post.path) %>" class="list-group-item list-group-item-action">
+            <h5><%- post.title %></h5>
+            <p class="small mb-0">
+              <%- excerpt(post) %>
+            </p>
+          </a>
+        <% count++; } %>
+      <% }); %>
+    </div>
+  </div>
+
+  <div class="col-lg-3 mb-3">
+    <%- partial('../widget/facebook_fans') %>
+  </div>
+
+  <div class="col-lg-4 d-none d-lg-block mb-3">
+    <%- partial('../widget/tagcloud') %>
+  </div>
+
+  <div class="col-lg-2 d-none d-lg-block mb-3">
+    <%- partial('../widget/google_adsense_rwd_ad') %>
+  </div>
+
+</div>

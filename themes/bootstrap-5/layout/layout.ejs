@@ -1,26 +1,51 @@
 <%- partial('common/head') %>
-<body>
+<body class="bg-light">
   <div>
     <%- partial('common/header', null, {cache: !config.relative_link}) %>
+
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-9">
-          <section id="main">
-            <%- partial('common/content-title') %>
-            <div id="sticky-space"></div>
-            <div class="main-body-content">
-              <%- body %>
+        <% /* 如果是首頁 */ %>
+        <% if (!page.title) {%>
+          <div class="col-lg-9 bg-white shadow-lg rounded-3 rounded-top">
+            <section id="main">
+              <%- partial('common/content-title') %>
+              <div id="sticky-space"></div>
+              <div class="main-body-content py-4">
+                <%- body %>
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-3 mt-5 mt-lg-0">
+            <%- partial('common/sidebar') %>
+            <%- partial('widget/google_adsense_rwd_ad') %>
+          </div>
+        <% } else { %>
+          <div class="col-lg-2 d-none d-lg-block">
+            <%- partial('common/left-sidebar') %>
+          </div>
+          <div class="col-lg-7 bg-white shadow-lg rounded-3 rounded-top">
+            <section id="main">
+              <%- partial('common/content-title') %>
+              <div id="sticky-space"></div>
+              <div class="main-body-content">
+                <%- body %>
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000;">
+              <%- partial('widget/google_adsense_rwd_ad') %>
             </div>
-          </section>
-        </div>
-        <div class="col-lg-3 mt-5 mt-lg-0">
-          <%- partial('common/sidebar') %>
-        </div>
+          </div>
+          <div class="col-12">
+            <%- partial('common/footerSummary') %>
+          </div>
+        <% } %>
       </div>
     </div>
     <%- partial('common/footer', null, {cache: !config.relative_link}) %>
     <%- partial('common/scripts') %>
-    <%- partial('widget/google_adsense_fixed') %>
   </div>
 </body>
 </html>

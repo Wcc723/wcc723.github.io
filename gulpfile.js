@@ -70,10 +70,7 @@ gulp.task('others', function(){
 
 
 gulp.task('watch', function() {
-  gulp.watch([config.paths.coffee + '**/**.coffee'], gulp.series('coffee'));
-  gulp.watch(objs, gulp.series('others'));
-  gulp.watch([config.paths.sass + '**/*.scss'], gulp.series('sass'));
-  
+  return gulp.watch([config.paths.sass + '**/*.scss'], gulp.series('sass', 'css'));
 })
 
-gulp.task('default', gulp.series('sass', 'css', 'js-lib', 'coffee', 'others', 'watch'));
+gulp.task('default', gulp.series('sass', 'css', 'js-lib', 'coffee', 'others', gulp.parallel('watch')));

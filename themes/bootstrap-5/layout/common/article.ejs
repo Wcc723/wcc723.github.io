@@ -11,7 +11,7 @@
                 <%- partial('post/title', { class_name: 'article-title' }) %>
             </header>
         <% } %>
-        
+        <div id="endView"></div><!-- google analytics -->
         <% /* partial('post/gallery') */ %>
         <div class="article-entry" itemprop="articleBody">
             <% if (theme.google_adsense) { %>
@@ -30,20 +30,22 @@
                 <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
             <% } %>
             </div>
-            <%- partial('post/nav') %>
-            <div style="margin: 15px 0;">
+            <!-- <div style="margin: 15px 0;">
                 <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
                     <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
                 </a>
-            </div>
+            </div> -->
             <% if (theme.google_adsense) { %>
-                <%- partial('../widget/google_adsense') %>
+                <div class="my-3">
+                    <%- partial('../widget/google_adsense_article_content') %>
+                </div>
             <% } %>
-            
+            <%- partial('post/nav') %>
+
         </div>
         <footer class="article-footer">
             <%- partial('share/index', { post: post }) %>
         </footer>
+        <%- partial('comment/index') %>
     </div>
 </article>
-<%- partial('comment/index') %>
