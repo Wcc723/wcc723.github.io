@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Vue 3 新手夏令營 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="vue" />
+    
+    
+
+    <meta name="description" content="現在前端所需技能越來越深，而三大框架雖然資源豐富，但對於新手來說卻也不知道如何入門，因此我們舉辦「Vue 3 夏令營」，讓更多的前端同好可以認識這門框架～ 這個活動適合哪些人呢？ 對於 JavaScript 有基礎掌握度 對於 Vue 2 或其它框架有基本認識，想學習 Vue 3 的開發者 想從基礎學習 Vue 3 的開發者  如果你不確定自己的基礎是否可以學習 Vue 3，可以先觀看此影片，本影">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue 3 新手夏令營">
+<meta property="og:url" content="https://wcc723.github.io/development/2021/07/07/vue-summer-camp/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="現在前端所需技能越來越深，而三大框架雖然資源豐富，但對於新手來說卻也不知道如何入門，因此我們舉辦「Vue 3 夏令營」，讓更多的前端同好可以認識這門框架～ 這個活動適合哪些人呢？ 對於 JavaScript 有基礎掌握度 對於 Vue 2 或其它框架有基本認識，想學習 Vue 3 的開發者 想從基礎學習 Vue 3 的開發者  如果你不確定自己的基礎是否可以學習 Vue 3，可以先觀看此影片，本影">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FVue3-SummerCamp-Cover.png?alt=media&token=89a5f930-8ff8-471f-a200-228c4c9d26a9">
+<meta property="article:published_time" content="2021-07-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-07-07T03:33:54.959Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FVue3-SummerCamp-Cover.png?alt=media&token=89a5f930-8ff8-471f-a200-228c4c9d26a9">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" id="style-switch" href="/css/all.css">
+    
+
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
+    
+    
+        
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43235390-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-43235390-2');
+</script>
+<script>
+  (() => {
+    let gtagViewContentSent = false;
+
+    setTimeout(() => {
+      const endViewDom = document.querySelector('#endView');
+      if (endViewDom) {
+        const endViewDomOffsetTop = endViewDom.offsetTop;
+        window.addEventListener('scroll', () => {
+          const windowHeight = window.innerHeight;
+          const windowY = window.screenY;
+          if ((windowHeight + windowY) > endViewDomOffsetTop && !gtagViewContentSent) {
+            gtagViewContentSent = true;
+            gtag('event', 'view_item');
+          }
+        });
+      }
+    }, 500);
+  })();
+</script>
+
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="bg-light">
+  <div>
+    <header>
+  <nav class="navbar navbar-expand-lg navbar-sticky bg-white shadow-sm">
+    <div class="container">
+      <!-- Logo START -->
+      <a class="navbar-brand" href="/">
+        <img
+          class="navbar-brand-item light-mode-item"
+          src="/images/blog_logo.svg"
+          alt="卡斯伯的 Blog"
+        />
+        <img
+          class="navbar-brand-item dark-mode-item"
+          src="/images/blog_logo_w.svg"
+          alt="卡斯伯的 Blog"
+        />
+      </a>
+      <!-- Logo END -->
+
+      <!-- Responsive navbar toggler -->
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="text-body h6 d-none d-sm-inline-block">Menu</span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav navbar-nav-scroll ms-auto">
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/"
+              >首頁</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives"
+              >歸檔</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+          <!-- Nav item 1 Demos -->
+        </ul>
+        <!-- <div class="my-3">
+          <div class="modeswitch" id="darkModeSwitch">
+            <div class="switch"></div>
+          </div>
+        </div> -->
+        <nav class="mx-3"><div id="search-form-wrap">
+
+    <form class="search-form input-group" style="width: 120px">
+        <input type="text" class="ins-search-input search-form-input form-control" placeholder="搜尋" />
+        <!-- <button type="submit" class="search-form-submit btn btn-outline-secondary">
+            <i class="bi bi-search fs-4"> </i>
+        </button> -->
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="bi bi-x"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></nav>
+        
+      </div>
+      <div class="nav-item">
+        <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasMenu" role="button" aria-controls="offcanvasMenu">
+          <i class="fs-5 bi bi-list"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+  <div class="offcanvas-header">
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column pt-0">
+    <div>
+      <img
+        class="light-mode-item my-3"
+        src="/images/blog_logo.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <img
+        class="dark-mode-item my-3"
+        src="/images/blog_logo_w.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <!-- Nav START -->
+      <ul class="nav d-block flex-column my-4">
+        
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/"
+              >首頁</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/archives"
+              >歸檔</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+    <div class="container">
+      <div class="row justify-content-center">
+        
+        
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000">
+  <div class="text-center">
+    <img
+      src="/images/2021/avatar.png"
+      height="115"
+      width="115"
+      class="img-fluid mb-2"
+      alt=""
+    />
+    <p>設計師轉職前端工程師，擅長將複雜觀念用圖形化方式呈現</p>
+    <a
+      href="https://www.facebook.com/WccCasper"
+      target="_blank"
+      class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-facebook"></i> 追蹤卡斯伯</a
+    >
+    <a href="#comments" class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-chat-text"></i
+    ></a>
+  </div>
+  <hr>
+  <div class="toc-component">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%99%E5%80%8B%E6%B4%BB%E5%8B%95%E9%81%A9%E5%90%88%E5%93%AA%E4%BA%9B%E4%BA%BA%E5%91%A2%EF%BC%9F"><span class="toc-text">這個活動適合哪些人呢？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AA%B2%E7%A8%8B%E5%A4%A7%E7%B6%B1"><span class="toc-text">課程大綱</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B4%BB%E5%8B%95%E6%99%82%E9%96%93"><span class="toc-text">活動時間</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%B4%E6%92%AD%E5%8F%83%E8%88%87%E5%B0%8F%E7%8D%8E%E5%8B%B5-%F0%9F%8E%81"><span class="toc-text">直播參與小獎勵 🎁</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%B0%E6%89%8B%E5%A6%82%E4%BD%95%E5%8A%A0%E5%85%A5-%E2%9C%8B"><span class="toc-text">新手如何加入 ✋</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%99%E5%80%8B%E6%B4%BB%E5%8B%95%E6%98%AF%E5%90%A6%E9%9C%80%E8%A6%81%E8%B2%BB%E7%94%A8"><span class="toc-text">這個活動是否需要費用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A6%8B%E5%95%8F%E9%A1%8C"><span class="toc-text">常見問題</span></a></li></ol>
+  </div>
+
+  
+    <hr />
+    <div class="d-flex justify-content-center">
+      <div
+        class="fb-like"
+        data-layout="box_count"
+        data-action="like"
+        data-size="large"
+        data-share="true"
+      ></div>
+    </div>
+    
+</div>
+
+          </div>
+          <div class="col-lg-7 bg-white shadow-lg rounded-3 rounded-top">
+            <section id="main">
+              <a target="_blank" rel="noopener" href="https://hex.school/5cYlz">
+    <img no-lazy src="/images/2021/blog-vue3-header.png" class="rounded-3" style="max-width: 100%" alt="">
+</a>
+<div class="main-body-header">
+    <h2 class="my-3">
+    
+    
+    </h2>
+</div>
+              <div id="sticky-space"></div>
+              <div class="main-body-content">
+                <article id="post-vue-summer-camp" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+            <div class="article-subtitle">
+                
+    <ul class="d-inline-block list-unstyled" itemprop="keywords"><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/vue/" rel="tag">vue</a></li></ul>
+
+                
+<span class="ms-2 small"><time datetime="2021-07-06T16:00:00.000Z" itemprop="datePublished">2021-07-07</time></span>
+            </div>
+        
+        
+            <header class="article-header">
+                 
+<h1 class="display-5" itemprop="name">Vue 3 新手夏令營</h1>
+ 
+
+            </header>
+        
+        <div id="endView"></div><!-- google analytics -->
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+                </div>
+            
+            <div class="need-gallery">
+                <p>現在前端所需技能越來越深，而三大框架雖然資源豐富，但對於新手來說卻也不知道如何入門，因此我們舉辦「Vue 3 夏令營」，讓更多的前端同好可以認識這門框架～</p>
+<h2 id="這個活動適合哪些人呢？"><a href="#這個活動適合哪些人呢？" class="headerlink" title="這個活動適合哪些人呢？"></a>這個活動適合哪些人呢？</h2><ul>
+<li>對於 JavaScript 有基礎掌握度</li>
+<li>對於 Vue 2 或其它框架有基本認識，想學習 Vue 3 的開發者</li>
+<li>想從基礎學習 Vue 3 的開發者</li>
+</ul>
+<p>如果你不確定自己的基礎是否可以學習 Vue 3，可以先觀看此<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=FGdKdn_CnWo">影片</a>，本影片內容是在直播介紹 JavaScript 中「ES6 Let 與 Const」的語法觀念，如果你能瞭解直播課程上所介紹的內容，將可來參與本次活動。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2021_7_7_%E4%B8%8A%E5%8D%8811_18.jpg?alt=media&amp;token=2d94d259-41ab-4a16-a5a3-ac0d72545e69" alt=""></p>
+<h2 id="課程大綱"><a href="#課程大綱" class="headerlink" title="課程大綱"></a>課程大綱</h2><p><strong>第一堂：7/14 Vue 起手式</strong></p>
+<p>起手式中將帶大家認識 Vue JS 的基本運作，以及 JavaScript 中的常見基本知識，而這些知識將有助於接下來的學習及實戰開發。</p>
+<p><strong>第二堂：7/21 Vue 與指令</strong></p>
+<p>Vue 是一個關注點分離的框架，開發者將專注於 JavaScript 的資料處理，並透過指令的形式將資料呈現於畫面上。</p>
+<p><strong>第三堂：7/28 Options API</strong></p>
+<p>當學習到 Options API 以後，已經可以開始嘗試各種應用開發，在此你將可以學會各種資料操作的技巧。</p>
+<p><strong>第四堂：8/4 Composition API</strong></p>
+<p>Composition API 是 Vue 3 中一個相當大的新功能，開發將超出原有 Vue 的限制，提供更大的變化及運用。</p>
+<h2 id="活動時間"><a href="#活動時間" class="headerlink" title="活動時間"></a><strong>活動時間</strong></h2><ul>
+<li>報名時間：即日起開始報名，</li>
+<li>活動開始時間：7/14 ~ 8/4</li>
+</ul>
+<p>內容包含「每週一場直播」、「每日任務」、「週間挑戰作業」</p>
+<h3 id="直播參與小獎勵-🎁"><a href="#直播參與小獎勵-🎁" class="headerlink" title="直播參與小獎勵 🎁"></a>直播參與小獎勵 🎁</h3><p>為鼓勵參與直播，<strong>參與三次直播</strong>並<strong>完成報到者</strong>，將可獲得額外實體獎品！</p>
+<p>獎項如下：</p>
+<ul>
+<li>最大獎 1 名：米家無線吸塵器 mini</li>
+<li>貳獎 2 名：小米手環 5</li>
+<li>三獎 3 名： 小米體重計</li>
+<li>加碼獎 5 名：Udemy 自選課程（390 元內）</li>
+<li>如果獎品不足，主辦單位將會以同價位品項作為替代。</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FVue3-SummerCamp-Cover.png?alt=media&amp;token=89a5f930-8ff8-471f-a200-228c4c9d26a9" alt=""></p>
+<h2 id="新手如何加入-✋"><a href="#新手如何加入-✋" class="headerlink" title="新手如何加入 ✋"></a>新手如何加入 ✋</h2><p><strong>任務一</strong>：加入 Discord 並自我介紹</p>
+<p>讓學習一加一大於二，他人的問題也許是你接下來會遇到的問題，從互動中尋找自己還缺少的問題點，甚至會遇到你未來的合作夥伴喔。</p>
+<p>流程：</p>
+<ol>
+<li>點擊 <a target="_blank" rel="noopener" href="https://discord.gg/rausk4aX">連結</a> 加入六角學院 Discord</li>
+<li>加入 <code>vue-夏令營公開頻道</code></li>
+<li>自我介紹一下，讓其他同學認識你吧<br>範例：大家好，我是 卡斯伯，過去是設計師，現在想趁著 Vue 夏令營打好框架基礎。</li>
+</ol>
+<p><a target="_blank" rel="noopener" href="https://hackmd.io/@dbFY0UD9SUeKmNXhWf01ew/BkJoW-hn_/%2Fj2p8ZhCqRLS5s6QfyYtnXw"
+class="btn btn-outline-danger rounded-pill">Discord 說明文件</a></p>
+<p><strong>任務二</strong>：Vue 新手夏令營 課程文件</p>
+<p>雖然是開放的夏令營活動，但本學院的資源都相當豐富，建議先打開，並存到你的個人最愛連結中，以便未來方便查找。</p>
+<p><a target="_blank" rel="noopener" href="https://hackmd.io/@dbFY0UD9SUeKmNXhWf01ew/BkJoW-hn_/%2FC05go-8iTSS-nrMwKU22kA"
+class="btn btn-danger rounded-pill">活動文件連結</a></p>
+<p><strong>任務三</strong>：訂閱<a target="_blank" rel="noopener" href="https://www.hexschool.com/calendar/">六角行事曆</a>、<a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA/videos">Youtube 頻道</a></p>
+<p>活動將會在線上舉行，建議訂閱 <a target="_blank" rel="noopener" href="https://www.hexschool.com/calendar/">活動行事曆</a> 及 <a target="_blank" rel="noopener" href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA">Youtube 頻道</a>，避免遺漏掉重要的課程喔。</p>
+<h2 id="這個活動是否需要費用"><a href="#這個活動是否需要費用" class="headerlink" title="這個活動是否需要費用"></a>這個活動是否需要費用</h2><p>不需要，這個活動完全免費</p>
+<h2 id="常見問題"><a href="#常見問題" class="headerlink" title="常見問題"></a>常見問題</h2><p><strong>Q: 一定要加入 Discord 嗎？</strong></p>
+<p>Discord 主要提供 每日挑戰、主線回饋及學員助教討論，接下來如果有額外的加碼內容也僅會在 Discord 中公告，如果要確保獲得完整學習體驗，建議加入 Discord 一同學習。</p>
+<p><strong>Q: 課程是以 Vue 2 還是 Vue 3 為主呢？</strong></p>
+<p>本活動均是以最新版 Vue 3 為主。</p>
+<p><strong>Q: 我完全不會寫網頁，可以參加此活動嗎？</strong></p>
+<p>建議至少有撰寫 JavaScript 經驗在參加比較好。</p>
+<p><strong>Q: 參與過程的小作業，如果做不出來怎麼辦？</strong></p>
+<p>我們會提供範例解答及 Discord 志工討論。</p>
+<p><strong>Q: 錄影檔案會公開嗎？</strong></p>
+<p>會的，錄影完全公開</p>
+<p><strong>Q: 我想領直播參與小獎勵，也有參與直播，卻忘記報到可以補嗎？</strong></p>
+<p>不能喔～，請確保活動期間有報到成功，預期不接受補報</p>
+<p><strong>Q: 上完之後有興趣，是否有更深入的內容呢？</strong></p>
+<p>有的，依據不同學習體驗可參考以下方案：</p>
+<p><strong>如果你想要自行安排學習時間</strong></p>
+<p>參考 「<a target="_blank" rel="noopener" href="https://www.hexschool.com/courses/vue3.html">Vue 3 實戰影音</a>」</p>
+<p><strong>如果想再時間內大幅提升能力，並且大量練習 JavaScript 及 Vue.js。</strong></p>
+<ul>
+<li>從 JS 基礎開始培養「<a target="_blank" rel="noopener" href="https://www.hexschool.com/courses/js-training.html">JavaScript 工程師養成直播班</a>」（預約中：10 ~ 11 月開班）</li>
+<li>完成實戰必備作品「<a target="_blank" rel="noopener" href="https://www.hexschool.com/courses/vue-training.html">Vue 作品實戰直播班</a>」（預約中：2022 1~2 月開班）</li>
+</ul>
+
+            </div>
+            
+                <div>
+  <script type="text/javascript">
+    document.write(
+      "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/agito723/button?referrer=" +
+      encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+  </script>
+<div>
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+            <!-- <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div> -->
+            
+                <div class="my-3">
+                    <ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8769565283"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+                </div>
+            
+            
+
+<style>
+.article-entry .article-nav {
+  display: flex;
+  background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav .col-12 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+</style>
+<div class="row g-0 mt-5 border-top border-bottom article-nav">
+  
+    <div class="col-12 py-3 py-md-4">
+      <div class="d-flex align-items-center position-relative">
+        <!-- Icon -->
+        <div class="bg-primary py-1">
+          <i class="bi bi-chevron-compact-left fs-3 text-white px-1 rtl-flip"></i>
+        </div>
+        <!-- Title -->
+        <div class="ms-3">
+          <h5 class="m-0">
+            <a href="/life/2021/06/14/why-use-mac/" class="stretched-link btn-link text-reset"
+              >上一篇：為什麼選擇使用 Mac 來進行開發</a
+            >
+          </h5>
+        </div>
+      </div>
+    </div>
+  
+  
+</div>
+
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+        </footer>
+        
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2021/07/07/vue-summer-camp/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+    </div>
+</article>
+
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000;">
+              <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+            </div>
+          </div>
+          <div class="col-12">
+            
+<div class="row mt-5">
+  <div class="col-lg-3 mb-3">
+    <h4>相似文章</h4>
+    <div class="list-group bg-white">
+      
+        
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+          <a href="/development/2019/11/23/ten-mins-learn-markdown/" class="list-group-item list-group-item-action">
+            <h5>十分鐘快速掌握 Markdown</h5>
+            <p class="small mb-0">
+              Markdown 是目前非常普遍用來撰寫文檔的語言，一開始的目標就是使用「易讀易寫的純文字格式編寫文件」，此初衷讓使用者可以專注在文字的本身，而不需要透過其它工具來切換格式。以 Word 撰寫文檔來說，就必須透過上方的工具列來切換標題、列表、粗體、斜體等等；而 Markdown 並沒有這樣的工具列，...
+            </p>
+          </a>
+        
+      
+          
+          <a href="/development/2019/12/01/vscode-chinese/" class="list-group-item list-group-item-action">
+            <h5>一分鐘切換成中文版 VSCode（完整圖文版）</h5>
+            <p class="small mb-0">
+              雖然開發者都具有一定的英文閱讀能力，但如果在不熟悉的情況下，就比較難以快速上手一個新工具。如果要快速掌握一個完整的工具或技術，最好的方式還是先切換成熟悉的語言。
+而 VSCode 雖然預設並無法直接切換語系，但官方有提供各國的語言套件，讓開發者可以自行選用。
+切換成中文版如果你對於 VSCode 有...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+          <a href="/development/2020/01/04/image-common-mistakes/" class="list-group-item list-group-item-action">
+            <h5>前端開發者，圖片常犯的五個粗心錯誤</h5>
+            <p class="small mb-0">
+              前端開發者是透過程式碼將資訊呈現成畫面，因此畫面的好壞也多少影響品質，在觀看許多履歷或作業的過程中，會發現許多相似的錯誤，而這些錯誤都是有跡可循，並且可以避免的；本篇先以常見的圖片問題與大家分享，看是否你也犯了這些錯誤呢？
+一、圖片變形新手錯誤率：⭐⭐⭐⭐令人感受的粗心度：👎👎👎👎
+圖片變形...
+            </p>
+          </a>
+        
+      
+          
+          <a href="/development/2020/02/09/jest-async/" class="list-group-item list-group-item-action">
+            <h5>單元測試 - 非同步及 Ajax</h5>
+            <p class="small mb-0">
+              本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest
+JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 Jav...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+    </div>
+  </div>
+
+  <div class="col-lg-3 mb-3">
+    
+<div class="widget-wrap widget-list mb-3">
+    <h4 class="mb-3">粉絲專頁</h4>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+  </div>
+
+  <div class="col-lg-4 d-none d-lg-block mb-3">
+    
+<div class="mb-3">
+  <h4 class="mb-3">標籤雲</h4>
+  <div class="widget tagcloud" style="line-height: 1;"><a href="/tags/Bootstrap/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">Sass</a> <a href="/tags/async/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">async</a> <a href="/tags/await/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">await</a> <a href="/tags/beginner/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">beginner</a> <a href="/tags/bootstrap/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">bootstrap</a> <a href="/tags/border/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">border</a> <a href="/tags/business/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">business</a> <a href="/tags/compass/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">compass</a> <a href="/tags/courses/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">courses</a> <a href="/tags/css/" style="font-size: 24px;" class="p-1 m-1 d-inline-block -10">css</a> <a href="/tags/d3/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">d3</a> <a href="/tags/d3js/" style="font-size: 20.47px;" class="p-1 m-1 d-inline-block -6">d3js</a> <a href="/tags/design/" style="font-size: 21.06px;" class="p-1 m-1 d-inline-block -7">design</a> <a href="/tags/develop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">develop</a> <a href="/tags/dns/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">dns</a> <a href="/tags/emmet/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">emmet</a> <a href="/tags/es6/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">es6</a> <a href="/tags/fire-app/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">fire.app</a> <a href="/tags/git/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">git</a> <a href="/tags/github/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">github</a> <a href="/tags/grid/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">grid</a> <a href="/tags/gulp/" style="font-size: 19.88px;" class="p-1 m-1 d-inline-block -6">gulp</a> <a href="/tags/html/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">html</a> <a href="/tags/icon-fonts/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icon fonts</a> <a href="/tags/icons/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icons</a> <a href="/tags/intro/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">intro</a> <a href="/tags/ironman/" style="font-size: 23.41px;" class="p-1 m-1 d-inline-block -9">ironman</a> <a href="/tags/javascript/" style="font-size: 22.82px;" class="p-1 m-1 d-inline-block -9">javascript</a> <a href="/tags/jekyll/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">jekyll</a> <a href="/tags/jest/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">jest</a> <a href="/tags/jquery/" style="font-size: 18.12px;" class="p-1 m-1 d-inline-block -4">jquery</a> <a href="/tags/js/" style="font-size: 21.65px;" class="p-1 m-1 d-inline-block -8">js</a> <a href="/tags/life/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">life</a> <a href="/tags/mac/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">mac</a> <a href="/tags/markdown/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">markdown</a> <a href="/tags/mobile/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">mobile</a> <a href="/tags/modules/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">modules</a> <a href="/tags/node-js/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">node.js</a> <a href="/tags/nodejs/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">nodejs</a> <a href="/tags/npm/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">npm</a> <a href="/tags/oocss/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">oocss</a> <a href="/tags/project/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">project</a> <a href="/tags/promise/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">promise</a> <a href="/tags/puppeteer/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">puppeteer</a> <a href="/tags/rails/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">rails</a> <a href="/tags/reactjs/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">reactjs</a> <a href="/tags/ruby/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">ruby</a> <a href="/tags/sass/" style="font-size: 22.24px;" class="p-1 m-1 d-inline-block -8">sass</a> <a href="/tags/scss/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">scss</a> <a href="/tags/sketch/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sketch</a> <a href="/tags/ssl/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">ssl</a> <a href="/tags/study/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">study</a> <a href="/tags/sublime-text/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sublime text</a> <a href="/tags/svg/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">svg</a> <a href="/tags/test/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">test</a> <a href="/tags/tool/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">tool</a> <a href="/tags/tools/" style="font-size: 18.71px;" class="p-1 m-1 d-inline-block -5">tools</a> <a href="/tags/vscode/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">vscode</a> <a href="/tags/vue/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">vue</a> <a href="/tags/web/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">web</a> <a href="/tags/workshop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">workshop</a> <a href="/tags/zeplin/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">zeplin</a></div>
+</div>
+
+
+  </div>
+
+  <div class="col-lg-2 d-none d-lg-block mb-3">
+    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+  </div>
+
+</div>
+          </div>
+        
+      </div>
+    </div>
+    <footer class="bg-dark py-5 mt-4 text-muted">
+  <div class="container">
+    <div class="container-inner">
+      <a id="back-to-top" href="javascript:;"
+        ><i class="icon fa fa-angle-up"></i
+      ></a>
+      <div class="credit">
+        <h1 class="logo-wrap">
+          <a href="/" class="logo"></a>
+        </h1>
+        <p>
+          &copy; 2021 Wang Casper
+        </p>
+        <p>
+          Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by
+          <a href="https://bootstrap5.hexschool.com/" target="_blank"
+            >Bootstrap</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    
+    
+
+
+
+    
+
+
+<!-- Custom Scripts -->
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script src="/js/bs-layout-functions.js"></script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v11.0&appId=556473851118881&autoLogAppEvents=1" nonce="drs0t5ih"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+  window.onload = () => {
+    $(function() {
+      if(!$('ins[class="adsbygoogle"]').data('adsbygoogleStatus')) {
+        console.log('(╭(°A°`)╮)) 拜託，別擋這個頁面的廣告，不然我一毛錢都沒得賺惹');
+        $('.adsense-message').css('display', 'block');
+      }
+    })
+  }
+  </script>
+
+
+<script>
+  /***
+   * 側欄選單滾動行為
+   */
+  ;(() => {
+    const h2 = [...document.querySelectorAll('.article-inner h2')];
+    const h3 = [...document.querySelectorAll('.article-inner h3')];
+    let currentHeading = '';
+    let currentHeadingLv3 = '';
+    // 確保至少有 h2 文章列表才運行
+    if (h2.length) {
+      const tocListLevel3 = [...document.querySelectorAll('.toc-level-2 > ol')]
+      const tocListLink = [...document.querySelectorAll('.toc-level-2 a')]
+      const tocListLinkLv3 = [...document.querySelectorAll('.toc-level-3 a')]
+      tocListLevel3.forEach(item => item.classList.add('d-none'));
+
+      window.addEventListener('scroll', function () {
+        const headings = h2.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse(); // 由後往前找
+        const headingsLevel3 = h3.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse();
+
+        const windowY = window.scrollY;
+        // console.log(headings, windowY);
+        const findTarget = headings.find(item => windowY + 60 > item.offsetTop);
+        const findTargetLv3 = headingsLevel3.find(item => windowY + 60 > item.offsetTop);
+        // console.log(findTarget);
+        if (findTarget && findTarget.id !== currentHeading) {
+          currentHeading = findTarget.id;
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTarget.uri}"]`);
+          tocListLevel3.forEach(item => item.classList.add('d-none'));
+          tocListLink.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          location.hash = findTarget.uri;
+        }
+        if (findTargetLv3 && findTargetLv3.id !== currentHeadingLv3) {
+          // console.log('findTargetLv3', findTargetLv3);
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTargetLv3.uri}"]`);
+          tocListLinkLv3.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          location.hash = findTarget.uri;
+        }
+
+
+      });
+    }
+  })();
+</script>
+
+  </div>
+</body>
+</html>
