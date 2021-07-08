@@ -279,7 +279,6 @@
   </div>
 </div>
 
-
     <div class="container">
       <div class="row justify-content-center">
         
@@ -337,6 +336,75 @@
     </h2>
 </div>
               <div id="sticky-space"></div>
+              
+<div class="bg-white p-2 rounded my-3 sticky-top shadow"
+  style="top: 64px"
+  id="calendar_notification_small-block">
+  <div class="me-3 d-flex align-items-center">
+    <span class="badge bg-primary p-2 me-3">近期活動通知：</span>
+    <a href="#"  class="d-inline-block text-decoration-underline text-primary" id="calendar_notification_small-content"
+    data-bs-toggle="modal" data-bs-target="#calendar_notify-sm-modal">
+    </a>
+  </div>
+</div>
+
+<div class="modal fade" id="calendar_notify-sm-modal" tabindex="-1" aria-labelledby="#calendar_notify-sm-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="calendar_notify-sm-modal-label">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="calendar_notify-sm-modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary d-block w-100" data-bs-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
+  const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
+  const query = '卡斯伯';
+
+  const today = new Date();
+  const fullYear = today.getFullYear();
+  const month = today.getMonth();
+  const date = today.getDate();
+  const hours = today.getHours();
+  const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
+  const timeMax = new Date(fullYear, month, date + 7, hours).toISOString();
+
+  const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
+
+  const calendarNotificationBlock = document.querySelector('#calendar_notification_small-block');
+
+  $.ajax({
+    url: api,
+    success: function(data) {
+      if (Array.isArray(data.items) && data.items.length) {
+        const item = data.items[0];
+        const context = `<div class="d-inline-block">
+          <strong class="me-3">${item.summary}</strong>
+          <br class="d-md-none" />活動時間：${new Date(item.start.dateTime).toLocaleString()}
+        </div>`;
+        const calendarContentDom = document.querySelector('#calendar_notification_small-content');
+                
+        calendarNotificationBlock.style.display = 'block';
+        calendarContentDom.innerHTML = context;
+
+        document.querySelector('#calendar_notify-sm-modal-label').textContent = item.summary;
+        document.querySelector('#calendar_notify-sm-modal-body').innerHTML = item.description;
+
+      }
+    }
+  });
+})();
+</script>
               <div class="main-body-content">
                 <article id="post-javascript-spread-operator" class="article article-single article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">

@@ -270,7 +270,6 @@
   </div>
 </div>
 
-
     <div class="container">
       <div class="row justify-content-center">
         
@@ -471,7 +470,7 @@ Liq...
   
   <div class="widgets-container">
     
-<div class="calendar_notification mb-3" id="calendar_notification-block" style="display: none">
+<div class="calendar_notification mb-3 bg-white rounded" id="calendar_notification-block" style="display: none">
   <div class="calendar_notification-header rounded-top">
     近期活動通知
   </div>
@@ -518,42 +517,44 @@ Liq...
 
 
 <script>
-const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
-const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
-const query = '卡斯伯';
-
-const today = new Date();
-const fullYear = today.getFullYear();
-const month = today.getMonth();
-const date = today.getDate();
-const hours = today.getHours();
-const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
-const timeMax = new Date(fullYear, month, date + 3, hours).toISOString();
-
-const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
-
-const calendarNotificationBlock = document.querySelector('#calendar_notification-block');
-
-$.ajax({
-  url: api,
-  success: function(data) {
-    if (Array.isArray(data.items) && data.items.length) {
-      const context = data.items.map(item => `
-        <div class="calendar_notification-card">
-          <h3 class="calendar_notification-summary">${item.summary}</h3>
-          <div><strong>活動時間：${new Date(item.start.dateTime).toLocaleString()}</strong></div>
-          <div class="calendar_notification-description">${item.description}</div>
-        </div>
-        `
-      ).join('');
-      const calendarContentDom = document.querySelector('#calendar_notification-content');
-      
-      calendarNotificationBlock.style.display = 'block';
-      calendarContentDom.innerHTML = context;
-
+;(() => {
+  const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
+  const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
+  const query = '卡斯伯';
+  
+  const today = new Date();
+  const fullYear = today.getFullYear();
+  const month = today.getMonth();
+  const date = today.getDate();
+  const hours = today.getHours();
+  const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
+  const timeMax = new Date(fullYear, month, date + 7, hours).toISOString();
+  
+  const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
+  
+  const calendarNotificationBlock = document.querySelector('#calendar_notification-block');
+  
+  $.ajax({
+    url: api,
+    success: function(data) {
+      if (Array.isArray(data.items) && data.items.length) {
+        const context = data.items.map(item => `
+          <div class="calendar_notification-card">
+            <h3 class="calendar_notification-summary">${item.summary}</h3>
+            <div><strong>活動時間：${new Date(item.start.dateTime).toLocaleString()}</strong></div>
+            <div class="calendar_notification-description">${item.description}</div>
+          </div>
+          `
+        ).join('');
+        const calendarContentDom = document.querySelector('#calendar_notification-content');
+        
+        calendarNotificationBlock.style.display = 'block';
+        calendarContentDom.innerHTML = context;
+  
+      }
     }
-  }
-});
+  });
+})();
 </script>   
 <h4 class="mb-3">Recent post</h4>
  
