@@ -205,18 +205,32 @@
         }
     }
 
+    let data = null;
     $(document).on('click focus', '.search-form-input', function () {
         // 改為點擊後，才觸發取得
-        $.getJSON(CONFIG.CONTENT_URL, function (json) {
+        if (!data) {
+            $.getJSON(CONFIG.CONTENT_URL, function (json) {
+                if (location.hash.trim() === '#ins-search') {
+                    $main.addClass('show');
+                }
+                $input.on('input', function () {
+                    data = json;
+                    var keywords = $(this).val();
+                    searchResultToDOM(search(json, keywords));
+                });
+                $input.trigger('input');
+            });
+        } else {
             if (location.hash.trim() === '#ins-search') {
                 $main.addClass('show');
             }
             $input.on('input', function () {
+                var json = data;
                 var keywords = $(this).val();
                 searchResultToDOM(search(json, keywords));
             });
             $input.trigger('input');
-        });
+        }
 
         $main.addClass('show');
         $main.find('.ins-search-input').focus();

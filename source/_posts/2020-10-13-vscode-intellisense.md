@@ -3,7 +3,7 @@ layout: post
 title: VSCode JS 註解就是你的文件
 category: development
 tagline:
-tags: [css, scss, bootstrap]
+tags: [js, bootstrap]
 cssdemo: 
 jsdemo:
 thumbnail:
