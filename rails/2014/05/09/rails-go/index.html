@@ -1520,12 +1520,13 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
    * 側欄選單滾動行為
    */
   ;(() => {
+    const isFirefox = navigator?.userAgent?.toLowerCase()?.indexOf('firefox') > -1 || '';
     const h2 = [...document.querySelectorAll('.article-inner h2')];
     const h3 = [...document.querySelectorAll('.article-inner h3')];
     let currentHeading = '';
     let currentHeadingLv3 = '';
     // 確保至少有 h2 文章列表才運行
-    if (h2.length) {
+    if (h2.length && !isFirefox) {
       const tocListLevel3 = [...document.querySelectorAll('.toc-level-2 > ol')]
       const tocListLink = [...document.querySelectorAll('.toc-level-2 a')]
       const tocListLinkLv3 = [...document.querySelectorAll('.toc-level-3 a')]
