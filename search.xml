@@ -4,6 +4,409 @@
   
     
     <entry>
+      <title><![CDATA[CSS 選取器(基本篇) - CSS Selector]]></title>
+      <url>https://wcc723.github.io/development/2021/09/11/css-selector/</url>
+      <content type="html"><![CDATA[<p>一個開發者對於畫面的掌控度高不高，完全都可以取決於「CSS 選取器」掌握度，無論是基本的 CSS 到 jQuery 甚至是原生的 JavaScript 都是使用 CSS 選取器。另外如果要寫道後端測試、爬蟲，也是持續使用這看似基礎的觀念，本篇將會循序漸進介紹各種選取器，讓大家從基礎開始學習此知識。</p>
+<ul>
+<li><a href="#元素選取器">元素選取器</a></li>
+<li><a href="#類別選取">類別選取</a></li>
+<li><a href="#id-選取">id 選取</a></li>
+<li><a href="#屬性選取">屬性選取</a></li>
+</ul>
+<p>而選取器是選取 HTML 元素的語法，它並不會限制只運用在 CSS 上（雖然普遍稱為 CSS Selector）。</p>
+<h2 id="元素選取器"><a href="#元素選取器" class="headerlink" title="元素選取器"></a>元素選取器</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F7118EFAC-F7D3-4595-B5B7-0D7C6A088ADA.png?alt=media&amp;token=c6192f79-9dc6-4a22-94d4-9f324e1919f8" alt=""></p>
+<p>最基本的 HTML 標籤選取，可以直接選取畫面上所有 “同類型的元素”，屬於比較廣泛的選取器。</p>
+<p>以下範例來說就直接選取了 <code>a</code> 標籤，並將它改為了紅色。</p>
+
+<div class="demo demo-1">
+  <a href="https://www.apple.com/" target="_blank">這是 Apple 官網連結</a>
+</div>
+<style>
+.demo-1 a {
+  background-color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot; target=&quot;_blank&quot;&gt;這是 Apple 官網連結&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-tag">a</span> &#123;
+  <span class="hljs-attribute">background-color</span>: red;
+&#125;</code></pre>
+<h3 id="元素選取-實戰說明"><a href="#元素選取-實戰說明" class="headerlink" title="元素選取 - 實戰說明"></a>元素選取 - 實戰說明</h3><p>因為它是屬於廣泛的選取器，雖然可一次選擇非常大量的元素；雖然這是優點但也同時是缺點，大量的選取可能會影響到其它不需要被選取的項目，為了避免影響後續維護或開發，此選取器大多都是利用在：</p>
+<ul>
+<li>開頭的 CSS Reset，範例：<a href="https://meyerweb.com/eric/tools/css/reset/">https://meyerweb.com/eric/tools/css/reset/</a></li>
+<li>限定範圍的標籤，例如：部落格主要文章中的段落 p 標籤</li>
+</ul>
+<h2 id="類別選取"><a href="#類別選取" class="headerlink" title="類別選取"></a>類別選取</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3A36399C-C888-4B07-A092-B95A2DBE18F2.png?alt=media&amp;token=70f0c3de-01a7-42a5-a23d-6cd1a1a41b4b" alt=""></p>
+<p>類別選取是樣式套用 “最實用” 的選取器，它具有以下的特性：</p>
+<ul>
+<li>可重複利用（套用在多個標籤上）</li>
+<li>可重複套用（可多個類別套用在同一個標籤上）</li>
+<li>適當的權重</li>
+</ul>
+<p>以下建立了 <code>.a-link</code> 的類別，並套用在 a 標籤上使其背景色調整為黃色。</p>
+
+<div class="demo demo-1">
+  <a href="https://www.apple.com/"
+  class="a-link" target="_blank">這是 Apple 官網連結</a>
+</div>
+<style>
+.demo-1 .a-link {
+  background-color: yellow;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  class=&quot;a-link&quot; target=&quot;_blank&quot;&gt;這是 Apple 官網連結&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-class">.a-link</span> &#123;
+  <span class="hljs-attribute">background-color</span>: yellow;
+&#125;</code></pre>
+<h3 id="類別選取-多個類別重複套用"><a href="#類別選取-多個類別重複套用" class="headerlink" title="類別選取 - 多個類別重複套用"></a>類別選取 - 多個類別重複套用</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEBF18CCF-5032-45C5-84FD-D5FF3794AF77.png?alt=media&amp;token=76354e36-5297-4563-9be8-9de0d47c8819" alt=""></p>
+<p>類別選取兩個特性：</p>
+<ul>
+<li>可重複利用（套用在多個標籤上）</li>
+<li>可重複套用（可多個類別套用在同一個標籤上）</li>
+</ul>
+<p>其中的 <strong>“可重複套用”</strong> 是許多新手會忽略的用法，使用方式就是定義兩個樣式並套用在同一個元素上。</p>
+
+<div class="demo demo-1">
+  <a href="https://www.apple.com/"
+  class="a-link a-link-color" target="_blank">這是 Apple 官網連結</a>
+</div>
+<style>
+.demo-1 .a-link {
+  background-color: yellow;
+}
+.demo-1  .a-link-color {
+  color: black;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  class=&quot;a-link a-link-color&quot; target=&quot;_blank&quot;&gt;這是 Apple 官網連結&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-class">.a-link</span> &#123;
+  <span class="hljs-attribute">background-color</span>: yellow;
+&#125;
+<span class="hljs-selector-class">.a-link-color</span> &#123;
+  <span class="hljs-attribute">color</span>: black;
+&#125;</code></pre>
+<h3 id="類別選取-實戰說明"><a href="#類別選取-實戰說明" class="headerlink" title="類別選取 - 實戰說明"></a>類別選取 - 實戰說明</h3><p>它具有非常多的優勢，讓許多框架、設計模式都是基於 class 為基礎進行設計，例如：</p>
+<ul>
+<li>OOCSS 的設計模式，<a href="/css/2016/12/02/oocss-one/">參考文</a></li>
+<li><a href="https://bootstrap5.hexschool.com/">Bootstrap 最流行的前端開發工具</a></li>
+<li><a href="https://tailwindcss.com/">以 Utilities 為單位的 CSS 框架</a></li>
+</ul>
+<p>所以運用上請把握一個原則，這是 CSS 樣式表運用 “最為廣泛的選取器”（沒有之一），如果是作為樣式使用：</p>
+<ul>
+<li>請使用 class 取代 id</li>
+<li>如果可以套用 class 時，請不要直接使用元素或其它選取器</li>
+</ul>
+<h2 id="ID-選取"><a href="#ID-選取" class="headerlink" title="ID 選取"></a>ID 選取</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5D7ACD60-0847-4D09-9BB3-7BC5A2D6AA88.png?alt=media&amp;token=ae2346b0-c5d1-4818-b956-697eb2dea164" alt=""></p>
+<p>在一個 HTML 頁面中原則上僅會有一個 id，如果出現兩個以上時，部分瀏覽器則會跳出錯誤的提示，建議調整頁面上重複定義 id 的元素。</p>
+<p>Id 選取在應用上特性：</p>
+<ul>
+<li>具有唯一性：畫面上僅會有一個該名稱 id</li>
+<li>較高的樣式權重：如果與 class 的樣式有衝突時，會以 id 為主</li>
+</ul>
+<p>以下範例就選取了 id <code>a-link</code>，要特別注意一個 id 在頁面中原則上只會有一個。</p>
+
+<div class="demo">
+  <a href="https://www.apple.com/"
+  id="a-link" class="b-link" target="_blank">這是 Apple 官網連結</a>
+</div>
+<style>
+#a-link {
+  background-color: pink;
+}
+.b-link {
+  background: blue;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  id=&quot;a-link&quot; class=&quot;b-link&quot; target=&quot;_blank&quot;&gt;這是 Apple 官網連結&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-id">#a-link</span> &#123;
+  <span class="hljs-attribute">background-color</span>: pink;
+&#125;
+<span class="hljs-selector-class">.b-link</span> &#123;
+  <span class="hljs-attribute">background</span>: blue;
+&#125;</code></pre>
+<h3 id="id-選取-實戰說明"><a href="#id-選取-實戰說明" class="headerlink" title="id 選取 - 實戰說明"></a>id 選取 - 實戰說明</h3><p>它具有高權重、不可重複、頁面唯一的特性，讓樣式無法多次的運用，並且可能造成管理上的問題；因此，實戰開發中不會使用 “id 選取器” 作為樣式的選取（注意：千萬不要這麼做）。</p>
+<p>不過這樣的特性卻很適合作為樣式以外的用途，例如：</p>
+<ul>
+<li>input 與 label 標籤的對應</li>
+<li>頁面元素的絕對選取（頁面上只會有一個），在 JS、後端爬蟲、測試中相當好用</li>
+</ul>
+<h2 id="屬性選取"><a href="#屬性選取" class="headerlink" title="屬性選取"></a>屬性選取</h2><p>相對於以上的選取器來說，這是相對少見但也是更為靈活的選取器，無論在樣式或任何情境都相當好用，在受到限制的情境中常常會有意想不到的用途，例如：</p>
+<ul>
+<li>標籤的屬性必須為特定屬性值，如：<code>&lt;input type=&quot;checkbox&quot;&gt;</code></li>
+<li>HTML 的結構已經確立無法改變時，如：已經完成頁面，需要進行爬蟲或測試使用</li>
+</ul>
+<p>屬性選取可運用的組合也相當多樣，基本上只要 HTML 元素中有任何一些不同，都可作為屬性選取器的選取方式。</p>
+<p>以下將一一的介紹屬性選取的各種手法：</p>
+<ul>
+<li>包含特定 “屬性” 的選取</li>
+<li>“屬性及值” 完全符合</li>
+<li>屬性值 “包含特定字串”</li>
+<li>”結尾值“ 包含特定文字</li>
+<li>屬性選取 實戰操作</li>
+</ul>
+<h3 id="包含特定-“屬性”-的選取"><a href="#包含特定-“屬性”-的選取" class="headerlink" title="包含特定 “屬性” 的選取"></a>包含特定 “屬性” 的選取</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F809CDD6D-B836-4C33-B62F-9D094A5E2FC8.png?alt=media&amp;token=b396eea0-c808-4db7-b7bb-68ca83bbfb62" alt=""></p>
+<p>只要元素中包含特定「屬性」皆可選取，以下範例來說其中一個 <code>a</code> 標籤缺少了 href 屬性，因此將不會被套用紅色的樣式，所以此方法也可以過濾出標籤中是否有正確包含特定屬性。</p>
+
+<div class="demo demo-2">
+  <a href="https://www.apple.com/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="https://www.google.com/"
+    target="_blank">Google</a> <br>
+  <a target="_blank">連結缺少 href</a>
+</div>
+<style>
+.demo-2 [href] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;https://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;
+&lt;a target=&quot;_blank&quot;&gt;連結缺少 href&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<h3 id="“屬性及值”-完全符合"><a href="#“屬性及值”-完全符合" class="headerlink" title="“屬性及值” 完全符合"></a>“屬性及值” 完全符合</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F12911289-C59A-413D-A5C7-A9AD8222F617.png?alt=media&amp;token=88127141-9559-4c45-b506-e1e4a9d9fdfb" alt=""></p>
+<p>接下來就是屬性選取慢慢進入進階的流程，當屬性內的值完全符合時，可以選取此元素。</p>
+
+<div class="demo demo-3">
+  <a href="https://www.apple.com/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="https://www.google.com/"
+    target="_blank">Google</a> <br>
+</div>
+<style>
+.demo-3 [href="https://www.apple.com/"] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;https://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href=<span class="hljs-string">&quot;https://www.apple.com/&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<h3 id="屬性值-”包含特定字串“"><a href="#屬性值-”包含特定字串“" class="headerlink" title="屬性值 ”包含特定字串“"></a>屬性值 ”包含特定字串“</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCD57EDCE-5210-4797-8B5A-A779BE652475.png?alt=media&amp;token=c66fc8be-e9c0-4fd3-b088-7bddcd5a4e8d" alt=""></p>
+<p>”包含特定字串“ 開始的運用變化就越來越多，以此範例就可以判斷標籤內的連結目標為何。</p>
+
+<div class="demo demo-4">
+  <a href="https://www.apple.com/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="https://www.google.com/"
+    target="_blank">Google</a> <br>
+</div>
+<style>
+.demo-4 [href*="google"] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;https://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href*=<span class="hljs-string">&quot;google&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<h3 id="“開頭值”-包含特定文字"><a href="#“開頭值”-包含特定文字" class="headerlink" title="“開頭值” 包含特定文字"></a>“開頭值” 包含特定文字</h3><p>除了判斷部分字詞以外，還可以從前到後、前後至前的選取形式。</p>
+
+<div class="demo demo-5">
+  <a href="https://www.apple.com/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="http://www.google.com/"
+    target="_blank">Google</a> <br>
+</div>
+<style>
+.demo-5 [href^="https"] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;http://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href^=<span class="hljs-string">&quot;https&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F53C089A7-B9F7-4C83-8107-D40AF1E847C8.png?alt=media&amp;token=da563dce-51d4-42f2-9f4f-60504f694c84" alt=""></p>
+<h3 id="”結尾值“-包含特定文字"><a href="#”結尾值“-包含特定文字" class="headerlink" title="”結尾值“ 包含特定文字"></a>”結尾值“ 包含特定文字</h3><p>此範例為結尾值的選取形式，就可以進行從後至前的選取。</p>
+
+<div class="demo demo-6">
+  <a href="https://www.apple.com/tw/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="http://www.google.com/"
+    target="_blank">Google</a> <br>
+</div>
+<style>
+.demo-6 [href$="/tw/"] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/tw/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;http://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href$=<span class="hljs-string">&quot;/tw/&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD49F67AA-F8FE-4699-8D4E-09E1D07EEA79.png?alt=media&amp;token=8b3b9dad-4c75-4285-9523-096519a7b6de" alt=""></p>
+<h3 id="屬性選取-實戰操作"><a href="#屬性選取-實戰操作" class="headerlink" title="屬性選取 實戰操作"></a>屬性選取 實戰操作</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F8542C4C0-1FA9-498E-B27F-FABD49AEC74B.png?alt=media&amp;token=e7fec286-39d1-4a5c-abe7-2c8912597efc" alt=""></p>
+<p>屬性選取在實戰中應用非常廣，最常見的案例之一就是判斷 input 的 type 類行為和，透過此方式避免選取到錯誤類型的 input（如果把 input 樣式套用在 checkbox 上就會顯得非常不適切）。</p>
+
+<div class="demo demo-7">
+  <input type="checkbox">
+</div>
+<style>
+.demo-7 input[type="checkbox"] {
+  appearance: none;
+  border: 1px solid red;
+  width: 1rem;
+  height: 1rem;
+}
+.demo-7 input[type="checkbox"]:checked {
+  background: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;input type=&quot;checkbox&quot;&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;checkbox&quot;</span>]</span> &#123;
+  appearance: none;
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid red;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">1rem</span>;
+&#125;
+<span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;checkbox&quot;</span>]</span><span class="hljs-selector-pseudo">:checked</span> &#123;
+  <span class="hljs-attribute">background</span>: red;
+&#125;</code></pre>
+<p>除此之外，CSS 的選取方式不限制僅能使用 CSS，因此無論是 jQuery、JavaScript 都可以使用此方式進行選取，以上述範例中的連結選取，都可以改用 JS 來進行處理，在現實的開發中就可以用來：</p>
+<ul>
+<li>當開發受到限制，不可調整 HTML 原始碼時，可使用 JS 置換內容</li>
+<li>Node.js 爬蟲開發</li>
+<li>Chrome 插件（擷取網頁內的資訊）</li>
+</ul>
+<h2 id="CSS-Selector-實戰練習"><a href="#CSS-Selector-實戰練習" class="headerlink" title="CSS Selector 實戰練習"></a>CSS Selector 實戰練習</h2><p>最後，提供一個練習題目讓大家動手試試看，透過下方的 input 輸入選取器語法，試著選擇以下卡片中的特定元素吧！（被選取的元素會以紅色外框呈現）</p>
+<p>挑戰題目：</p>
+<ol>
+<li>選取 https 開頭的 a 標籤</li>
+<li>選取 /tw 結尾的 a 標籤</li>
+<li>選取左邊的圖片</li>
+<li>同時選取 input 及 textarea</li>
+<li>僅選取 checkbox</li>
+<li>選取 textarea 對應的 label</li>
+</ol>
+<p>這些題目，你可以完成幾題呢？</p>
+
+<div class="demo">
+  <div class="mb-3">
+    <label for="selectorPractice">輸入你認為正確的 Selector</label>
+    <input type="input" id="selectorPractice" class="form-control"
+    value=".list-group-item">
+  </div>
+  <pre id="preBlock">
+  </pre>
+  <div id="demo">
+    <div class="card border">
+      <div class="card-img-top overflow-hidden">
+        <div class="row row-cols-2 gx-0">
+          <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YXBwbGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=60')"></div>
+          <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1587883012610-e3df17d41270?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cGluZWFwcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60')"></div>
+        </div>
+      </div>
+      <div class="list-group list-group-flush">
+        <a href="http://www.facebook.com/" class="list-group-item list-group-item-action">Facebook</a>
+        <a href="https://www.google.com/" class="list-group-item list-group-item-action">Google</a>
+        <a href="https://www.apple.com/tw/" class="list-group-item list-group-item-action">Apple</a>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" value="" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Checkbox
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+          <label class="form-check-label" for="flexCheckChecked">
+            Radio
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .outline {
+    outline: solid red 2px;
+  }
+  .card-bg {
+    height: 200px;
+    background-position: center center;
+    background-size: cover;
+  }
+</style>
+<script>
+  const selectorPractice = document.querySelector('#selectorPractice');
+  const preBlock = document.querySelector('#preBlock');
+  let preDom = [];
+  selectorPractice.addEventListener('keyup', selectorFn);
+  function selectorFn() {
+    const value = selectorPractice.value;
+    const selectDom = document.querySelectorAll(`#demo ${value}`);
+    preBlock.textContent = `document.querySelectorAll(${value});`;
+    if (selectDom) {
+      if (preDom) {
+        console.log(preDom);
+        preDom.forEach(element => {
+          element.classList.remove('outline');
+        })
+      }
+      selectDom.forEach(element => {
+        element.classList.add('outline');
+      });
+      preDom = selectDom;
+    }
+  }
+  selectorFn();
+</script>
+
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Vue 3 新手夏令營]]></title>
       <url>https://wcc723.github.io/development/2021/07/07/vue-summer-camp/</url>
       <content type="html"><![CDATA[<p>現在前端所需技能越來越深，而三大框架雖然資源豐富，但對於新手來說卻也不知道如何入門，因此我們舉辦「Vue 3 夏令營」，讓更多的前端同好可以認識這門框架～</p>
