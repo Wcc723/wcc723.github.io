@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>JavaScript Console 運用技巧 - 8 招讓你除錯更高效 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,js" />
+    
+    
+
+    <meta name="description" content="寫 JavaScript 需要檢視運作是否正確時候，都會使用 console.log  來檢視輸出或運算的值，而 console 的運用技巧不僅僅只有將值呈現在開發的 Console 介面中。本篇就來介紹許多 console 語法的實戰運用方法吧！ 首先，在此先準備一份等等會用到的物件及陣列作為以下範例使用：const Ming &#x3D; &amp;#123;   name: &amp;#x27;小明&amp;#x27;,">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript Console 運用技巧 - 8 招讓你除錯更高效">
+<meta property="og:url" content="https://wcc723.github.io/development/2021/09/14/js-console/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="寫 JavaScript 需要檢視運作是否正確時候，都會使用 console.log  來檢視輸出或運算的值，而 console 的運用技巧不僅僅只有將值呈現在開發的 Console 介面中。本篇就來介紹許多 console 語法的實戰運用方法吧！ 首先，在此先準備一份等等會用到的物件及陣列作為以下範例使用：const Ming &#x3D; &amp;#123;   name: &amp;#x27;小明&amp;#x27;,">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fjs-console.jpg?alt=media&token=b1bcec59-79cd-4483-be9b-b29fde8f8add">
+<meta property="article:published_time" content="2021-09-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-14T08:15:50.328Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="js">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fjs-console.jpg?alt=media&token=b1bcec59-79cd-4483-be9b-b29fde8f8add">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" id="style-switch" href="/css/all.css">
+    
+
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
+    
+    
+        
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43235390-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-43235390-2');
+</script>
+<script>
+  (() => {
+    let gtagViewContentSent = false;
+
+    setTimeout(() => {
+      const endViewDom = document.querySelector('#endView');
+      if (endViewDom) {
+        const endViewDomOffsetTop = endViewDom.offsetTop;
+        window.addEventListener('scroll', () => {
+          const windowHeight = window.innerHeight;
+          const windowY = window.screenY;
+          if ((windowHeight + windowY) > endViewDomOffsetTop && !gtagViewContentSent) {
+            gtagViewContentSent = true;
+            gtag('event', 'view_item');
+          }
+        });
+      }
+    }, 500);
+  })();
+</script>
+
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="bg-light">
+  <div>
+    <header>
+  <nav class="navbar navbar-expand-lg navbar-sticky bg-white shadow-sm">
+    <div class="container">
+      <!-- Logo START -->
+      <a class="navbar-brand" href="/">
+        <img
+          class="navbar-brand-item light-mode-item"
+          src="/images/blog_logo.svg"
+          alt="卡斯伯的 Blog"
+        />
+        <img
+          class="navbar-brand-item dark-mode-item"
+          src="/images/blog_logo_w.svg"
+          alt="卡斯伯的 Blog"
+        />
+      </a>
+      <!-- Logo END -->
+
+      <!-- Responsive navbar toggler -->
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="text-body h6 d-none d-sm-inline-block">Menu</span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav navbar-nav-scroll ms-auto">
+          <li class="nav-item">
+            <a href="/about/hexschool-traning.html" class="nav-link position-relative">
+              作品直播班(學員心得)
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/css"
+              >CSS</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/javascript/"
+              >JS</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives"
+              >文章列表</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+          <!-- Nav item 1 Demos -->
+        </ul>
+        <!-- <div class="my-3">
+          <div class="modeswitch" id="darkModeSwitch">
+            <div class="switch"></div>
+          </div>
+        </div> -->
+        <nav class="mx-3"><div id="search-form-wrap">
+
+    <form class="search-form input-group" style="width: 120px">
+        <input type="text" class="ins-search-input search-form-input form-control" placeholder="搜尋知識" />
+        <!-- <button type="submit" class="search-form-submit btn btn-outline-secondary">
+            <i class="bi bi-search fs-4"> </i>
+        </button> -->
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="bi bi-x"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></nav>
+        
+      </div>
+      <div class="nav-item">
+        <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasMenu" role="button" aria-controls="offcanvasMenu">
+          <i class="fs-5 bi bi-list"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+  <div class="offcanvas-header">
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column pt-0">
+    <div>
+      <img
+        class="light-mode-item my-3"
+        src="/images/blog_logo.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <img
+        class="dark-mode-item my-3"
+        src="/images/blog_logo_w.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <!-- Nav START -->
+      <ul class="nav d-block flex-column my-4">
+        
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/tags/css"
+              >CSS</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/tags/javascript/"
+              >JS</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/archives"
+              >文章列表</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        
+        
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000">
+  <div class="text-center">
+    <img
+      src="/images/2021/avatar.png"
+      height="115"
+      width="115"
+      class="img-fluid mb-2"
+      alt=""
+    />
+    <p>設計師轉職前端工程師，擅長將複雜觀念用圖形化方式呈現</p>
+    <a
+      href="https://www.facebook.com/WccCasper"
+      target="_blank"
+      class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-facebook"></i> 追蹤卡斯伯</a
+    >
+    <a href="#comments" class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-chat-text"></i
+    ></a>
+  </div>
+  <hr>
+  <div class="toc-component">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%82%BA-console-log-%E7%9A%84%E7%A8%8B%E5%BC%8F%E7%A2%BC%E4%B8%8A%E8%89%B2"><span class="toc-text">為 console.log 的程式碼上色</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#console-table-%EF%BC%9A%E4%BD%BF%E7%94%A8%E8%A1%A8%E6%A0%BC%E7%9A%84%E6%96%B9%E5%BC%8F%E9%99%B3%E5%88%97%E9%99%A3%E5%88%97%E7%9A%84%E8%B3%87%E8%A8%8A"><span class="toc-text">console.table()：使用表格的方式陳列陣列的資訊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#console-group-%EF%BC%9A%E7%BE%A4%E7%B5%84%E5%8C%96%E5%A4%A7%E9%87%8F%E7%9A%84-log-%E8%B3%87%E8%A8%8A"><span class="toc-text">console.group()：群組化大量的 log 資訊</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#console-time-%EF%BC%9A%E9%96%8B%E7%99%BC%E8%80%85%E6%9C%80%E6%84%9B%E6%96%A4%E6%96%A4%E8%A8%88%E8%BC%83%E9%82%A3-1ms-%E7%9A%84%E6%95%88%E8%83%BD%E4%BA%86"><span class="toc-text">console.time()：開發者最愛斤斤計較那 1ms 的效能了</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#console-dir-%EF%BC%9A%E4%BB%A5%E7%89%A9%E4%BB%B6%E7%9A%84%E5%BD%A2%E5%BC%8F%E5%91%88%E7%8F%BE%E8%B3%87%E6%96%99"><span class="toc-text">console.dir()：以物件的形式呈現資料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#console-error"><span class="toc-text">console.error()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#console-warn"><span class="toc-text">console.warn()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#console-clear"><span class="toc-text">console.clear()</span></a></li></ol>
+  </div>
+
+  
+    <hr />
+    <div class="d-flex justify-content-center">
+      <div
+        class="fb-like"
+        data-layout="box_count"
+        data-action="like"
+        data-size="large"
+        data-share="true"
+      ></div>
+    </div>
+    
+</div>
+
+          </div>
+          <div class="col-lg-7 bg-white shadow-lg rounded-3 rounded-top">
+            <section id="main">
+              <p class="mt-2 mb-0 small">卡斯伯提供的教學資源：</p>
+<div class="row gx-2">
+    <a class="col-4 d-block" href="https://hex.school/5cYlz" target="_blank">
+        <img no-lazy src="/images/2021/vue3_實戰影音.jpg" style="max-width: 100%" alt="">
+    </a>
+    <a class="col-4 d-block" href="/about/hexschool-traning.html">
+        <img no-lazy src="/images/2021/vue_作品實戰班.jpg" style="max-width: 100%" alt="">
+    </a>
+    <a class="col-4 d-block" target="_blank" rel="noopener" href="https://hex.school/7ZLrm">
+        <img no-lazy src="/images/2021/Bootstrap5_繁體中文文件.jpg" style="max-width: 100%" alt="">
+    </a>
+</div>
+<div class="main-body-header">
+    <h2 class="my-3">
+    
+    
+    </h2>
+</div>
+              <div id="sticky-space"></div>
+              
+<div class="bg-white rounded my-3 shadow
+  alert alert-dismissible fade show"
+  id="calendar_notification_small-block">
+  <div class="me-3 d-flex align-items-center">
+    <span class="badge bg-primary p-2 me-3">近期活動通知：</span>
+    <a href="#"  class="d-inline-block text-decoration-underline text-primary" id="calendar_notification_small-content"
+    data-bs-toggle="modal" data-bs-target="#calendar_notify-sm-modal">
+    </a>
+  </div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="modal fade" id="calendar_notify-sm-modal" tabindex="-1" aria-labelledby="#calendar_notify-sm-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="calendar_notify-sm-modal-label">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="calendar_notify-sm-modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary d-block w-100" data-bs-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+#calendar_notification_small-block {
+  display: none;
+}
+</style>
+
+<script>
+(() => {
+  const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
+  const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
+  const query = '卡斯伯';
+
+  const today = new Date();
+  const fullYear = today.getFullYear();
+  const month = today.getMonth();
+  const date = today.getDate();
+  const hours = today.getHours();
+  const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
+  const timeMax = new Date(fullYear, month, date + 7, hours).toISOString();
+
+  const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
+
+  const calendarNotificationBlock = document.querySelector('#calendar_notification_small-block');
+
+  $.ajax({
+    url: api,
+    success: function(data) {
+      if (Array.isArray(data.items) && data.items.length) {
+        const item = data.items[0];
+        const context = `<div class="d-inline-block">
+          <strong class="me-3">${item.summary}</strong>
+          <br class="d-md-none" />活動時間：${new Date(item.start.dateTime).toLocaleString()}
+        </div>`;
+        const calendarContentDom = document.querySelector('#calendar_notification_small-content');
+                
+        calendarNotificationBlock.style.display = 'block';
+        calendarContentDom.innerHTML = context;
+
+        document.querySelector('#calendar_notify-sm-modal-label').textContent = item.summary;
+        document.querySelector('#calendar_notify-sm-modal-body').innerHTML = item.description;
+
+      }
+    }
+  });
+})();
+</script>
+              <div class="main-body-content">
+                <article id="post-js-console" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner" data-bs-offset="0">
+        
+            <div class="article-subtitle">
+                
+    <ul class="d-inline-block list-unstyled" itemprop="keywords"><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/javascript/" rel="tag">javascript</a></li><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/js/" rel="tag">js</a></li></ul>
+
+                
+<span class="ms-2 small"><time datetime="2021-09-13T16:00:00.000Z" itemprop="datePublished">2021-09-14</time></span>
+            </div>
+        
+        
+            <header class="article-header">
+                 
+<h1 class="display-5" itemprop="name">JavaScript Console 運用技巧 - 8 招讓你除錯更高效</h1>
+ 
+
+            </header>
+        
+        <div id="endView"></div><!-- google analytics -->
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+                </div>
+            
+            <div class="need-gallery">
+                <p>寫 JavaScript 需要檢視運作是否正確時候，都會使用 <code>console.log</code>  來檢視輸出或運算的值，而 <code>console</code> 的運用技巧不僅僅只有將值呈現在開發的 Console 介面中。本篇就來介紹許多 <code>console</code> 語法的實戰運用方法吧！</p>
+<p>首先，在此先準備一份等等會用到的物件及陣列作為以下範例使用：<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> Ming = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-number">15</span>,
+  <span class="hljs-attr">favorite</span>: <span class="hljs-string">&#x27;鍋燒意麵&#x27;</span>
+&#125;
+<span class="hljs-keyword">const</span> Jay = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;杰倫&#x27;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-number">16</span>,
+  <span class="hljs-attr">favorite</span>: <span class="hljs-string">&#x27;炒麵&#x27;</span>
+&#125;
+<span class="hljs-keyword">const</span> Auntie = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-number">21</span>,
+  <span class="hljs-attr">favorite</span>: <span class="hljs-string">&#x27;蘿蔔糕&#x27;</span>
+&#125;
+<span class="hljs-keyword">const</span> people = [Ming, Jay, Auntie];</code></pre></p>
+<h2 id="為-console-log-的程式碼上色"><a href="#為-console-log-的程式碼上色" class="headerlink" title="為 console.log 的程式碼上色"></a>為 console.log 的程式碼上色</h2><p>有在 Facebook 頁面中開啟過開發者工具嗎？如果有，相信你對於以下這張圖並不陌生。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F6D8AF4B7-FF19-4BFD-89A2-D676B037B58A.png?alt=media&amp;token=6e13d927-8a00-4cab-87a4-162ddc685f7d" alt=""></p>
+<p>Console 中的文字並非只有固定的色彩，它與網頁中的文字一樣，都可以透過 CSS 的語法來調整其色彩，只要在 <code>log</code> 的文字前方先加入 <code>%c</code> 後，在 <code>,</code> 後方的參數就能夠傳入 CSS 語法做為參數，並且調整 Console 中呈現的文字樣式。</p>
+<pre><code class="hljs js"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">`%c <span class="hljs-subst">$&#123;Ming.name&#125;</span> 有瑟瑟的顏色`</span>, <span class="hljs-string">&#x27;color: orange; font-size: 24px&#x27;</span>);</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF2B60FC3-8DD8-437E-B26C-AD1C7E89051F.png?alt=media&amp;token=dd412a3b-c7a4-4850-999a-118a90fd93a9" alt=""></p>
+<h2 id="console-table-：使用表格的方式陳列陣列的資訊"><a href="#console-table-：使用表格的方式陳列陣列的資訊" class="headerlink" title="console.table()：使用表格的方式陳列陣列的資訊"></a>console.table()：使用表格的方式陳列陣列的資訊</h2><p>當要呈現資料於 Console 介面中，做常見的方式就是使用 log 的方法：<br><pre><code class="hljs js"><span class="hljs-string">&#x27;😴 基本用法&#x27;</span>
+<span class="hljs-built_in">console</span>.log(Ming);
+<span class="hljs-built_in">console</span>.log(Jay);
+<span class="hljs-built_in">console</span>.log(Auntie);
+
+<span class="hljs-built_in">console</span>.log(people);</code></pre></p>
+<p>當然，這樣的用法絕對沒有問題，透過此方法可以將值一一陳列出來，不過當這些數值是 “具有關聯性” 時，一般的 log 就無法比較兩者之間的關係。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FE2E0CFC5-492E-4ADD-AEFB-3269B58D445A.png?alt=media&amp;token=ce87d1a9-6c38-4ee0-9753-66e749d71672" alt=""></p>
+<p><code>console.table()</code> 針對物件之間有相同的屬性名稱時，就能夠輕易的比較相同屬性之間的關係。<br><pre><code class="hljs js"><span class="hljs-built_in">console</span>.table([Ming, Jay, Auntie]);
+<span class="hljs-built_in">console</span>.table(people);</code></pre><br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3FCC79BD-FB26-44C2-8779-4B90727D4A9A.png?alt=media&amp;token=11654b5b-927f-4511-ab6a-a3320dd8cd43" alt=""></p>
+<p>除此之外，表格上方的標頭還可以點選作為排序使用，如果拿到一個 JSON 想比對其中的值，還要轉貼到 Excel 或是 <code>sort()</code> 語法安排，不如直接改用 <code>table()</code> 進行比較吧。</p>
+
+<video width="100%" controls autoplay loop>
+  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FSep-14-2021%2014-34-38.mp4?alt=media&token=93bc70be-ace0-4e4b-9e47-bb7f44d58845" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+<h2 id="console-group-：群組化大量的-log-資訊"><a href="#console-group-：群組化大量的-log-資訊" class="headerlink" title="console.group()：群組化大量的 log 資訊"></a>console.group()：群組化大量的 log 資訊</h2><p>使用 <code>log()</code> 觀看迴圈值是合情合理的，不過當陣列的長度有上百筆時，Console 介面中的資料還真會滾到令人厭世。</p>
+<pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; people.length; index++) &#123;
+  <span class="hljs-keyword">const</span> element = people[index];
+  <span class="hljs-built_in">console</span>.log(element);
+&#125;</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5F812183-317D-4FB4-B26A-1E7963B1AD64.png?alt=media&amp;token=630dd86e-ad87-46a3-bd2e-9399434bc974" alt="在迴圈中使用 `console.log()` 會一一呈現資料，數量一多看起來就會顯的很吃力"></p>
+<blockquote>
+<p>在迴圈中使用 <code>console.log()</code> 會一一呈現資料，數量一多看起來就會顯的很吃力</p>
+</blockquote>
+<p>使用 <code>console.group()</code>、<code>console.groupEnd()</code> 設置群組的起訖，在 Console 的介面中就能方便的收合群組內容。</p>
+<pre><code class="hljs js"><span class="hljs-built_in">console</span>.group(<span class="hljs-string">&#x27;迴圈群組&#x27;</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; people.length; index++) &#123;
+  <span class="hljs-keyword">const</span> element = people[index];
+  <span class="hljs-built_in">console</span>.log(element);
+&#125;
+<span class="hljs-built_in">console</span>.groupEnd();</code></pre>
+<p><code>console.group(/* 群組名稱 */)</code>可以傳入 “群組名稱” 做為參數，作為在 Console 介面中辨識群組的顯示名稱，在介面中的群組名稱也會以粗體名稱，並且可以點擊箭頭符號收合群組內容。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3D7FBA6B-EA9E-480A-A8FF-4837FC1AAA23.png?alt=media&amp;token=1ea045e1-f1a4-4b96-9894-fe1f7da5fc09" alt=""></p>
+<h2 id="console-time-：開發者最愛斤斤計較那-1ms-的效能了"><a href="#console-time-：開發者最愛斤斤計較那-1ms-的效能了" class="headerlink" title="console.time()：開發者最愛斤斤計較那 1ms 的效能了"></a>console.time()：開發者最愛斤斤計較那 1ms 的效能了</h2><p>每當寫出神邏輯的時候，都會擔心電腦效能跟不上自己的思維，這時候就可以使用 <code>time()</code> 追蹤片段程式碼所處理的時間差，得知自己是不是該換台電腦解決問題。</p>
+<pre><code class="hljs js"><span class="hljs-string">&#x27;🤩 時間追蹤&#x27;</span>;
+<span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;迴圈處理時間&#x27;</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; people.length; index++) &#123;
+  <span class="hljs-keyword">const</span> element = people[index];
+  <span class="hljs-built_in">console</span>.log(element);
+&#125;
+<span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;迴圈處理時間&#x27;</span>);</code></pre>
+<p>在起訖中分別加入 <code>time()</code> 以及 <code>timeEnd()</code>，執行程式碼後就可以獲得處理的結果。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD653C44C-A9D8-4C39-AF75-CE065F407C69.png?alt=media&amp;token=f09c1870-465c-497f-af8f-c8f5f70aebeb" alt=""></p>
+<h2 id="console-dir-：以物件的形式呈現資料"><a href="#console-dir-：以物件的形式呈現資料" class="headerlink" title="console.dir()：以物件的形式呈現資料"></a>console.dir()：以物件的形式呈現資料</h2><pre><code class="hljs js"><span class="hljs-comment">// HTML &lt;p&gt;推薦的 Console 語法&lt;/p&gt;</span>
+<span class="hljs-keyword">const</span> p = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;p&#x27;</span>);
+<span class="hljs-built_in">console</span>.log(p);</code></pre>
+<p>當使用 <code>console.log()</code> 查看 DOM 元素，並想了解其中可用的方法或屬性時…，它可能會出現如下帶點失望的標籤，並且心裡默罵：</p>
+<ul>
+<li>要這個幹嘛啦</li>
+<li>要知道的是物件屬性、屬性！</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCCE9EDA4-971D-4271-8B45-11FEC5ED0755.png?alt=media&amp;token=cf5f787f-42b9-493a-8b50-c20ba76e0551" alt=""></p>
+<p>這時候需要的是 <code>console.dir()</code>，你會發現另一個新世界，原本的 DOM 元素被改為物件的形式呈現，你可以輕鬆展開此物件，並檢視裡面有哪些可用屬性。</p>
+<pre><code class="hljs js"><span class="hljs-keyword">const</span> p = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;p&#x27;</span>);
+<span class="hljs-built_in">console</span>.dir(p);</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FA11E8437-85F7-49EB-8F96-04BF727A4308.png?alt=media&amp;token=61e21623-8f2b-447a-b872-b1d9125d66dd" alt=""></p>
+<blockquote>
+<p>展開的 P 元素，包含其中所有的屬性（這在操作 DOM 時極為好用）</p>
+</blockquote>
+<h2 id="console-error"><a href="#console-error" class="headerlink" title="console.error()"></a>console.error()</h2><p>寫程式有錯誤是難免的，但是如果是錯誤，卻沒有明確的提示導致沒有被發現問題，就失去提示的意義了，如果想讓 Console 的內容更加醒目，可以使用 <code>console.error()</code> 使訊息在 Console 介面中以錯誤的形式呈現。</p>
+<pre><code class="hljs js"><span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">$&#123;Ming.name&#125;</span> 你完蛋了`</span>);</code></pre>
+<p>當運用在一般文字訊息上時，也可以展開訊息並說明錯誤來源自哪一段程式碼。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD738C899-B567-4F8C-9A12-18CFA6E59056.png?alt=media&amp;token=5b465333-ffbe-442d-9759-9fc3d12fedef" alt=""></p>
+<p>在 AJAX 的未確認狀態中，也會使用 <code>console.error</code> 來呈現錯誤的回饋訊息，以下範例刻意將 API 路徑調整成錯誤的，並透過 <code>console.error()</code> 來將錯誤的資訊呈現在 Console 介面中</p>
+<pre><code class="hljs js"><span class="hljs-string">&#x27;🤩 Error&#x27;</span>;
+axios.get(<span class="hljs-string">&#x27;https://randomuser.me/apis&#x27;</span>)
+  .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(res))
+  .catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">&#x27;待誌大條啦: &#x27;</span>, error.response)
+  &#125;)</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FFFA221BB-01DB-429D-AC26-9C8477D1610C.png?alt=media&amp;token=64a50e79-5606-48c8-82db-44a62a39c35c" alt=""></p>
+<h2 id="console-warn"><a href="#console-warn" class="headerlink" title="console.warn()"></a>console.warn()</h2><p>錯誤太突兀了嗎？如果是自行開發的函式庫，已經透過各種形式避免程式碼出錯，但還是想把有錯誤的訊息給予開發者知道，那麼則可以使用 <code>console.warn()</code>。</p>
+<pre><code class="hljs js"><span class="hljs-string">&#x27;🤩 Warning&#x27;</span>;
+<span class="hljs-comment">/***</span>
+<span class="hljs-comment"> * 超精美函式庫 💖</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number&#125;</span> </span>num 純數值</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;string&#125;</span> </span>text 請傳入字串</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">superMagicLibrary</span>(<span class="hljs-params">num, text</span>) </span>&#123;
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> num !== <span class="hljs-string">&#x27;number&#x27;</span>) &#123;
+    <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">&#x27;尊重一下好嗎，請傳入純數值&#x27;</span>)
+  &#125;
+&#125;
+superMagicLibrary(<span class="hljs-string">&#x27;字串&#x27;</span>);</code></pre>
+<p>函式庫中大多會避免已知的錯誤，如果要友善的給予回饋，可以使用 <code>warn()</code> 代替 <code>error()</code> 提醒開發者更好的做法 :D。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEB1B67D5-40A3-4B1B-BFF2-1BE505EEACC2.png?alt=media&amp;token=984dbd55-0eaa-4645-aaed-73841e4fb4d3" alt=""></p>
+<h2 id="console-clear"><a href="#console-clear" class="headerlink" title="console.clear()"></a>console.clear()</h2><p>如果覺得 Console 介面已經充滿了許多不必要的資訊，想要專注於當前開發的程式碼，那麼可以加入 <code>console.clear()</code>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FABBCB95A-552B-43E7-8B7E-6EB30103C24C.png?alt=media&amp;token=c6f81fec-ab28-4c2c-b1bf-ac4bf3aae174" alt=""></p>
+<blockquote>
+<p>畫面中會出現 Console was cleared 的字眼</p>
+</blockquote>
+<p>此語法亦可在 Console 介面中直接輸入，會直接清除當下的所有資訊內容。</p>
+
+<video width="100%" controls autoplay loop>
+  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FSep-14-2021%2015-19-27.mp4?alt=media&token=596fce33-240c-4064-87ac-0ddcf468c723 " type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+<p>不過請慎用此方法，如果隨意插入 <code>console.clear()</code> 在不同的檔案中，不知情的夥伴一定會在開發中卡很久，可能發生的情境有…：</p>
+<ul>
+<li>奇怪，我寫的 Code 怎麼都沒顯示在 Console</li>
+<li>編譯器壞了嗎？怎麼好像沒有運作</li>
+<li>我的 Chrome 怪怪的</li>
+</ul>
+<p>還有哪些方法你也常用，但沒有介紹到的呢？歡迎在底下留言區留言喔 :D</p>
+
+            </div>
+            
+                <div>
+  <script type="text/javascript">
+    document.write(
+      "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/agito723/button?referrer=" +
+      encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+  </script>
+<div>
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+            <!-- <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div> -->
+            
+                <div class="my-3">
+                    <ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8769565283"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+                </div>
+            
+            
+
+<style>
+.article-entry .article-nav {
+  display: flex;
+  background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav .col-12 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+</style>
+<div class="row g-0 mt-5 border-top border-bottom article-nav">
+  
+    <div class="col-12 py-3 py-md-4">
+      <div class="d-flex align-items-center position-relative">
+        <!-- Icon -->
+        <div class="bg-primary py-1">
+          <i class="bi bi-chevron-compact-left fs-3 text-white px-1 rtl-flip"></i>
+        </div>
+        <!-- Title -->
+        <div class="ms-3">
+          <h5 class="m-0">
+            <a href="/development/2021/09/11/css-selector/" class="stretched-link btn-link text-reset"
+              >上一篇：CSS 選取器(基本篇) - CSS Selector</a
+            >
+          </h5>
+        </div>
+      </div>
+    </div>
+  
+  
+</div>
+
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+        </footer>
+        
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2021/09/14/js-console/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+    </div>
+</article>
+
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000;">
+              <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+            </div>
+          </div>
+          <div class="col-12">
+            
+<div class="row mt-5">
+  <div class="col-lg-3 mb-3">
+    <h4>相似文章</h4>
+    <div class="list-group bg-white">
+      
+        
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+          <a href="/development/2019/11/23/ten-mins-learn-markdown/" class="list-group-item list-group-item-action">
+            <h5>十分鐘快速掌握 Markdown</h5>
+            <p class="small mb-0">
+              Markdown 是目前非常普遍用來撰寫文檔的語言，一開始的目標就是使用「易讀易寫的純文字格式編寫文件」，此初衷讓使用者可以專注在文字的本身，而不需要透過其它工具來切換格式。以 Word 撰寫文檔來說，就必須透過上方的工具列來切換標題、列表、粗體、斜體等等；而 Markdown 並沒有這樣的工具列，...
+            </p>
+          </a>
+        
+      
+          
+          <a href="/development/2019/12/01/vscode-chinese/" class="list-group-item list-group-item-action">
+            <h5>一分鐘切換成中文版 VSCode（完整圖文版）</h5>
+            <p class="small mb-0">
+              雖然開發者都具有一定的英文閱讀能力，但如果在不熟悉的情況下，就比較難以快速上手一個新工具。如果要快速掌握一個完整的工具或技術，最好的方式還是先切換成熟悉的語言。
+而 VSCode 雖然預設並無法直接切換語系，但官方有提供各國的語言套件，讓開發者可以自行選用。
+切換成中文版如果你對於 VSCode 有...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+          <a href="/development/2020/01/04/image-common-mistakes/" class="list-group-item list-group-item-action">
+            <h5>前端開發者，圖片常犯的五個粗心錯誤</h5>
+            <p class="small mb-0">
+              前端開發者是透過程式碼將資訊呈現成畫面，因此畫面的好壞也多少影響品質，在觀看許多履歷或作業的過程中，會發現許多相似的錯誤，而這些錯誤都是有跡可循，並且可以避免的；本篇先以常見的圖片問題與大家分享，看是否你也犯了這些錯誤呢？
+一、圖片變形新手錯誤率：⭐⭐⭐⭐令人感受的粗心度：👎👎👎👎
+圖片變形...
+            </p>
+          </a>
+        
+      
+          
+          <a href="/development/2020/02/09/jest-async/" class="list-group-item list-group-item-action">
+            <h5>單元測試 - 非同步及 Ajax</h5>
+            <p class="small mb-0">
+              本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest
+JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 Jav...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+    </div>
+  </div>
+
+  <div class="col-lg-3 mb-3">
+    
+<div class="widget-wrap widget-list mb-3">
+    <h4 class="mb-3">粉絲專頁</h4>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+  </div>
+
+  <div class="col-lg-4 d-none d-lg-block mb-3">
+    
+<div class="mb-3">
+  <h4 class="mb-3">標籤雲</h4>
+  <div class="widget tagcloud" style="line-height: 1;"><a href="/tags/Bootstrap/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">Sass</a> <a href="/tags/async/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">async</a> <a href="/tags/await/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">await</a> <a href="/tags/beginner/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">beginner</a> <a href="/tags/bootstrap/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">bootstrap</a> <a href="/tags/border/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">border</a> <a href="/tags/business/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">business</a> <a href="/tags/compass/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">compass</a> <a href="/tags/courses/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">courses</a> <a href="/tags/css/" style="font-size: 24px;" class="p-1 m-1 d-inline-block -10">css</a> <a href="/tags/d3/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">d3</a> <a href="/tags/d3js/" style="font-size: 20.47px;" class="p-1 m-1 d-inline-block -6">d3js</a> <a href="/tags/design/" style="font-size: 21.06px;" class="p-1 m-1 d-inline-block -7">design</a> <a href="/tags/develop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">develop</a> <a href="/tags/dns/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">dns</a> <a href="/tags/emmet/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">emmet</a> <a href="/tags/es6/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">es6</a> <a href="/tags/fire-app/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">fire.app</a> <a href="/tags/git/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">git</a> <a href="/tags/github/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">github</a> <a href="/tags/grid/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">grid</a> <a href="/tags/gulp/" style="font-size: 19.88px;" class="p-1 m-1 d-inline-block -6">gulp</a> <a href="/tags/html/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">html</a> <a href="/tags/icon-fonts/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icon fonts</a> <a href="/tags/icons/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icons</a> <a href="/tags/intro/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">intro</a> <a href="/tags/ironman/" style="font-size: 23.41px;" class="p-1 m-1 d-inline-block -9">ironman</a> <a href="/tags/javascript/" style="font-size: 22.82px;" class="p-1 m-1 d-inline-block -9">javascript</a> <a href="/tags/jekyll/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">jekyll</a> <a href="/tags/jest/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">jest</a> <a href="/tags/jquery/" style="font-size: 18.12px;" class="p-1 m-1 d-inline-block -4">jquery</a> <a href="/tags/js/" style="font-size: 22.24px;" class="p-1 m-1 d-inline-block -8">js</a> <a href="/tags/life/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">life</a> <a href="/tags/mac/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">mac</a> <a href="/tags/markdown/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">markdown</a> <a href="/tags/mobile/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">mobile</a> <a href="/tags/modules/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">modules</a> <a href="/tags/node-js/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">node.js</a> <a href="/tags/nodejs/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">nodejs</a> <a href="/tags/npm/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">npm</a> <a href="/tags/oocss/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">oocss</a> <a href="/tags/project/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">project</a> <a href="/tags/promise/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">promise</a> <a href="/tags/puppeteer/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">puppeteer</a> <a href="/tags/rails/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">rails</a> <a href="/tags/reactjs/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">reactjs</a> <a href="/tags/ruby/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">ruby</a> <a href="/tags/sass/" style="font-size: 21.65px;" class="p-1 m-1 d-inline-block -8">sass</a> <a href="/tags/scss/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">scss</a> <a href="/tags/sketch/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sketch</a> <a href="/tags/ssl/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">ssl</a> <a href="/tags/study/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">study</a> <a href="/tags/sublime-text/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sublime text</a> <a href="/tags/svg/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">svg</a> <a href="/tags/test/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">test</a> <a href="/tags/tool/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">tool</a> <a href="/tags/tools/" style="font-size: 18.71px;" class="p-1 m-1 d-inline-block -5">tools</a> <a href="/tags/vscode/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">vscode</a> <a href="/tags/vue/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">vue</a> <a href="/tags/web/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">web</a> <a href="/tags/workshop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">workshop</a> <a href="/tags/zeplin/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">zeplin</a></div>
+</div>
+
+
+  </div>
+
+  <div class="col-lg-2 d-none d-lg-block mb-3">
+    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+  </div>
+
+</div>
+          </div>
+        
+      </div>
+    </div>
+    <footer class="bg-dark py-5 mt-4 text-muted">
+  <div class="container">
+    <div class="container-inner">
+      <a id="back-to-top" href="javascript:;"
+        ><i class="icon fa fa-angle-up"></i
+      ></a>
+      <div class="credit">
+        <h1 class="logo-wrap">
+          <a href="/" class="logo"></a>
+        </h1>
+        <p>
+          &copy; 2021 Wang Casper
+        </p>
+        <p>
+          Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by
+          <a href="https://bootstrap5.hexschool.com/" target="_blank"
+            >Bootstrap</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    
+    
+
+
+
+    
+
+
+<!-- Custom Scripts -->
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script src="/js/bs-layout-functions.js"></script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v11.0&appId=556473851118881&autoLogAppEvents=1" nonce="drs0t5ih"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+  window.onload = () => {
+    $(function() {
+      if(!$('ins[class="adsbygoogle"]').data('adsbygoogleStatus')) {
+        console.log('(╭(°A°`)╮)) 拜託，別擋這個頁面的廣告，不然我一毛錢都沒得賺惹');
+        $('.adsense-message').css('display', 'block');
+      }
+    })
+  }
+  </script>
+
+
+<script>
+  /***
+   * 側欄選單滾動行為
+   */
+  ;(() => {
+    const isFirefox = navigator?.userAgent?.toLowerCase()?.indexOf('firefox') > -1 || '';
+    const h2 = [...document.querySelectorAll('.article-inner h2')];
+    const h3 = [...document.querySelectorAll('.article-inner h3')];
+    let currentHeading = '';
+    let currentHeadingLv3 = '';
+    // 確保至少有 h2 文章列表才運行
+    if (h2.length && !isFirefox) {
+      const tocListLevel3 = [...document.querySelectorAll('.toc-level-2 > ol')]
+      const tocListLink = [...document.querySelectorAll('.toc-level-2 a')]
+      const tocListLinkLv3 = [...document.querySelectorAll('.toc-level-3 a')]
+      tocListLevel3.forEach(item => item.classList.add('d-none'));
+
+      window.addEventListener('scroll', function () {
+        const headings = h2.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse(); // 由後往前找
+        const headingsLevel3 = h3.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse();
+
+        const windowY = window.scrollY;
+        // console.log(headings, windowY);
+        const findTarget = headings.find(item => windowY + 60 > item.offsetTop);
+        const findTargetLv3 = headingsLevel3.find(item => windowY + 60 > item.offsetTop);
+        // console.log(findTarget);
+        if (findTarget && findTarget.id !== currentHeading) {
+          currentHeading = findTarget.id;
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTarget.uri}"]`);
+          tocListLevel3.forEach(item => item.classList.add('d-none'));
+          tocListLink.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          // location.hash = findTarget.uri;
+        }
+        if (findTargetLv3 && findTargetLv3.id !== currentHeadingLv3) {
+          // console.log('findTargetLv3', findTargetLv3);
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTargetLv3.uri}"]`);
+          tocListLinkLv3.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          // location.hash = findTarget.uri;
+        }
+
+
+      });
+    }
+  })();
+</script>
+
+  </div>
+</body>
+</html>

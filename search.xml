@@ -4,6 +4,157 @@
   
     
     <entry>
+      <title><![CDATA[JavaScript Console 運用技巧 - 8 招讓你除錯更高效]]></title>
+      <url>https://wcc723.github.io/development/2021/09/14/js-console/</url>
+      <content type="html"><![CDATA[<p>寫 JavaScript 需要檢視運作是否正確時候，都會使用 <code>console.log</code>  來檢視輸出或運算的值，而 <code>console</code> 的運用技巧不僅僅只有將值呈現在開發的 Console 介面中。本篇就來介紹許多 <code>console</code> 語法的實戰運用方法吧！</p>
+<p>首先，在此先準備一份等等會用到的物件及陣列作為以下範例使用：<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> Ming = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-number">15</span>,
+  <span class="hljs-attr">favorite</span>: <span class="hljs-string">&#x27;鍋燒意麵&#x27;</span>
+&#125;
+<span class="hljs-keyword">const</span> Jay = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;杰倫&#x27;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-number">16</span>,
+  <span class="hljs-attr">favorite</span>: <span class="hljs-string">&#x27;炒麵&#x27;</span>
+&#125;
+<span class="hljs-keyword">const</span> Auntie = &#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-number">21</span>,
+  <span class="hljs-attr">favorite</span>: <span class="hljs-string">&#x27;蘿蔔糕&#x27;</span>
+&#125;
+<span class="hljs-keyword">const</span> people = [Ming, Jay, Auntie];</code></pre></p>
+<h2 id="為-console-log-的程式碼上色"><a href="#為-console-log-的程式碼上色" class="headerlink" title="為 console.log 的程式碼上色"></a>為 console.log 的程式碼上色</h2><p>有在 Facebook 頁面中開啟過開發者工具嗎？如果有，相信你對於以下這張圖並不陌生。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F6D8AF4B7-FF19-4BFD-89A2-D676B037B58A.png?alt=media&amp;token=6e13d927-8a00-4cab-87a4-162ddc685f7d" alt=""></p>
+<p>Console 中的文字並非只有固定的色彩，它與網頁中的文字一樣，都可以透過 CSS 的語法來調整其色彩，只要在 <code>log</code> 的文字前方先加入 <code>%c</code> 後，在 <code>,</code> 後方的參數就能夠傳入 CSS 語法做為參數，並且調整 Console 中呈現的文字樣式。</p>
+<pre><code class="hljs js"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">`%c <span class="hljs-subst">$&#123;Ming.name&#125;</span> 有瑟瑟的顏色`</span>, <span class="hljs-string">&#x27;color: orange; font-size: 24px&#x27;</span>);</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF2B60FC3-8DD8-437E-B26C-AD1C7E89051F.png?alt=media&amp;token=dd412a3b-c7a4-4850-999a-118a90fd93a9" alt=""></p>
+<h2 id="console-table-：使用表格的方式陳列陣列的資訊"><a href="#console-table-：使用表格的方式陳列陣列的資訊" class="headerlink" title="console.table()：使用表格的方式陳列陣列的資訊"></a>console.table()：使用表格的方式陳列陣列的資訊</h2><p>當要呈現資料於 Console 介面中，做常見的方式就是使用 log 的方法：<br><pre><code class="hljs js"><span class="hljs-string">&#x27;😴 基本用法&#x27;</span>
+<span class="hljs-built_in">console</span>.log(Ming);
+<span class="hljs-built_in">console</span>.log(Jay);
+<span class="hljs-built_in">console</span>.log(Auntie);
+
+<span class="hljs-built_in">console</span>.log(people);</code></pre></p>
+<p>當然，這樣的用法絕對沒有問題，透過此方法可以將值一一陳列出來，不過當這些數值是 “具有關聯性” 時，一般的 log 就無法比較兩者之間的關係。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FE2E0CFC5-492E-4ADD-AEFB-3269B58D445A.png?alt=media&amp;token=ce87d1a9-6c38-4ee0-9753-66e749d71672" alt=""></p>
+<p><code>console.table()</code> 針對物件之間有相同的屬性名稱時，就能夠輕易的比較相同屬性之間的關係。<br><pre><code class="hljs js"><span class="hljs-built_in">console</span>.table([Ming, Jay, Auntie]);
+<span class="hljs-built_in">console</span>.table(people);</code></pre><br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3FCC79BD-FB26-44C2-8779-4B90727D4A9A.png?alt=media&amp;token=11654b5b-927f-4511-ab6a-a3320dd8cd43" alt=""></p>
+<p>除此之外，表格上方的標頭還可以點選作為排序使用，如果拿到一個 JSON 想比對其中的值，還要轉貼到 Excel 或是 <code>sort()</code> 語法安排，不如直接改用 <code>table()</code> 進行比較吧。</p>
+
+<video width="100%" controls autoplay loop>
+  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FSep-14-2021%2014-34-38.mp4?alt=media&token=93bc70be-ace0-4e4b-9e47-bb7f44d58845" type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+<h2 id="console-group-：群組化大量的-log-資訊"><a href="#console-group-：群組化大量的-log-資訊" class="headerlink" title="console.group()：群組化大量的 log 資訊"></a>console.group()：群組化大量的 log 資訊</h2><p>使用 <code>log()</code> 觀看迴圈值是合情合理的，不過當陣列的長度有上百筆時，Console 介面中的資料還真會滾到令人厭世。</p>
+<pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; people.length; index++) &#123;
+  <span class="hljs-keyword">const</span> element = people[index];
+  <span class="hljs-built_in">console</span>.log(element);
+&#125;</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5F812183-317D-4FB4-B26A-1E7963B1AD64.png?alt=media&amp;token=630dd86e-ad87-46a3-bd2e-9399434bc974" alt="在迴圈中使用 `console.log()` 會一一呈現資料，數量一多看起來就會顯的很吃力"></p>
+<blockquote>
+<p>在迴圈中使用 <code>console.log()</code> 會一一呈現資料，數量一多看起來就會顯的很吃力</p>
+</blockquote>
+<p>使用 <code>console.group()</code>、<code>console.groupEnd()</code> 設置群組的起訖，在 Console 的介面中就能方便的收合群組內容。</p>
+<pre><code class="hljs js"><span class="hljs-built_in">console</span>.group(<span class="hljs-string">&#x27;迴圈群組&#x27;</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; people.length; index++) &#123;
+  <span class="hljs-keyword">const</span> element = people[index];
+  <span class="hljs-built_in">console</span>.log(element);
+&#125;
+<span class="hljs-built_in">console</span>.groupEnd();</code></pre>
+<p><code>console.group(/* 群組名稱 */)</code>可以傳入 “群組名稱” 做為參數，作為在 Console 介面中辨識群組的顯示名稱，在介面中的群組名稱也會以粗體名稱，並且可以點擊箭頭符號收合群組內容。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3D7FBA6B-EA9E-480A-A8FF-4837FC1AAA23.png?alt=media&amp;token=1ea045e1-f1a4-4b96-9894-fe1f7da5fc09" alt=""></p>
+<h2 id="console-time-：開發者最愛斤斤計較那-1ms-的效能了"><a href="#console-time-：開發者最愛斤斤計較那-1ms-的效能了" class="headerlink" title="console.time()：開發者最愛斤斤計較那 1ms 的效能了"></a>console.time()：開發者最愛斤斤計較那 1ms 的效能了</h2><p>每當寫出神邏輯的時候，都會擔心電腦效能跟不上自己的思維，這時候就可以使用 <code>time()</code> 追蹤片段程式碼所處理的時間差，得知自己是不是該換台電腦解決問題。</p>
+<pre><code class="hljs js"><span class="hljs-string">&#x27;🤩 時間追蹤&#x27;</span>;
+<span class="hljs-built_in">console</span>.time(<span class="hljs-string">&#x27;迴圈處理時間&#x27;</span>);
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> index = <span class="hljs-number">0</span>; index &lt; people.length; index++) &#123;
+  <span class="hljs-keyword">const</span> element = people[index];
+  <span class="hljs-built_in">console</span>.log(element);
+&#125;
+<span class="hljs-built_in">console</span>.timeEnd(<span class="hljs-string">&#x27;迴圈處理時間&#x27;</span>);</code></pre>
+<p>在起訖中分別加入 <code>time()</code> 以及 <code>timeEnd()</code>，執行程式碼後就可以獲得處理的結果。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD653C44C-A9D8-4C39-AF75-CE065F407C69.png?alt=media&amp;token=f09c1870-465c-497f-af8f-c8f5f70aebeb" alt=""></p>
+<h2 id="console-dir-：以物件的形式呈現資料"><a href="#console-dir-：以物件的形式呈現資料" class="headerlink" title="console.dir()：以物件的形式呈現資料"></a>console.dir()：以物件的形式呈現資料</h2><pre><code class="hljs js"><span class="hljs-comment">// HTML &lt;p&gt;推薦的 Console 語法&lt;/p&gt;</span>
+<span class="hljs-keyword">const</span> p = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;p&#x27;</span>);
+<span class="hljs-built_in">console</span>.log(p);</code></pre>
+<p>當使用 <code>console.log()</code> 查看 DOM 元素，並想了解其中可用的方法或屬性時…，它可能會出現如下帶點失望的標籤，並且心裡默罵：</p>
+<ul>
+<li>要這個幹嘛啦</li>
+<li>要知道的是物件屬性、屬性！</li>
+</ul>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCCE9EDA4-971D-4271-8B45-11FEC5ED0755.png?alt=media&amp;token=cf5f787f-42b9-493a-8b50-c20ba76e0551" alt=""></p>
+<p>這時候需要的是 <code>console.dir()</code>，你會發現另一個新世界，原本的 DOM 元素被改為物件的形式呈現，你可以輕鬆展開此物件，並檢視裡面有哪些可用屬性。</p>
+<pre><code class="hljs js"><span class="hljs-keyword">const</span> p = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&#x27;p&#x27;</span>);
+<span class="hljs-built_in">console</span>.dir(p);</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FA11E8437-85F7-49EB-8F96-04BF727A4308.png?alt=media&amp;token=61e21623-8f2b-447a-b872-b1d9125d66dd" alt=""></p>
+<blockquote>
+<p>展開的 P 元素，包含其中所有的屬性（這在操作 DOM 時極為好用）</p>
+</blockquote>
+<h2 id="console-error"><a href="#console-error" class="headerlink" title="console.error()"></a>console.error()</h2><p>寫程式有錯誤是難免的，但是如果是錯誤，卻沒有明確的提示導致沒有被發現問題，就失去提示的意義了，如果想讓 Console 的內容更加醒目，可以使用 <code>console.error()</code> 使訊息在 Console 介面中以錯誤的形式呈現。</p>
+<pre><code class="hljs js"><span class="hljs-built_in">console</span>.error(<span class="hljs-string">`<span class="hljs-subst">$&#123;Ming.name&#125;</span> 你完蛋了`</span>);</code></pre>
+<p>當運用在一般文字訊息上時，也可以展開訊息並說明錯誤來源自哪一段程式碼。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD738C899-B567-4F8C-9A12-18CFA6E59056.png?alt=media&amp;token=5b465333-ffbe-442d-9759-9fc3d12fedef" alt=""></p>
+<p>在 AJAX 的未確認狀態中，也會使用 <code>console.error</code> 來呈現錯誤的回饋訊息，以下範例刻意將 API 路徑調整成錯誤的，並透過 <code>console.error()</code> 來將錯誤的資訊呈現在 Console 介面中</p>
+<pre><code class="hljs js"><span class="hljs-string">&#x27;🤩 Error&#x27;</span>;
+axios.get(<span class="hljs-string">&#x27;https://randomuser.me/apis&#x27;</span>)
+  .then(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> <span class="hljs-built_in">console</span>.log(res))
+  .catch(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;
+    <span class="hljs-built_in">console</span>.error(<span class="hljs-string">&#x27;待誌大條啦: &#x27;</span>, error.response)
+  &#125;)</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FFFA221BB-01DB-429D-AC26-9C8477D1610C.png?alt=media&amp;token=64a50e79-5606-48c8-82db-44a62a39c35c" alt=""></p>
+<h2 id="console-warn"><a href="#console-warn" class="headerlink" title="console.warn()"></a>console.warn()</h2><p>錯誤太突兀了嗎？如果是自行開發的函式庫，已經透過各種形式避免程式碼出錯，但還是想把有錯誤的訊息給予開發者知道，那麼則可以使用 <code>console.warn()</code>。</p>
+<pre><code class="hljs js"><span class="hljs-string">&#x27;🤩 Warning&#x27;</span>;
+<span class="hljs-comment">/***</span>
+<span class="hljs-comment"> * 超精美函式庫 💖</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;number&#125;</span> </span>num 純數值</span>
+<span class="hljs-comment"> * <span class="hljs-doctag">@param <span class="hljs-type">&#123;string&#125;</span> </span>text 請傳入字串</span>
+<span class="hljs-comment"> */</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">superMagicLibrary</span>(<span class="hljs-params">num, text</span>) </span>&#123;
+  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> num !== <span class="hljs-string">&#x27;number&#x27;</span>) &#123;
+    <span class="hljs-built_in">console</span>.warn(<span class="hljs-string">&#x27;尊重一下好嗎，請傳入純數值&#x27;</span>)
+  &#125;
+&#125;
+superMagicLibrary(<span class="hljs-string">&#x27;字串&#x27;</span>);</code></pre>
+<p>函式庫中大多會避免已知的錯誤，如果要友善的給予回饋，可以使用 <code>warn()</code> 代替 <code>error()</code> 提醒開發者更好的做法 :D。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEB1B67D5-40A3-4B1B-BFF2-1BE505EEACC2.png?alt=media&amp;token=984dbd55-0eaa-4645-aaed-73841e4fb4d3" alt=""></p>
+<h2 id="console-clear"><a href="#console-clear" class="headerlink" title="console.clear()"></a>console.clear()</h2><p>如果覺得 Console 介面已經充滿了許多不必要的資訊，想要專注於當前開發的程式碼，那麼可以加入 <code>console.clear()</code>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FABBCB95A-552B-43E7-8B7E-6EB30103C24C.png?alt=media&amp;token=c6f81fec-ab28-4c2c-b1bf-ac4bf3aae174" alt=""></p>
+<blockquote>
+<p>畫面中會出現 Console was cleared 的字眼</p>
+</blockquote>
+<p>此語法亦可在 Console 介面中直接輸入，會直接清除當下的所有資訊內容。</p>
+
+<video width="100%" controls autoplay loop>
+  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FSep-14-2021%2015-19-27.mp4?alt=media&token=596fce33-240c-4064-87ac-0ddcf468c723 " type="video/mp4">
+Your browser does not support the video tag.
+</video>
+
+<p>不過請慎用此方法，如果隨意插入 <code>console.clear()</code> 在不同的檔案中，不知情的夥伴一定會在開發中卡很久，可能發生的情境有…：</p>
+<ul>
+<li>奇怪，我寫的 Code 怎麼都沒顯示在 Console</li>
+<li>編譯器壞了嗎？怎麼好像沒有運作</li>
+<li>我的 Chrome 怪怪的</li>
+</ul>
+<p>還有哪些方法你也常用，但沒有介紹到的呢？歡迎在底下留言區留言喔 :D</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[CSS 選取器(基本篇) - CSS Selector]]></title>
       <url>https://wcc723.github.io/development/2021/09/11/css-selector/</url>
       <content type="html"><![CDATA[<p>一個開發者對於畫面的掌控度高不高，完全都可以取決於「CSS 選取器」掌握度，無論是基本的 CSS 到 jQuery 甚至是原生的 JavaScript 都是使用 CSS 選取器。另外如果要寫道後端測試、爬蟲，也是持續使用這看似基礎的觀念，本篇將會循序漸進介紹各種選取器，讓大家從基礎開始學習此知識。</p>
