@@ -1,0 +1,1632 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>CSS 變數必學知識 - 宣告、繼承及 Bootstrap 中的運用技巧 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="css" />
+    
+    
+
+    <meta name="description" content="在 Bootstrap 5 以後，大量導入 “CSS Variable” 的技巧，透過變數可以大幅增加 CSS 的可運用性，讓同一段程式碼透過修改變數的形式，大幅增加 CSS 的可用性，本篇將介紹 CSS 基本運用方式，以及在 Bootstrap 5 中如何運用此技巧來豐富性其用途。 CSS 變數基礎運用方式使用 CSS 變數時，一定會先定義其值，預設的情況下會在最外層的元素中定義變數以及值。 以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 變數必學知識 - 宣告、繼承及 Bootstrap 中的運用技巧">
+<meta property="og:url" content="https://wcc723.github.io/development/2021/09/22/css-variables-bootstrap/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="在 Bootstrap 5 以後，大量導入 “CSS Variable” 的技巧，透過變數可以大幅增加 CSS 的可運用性，讓同一段程式碼透過修改變數的形式，大幅增加 CSS 的可用性，本篇將介紹 CSS 基本運用方式，以及在 Bootstrap 5 中如何運用此技巧來豐富性其用途。 CSS 變數基礎運用方式使用 CSS 變數時，一定會先定義其值，預設的情況下會在最外層的元素中定義變數以及值。 以">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fcss_variables.png?alt=media&token=c73a7d92-ec73-4c63-a9e1-143bb06b7c41">
+<meta property="article:published_time" content="2021-09-21T16:00:00.000Z">
+<meta property="article:modified_time" content="2021-09-23T03:21:20.779Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fcss_variables.png?alt=media&token=c73a7d92-ec73-4c63-a9e1-143bb06b7c41">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" id="style-switch" href="/css/all.css">
+    
+
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
+    
+    
+        
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-43235390-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-43235390-2');
+</script>
+<script>
+  (() => {
+    let gtagViewContentSent = false;
+
+    setTimeout(() => {
+      const endViewDom = document.querySelector('#endView');
+      if (endViewDom) {
+        const endViewDomOffsetTop = endViewDom.offsetTop;
+        window.addEventListener('scroll', () => {
+          const windowHeight = window.innerHeight;
+          const windowY = window.screenY;
+          if ((windowHeight + windowY) > endViewDomOffsetTop && !gtagViewContentSent) {
+            gtagViewContentSent = true;
+            gtag('event', 'view_item');
+          }
+        });
+      }
+    }, 500);
+  })();
+</script>
+
+    
+    
+
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="bg-light">
+  <div>
+    <header>
+  <nav class="navbar navbar-expand-lg navbar-sticky bg-white shadow-sm">
+    <div class="container">
+      <!-- Logo START -->
+      <a class="navbar-brand" href="/">
+        <img
+          class="navbar-brand-item light-mode-item"
+          src="/images/blog_logo.svg"
+          alt="卡斯伯的 Blog"
+        />
+        <img
+          class="navbar-brand-item dark-mode-item"
+          src="/images/blog_logo_w.svg"
+          alt="卡斯伯的 Blog"
+        />
+      </a>
+      <!-- Logo END -->
+
+      <!-- Responsive navbar toggler -->
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="text-body h6 d-none d-sm-inline-block">Menu</span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav navbar-nav-scroll ms-auto">
+          <li class="nav-item">
+            <a href="/about/hexschool-traning.html" class="nav-link position-relative">
+              作品直播班(學員心得)
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/css"
+              >CSS</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/javascript/"
+              >JS</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives"
+              >文章列表</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+          <!-- Nav item 1 Demos -->
+        </ul>
+        <!-- <div class="my-3">
+          <div class="modeswitch" id="darkModeSwitch">
+            <div class="switch"></div>
+          </div>
+        </div> -->
+        <nav class="mx-3"><div id="search-form-wrap">
+
+    <form class="search-form input-group" style="width: 120px">
+        <input type="text" class="ins-search-input search-form-input form-control" placeholder="搜尋知識" />
+        <!-- <button type="submit" class="search-form-submit btn btn-outline-secondary">
+            <i class="bi bi-search fs-4"> </i>
+        </button> -->
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="bi bi-x"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></nav>
+        
+      </div>
+      <div class="nav-item">
+        <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasMenu" role="button" aria-controls="offcanvasMenu">
+          <i class="fs-5 bi bi-list"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+  <div class="offcanvas-header">
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column pt-0">
+    <div>
+      <img
+        class="light-mode-item my-3"
+        src="/images/blog_logo.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <img
+        class="dark-mode-item my-3"
+        src="/images/blog_logo_w.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <!-- Nav START -->
+      <ul class="nav d-block flex-column my-4">
+        
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/tags/css"
+              >CSS</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/tags/javascript/"
+              >JS</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/archives"
+              >文章列表</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        
+        
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000">
+  <div class="text-center">
+    <img
+      src="/images/2021/avatar.png"
+      height="115"
+      width="115"
+      class="img-fluid mb-2"
+      alt=""
+    />
+    <p>設計師轉職前端工程師，擅長將複雜觀念用圖形化方式呈現</p>
+    <a
+      href="https://www.facebook.com/WccCasper"
+      target="_blank"
+      class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-facebook"></i> 追蹤卡斯伯</a
+    >
+    <a href="#comments" class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-chat-text"></i
+    ></a>
+  </div>
+  <hr>
+  <div class="toc-component">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#CSS-%E8%AE%8A%E6%95%B8%E5%9F%BA%E7%A4%8E%E9%81%8B%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="toc-text">CSS 變數基礎運用方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AE%8A%E6%95%B8%E7%9A%84%E7%B9%BC%E6%89%BF%E7%89%B9%E6%80%A7"><span class="toc-text">變數的繼承特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Bootstrap-5-%E7%9A%84%E8%AE%8A%E6%95%B8%E9%81%8B%E7%94%A8%E6%A6%82%E5%BF%B5"><span class="toc-text">Bootstrap 5 的變數運用概念</span></a></li></ol>
+  </div>
+  
+    <hr />
+    <div class="d-flex justify-content-center">
+      <div
+        class="fb-like"
+        data-layout="box_count"
+        data-action="like"
+        data-size="large"
+        data-share="true"
+      ></div>
+    </div>
+    <div class="text-center mt-2 text-black-50">
+      按讚，就是最大的支持
+    </div>
+    
+</div>
+
+          </div>
+          <div class="col-lg-7 bg-white shadow-lg rounded-3 rounded-top">
+            <section id="main">
+              <p class="mt-2 mb-0 small">卡斯伯提供的教學資源：</p>
+<div class="row gx-2">
+    <a class="col-4 d-block" href="https://hex.school/5cYlz" target="_blank">
+        <img no-lazy src="/images/2021/vue3_實戰影音.jpg" style="max-width: 100%" alt="">
+    </a>
+    <a class="col-4 d-block" href="/about/hexschool-traning.html">
+        <img no-lazy src="/images/2021/vue_作品實戰班.jpg" style="max-width: 100%" alt="">
+    </a>
+    <a class="col-4 d-block" target="_blank" rel="noopener" href="https://hex.school/7ZLrm">
+        <img no-lazy src="/images/2021/Bootstrap5_繁體中文文件.jpg" style="max-width: 100%" alt="">
+    </a>
+</div>
+<div class="main-body-header">
+    <h2 class="my-3">
+    
+    
+    </h2>
+</div>
+              <div id="sticky-space"></div>
+              
+<div class="bg-white rounded my-3 shadow
+  alert alert-dismissible fade show"
+  id="calendar_notification_small-block">
+  <div class="me-3 d-flex align-items-center">
+    <span class="badge bg-primary p-2 me-3">近期活動通知：</span>
+    <a href="#"  class="d-inline-block text-decoration-underline text-primary" id="calendar_notification_small-content"
+    data-bs-toggle="modal" data-bs-target="#calendar_notify-sm-modal">
+    </a>
+  </div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="modal fade" id="calendar_notify-sm-modal" tabindex="-1" aria-labelledby="#calendar_notify-sm-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="calendar_notify-sm-modal-label">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="calendar_notify-sm-modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary d-block w-100" data-bs-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+#calendar_notification_small-block {
+  display: none;
+}
+</style>
+
+<script>
+(() => {
+  const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
+  const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
+  const query = '卡斯伯';
+
+  const today = new Date();
+  const fullYear = today.getFullYear();
+  const month = today.getMonth();
+  const date = today.getDate();
+  const hours = today.getHours();
+  const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
+  const timeMax = new Date(fullYear, month, date + 7, hours).toISOString();
+
+  const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
+
+  const calendarNotificationBlock = document.querySelector('#calendar_notification_small-block');
+
+  $.ajax({
+    url: api,
+    success: function(data) {
+      if (Array.isArray(data.items) && data.items.length) {
+        const item = data.items[0];
+        const context = `<div class="d-inline-block">
+          <strong class="me-3">${item.summary}</strong>
+          <br class="d-md-none" />活動時間：${new Date(item.start.dateTime).toLocaleString()}
+        </div>`;
+        const calendarContentDom = document.querySelector('#calendar_notification_small-content');
+                
+        calendarNotificationBlock.style.display = 'block';
+        calendarContentDom.innerHTML = context;
+
+        document.querySelector('#calendar_notify-sm-modal-label').textContent = item.summary;
+        document.querySelector('#calendar_notify-sm-modal-body').innerHTML = item.description;
+
+      }
+    }
+  });
+})();
+</script>
+              <div class="main-body-content">
+                <article id="post-css-variables-bootstrap" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner" data-bs-offset="0">
+        
+            <div class="article-subtitle">
+                
+    <ul class="d-inline-block list-unstyled" itemprop="keywords"><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/css/" rel="tag">css</a></li></ul>
+
+                
+<span class="ms-2 small"><time datetime="2021-09-21T16:00:00.000Z" itemprop="datePublished">2021-09-22</time></span>
+            </div>
+        
+        
+            <header class="article-header">
+                 
+<h1 class="display-5" itemprop="name">CSS 變數必學知識 - 宣告、繼承及 Bootstrap 中的運用技巧</h1>
+ 
+
+            </header>
+        
+        <div id="endView"></div><!-- google analytics -->
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+                </div>
+            
+            <div class="need-gallery">
+                <p>在 Bootstrap 5 以後，大量導入 “CSS Variable” 的技巧，透過變數可以大幅增加 CSS 的可運用性，讓同一段程式碼透過修改變數的形式，大幅增加 CSS 的可用性，本篇將介紹 CSS 基本運用方式，以及在 Bootstrap 5 中如何運用此技巧來豐富性其用途。</p>
+<h2 id="CSS-變數基礎運用方式"><a href="#CSS-變數基礎運用方式" class="headerlink" title="CSS 變數基礎運用方式"></a>CSS 變數基礎運用方式</h2><p>使用 CSS 變數時，一定會先定義其值，預設的情況下會在最外層的元素中定義變數以及值。</p>
+<p>以下範例來說，就在根元素 <code>:root</code> 定義了 <code>--casper-color</code> 的變數，而後方的 <code>#00cc99</code> 將是他的值。</p>
+<pre><code class="hljs css"><span class="hljs-selector-pseudo">:root</span> &#123;
+  --casper-<span class="hljs-attribute">color</span>: <span class="hljs-number">#00cc99</span>;
+&#125;</code></pre>
+<p>在此也簡單說明定義變數的規則：</p>
+<ul>
+<li>可以定義在任何元素上，而 <code>:root</code> 表示的是根元素</li>
+<li>定義的變數會使用 <code>--</code> 在最前方，其後的名稱是自定義的</li>
+<li><code>:</code> 後方則是變數值，值沒有特別的限制，大多都是與 CSS 值一致</li>
+</ul>
+<p>當變數定義完以後，就可以呼叫此變數來運用它，以下範例就是直接取用剛剛所定義的色彩。<br><pre><code class="hljs css"><span class="hljs-selector-class">.box</span> &#123;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">var</span>(--casper-color);
+&#125;</code></pre></p>
+<p>取值時的規則如下：</p>
+<ul>
+<li>會使用 <code>var</code> 在變數的最前方</li>
+<li>使用 <code>()</code> 包覆住變數</li>
+<li>接下來就會套用變數所定義的值</li>
+</ul>
+<p>接下來運行的結果如下，<code>.box</code> 元素套用了 <code>:root</code> 所定義的變數。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F98EC12D4-E550-413C-B62C-263469EC9B60.png?alt=media&amp;token=3eaa61c2-be51-4129-83b4-e2cd6427293f" alt=""></p>
+<p>接下來看看實際的範例，最外層定義了 <code>--casper-color</code> 變數，然後內層的 <code>.box</code> 取用其值套用在背景色上。</p>
+
+<style>
+:root {
+  --casper-color: #00cc99;
+}
+.box {
+  height: 100px;
+  width: 100px;
+  background-color: var(--casper-color);
+}
+</style>
+<div class="demo">
+  <div class="box"></div>
+</div> 
+
+<h2 id="變數的繼承特性"><a href="#變數的繼承特性" class="headerlink" title="變數的繼承特性"></a>變數的繼承特性</h2><p>相對於 JavaScript 來說，CSS 運行時並不會改變其值，而既然它稱為 “變數” 但值不會改變該如何運用呢？</p>
+<p>而 CSS 變數具有一個 “繼承特性”，換個簡單的說法就是它具有 “作用域的特性”。</p>
+<p>以剛剛上述的程式碼來說，最外層定義了 <code>--casper-color</code> 變數，那麼內層所有元素都可以取用此變數的值。但如果在其 <code>:root</code> 的內層補上其它的同名變數，則會使用內層的變數值。</p>
+<p>示意圖：內層取值時，會直接繼承最接近層級所定義的變數，當沒有任何可取用的值時，則使用根元素所定義的變數。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FBE4403D6-D2A3-4D5D-AF5B-6E05E8336A1F.png?alt=media&amp;token=a333a090-f9a5-4df8-b7f0-1deeddd57ee1" alt=""></p>
+<p>案例：如果在中間補一層 <code>.local</code>，那麼在其內部取值時，則會取用到 <code>.local</code> 的變數，而不是 <code>:root</code>。<br><pre><code class="hljs css"><span class="hljs-selector-pseudo">:root</span> &#123;
+  --casper-<span class="hljs-attribute">color</span>: <span class="hljs-number">#00cc99</span>;
+&#125;
+
+<span class="hljs-selector-class">.local</span> &#123;
+  --casper-<span class="hljs-attribute">color</span>: orange;
+&#125;
+
+<span class="hljs-selector-class">.box</span> &#123;
+  <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">var</span>(--casper-color);
+&#125;</code></pre></p>
+<p>運行結果：以下範例只有新增 <code>.local</code> 的變數，其餘程式碼與上段一樣，但在此的 <code>.box</code> 已被套用成橘色。</p>
+
+<style>
+.local {
+  --casper-color: orange;
+}
+</style>
+<div class="demo">
+  <div class="local">
+    <div class="box"></div>
+  </div>
+</div>
+
+<p>繼承規則與 CSS 權重概念一致，基本原則如下：</p>
+<ul>
+<li>內層優於外層</li>
+<li>當 Class 繼承變數為同層時，以權重高的為主</li>
+</ul>
+<h4 id="使用不同的-class-定義不同的區域變數"><a href="#使用不同的-class-定義不同的區域變數" class="headerlink" title="使用不同的 class 定義不同的區域變數"></a>使用不同的 class 定義不同的區域變數</h4><p>透過區域變數的概念，取值的程式碼都可以不需要做調整，只要調整區域中的變數就可以不斷的改變內層的呈現。</p>
+<p>以此範例來說，<code>.box</code> 的 CSS 與一開始所定義的無異，但卻能產生出多種變化的色彩。<br><pre><code class="hljs css"><span class="hljs-selector-class">.local-purple</span> &#123;
+  --casper-<span class="hljs-attribute">color</span>: purple;
+&#125;
+<span class="hljs-selector-class">.local-cyan</span> &#123;
+  --casper-<span class="hljs-attribute">color</span>: cyan;
+&#125;</code></pre></p>
+<h2 id="Bootstrap-5-的變數運用概念"><a href="#Bootstrap-5-的變數運用概念" class="headerlink" title="Bootstrap 5 的變數運用概念"></a>Bootstrap 5 的變數運用概念</h2><p>在 Bootstrap 5 中的 <code>:root</code> 就有定義了許多可用的情境色彩（<a target="_blank" rel="noopener" href="https://bootstrap5.hexschool.com/docs/5.0/customize/css-variables/">文件連結</a>），當我們利用 Bootstrap 時，需要撰寫額外的元件時就可以直接取用這些變數的色彩。</p>
+<p>除此之外，許多的元件、功能性模組都有額外定義的變數，例如格線系統中的 <code>.row</code> 就定義了 <code>--bs-gutter-x</code> 作為格線系統中的間隔值。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2BC0F6B4-0DEE-46C2-8BAB-12B21A305489.png?alt=media&amp;token=a84b4a50-c04f-40db-accc-ad012a9bcb1c" alt=""></p>
+<p>當要調整格線之間的間隔時，可以在外層 <code>.row</code> 加上 <code>gx-1</code> ，而此 class 僅只有調整 <code>--bs-gutter-x</code> 的變數值，並沒有其它的樣式在內。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F22332055-E18C-4090-8253-38BAD360F36A.png?alt=media&amp;token=85729206-6125-4e9e-b673-8f74de6892d3" alt=""></p>
+<p>雖然沒有賦予其它的樣式，但是在內層的 <code>col-*</code> 就會繼承新覆蓋的值，透過這樣的方式，僅需要短短 3 行變數調整程式碼，就可以產生出不同間距的格線系統。</p>
+
+<div class="demo">
+  <div class="row">
+    <div class="col-6">
+      <div class="box w-auto"></div>
+    </div>
+    <div class="col-6">
+      <div class="box w-auto"></div>
+    </div>
+  </div>
+  <hr class="w-100">
+  <div class="row gx-1">
+    <div class="col-6">
+      <div class="box w-auto"></div>
+    </div>
+    <div class="col-6">
+      <div class="box w-auto"></div>
+    </div>
+  </div>
+</div> 
+
+<p>原始碼如下：</p>
+<pre><code class="hljs plaintext">&lt;div class=&quot;row&quot;&gt;
+  &lt;div class=&quot;col-6&quot;&gt;
+    &lt;div class=&quot;box w-auto&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col-6&quot;&gt;
+    &lt;div class=&quot;box w-auto&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&quot;row gx-1&quot;&gt;
+  &lt;div class=&quot;col-6&quot;&gt;
+    &lt;div class=&quot;box w-auto&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;col-6&quot;&gt;
+    &lt;div class=&quot;box w-auto&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+<h4 id="其它範例"><a href="#其它範例" class="headerlink" title="其它範例"></a>其它範例</h4><p>除了格線系統以外，Bootstrap 亦將變數用在許多地方，在 Helpers 內的 Ratios(比例) 中，也是透過變數的技巧來調整不同的比例。</p>
+<p>其中的 <code>ratio-16x9</code> 就是修改 <code>--bs-aspect-ratio</code>，其內層的元素套用此比例完成比例挑整樣式。 </p>
+ 
+<div class="ratio ratio-16x9">
+  <iframe src="https://www.youtube.com/embed/XAdIuuU_90g?rel=0" title="YouTube video" allowfullscreen></iframe>
+</div>
+
+<p>原始碼如下：</p>
+<pre><code class="hljs plaintext">&lt;div class=&quot;ratio ratio-16x9&quot;&gt;
+  &lt;iframe src=&quot;https://www.youtube.com/embed/XAdIuuU_90g?rel=0&quot; title=&quot;YouTube video&quot; allowfullscreen&gt;&lt;/iframe&gt;
+&lt;/div&gt;</code></pre>
+<p>除此之外，還可以直接使寫入其它變數值於 <code>style</code> 內，讓 CSS 的變數可用性大幅上升，以下範例來說就將 <code>--bs-aspect-ratio</code> 改為 <code>100%</code>，就可以將內嵌的影片比例給改為 1:1。</p>
+ 
+<div class="ratio" style="--bs-aspect-ratio: 100%;">
+  <iframe src="https://www.youtube.com/embed/XAdIuuU_90g?rel=0" title="YouTube video" allowfullscreen></iframe>
+</div>
+
+<p>套用方式，將變數改為 100%。<br><pre><code class="hljs plaintext">style=&quot;--bs-aspect-ratio: 100%;&quot;</code></pre></p>
+<p>當然，變數實際運用不僅如此，如果是搭配 JavaScript 更能做出許多變化，而除了本篇所介紹的方法外，你還有看過哪些方法呢？</p>
+
+            </div>
+            
+                <div>
+  <script type="text/javascript">
+    document.write(
+      "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/agito723/button?referrer=" +
+      encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+  </script>
+<div>
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+            <!-- <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div> -->
+            
+                <div class="my-3">
+                    <ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8769565283"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+                </div>
+            
+            
+
+<style>
+.article-entry .article-nav {
+  display: flex;
+  background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav .col-12 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+</style>
+<div class="row g-0 mt-5 border-top border-bottom article-nav">
+  
+    <div class="col-12 py-3 py-md-4">
+      <div class="d-flex align-items-center position-relative">
+        <!-- Icon -->
+        <div class="bg-primary py-1">
+          <i class="bi bi-chevron-compact-left fs-3 text-white px-1 rtl-flip"></i>
+        </div>
+        <!-- Title -->
+        <div class="ms-3">
+          <h5 class="m-0">
+            <a href="/development/2021/09/17/resume-skills/" class="stretched-link btn-link text-reset"
+              >上一篇：履歷避雷技巧 - 技能描述篇</a
+            >
+          </h5>
+        </div>
+      </div>
+    </div>
+  
+  
+</div>
+
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+        </footer>
+        
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2021/09/22/css-variables-bootstrap/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+    </div>
+</article>
+
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000;">
+              <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+            </div>
+          </div>
+          <div class="col-12">
+            
+<div class="row mt-5">
+  <div class="col-lg-3 mb-3">
+    <h4>相似文章</h4>
+    <div class="list-group bg-white">
+      
+        
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+          <a href="/development/2019/11/23/ten-mins-learn-markdown/" class="list-group-item list-group-item-action">
+            <h5>十分鐘快速掌握 Markdown</h5>
+            <p class="small mb-0">
+              Markdown 是目前非常普遍用來撰寫文檔的語言，一開始的目標就是使用「易讀易寫的純文字格式編寫文件」，此初衷讓使用者可以專注在文字的本身，而不需要透過其它工具來切換格式。以 Word 撰寫文檔來說，就必須透過上方的工具列來切換標題、列表、粗體、斜體等等；而 Markdown 並沒有這樣的工具列，...
+            </p>
+          </a>
+        
+      
+          
+          <a href="/development/2019/12/01/vscode-chinese/" class="list-group-item list-group-item-action">
+            <h5>一分鐘切換成中文版 VSCode（完整圖文版）</h5>
+            <p class="small mb-0">
+              雖然開發者都具有一定的英文閱讀能力，但如果在不熟悉的情況下，就比較難以快速上手一個新工具。如果要快速掌握一個完整的工具或技術，最好的方式還是先切換成熟悉的語言。
+而 VSCode 雖然預設並無法直接切換語系，但官方有提供各國的語言套件，讓開發者可以自行選用。
+切換成中文版如果你對於 VSCode 有...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+          <a href="/development/2020/01/04/image-common-mistakes/" class="list-group-item list-group-item-action">
+            <h5>前端開發者，圖片常犯的五個粗心錯誤</h5>
+            <p class="small mb-0">
+              前端開發者是透過程式碼將資訊呈現成畫面，因此畫面的好壞也多少影響品質，在觀看許多履歷或作業的過程中，會發現許多相似的錯誤，而這些錯誤都是有跡可循，並且可以避免的；本篇先以常見的圖片問題與大家分享，看是否你也犯了這些錯誤呢？
+一、圖片變形新手錯誤率：⭐⭐⭐⭐令人感受的粗心度：👎👎👎👎
+圖片變形...
+            </p>
+          </a>
+        
+      
+          
+          <a href="/development/2020/02/09/jest-async/" class="list-group-item list-group-item-action">
+            <h5>單元測試 - 非同步及 Ajax</h5>
+            <p class="small mb-0">
+              本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest
+JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 Jav...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+    </div>
+  </div>
+
+  <div class="col-lg-3 mb-3">
+    
+<div class="widget-wrap widget-list mb-3">
+    <h4 class="mb-3">粉絲專頁</h4>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+  </div>
+
+  <div class="col-lg-4 d-none d-lg-block mb-3">
+    
+<div class="mb-3">
+  <h4 class="mb-3">標籤雲</h4>
+  <div class="widget tagcloud" style="line-height: 1;"><a href="/tags/Bootstrap/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">Sass</a> <a href="/tags/async/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">async</a> <a href="/tags/await/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">await</a> <a href="/tags/beginner/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">beginner</a> <a href="/tags/bootstrap/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">bootstrap</a> <a href="/tags/border/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">border</a> <a href="/tags/business/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">business</a> <a href="/tags/compass/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">compass</a> <a href="/tags/courses/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">courses</a> <a href="/tags/css/" style="font-size: 24px;" class="p-1 m-1 d-inline-block -10">css</a> <a href="/tags/d3/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">d3</a> <a href="/tags/d3js/" style="font-size: 20.47px;" class="p-1 m-1 d-inline-block -6">d3js</a> <a href="/tags/design/" style="font-size: 21.06px;" class="p-1 m-1 d-inline-block -7">design</a> <a href="/tags/develop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">develop</a> <a href="/tags/dns/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">dns</a> <a href="/tags/emmet/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">emmet</a> <a href="/tags/es6/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">es6</a> <a href="/tags/fire-app/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">fire.app</a> <a href="/tags/git/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">git</a> <a href="/tags/github/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">github</a> <a href="/tags/grid/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">grid</a> <a href="/tags/gulp/" style="font-size: 19.88px;" class="p-1 m-1 d-inline-block -6">gulp</a> <a href="/tags/html/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">html</a> <a href="/tags/icon-fonts/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icon fonts</a> <a href="/tags/icons/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icons</a> <a href="/tags/intro/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">intro</a> <a href="/tags/ironman/" style="font-size: 23.41px;" class="p-1 m-1 d-inline-block -9">ironman</a> <a href="/tags/javascript/" style="font-size: 22.82px;" class="p-1 m-1 d-inline-block -9">javascript</a> <a href="/tags/jekyll/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">jekyll</a> <a href="/tags/jest/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">jest</a> <a href="/tags/jquery/" style="font-size: 18.12px;" class="p-1 m-1 d-inline-block -4">jquery</a> <a href="/tags/js/" style="font-size: 22.24px;" class="p-1 m-1 d-inline-block -8">js</a> <a href="/tags/life/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">life</a> <a href="/tags/mac/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">mac</a> <a href="/tags/markdown/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">markdown</a> <a href="/tags/mobile/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">mobile</a> <a href="/tags/modules/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">modules</a> <a href="/tags/node-js/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">node.js</a> <a href="/tags/nodejs/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">nodejs</a> <a href="/tags/npm/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">npm</a> <a href="/tags/oocss/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">oocss</a> <a href="/tags/project/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">project</a> <a href="/tags/promise/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">promise</a> <a href="/tags/puppeteer/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">puppeteer</a> <a href="/tags/rails/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">rails</a> <a href="/tags/reactjs/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">reactjs</a> <a href="/tags/ruby/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">ruby</a> <a href="/tags/sass/" style="font-size: 21.65px;" class="p-1 m-1 d-inline-block -8">sass</a> <a href="/tags/scss/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">scss</a> <a href="/tags/sketch/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sketch</a> <a href="/tags/ssl/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">ssl</a> <a href="/tags/study/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">study</a> <a href="/tags/sublime-text/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sublime text</a> <a href="/tags/svg/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">svg</a> <a href="/tags/test/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">test</a> <a href="/tags/tool/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">tool</a> <a href="/tags/tools/" style="font-size: 18.71px;" class="p-1 m-1 d-inline-block -5">tools</a> <a href="/tags/vscode/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">vscode</a> <a href="/tags/vue/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">vue</a> <a href="/tags/web/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">web</a> <a href="/tags/workshop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">workshop</a> <a href="/tags/zeplin/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">zeplin</a> <a href="/tags/%E5%B1%A5%E6%AD%B7/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">履歷</a></div>
+</div>
+
+
+  </div>
+
+  <div class="col-lg-2 d-none d-lg-block mb-3">
+    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+  </div>
+
+</div>
+          </div>
+        
+      </div>
+    </div>
+    <footer class="bg-dark py-5 mt-4 text-muted">
+  <div class="container">
+    <div class="container-inner">
+      <a id="back-to-top" href="javascript:;"
+        ><i class="icon fa fa-angle-up"></i
+      ></a>
+      <div class="credit">
+        <h1 class="logo-wrap">
+          <a href="/" class="logo"></a>
+        </h1>
+        <p>
+          &copy; 2021 Wang Casper
+        </p>
+        <p>
+          Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by
+          <a href="https://bootstrap5.hexschool.com/" target="_blank"
+            >Bootstrap</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    
+    
+
+
+
+    
+
+
+<!-- Custom Scripts -->
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script src="/js/bs-layout-functions.js"></script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v11.0&appId=556473851118881&autoLogAppEvents=1" nonce="drs0t5ih"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+  window.onload = () => {
+    $(function() {
+      if(!$('ins[class="adsbygoogle"]').data('adsbygoogleStatus')) {
+        console.log('(╭(°A°`)╮)) 拜託，別擋這個頁面的廣告，不然我一毛錢都沒得賺惹');
+        $('.adsense-message').css('display', 'block');
+      }
+    })
+  }
+  </script>
+
+
+<script>
+  /***
+   * 側欄選單滾動行為
+   */
+  ;(() => {
+    const isFirefox = navigator?.userAgent?.toLowerCase()?.indexOf('firefox') > -1 || '';
+    const h2 = [...document.querySelectorAll('.article-inner h2')];
+    const h3 = [...document.querySelectorAll('.article-inner h3')];
+    let currentHeading = '';
+    let currentHeadingLv3 = '';
+    // 確保至少有 h2 文章列表才運行
+    if (h2.length && !isFirefox) {
+      const tocListLevel3 = [...document.querySelectorAll('.toc-level-2 > ol')]
+      const tocListLink = [...document.querySelectorAll('.toc-level-2 a')]
+      const tocListLinkLv3 = [...document.querySelectorAll('.toc-level-3 a')]
+      tocListLevel3.forEach(item => item.classList.add('d-none'));
+
+      window.addEventListener('scroll', function () {
+        const headings = h2.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse(); // 由後往前找
+        const headingsLevel3 = h3.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse();
+
+        const windowY = window.scrollY;
+        // console.log(headings, windowY);
+        const findTarget = headings.find(item => windowY + 60 > item.offsetTop);
+        const findTargetLv3 = headingsLevel3.find(item => windowY + 60 > item.offsetTop);
+        // console.log(findTarget);
+        if (findTarget && findTarget.id !== currentHeading) {
+          currentHeading = findTarget.id;
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTarget.uri}"]`);
+          tocListLevel3.forEach(item => item.classList.add('d-none'));
+          tocListLink.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          // location.hash = findTarget.uri;
+        }
+        if (findTargetLv3 && findTargetLv3.id !== currentHeadingLv3) {
+          // console.log('findTargetLv3', findTargetLv3);
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTargetLv3.uri}"]`);
+          tocListLinkLv3.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          // location.hash = findTarget.uri;
+        }
+
+
+      });
+    }
+  })();
+</script>
+
+  </div>
+</body>
+</html>
