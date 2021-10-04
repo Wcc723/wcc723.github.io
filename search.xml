@@ -4,6 +4,333 @@
   
     
     <entry>
+      <title><![CDATA[一個工具，帶你完整認識 CSS Animation]]></title>
+      <url>https://wcc723.github.io/development/2021/10/04/css-animation/</url>
+      <content type="html"><![CDATA[<p>網頁上看到許多 CSS Animation 套效想要參考使用，但卻不知道其中的屬性各自代表什麼意思嗎？本篇將介紹 CSS Animation 的各項屬性運用技巧，並提供一個模擬工具，讓大家可以快速的了解每個屬性的意義。</p>
+<h2 id="建立第一個動畫"><a href="#建立第一個動畫" class="headerlink" title="建立第一個動畫"></a>建立第一個動畫</h2><p>在學習每一個屬性之前，首先先動手試試看讓一個元素套用動態的效果，在這之中我們需要先認識兩個語法 <code>animation</code> 及 <code>@keyframe</code>：</p>
+<ul>
+<li><code>@keyframes</code>: 影格，就像是戲中每個角色在 <strong>特定時間點需要呈現的狀態</strong></li>
+<li><code>animation</code>: 動畫，<strong>決定實際演出時的播放方式</strong>，包含速率、正反轉都可以調整</li>
+</ul>
+<h4 id="步驟一：建立-keyframe"><a href="#步驟一：建立-keyframe" class="headerlink" title="步驟一：建立 @keyframe"></a>步驟一：建立 @keyframe</h4><p>CSS Animation 看起來主角應該是 <code>animation</code> 屬性，但實際決定元素是如何運作的是 <code>@keyframes</code>，顧名思義是「影格」的意思，用來決定每個階段元素所套用的樣式。</p>
+<p>而它的結構比較不一樣，看起來會比較像是 <code>@media query</code>，會包含以下的語法：</p>
+<ul>
+<li>使用 <code>@keyframes</code> 定義，後面包含其自訂名稱</li>
+<li>使用 <code>form...to</code>、<code>%</code> 等各種方式定義每個階段的影格變化</li>
+<li>在 <code>&#123; ... &#125;</code> 中定義元素在該影格所套用的樣式</li>
+</ul>
+<p>撰寫結構如下：</p>
+<pre><code class="hljs css"><span class="hljs-comment">/* 使用 `@keyframes` 定義，後面包含其自訂名稱 */</span>
+<span class="hljs-keyword">@keyframes</span> rotate-keyframe &#123;
+  <span class="hljs-comment">/* 定義每個階段的影格變化  */</span>
+  <span class="hljs-selector-tag">from</span> &#123;
+    <span class="hljs-comment">/* 定義元素在該影格所套用的樣式 */</span>
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0deg</span>);
+  &#125;
+  <span class="hljs-selector-tag">to</span> &#123;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">360deg</span>);
+  &#125;
+&#125;</code></pre>
+<p><code>from...to</code> 是只有頭尾的撰寫方式，如果要加入更多階段的影格樣式，可以使用 <code>%</code>，寫法概念如下：</p>
+<pre><code class="hljs css"><span class="hljs-comment">/* 使用 `@keyframes` 定義，後面包含其自訂名稱 */</span>
+<span class="hljs-keyword">@keyframes</span> rotate-keyframe &#123;
+  <span class="hljs-comment">/* 定義每個階段的影格變化  */</span>
+  <span class="hljs-number">0%</span> &#123;
+    <span class="hljs-comment">/* 定義元素在該影格所套用的樣式 */</span>
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0deg</span>);
+  &#125;
+  <span class="hljs-number">50%</span> &#123;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">180deg</span>);
+  &#125;
+  <span class="hljs-number">100%</span> &#123;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">360deg</span>);
+  &#125;
+&#125;</code></pre>
+<h4 id="步驟二：套用-animation-並載入影格"><a href="#步驟二：套用-animation-並載入影格" class="headerlink" title="步驟二：套用 animation 並載入影格"></a>步驟二：套用 animation 並載入影格</h4><p>實作中會建議先準備好 <code>@keyframes</code>，才能確保 animation 是可以運作的，套用時請注意：</p>
+<ul>
+<li><code>animation</code> 需要對應一個 <code>@keyframes</code> 的名稱</li>
+<li>至少要包含兩個屬性才能運作 - <code>animation-name</code>(@keyframes 名稱)、<code>animation-duration</code> (動畫持續時間)</li>
+</ul>
+<pre><code class="hljs css"><span class="hljs-selector-class">.box</span> &#123;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">100px</span>;
+  <span class="hljs-attribute">display</span>: inline-block;
+  <span class="hljs-attribute">background-color</span>: orange;
+&#125;
+<span class="hljs-selector-class">.rotate</span> &#123;
+  <span class="hljs-attribute">animation-name</span>: rotate-keyframe; <span class="hljs-comment">/* 套用的 keyframe */</span>
+  <span class="hljs-attribute">animation-duration</span>: <span class="hljs-number">3s</span>;          <span class="hljs-comment">/* 動畫持續時間 */</span>
+  <span class="hljs-attribute">animation-iteration-count</span>: infinite; <span class="hljs-comment">/* 動畫播放次數 */</span>
+  <span class="hljs-attribute">animation-timing-function</span>: linear;   <span class="hljs-comment">/* 影片加速速率 */</span>
+&#125;
+<span class="hljs-keyword">@keyframes</span> rotate-keyframe &#123;
+  <span class="hljs-selector-tag">from</span> &#123;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">0deg</span>);
+  &#125;
+  <span class="hljs-selector-tag">to</span> &#123;
+    <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(<span class="hljs-number">360deg</span>);
+  &#125;
+&#125;</code></pre>
+<pre><code class="hljs plaintext">&lt;div class=&quot;box rotate&quot;&gt;&lt;/div&gt;</code></pre>
+<p>透過以上的程式碼，就可以做出以下的旋轉方塊效果。</p>
+
+<style>
+.box {
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  background-color: orange;
+}
+.rotate {
+  animation-name: rotate-keyframe;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+.move {
+  animation-name: move-object;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes rotate-keyframe {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes move-object {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+</style>
+<div class="demo">
+  <div class="box rotate"></div>
+</div>
+
+<h2 id="認識每一個-animation-屬性"><a href="#認識每一個-animation-屬性" class="headerlink" title="認識每一個 animation 屬性"></a>認識每一個 animation 屬性</h2><p>相信透過以上流程，就大致知道如何產生一個動畫效果，趁著有點熟悉的狀態下，持續學習完 Animation 的各項常用屬性吧。</p>
+<h4 id="animation-name：必要屬性"><a href="#animation-name：必要屬性" class="headerlink" title="animation-name：必要屬性"></a>animation-name：必要屬性</h4><p>決定動畫所套用的 <code>@keyframes</code> 其值必定會是自訂的 keyframes 名稱，如果 CSS 中沒有 keyframes 將無法運作。</p>
+<h4 id="animation-duration：必要屬性"><a href="#animation-duration：必要屬性" class="headerlink" title="animation-duration：必要屬性"></a>animation-duration：必要屬性</h4><p>決定動畫演示一次的時間長短，撰寫時務必加入單位（<code>s</code> 秒、<code>ms</code> 毫秒…），寫法參考如下</p>
+<pre><code class="hljs css"><span class="hljs-attribute">animation-duration</span>: <span class="hljs-number">3s</span>;
+<span class="hljs-attribute">animation-duration</span>: <span class="hljs-number">240ms</span>;</code></pre>
+<h4 id="animation-iteration-count-⭐⭐⭐"><a href="#animation-iteration-count-⭐⭐⭐" class="headerlink" title="animation-iteration-count ⭐⭐⭐"></a>animation-iteration-count ⭐⭐⭐</h4><p>動畫播放次數，可以填入數值（整數，或是包含小數點均可），或者可以使用 <code>infinite</code> 表示無限次重複播放。</p>
+<pre><code class="hljs css"><span class="hljs-attribute">animation-iteration-count</span>: infinite;
+<span class="hljs-attribute">animation-iteration-count</span>: <span class="hljs-number">1</span>;
+<span class="hljs-attribute">animation-iteration-count</span>: <span class="hljs-number">2.5</span>;</code></pre>
+<h4 id="animation-timing-function-⭐⭐⭐"><a href="#animation-timing-function-⭐⭐⭐" class="headerlink" title="animation-timing-function ⭐⭐⭐"></a>animation-timing-function ⭐⭐⭐</h4><p>動畫效果轉換的速率，如果善加運用可以讓元素動態更具有生命力，animation 的運用好壞將與此屬性有極大的關係。套用的值非常靈活，包含：</p>
+<ul>
+<li>各種 Timing Function 例如：ease、ease-in、ease-in-out、linear…</li>
+<li>使用階段的方式定義，如：<code>steps(8, end)</code>（套用八個階段完成影格</li>
+<li>使用貝茲曲線定義動態轉換效果，如：<code>cubic-bezier(0.1, 0.7, 1.0, 0.1)</code>，會建議直接使用<a href="https://cubic-bezier.com/">工具</a> 產生貝茲數值。</li>
+</ul>
+<p>寫法參考如下：</p>
+<pre><code class="hljs css"><span class="hljs-attribute">animation-timing-function</span>: ease;
+<span class="hljs-attribute">animation-timing-function</span>: ease-in;
+<span class="hljs-attribute">animation-timing-function</span>: ease-out;
+<span class="hljs-attribute">animation-timing-function</span>: linear;        <span class="hljs-comment">/* 線性的速率 */</span>
+<span class="hljs-attribute">animation-timing-function</span>: <span class="hljs-built_in">steps</span>(<span class="hljs-number">5</span>, end); <span class="hljs-comment">/* 階段性的轉換 */</span>
+<span class="hljs-attribute">animation-timing-function</span>: <span class="hljs-built_in">cubic-bezier</span>(.<span class="hljs-number">4</span>,.<span class="hljs-number">94</span>,.<span class="hljs-number">56</span>,<span class="hljs-number">1.59</span>); <span class="hljs-comment">/* 自訂義貝茲轉換速率 */</span></code></pre>
+
+<div class="demo my-3">
+  <div class="box move" style="animation-timing-function: cubic-bezier(.4,.94,.56,1.59) "></div>
+</div>
+
+<blockquote>
+<p>套用 <code>cubic-bezier</code> 甚至可以讓元素會有反彈的感覺</p>
+</blockquote>
+<h4 id="animation-direction-⭐⭐"><a href="#animation-direction-⭐⭐" class="headerlink" title="animation-direction ⭐⭐"></a>animation-direction ⭐⭐</h4><p>動畫播放正向或是反向播放，也可以設定為單數次正向播放、雙數次為反向的運行狀態。</p>
+<pre><code class="hljs css"><span class="hljs-attribute">animation-direction</span>: normal;             <span class="hljs-comment">/* 正向播放 */</span>
+<span class="hljs-attribute">animation-direction</span>: reverse;            <span class="hljs-comment">/* 反向播放 */</span>
+<span class="hljs-attribute">animation-direction</span>: alternate;          <span class="hljs-comment">/* 單數次為正向播放，雙數次為反向播放 */</span>
+<span class="hljs-attribute">animation-direction</span>: alternate-revers;   <span class="hljs-comment">/* 與前者相反，雙數次為正向播放，單數次為反向播放 */</span></code></pre>
+
+<div class="demo my-3">
+  <div class="box move" style="animation-direction: alternate"></div>
+</div>
+
+<blockquote>
+<p>alternate 簡單來說就是一次正向、一次反向的播放方式</p>
+</blockquote>
+<h4 id="animation-play-state-⭐"><a href="#animation-play-state-⭐" class="headerlink" title="animation-play-state ⭐"></a>animation-play-state ⭐</h4><p>決定當前的動畫是否暫停，包含 <code>running</code>、<code>paused</code> 的屬性。</p>
+<pre><code class="hljs css"><span class="hljs-attribute">animation-play-state</span>: running;
+<span class="hljs-attribute">animation-play-state</span>: paused;</code></pre>
+<h4 id="animation-fill-mode-⭐"><a href="#animation-fill-mode-⭐" class="headerlink" title="animation-fill-mode ⭐"></a>animation-fill-mode ⭐</h4><p>定義動畫在播放完成的停留呈現狀態。</p>
+<pre><code class="hljs css"><span class="hljs-attribute">animation-fill-mode</span>: forwards;   <span class="hljs-comment">/* 停留在結束的狀態 */</span>
+<span class="hljs-attribute">animation-fill-mode</span>: backwards;  <span class="hljs-comment">/* 停留在剛開始的狀態 */</span>
+<span class="hljs-attribute">animation-fill-mode</span>: both;       <span class="hljs-comment">/* 依據開始或結束決定呈現的狀態 */</span></code></pre>
+<h4 id="animation-delay-⭐"><a href="#animation-delay-⭐" class="headerlink" title="animation-delay ⭐"></a>animation-delay ⭐</h4><p>第一次播放動畫時所延遲的時間</p>
+<pre><code class="hljs css"><span class="hljs-attribute">animation-delay</span>: <span class="hljs-number">0</span>;
+<span class="hljs-attribute">animation-delay</span>: <span class="hljs-number">3s</span>;</code></pre>
+<h2 id="動手試試看-CSS-Animation"><a href="#動手試試看-CSS-Animation" class="headerlink" title="動手試試看 CSS Animation"></a>動手試試看 CSS Animation</h2><p>看完本篇文章，相信對於 CSS Animation 有基本的認識，接下來就直接動手玩玩看，了解 CSS Animation 的魅力吧</p>
+
+<script src="https://unpkg.com/vue@next"></script>
+<div id="app">
+  <div class="row row-cols-lg-2 gy-2 gx-3">
+    <div class="col" v-for="(ani, key) in animationStyle" :key="key">
+      <label :for="key">{{ ani.name.replace('animation-', '')}} <small>({{ ani.description }})</small></label>
+      <select class="form-select" :id="key" v-model="selectProperties[ani.name]">
+        <option value="">不設定</option>
+        <option :value="item" v-for="(item) in ani.properties"
+          :key="`${item}property`">
+          {{ item }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="demo my-3">
+    <div class="box"
+      :style="selectProperties"
+    >
+  </div>
+  </div>
+
+  <p>運作時所套用的 CSS 程式碼</p>
+  <pre class="hljs"><code class="hljs">.animation &#123;
+<template  v-for="(item, key) in selectProperties" :key="key"><div v-if="item">  &#123;&#123; key &#125;&#125;: &#123;&#123; item &#125;&#125;;</div></template>&#125;
+@keyframes rotate-keyframe &#123;
+  from &#123;
+    transform: rotate(0deg);
+  &#125;
+  to &#123;
+    transform: rotate(360deg);
+  &#125;
+&#125;
+@keyframes move-object &#123;
+  0% &#123;
+    transform: translateX(0);
+  &#125;
+  100% &#123;
+    transform: translateX(200%);
+  &#125;
+&#125;</code></pre>
+</div>
+<script>
+const { reactive, ref } = Vue;
+const app = Vue.createApp({
+  setup() {
+    const animationStyle = reactive({
+      animationName: {
+        name: 'animation-name',
+        description: '*動畫所套用的 keyframe 名稱',
+        properties: [
+          'rotate-keyframe',
+          'move-object',
+        ]
+      },
+      animationDuration: {
+        name: 'animation-duration',
+        description: '*動畫持續時間',
+        properties: [
+          '1s',
+          '3s',
+          '500ms',
+          'alternate-reverse',
+        ]
+      },
+      animationIterationCount: {
+        name: 'animation-iteration-count',
+        description: '*動畫播放次數',
+        properties: [
+          '1',
+          '3',
+          '1.5',
+          'infinite',
+        ]
+      },
+      animationTimingFunction: {
+        name: 'animation-timing-function',
+        description: '動畫轉換時的加速曲線',
+        properties: [
+          'ease',
+          'ease-in',
+          'ease-out',
+          'linear',
+          'steps(5, end)',
+          'cubic-bezier(.4,.94,.56,1.59)'
+        ]
+      },
+      animationDirection: {
+        name: 'animation-direction',
+        description: '動畫向前，或是反轉播放',
+        properties: [
+          'normal',
+          'reverse',
+          'alternate',
+          'alternate-reverse',
+        ]
+      },
+      animationPlayState: {
+        name: 'animation-play-state',
+        description: '動畫播放的狀態',
+        properties: [
+          'running',
+          'paused',
+        ]
+      },
+      animationFillMode: {
+        name: 'animation-fill-mode',
+        description: '定義播放以外的時間的呈現狀態',
+        properties: [
+          'none',
+          'forwards',
+          'backwards',
+          'both',
+        ]
+      },
+      animationDelay: {
+        name: 'animation-delay',
+        description: '第一次播放動畫延遲時間',
+        properties: [
+          '0',
+          '1s',
+          '2s',
+          'initial',
+        ]
+      },
+    });
+    const selectProperties = reactive({
+      'animation-name': 'rotate-keyframe',
+      'animation-duration': '3s',
+      'animation-iteration-count': 'infinite',
+      'animation-timing-function': 'linear',
+    });
+    return {
+      animationStyle,
+      selectProperties
+    }
+  }
+}).mount('#app');
+</script>
+
+<h2 id="延伸閱讀"><a href="#延伸閱讀" class="headerlink" title="延伸閱讀"></a>延伸閱讀</h2><p>如果要在實戰中套用 Animation 的效果，非常推薦直接使用 「<a href="https://animate.style/">Animate.css</a>」，包含相當多種動態轉場效果，就算是一般的網站宣傳頁面，都可以輕易地將動態套用至元素上喔</p>
+<p>延伸資源：</p>
+<ul>
+<li>Animate.css：<a href="https://animate.style/">https://animate.style/</a></li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> css </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Mac OSX 截圖全說明（單一視窗、全螢幕、重設截圖路徑、Touch Bar）]]></title>
       <url>https://wcc723.github.io/development/2021/09/28/mac-osx-screen-capture/</url>
       <content type="html"><![CDATA[<p>Mac OSX 的內建截圖熱鍵相當好用，雖然看起來熱鍵組合很多，但每一個鍵都有它的組合意義，在此先附上完整的熱鍵組合表。</p>
