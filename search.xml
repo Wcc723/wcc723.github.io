@@ -4,6 +4,75 @@
   
     
     <entry>
+      <title><![CDATA[安裝 nvm 環境，Node.js 開發者必學（Windows、Mac 均適用）]]></title>
+      <url>https://wcc723.github.io/development/2022/01/10/install-nvm/</url>
+      <content type="html"><![CDATA[<p>使用 NVM 已經是 Node.js 開發者必備的工具，它最大的用途在於可以輕鬆切換不同版本的 Node.js，尤其在後端的專案中，團隊需要統一的開發環境時可以精確切換到同一個 Node.js 子版本上，避免發生版本不同所發生的問題。</p>
+<p>NVM 為 Node Version Manager 的縮寫，顧名思義就是「Node 版本管理控制」，常用的功能包含：</p>
+<ul>
+<li>切換 Node.js 的版本</li>
+<li>使用特定 Node.js 作為預設啟用環境</li>
+<li>安裝不同的套件至特定的版本上</li>
+</ul>
+<p>除了以上的功能外，就我在使用的感受上甚至可以比官方下載安裝有便利的體驗（例如：Mac OS 系統下不需要使用 <code>sudo</code> 就能使用 <code>npm install</code>）。</p>
+<p>接下來本篇文章將要來介紹如何安裝 NVM 工具，流程如下：</p>
+<ul>
+<li>安裝 NVM</li>
+<li>Mac 環境的額外設定</li>
+<li>常見 NVM 指令及示範</li>
+</ul>
+<h2 id="安裝-NVM-環境"><a href="#安裝-NVM-環境" class="headerlink" title="安裝 NVM 環境"></a>安裝 NVM 環境</h2><p>接下來到 NVM 的 <a href="https://github.com/nvm-sh/nvm">GitHub 儲存庫下載</a>，無論你是 Windows、MacOS、Unix 系統都有對應的安裝方式。</p>
+<h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><p><a href="https://github.com/coreybutler/nvm-windows">NVM for Windows</a> 有提供安裝工具，下載後照著安裝精靈依序完成即可運作，<a href="https://github.com/coreybutler/nvm-windows/releases">下載連結</a>。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCapture.PNG?alt=media&amp;token=ac661f77-33c6-4c98-8d9a-43144e45e83d" alt=""></p>
+<blockquote>
+<p>請選擇 <code>nvm-setup</code> 下載並安裝</p>
+</blockquote>
+<p>下載後依循著安裝精靈即可完成。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2.PNG?alt=media&amp;token=1b528b03-2cb9-4953-8b3f-c1a833cb4346" alt=""></p>
+<p>完成後，打開「命令提示字元」可以試著輸入 <code>nvm</code>，如果看到類似以下畫面就算是完成了。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3.PNG?alt=media&amp;token=e03b523e-9294-46e9-81e4-f9a942385e01" alt=""></p>
+<h4 id="MacOS"><a href="#MacOS" class="headerlink" title="MacOS"></a>MacOS</h4><p>MacOS 則是使用指令進行安裝，打開「終端機」或自行安裝的「iTerm」等工具，輸入以下指令即可開始安裝，（更多版本<a href="https://github.com/nvm-sh/nvm#installing-and-updating">連結</a>）。</p>
+<pre><code class="hljs plaintext">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash</code></pre>
+<p>安裝後預期會顯示以下片段及算安裝完成，而此時如果你有安裝其它指令工具，有可能會發生輸入 <code>nvm</code> 無法呼叫的狀況（例如：<code>zsh: command not found: nvm</code>）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2CE395C0-B566-4FBB-BA01-C69584560989.png?alt=media&amp;token=3b53e246-2f91-4e89-bcc4-b51d59e94692" alt=""></p>
+<p>接下來可以在你所使用的命令設定檔案加入以下片段程式碼，以「zsh」來說可以打開  <code>.zshrc</code> 加入以下片段後重啟（注意：<code>.zshrc</code> 通常在使用者根目錄下並且為隱藏檔，找到後可以使用任何文字編輯器打開編輯）。<br><pre><code class="hljs sh"><span class="hljs-built_in">export</span> NVM_DIR=<span class="hljs-string">&quot;<span class="hljs-variable">$HOME</span>/.nvm&quot;</span>
+[ -s <span class="hljs-string">&quot;<span class="hljs-variable">$NVM_DIR</span>/nvm.sh&quot;</span> ] &amp;&amp; \. <span class="hljs-string">&quot;<span class="hljs-variable">$NVM_DIR</span>/nvm.sh&quot;</span>  <span class="hljs-comment"># This loads nvm</span>
+[ -s <span class="hljs-string">&quot;<span class="hljs-variable">$NVM_DIR</span>/bash_completion&quot;</span> ] &amp;&amp; \. <span class="hljs-string">&quot;<span class="hljs-variable">$NVM_DIR</span>/bash_completion&quot;</span>  <span class="hljs-comment"># This loads nvm bash_completion</span></code></pre></p>
+<p>設定完成以後，按下 <code>nvm</code> 就會跳出如下圖就算完成了。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FECA8043A-CD93-4074-B652-BD91F9B735A0.png?alt=media&amp;token=6ff29801-7a12-4622-af6b-aa6a1fddec23" alt=""></p>
+<h2 id="常用-NVM-指令"><a href="#常用-NVM-指令" class="headerlink" title="常用 NVM 指令"></a>常用 NVM 指令</h2><p>直接輸入 <code>nvm</code> 及可以看到所有的指令列表，在此僅列出最常見的幾個指令（基本上常用的只有兩三個，剩下幾個只要認識即可） </p>
+<p>常見指令：</p>
+<ul>
+<li>nvm ls-remote：列出目前可用的遠端 Node.js 版本</li>
+<li>nvm install ：安裝特定版本的 Node.js</li>
+<li>nvm ls：列出本定端所安裝的 Node.js 環境</li>
+<li>nvm alias default node：設定命令列預設開啟的 Node.js 版本</li>
+<li>nvm use：當前命令列套用特定版本的 Node.js</li>
+</ul>
+<h2 id="示範"><a href="#示範" class="headerlink" title="示範"></a>示範</h2><p>第一次安裝，如果不清楚選擇哪一個版本，可到 <a href="https://nodejs.org/en/">Node.js 官方網站</a> 查看，通常會用左右的方式排列，選擇其中左方的 LTS 推薦的版本。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F7B4581E8-D4BD-4521-B2FB-A2F8C5BB47C0.png?alt=media&amp;token=43bee2a1-f6aa-4be2-8ce4-5e917887a57f" alt=""></p>
+<p>接下來依序輸入以下指令 <code>nvm install &#123;&#123; 版本號 &#125;&#125;</code>，就會開始安裝 Node.js 的環境。<br><pre><code class="hljs plaintext">nvm install 16</code></pre></p>
+<p>安裝過程圖，安裝完成以後可以輸入 <code>node</code> 查看是否有正確安裝。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F256D026B-3CCE-4052-9ECC-7004518D340F.png?alt=media&amp;token=a46a0828-d922-4b9c-b356-22d402b859f3" alt=""></p>
+<p>以我們公司來說是以 Node.js 14 版為主，因此我另外安裝了 14 的版本在我的作業環境上。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F237E2344-3A31-4046-890E-F15989A8792E.png?alt=media&amp;token=4592d719-f0ce-4318-a829-cea08ba2c7db" alt=""></p>
+<p>關掉命令列重啟以後，再次輸入 <code>node -v</code>  會使用其中一個做為預設版本，以我 Mac 來說預設為 16 版。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F55CE4478-D4CD-4E84-8E12-C7F504F47299.png?alt=media&amp;token=2236eaa1-a7bb-404f-a0e9-7cc260988287" alt=""></p>
+<p>畢竟在公司是比較長的時間，因此可以使用 <code>nvm alias default &#123;&#123; 版本號 &#125;&#125;</code> 將特定版本作為預設值（下次開啟為 14 版）。<br><pre><code class="hljs plaintext">nvm alias default 14</code></pre></p>
+<p>命令列重啟後使用 <code>nvm list</code> 查看本機的狀態，可以看到當前版本為 14.18.2，並且預設版本也為此版號。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD136D51A-D682-49F2-8357-B4AA932B5AF1.png?alt=media&amp;token=a594247b-1626-45a6-9c72-5c71607fe620" alt=""></p>
+<p>接下來想切換至特定版本，可以使用 <code>nvm use &#123;&#123; 版本號 &#125;&#125;</code> 切換當前命令列所使用的 Node.js 版本。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4D13FD16-FB7C-4635-8211-E70A6C597F1C.png?alt=media&amp;token=5f3c4ff3-8f9f-413e-b33c-ddf4848270a1" alt=""></p>
+<p>安裝完成，接下來回到你的專案試試看吧～</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[一個工具，帶你完整認識 CSS Animation]]></title>
       <url>https://wcc723.github.io/development/2021/10/04/css-animation/</url>
       <content type="html"><![CDATA[<p>網頁上看到許多 CSS Animation 套效想要參考使用，但卻不知道其中的屬性各自代表什麼意思嗎？本篇將介紹 CSS Animation 的各項屬性運用技巧，並提供一個模擬工具，讓大家可以快速的了解每個屬性的意義。</p>
