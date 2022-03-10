@@ -29,7 +29,7 @@
 people.forEach(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> &#123;
   <span class="hljs-built_in">console</span>.log(item);
 &#125;);</code></pre></p>
-<h2 id="直接將物件轉為陣列格式"><a href="#直接將物件轉為陣列格式" class="headerlink" title="直接將物件轉為陣列格式"></a>直接將物件轉為陣列格式</h2><p>過去，通常會使用 <code>for…in</code> 的方式列舉物件內所有的資料，但此手法不僅寫法複雜且可能會出現額外的錯誤，必須額外加上更多判斷才能解決問題（<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty#%E9%81%8D%E6%AD%B7%E7%89%A9%E4%BB%B6%E7%9A%84%E5%B1%AC%E6%80%A7">Object.prototype.hasOwnProperty() - JavaScript | MDN</a>）。</p>
+<h2 id="直接將物件轉為陣列格式"><a href="#直接將物件轉為陣列格式" class="headerlink" title="直接將物件轉為陣列格式"></a>直接將物件轉為陣列格式</h2><p>過去，通常會使用 <code>for...in</code> 的方式列舉物件內所有的資料，但此手法不僅寫法複雜且可能會出現額外的錯誤，必須額外加上更多判斷才能解決問題，最常見的就是加入（<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty#%E9%81%8D%E6%AD%B7%E7%89%A9%E4%BB%B6%E7%9A%84%E5%B1%AC%E6%80%A7"><code>hasOwnProperty()</code></a>）避免列舉到不必要的值。</p>
 <p>因此，要對物件使用陣列方法，更快的方式是將物件轉為陣列，在 ES6 的語法中就提供了三種物件轉陣列的形式：</p>
 <ul>
 <li>Object.values</li>
@@ -37,21 +37,21 @@ people.forEach(<span class="hljs-function"><span class="hljs-params">item</span>
 <li>Object.entries</li>
 </ul>
 <h3 id="最快的手法-Object-values"><a href="#最快的手法-Object-values" class="headerlink" title="最快的手法 Object.values"></a>最快的手法 Object.values</h3><p><code>Object.values()</code> 可以直接傳入一個物件，並<strong>將傳入的物件直接轉為陣列的形式</strong>。</p>
-<p>以此範例來說，<code>Object.values(people)</code> 會把 <code>people</code> 物件轉為純陣列，因此會得到以下的結果。<br>[image:1C3A9B44-A1EF-4263-9BE3-68D82A1C0174-96893-00001D3E506193A1/1F8A943F-237B-4F47-8690-C6869DA340B5.png]</p>
+<p>以此範例來說，<code>Object.values(people)</code> 會把 <code>people</code> 物件轉為純陣列，因此會得到以下的結果。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F1F8A943F-237B-4F47-8690-C6869DA340B5.png?alt=media&amp;token=dfe8939a-5931-450b-a2e7-7d9331d8bea9" alt="`Object.values(people)` 會把 `people` 物件轉為純陣列"></p>
 <pre><code class="hljs js"><span class="hljs-comment">//  Object.values(people)</span>
 
 [&#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Casper&#x27;</span>,
   <span class="hljs-attr">like</span>: <span class="hljs-string">&#x27;鍋燒意麵&#x27;</span>,
   <span class="hljs-attr">age</span>: <span class="hljs-number">18</span>,
-&#125;, &#123;…&#125;, &#123;…&#125;, &#123;…&#125;]</code></pre>
+&#125;, &#123;...&#125;, &#123;...&#125;, &#123;...&#125;]</code></pre>
 <p>轉為陣列以後，自然可以搭配各種陣列語法來進行運作。寫起來的語法如下，看起來就像純陣列的迴圈一樣，只不過前方增加了 <code>Object.values</code>。<br><pre><code class="hljs js"><span class="hljs-built_in">Object</span>.values(people).forEach(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;
   <span class="hljs-built_in">console</span>.log(item); <span class="hljs-comment">// &#123; name: &#x27;Casper&#x27;, ... &#125;</span>
 &#125;);</code></pre></p>
-<p>[image:735990F5-960C-4D2F-9970-32CF3D6CB6B5-96893-00001D3A0CF19F68/293D8102-CCBE-4526-9A67-CCA8C9CB7515.png]</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F293D8102-CCBE-4526-9A67-CCA8C9CB7515.png?alt=media&amp;token=6b1e9cf0-903d-4d8f-8146-5f7b3bd08641" alt="Object.values(...).forEach 的陣列手法"></p>
 <p>而此語法的缺點在於：無法取得物件 <code>key</code> 值，在範例中的 <code>001</code>、<code>002</code> 等 key 值就無法被取得，當需要取得 key 值時你可以參考以下兩種語法。</p>
 <h4 id="Object-keys"><a href="#Object-keys" class="headerlink" title="Object.keys"></a>Object.keys</h4><p><code>Object.keys()</code> 可以直接傳入一個物件，並將其 key 值以陣列的方式呈現。</p>
-<p>[image:14DCE056-9457-4985-96E2-8E7173B4316A-96893-00001D3CC82CEA55/C43702E0-09B6-486F-B1E2-3582F1A48CF5.png]</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC43702E0-09B6-486F-B1E2-3582F1A48CF5.png?alt=media&amp;token=6a8331f4-c5b9-41ca-b4bc-d597fa7fba03" alt="`Object.keys()` 可以直接傳入一個物件，並將其 key 值以陣列的方式呈現"></p>
 <p>概念與 values 相近，不過也顧名思義是取得 key 值所用，因此所產生的陣列也僅會有 key 值，搭配 <code>forEach</code> 等迴圈手法時也僅會有 key 值，範例如下：</p>
 <pre><code class="hljs js"><span class="hljs-built_in">Object</span>.keys(people).forEach(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> &#123;
   <span class="hljs-built_in">console</span>.log(key); <span class="hljs-comment">// 001, 002, 003</span>
@@ -60,7 +60,7 @@ people.forEach(<span class="hljs-function"><span class="hljs-params">item</span>
 <p>不過雖說僅有取出 key 值，但在 JavaScript 中有 key 後再取得 value 也不是困難事，可以直接使用 <code>object[key]</code> 的方式直接取回物件內的 value。</p>
 <h4 id="Object-entries"><a href="#Object-entries" class="headerlink" title="Object.entries"></a>Object.entries</h4><p><code>Object.entries()</code> 可以直接傳入一個物件，並將 key 與 value 以陣列的方式呈現。</p>
 <p>算是前兩種的混合版，產生的新陣列中同時會包含 key 以及 value，結構為 <code>[key, value]</code>，以此範例搭配 <code>Object.entries(people)</code> 結果如下：</p>
-<p>[image:470014D1-52D4-4DEA-AF6E-5247B5C73984-96893-00001D3CE7DDF242/386AC993-FC3B-4B8B-BBC6-2B1C0E526FD1.png]</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F386AC993-FC3B-4B8B-BBC6-2B1C0E526FD1.png?alt=media&amp;token=af93bc65-cf6b-4365-806d-ffdd2439d4fe" alt="`Object.entries()` 可以直接傳入一個物件，並將 key 與 value 以陣列的方式呈現。"></p>
 <p>這個方式同時取得了 key 與 value，但因為產生的新結構會另外用一層陣列組成，所以語法相較前面的來說會更複雜一些。<br><pre><code class="hljs js"><span class="hljs-built_in">Object</span>.entries(people).forEach(<span class="hljs-function">(<span class="hljs-params">obj</span>) =&gt;</span> &#123;
   <span class="hljs-built_in">console</span>.log(obj); <span class="hljs-comment">// [&#x27;001&#x27;, &#123;...&#125;]</span>
   <span class="hljs-built_in">console</span>.log(obj[<span class="hljs-number">0</span>], obj[<span class="hljs-number">1</span>]); <span class="hljs-comment">// &#x27;001&#x27;, &#123;...&#125;</span>
@@ -4568,120 +4568,6 @@ getData();</code></pre></p>
     </entry>
     
     <entry>
-      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
-      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
-      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
-<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
-<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
-<blockquote>
-<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> globalVariable = <span class="hljs-string">&#x27;全域變數&#x27;</span>;
-<span class="hljs-keyword">var</span> obj = &#123;
-  <span class="hljs-attr">aFunction</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">para</span>) </span>&#123;
-    <span class="hljs-keyword">var</span> localVariables = <span class="hljs-string">&#x27;區域變數&#x27;</span>;
-    <span class="hljs-built_in">console</span>.log(para, localVariables, <span class="hljs-built_in">arguments</span>, <span class="hljs-built_in">this</span>, globalVariable);
-    <span class="hljs-comment">// 包含傳入的參數</span>
-  &#125;
-&#125;
-obj.aFunction(<span class="hljs-string">&#x27;一段描述&#x27;</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);</code></pre></p>
-</blockquote>
-<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
-<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
-<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
-<ul>
-<li><strong>para</strong>: 呼叫時傳入的參數。</li>
-<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
-<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
-<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
-<li>Global: 全域變數</li>
-</ul>
-<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
-<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
-<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
-<ol>
-<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
-<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
-</ol>
-<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callMore</span>(<span class="hljs-params">d, c, b, a</span>) </span>&#123;
-  <span class="hljs-built_in">console</span>.log(d, c, b, a);
-&#125;
-<span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;a&#x27;</span>;
-<span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
-<span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
-callMore(a, b, c);</code></pre>
-<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
-<p>簡單的結論：</p>
-<ul>
-<li>參數名稱不會受到呼叫名稱影響</li>
-<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
-<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
-</ul>
-<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
-<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
-<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMoney</span>(<span class="hljs-params">money = <span class="hljs-number">1000</span></span>) </span>&#123;
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`我有 <span class="hljs-subst">$&#123; money &#125;</span>`</span>); <span class="hljs-comment">// 我有 1000</span>
-&#125;
-getMoney(); <span class="hljs-comment">// 不需要傳入參數</span></code></pre></p>
-<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
-<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
-<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callMore</span>(<span class="hljs-params">d, c, b, a</span>) </span>&#123;
-  <span class="hljs-comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span>
-  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>);
-&#125;
-<span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;a&#x27;</span>;
-<span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
-<span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
-callMore(a, b, c);</code></pre>
-<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
-<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
-<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
-<ul>
-<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
-<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
-</ul>
-<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> callMore = <span class="hljs-function">(<span class="hljs-params">a, ...args</span>) =&gt;</span> &#123;
-  <span class="hljs-built_in">console</span>.log(args);
-&#125;
-<span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;a&#x27;</span>;
-<span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
-<span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
-callMore(a, b, c);</code></pre>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
-<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
-<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
-<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">functionB</span>(<span class="hljs-params">fn</span>) </span>&#123;
-  fn(<span class="hljs-string">&#x27;小明&#x27;</span>);
-&#125;
-functionB(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) </span>&#123;
-  <span class="hljs-built_in">console</span>.log(name + <span class="hljs-string">&#x27; 您好&#x27;</span>);
-&#125;);</code></pre></p>
-<blockquote>
-<p>可以試著看看其中的參數是如何傳遞的</p>
-</blockquote>
-<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
-]]></content>
-      
-        <categories>
-            
-            <category> development </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> javascript </tag>
-            
-            <tag> js </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班]]></title>
       <url>https://wcc723.github.io/development/2020/09/22/javascript-training-1st/</url>
       <content type="html"><![CDATA[<p>2020 年 9 月 20 日是 「JavaScript 作品實戰直播班」開班滿三個月的時間，也同時是本課程最後一天的繳交期限，同學們在家中努力趕工最終作品，而我在電腦前準備這份心得。</p>
@@ -5032,6 +4918,120 @@ functionB(<span class="hljs-function"><span class="hljs-keyword">function</span>
             <tag> js </tag>
             
             <tag> courses </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[呼叫函式時，到底有多少個參數 / 變數可供使用？]]></title>
+      <url>https://wcc723.github.io/development/2020/09/22/js-function/</url>
+      <content type="html"><![CDATA[<p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
+<h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
+<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
+<blockquote>
+<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> globalVariable = <span class="hljs-string">&#x27;全域變數&#x27;</span>;
+<span class="hljs-keyword">var</span> obj = &#123;
+  <span class="hljs-attr">aFunction</span>: <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">para</span>) </span>&#123;
+    <span class="hljs-keyword">var</span> localVariables = <span class="hljs-string">&#x27;區域變數&#x27;</span>;
+    <span class="hljs-built_in">console</span>.log(para, localVariables, <span class="hljs-built_in">arguments</span>, <span class="hljs-built_in">this</span>, globalVariable);
+    <span class="hljs-comment">// 包含傳入的參數</span>
+  &#125;
+&#125;
+obj.aFunction(<span class="hljs-string">&#x27;一段描述&#x27;</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);</code></pre></p>
+</blockquote>
+<p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
+<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
+<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
+<ul>
+<li><strong>para</strong>: 呼叫時傳入的參數。</li>
+<li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
+<li>this: 函式運行時帶入的變數，如何呼叫函式將會影響它的指向，之後會有獨立篇章進行介紹。</li>
+<li>localVariables: 區域變數，僅有在此函式內的作用域可進行呼叫。</li>
+<li>Global: 全域變數</li>
+</ul>
+<p>上述五個變數中，前面兩者就屬於呼叫時傳入的變數，本篇也會著重在這兩點的特點進行介紹。</p>
+<h2 id="參數的特性"><a href="#參數的特性" class="headerlink" title="參數的特性"></a>參數的特性</h2><p>參數是由呼叫函式時所傳入的變數，相對於其它程式語言來說 JS 傳遞參數限制更少，任何的值都可以作為參數使用，也因為如此新手或從其它程式語言轉過來的會有許多不熟悉的地方，以下列出常見的問題：</p>
+<h3 id="參數的名稱於函式內定義"><a href="#參數的名稱於函式內定義" class="headerlink" title="參數的名稱於函式內定義"></a>參數的名稱於函式內定義</h3><p>這段是在授課中常見的問題，剛接觸程式語言的新手常常會被參數的名稱搞混，<strong>誤以為呼叫時的名稱就是函式內運作的名稱</strong>，如以下範例來說請問值為？</p>
+<ol>
+<li><code>&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, undefined</code></li>
+<li><code>&#39;d&#39;, &#39;c&#39;, &#39;b&#39;, &#39;a&#39;</code></li>
+</ol>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callMore</span>(<span class="hljs-params">d, c, b, a</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(d, c, b, a);
+&#125;
+<span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;a&#x27;</span>;
+<span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
+<span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
+callMore(a, b, c);</code></pre>
+<p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
+<p>簡單的結論：</p>
+<ul>
+<li>參數名稱不會受到呼叫名稱影響</li>
+<li>如果遇到有宣告但<strong>沒有傳入</strong>值則會是 <code>undefined</code></li>
+<li>如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值</li>
+</ul>
+<h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
+<p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
+<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getMoney</span>(<span class="hljs-params">money = <span class="hljs-number">1000</span></span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-string">`我有 <span class="hljs-subst">$&#123; money &#125;</span>`</span>); <span class="hljs-comment">// 我有 1000</span>
+&#125;
+getMoney(); <span class="hljs-comment">// 不需要傳入參數</span></code></pre></p>
+<h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
+<p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
+<pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">callMore</span>(<span class="hljs-params">d, c, b, a</span>) </span>&#123;
+  <span class="hljs-comment">// 注意：在此並沒有使用到定義的 d, c, b, a 參數</span>
+  <span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">arguments</span>);
+&#125;
+<span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;a&#x27;</span>;
+<span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
+<span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
+callMore(a, b, c);</code></pre>
+<p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
+<p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
+<h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
+<ul>
+<li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
+<li>與已經定義的參數內容重疊，無法僅運用額外傳入的參數</li>
+</ul>
+<p>因此在 ES6 後新增了「其餘參數」的語法，可在定義參數時<strong>直接傳入剩餘未定的變數內容</strong>，語法範例如下：</p>
+<pre><code class="hljs js"><span class="hljs-keyword">const</span> callMore = <span class="hljs-function">(<span class="hljs-params">a, ...args</span>) =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(args);
+&#125;
+<span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;a&#x27;</span>;
+<span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
+<span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
+callMore(a, b, c);</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
+<p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
+<h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
+<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><pre><code class="hljs js"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">functionB</span>(<span class="hljs-params">fn</span>) </span>&#123;
+  fn(<span class="hljs-string">&#x27;小明&#x27;</span>);
+&#125;
+functionB(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) </span>&#123;
+  <span class="hljs-built_in">console</span>.log(name + <span class="hljs-string">&#x27; 您好&#x27;</span>);
+&#125;);</code></pre></p>
+<blockquote>
+<p>可以試著看看其中的參數是如何傳遞的</p>
+</blockquote>
+<p>由於 JavaScript 是非常具有彈性的，因此可將「函式」作為參數作為參數傳遞，這樣的特性也稱為「一級函式」（First-class Function），在後續的文章也會更深入的介紹。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> js </tag>
             
         </tags>
         
@@ -7684,9 +7684,9 @@ test(<span class="hljs-string">&#x27;測試 email 格式是否正確 2&#x27;</sp
         
         <tags>
             
-            <tag> vscode </tag>
-            
             <tag> develop </tag>
+            
+            <tag> vscode </tag>
             
         </tags>
         
@@ -7920,9 +7920,9 @@ ___</code></pre>
         
         <tags>
             
-            <tag> develop </tag>
-            
             <tag> markdown </tag>
+            
+            <tag> develop </tag>
             
         </tags>
         
@@ -28957,9 +28957,9 @@ line.l2&#123;
         
         <tags>
             
-            <tag> svg </tag>
-            
             <tag> css </tag>
+            
+            <tag> svg </tag>
             
         </tags>
         
@@ -30917,62 +30917,6 @@ git commit -m &quot;first commit&quot;
     </entry>
     
     <entry>
-      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
-      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
-      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480" > </iframe>
-
-<span id="more"></span>
-<hr>
-<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/">http://livestyle.emmet.io/install/</a></p>
-<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
-<ol>
-<li>安裝Package Control </li>
-<li>安裝LiveStyle 擴充功能</li>
-<li>安裝Chrome的 LiveStyle 擴充功能</li>
-<li>使用LiveStyle</li>
-</ol>
-<hr>
-<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
-
-<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
-</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
-<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
-<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
-<p>選擇：Install Package</p>
-<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
-<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
-<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
-<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
-<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
-<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
-<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
-<p>接下來開啟正在做的檔案(直接開就可以了)</p>
-<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
-<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
-<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
-]]></content>
-      
-        <categories>
-            
-            <category> tools </category>
-            
-        </categories>
-        
-        
-        <tags>
-            
-            <tag> tools </tag>
-            
-            <tag> emmet </tag>
-            
-            <tag> sublime text </tag>
-            
-        </tags>
-        
-    </entry>
-    
-    <entry>
       <title><![CDATA[Jekyll 介紹]]></title>
       <url>https://wcc723.github.io/jekyll/2014/01/04/what-is-jekyll/</url>
       <content type="html"><![CDATA[<p>本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。</p>
@@ -31055,6 +30999,62 @@ git commit -m &quot;first commit&quot;
         <tags>
             
             <tag> jekyll </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Emmet Live Style 加減用啦~]]></title>
+      <url>https://wcc723.github.io/tools/2014/01/04/emmet-livestyle/</url>
+      <content type="html"><![CDATA[<p>livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。</p>
+<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480" > </iframe>
+
+<span id="more"></span>
+<hr>
+<h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p><a href="http://livestyle.emmet.io/install/">http://livestyle.emmet.io/install/</a></p>
+<p>安裝流程都是參考官方文件。而這是Sublime Text的擴充功能，所以一定要用Sublime Text，流程如下：</p>
+<ol>
+<li>安裝Package Control </li>
+<li>安裝LiveStyle 擴充功能</li>
+<li>安裝Chrome的 LiveStyle 擴充功能</li>
+<li>使用LiveStyle</li>
+</ol>
+<hr>
+<h2 id="安裝Package-Control"><a href="#安裝Package-Control" class="headerlink" title="安裝Package Control"></a>安裝Package Control</h2><p>這部分只要開啟Sublime Text，按下<code>ctrl+`</code>並且貼上以下的code即可。</p>
+
+<pre><code>import urllib.request,os,hashlib; h = &apos;7183a2d3e96f11eeadd761d777e62404e330c659d4bb41d3bdf022e94cab3cd0&apos;; pf = &apos;Package Control.sublime-package&apos;; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( &apos;http://sublime.wbond.net/&apos; + pf.replace(&apos; &apos;, &apos;%20&apos;)).read(); dh = hashlib.sha256(by).hexdigest(); print(&apos;Error validating download (got %s instead of %s), please try manual install&apos; % (dh, h)) if dh != h else open(os.path.join( ipp, pf), &apos;wb&apos; ).write(by)
+</code></pre><p><em>原諒我這段，這邊我懶得重裝了…，所以沒有圖。</em></p>
+<h2 id="安裝LiveStyle-擴充功能"><a href="#安裝LiveStyle-擴充功能" class="headerlink" title="安裝LiveStyle 擴充功能"></a>安裝LiveStyle 擴充功能</h2><p>在Sublime Text上方的Preferences下找到Package Control。</p>
+<p><img src="/images/2014-01-04_153230.png" alt="安裝LiveStyle"></p>
+<p>選擇：Install Package</p>
+<p><img src="/images/2014-01-04_153244.png" alt="安裝LiveStyle"></p>
+<p>接下來輸入LiveStyle，就能安裝LiveStyle擴充功能</p>
+<p><img src="/images/2014-01-04_153318.png" alt="安裝LiveStyle"></p>
+<h2 id="安裝Chrome的-LiveStyle-擴充功能"><a href="#安裝Chrome的-LiveStyle-擴充功能" class="headerlink" title="安裝Chrome的 LiveStyle 擴充功能"></a>安裝Chrome的 LiveStyle 擴充功能</h2><p>打開這個網址<br><a href="https://chrome.google.com/webstore/detail/emmet-livestyle/diebikgmpmeppiilkaijjbdgciafajmg">Chrome Emmet LiveStyle</a>，再加入倒Chomre就可以了。</p>
+<p><img src="/images/2014-01-04_153622.png" alt="安裝Chrome的 LiveStyle 擴充功能"></p>
+<h2 id="使用-LiveStyle"><a href="#使用-LiveStyle" class="headerlink" title="使用 LiveStyle"></a>使用 LiveStyle</h2><p>Chrome的擴充元件，放在開發者工具裡，只要按下F12，就能看到開發者工具，找到LiveStyle並<br><code>Enable LiveStyle for current page</code>。</p>
+<p><img src="/images/2014-01-04_153855.png" alt="按F12"></p>
+<p>接下來開啟正在做的檔案(直接開就可以了)</p>
+<p><img src="/images/2014-01-04_154140.png" alt="開啟檔案"></p>
+<p>修改CSS，不需要存檔，就會發現畫面上的CSS效果跟著改變囉。</p>
+<p><img src="/images/2014-01-04_154152.png" alt="修改CSS"></p>
+]]></content>
+      
+        <categories>
+            
+            <category> tools </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> tools </tag>
+            
+            <tag> emmet </tag>
+            
+            <tag> sublime text </tag>
             
         </tags>
         
@@ -36744,11 +36744,11 @@ table.table3
         
         <tags>
             
-            <tag> html </tag>
-            
             <tag> sass </tag>
             
             <tag> css </tag>
+            
+            <tag> html </tag>
             
         </tags>
         

@@ -17,13 +17,13 @@
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="陣列本身具有非常多好用的迴圈方法，如：forEach、map、reduce、find…，這些方法有助於處理各種陣列的資料。 但實戰中，不一定所有的資料格式都會是使用陣列，尤其是從後端 API 串接的資料或是各種第三方資源，就有可能是使用物件的方式提供，此時就無法使用上述的各種陣列手法。 以下方的資料為例，如果直接使用 forEach 等各種陣列手法則會出現錯誤。const people &#x3D; &amp;#1">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FNVM.jpg?alt=media&token=a38ca452-71d3-4c5c-bcbd-6dc77e9d50e8">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fjs_object_to_array.png?alt=media&token=7e288673-74ee-44cc-afc6-25544cd384e8">
 <meta property="article:published_time" content="2022-03-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-10T08:11:18.544Z">
+<meta property="article:modified_time" content="2022-03-10T08:40:33.291Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="javascript">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FNVM.jpg?alt=media&token=a38ca452-71d3-4c5c-bcbd-6dc77e9d50e8">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fjs_object_to_array.png?alt=media&token=7e288673-74ee-44cc-afc6-25544cd384e8">
 <meta property="fb:app_id" content="556473851118881">
     
 
@@ -499,7 +499,7 @@
 people.forEach(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> &#123;
   <span class="hljs-built_in">console</span>.log(item);
 &#125;);</code></pre></p>
-<h2 id="直接將物件轉為陣列格式"><a href="#直接將物件轉為陣列格式" class="headerlink" title="直接將物件轉為陣列格式"></a>直接將物件轉為陣列格式</h2><p>過去，通常會使用 <code>for…in</code> 的方式列舉物件內所有的資料，但此手法不僅寫法複雜且可能會出現額外的錯誤，必須額外加上更多判斷才能解決問題（<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty#%E9%81%8D%E6%AD%B7%E7%89%A9%E4%BB%B6%E7%9A%84%E5%B1%AC%E6%80%A7">Object.prototype.hasOwnProperty() - JavaScript | MDN</a>）。</p>
+<h2 id="直接將物件轉為陣列格式"><a href="#直接將物件轉為陣列格式" class="headerlink" title="直接將物件轉為陣列格式"></a>直接將物件轉為陣列格式</h2><p>過去，通常會使用 <code>for...in</code> 的方式列舉物件內所有的資料，但此手法不僅寫法複雜且可能會出現額外的錯誤，必須額外加上更多判斷才能解決問題，最常見的就是加入（<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty#%E9%81%8D%E6%AD%B7%E7%89%A9%E4%BB%B6%E7%9A%84%E5%B1%AC%E6%80%A7"><code>hasOwnProperty()</code></a>）避免列舉到不必要的值。</p>
 <p>因此，要對物件使用陣列方法，更快的方式是將物件轉為陣列，在 ES6 的語法中就提供了三種物件轉陣列的形式：</p>
 <ul>
 <li>Object.values</li>
@@ -507,21 +507,21 @@ people.forEach(<span class="hljs-function"><span class="hljs-params">item</span>
 <li>Object.entries</li>
 </ul>
 <h3 id="最快的手法-Object-values"><a href="#最快的手法-Object-values" class="headerlink" title="最快的手法 Object.values"></a>最快的手法 Object.values</h3><p><code>Object.values()</code> 可以直接傳入一個物件，並<strong>將傳入的物件直接轉為陣列的形式</strong>。</p>
-<p>以此範例來說，<code>Object.values(people)</code> 會把 <code>people</code> 物件轉為純陣列，因此會得到以下的結果。<br>[image:1C3A9B44-A1EF-4263-9BE3-68D82A1C0174-96893-00001D3E506193A1/1F8A943F-237B-4F47-8690-C6869DA340B5.png]</p>
+<p>以此範例來說，<code>Object.values(people)</code> 會把 <code>people</code> 物件轉為純陣列，因此會得到以下的結果。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F1F8A943F-237B-4F47-8690-C6869DA340B5.png?alt=media&amp;token=dfe8939a-5931-450b-a2e7-7d9331d8bea9" alt="`Object.values(people)` 會把 `people` 物件轉為純陣列"></p>
 <pre><code class="hljs js"><span class="hljs-comment">//  Object.values(people)</span>
 
 [&#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Casper&#x27;</span>,
   <span class="hljs-attr">like</span>: <span class="hljs-string">&#x27;鍋燒意麵&#x27;</span>,
   <span class="hljs-attr">age</span>: <span class="hljs-number">18</span>,
-&#125;, &#123;…&#125;, &#123;…&#125;, &#123;…&#125;]</code></pre>
+&#125;, &#123;...&#125;, &#123;...&#125;, &#123;...&#125;]</code></pre>
 <p>轉為陣列以後，自然可以搭配各種陣列語法來進行運作。寫起來的語法如下，看起來就像純陣列的迴圈一樣，只不過前方增加了 <code>Object.values</code>。<br><pre><code class="hljs js"><span class="hljs-built_in">Object</span>.values(people).forEach(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;
   <span class="hljs-built_in">console</span>.log(item); <span class="hljs-comment">// &#123; name: &#x27;Casper&#x27;, ... &#125;</span>
 &#125;);</code></pre></p>
-<p>[image:735990F5-960C-4D2F-9970-32CF3D6CB6B5-96893-00001D3A0CF19F68/293D8102-CCBE-4526-9A67-CCA8C9CB7515.png]</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F293D8102-CCBE-4526-9A67-CCA8C9CB7515.png?alt=media&amp;token=6b1e9cf0-903d-4d8f-8146-5f7b3bd08641" alt="Object.values(...).forEach 的陣列手法"></p>
 <p>而此語法的缺點在於：無法取得物件 <code>key</code> 值，在範例中的 <code>001</code>、<code>002</code> 等 key 值就無法被取得，當需要取得 key 值時你可以參考以下兩種語法。</p>
 <h4 id="Object-keys"><a href="#Object-keys" class="headerlink" title="Object.keys"></a>Object.keys</h4><p><code>Object.keys()</code> 可以直接傳入一個物件，並將其 key 值以陣列的方式呈現。</p>
-<p>[image:14DCE056-9457-4985-96E2-8E7173B4316A-96893-00001D3CC82CEA55/C43702E0-09B6-486F-B1E2-3582F1A48CF5.png]</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC43702E0-09B6-486F-B1E2-3582F1A48CF5.png?alt=media&amp;token=6a8331f4-c5b9-41ca-b4bc-d597fa7fba03" alt="`Object.keys()` 可以直接傳入一個物件，並將其 key 值以陣列的方式呈現"></p>
 <p>概念與 values 相近，不過也顧名思義是取得 key 值所用，因此所產生的陣列也僅會有 key 值，搭配 <code>forEach</code> 等迴圈手法時也僅會有 key 值，範例如下：</p>
 <pre><code class="hljs js"><span class="hljs-built_in">Object</span>.keys(people).forEach(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> &#123;
   <span class="hljs-built_in">console</span>.log(key); <span class="hljs-comment">// 001, 002, 003</span>
@@ -530,7 +530,7 @@ people.forEach(<span class="hljs-function"><span class="hljs-params">item</span>
 <p>不過雖說僅有取出 key 值，但在 JavaScript 中有 key 後再取得 value 也不是困難事，可以直接使用 <code>object[key]</code> 的方式直接取回物件內的 value。</p>
 <h4 id="Object-entries"><a href="#Object-entries" class="headerlink" title="Object.entries"></a>Object.entries</h4><p><code>Object.entries()</code> 可以直接傳入一個物件，並將 key 與 value 以陣列的方式呈現。</p>
 <p>算是前兩種的混合版，產生的新陣列中同時會包含 key 以及 value，結構為 <code>[key, value]</code>，以此範例搭配 <code>Object.entries(people)</code> 結果如下：</p>
-<p>[image:470014D1-52D4-4DEA-AF6E-5247B5C73984-96893-00001D3CE7DDF242/386AC993-FC3B-4B8B-BBC6-2B1C0E526FD1.png]</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F386AC993-FC3B-4B8B-BBC6-2B1C0E526FD1.png?alt=media&amp;token=af93bc65-cf6b-4365-806d-ffdd2439d4fe" alt="`Object.entries()` 可以直接傳入一個物件，並將 key 與 value 以陣列的方式呈現。"></p>
 <p>這個方式同時取得了 key 與 value，但因為產生的新結構會另外用一層陣列組成，所以語法相較前面的來說會更複雜一些。<br><pre><code class="hljs js"><span class="hljs-built_in">Object</span>.entries(people).forEach(<span class="hljs-function">(<span class="hljs-params">obj</span>) =&gt;</span> &#123;
   <span class="hljs-built_in">console</span>.log(obj); <span class="hljs-comment">// [&#x27;001&#x27;, &#123;...&#125;]</span>
   <span class="hljs-built_in">console</span>.log(obj[<span class="hljs-number">0</span>], obj[<span class="hljs-number">1</span>]); <span class="hljs-comment">// &#x27;001&#x27;, &#123;...&#125;</span>
@@ -1257,21 +1257,23 @@ people.forEach(<span class="hljs-function"><span class="hljs-params">item</span>
           
       
           
+          <a href="/development/2019/11/23/ten-mins-learn-markdown/" class="list-group-item list-group-item-action">
+            <h5>十分鐘快速掌握 Markdown</h5>
+            <p class="small mb-0">
+              Markdown 是目前非常普遍用來撰寫文檔的語言，一開始的目標就是使用「易讀易寫的純文字格式編寫文件」，此初衷讓使用者可以專注在文字的本身，而不需要透過其它工具來切換格式。以 Word 撰寫文檔來說，就必須透過上方的工具列來切換標題、列表、粗體、斜體等等；而 Markdown 並沒有這樣的工具列，...
+            </p>
+          </a>
+        
+      
+          
+      
+          
           <a href="/development/2019/12/01/vscode-chinese/" class="list-group-item list-group-item-action">
             <h5>一分鐘切換成中文版 VSCode（完整圖文版）</h5>
             <p class="small mb-0">
               雖然開發者都具有一定的英文閱讀能力，但如果在不熟悉的情況下，就比較難以快速上手一個新工具。如果要快速掌握一個完整的工具或技術，最好的方式還是先切換成熟悉的語言。
 而 VSCode 雖然預設並無法直接切換語系，但官方有提供各國的語言套件，讓開發者可以自行選用。
 切換成中文版如果你對於 VSCode 有...
-            </p>
-          </a>
-        
-      
-          
-          <a href="/development/2019/11/23/ten-mins-learn-markdown/" class="list-group-item list-group-item-action">
-            <h5>十分鐘快速掌握 Markdown</h5>
-            <p class="small mb-0">
-              Markdown 是目前非常普遍用來撰寫文檔的語言，一開始的目標就是使用「易讀易寫的純文字格式編寫文件」，此初衷讓使用者可以專注在文字的本身，而不需要透過其它工具來切換格式。以 Word 撰寫文檔來說，就必須透過上方的工具列來切換標題、列表、粗體、斜體等等；而 Markdown 並沒有這樣的工具列，...
             </p>
           </a>
         
@@ -1290,16 +1292,14 @@ people.forEach(<span class="hljs-function"><span class="hljs-params">item</span>
         
       
           
-          <a href="/development/2020/02/09/jest-async/" class="list-group-item list-group-item-action">
-            <h5>單元測試 - 非同步及 Ajax</h5>
+          <a href="/development/2020/02/02/jest-intro/" class="list-group-item list-group-item-action">
+            <h5>十分鐘上手前端單元測試 - 使用 Jest</h5>
             <p class="small mb-0">
-              本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest
-JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 Jav...
+              隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。
+前...
             </p>
           </a>
         
-      
-          
       
           
       
