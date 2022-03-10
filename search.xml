@@ -4,6 +4,91 @@
   
     
     <entry>
+      <title><![CDATA[JS 中的物件迴圈手法]]></title>
+      <url>https://wcc723.github.io/development/2022/03/10/object-for-each/</url>
+      <content type="html"><![CDATA[<p>陣列本身具有非常多好用的迴圈方法，如：<code>forEach</code>、<code>map</code>、<code>reduce</code>、<code>find</code>…，這些方法有助於處理各種陣列的資料。</p>
+<p>但實戰中，不一定所有的資料格式都會是使用陣列，尤其是從後端 API 串接的資料或是各種第三方資源，就有可能是使用物件的方式提供，此時就無法使用上述的各種陣列手法。</p>
+<p>以下方的資料為例，如果直接使用 forEach 等各種陣列手法則會出現錯誤。<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> people = &#123;
+  <span class="hljs-string">&#x27;001&#x27;</span>: &#123;
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Casper&#x27;</span>,
+    <span class="hljs-attr">like</span>: <span class="hljs-string">&#x27;鍋燒意麵&#x27;</span>,
+    <span class="hljs-attr">age</span>: <span class="hljs-number">18</span>,
+  &#125;,
+  <span class="hljs-string">&#x27;002&#x27;</span>: &#123;
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Wang&#x27;</span>,
+    <span class="hljs-attr">like</span>: <span class="hljs-string">&#x27;炒麵&#x27;</span>,
+    <span class="hljs-attr">age</span>: <span class="hljs-number">24</span>,
+  &#125;,
+  <span class="hljs-string">&#x27;004&#x27;</span>: &#123;
+    <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;滷蛋&#x27;</span>,
+    <span class="hljs-attr">like</span>: <span class="hljs-string">&#x27;蘿蔔泥&#x27;</span>,
+    <span class="hljs-attr">age</span>: <span class="hljs-number">3</span>,
+  &#125;,
+&#125;;</code></pre></p>
+<p>物件本身並不具有 forEach 的方法，所以會出現錯誤。<br><pre><code class="hljs js"><span class="hljs-comment">// TypeError: people.forEach is not a function</span>
+people.forEach(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(item);
+&#125;);</code></pre></p>
+<h2 id="直接將物件轉為陣列格式"><a href="#直接將物件轉為陣列格式" class="headerlink" title="直接將物件轉為陣列格式"></a>直接將物件轉為陣列格式</h2><p>過去，通常會使用 <code>for…in</code> 的方式列舉物件內所有的資料，但此手法不僅寫法複雜且可能會出現額外的錯誤，必須額外加上更多判斷才能解決問題（<a href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Object/hasOwnProperty#%E9%81%8D%E6%AD%B7%E7%89%A9%E4%BB%B6%E7%9A%84%E5%B1%AC%E6%80%A7">Object.prototype.hasOwnProperty() - JavaScript | MDN</a>）。</p>
+<p>因此，要對物件使用陣列方法，更快的方式是將物件轉為陣列，在 ES6 的語法中就提供了三種物件轉陣列的形式：</p>
+<ul>
+<li>Object.values</li>
+<li>Object.keys</li>
+<li>Object.entries</li>
+</ul>
+<h3 id="最快的手法-Object-values"><a href="#最快的手法-Object-values" class="headerlink" title="最快的手法 Object.values"></a>最快的手法 Object.values</h3><p><code>Object.values()</code> 可以直接傳入一個物件，並<strong>將傳入的物件直接轉為陣列的形式</strong>。</p>
+<p>以此範例來說，<code>Object.values(people)</code> 會把 <code>people</code> 物件轉為純陣列，因此會得到以下的結果。<br>[image:1C3A9B44-A1EF-4263-9BE3-68D82A1C0174-96893-00001D3E506193A1/1F8A943F-237B-4F47-8690-C6869DA340B5.png]</p>
+<pre><code class="hljs js"><span class="hljs-comment">//  Object.values(people)</span>
+
+[&#123;
+  <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Casper&#x27;</span>,
+  <span class="hljs-attr">like</span>: <span class="hljs-string">&#x27;鍋燒意麵&#x27;</span>,
+  <span class="hljs-attr">age</span>: <span class="hljs-number">18</span>,
+&#125;, &#123;…&#125;, &#123;…&#125;, &#123;…&#125;]</code></pre>
+<p>轉為陣列以後，自然可以搭配各種陣列語法來進行運作。寫起來的語法如下，看起來就像純陣列的迴圈一樣，只不過前方增加了 <code>Object.values</code>。<br><pre><code class="hljs js"><span class="hljs-built_in">Object</span>.values(people).forEach(<span class="hljs-function">(<span class="hljs-params">item</span>) =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(item); <span class="hljs-comment">// &#123; name: &#x27;Casper&#x27;, ... &#125;</span>
+&#125;);</code></pre></p>
+<p>[image:735990F5-960C-4D2F-9970-32CF3D6CB6B5-96893-00001D3A0CF19F68/293D8102-CCBE-4526-9A67-CCA8C9CB7515.png]</p>
+<p>而此語法的缺點在於：無法取得物件 <code>key</code> 值，在範例中的 <code>001</code>、<code>002</code> 等 key 值就無法被取得，當需要取得 key 值時你可以參考以下兩種語法。</p>
+<h4 id="Object-keys"><a href="#Object-keys" class="headerlink" title="Object.keys"></a>Object.keys</h4><p><code>Object.keys()</code> 可以直接傳入一個物件，並將其 key 值以陣列的方式呈現。</p>
+<p>[image:14DCE056-9457-4985-96E2-8E7173B4316A-96893-00001D3CC82CEA55/C43702E0-09B6-486F-B1E2-3582F1A48CF5.png]</p>
+<p>概念與 values 相近，不過也顧名思義是取得 key 值所用，因此所產生的陣列也僅會有 key 值，搭配 <code>forEach</code> 等迴圈手法時也僅會有 key 值，範例如下：</p>
+<pre><code class="hljs js"><span class="hljs-built_in">Object</span>.keys(people).forEach(<span class="hljs-function">(<span class="hljs-params">key</span>) =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(key); <span class="hljs-comment">// 001, 002, 003</span>
+  <span class="hljs-built_in">console</span>.log(people[key]); <span class="hljs-comment">// &#123; name: &#x27;Casper&#x27;, ... &#125;</span>
+&#125;);</code></pre>
+<p>不過雖說僅有取出 key 值，但在 JavaScript 中有 key 後再取得 value 也不是困難事，可以直接使用 <code>object[key]</code> 的方式直接取回物件內的 value。</p>
+<h4 id="Object-entries"><a href="#Object-entries" class="headerlink" title="Object.entries"></a>Object.entries</h4><p><code>Object.entries()</code> 可以直接傳入一個物件，並將 key 與 value 以陣列的方式呈現。</p>
+<p>算是前兩種的混合版，產生的新陣列中同時會包含 key 以及 value，結構為 <code>[key, value]</code>，以此範例搭配 <code>Object.entries(people)</code> 結果如下：</p>
+<p>[image:470014D1-52D4-4DEA-AF6E-5247B5C73984-96893-00001D3CE7DDF242/386AC993-FC3B-4B8B-BBC6-2B1C0E526FD1.png]</p>
+<p>這個方式同時取得了 key 與 value，但因為產生的新結構會另外用一層陣列組成，所以語法相較前面的來說會更複雜一些。<br><pre><code class="hljs js"><span class="hljs-built_in">Object</span>.entries(people).forEach(<span class="hljs-function">(<span class="hljs-params">obj</span>) =&gt;</span> &#123;
+  <span class="hljs-built_in">console</span>.log(obj); <span class="hljs-comment">// [&#x27;001&#x27;, &#123;...&#125;]</span>
+  <span class="hljs-built_in">console</span>.log(obj[<span class="hljs-number">0</span>], obj[<span class="hljs-number">1</span>]); <span class="hljs-comment">// &#x27;001&#x27;, &#123;...&#125;</span>
+&#125;);</code></pre></p>
+<h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>這幾個在實戰中都是非常好用的語法，用過以後也不會想再回去寫 <code>for...in</code> 的結構，三個語法實戰中也僅需要記得兩種即可，使用的判斷如下：</p>
+<ul>
+<li>不需要取得 key，僅需要 value 的迴圈：那麼請使用 <code>Object.values</code> 精簡又方便。</li>
+<li>需要 key 以及 value 的迴圈：那麼可以使用 <code>Object.keys</code>、<code>Object.entries</code> 兩者擇其一，都可以符合需求。</li>
+</ul>
+<p>而我在實戰中會比較偏向使用 <code>Object.values</code> 以及  <code>Object.keys</code>，對我來說語法較為單純、好運用。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[安裝 nvm 環境，Node.js 開發者必學（Windows、Mac 均適用）]]></title>
       <url>https://wcc723.github.io/development/2022/01/10/install-nvm/</url>
       <content type="html"><![CDATA[<p>使用 NVM 已經是 Node.js 開發者必備的工具，它最大的用途在於可以輕鬆切換不同版本的 Node.js，尤其在後端的專案中，團隊需要統一的開發環境時可以精確切換到同一個 Node.js 子版本上，避免發生版本不同所發生的問題。</p>
@@ -7599,9 +7684,9 @@ test(<span class="hljs-string">&#x27;測試 email 格式是否正確 2&#x27;</sp
         
         <tags>
             
-            <tag> develop </tag>
-            
             <tag> vscode </tag>
+            
+            <tag> develop </tag>
             
         </tags>
         
@@ -7835,9 +7920,9 @@ ___</code></pre>
         
         <tags>
             
-            <tag> markdown </tag>
-            
             <tag> develop </tag>
+            
+            <tag> markdown </tag>
             
         </tags>
         
@@ -28872,9 +28957,9 @@ line.l2&#123;
         
         <tags>
             
-            <tag> css </tag>
-            
             <tag> svg </tag>
+            
+            <tag> css </tag>
             
         </tags>
         
@@ -36659,11 +36744,11 @@ table.table3
         
         <tags>
             
+            <tag> html </tag>
+            
             <tag> sass </tag>
             
             <tag> css </tag>
-            
-            <tag> html </tag>
             
         </tags>
         
