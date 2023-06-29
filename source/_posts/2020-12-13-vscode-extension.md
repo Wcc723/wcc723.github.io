@@ -37,7 +37,7 @@ Better Comment 能夠將你的註解加入不同的色彩，並且可以依據�
 
 私心推薦：⭐⭐⭐
 
-## Bracket Pair Colorizer
+## Bracket Pair Colorizer （已暫停維護）
 每次都找不到大小括號的結尾在哪嗎？
 
 Bracket Pair Colorizer 協助大中小括號（`{}`、`[]`、`()`）一一的獨立補上不同色彩，讓你在撰寫程式碼時可以專注在邏輯處理上，不必為了尋找結尾而耗去大量精力。
@@ -48,6 +48,16 @@ Bracket Pair Colorizer 協助大中小括號（`{}`、`[]`、`()`）一一的獨
 套件網址：https://marketplace.visualstudio.com/items?itemName=CoenraadS.bracket-pair-colorizer
 
 私心推薦：⭐⭐⭐⭐
+
+> 2022 更新：此套件已暫停維護，VSCode 新版已內建此功能，打開設定檔加入以下即可使用，不需要另外裝擴充套件。
+
+```
+{
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs":"active"
+}
+```
+
 
 ## indent-rainbow
 找不到大小括號就算了，連 103 行與 127 行的縮排也都對不上！
@@ -112,7 +122,7 @@ VSCode 為國際知名大廠微軟大大所開發，因此包含各種語系檔�
 
 > 看到別人拼錯，儘早提醒他是維持雙方關係的好方法
 
-套件網址：https://marketplace.visualstudio.com/items?itemName=MS-CEINTL.vscode-language-pack-zh-hant
+套件網址：https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker
 
 私心推薦：⭐⭐⭐⭐⭐
 
@@ -163,9 +173,17 @@ Your browser does not support the video tag.
 套件網址：
 - Excel Viewer: https://marketplace.visualstudio.com/items?itemName=GrapeCity.gc-excelviewer
 - PDF Viewer: https://marketplace.visualstudio.com/items?itemName=analytic-signal.preview-pdf
-- SVG Viewer: https://marketplace.visualstudio.com/items?itemName=cssho.vscode-svgviewer
+- SVG Viewer(已下架): https://marketplace.visualstudio.com/items?itemName=cssho.vscode-svgviewer
+
 
 私心推薦：⭐⭐⭐⭐
+
+#### 2022 更新推薦 SVG Preview
+
+先前版本的 SVG Viewer 已經下架，在此推薦 SVG Preview，除了本身能強化對於 SVG 程式碼的撰寫以外，還能即時的預覽 SVG 的修改變化喔。
+
+- SVG Preview: [https://marketplace.visualstudio.com/items?itemName=jock.svg](https://marketplace.visualstudio.com/items?itemName=jock.svg)
+
 
 
 ## favorites

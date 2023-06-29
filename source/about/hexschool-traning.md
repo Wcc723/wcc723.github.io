@@ -1,6 +1,6 @@
 ---
 title: 卡斯伯 前端作品實戰直播班預約
-date: 2021-9-12 15:28:32
+date: 2022-6-12 15:28:32
 published: true
 ---
 ## Vue 3 作品實戰班
@@ -9,28 +9,37 @@ published: true
 
 求職缺少獨立的作品嗎？或是想更精進前端的作品！？「Vue 3 作品實戰班」不僅教你實戰技巧，更帶你完成獨一無二的網站作品！
 
-- 下次開課時間：2022 年 1 月 ～ 3 月 
+- 下次開課時間：2023 年 1 月 ～ 3 月 
 - 課程介紹頁面：https://hex.school/fPKVU
 - 授課講師：卡斯伯
-- 預計開放註冊時間：2021 年 11 月
-- 課程包含哪些內容：<a href="/development/2020/09/22/javascript-training-1st/">直播內容說明（2020 版）</a>
+- 預計開放註冊時間：2022 年 11 月
+- 課程包含哪些內容：<a href="https://youtu.be/pkAOS7sPIVc" target="_blank">Youtube 線上說明</a>
+- 課程包含哪些內容：<a href="/development/2020/09/22/javascript-training-1st/">圖文介紹版</a>
 - 學習目標：
   - 學習實戰必備的 JS 技巧（資料處理、AJAX、ES6）
   - 了解 Vue.js 使用方式（元件、生命週期、套件運用、Vue CLi）
   - 完成獨立的**面試作品**
 
-學員作品牆：https://works.hexschool.io/#/
+學員作品牆：https://works.hexschool.io/#/?tag=Vue
 
 {% raw %}
-<div class="btn-group">
-  <a class="btn btn-outline-danger" href="https://hex.school/fPKVU" target="_blank">
-    課程介紹頁面
-  </a>
-  <a class="btn btn-danger" href="https://r.botbonnie.com/7OJxr" target="_blank">
-    點我預約通知「Vue 3 作品實戰班」
-  </a>
-</div>
+<a class="btn btn-danger btn-lg" href="https://hex.school/fPKVU" target="_blank">
+  <i class="bi bi-gem"></i> 課程頁面 <i class="bi bi-gem"></i>
+</a>
 {% endraw %}
+
+#### 2022 完課學員心得
+- [CT](https://vocus.cc/article/622b518bfd897800010ba4d4)：我認為六角提供相當多且豐富的資源，而且「即時問答」、「詳盡解答」相當重要，也給予同學們很友善的問答空間。後來自己發現其實公開問問題根本沒什麼，因為上面問題真的太。多。了。
+- [王聖禮](https://vocus.cc/article/622b4137fd897800010b6d63)：助教不是像外面很多課程的工作人員，用著塞滿雞湯的回覆，而是帶著認真卻真誠的回應。
+- [夜矢](https://home.gamer.com.tw/artwork.php?sn=5407571)：作為一個之前的**巴哈版主與現任DCARD版主**，我很佩服他們的企業願意花時間在經營社群，不是單指六角在社群的號召力，而是願意在前端這個領域給予資源，像是六角每周的請大神coding、持續三年的the f2e，甚至有些資源是丟在YT供人賞閱。
+- [Bruno](https://brunoyu2022.pixnet.net/blog/post/59408419)：話說大多數人誰會在除夕前一天還在上課? **中後期每個禮拜日還需要加班加點的替同學解說呢? 1到到2次或許還好，但時間一長，若沒有其他動力，能夠長期堅持嗎?**
+- [Vicky](https://medium.com/@hyxfish27/vue-%E7%9B%B4%E6%92%AD%E7%8F%AD-%E6%94%B9%E8%AE%8A%E6%88%91%E7%9A%84%E9%82%A3%E4%BA%9B%E5%B0%8F%E4%BA%8B-fbf2c74fe55d)：真的很謝謝六角提供這麼好的學習環境，在這邊學習，還有很多天使助教💖，這陣子也是超級辛苦的拼命改我們的作業，還有每日助教服務，真的是我見過最佛心的課啦 !
+- [有廖先生](https://medium.com/@billpop742/2022-%E5%85%AD%E8%A7%92%E5%AD%B8%E9%99%A2-vue-%E7%9B%B4%E6%92%AD%E7%8F%AD%E5%BF%83%E5%BE%97-693915c21fd6)：老師與助教不斷地在線上做服務跟解答，造成身體爆肝、精神耗弱。而且每週課程中，有時還有意外的加碼課程。像這麼的有佛心的學院，在這世上少之又少。
+- [Jemma](https://missnine.medium.com/%E6%98%AF%E9%80%99%E6%A8%A3%E7%9A%84%E8%AA%B2%E7%A8%8B%E5%A0%85%E5%AE%9A%E6%88%91%E7%9A%84%E5%89%8D%E7%AB%AF%E4%B9%8B%E8%B7%AF-%E5%85%AD%E8%A7%92%E5%AD%B8%E9%99%A2-cd1f2849df33)：我是一名設計本科生，從小就非常熱愛設計。老師總會在最後回答同學在學習過程中遇到的挫敗，並且透過分享實務經驗來勉勵同學，減少大家的挫敗感，甚至會提供獎勵，讓大家在學習上更有成就感，更有動力，我就常常因此振作起來。
+- [Mizu](https://equatorial-alloy-23b.notion.site/2022-3-7-Vue-b3a24d30bd1b4abc8a76858e88f8cbb0)：卡斯伯老師非常擅長透過繪圖把困難的事情變得簡單，光是從第一堂課的關注點分離就有深刻體會！雖然當時已經對關注點分離有些微了解，但在**看到老師透過繪圖來解說，讓我又更加深印象了**！
+- [Iris Huang](https://medium.com/@iris.huang/vue-%E7%9B%B4%E6%92%AD%E7%8F%AD%E8%AA%B2%E5%BE%8C%E5%BF%83%E5%BE%97-6fc2587ec48c)：卡斯伯老師的加碼課即知識與八卦(?)於一堂課，因為不是正規課，老師也比較多時間回覆問題，這些問題包括但不限於程式雷點及周邊知識、實戰相關小撇步、螢幕推薦(?)等。
+
+
 
 #### 2021 完課學員心得：
 - [Iven Liu](https://hackmd.io/1w6IAhxNSDWFi2GC58Jgrg?view)：自從出社會之後，就再也沒有人會向學校老師一樣，**不藏私的把自己會的分享給你**，真心的希望你學會、成長。但是在六角我看到了這塊，不論是老師、助教、同學，只要你有問題，每個人都是真心真意的幫助你，真心真意的希望你學會。
@@ -42,6 +51,7 @@ published: true
 - [Jiang V](https://jiangsdesign.medium.com/vue-%E4%BD%9C%E5%93%81%E5%AF%A6%E6%88%B0%E7%9B%B4%E6%92%AD%E7%8F%AD-%E5%BF%83%E5%BE%97%E5%88%86%E4%BA%AB-50077176b8b)：**哪個單位課程會一直再加碼免費直播啦，而且都是兩小時在起跳的**，真的好感謝六角讓我帶來自信，完全不怕作業寫不出來了~
 - [Peggyted](https://peggyted0129.medium.com/vue-%E7%9B%B4%E6%92%AD%E7%8F%AD%E5%BF%83%E5%BE%97%E7%89%86-b969326ab56c)：覺得六角和別家不一樣的是，售後服務超好，絕對不會售後不理你
 - [晃晃](https://haroldzhen531.medium.com/vue-%E7%9B%B4%E6%92%AD%E7%8F%AD%E8%AA%B2%E5%BE%8C%E5%BF%83%E5%BE%97-5512566382fc)：基本上就是寫完就上線了，不然就是同事怕得罪人也不敢認真給建議，這個批改服務真的很棒。
+
 
 
 #### 2020 完課學員心得：
