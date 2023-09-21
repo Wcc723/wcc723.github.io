@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>AWS S3 申請設定以及 Node.js 串接方式 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,nodejs" />
+    
+    
+
+    <meta name="description" content="這是鐵人賽相關文章，影片會在活動開始後發布 AWS S3 是雲端靜態檔案的儲存服務，簡單來說就是能夠把圖片、影片等上傳後不太會更動的檔案進行上傳，接下來用戶在觀看時，就能夠直接存取這些檔案。 而這個服務僅會作為靜態檔案儲存使用，因此在價格上會相對直接將檔案存到虛擬主機來得低上許多，本篇會介紹申請以及完整上傳的流程，在開始之前也請先確保已經有 AWS 帳號，並且已經綁定信用卡。 流程說明">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AWS S3 申請設定以及 Node.js 串接方式">
+<meta property="og:url" content="https://wcc723.github.io/development/2023/09/28/aws-s3/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="這是鐵人賽相關文章，影片會在活動開始後發布 AWS S3 是雲端靜態檔案的儲存服務，簡單來說就是能夠把圖片、影片等上傳後不太會更動的檔案進行上傳，接下來用戶在觀看時，就能夠直接存取這些檔案。 而這個服務僅會作為靜態檔案儲存使用，因此在價格上會相對直接將檔案存到虛擬主機來得低上許多，本篇會介紹申請以及完整上傳的流程，在開始之前也請先確保已經有 AWS 帳號，並且已經綁定信用卡。 流程說明">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FAWS-S3-cover.jpg?alt=media&token=478ccefa-a57f-4756-b4f3-6c5e64d31d8f">
+<meta property="article:published_time" content="2023-09-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-21T05:44:54.093Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="nodejs">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FAWS-S3-cover.jpg?alt=media&token=478ccefa-a57f-4756-b4f3-6c5e64d31d8f">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" id="style-switch" href="/css/all.css">
+    
+
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
+    
+    
+        
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-97433H4032');
+</script>
+    
+    
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "ideor5a1by");
+</script>
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="bg-light">
+  <div>
+    <header>
+  <nav class="navbar navbar-expand-lg navbar-sticky bg-white shadow-sm">
+    <div class="container">
+      <!-- Logo START -->
+      <a class="navbar-brand" href="/">
+        <img
+          class="navbar-brand-item light-mode-item"
+          src="/images/blog_logo.svg"
+          alt="卡斯伯的 Blog"
+        />
+        <img
+          class="navbar-brand-item dark-mode-item"
+          src="/images/blog_logo_w.svg"
+          alt="卡斯伯的 Blog"
+        />
+      </a>
+      <!-- Logo END -->
+
+      <!-- Responsive navbar toggler -->
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="text-body h6 d-none d-sm-inline-block">Menu</span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav navbar-nav-scroll ms-auto">
+          <li class="nav-item">
+            <a href="/about/hexschool-traning.html" class="nav-link position-relative">
+              作品直播班(學員心得)
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/css"
+              >CSS</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/javascript/"
+              >JS</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives"
+              >文章列表</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+          <!-- Nav item 1 Demos -->
+        </ul>
+        <!-- <div class="my-3">
+          <div class="modeswitch" id="darkModeSwitch">
+            <div class="switch"></div>
+          </div>
+        </div> -->
+        <nav class="mx-3"><div id="search-form-wrap">
+
+    <form class="search-form input-group" style="width: 120px">
+        <input type="text" class="ins-search-input search-form-input form-control" placeholder="搜尋知識" />
+        <!-- <button type="submit" class="search-form-submit btn btn-outline-secondary">
+            <i class="bi bi-search fs-4"> </i>
+        </button> -->
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="bi bi-x"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></nav>
+        
+      </div>
+      <div class="nav-item">
+        <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasMenu" role="button" aria-controls="offcanvasMenu">
+          <i class="fs-5 bi bi-list"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+  <div class="offcanvas-header">
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column pt-0">
+    <div>
+      <img
+        class="light-mode-item my-3"
+        src="/images/blog_logo.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <img
+        class="dark-mode-item my-3"
+        src="/images/blog_logo_w.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <!-- Nav START -->
+      <ul class="nav d-block flex-column my-4">
+        
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/tags/css"
+              >CSS</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/tags/javascript/"
+              >JS</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/archives"
+              >文章列表</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        
+        
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000">
+  <div class="text-center">
+    <img
+      src="/images/2021/avatar.png"
+      height="115"
+      width="115"
+      class="img-fluid mb-2"
+      alt=""
+    />
+    <p>設計師轉職前端工程師，擅長將複雜觀念用圖形化方式呈現</p>
+    <a
+      href="https://www.facebook.com/WccCasper"
+      target="_blank"
+      class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-facebook"></i> 追蹤卡斯伯</a
+    >
+    <a href="#comments" class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-chat-text"></i
+    ></a>
+  </div>
+  <hr>
+  <div class="toc-component">
+    <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%81%E7%A8%8B%E8%AA%AA%E6%98%8E"><span class="toc-text">流程說明</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-IAM-%E5%B8%B3%E8%99%9F"><span class="toc-text">建立 IAM 帳號</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BB%BA%E7%AB%8B-S3-Bucket"><span class="toc-text">建立 S3 Bucket</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9E%E5%88%B0%E7%A8%8B%E5%BC%8F%E7%A2%BC"><span class="toc-text">回到程式碼</span></a>
+  </div>
+  
+    <hr />
+    <div class="d-flex justify-content-center">
+      <div
+        class="fb-like"
+        data-layout="box_count"
+        data-action="like"
+        data-size="large"
+        data-share="true"
+        data-href="https://wcc723.github.io/development/2023/09/28/aws-s3/"
+      ></div>
+    </div>
+    <div class="text-center mt-2 text-black-50">
+      按讚，就是最大的支持
+    </div>
+    
+</div>
+
+          </div>
+          <div class="col-lg-8 bg-white shadow-lg rounded-3 rounded-top">
+            <section id="main">
+              <p class="mt-2 mb-0 small">卡斯伯提供的教學資源：</p>
+<div class="row gx-2">
+    <a class="col-4 d-block" href="https://hex.school/5cYlz" target="_blank">
+        <img no-lazy src="/images/2021/vue3_實戰影音.jpg" style="max-width: 100%" alt="">
+    </a>
+    <a class="col-4 d-block" href="/about/hexschool-traning.html">
+        <img no-lazy src="/images/2022/vue_作品實戰班_學員心得.jpg" style="max-width: 100%" alt="">
+    </a>
+    <a class="col-4 d-block" target="_blank" rel="noopener" href="https://hex.school/byKCb">
+        <img no-lazy src="/images/2022/JavaScript面試力.jpg" style="max-width: 100%" alt="">
+    </a>
+</div>
+<div class="main-body-header">
+    <h2 class="my-3">
+    
+    
+    </h2>
+</div>
+              <div id="sticky-space"></div>
+              
+<div class="bg-white rounded my-3 shadow
+  alert alert-dismissible fade show"
+  id="calendar_notification_small-block">
+  <div class="me-3 d-flex align-items-center">
+    <span class="badge bg-primary p-2 me-3">近期活動通知：</span>
+    <a href="#"  class="d-inline-block text-decoration-underline text-primary" id="calendar_notification_small-content"
+    data-bs-toggle="modal" data-bs-target="#calendar_notify-sm-modal">
+    </a>
+  </div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="modal fade" id="calendar_notify-sm-modal" tabindex="-1" aria-labelledby="#calendar_notify-sm-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="calendar_notify-sm-modal-label">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="calendar_notify-sm-modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary d-block w-100" data-bs-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+#calendar_notification_small-block {
+  display: none;
+}
+</style>
+
+<script>
+(() => {
+  const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
+  const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
+  const query = '卡斯伯';
+
+  const today = new Date();
+  const fullYear = today.getFullYear();
+  const month = today.getMonth();
+  const date = today.getDate();
+  const hours = today.getHours();
+  const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
+  const timeMax = new Date(fullYear, month, date + 7, hours).toISOString();
+
+  const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
+
+  const calendarNotificationBlock = document.querySelector('#calendar_notification_small-block');
+
+  $.ajax({
+    url: api,
+    success: function(data) {
+      if (Array.isArray(data.items) && data.items.length) {
+        const item = data.items[0];
+        const context = `<div class="d-inline-block">
+          <strong class="me-3">${item.summary}</strong>
+          <br class="d-md-none" />活動時間：${new Date(item.start.dateTime).toLocaleString()}
+        </div>`;
+        const calendarContentDom = document.querySelector('#calendar_notification_small-content');
+                
+        calendarNotificationBlock.style.display = 'block';
+        calendarContentDom.innerHTML = context;
+
+        document.querySelector('#calendar_notify-sm-modal-label').textContent = item.summary;
+        document.querySelector('#calendar_notify-sm-modal-body').innerHTML = item.description;
+
+      }
+    }
+  });
+})();
+</script>
+              <div class="main-body-content">
+                <article id="post-aws-s3" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner" data-bs-offset="0">
+        
+            <div class="article-subtitle">
+                
+    <ul class="d-inline-block list-unstyled" itemprop="keywords"><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/javascript/" rel="tag">javascript</a></li><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
+
+                
+<span class="ms-2 small"><time datetime="2023-09-27T16:00:00.000Z" itemprop="datePublished">2023-09-28</time></span>
+            </div>
+        
+        
+            <header class="article-header">
+                 
+<h1 class="display-5" itemprop="name">AWS S3 申請設定以及 Node.js 串接方式</h1>
+ 
+
+            </header>
+        
+        <div id="endView"></div><!-- google analytics -->
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                </div>
+            
+            <div class="need-gallery">
+                 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/y12KO8XM6jw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>AWS S3 是雲端靜態檔案的儲存服務，簡單來說就是能夠把圖片、影片等上傳後不太會更動的檔案進行上傳，接下來用戶在觀看時，就能夠直接存取這些檔案。</p>
+<p>而這個服務僅會作為靜態檔案儲存使用，因此在價格上會相對直接將檔案存到虛擬主機來得低上許多，本篇會介紹申請以及完整上傳的流程，在開始之前也請先確保已經有 AWS 帳號，並且已經綁定信用卡。</p>
+<h3 id="流程說明"><a href="#流程說明" class="headerlink" title="流程說明"></a>流程說明</h3><ol>
+<li>建立 IAM 帳號： 首先會先建立 IAM 帳號，為了安全性，我們會透過一個子帳號來進行上傳，所以必須先賦予子帳號 S3 相關權限。</li>
+<li>建立 S3 Bucket：接下來就能開始準備上傳流程，也會說明相關的權限設置。</li>
+<li>撰寫程式碼～</li>
+</ol>
+<h2 id="建立-IAM-帳號"><a href="#建立-IAM-帳號" class="headerlink" title="建立 IAM 帳號"></a>建立 IAM 帳號</h2><p>可以在 AWS 導覽列中輸入 IAM，接下來就會在彈出視窗中找到 IAM 管理工具。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_52.png?alt=media&amp;token=c432e033-9821-4159-bc55-83344e139bdf" alt=""></p>
+<p>接下來建立一個新的使用者，我們會賦予他 S3 的管理權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_53.png?alt=media&amp;token=5105397d-8592-4fa2-8a68-d1ae4b01c4f8" alt=""></p>
+<p>顧名思義，你可以定義使用者的名稱，在此不需要給予額外的管理控制台權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F884D3207-26DC-4377-8D78-060E112FFE67.png?alt=media&amp;token=786a66de-7128-4641-bb90-b39e6945bc6d" alt=""></p>
+<p>在設定許可中，選擇「直接連接政策」，搜尋欄中可以輸入「S3」，許可政策選擇「AmazonS3FullAccess」，接下來按下下一步、建立使用者即可。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_55.png?alt=media&amp;token=7893bb72-dab0-4d25-bbfe-acf69608f0ff" alt=""></p>
+<p>在這個流程中已經建立了一個使用者，接下來會需要取得這使用者的存取方式，用來作為 Node.js 存取的方法。</p>
+<p>回到 IAM 使用者列表，點選剛剛所建立的使用者，在畫面的上方可以找到建立存取金鑰。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_58.png?alt=media&amp;token=e7584bc0-0b09-490e-8d80-57e9bf64b62b" alt=""></p>
+<p>他會問你做什麼用的，據說選什麼沒太大關係，但我們還是乖乖選擇本機代碼。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_59.png?alt=media&amp;token=30b10b06-26a0-46f9-b4e5-9fbdc9d105bc" alt=""></p>
+<p>最後，把這個金鑰存起來，記得這個畫面只能進來一次，請準備好有地方存再開啟。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_00.png?alt=media&amp;token=509953bd-dac2-4d25-8d01-a6517e3289c5" alt=""></p>
+<h2 id="建立-S3-Bucket"><a href="#建立-S3-Bucket" class="headerlink" title="建立 S3 Bucket"></a>建立 S3 Bucket</h2><p>Bucket 策略有兩種，本篇會直接調整 Bucket 的公開政策，讓在此 Bucket 的圖片均可以直接存取，為什麼這麼做可以參考 <a target="_blank" rel="noopener" href="https://aws.amazon.com/tw/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/">AWS 所提供的文件</a>。</p>
+<p>回到 S3 的服務中，選擇建立儲存貯體（Bucket）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_02.png?alt=media&amp;token=8b1b2a50-5f9f-48be-b726-11059b7b51a5" alt=""></p>
+<p>接下來就按照需求輸入名稱以及選擇區域，區域會影響：</p>
+<ul>
+<li>存取速度</li>
+<li>價格<br>而其中的價格影響較小，會建議依據服務受眾所在地區進行選擇。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_03.png?alt=media&amp;token=599ca8ab-a296-441a-98ea-cbd772354728" alt=""></li>
+</ul>
+<p>接下來回到建立的 Bucket，選擇「許可」，在此會開放此 Bucket 的公開權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_04.png?alt=media&amp;token=907121ee-60ac-4181-9222-341e5db92b4e" alt=""></p>
+<p>按照下圖的設定方式並儲存。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F044FED66-048A-4C36-AA46-9A9845F1B10E.png?alt=media&amp;token=3f17e406-b7bb-4f1d-a3ff-a61b785e5156" alt=""></p>
+<p>接下來政策也需要調整，按下編輯。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_05.png?alt=media&amp;token=916aa9ad-7d0b-47f9-96ce-c7e75ffb58a3" alt=""></p>
+<p>依據下圖輸入（下方有附上程式碼），確認後進行儲存<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4FD690EB-8FFF-4FE3-A059-0EBAD6D4723A.png?alt=media&amp;token=87b6632f-d94b-4c47-af57-d5266490ee93" alt=""></p>
+<p>Bucket 政策原始碼。<br><pre><code class="hljs plaintext">&#123;
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        &#123;
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: &quot;*&quot;,
+            &quot;Action&quot;: &quot;s3:GetObject&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:s3:::&#123;&#123; bucket name &#125;&#125;/*&quot;
+        &#125;
+    ]
+&#125;</code></pre></p>
+<h2 id="回到程式碼"><a href="#回到程式碼" class="headerlink" title="回到程式碼"></a>回到程式碼</h2><p>在此有提供完整的 Node.js 程式碼，依據需求將 IAM 及 Bucket 申請的資料填入 <code>.env</code> 即可（請參照 <code>.env.sample</code> ）。</p>
+<p>完整範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/aws-s3-upload">https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/aws-s3-upload</a></p>
+<p>如果在開發上有問題，建議參考本影片，會帶你從頭開始申請並上傳圖片喔：<a target="_blank" rel="noopener" href="https://youtu.be/y12KO8XM6jw">https://youtu.be/y12KO8XM6jw</a></p>
+
+            </div>
+            
+                <div>
+  <script type="text/javascript">
+    document.write(
+      "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/agito723/button?referrer=" +
+      encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+  </script>
+<div>
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+            <!-- <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div> -->
+            
+                <div class="my-3">
+                    <ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8769565283"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+                </div>
+            
+            
+
+<style>
+.article-entry .article-nav {
+  display: flex;
+  background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav .col-12 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+</style>
+<div class="row g-0 mt-5 border-top border-bottom article-nav">
+  
+    <div class="col-12 py-3 py-md-4">
+      <div class="d-flex align-items-center position-relative">
+        <!-- Icon -->
+        <div class="bg-primary py-1">
+          <i class="bi bi-chevron-compact-left fs-3 text-white px-1 rtl-flip"></i>
+        </div>
+        <!-- Title -->
+        <div class="ms-3">
+          <h5 class="m-0">
+            <a href="/development/2023/09/26/newebay/" class="stretched-link btn-link text-reset"
+              >上一篇：藍新金流申請以及串接方式</a
+            >
+          </h5>
+        </div>
+      </div>
+    </div>
+  
+  
+  <div class="col-12 py-3 py-md-4 text-sm-end">
+    <div class="d-flex align-items-center position-relative justify-content-end">
+      <!-- Title -->
+      <div class="me-3">
+        <h5 class="m-0">
+          <a href="/development/2023/09/29/fireabase-storage/" class="stretched-link btn-link text-reset"
+            >下一篇： Firebase Storage 申請設定以及 Node.js 串接方式 </a
+          >
+        </h5>
+      </div>
+      <!-- Icon -->
+      <div class="bg-primary py-1">
+        <i
+          class="bi bi-chevron-compact-right fs-3 text-white px-1 rtl-flip"
+        ></i>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+        </footer>
+        
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2023/09/28/aws-s3/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+    </div>
+</article>
+
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000;">
+              <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+            </div>
+          </div>
+          <div class="col-12">
+            
+<div class="row mt-5">
+  <div class="col-lg-3 mb-3">
+    <h4>相似文章</h4>
+    <div class="list-group bg-white">
+      
+        
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+          <a href="/development/2019/11/23/ten-mins-learn-markdown/" class="list-group-item list-group-item-action">
+            <h5>十分鐘快速掌握 Markdown</h5>
+            <p class="small mb-0">
+              Markdown 是目前非常普遍用來撰寫文檔的語言，一開始的目標就是使用「易讀易寫的純文字格式編寫文件」，此初衷讓使用者可以專注在文字的本身，而不需要透過其它工具來切換格式。以 Word 撰寫文檔來說，就必須透過上方的工具列來切換標題、列表、粗體、斜體等等；而 Markdown 並沒有這樣的工具列，...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+          <a href="/development/2019/12/01/vscode-chinese/" class="list-group-item list-group-item-action">
+            <h5>一分鐘切換成中文版 VSCode（完整圖文版）</h5>
+            <p class="small mb-0">
+              雖然開發者都具有一定的英文閱讀能力，但如果在不熟悉的情況下，就比較難以快速上手一個新工具。如果要快速掌握一個完整的工具或技術，最好的方式還是先切換成熟悉的語言。
+而 VSCode 雖然預設並無法直接切換語系，但官方有提供各國的語言套件，讓開發者可以自行選用。
+切換成中文版如果你對於 VSCode 有...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+          <a href="/development/2020/01/04/image-common-mistakes/" class="list-group-item list-group-item-action">
+            <h5>前端開發者，圖片常犯的五個粗心錯誤</h5>
+            <p class="small mb-0">
+              前端開發者是透過程式碼將資訊呈現成畫面，因此畫面的好壞也多少影響品質，在觀看許多履歷或作業的過程中，會發現許多相似的錯誤，而這些錯誤都是有跡可循，並且可以避免的；本篇先以常見的圖片問題與大家分享，看是否你也犯了這些錯誤呢？
+一、圖片變形新手錯誤率：⭐⭐⭐⭐令人感受的粗心度：👎👎👎👎
+圖片變形...
+            </p>
+          </a>
+        
+      
+          
+          <a href="/development/2020/02/02/jest-intro/" class="list-group-item list-group-item-action">
+            <h5>十分鐘上手前端單元測試 - 使用 Jest</h5>
+            <p class="small mb-0">
+              隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。
+前...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+    </div>
+  </div>
+
+  <div class="col-lg-3 mb-3">
+    
+<div class="widget-wrap widget-list mb-3">
+    <h4 class="mb-3">粉絲專頁</h4>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+  </div>
+
+  <div class="col-lg-4 d-none d-lg-block mb-3">
+    
+<div class="mb-3">
+  <h4 class="mb-3">標籤雲</h4>
+  <div class="widget tagcloud" style="line-height: 1;"><a href="/tags/Bootstrap/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">Sass</a> <a href="/tags/async/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">async</a> <a href="/tags/await/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">await</a> <a href="/tags/beginner/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">beginner</a> <a href="/tags/bootstrap/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">bootstrap</a> <a href="/tags/border/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">border</a> <a href="/tags/business/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">business</a> <a href="/tags/compass/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">compass</a> <a href="/tags/courses/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">courses</a> <a href="/tags/css/" style="font-size: 24px;" class="p-1 m-1 d-inline-block -10">css</a> <a href="/tags/d3/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">d3</a> <a href="/tags/d3js/" style="font-size: 20.47px;" class="p-1 m-1 d-inline-block -6">d3js</a> <a href="/tags/design/" style="font-size: 21.06px;" class="p-1 m-1 d-inline-block -7">design</a> <a href="/tags/develop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">develop</a> <a href="/tags/dns/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">dns</a> <a href="/tags/emmet/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">emmet</a> <a href="/tags/es6/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">es6</a> <a href="/tags/fire-app/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">fire.app</a> <a href="/tags/git/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">git</a> <a href="/tags/github/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">github</a> <a href="/tags/grid/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">grid</a> <a href="/tags/gulp/" style="font-size: 19.88px;" class="p-1 m-1 d-inline-block -6">gulp</a> <a href="/tags/html/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">html</a> <a href="/tags/icon-fonts/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icon fonts</a> <a href="/tags/icons/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icons</a> <a href="/tags/intro/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">intro</a> <a href="/tags/ironman/" style="font-size: 23.41px;" class="p-1 m-1 d-inline-block -9">ironman</a> <a href="/tags/javascript/" style="font-size: 22.82px;" class="p-1 m-1 d-inline-block -9">javascript</a> <a href="/tags/jekyll/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">jekyll</a> <a href="/tags/jest/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">jest</a> <a href="/tags/jquery/" style="font-size: 18.12px;" class="p-1 m-1 d-inline-block -4">jquery</a> <a href="/tags/js/" style="font-size: 22.24px;" class="p-1 m-1 d-inline-block -8">js</a> <a href="/tags/life/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">life</a> <a href="/tags/mac/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">mac</a> <a href="/tags/markdown/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">markdown</a> <a href="/tags/mobile/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">mobile</a> <a href="/tags/modules/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">modules</a> <a href="/tags/node-js/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">node.js</a> <a href="/tags/nodejs/" style="font-size: 18.12px;" class="p-1 m-1 d-inline-block -4">nodejs</a> <a href="/tags/npm/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">npm</a> <a href="/tags/oocss/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">oocss</a> <a href="/tags/osx/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">osx</a> <a href="/tags/project/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">project</a> <a href="/tags/promise/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">promise</a> <a href="/tags/puppeteer/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">puppeteer</a> <a href="/tags/rails/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">rails</a> <a href="/tags/reactjs/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">reactjs</a> <a href="/tags/ruby/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">ruby</a> <a href="/tags/sass/" style="font-size: 21.65px;" class="p-1 m-1 d-inline-block -8">sass</a> <a href="/tags/scss/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">scss</a> <a href="/tags/sketch/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sketch</a> <a href="/tags/ssl/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">ssl</a> <a href="/tags/study/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">study</a> <a href="/tags/sublime-text/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sublime text</a> <a href="/tags/svg/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">svg</a> <a href="/tags/test/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">test</a> <a href="/tags/tool/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">tool</a> <a href="/tags/tools/" style="font-size: 18.71px;" class="p-1 m-1 d-inline-block -5">tools</a> <a href="/tags/vscode/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">vscode</a> <a href="/tags/vue/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">vue</a> <a href="/tags/web/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">web</a> <a href="/tags/workshop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">workshop</a> <a href="/tags/zeplin/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">zeplin</a> <a href="/tags/%E5%B1%A5%E6%AD%B7/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">履歷</a></div>
+</div>
+
+
+  </div>
+
+  <div class="col-lg-2 d-none d-lg-block mb-3">
+    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+  </div>
+
+</div>
+          </div>
+        
+      </div>
+    </div>
+    <footer class="bg-dark py-5 mt-4 text-muted">
+  <div class="container">
+    <div class="container-inner">
+      <a id="back-to-top" href="javascript:;"
+        ><i class="icon fa fa-angle-up"></i
+      ></a>
+      <div class="credit">
+        <h1 class="logo-wrap">
+          <a href="/" class="logo"></a>
+        </h1>
+        <p>
+          &copy; 2023 Wang Casper
+        </p>
+        <p>
+          Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by
+          <a href="https://bootstrap5.hexschool.com/" target="_blank"
+            >Bootstrap</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script src="/js/bs-layout-functions.js"></script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v11.0&appId=556473851118881&autoLogAppEvents=1" nonce="drs0t5ih"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+  window.onload = () => {
+    $(function() {
+      if(!$('ins[class="adsbygoogle"]').data('adsbygoogleStatus')) {
+        console.log('(╭(°A°`)╮)) 拜託，別擋這個頁面的廣告，不然我一毛錢都沒得賺惹');
+        $('.adsense-message').css('display', 'block');
+      }
+    })
+  }
+  </script>
+
+
+<script>
+  /***
+   * 側欄選單滾動行為
+   */
+  ;(() => {
+    const isFirefox = navigator?.userAgent?.toLowerCase()?.indexOf('firefox') > -1 || '';
+    const h2 = [...document.querySelectorAll('.article-inner h2')];
+    const h3 = [...document.querySelectorAll('.article-inner h3')];
+    let currentHeading = '';
+    let currentHeadingLv3 = '';
+    // 確保至少有 h2 文章列表才運行
+    if (h2.length && !isFirefox) {
+      const tocListLevel3 = [...document.querySelectorAll('.toc-level-2 > ol')]
+      const tocListLink = [...document.querySelectorAll('.toc-level-2 a')]
+      const tocListLinkLv3 = [...document.querySelectorAll('.toc-level-3 a')]
+      tocListLevel3.forEach(item => item.classList.add('d-none'));
+
+      window.addEventListener('scroll', function () {
+        const headings = h2.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse(); // 由後往前找
+        const headingsLevel3 = h3.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse();
+
+        const windowY = window.scrollY;
+        // console.log(headings, windowY);
+        const findTarget = headings.find(item => windowY + 60 > item.offsetTop);
+        const findTargetLv3 = headingsLevel3.find(item => windowY + 60 > item.offsetTop);
+        // console.log(findTarget);
+        if (findTarget && findTarget.id !== currentHeading) {
+          currentHeading = findTarget.id;
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTarget.uri}"]`);
+          tocListLevel3.forEach(item => item.classList.add('d-none'));
+          tocListLink.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          // location.hash = findTarget.uri;
+        }
+        if (findTargetLv3 && findTargetLv3.id !== currentHeadingLv3) {
+          // console.log('findTargetLv3', findTargetLv3);
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTargetLv3.uri}"]`);
+          tocListLinkLv3.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          // location.hash = findTarget.uri;
+        }
+
+
+      });
+    }
+  })();
+</script>
+
+  </div>
+</body>
+</html>

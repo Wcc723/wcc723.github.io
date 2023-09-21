@@ -4,6 +4,171 @@
   
     
     <entry>
+      <title><![CDATA[Firebase Storage 申請設定以及 Node.js 串接方式]]></title>
+      <url>https://wcc723.github.io/development/2023/09/29/fireabase-storage/</url>
+      <content type="html"><![CDATA[ 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/H4GmskFhSJQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>我很喜歡使用 Firebase Storage，相對於 AWS S3 來說，Firebase Storage 的設定、管理更加容易，而且還有提供每日免費額度，相當適合小型專案使用，而我的 Blog 圖片來說，絕大部分也都是上傳到 Firebase Storage。</p>
+<p>本篇將會介紹 Firebase Storage 及設定流程，並在後方附上相關程式碼以供直接運用。</p>
+<p>進入  <a href="https://console.firebase.google.com/u/0/">Firebase Console</a> 選擇新增專案，輸入名稱後可以一直繼續到底（分析可以取消就是了，但不影響運作）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FECE551C1-BEA7-482A-BC7A-0689F13019DB.png?alt=media&amp;token=0ccb4089-fa25-42e0-b983-f3d93488af54" alt=""></p>
+<p>專案建立以後，在畫面的左上方，點選齒輪符號，按下專案設定。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_27.png?alt=media&amp;token=ef90293d-a419-40b4-a877-fe49f58271c1" alt=""></p>
+<p>其中找到「服務帳戶」，下方可以建立新的私密金鑰，私密金鑰是採用 JSON 提供，僅會提供一次，請確實地找地方儲存，並且避免遺失及落入他人手中。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_28.png?alt=media&amp;token=e6716e4d-7a8f-47f2-ae04-e199342e0575" alt=""></p>
+<p>在左側選單，點選 Storage。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_29.png?alt=media&amp;token=d2ab2ec8-ce8c-430a-8fe6-0940cc02fb9b" alt=""></p>
+<p>接下來會在啟用前有基本的設定。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FDC1F6B80-A4B1-497A-8D22-BEFCA64D178B.png?alt=media&amp;token=41eb69ea-8d13-4873-9a07-1a1b8e3cb9ed" alt=""></p>
+<p>接下來可以選擇地區，一樣依據你服務的用戶位置做選擇。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F258A84C1-3EDB-46CF-8A76-7D94809A8446.png?alt=media&amp;token=fafd02ca-9ec3-4645-bd07-bc4d4875f7f1" alt=""></p>
+<p>建立後，可以看到 <code>gs://...</code> 的路徑，請先複製起來，在後面的環境變數中需要填寫這段路徑。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_30.png?alt=media&amp;token=a8bdb2f7-b71d-45b5-9eda-557b239bf52f" alt=""></p>
+<p>因為預設的 Storage 是無法被直接存取的，因此需要調整規則，讓檔案直接公開能夠讓任何人存取。<br>切換到「Rules」分頁，將新的規則貼入（附在下方），接下來按下「發布」。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_30%202.png?alt=media&amp;token=7ceb7c57-7d15-4273-9f8f-5f396f90c5ea" alt=""></p>
+<pre><code class="hljs plaintext">service firebase.storage &#123;
+  match /b/&#123;bucket&#125;/o &#123;
+    match /&#123;allPaths=**&#125; &#123;
+      // allow read, write: if request.auth!=null;
+      allow read, write: if true;
+    &#125;
+  &#125;
+&#125;</code></pre>
+<h2 id="回到程式碼"><a href="#回到程式碼" class="headerlink" title="回到程式碼"></a>回到程式碼</h2><p>在此有提供完整的 Node.js 程式碼，依據需求將 Firebase Storage 申請的資料填入 <code>.env</code> 即可（請參照 <code>.env.sample</code> ）。</p>
+<p>完整範例：<a href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/firebase-storage-upload">https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/firebase-storage-upload</a></p>
+<p>如果在開發上有問題，建議參考本影片，會帶你從頭開始申請並上傳圖片喔：<a href="https://youtu.be/H4GmskFhSJQ">https://youtu.be/H4GmskFhSJQ</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[AWS S3 申請設定以及 Node.js 串接方式]]></title>
+      <url>https://wcc723.github.io/development/2023/09/28/aws-s3/</url>
+      <content type="html"><![CDATA[ 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/y12KO8XM6jw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>AWS S3 是雲端靜態檔案的儲存服務，簡單來說就是能夠把圖片、影片等上傳後不太會更動的檔案進行上傳，接下來用戶在觀看時，就能夠直接存取這些檔案。</p>
+<p>而這個服務僅會作為靜態檔案儲存使用，因此在價格上會相對直接將檔案存到虛擬主機來得低上許多，本篇會介紹申請以及完整上傳的流程，在開始之前也請先確保已經有 AWS 帳號，並且已經綁定信用卡。</p>
+<h3 id="流程說明"><a href="#流程說明" class="headerlink" title="流程說明"></a>流程說明</h3><ol>
+<li>建立 IAM 帳號： 首先會先建立 IAM 帳號，為了安全性，我們會透過一個子帳號來進行上傳，所以必須先賦予子帳號 S3 相關權限。</li>
+<li>建立 S3 Bucket：接下來就能開始準備上傳流程，也會說明相關的權限設置。</li>
+<li>撰寫程式碼～</li>
+</ol>
+<h2 id="建立-IAM-帳號"><a href="#建立-IAM-帳號" class="headerlink" title="建立 IAM 帳號"></a>建立 IAM 帳號</h2><p>可以在 AWS 導覽列中輸入 IAM，接下來就會在彈出視窗中找到 IAM 管理工具。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_52.png?alt=media&amp;token=c432e033-9821-4159-bc55-83344e139bdf" alt=""></p>
+<p>接下來建立一個新的使用者，我們會賦予他 S3 的管理權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_53.png?alt=media&amp;token=5105397d-8592-4fa2-8a68-d1ae4b01c4f8" alt=""></p>
+<p>顧名思義，你可以定義使用者的名稱，在此不需要給予額外的管理控制台權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F884D3207-26DC-4377-8D78-060E112FFE67.png?alt=media&amp;token=786a66de-7128-4641-bb90-b39e6945bc6d" alt=""></p>
+<p>在設定許可中，選擇「直接連接政策」，搜尋欄中可以輸入「S3」，許可政策選擇「AmazonS3FullAccess」，接下來按下下一步、建立使用者即可。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_55.png?alt=media&amp;token=7893bb72-dab0-4d25-bbfe-acf69608f0ff" alt=""></p>
+<p>在這個流程中已經建立了一個使用者，接下來會需要取得這使用者的存取方式，用來作為 Node.js 存取的方法。</p>
+<p>回到 IAM 使用者列表，點選剛剛所建立的使用者，在畫面的上方可以找到建立存取金鑰。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_58.png?alt=media&amp;token=e7584bc0-0b09-490e-8d80-57e9bf64b62b" alt=""></p>
+<p>他會問你做什麼用的，據說選什麼沒太大關係，但我們還是乖乖選擇本機代碼。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_59.png?alt=media&amp;token=30b10b06-26a0-46f9-b4e5-9fbdc9d105bc" alt=""></p>
+<p>最後，把這個金鑰存起來，記得這個畫面只能進來一次，請準備好有地方存再開啟。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_00.png?alt=media&amp;token=509953bd-dac2-4d25-8d01-a6517e3289c5" alt=""></p>
+<h2 id="建立-S3-Bucket"><a href="#建立-S3-Bucket" class="headerlink" title="建立 S3 Bucket"></a>建立 S3 Bucket</h2><p>Bucket 策略有兩種，本篇會直接調整 Bucket 的公開政策，讓在此 Bucket 的圖片均可以直接存取，為什麼這麼做可以參考 <a href="https://aws.amazon.com/tw/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/">AWS 所提供的文件</a>。</p>
+<p>回到 S3 的服務中，選擇建立儲存貯體（Bucket）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_02.png?alt=media&amp;token=8b1b2a50-5f9f-48be-b726-11059b7b51a5" alt=""></p>
+<p>接下來就按照需求輸入名稱以及選擇區域，區域會影響：</p>
+<ul>
+<li>存取速度</li>
+<li>價格<br>而其中的價格影響較小，會建議依據服務受眾所在地區進行選擇。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_03.png?alt=media&amp;token=599ca8ab-a296-441a-98ea-cbd772354728" alt=""></li>
+</ul>
+<p>接下來回到建立的 Bucket，選擇「許可」，在此會開放此 Bucket 的公開權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_04.png?alt=media&amp;token=907121ee-60ac-4181-9222-341e5db92b4e" alt=""></p>
+<p>按照下圖的設定方式並儲存。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F044FED66-048A-4C36-AA46-9A9845F1B10E.png?alt=media&amp;token=3f17e406-b7bb-4f1d-a3ff-a61b785e5156" alt=""></p>
+<p>接下來政策也需要調整，按下編輯。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_05.png?alt=media&amp;token=916aa9ad-7d0b-47f9-96ce-c7e75ffb58a3" alt=""></p>
+<p>依據下圖輸入（下方有附上程式碼），確認後進行儲存<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4FD690EB-8FFF-4FE3-A059-0EBAD6D4723A.png?alt=media&amp;token=87b6632f-d94b-4c47-af57-d5266490ee93" alt=""></p>
+<p>Bucket 政策原始碼。<br><pre><code class="hljs plaintext">&#123;
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        &#123;
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: &quot;*&quot;,
+            &quot;Action&quot;: &quot;s3:GetObject&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:s3:::&#123;&#123; bucket name &#125;&#125;/*&quot;
+        &#125;
+    ]
+&#125;</code></pre></p>
+<h2 id="回到程式碼"><a href="#回到程式碼" class="headerlink" title="回到程式碼"></a>回到程式碼</h2><p>在此有提供完整的 Node.js 程式碼，依據需求將 IAM 及 Bucket 申請的資料填入 <code>.env</code> 即可（請參照 <code>.env.sample</code> ）。</p>
+<p>完整範例：<a href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/aws-s3-upload">https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/aws-s3-upload</a></p>
+<p>如果在開發上有問題，建議參考本影片，會帶你從頭開始申請並上傳圖片喔：<a href="https://youtu.be/y12KO8XM6jw">https://youtu.be/y12KO8XM6jw</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[藍新金流申請以及串接方式]]></title>
+      <url>https://wcc723.github.io/development/2023/09/26/newebay/</url>
+      <content type="html"><![CDATA[<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>藍新金流官方正式網站：<a href="https://www.newebpay.com/">https://www.newebpay.com/</a><br>藍新金流測試站：<a href="https://cwww.newebpay.com/">https://cwww.newebpay.com/</a><br>完整範例程式碼：<a href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/newebpay-sample">GitHub - Wcc723/node-ironman-sample-2023 at feature/newebpay-sample</a></p>
+ 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/-eg-fRDWNFg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>申請流程及操作影片（9/26 公開）：<a href="https://youtu.be/-eg-fRDWNFg">https://youtu.be/-eg-fRDWNFg</a></p>
+<p>如果是作為測試使用，請選擇藍新金流測試站。 在測試站中你會申請到開發用的專屬 key， 以下流程將會介紹 key 的申請方式。</p>
+<h2 id="申請流程"><a href="#申請流程" class="headerlink" title="申請流程"></a>申請流程</h2><p>進入藍新金流的網站以後， 請選擇上方的會員中心， 在左側的商店管理中可以找到商店資料設定， 如果還沒有任何商店可以在此建立一個新的。 在下圖的範例中是已經建立好的商店。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_24.png?alt=media&amp;token=3df59bee-a2ea-4662-a7f3-1b0b9bcb7adc" alt=""></p>
+<p>商店資料中往下看，可以找到串接金鑰， 請把其中的值複製下來， 並且避免流入他人手中（在下方的圖片中，我已經先把串接金鑰隱藏了）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F95053CFE-9280-4E02-BCBF-2731AB8027CB.png?alt=media&amp;token=60e837c6-82ed-4c96-a88a-af932ba036a9" alt=""></p>
+<p>如果是新設立的商店，金流設定中並不會啟用信用卡支付，如果需要這些設定請另外開啟。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F88A9DC90-E4CC-406D-B1BB-4AEF28ED2A03.png?alt=media&amp;token=661c4bbf-3bfa-4677-b98e-25bdae33750f" alt=""></p>
+<h2 id="程式碼"><a href="#程式碼" class="headerlink" title="程式碼"></a>程式碼</h2><blockquote>
+<p>注意，要運行金流服務，請確保有可用的雲端伺服器。</p>
+</blockquote>
+<p>當申請完以後，可以開啟以下  <a href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/newebpay-sample">儲存庫</a>， 下載後打開 <code>.env.sample</code>， 並將剛剛申請好的金鑰，按照需求填寫至 <code>.env.sample</code>，並且另存新檔為 <code>.env</code>。</p>
+<pre><code class="hljs plaintext">MerchantID= # 商店 ID
+HASHKEY= # 商店 HashKey
+HASHIV= # 商店 HashIV
+Version=2.0 # 串接程式版本，2023 年版本為 2.0
+
+ReturnUrl= # 前端回傳網址
+NotifyUrl= # 交易結果通知網址
+PayGateWay=https://ccore.newebpay.com/MPG/mpg_gateway # 測試機、正式機 API 路徑</code></pre>
+<p>其中的 <code>ReturnUrl</code> 及 <code>NotifyUrl</code> 需要填寫雲端伺服器的路徑，本地端無法接收回傳資料。</p>
+<p>接下來部署到雲端伺服器後，即可進行測試運行。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[JS 中的物件迴圈手法]]></title>
       <url>https://wcc723.github.io/development/2022/03/10/object-for-each/</url>
       <content type="html"><![CDATA[<p>陣列本身具有非常多好用的迴圈方法，如：<code>forEach</code>、<code>map</code>、<code>reduce</code>、<code>find</code>…，這些方法有助於處理各種陣列的資料。</p>
