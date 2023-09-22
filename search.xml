@@ -4,6 +4,86 @@
   
     
     <entry>
+      <title><![CDATA[Ubuntu 虛擬主機部署 Node.js 服務，使用 PM2 服務管理]]></title>
+      <url>https://wcc723.github.io/development/2023/10/03/unbuntu-and-pm2/</url>
+      <content type="html"><![CDATA[ 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/e9Y4sWcwsn8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>本篇文章會介紹如何「租賃虛擬主機，並且部署 Node.js 服務」，因為會從零開始建置，因此本篇文章會包含以下文章：</p>
+<ol>
+<li>Ubuntu 環境建置：主要是準備 Node.js 及 PM2 環境</li>
+<li>專案建置：在此會部署 Node.js 服務，從 GitHub 上 pull 專案直接運行</li>
+<li>PM2 管理：最後，會示範如何使用 PM2 管理 Node.js 專案</li>
+</ol>
+<h2 id="建置-Ubuntu-環境"><a href="#建置-Ubuntu-環境" class="headerlink" title="建置 Ubuntu 環境"></a>建置 Ubuntu 環境</h2><p>原則上任何的版本、伺服器的 Ubuntu 作業系統不會有太大差異，因此以下指令皆可運行，流程如下：</p>
+<p>更新套件列表，在此是更新 Ubuntu 套件列表，確保安裝的套件都是最新的：<br><pre><code class="hljs bash">sudo apt-get update</code></pre></p>
+<p>安裝 Node.js，其中的 <code>18.x</code> 可以替換成預期安裝的任何版本。<br><pre><code class="hljs bash"><span class="hljs-comment"># 安裝 Node.js 18.x 版本</span>
+curl -sL &lt;https://deb.nodesource.com/setup_18.x&gt; | sudo -E bash -
+sudo apt-get install -y nodejs</code></pre></p>
+<p>確認 Node.js 和 npm 安裝成功，正確會回應版本號：<br><pre><code class="hljs bash">node -v
+npm -v</code></pre></p>
+<p>如果 NPM 沒有被安裝，可以使用以下指令安裝：<br><pre><code class="hljs bash">curl -L https://www.npmjs.com/install.sh | sudo sh</code></pre></p>
+<p>NPM 確認安裝無誤以後，可以安裝 pm2 服務。<br><pre><code class="hljs bash">npm install -g pm2</code></pre></p>
+<h2 id="部署專案"><a href="#部署專案" class="headerlink" title="部署專案"></a>部署專案</h2><p>接下來，你可以使用任何自己的 Node 專案進行部署，或者參考此<a href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/error-catch">範例專案</a>。</p>
+<p>接下來，可以使用到以下指令建立資料夾，並且將專案 clone 至資料夾中：<br><pre><code class="hljs plaintext">mkdir website-sample
+cd website-sample
+git clone &#123;&#123; 專案路徑 &#125;&#125;
+cd &#123;&#123; 專案名稱 &#125;&#125;</code></pre></p>
+<p>下載後，也可以輸入 ls，就能看到當前專案的資料夾內容，範例如下：<br><pre><code class="hljs bash">&gt; ls 
+<span class="hljs-comment"># app.js bin controllers models package.json pnpm-lock.yaml public routes swagger. js views</span></code></pre></p>
+<p>沒有問題後，就能使用 <code>npm install</code> 安裝專案所需的套件，安裝完成後，就能使用 <code>npm start</code> 運行專案，確認專案運行是沒有問題的。<br><pre><code class="hljs bash">npm install
+npm run swagger <span class="hljs-comment"># 範例專案需要加入 swagger 才能正確運行</span>
+npm start</code></pre></p>
+<p>確認無誤以後，可以按下 <code>ctrl + c</code> 來關閉當前 Node.js 運行，接下來就能使用 PM2 服務管理專案。</p>
+<h2 id="使用-PM2-管理專案"><a href="#使用-PM2-管理專案" class="headerlink" title="使用 PM2 管理專案"></a>使用 PM2 管理專案</h2><p>PM2 是一個 Node.js 應用的運行管理器，廣泛用於 Production 環境。它提供了多種功能，以確保專案運行得更佳穩定，並且對於新手來說相當容易上手。</p>
+<p>在專案中，可以使用到以下指令來使用 PM2 管理 Node.js 專案。<br><pre><code class="hljs bash"><span class="hljs-comment"># 一般 Node.js 服務</span>
+pm2 start
+
+<span class="hljs-comment"># Express generator 啟動方式（本範例是使用 Express generator）</span>
+pm2 start ./bin/www</code></pre></p>
+<p>輸入後，專案就與直接使用 <code>npm start</code> 無異，可以輸入 <code>ip</code> 來進入你當前的專案，不過除此之外，PM2 還有許多的功能，例如你可以輸入 <code>pm2 monit</code> 就能開啟例如下圖的監控介面，可以看到當前專案的運行狀態。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_22_17_00.png?alt=media&amp;token=47531e75-501d-41dc-b4ea-fe999cf68587" alt=""></p>
+<p>而 PM2 的指令相當多，在此就不一一介紹，可以參考以下常用指令：</p>
+<h4 id="PM2-常用服務管理指令"><a href="#PM2-常用服務管理指令" class="headerlink" title="PM2 常用服務管理指令"></a>PM2 常用服務管理指令</h4><pre><code class="hljs bash">pm2 restart &#123;id, name&#125; <span class="hljs-comment"># 重啟特定服務</span>
+pm2 delete &#123;id, name&#125; <span class="hljs-comment"># 移除特定服務</span>
+pm2 rename &lt;old_name&gt; &lt;new_name&gt; <span class="hljs-comment"># 重新命名服務(`pm2 rename app myApp`)</span>
+pm2 list <span class="hljs-comment"># 列出所有服務</span></code></pre>
+<h4 id="重啟服務相關指令"><a href="#重啟服務相關指令" class="headerlink" title="重啟服務相關指令"></a>重啟服務相關指令</h4><pre><code class="hljs bash"><span class="hljs-comment"># 以無中斷的方式重啟名為 &#x27;app&#x27; 的服務</span>
+pm2 reload app
+
+<span class="hljs-comment"># 直接重啟名為 &#x27;app&#x27; 的服務</span>
+pm2 restart app
+
+<span class="hljs-comment"># 以無中斷的方式重啟所有服務</span>
+pm2 reload all
+
+<span class="hljs-comment"># 直接重啟所有服務</span>
+pm2 restart all</code></pre>
+<h2 id="PM2-設定檔"><a href="#PM2-設定檔" class="headerlink" title="PM2 設定檔"></a>PM2 設定檔</h2><p>PM2 除了使用指令操作以外，還可以建立設定檔案進行進階操作，例如 cluster 叢集、自動重啟機制。而在開頭的影片中，因為篇幅關係，並沒有介紹到設定檔的部分（<del>真實原因：我忘記錄了</del>）。</p>
+<p>PM2 設定檔案可參考以下文件：<br><a href="https://pm2.keymetrics.io/docs/usage/application-declaration/">https://pm2.keymetrics.io/docs/usage/application-declaration/</a></p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Firebase Storage 申請設定以及 Node.js 串接方式]]></title>
       <url>https://wcc723.github.io/development/2023/09/29/fireabase-storage/</url>
       <content type="html"><![CDATA[ 
