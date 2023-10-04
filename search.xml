@@ -4,6 +4,364 @@
   
     
     <entry>
+      <title><![CDATA[在 Ubuntu 上加入 Docker 環境並部署 Node.js 專案]]></title>
+      <url>https://wcc723.github.io/development/2023/10/08/ubuntu-docker/</url>
+      <content type="html"><![CDATA[ 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/JocSDHOFNzw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>本篇文章會介紹如何「如何在 Ubuntu 環境上加入 Docker 環境，並且部署 Node.js 專案」，建議對於指令操作有基本的經驗，以下是本文包含的流程：</p>
+<ol>
+<li>在 Ubuntu 上安裝 Docker 環境</li>
+<li>本地端上傳 Docker Image（使用 SCP 的指令）</li>
+<li>伺服器 Docker Daemon 未啟動的解決方式</li>
+</ol>
+<p>另外，本篇的相關程式碼可以參考：<a href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/docker-sample">https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/docker-sample</a></p>
+<h2 id="在-Ubuntu-上安裝-Docker-環境"><a href="#在-Ubuntu-上安裝-Docker-環境" class="headerlink" title="在 Ubuntu 上安裝 Docker 環境"></a>在 Ubuntu 上安裝 Docker 環境</h2><p>Ubuntu 上安裝 Docker 環境可直接參考<a href="https://docs.docker.com/engine/install/ubuntu/">官方文件</a>，文件說明已相當完整，或在此參考中文化版本。</p>
+<ol>
+<li>首先更新你的現有列表套件：</li>
+</ol>
+<pre><code class="hljs bash">sudo apt-get update</code></pre>
+<ol start="2">
+<li>允許使用 HTTPS 進行套件安裝：</li>
+</ol>
+<pre><code class="hljs bash">sudo apt-get install ca-certificates curl gnupg</code></pre>
+<ol start="3">
+<li>添加 Docker 的 GPG 鑰匙：</li>
+</ol>
+<pre><code class="hljs bash">sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg</code></pre>
+<ol start="4">
+<li>添加 Docker 的 repository：</li>
+</ol>
+<pre><code class="hljs bash"><span class="hljs-built_in">echo</span> \
+  <span class="hljs-string">&quot;deb [arch=&quot;</span>$(dpkg --print-architecture)<span class="hljs-string">&quot; signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \</span>
+<span class="hljs-string">  &quot;</span>$(. /etc/os-release &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VERSION_CODENAME</span>&quot;</span>)<span class="hljs-string">&quot; stable&quot;</span> | \
+  sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+sudo apt-get update</code></pre>
+<ol start="5">
+<li>再次更新套件：</li>
+</ol>
+<pre><code class="hljs bash">sudo apt-get update</code></pre>
+<ol start="6">
+<li>安裝 Docker：</li>
+</ol>
+<pre><code class="hljs bash">sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></pre>
+<ol start="7">
+<li>驗證是否有安裝成功：</li>
+</ol>
+<pre><code class="hljs html">docker -v</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fubuntu-docker-1.png?alt=media&amp;token=57f34fe2-90ee-4e04-9cc0-4a3a443127f7" alt="檢視安裝的 Docker 版本"></p>
+<ol start="8">
+<li>驗證 Docker 是否已成功安裝，並運行：</li>
+</ol>
+<pre><code class="hljs bash">sudo docker run hello-world</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fubuntu-docker-2.png?alt=media&amp;token=19817044-4443-4ca4-a0a3-90977a7afc10" alt="運行官方提供的範例"></p>
+<p>官方的範例僅會出現上方提示文字，表示已經成功運行。可以直接使用 <code>docker ps</code> 列出所有容器，然後再使用 <code>docker rm &lt;container id&gt;</code> 移除該容器。</p>
+<h2 id="本地端上傳-Docker-Image"><a href="#本地端上傳-Docker-Image" class="headerlink" title="本地端上傳 Docker Image"></a>本地端上傳 Docker Image</h2><p>首先，在你的本地系統中保存 Docker Image 成 tar 檔案： <code>-o</code> 表示輸出 output（請先使用 build 指令建立映像檔）。</p>
+<pre><code class="hljs bash">docker save -o &lt;tar文件名稱.tar&gt; &lt;image名稱:tag&gt;</code></pre>
+<p>在本地端使用 scp 將 tar 檔案傳輸到虛擬主機上：</p>
+<pre><code class="hljs bash">scp &lt;tar文件名稱.tar&gt; &lt;使用者名稱&gt;@&lt;虛擬機IP位址&gt;:&lt;路徑&gt;/&lt;檔名&gt;.tar</code></pre>
+<p>登入虛擬主機，然後在虛擬主機中使用 Docker load 加載 Image（<code>-i</code> 表示輸入 input）：</p>
+<pre><code class="hljs bash">docker load -i &lt;tar文件名稱.tar&gt;</code></pre>
+<p>接下來使用 <code>docker images</code> 檢視已經準備好的 image，可以看到剛剛的 image 已經加入列表中，並使用 <code>docker run -d &lt;image名稱:tag&gt;</code> 運行 docker 環境。</p>
+<pre><code class="hljs html">docker run -d -p 8080:3000 &lt;image名稱:tag&gt;</code></pre>
+<p>上述指令中的：    </p>
+<ul>
+<li><code>-d</code> 選項意為 “detach”，意即在背景模式下運行容器。使用 <code>-d</code> 選項後，Docker 會在背景中運行容器，並返回容器 ID，不會看到任何的輸出，終端機會直接返回。</li>
+<li><code>-p 8080:3000</code> 表示將容器的 3000 port 對應到主機的 8080 port，這樣就可以在主機上透過 8080 port 來訪問容器中的應用程式。</li>
+</ul>
+<p>可能遇到的錯誤：<br><pre><code class="hljs plaintext">WARNING: The requested image&#x27;s platform (linux/arm64/v8) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested</code></pre></p>
+<p>錯誤是因為試圖在一個系統環境（如 <code>linux/amd64</code>）上運行為另一個系統環境（本範例為 <code>linux/arm64/v8</code>）建立的 Docker 映像。解決方式需要在建立時指定平台，例如：</p>
+<pre><code class="hljs bash">docker build --platform=linux/amd64 -t &#123;tag name&#125;</code></pre>
+<p>完成後再重複上述的流程即可。</p>
+<h4 id="Docker-服務遇到錯誤終止的解決方式"><a href="#Docker-服務遇到錯誤終止的解決方式" class="headerlink" title="Docker 服務遇到錯誤終止的解決方式"></a>Docker 服務遇到錯誤終止的解決方式</h4><p>在執行時加入 <code>--restart=always</code> 參數，表示當服務終止時，Docker 會自動重啟服務。</p>
+<pre><code class="hljs bash">docker run --restart=always -d my-node-app</code></pre>
+<h2 id="伺服器-Docker-Daemon-未啟動的解決方式"><a href="#伺服器-Docker-Daemon-未啟動的解決方式" class="headerlink" title="伺服器 Docker Daemon 未啟動的解決方式"></a>伺服器 Docker Daemon 未啟動的解決方式</h2><p>如果機器出現錯誤，導致 Docker Daemon 未啟動，可以使用以下指令啟動 Docker Daemon：</p>
+<pre><code class="hljs bash">sudo systemctl start docker</code></pre>
+<p>如果你想要在系統開機時自動啟動 Docker，可以使用以下命令：（雖然這樣，重啟後的 container 依然不會自動運行）</p>
+<pre><code class="hljs bash">sudo systemctl <span class="hljs-built_in">enable</span> docker</code></pre>
+<p>要停止 Docker daemon，可以使用以下命令：</p>
+<pre><code class="hljs bash">sudo systemctl stop docker</code></pre>
+<p>如果你不希望在系統開機時自動啟動 Docker，可以使用以下命令：</p>
+<pre><code class="hljs bash">sudo systemctl <span class="hljs-built_in">disable</span> docker</code></pre>
+<p>要檢查 Docker daemon 的狀態，可以使用以下命令：</p>
+<pre><code class="hljs bash">sudo systemctl status docker</code></pre>
+<p>這些命令都需要 root 權限，所以需要使用 <code>sudo</code> 命令。如果你已經將用戶添加到了 <code>docker</code> 群組，則可以直接執行 Docker 命令，不再需要 <code>sudo</code>。</p>
+<h4 id="如果無法停止"><a href="#如果無法停止" class="headerlink" title="如果無法停止"></a>如果無法停止</h4><p>你可以會看到以下錯誤，主要原因是因為 docker socket 仍在運行中（部分容器還在運行）：</p>
+<pre><code class="hljs bash">Warning: Stopping docker.service, but it can still be activated by:
+docker.socket</code></pre>
+<p>需要將完整的 docker service 關閉，可使用以下指令：</p>
+<pre><code class="hljs bash">sudo systemctl stop docker.service
+sudo systemctl stop docker.socket</code></pre>
+<h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>本篇文章介紹如何在 Ubuntu 上安裝 Docker 環境，並且部署 Node.js 專案，另外也介紹了如何在本地端上傳 Docker Image 到虛擬主機上，以及 Docker Daemon 未啟動的解決方式。</p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在 Ubuntu 上加入 Docker 環境並部署 Node.js 專案]]></title>
+      <url>https://wcc723.github.io/development/2023/10/07/docker-container/</url>
+      <content type="html"><![CDATA[ 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/RsY5cCc9RGM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>本篇文章會介紹如何「如何在 Ubuntu 環境上加入 Docker 環境，並且部署 Node.js 專案」，建議對於指令操作有基本的經驗，以下是本文包含的流程：</p>
+<ol>
+<li>在 Ubuntu 上安裝 Docker 環境</li>
+<li>本地端上傳 Docker Image（使用 SCP 的指令）</li>
+<li>伺服器 Docker Daemon 未啟動的解決方式</li>
+</ol>
+<p>另外，本篇的相關程式碼可以參考：<a href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/docker-sample">https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/docker-sample</a></p>
+<h2 id="建立-Dockerfile-以及產生-Docker-Images"><a href="#建立-Dockerfile-以及產生-Docker-Images" class="headerlink" title="建立 Dockerfile 以及產生 Docker Images"></a>建立 Dockerfile 以及產生 Docker Images</h2><p>請先確保環境中已經有安裝 Docker 或 <a href="https://www.docker.com/products/docker-desktop/">Docker Desktop</a>，可以使用以下指令確保有安裝 Docker 環境。</p>
+<pre><code class="hljs bash">docker --version</code></pre>
+<p>Dockerfile 是一個純文字檔案，檔案名稱必須為 <code>Dockerfile</code>，並且放在專案的根目錄下，以下是一個 Node.js 的 Dockerfile 範例：</p>
+<pre><code class="hljs dockerfile"><span class="hljs-comment"># 選擇 Node.js 的基礎映像檔</span>
+<span class="hljs-keyword">FROM</span> node:<span class="hljs-number">18</span>
+
+<span class="hljs-comment"># 設置工作目錄，WORKDIR 是 Dockerfile 的指令，用來設置在容器內部用於存儲應用程式檔案的目錄。</span>
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /usr/src/app</span>
+
+<span class="hljs-comment"># 首先複製 package.json 到工作目錄</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> package*.json ./</span>
+
+<span class="hljs-comment"># 安裝套件</span>
+<span class="hljs-comment"># RUN 指令用於在映像檔構建階段執行命令，並創建新的層。每個 RUN 指令都會在當前映像檔的頂部創建一個新的層並提交更改，進而形成新的映像檔。</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> npm install</span>
+
+<span class="hljs-comment"># 複製應用程式程式碼到工作目錄</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> . .</span>
+
+<span class="hljs-comment"># 建立 Swagger 文件</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> npm run swagger</span>
+
+<span class="hljs-comment"># 暴露應用程式所使用的端口</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">3000</span> 
+
+<span class="hljs-comment"># 啟動您的應用程式</span>
+<span class="hljs-comment"># CMD 指令用於指定一個容器啟動時需要執行的命令。每個 Dockerfile 只能包含一個 CMD 指令。</span>
+<span class="hljs-comment"># 總結來說，RUN 是在構建映像檔時執行的命令，而 CMD 是在容器啟動時執行的命令。</span>
+<span class="hljs-keyword">CMD</span><span class="bash"> [<span class="hljs-string">&quot;npm&quot;</span>, <span class="hljs-string">&quot;start&quot;</span>]</span></code></pre>
+<p>其中因為專案中會使用到 Swagger，所以必須額外運行 <code>RUN npm run swagger</code> 來進行初始化。在上述範例中均有包含註解，但要額外解釋的是 <code>RUN</code> 與 <code>CMD</code> 的差異：</p>
+<ul>
+<li><code>RUN</code> 是在構建映像檔時執行的命令，每個專案可以包含多個 <code>RUN</code> 指令。</li>
+<li><code>CMD</code> 是在容器啟動時執行的命令，每個專案只能包含 <strong>一個 <code>CMD</code> 指令</strong>。</li>
+</ul>
+<p>如果專案中有需要被忽略不在建構時加入的檔案，可以在專案根目錄下新增 <code>.dockerignore</code> 檔案，並在檔案中指定要忽略的檔案或目錄，以下是一個範例：</p>
+<pre><code class="hljs bash">node_modules</code></pre>
+<p>準備完成以後，可以輸入以下指令來開始進行建構：</p>
+<pre><code class="hljs bash">docker build -t &#123;自訂名稱&#125; .</code></pre>
+<p>範例如：<code>docker build -t my-nodejs-app .</code>，其中的 -t 是定義標籤用的，也就是後方的名稱，如果沒有這個名稱會被隨機分配 id，以後也不好管理。除此之外，後面需要加上 <code>.</code>，表示當前路徑。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fdocker-image-01.png?alt=media&amp;token=24ae08d0-9e1e-496f-bdc3-c5771e4b1e5c" alt="打包中的圖片"></p>
+<p>在 Docker Desktop 也能看到這一個範例，可以直接從 Docker Desktop 執行它，或在終端機中輸入以下指令：</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fdocker-image-02.png?alt=media&amp;token=af45b3ae-e974-489f-9391-58dcb3b3f34b" alt="Docker Desktop 中的畫面"></p>
+<pre><code class="hljs bash">docker run -p 3000:3000 sample-node-express</code></pre>
+<p>上述指令所代表的意思是：</p>
+<ul>
+<li>-p 是內部 port 與外部 port 對應的指令，因為我們建立時是使用 3000 port，所以後者輸入 3000，後者可以映射另一個 port 來執行它（前者）</li>
+<li>範例：docker run -p 5678:3000 sample-node-express</li>
+<li>運行後，終端機會卡在容器運行的狀態，如果想直接在背景運行，可以使用 <code>-d</code> 取代掉 <code>-p</code></li>
+</ul>
+<p>如果要關閉容器，可以這麼做：</p>
+<ul>
+<li>另外開一個終端機，輸入 <code>docker ps</code> ，列出所有運行中的容器</li>
+<li>docker stop {id} 來停止運行中的容器</li>
+</ul>
+<h2 id="補充知識：容器化概念說明"><a href="#補充知識：容器化概念說明" class="headerlink" title="補充知識：容器化概念說明"></a>補充知識：容器化概念說明</h2><h4 id="Docker-Image（映像檔）："><a href="#Docker-Image（映像檔）：" class="headerlink" title="Docker Image（映像檔）："></a>Docker Image（映像檔）：</h4><p>Docker 映像檔是一個輕量級的、獨立的、可執行的軟體包，包含了執行應用程式所需要的一切，包括程式碼、運行環境、函式庫、環境變數和設定文件等等。由於映像檔包含了應用運行所需的全部相依套件，這使得您可以在任何 Docker 環境上一致地運行您的應用。Docker 映像檔可以透過 Dockerfile 來建立，也可以透過 Docker Hub 或其他 Docker Registry 下載。</p>
+<h4 id="Docker-Container（容器）："><a href="#Docker-Container（容器）：" class="headerlink" title="Docker Container（容器）："></a>Docker Container（容器）：</h4><p>Docker 容器(container)是 Docker 映像檔(image)的一個執行實例。當透過 <code>docker run</code> 指令啟動一個映像檔時，該映像檔就會成為一個活動的容器。每一個容器都是從映像檔建立的，而且是完全獨立的，它有獨立的檔案系統、網路接口和進程空間等等。可以在一台主機上同時運行多個容器，它們之間彼此隔離，但又可以透過特定的方式進行互動。</p>
+<h4 id="Docker-Daemon："><a href="#Docker-Daemon：" class="headerlink" title="Docker Daemon："></a>Docker Daemon：</h4><p>Docker Daemon 是一個持續運行的後臺進程，用於管理 Docker 容器。當作業系統開啟 Docker Desktop 或者運行 Docker 時。就能透過 <code>docker</code> 指令來建立、運行、或管理容器時，實際上是 Docker Daemon 在幕後處理這些任務。</p>
+<p>例如，當執行 <code>docker run</code> 時，Docker Daemon 會找到或者下載適當的映像檔，創建新的容器，並且分配資源給它。Docker Daemon 也負責監控、日誌記錄、網路配置等等。</p>
+<h2 id="Docker-常見指令"><a href="#Docker-常見指令" class="headerlink" title="Docker 常見指令"></a>Docker 常見指令</h2><ul>
+<li><code>docker run &lt;image&gt;</code>：從映像檔建立並啟動一個新的容器。</li>
+<li><code>docker ps</code>：列出正在運行的容器。</li>
+<li><code>docker stop &lt;container&gt;</code>：停止一個容器。</li>
+<li><code>docker ps -a</code> ：列出所有容器，包含停止的容器。</li>
+<li><code>docker rm &lt;container&gt;</code>：移除一個容器。</li>
+<li><code>docker images</code>：列出本地的所有映像檔。</li>
+<li><code>docker rmi &lt;image&gt;</code>：移除一個映像檔。</li>
+<li><code>docker pull &lt;image&gt;</code>：從 Docker Hub 或其他 Docker Registry 下載一個映像檔。</li>
+<li><code>docker build -t &lt;image&gt; .</code>：從當前目錄的 Dockerfile 建立一個新的映像檔。</li>
+<li><code>docker exec -it &lt;container&gt; bash</code>：進入一個正在運行的容器的 bash shell。</li>
+<li><code>docker run -d -p 8080:3000 &lt;image名稱:tag&gt;</code> ：在背景運行</li>
+</ul>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[使用 GitHub Action 部署 Node.js 專案至虛擬主機上]]></title>
+      <url>https://wcc723.github.io/development/2023/10/04/nodejs-github-action/</url>
+      <content type="html"><![CDATA[ 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/cUmSAGtP-70" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>本篇文章會介紹如何「使用 GitHub Action 部署專案至虛擬主機上」，虛擬主機會使用 PM2 來進行管理，整個流程與業界實戰會略有落差，主要是作為 “基礎知識” 理解所使用，實戰中還是多利用 Docker 容器化來進行管理：</p>
+<ol>
+<li>虛擬主機環境準備</li>
+<li>準備 GitHub Action</li>
+<li>其他說明</li>
+</ol>
+<p>程式碼部分可以參考 <a href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/action-pm2">本範例</a>，不過在環境配置上，還是需要勞煩各位自己動手做，它才能夠正確的運行喔</p>
+<h2 id="虛擬主機環境準備"><a href="#虛擬主機環境準備" class="headerlink" title="虛擬主機環境準備"></a>虛擬主機環境準備</h2><p>這是整個流程最複雜的地方，而本篇不會介紹 PM2 的安裝，如果不熟悉可以先參考我另一篇文章 <a href="/development/2023/10/03/unbuntu-and-pm2/">Ubuntu 虛擬主機部署 Node.js 服務，使用 PM2 服務管理</a>，會從零開始介紹 Ubuntu 環境建置、專案建置、PM2 管理。</p>
+<p>這段主要準備的是給予 GitHub Action 連線用的配置，主要是產生 SSH 金鑰，並將私鑰提供給 GitHub Action 使用，流程如下：</p>
+<h4 id="建立公私鑰，並加入到儲存庫的-secrets-中"><a href="#建立公私鑰，並加入到儲存庫的-secrets-中" class="headerlink" title="建立公私鑰，並加入到儲存庫的 secrets 中"></a>建立公私鑰，並加入到儲存庫的 secrets 中</h4><ol>
+<li>輸入以下指令以建立新的 SSH 私鑰。這裡使用的是 RSA 類型的金鑰（<a href="mailto:your_email@example.com">your_email@example.com</a> 請替換為個人 Email）：</li>
+</ol>
+<pre><code class="hljs bash">ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">&quot;your_email@example.com&quot;</span></code></pre>
+<ol start="2">
+<li><p>當提示您 <code>Enter a file in which to save the key</code>（輸入一個文件來保存鑰匙）時，只需按 Enter。這將會將私鑰保存在預設位置，即您的 home 目錄下的 <code>.ssh/id_rsa</code> 文件。</p>
+</li>
+<li><p>在接下來的提示 “Enter passphrase (empty for no passphrase)”（輸入密碼短語，不需要密碼短語則留空）中，您可以選擇是否要為私鑰設置一個密碼短語。設置密碼短語可以提高安全性，但同時也會降低方便性。如果選擇設置密碼短語，每次使用私鑰時都會要求輸入。選擇不設置，只需按 Enter 即可。</p>
+</li>
+</ol>
+<blockquote>
+<p>注意：在本 GitHub workflow 範例中，加入短語可能會無法運作，屆時需要自行調整</p>
+</blockquote>
+<ol start="4">
+<li>如果一切順利，應該已經在 <code>~/.ssh/id_rsa</code> 和 <code>~/.ssh/id_rsa.pub</code> 中生成了私鑰和公鑰。可以使用 <code>cat ~/.ssh/id_rsa</code> 查看私鑰，並使用 <code>cat ~/.ssh/id_rsa.pub</code> 查看公鑰。</li>
+</ol>
+<blockquote>
+<p>請注意保護好您的私鑰，不要讓它落入他人手中。</p>
+</blockquote>
+<ol start="5">
+<li><p>接下來將公鑰加入至 Server 中</p>
+<ol>
+<li><code>cat ~/.ssh/id_rsa.pub</code> 查看公鑰並複製</li>
+<li>執行指令 <code>echo &#39;ssh-rsa AAAA...&#39; &gt;&gt; ~/.ssh/authorized_keys</code> 其中的 <code>&#39;ssh-rsa AAAA...&#39;</code> 替換成剛剛複製的公鑰</li>
+</ol>
+</li>
+<li><p>設置權限，讓他可以被讀取</p>
+</li>
+</ol>
+<pre><code class="hljs bash">chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys</code></pre>
+<h4 id="將-SSH-私鑰加入到儲存庫的-secrets-中"><a href="#將-SSH-私鑰加入到儲存庫的-secrets-中" class="headerlink" title="將 SSH 私鑰加入到儲存庫的 secrets 中"></a>將 SSH 私鑰加入到儲存庫的 secrets 中</h4><ol>
+<li>打開 GitHub 儲存庫，進入上方的 Settings，左側找到 Secrets and variables，展開選擇 Actions，然後按下 “New repository secret”，然後在虛擬主機上使用 <code>cat ~/.ssh/id_rsa</code> 查看並複製私鑰。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-01.png?alt=media&amp;token=4ce6b89d-235d-4dc0-bc84-7ecb0f953f84" alt=""></p>
+<ol start="2">
+<li>加入名稱 “DEPLOY_SSH_KEY” 然後把完整的私鑰加入。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-02.png?alt=media&amp;token=a9424a8d-8f36-4725-b482-f3f0d6f83bfd" alt=""></p>
+<p>之後以此類推，只要需要加入 secrets 的地方，都可以使用此方式加入。</p>
+<h2 id="準備-GitHub-Action"><a href="#準備-GitHub-Action" class="headerlink" title="準備 GitHub Action"></a>準備 GitHub Action</h2><p>在專案中，建立資料夾 <code>.github/workflows</code>，並且建立 <code>deploy.yml</code> 檔案，內容如下：</p>
+<pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">部署</span> <span class="hljs-string">PM2</span> <span class="hljs-string">專案</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span> 
+    <span class="hljs-attr">branches:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">feature/action-pm2</span>
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">deploy:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span> <span class="hljs-string">code</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v1</span>
+      
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">Node.js</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v1</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">node-version:</span> <span class="hljs-number">18</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">npm</span> <span class="hljs-string">install,</span> <span class="hljs-string">build</span> <span class="hljs-string">and</span> <span class="hljs-string">test</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span>
+<span class="hljs-string">          npm install</span>
+<span class="hljs-string">          npm run swagger</span>
+<span class="hljs-string"></span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Create</span> <span class="hljs-string">.env</span> <span class="hljs-string">file</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span>
+<span class="hljs-string">          echo ENV_VARIALBES=$&#123;&#123; secrets.ENV_VARIALBES &#125;&#125; &gt;&gt; .env</span>
+<span class="hljs-string">          echo PORT=$&#123;&#123; secrets.ENV_PORT &#125;&#125; &gt;&gt; .env</span>
+<span class="hljs-string"></span>        <span class="hljs-comment"># 然後再執行 rsync 來將 .env 文件傳輸到虛擬主機</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">SSH</span> <span class="hljs-string">key</span>  <span class="hljs-comment"># 第二步，安裝 SSH 密鑰</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">webfactory/ssh-agent@v0.5.3</span>  <span class="hljs-comment"># 使用第三方的 ssh-agent 動作</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">ssh-private-key:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.DEPLOY_SSH_KEY</span> <span class="hljs-string">&#125;&#125;</span>  <span class="hljs-comment"># 從 GitHub Secrets 中取得私鑰</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">更新</span> <span class="hljs-string">known_hosts</span> <span class="hljs-string">文件</span>  <span class="hljs-comment"># 步驟的名稱</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span>  <span class="hljs-comment"># 將要執行的命令</span>
+          <span class="hljs-string">mkdir</span> <span class="hljs-string">-p</span> <span class="hljs-string">~/.ssh</span>
+          <span class="hljs-string">ssh-keyscan</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.hostname</span> <span class="hljs-string">&#125;&#125;</span> <span class="hljs-string">&gt;&gt;</span> <span class="hljs-string">~/.ssh/known_hosts</span>
+        <span class="hljs-comment"># 請將 &#x27;hostname&#x27; 替換為你的服務器地址，例如 IP 地址或域名</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Transfer</span> <span class="hljs-string">files</span>  <span class="hljs-comment"># 第六步，傳輸文件</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">rsync</span> <span class="hljs-string">-avz</span> <span class="hljs-string">--delete</span> <span class="hljs-string">./</span> <span class="hljs-string">root@$&#123;&#123;</span> <span class="hljs-string">secrets.hostname</span> <span class="hljs-string">&#125;&#125;:~/website-sample/node-ironman-sample-2023/</span>  <span class="hljs-comment"># 使用 rsync 命令將文件傳輸到虛擬主機</span>
+        <span class="hljs-comment"># root@hostname 請替換成相應的帳號及主機位置(ip 或網址)</span>
+        <span class="hljs-attr">env:</span>
+          <span class="hljs-attr">ENV_VARIABLE:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.ENV_VARIABLE</span> <span class="hljs-string">&#125;&#125;</span>  <span class="hljs-comment"># 從 GitHub Secrets 中取得環境變數的值</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Restart</span> <span class="hljs-string">PM2</span>  <span class="hljs-comment"># 第八步，重啟 PM2</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">ssh</span> <span class="hljs-string">root@$&#123;&#123;</span> <span class="hljs-string">secrets.hostname</span> <span class="hljs-string">&#125;&#125;</span> <span class="hljs-string">&#x27;cd ~/website-sample/node-ironman-sample-2023/ &amp;&amp; pm2 restart www --update-env&#x27;</span>  <span class="hljs-comment"># 透過 SSH 連到虛擬主機，然後進到應用程式的目錄，並重啟所有 PM2 管理的應用程式</span></code></pre>
+<p>專案加入 GitHub Action 後，每次 push 就會觸發部署，並且會在 GitHub Action 中看到部署的狀態，如下圖</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-03.png?alt=media&amp;token=fa331f44-c0d2-43d8-b7c0-1b126b547b23" alt=""></p>
+<p>如果成功會出現如下的綠色勾勾，並且可以點進去看到詳細的部署過程。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-04.png?alt=media&amp;token=b5b132e9-97c8-43cf-9255-f7f59b66f52c" alt=""></p>
+<p>反之，當遇到錯誤，則會出現紅色的叉叉，並且可以點進去看到詳細的錯誤訊息。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-06.png?alt=media&amp;token=d0b0c794-f9c1-4e18-9ec2-364f32e682d7" alt=""></p>
+<h2 id="其他說明"><a href="#其他說明" class="headerlink" title="其他說明"></a>其他說明</h2><p>GitHub Action 是目前相當主流的自動化工具之一，只要是 GitHub 儲存庫都可以使用，而且可以部署各種語言的專案，例如 Node.js、Python、Java、Go、Ruby、PHP 等等，甚至可以使用 Docker 來進行部署，這邊只是介紹其中一種方式，如果有興趣可以參考 <a href="https://docs.github.com/en/actions">GitHub Action 官方文件</a>。</p>
+<p>然而 GitHub Action 並非免費的服務，可以在個人設定 &gt; Billing and plans &gt; plans and usage 中找到相關的使用量及說明。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-05.png?alt=media&amp;token=8ab5fcb4-b67e-4eda-a5fd-e1987ae40e3a" alt=""></p>
+]]></content>
+      
+        <categories>
+            
+            <category> development </category>
+            
+        </categories>
+        
+        
+        <tags>
+            
+            <tag> javascript </tag>
+            
+            <tag> nodejs </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[Ubuntu 虛擬主機部署 Node.js 服務，使用 PM2 服務管理]]></title>
       <url>https://wcc723.github.io/development/2023/10/03/unbuntu-and-pm2/</url>
       <content type="html"><![CDATA[ 

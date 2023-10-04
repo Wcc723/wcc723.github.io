@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>使用 GitHub Action 部署 Node.js 專案至虛擬主機上 | 卡斯伯 Blog - 前端，沒有極限</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+        <meta name="keywords" content="javascript,nodejs" />
+    
+    
+
+    <meta name="description" content="這是鐵人賽相關文章，影片會在活動開始後發布 本篇文章會介紹如何「使用 GitHub Action 部署專案至虛擬主機上」，虛擬主機會使用 PM2 來進行管理，整個流程與業界實戰會略有落差，主要是作為 “基礎知識” 理解所使用，實戰中還是多利用 Docker 容器化來進行管理：  虛擬主機環境準備 準備 GitHub Action 其他說明  程式碼部分可以參考 本範例，不過在環境配置上">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 GitHub Action 部署 Node.js 專案至虛擬主機上">
+<meta property="og:url" content="https://wcc723.github.io/development/2023/10/04/nodejs-github-action/index.html">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="這是鐵人賽相關文章，影片會在活動開始後發布 本篇文章會介紹如何「使用 GitHub Action 部署專案至虛擬主機上」，虛擬主機會使用 PM2 來進行管理，整個流程與業界實戰會略有落差，主要是作為 “基礎知識” 理解所使用，實戰中還是多利用 Docker 容器化來進行管理：  虛擬主機環境準備 準備 GitHub Action 其他說明  程式碼部分可以參考 本範例，不過在環境配置上">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-o.jpeg?alt=media&token=70ca38c4-d431-448a-b8a8-ad47f57c2e96">
+<meta property="article:published_time" content="2023-10-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-10-04T13:32:39.996Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="nodejs">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-o.jpeg?alt=media&token=70ca38c4-d431-448a-b8a8-ad47f57c2e96">
+<meta property="fb:app_id" content="556473851118881">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" id="style-switch" href="/css/all.css">
+    
+
+    
+<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
+    
+    
+        
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-97433H4032');
+</script>
+    
+    
+
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "ideor5a1by");
+</script>
+    <!-- Facebook Pixel Code -->
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '152520611964487');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
+    /></noscript>
+    <!-- DO NOT MODIFY -->
+    <!-- End Facebook Pixel Code -->
+    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+    
+    <!-- Ahref SEO Tool -->
+    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
+
+    <!-- Google Adsense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
+    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body class="bg-light">
+  <div>
+    <header>
+  <nav class="navbar navbar-expand-lg navbar-sticky bg-white shadow-sm">
+    <div class="container">
+      <!-- Logo START -->
+      <a class="navbar-brand" href="/">
+        <img
+          class="navbar-brand-item light-mode-item"
+          src="/images/blog_logo.svg"
+          alt="卡斯伯的 Blog"
+        />
+        <img
+          class="navbar-brand-item dark-mode-item"
+          src="/images/blog_logo_w.svg"
+          alt="卡斯伯的 Blog"
+        />
+      </a>
+      <!-- Logo END -->
+
+      <!-- Responsive navbar toggler -->
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="text-body h6 d-none d-sm-inline-block">Menu</span>
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav navbar-nav-scroll ms-auto">
+          <li class="nav-item">
+            <a href="/about/hexschool-traning.html" class="nav-link position-relative">
+              作品直播班(學員心得)
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/css"
+              >CSS</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/tags/javascript/"
+              >JS</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/archives"
+              >文章列表</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+          <!-- Nav item 1 Demos -->
+        </ul>
+        <!-- <div class="my-3">
+          <div class="modeswitch" id="darkModeSwitch">
+            <div class="switch"></div>
+          </div>
+        </div> -->
+        <nav class="mx-3"><div id="search-form-wrap">
+
+    <form class="search-form input-group" style="width: 120px">
+        <input type="text" class="ins-search-input search-form-input form-control" placeholder="搜尋知識" />
+        <!-- <button type="submit" class="search-form-submit btn btn-outline-secondary">
+            <i class="bi bi-search fs-4"> </i>
+        </button> -->
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
+            <span class="ins-close ins-selectable"><i class="bi bi-x"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '頁面',
+            CATEGORIES: '分類',
+            TAGS: '標籤标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div></nav>
+        
+      </div>
+      <div class="nav-item">
+        <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasMenu" role="button" aria-controls="offcanvasMenu">
+          <i class="fs-5 bi bi-list"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
+  <div class="offcanvas-header">
+    <button
+      type="button"
+      class="btn-close text-reset"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body d-flex flex-column pt-0">
+    <div>
+      <img
+        class="light-mode-item my-3"
+        src="/images/blog_logo.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <img
+        class="dark-mode-item my-3"
+        src="/images/blog_logo_w.svg"
+        alt="卡斯伯的 Blog"
+      />
+      <!-- Nav START -->
+      <ul class="nav d-block flex-column my-4">
+        
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/tags/css"
+              >CSS</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/tags/javascript/"
+              >JS</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/categories/life"
+              >生活</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/archives"
+              >文章列表</a
+            >
+          </li>
+          
+          <li class="nav-item my-3">
+            <a class="nav-link" href="/about"
+              >關於</a
+            >
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        
+        
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000">
+  <div class="text-center">
+    <img
+      src="/images/2021/avatar.png"
+      height="115"
+      width="115"
+      class="img-fluid mb-2"
+      alt=""
+    />
+    <p>設計師轉職前端工程師，擅長將複雜觀念用圖形化方式呈現</p>
+    <a
+      href="https://www.facebook.com/WccCasper"
+      target="_blank"
+      class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-facebook"></i> 追蹤卡斯伯</a
+    >
+    <a href="#comments" class="btn btn-outline-primary btn-sm rounded-pill"
+      ><i class="bi bi-chat-text"></i
+    ></a>
+  </div>
+  <hr>
+  <div class="toc-component">
+    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%99%9B%E6%93%AC%E4%B8%BB%E6%A9%9F%E7%92%B0%E5%A2%83%E6%BA%96%E5%82%99"><span class="toc-text">虛擬主機環境準備</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BA%96%E5%82%99-GitHub-Action"><span class="toc-text">準備 GitHub Action</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E8%AA%AA%E6%98%8E"><span class="toc-text">其他說明</span></a></li></ol>
+  </div>
+  
+    <hr />
+    <div class="d-flex justify-content-center">
+      <div
+        class="fb-like"
+        data-layout="box_count"
+        data-action="like"
+        data-size="large"
+        data-share="true"
+        data-href="https://wcc723.github.io/development/2023/10/04/nodejs-github-action/"
+      ></div>
+    </div>
+    <div class="text-center mt-2 text-black-50">
+      按讚，就是最大的支持
+    </div>
+    
+</div>
+
+          </div>
+          <div class="col-lg-8 bg-white shadow-lg rounded-3 rounded-top">
+            <section id="main">
+              <p class="mt-2 mb-0 small">卡斯伯提供的教學資源：</p>
+<div class="row gx-2">
+    <a class="col-4 d-block" href="https://hex.school/5cYlz" target="_blank">
+        <img no-lazy src="/images/2021/vue3_實戰影音.jpg" style="max-width: 100%" alt="">
+    </a>
+    <a class="col-4 d-block" href="/about/hexschool-traning.html">
+        <img no-lazy src="/images/2022/vue_作品實戰班_學員心得.jpg" style="max-width: 100%" alt="">
+    </a>
+    <a class="col-4 d-block" target="_blank" rel="noopener" href="https://hex.school/byKCb">
+        <img no-lazy src="/images/2022/JavaScript面試力.jpg" style="max-width: 100%" alt="">
+    </a>
+</div>
+<div class="main-body-header">
+    <h2 class="my-3">
+    
+    
+    </h2>
+</div>
+              <div id="sticky-space"></div>
+              
+<div class="bg-white rounded my-3 shadow
+  alert alert-dismissible fade show"
+  id="calendar_notification_small-block">
+  <div class="me-3 d-flex align-items-center">
+    <span class="badge bg-primary p-2 me-3">近期活動通知：</span>
+    <a href="#"  class="d-inline-block text-decoration-underline text-primary" id="calendar_notification_small-content"
+    data-bs-toggle="modal" data-bs-target="#calendar_notify-sm-modal">
+    </a>
+  </div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="modal fade" id="calendar_notify-sm-modal" tabindex="-1" aria-labelledby="#calendar_notify-sm-modal-label" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="calendar_notify-sm-modal-label">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="calendar_notify-sm-modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary d-block w-100" data-bs-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+#calendar_notification_small-block {
+  display: none;
+}
+</style>
+
+<script>
+(() => {
+  const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
+  const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
+  const query = '卡斯伯';
+
+  const today = new Date();
+  const fullYear = today.getFullYear();
+  const month = today.getMonth();
+  const date = today.getDate();
+  const hours = today.getHours();
+  const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
+  const timeMax = new Date(fullYear, month, date + 7, hours).toISOString();
+
+  const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
+
+  const calendarNotificationBlock = document.querySelector('#calendar_notification_small-block');
+
+  $.ajax({
+    url: api,
+    success: function(data) {
+      if (Array.isArray(data.items) && data.items.length) {
+        const item = data.items[0];
+        const context = `<div class="d-inline-block">
+          <strong class="me-3">${item.summary}</strong>
+          <br class="d-md-none" />活動時間：${new Date(item.start.dateTime).toLocaleString()}
+        </div>`;
+        const calendarContentDom = document.querySelector('#calendar_notification_small-content');
+                
+        calendarNotificationBlock.style.display = 'block';
+        calendarContentDom.innerHTML = context;
+
+        document.querySelector('#calendar_notify-sm-modal-label').textContent = item.summary;
+        document.querySelector('#calendar_notify-sm-modal-body').innerHTML = item.description;
+
+      }
+    }
+  });
+})();
+</script>
+              <div class="main-body-content">
+                <article id="post-nodejs-github-action" class="article article-single article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner" data-bs-offset="0">
+        
+            <div class="article-subtitle">
+                
+    <ul class="d-inline-block list-unstyled" itemprop="keywords"><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/javascript/" rel="tag">javascript</a></li><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/nodejs/" rel="tag">nodejs</a></li></ul>
+
+                
+<span class="ms-2 small"><time datetime="2023-10-03T16:00:00.000Z" itemprop="datePublished">2023-10-04</time></span>
+            </div>
+        
+        
+            <header class="article-header">
+                 
+<h1 class="display-5" itemprop="name">使用 GitHub Action 部署 Node.js 專案至虛擬主機上</h1>
+ 
+
+            </header>
+        
+        <div id="endView"></div><!-- google analytics -->
+        
+        <div class="article-entry" itemprop="articleBody">
+            
+                <div style="margin: 15px 0;">
+                    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+                </div>
+            
+            <div class="need-gallery">
+                 
+<div class="ratio ratio-16x9">
+<iframe width="100%" src="https://www.youtube.com/embed/cUmSAGtP-70" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
+<p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
+<p>本篇文章會介紹如何「使用 GitHub Action 部署專案至虛擬主機上」，虛擬主機會使用 PM2 來進行管理，整個流程與業界實戰會略有落差，主要是作為 “基礎知識” 理解所使用，實戰中還是多利用 Docker 容器化來進行管理：</p>
+<ol>
+<li>虛擬主機環境準備</li>
+<li>準備 GitHub Action</li>
+<li>其他說明</li>
+</ol>
+<p>程式碼部分可以參考 <a target="_blank" rel="noopener" href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/action-pm2">本範例</a>，不過在環境配置上，還是需要勞煩各位自己動手做，它才能夠正確的運行喔</p>
+<h2 id="虛擬主機環境準備"><a href="#虛擬主機環境準備" class="headerlink" title="虛擬主機環境準備"></a>虛擬主機環境準備</h2><p>這是整個流程最複雜的地方，而本篇不會介紹 PM2 的安裝，如果不熟悉可以先參考我另一篇文章 <a href="/development/2023/10/03/unbuntu-and-pm2/">Ubuntu 虛擬主機部署 Node.js 服務，使用 PM2 服務管理</a>，會從零開始介紹 Ubuntu 環境建置、專案建置、PM2 管理。</p>
+<p>這段主要準備的是給予 GitHub Action 連線用的配置，主要是產生 SSH 金鑰，並將私鑰提供給 GitHub Action 使用，流程如下：</p>
+<h4 id="建立公私鑰，並加入到儲存庫的-secrets-中"><a href="#建立公私鑰，並加入到儲存庫的-secrets-中" class="headerlink" title="建立公私鑰，並加入到儲存庫的 secrets 中"></a>建立公私鑰，並加入到儲存庫的 secrets 中</h4><ol>
+<li>輸入以下指令以建立新的 SSH 私鑰。這裡使用的是 RSA 類型的金鑰（<a href="mailto:your_email@example.com">your_email@example.com</a> 請替換為個人 Email）：</li>
+</ol>
+<pre><code class="hljs bash">ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">&quot;your_email@example.com&quot;</span></code></pre>
+<ol start="2">
+<li><p>當提示您 <code>Enter a file in which to save the key</code>（輸入一個文件來保存鑰匙）時，只需按 Enter。這將會將私鑰保存在預設位置，即您的 home 目錄下的 <code>.ssh/id_rsa</code> 文件。</p>
+</li>
+<li><p>在接下來的提示 “Enter passphrase (empty for no passphrase)”（輸入密碼短語，不需要密碼短語則留空）中，您可以選擇是否要為私鑰設置一個密碼短語。設置密碼短語可以提高安全性，但同時也會降低方便性。如果選擇設置密碼短語，每次使用私鑰時都會要求輸入。選擇不設置，只需按 Enter 即可。</p>
+</li>
+</ol>
+<blockquote>
+<p>注意：在本 GitHub workflow 範例中，加入短語可能會無法運作，屆時需要自行調整</p>
+</blockquote>
+<ol start="4">
+<li>如果一切順利，應該已經在 <code>~/.ssh/id_rsa</code> 和 <code>~/.ssh/id_rsa.pub</code> 中生成了私鑰和公鑰。可以使用 <code>cat ~/.ssh/id_rsa</code> 查看私鑰，並使用 <code>cat ~/.ssh/id_rsa.pub</code> 查看公鑰。</li>
+</ol>
+<blockquote>
+<p>請注意保護好您的私鑰，不要讓它落入他人手中。</p>
+</blockquote>
+<ol start="5">
+<li><p>接下來將公鑰加入至 Server 中</p>
+<ol>
+<li><code>cat ~/.ssh/id_rsa.pub</code> 查看公鑰並複製</li>
+<li>執行指令 <code>echo &#39;ssh-rsa AAAA...&#39; &gt;&gt; ~/.ssh/authorized_keys</code> 其中的 <code>&#39;ssh-rsa AAAA...&#39;</code> 替換成剛剛複製的公鑰</li>
+</ol>
+</li>
+<li><p>設置權限，讓他可以被讀取</p>
+</li>
+</ol>
+<pre><code class="hljs bash">chmod 700 ~/.ssh
+chmod 600 ~/.ssh/authorized_keys</code></pre>
+<h4 id="將-SSH-私鑰加入到儲存庫的-secrets-中"><a href="#將-SSH-私鑰加入到儲存庫的-secrets-中" class="headerlink" title="將 SSH 私鑰加入到儲存庫的 secrets 中"></a>將 SSH 私鑰加入到儲存庫的 secrets 中</h4><ol>
+<li>打開 GitHub 儲存庫，進入上方的 Settings，左側找到 Secrets and variables，展開選擇 Actions，然後按下 “New repository secret”，然後在虛擬主機上使用 <code>cat ~/.ssh/id_rsa</code> 查看並複製私鑰。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-01.png?alt=media&amp;token=4ce6b89d-235d-4dc0-bc84-7ecb0f953f84" alt=""></p>
+<ol start="2">
+<li>加入名稱 “DEPLOY_SSH_KEY” 然後把完整的私鑰加入。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-02.png?alt=media&amp;token=a9424a8d-8f36-4725-b482-f3f0d6f83bfd" alt=""></p>
+<p>之後以此類推，只要需要加入 secrets 的地方，都可以使用此方式加入。</p>
+<h2 id="準備-GitHub-Action"><a href="#準備-GitHub-Action" class="headerlink" title="準備 GitHub Action"></a>準備 GitHub Action</h2><p>在專案中，建立資料夾 <code>.github/workflows</code>，並且建立 <code>deploy.yml</code> 檔案，內容如下：</p>
+<pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">部署</span> <span class="hljs-string">PM2</span> <span class="hljs-string">專案</span>
+
+<span class="hljs-attr">on:</span>
+  <span class="hljs-attr">push:</span> 
+    <span class="hljs-attr">branches:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-string">feature/action-pm2</span>
+
+<span class="hljs-attr">jobs:</span>
+  <span class="hljs-attr">deploy:</span>
+    <span class="hljs-attr">runs-on:</span> <span class="hljs-string">ubuntu-latest</span>
+    <span class="hljs-attr">steps:</span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Checkout</span> <span class="hljs-string">code</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/checkout@v1</span>
+      
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">Node.js</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">actions/setup-node@v1</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">node-version:</span> <span class="hljs-number">18</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">npm</span> <span class="hljs-string">install,</span> <span class="hljs-string">build</span> <span class="hljs-string">and</span> <span class="hljs-string">test</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span>
+<span class="hljs-string">          npm install</span>
+<span class="hljs-string">          npm run swagger</span>
+<span class="hljs-string"></span>
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Create</span> <span class="hljs-string">.env</span> <span class="hljs-string">file</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span>
+<span class="hljs-string">          echo ENV_VARIALBES=$&#123;&#123; secrets.ENV_VARIALBES &#125;&#125; &gt;&gt; .env</span>
+<span class="hljs-string">          echo PORT=$&#123;&#123; secrets.ENV_PORT &#125;&#125; &gt;&gt; .env</span>
+<span class="hljs-string"></span>        <span class="hljs-comment"># 然後再執行 rsync 來將 .env 文件傳輸到虛擬主機</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Install</span> <span class="hljs-string">SSH</span> <span class="hljs-string">key</span>  <span class="hljs-comment"># 第二步，安裝 SSH 密鑰</span>
+        <span class="hljs-attr">uses:</span> <span class="hljs-string">webfactory/ssh-agent@v0.5.3</span>  <span class="hljs-comment"># 使用第三方的 ssh-agent 動作</span>
+        <span class="hljs-attr">with:</span>
+          <span class="hljs-attr">ssh-private-key:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.DEPLOY_SSH_KEY</span> <span class="hljs-string">&#125;&#125;</span>  <span class="hljs-comment"># 從 GitHub Secrets 中取得私鑰</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">更新</span> <span class="hljs-string">known_hosts</span> <span class="hljs-string">文件</span>  <span class="hljs-comment"># 步驟的名稱</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">|</span>  <span class="hljs-comment"># 將要執行的命令</span>
+          <span class="hljs-string">mkdir</span> <span class="hljs-string">-p</span> <span class="hljs-string">~/.ssh</span>
+          <span class="hljs-string">ssh-keyscan</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.hostname</span> <span class="hljs-string">&#125;&#125;</span> <span class="hljs-string">&gt;&gt;</span> <span class="hljs-string">~/.ssh/known_hosts</span>
+        <span class="hljs-comment"># 請將 &#x27;hostname&#x27; 替換為你的服務器地址，例如 IP 地址或域名</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Transfer</span> <span class="hljs-string">files</span>  <span class="hljs-comment"># 第六步，傳輸文件</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">rsync</span> <span class="hljs-string">-avz</span> <span class="hljs-string">--delete</span> <span class="hljs-string">./</span> <span class="hljs-string">root@$&#123;&#123;</span> <span class="hljs-string">secrets.hostname</span> <span class="hljs-string">&#125;&#125;:~/website-sample/node-ironman-sample-2023/</span>  <span class="hljs-comment"># 使用 rsync 命令將文件傳輸到虛擬主機</span>
+        <span class="hljs-comment"># root@hostname 請替換成相應的帳號及主機位置(ip 或網址)</span>
+        <span class="hljs-attr">env:</span>
+          <span class="hljs-attr">ENV_VARIABLE:</span> <span class="hljs-string">$&#123;&#123;</span> <span class="hljs-string">secrets.ENV_VARIABLE</span> <span class="hljs-string">&#125;&#125;</span>  <span class="hljs-comment"># 從 GitHub Secrets 中取得環境變數的值</span>
+
+      <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Restart</span> <span class="hljs-string">PM2</span>  <span class="hljs-comment"># 第八步，重啟 PM2</span>
+        <span class="hljs-attr">run:</span> <span class="hljs-string">ssh</span> <span class="hljs-string">root@$&#123;&#123;</span> <span class="hljs-string">secrets.hostname</span> <span class="hljs-string">&#125;&#125;</span> <span class="hljs-string">&#x27;cd ~/website-sample/node-ironman-sample-2023/ &amp;&amp; pm2 restart www --update-env&#x27;</span>  <span class="hljs-comment"># 透過 SSH 連到虛擬主機，然後進到應用程式的目錄，並重啟所有 PM2 管理的應用程式</span></code></pre>
+<p>專案加入 GitHub Action 後，每次 push 就會觸發部署，並且會在 GitHub Action 中看到部署的狀態，如下圖</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-03.png?alt=media&amp;token=fa331f44-c0d2-43d8-b7c0-1b126b547b23" alt=""></p>
+<p>如果成功會出現如下的綠色勾勾，並且可以點進去看到詳細的部署過程。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-04.png?alt=media&amp;token=b5b132e9-97c8-43cf-9255-f7f59b66f52c" alt=""></p>
+<p>反之，當遇到錯誤，則會出現紅色的叉叉，並且可以點進去看到詳細的錯誤訊息。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-06.png?alt=media&amp;token=d0b0c794-f9c1-4e18-9ec2-364f32e682d7" alt=""></p>
+<h2 id="其他說明"><a href="#其他說明" class="headerlink" title="其他說明"></a>其他說明</h2><p>GitHub Action 是目前相當主流的自動化工具之一，只要是 GitHub 儲存庫都可以使用，而且可以部署各種語言的專案，例如 Node.js、Python、Java、Go、Ruby、PHP 等等，甚至可以使用 Docker 來進行部署，這邊只是介紹其中一種方式，如果有興趣可以參考 <a target="_blank" rel="noopener" href="https://docs.github.com/en/actions">GitHub Action 官方文件</a>。</p>
+<p>然而 GitHub Action 並非免費的服務，可以在個人設定 &gt; Billing and plans &gt; plans and usage 中找到相關的使用量及說明。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-05.png?alt=media&amp;token=8ab5fcb4-b67e-4eda-a5fd-e1987ae40e3a" alt=""></p>
+
+            </div>
+            
+                <div>
+  <script type="text/javascript">
+    document.write(
+      "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/agito723/button?referrer=" +
+      encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
+  </script>
+<div>
+            
+            <div style="overflow: hidden; margin: 15px 0;">
+            
+                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+            
+            </div>
+            <!-- <div style="margin: 15px 0;">
+                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
+                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
+                </a>
+            </div> -->
+            
+                <div class="my-3">
+                    <ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8769565283"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+                </div>
+            
+            
+
+<style>
+.article-entry .article-nav {
+  display: flex;
+  background-color: rgba(0,0,0,0.03);
+}
+.article-entry .article-nav .col-12 {
+  flex: 0 0 auto;
+  width: 50%;
+}
+</style>
+<div class="row g-0 mt-5 border-top border-bottom article-nav">
+  
+    <div class="col-12 py-3 py-md-4">
+      <div class="d-flex align-items-center position-relative">
+        <!-- Icon -->
+        <div class="bg-primary py-1">
+          <i class="bi bi-chevron-compact-left fs-3 text-white px-1 rtl-flip"></i>
+        </div>
+        <!-- Title -->
+        <div class="ms-3">
+          <h5 class="m-0">
+            <a href="/development/2023/10/03/unbuntu-and-pm2/" class="stretched-link btn-link text-reset"
+              >上一篇：Ubuntu 虛擬主機部署 Node.js 服務，使用 PM2 服務管理</a
+            >
+          </h5>
+        </div>
+      </div>
+    </div>
+  
+  
+  <div class="col-12 py-3 py-md-4 text-sm-end">
+    <div class="d-flex align-items-center position-relative justify-content-end">
+      <!-- Title -->
+      <div class="me-3">
+        <h5 class="m-0">
+          <a href="/development/2023/10/07/docker-container/" class="stretched-link btn-link text-reset"
+            >下一篇： 在 Ubuntu 上加入 Docker 環境並部署 Node.js 專案 </a
+          >
+        </h5>
+      </div>
+      <!-- Icon -->
+      <div class="bg-primary py-1">
+        <i
+          class="bi bi-chevron-compact-right fs-3 text-white px-1 rtl-flip"
+        ></i>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+
+        </div>
+        <footer class="article-footer">
+            
+
+
+        </footer>
+        
+    <section id="comments">
+    
+      
+
+  <!-- Facebook Comments Block -->
+  <div class="fb-comments"
+    data-href="https://wcc723.github.io/development/2023/10/04/nodejs-github-action/"
+    data-width="100%">
+  </div>
+
+
+    
+    </section>
+
+
+    </div>
+</article>
+
+              </div>
+            </section>
+          </div>
+          <div class="col-lg-2 d-none d-lg-block">
+            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000;">
+              <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+            </div>
+          </div>
+          <div class="col-12">
+            
+<div class="row mt-5">
+  <div class="col-lg-3 mb-3">
+    <h4>相似文章</h4>
+    <div class="list-group bg-white">
+      
+        
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+          <a href="/development/2019/11/23/ten-mins-learn-markdown/" class="list-group-item list-group-item-action">
+            <h5>十分鐘快速掌握 Markdown</h5>
+            <p class="small mb-0">
+              Markdown 是目前非常普遍用來撰寫文檔的語言，一開始的目標就是使用「易讀易寫的純文字格式編寫文件」，此初衷讓使用者可以專注在文字的本身，而不需要透過其它工具來切換格式。以 Word 撰寫文檔來說，就必須透過上方的工具列來切換標題、列表、粗體、斜體等等；而 Markdown 並沒有這樣的工具列，...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+          <a href="/development/2019/12/01/vscode-chinese/" class="list-group-item list-group-item-action">
+            <h5>一分鐘切換成中文版 VSCode（完整圖文版）</h5>
+            <p class="small mb-0">
+              雖然開發者都具有一定的英文閱讀能力，但如果在不熟悉的情況下，就比較難以快速上手一個新工具。如果要快速掌握一個完整的工具或技術，最好的方式還是先切換成熟悉的語言。
+而 VSCode 雖然預設並無法直接切換語系，但官方有提供各國的語言套件，讓開發者可以自行選用。
+切換成中文版如果你對於 VSCode 有...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+          <a href="/development/2020/01/04/image-common-mistakes/" class="list-group-item list-group-item-action">
+            <h5>前端開發者，圖片常犯的五個粗心錯誤</h5>
+            <p class="small mb-0">
+              前端開發者是透過程式碼將資訊呈現成畫面，因此畫面的好壞也多少影響品質，在觀看許多履歷或作業的過程中，會發現許多相似的錯誤，而這些錯誤都是有跡可循，並且可以避免的；本篇先以常見的圖片問題與大家分享，看是否你也犯了這些錯誤呢？
+一、圖片變形新手錯誤率：⭐⭐⭐⭐令人感受的粗心度：👎👎👎👎
+圖片變形...
+            </p>
+          </a>
+        
+      
+          
+          <a href="/development/2020/02/02/jest-intro/" class="list-group-item list-group-item-action">
+            <h5>十分鐘上手前端單元測試 - 使用 Jest</h5>
+            <p class="small mb-0">
+              隨著應用程式越來越大，人工流程的測試也會耗去許多的時間，許多功能再開發後都必須重新進行點擊特定目標、撰寫複雜表單、送出來檢驗功能的正確性，當功能越來越複雜時，人工測試所花的時間也會越來越常，因此改用測試工具相對會節省去許多時間。尤其到了上線時才發現錯誤，那時候心中真的會吶喊 No、No、No～。
+前...
+            </p>
+          </a>
+        
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+          
+      
+    </div>
+  </div>
+
+  <div class="col-lg-3 mb-3">
+    
+<div class="widget-wrap widget-list mb-3">
+    <h4 class="mb-3">粉絲專頁</h4>
+    <div class="widget">
+        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+    </div>
+</div>
+  </div>
+
+  <div class="col-lg-4 d-none d-lg-block mb-3">
+    
+<div class="mb-3">
+  <h4 class="mb-3">標籤雲</h4>
+  <div class="widget tagcloud" style="line-height: 1;"><a href="/tags/Bootstrap/" style="font-size: 19px;" class="p-1 m-1 d-inline-block -5">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 16.78px;" class="p-1 m-1 d-inline-block -3">Sass</a> <a href="/tags/async/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">async</a> <a href="/tags/await/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">await</a> <a href="/tags/beginner/" style="font-size: 14.56px;" class="p-1 m-1 d-inline-block -1">beginner</a> <a href="/tags/bootstrap/" style="font-size: 17.33px;" class="p-1 m-1 d-inline-block -3">bootstrap</a> <a href="/tags/border/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">border</a> <a href="/tags/business/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">business</a> <a href="/tags/compass/" style="font-size: 15.67px;" class="p-1 m-1 d-inline-block -2">compass</a> <a href="/tags/courses/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">courses</a> <a href="/tags/css/" style="font-size: 24px;" class="p-1 m-1 d-inline-block -10">css</a> <a href="/tags/d3/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">d3</a> <a href="/tags/d3js/" style="font-size: 20.67px;" class="p-1 m-1 d-inline-block -7">d3js</a> <a href="/tags/design/" style="font-size: 21.22px;" class="p-1 m-1 d-inline-block -7">design</a> <a href="/tags/develop/" style="font-size: 15.11px;" class="p-1 m-1 d-inline-block -1">develop</a> <a href="/tags/dns/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">dns</a> <a href="/tags/emmet/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">emmet</a> <a href="/tags/es6/" style="font-size: 14.56px;" class="p-1 m-1 d-inline-block -1">es6</a> <a href="/tags/fire-app/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">fire.app</a> <a href="/tags/git/" style="font-size: 16.78px;" class="p-1 m-1 d-inline-block -3">git</a> <a href="/tags/github/" style="font-size: 16.22px;" class="p-1 m-1 d-inline-block -2">github</a> <a href="/tags/grid/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">grid</a> <a href="/tags/gulp/" style="font-size: 20.11px;" class="p-1 m-1 d-inline-block -6">gulp</a> <a href="/tags/html/" style="font-size: 15.67px;" class="p-1 m-1 d-inline-block -2">html</a> <a href="/tags/icon-fonts/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icon fonts</a> <a href="/tags/icons/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icons</a> <a href="/tags/intro/" style="font-size: 14.56px;" class="p-1 m-1 d-inline-block -1">intro</a> <a href="/tags/ironman/" style="font-size: 23.44px;" class="p-1 m-1 d-inline-block -9">ironman</a> <a href="/tags/javascript/" style="font-size: 22.89px;" class="p-1 m-1 d-inline-block -9">javascript</a> <a href="/tags/jekyll/" style="font-size: 19px;" class="p-1 m-1 d-inline-block -5">jekyll</a> <a href="/tags/jest/" style="font-size: 14.56px;" class="p-1 m-1 d-inline-block -1">jest</a> <a href="/tags/jquery/" style="font-size: 17.89px;" class="p-1 m-1 d-inline-block -4">jquery</a> <a href="/tags/js/" style="font-size: 22.33px;" class="p-1 m-1 d-inline-block -8">js</a> <a href="/tags/life/" style="font-size: 15.67px;" class="p-1 m-1 d-inline-block -2">life</a> <a href="/tags/mac/" style="font-size: 15.11px;" class="p-1 m-1 d-inline-block -1">mac</a> <a href="/tags/markdown/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">markdown</a> <a href="/tags/mobile/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">mobile</a> <a href="/tags/modules/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">modules</a> <a href="/tags/node-js/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">node.js</a> <a href="/tags/nodejs/" style="font-size: 19.56px;" class="p-1 m-1 d-inline-block -6">nodejs</a> <a href="/tags/npm/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">npm</a> <a href="/tags/oocss/" style="font-size: 17.33px;" class="p-1 m-1 d-inline-block -3">oocss</a> <a href="/tags/osx/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">osx</a> <a href="/tags/project/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">project</a> <a href="/tags/promise/" style="font-size: 15.11px;" class="p-1 m-1 d-inline-block -1">promise</a> <a href="/tags/puppeteer/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">puppeteer</a> <a href="/tags/rails/" style="font-size: 14.56px;" class="p-1 m-1 d-inline-block -1">rails</a> <a href="/tags/reactjs/" style="font-size: 15.67px;" class="p-1 m-1 d-inline-block -2">reactjs</a> <a href="/tags/ruby/" style="font-size: 14.56px;" class="p-1 m-1 d-inline-block -1">ruby</a> <a href="/tags/sass/" style="font-size: 21.78px;" class="p-1 m-1 d-inline-block -8">sass</a> <a href="/tags/scss/" style="font-size: 16.22px;" class="p-1 m-1 d-inline-block -2">scss</a> <a href="/tags/sketch/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sketch</a> <a href="/tags/ssl/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">ssl</a> <a href="/tags/study/" style="font-size: 16.22px;" class="p-1 m-1 d-inline-block -2">study</a> <a href="/tags/sublime-text/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sublime text</a> <a href="/tags/svg/" style="font-size: 17.33px;" class="p-1 m-1 d-inline-block -3">svg</a> <a href="/tags/test/" style="font-size: 15.11px;" class="p-1 m-1 d-inline-block -1">test</a> <a href="/tags/tool/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">tool</a> <a href="/tags/tools/" style="font-size: 18.44px;" class="p-1 m-1 d-inline-block -4">tools</a> <a href="/tags/vscode/" style="font-size: 14.56px;" class="p-1 m-1 d-inline-block -1">vscode</a> <a href="/tags/vue/" style="font-size: 15.11px;" class="p-1 m-1 d-inline-block -1">vue</a> <a href="/tags/web/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">web</a> <a href="/tags/workshop/" style="font-size: 15.11px;" class="p-1 m-1 d-inline-block -1">workshop</a> <a href="/tags/zeplin/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">zeplin</a> <a href="/tags/%E5%B1%A5%E6%AD%B7/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">履歷</a></div>
+</div>
+
+
+  </div>
+
+  <div class="col-lg-2 d-none d-lg-block mb-3">
+    <!-- RWD AD -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-8296684122088055"
+     data-ad-slot="8450544523"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+<div class="adsense-message">
+  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
+</div>
+  </div>
+
+</div>
+          </div>
+        
+      </div>
+    </div>
+    <footer class="bg-dark py-5 mt-4 text-muted">
+  <div class="container">
+    <div class="container-inner">
+      <a id="back-to-top" href="javascript:;"
+        ><i class="icon fa fa-angle-up"></i
+      ></a>
+      <div class="credit">
+        <h1 class="logo-wrap">
+          <a href="/" class="logo"></a>
+        </h1>
+        <p>
+          &copy; 2023 Wang Casper
+        </p>
+        <p>
+          Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by
+          <a href="https://bootstrap5.hexschool.com/" target="_blank"
+            >Bootstrap</a
+          >
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+    
+    
+
+
+
+<!-- Custom Scripts -->
+
+<!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+<script src="/js/bs-layout-functions.js"></script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v11.0&appId=556473851118881&autoLogAppEvents=1" nonce="drs0t5ih"></script>
+
+
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+  window.onload = () => {
+    $(function() {
+      if(!$('ins[class="adsbygoogle"]').data('adsbygoogleStatus')) {
+        console.log('(╭(°A°`)╮)) 拜託，別擋這個頁面的廣告，不然我一毛錢都沒得賺惹');
+        $('.adsense-message').css('display', 'block');
+      }
+    })
+  }
+  </script>
+
+
+<script>
+  /***
+   * 側欄選單滾動行為
+   */
+  ;(() => {
+    const isFirefox = navigator?.userAgent?.toLowerCase()?.indexOf('firefox') > -1 || '';
+    const h2 = [...document.querySelectorAll('.article-inner h2')];
+    const h3 = [...document.querySelectorAll('.article-inner h3')];
+    let currentHeading = '';
+    let currentHeadingLv3 = '';
+    // 確保至少有 h2 文章列表才運行
+    if (h2.length && !isFirefox) {
+      const tocListLevel3 = [...document.querySelectorAll('.toc-level-2 > ol')]
+      const tocListLink = [...document.querySelectorAll('.toc-level-2 a')]
+      const tocListLinkLv3 = [...document.querySelectorAll('.toc-level-3 a')]
+      tocListLevel3.forEach(item => item.classList.add('d-none'));
+
+      window.addEventListener('scroll', function () {
+        const headings = h2.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse(); // 由後往前找
+        const headingsLevel3 = h3.map((item) => ({
+          uri: encodeURI(item.id),
+          id: item.id,
+          offsetTop: item.offsetTop,
+        })).reverse();
+
+        const windowY = window.scrollY;
+        // console.log(headings, windowY);
+        const findTarget = headings.find(item => windowY + 60 > item.offsetTop);
+        const findTargetLv3 = headingsLevel3.find(item => windowY + 60 > item.offsetTop);
+        // console.log(findTarget);
+        if (findTarget && findTarget.id !== currentHeading) {
+          currentHeading = findTarget.id;
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTarget.uri}"]`);
+          tocListLevel3.forEach(item => item.classList.add('d-none'));
+          tocListLink.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          // location.hash = findTarget.uri;
+        }
+        if (findTargetLv3 && findTargetLv3.id !== currentHeadingLv3) {
+          // console.log('findTargetLv3', findTargetLv3);
+          const tocLink = document.querySelector(`a.toc-link[href="#${findTargetLv3.uri}"]`);
+          tocListLinkLv3.forEach(item => item.classList.remove('active'));
+          tocLink.classList.add('active');
+          // location.hash = findTarget.uri;
+        }
+
+
+      });
+    }
+  })();
+</script>
+
+  </div>
+</body>
+</html>
