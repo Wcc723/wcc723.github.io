@@ -1,19 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-    <meta charset="utf-8">
-    
-    <title>SVG 超硬派了解 line, polygon, polyline, path (手工繪製) | 卡斯伯 Blog - 前端，沒有極限</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    
-        <meta name="keywords" content="ironman,d3js" />
-    
-    
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var m=localStorage.getItem('casper-theme')||'light';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
 
-    <meta name="description" content="這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。 今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為line、polygon、polyline、path，而其中我認為最難的是path…，希望今天能夠突">
+<title>SVG 超硬派了解 line, polygon, polyline, path (手工繪製) | 卡斯伯 Blog - 前端，沒有極限</title>
+
+<meta name="keywords" content="ironman,d3js" />
+
+
+<meta name="description" content="這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。 今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為line、polygon、polyline、path，而其中我認為最難的是path…，希望今天能夠突">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SVG 超硬派了解 line, polygon, polyline, path (手工繪製)">
-<meta property="og:url" content="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/index.html">
+<meta property="og:url" content="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。 今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為line、polygon、polyline、path，而其中我認為最難的是path…，希望今天能夠突">
 <meta property="og:locale" content="zh_TW">
@@ -21,452 +21,112 @@
 <meta property="article:published_time" content="2014-10-01T16:00:00.000Z">
 <meta property="article:modified_time" content="2016-10-13T02:20:18.000Z">
 <meta property="article:author" content="Wang Casper">
-<meta property="article:tag" content="ironman">
 <meta property="article:tag" content="d3js">
+<meta property="article:tag" content="ironman">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/2014ironman/day03_01.png">
 <meta property="fb:app_id" content="556473851118881">
-    
 
-    
 
-    
+<link rel="canonical" href="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/" />
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" id="style-switch" href="/css/all.css">
-    
 
-    
-<script src="/libs/jquery/2.0.3/jquery.min.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SVG 超硬派了解 line, polygon, polyline, path (手工繪製)","datePublished":"2014-10-01T16:00:00.000Z","dateModified":"2016-10-13T02:20:18.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/","image":["https://wcc723.github.io/2014ironman/day03_01.png"]}</script>
 
-    
-    
-    
-        
-<!-- Google tag (gtag.js) -->
+
+<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-97433H4032');
-</script>
-    
-    
-
-<script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "ideor5a1by");
-</script>
-    <!-- Facebook Pixel Code -->
-    <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '152520611964487');
-    fbq('track', 'PageView');
-    </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1"
-    /></noscript>
-    <!-- DO NOT MODIFY -->
-    <!-- End Facebook Pixel Code -->
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    
-    <!-- Ahref SEO Tool -->
-    <meta name="ahrefs-site-verification" content="e5efc5eadc5d0a0df8ddcab110541df9182f7c6442688579f549adb686ce8f02">
-
-    <!-- Google Adsense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-
-    <link rel="stylesheet" href="https://unpkg.com/applause-button/dist/applause-button.css">
-    <script src="https://unpkg.com/applause-button/dist/applause-button.js"></script>
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-<body class="bg-light">
-  <div>
-    <header>
-  <nav class="navbar navbar-expand-lg navbar-sticky bg-white shadow-sm">
-    <div class="container">
-      <!-- Logo START -->
-      <a class="navbar-brand" href="/">
-        <img
-          class="navbar-brand-item light-mode-item"
-          src="/images/blog_logo.svg"
-          alt="卡斯伯的 Blog"
-        />
-        <img
-          class="navbar-brand-item dark-mode-item"
-          src="/images/blog_logo_w.svg"
-          alt="卡斯伯的 Blog"
-        />
-      </a>
-      <!-- Logo END -->
-
-      <!-- Responsive navbar toggler -->
-      <button
-        class="navbar-toggler ms-auto"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="text-body h6 d-none d-sm-inline-block">Menu</span>
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav navbar-nav-scroll ms-auto">
-          <li class="nav-item">
-            <a href="/about/hexschool-traning.html" class="nav-link position-relative">
-              作品直播班(學員心得)
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/tags/css"
-              >CSS</a
-            >
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/tags/javascript/"
-              >JS</a
-            >
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/categories/life"
-              >生活</a
-            >
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/archives"
-              >文章列表</a
-            >
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="/about"
-              >關於</a
-            >
-          </li>
-          
-          <!-- Nav item 1 Demos -->
-        </ul>
-        <!-- <div class="my-3">
-          <div class="modeswitch" id="darkModeSwitch">
-            <div class="switch"></div>
-          </div>
-        </div> -->
-        <nav class="mx-3"><div id="search-form-wrap">
-
-    <form class="search-form input-group" style="width: 120px">
-        <input type="text" class="ins-search-input search-form-input form-control" placeholder="搜尋知識" />
-        <!-- <button type="submit" class="search-form-submit btn btn-outline-secondary">
-            <i class="bi bi-search fs-4"> </i>
-        </button> -->
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="想要查些什麼勒..." />
-            <span class="ins-close ins-selectable"><i class="bi bi-x"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: '文章',
-            PAGES: '頁面',
-            CATEGORIES: '分類',
-            TAGS: '標籤标签',
-            UNTITLED: '(未命名)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-
-<script src="/js/insight.js"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-97433H4032');</script>
 
 
-</div></nav>
-        
-      </div>
-      <div class="nav-item">
-        <a class="nav-link p-0" data-bs-toggle="offcanvas" href="#offcanvasMenu" role="button" aria-controls="offcanvasMenu">
-          <i class="fs-5 bi bi-list"></i>
-        </a>
-      </div>
-    </div>
-  </nav>
-</header>
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','152520611964487');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1" /></noscript>
 
-<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasMenu">
-  <div class="offcanvas-header">
-    <button
-      type="button"
-      class="btn-close text-reset"
-      data-bs-dismiss="offcanvas"
-      aria-label="Close"
-    ></button>
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8296684122088055" crossorigin="anonymous"></script>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <div class="atmos" aria-hidden="true">
+    <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
   </div>
-  <div class="offcanvas-body d-flex flex-column pt-0">
-    <div>
-      <img
-        class="light-mode-item my-3"
-        src="/images/blog_logo.svg"
-        alt="卡斯伯的 Blog"
-      />
-      <img
-        class="dark-mode-item my-3"
-        src="/images/blog_logo_w.svg"
-        alt="卡斯伯的 Blog"
-      />
-      <!-- Nav START -->
-      <ul class="nav d-block flex-column my-4">
-        
-          <li class="nav-item my-3">
-            <a class="nav-link" href="/tags/css"
-              >CSS</a
-            >
-          </li>
-          
-          <li class="nav-item my-3">
-            <a class="nav-link" href="/tags/javascript/"
-              >JS</a
-            >
-          </li>
-          
-          <li class="nav-item my-3">
-            <a class="nav-link" href="/categories/life"
-              >生活</a
-            >
-          </li>
-          
-          <li class="nav-item my-3">
-            <a class="nav-link" href="/archives"
-              >文章列表</a
-            >
-          </li>
-          
-          <li class="nav-item my-3">
-            <a class="nav-link" href="/about"
-              >關於</a
-            >
-          </li>
-          
-      </ul>
-    </div>
-  </div>
-</div>
 
-    <div class="container">
-      <div class="row justify-content-center">
-        
-        
-          <div class="col-lg-2 d-none d-lg-block">
-            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000">
-  <div class="text-center">
-    <img
-      src="/images/2021/avatar.png"
-      height="115"
-      width="115"
-      class="img-fluid mb-2"
-      alt=""
-    />
-    <p>設計師轉職前端工程師，擅長將複雜觀念用圖形化方式呈現</p>
-    <a
-      href="https://www.facebook.com/WccCasper"
-      target="_blank"
-      class="btn btn-outline-primary btn-sm rounded-pill"
-      ><i class="bi bi-facebook"></i> 追蹤卡斯伯</a
-    >
-    <a href="#comments" class="btn btn-outline-primary btn-sm rounded-pill"
-      ><i class="bi bi-chat-text"></i
-    ></a>
-  </div>
-  <hr>
-  <div class="toc-component">
-    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Line"><span class="toc-text">Line</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Polyline"><span class="toc-text">Polyline</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Polygon"><span class="toc-text">Polygon</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%B0%E7%8D%84%E8%88%AC%E7%9A%84Path"><span class="toc-text">地獄般的Path</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%B5%90"><span class="toc-text">小結</span></a></li></ol>
-  </div>
   
-    <hr />
-    <div class="d-flex justify-content-center">
-      <div
-        class="fb-like"
-        data-layout="box_count"
-        data-action="like"
-        data-size="large"
-        data-share="true"
-        data-href="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/"
-      ></div>
-    </div>
-    <div class="text-center mt-2 text-black-50">
-      按讚，就是最大的支持
-    </div>
-    
-</div>
+<div class="dateline"><div class="in">
+  <span>第 361 篇 · 第 14 卷</span>
+  <span class="c">前端，沒有極限</span>
+  <span>2026 年 6 月 9 日 · 台北</span>
+</div></div>
 
-          </div>
-          <div class="col-lg-8 bg-white shadow-lg rounded-3 rounded-top">
-            <section id="main">
-              <p class="mt-2 mb-0 small">卡斯伯提供的教學資源：</p>
-<div class="row gx-2">
-    <a class="col-4 d-block" href="https://hex.school/5cYlz" target="_blank">
-        <img no-lazy src="/images/2021/vue3_實戰影音.jpg" style="max-width: 100%" alt="">
-    </a>
-    <a class="col-4 d-block" href="/about/hexschool-traning.html">
-        <img no-lazy src="/images/2022/vue_作品實戰班_學員心得.jpg" style="max-width: 100%" alt="">
-    </a>
-    <a class="col-4 d-block" target="_blank" rel="noopener" href="https://hex.school/byKCb">
-        <img no-lazy src="/images/2022/JavaScript面試力.jpg" style="max-width: 100%" alt="">
-    </a>
-</div>
-<div class="main-body-header">
-    <h2 class="my-3">
+<header class="topbar"><nav class="nav">
+  <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  <a class="brand" href="/"><span class="mk is-img"><img src="/img/casper-avatar.webp" alt="卡斯伯"></span>卡斯伯 Blog</a>
+  <div class="menu">
     
     
-    </h2>
-</div>
-              <div id="sticky-space"></div>
-              
-<div class="bg-white rounded my-3 shadow
-  alert alert-dismissible fade show"
-  id="calendar_notification_small-block">
-  <div class="me-3 d-flex align-items-center">
-    <span class="badge bg-primary p-2 me-3">近期活動通知：</span>
-    <a href="#"  class="d-inline-block text-decoration-underline text-primary" id="calendar_notification_small-content"
-    data-bs-toggle="modal" data-bs-target="#calendar_notify-sm-modal">
-    </a>
+      <a href="/">首頁</a>
+    
+      <a href="/tags/css/">CSS</a>
+    
+      <a href="/tags/javascript/">JavaScript</a>
+    
+      <a href="/categories/life/">生活</a>
+    
+      <a href="/archives/">封存</a>
+    
+      <a href="/about/">關於</a>
+    
   </div>
-  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
+  <span class="grow"></span>
+  <button class="search-trig" type="button" data-cs-open>搜尋…<kbd>⌘K</kbd></button>
+  <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+</nav></header>
 
-<div class="modal fade" id="calendar_notify-sm-modal" tabindex="-1" aria-labelledby="#calendar_notify-sm-modal-label" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="calendar_notify-sm-modal-label">Modal title</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body" id="calendar_notify-sm-modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary d-block w-100" data-bs-dismiss="modal">關閉</button>
-      </div>
+<div class="wrap"><div class="cmdbar">
+  <span class="q">ls -lt ./posts --since=2013<span class="cursor"></span></span>
+  <span class="status">
+    <span class="rec"></span> REC
+    <span>·</span> node <span class="seal">361</span>
+    <span>·</span> uplink <span class="uplink"><i></i><i></i><i></i><i></i></span>
+  </span>
+</div></div>
+
+
+  <div class="wrap">
+    <div class="layout">
+      <main id="main" tabindex="-1">
+<article class="post">
+  <header class="article-head">
+    <p class="crumb">d3js</p>
+    <h1>SVG 超硬派了解 line, polygon, polyline, path (手工繪製)</h1>
+    <div class="meta">
+      <span>2014 年 10 月 02 日</span>
+      <span>·</span>
+      <span>12 分鐘閱讀</span>
+      <span>·</span>
+      <span>By Wang Casper</span>
     </div>
-  </div>
-</div>
+    <div class="rule-d"></div>
+  </header>
 
-<style>
-#calendar_notification_small-block {
-  display: none;
-}
-</style>
-
-<script>
-(() => {
-  const cal_id = 'hexschool.com_i1ser2sqh38tmovshrae4umugo%40group.calendar.google.com'
-  const api_key = 'AIzaSyDXE6S48Pg8GB0XtJzYfZurAVhkATVlLTs'
-  const query = '卡斯伯';
-
-  const today = new Date();
-  const fullYear = today.getFullYear();
-  const month = today.getMonth();
-  const date = today.getDate();
-  const hours = today.getHours();
-  const timeMin = new Date(fullYear, month, date, hours - 10).toISOString();
-  const timeMax = new Date(fullYear, month, date + 7, hours).toISOString();
-
-  const api = `https://content.googleapis.com/calendar/v3/calendars/${cal_id}/events?key=${api_key}&q=${query}&timeMax=${timeMax}&timeMin=${timeMin}`;
-
-  const calendarNotificationBlock = document.querySelector('#calendar_notification_small-block');
-
-  $.ajax({
-    url: api,
-    success: function(data) {
-      if (Array.isArray(data.items) && data.items.length) {
-        const item = data.items[0];
-        const context = `<div class="d-inline-block">
-          <strong class="me-3">${item.summary}</strong>
-          <br class="d-md-none" />活動時間：${new Date(item.start.dateTime).toLocaleString()}
-        </div>`;
-        const calendarContentDom = document.querySelector('#calendar_notification_small-content');
-                
-        calendarNotificationBlock.style.display = 'block';
-        calendarContentDom.innerHTML = context;
-
-        document.querySelector('#calendar_notify-sm-modal-label').textContent = item.summary;
-        document.querySelector('#calendar_notify-sm-modal-body').innerHTML = item.description;
-
-      }
-    }
-  });
-})();
-</script>
-              <div class="main-body-content">
-                <article id="post-Ironman-30-days-03" class="article article-single article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner" data-bs-offset="0">
-        
-            <div class="article-subtitle">
-                
-    <ul class="d-inline-block list-unstyled" itemprop="keywords"><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/d3js/" rel="tag">d3js</a></li><li class="d-inline-block me-1"><a class="badge bg-danger-soft text-danger mb-2" href="/tags/ironman/" rel="tag">ironman</a></li></ul>
-
-                
-<span class="ms-2 small"><time datetime="2014-10-01T16:00:00.000Z" itemprop="datePublished">2014-10-02</time></span>
-            </div>
-        
-        
-            <header class="article-header">
-                 
-<h1 class="display-5" itemprop="name">SVG 超硬派了解 line, polygon, polyline, path (手工繪製)</h1>
- 
-
-            </header>
-        
-        <div id="endView"></div><!-- google analytics -->
-        
-        <div class="article-entry" itemprop="articleBody">
-            
-                <div style="margin: 15px 0;">
-                    <!-- RWD AD -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-8296684122088055"
-     data-ad-slot="8450544523"
-     data-ad-format="auto"></ins>
-<script>
-(adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-                </div>
-            
-            <div class="need-gallery">
-                <p>這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。</p>
+  <div class="prose"><p>這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。</p>
 <p>今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為line、polygon、polyline、path，而其中我認為最難的是path…，希望今天能夠突破他。<strong>我將用非天才型的硬派學習法！</strong></p>
 <p><em>本篇建議使用超過720px裝置觀看</em></p>
 <span id="more"></span>
+
 <p>教程參考：<a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/svg/">http://tutorials.jenkov.com/svg/</a></p>
 <h2 id="Line"><a href="#Line" class="headerlink" title="Line"></a>Line</h2><p>這是最簡單的，只要標注上起點以及終點就完成了，起點是x1、y1，終點則是x2、y2。</p>
 
@@ -475,12 +135,14 @@
 	<line x1="0" y1="10" x2="300" y2="60" x3="0" y3="80" style="stroke: Tomato; stroke-width: 3px"/>
 </svg>
 
+
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;300&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: Tomato;stroke-width: 3px&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;300&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;60&quot;</span> <span class="hljs-attr">x3</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">y3</span>=<span class="hljs-string">&quot;80&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: Tomato; stroke-width: 3px&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
+
 <p>我也試試看能不能三點，寫了x3、y3都是沒用的(白目)。</p>
-<h2 id="Polyline"><a href="#Polyline" class="headerlink" title="Polyline"></a>Polyline</h2><p>Polyline我查到的中文翻譯是折線，它主要是繪製多點線段。<a target="_blank" rel="noopener" href="https://translate.google.com.tw/?ie=UTF-8&amp;hl=zh-CN&amp;client=tw-ob#en/zh-TW/Polyline">來源…</a></p>
+<h2 id="Polyline"><a href="#Polyline" class="headerlink" title="Polyline"></a>Polyline</h2><p>Polyline我查到的中文翻譯是折線，它主要是繪製多點線段。<a target="_blank" rel="noopener" href="https://translate.google.com.tw/?ie=UTF-8&hl=zh-CN&client=tw-ob#en/zh-TW/Polyline">來源…</a></p>
 <p>點的位置’40,0’，<code>40</code>代表x，<code>0</code>代表y，兩個點中間會接一個空格。</p>
 
 <svg width="100%" height="100">
@@ -489,11 +151,13 @@
 	<polyline points="240,0 260,60 200,60 240,0" style="fill:none; stroke:red; stroke-width:2"/>
 </svg>
 
+
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">polyline</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;40,0 60,60 0,60&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot; stroke:red; stroke-width:2&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">polyline</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;140,0 160,60 100,60&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;fill:none; stroke:red; stroke-width:2&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">polyline</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;240,0 260,60 200,60 240,0&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;fill:none; stroke:red; stroke-width:2&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
+
 <p>Polyline開始類似Illustrator的鋼筆工具(但還不能繪製弧線)，在線段之間還能填入色彩，但特別要注意的是他並不是自動封閉線段。</p>
 <h2 id="Polygon"><a href="#Polygon" class="headerlink" title="Polygon"></a>Polygon</h2><p>Polygon中文翻譯為多邊形，用來繪製不少於3個邊的圖形，使用方式和<code>Polyline</code>完全相同。</p>
 
@@ -504,11 +168,13 @@
 </svg>
 </svg>
 
+
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">polygon</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;40,0 60,60 0,60&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot; stroke:red; stroke-width:2&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">polygon</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;140,0 160,60 100,60&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;fill:none; stroke:red; stroke-width:2&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">polygon</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;240,0 260,60 200,60 240,0&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;fill:none; stroke:red; stroke-width:2&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
+
 <p>刻意使用和polyline相同的程式碼，兩者只有標簽不同，從這樣比較能夠比對出兩個不同的地方，重點就是Polygon會<strong>自動連接最後點到第一個點</strong>。</p>
 <h2 id="地獄般的Path"><a href="#地獄般的Path" class="headerlink" title="地獄般的Path"></a>地獄般的Path</h2><p>SVG <code>&lt;path&gt;</code>是相當有難度的一個章節，每次打開到這個章節，都會想要關掉網頁。它的難度就我目前看來，就是用鍵盤畫貝茲曲線吧…。</p>
 <h4 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h4><p>這一張有一定的難度，所以在範例上我參考以下網站。</p>
@@ -520,16 +186,16 @@
 <p>在w3c school的教程裡有提到path常用的屬性，這在path是相當重要的所以先列出來。</p>
 <p>其實我一直在逃避學習Path，因為他真的很複雜，所以我採用最熱血的學習方式！要用手工的方式把坐標，標在SVG上！</p>
 <ul>
-<li>M = moveto</li>
-<li>L = lineto</li>
-<li>H = horizontal lineto</li>
-<li>V = vertical lineto</li>
-<li>C = curveto</li>
-<li>S = smooth curveto</li>
-<li>Q = quadratic Bézier curve</li>
-<li>T = smooth quadratic Bézier curveto</li>
-<li>A = elliptical Arc</li>
-<li>Z = closepath</li>
+<li>M &#x3D; moveto</li>
+<li>L &#x3D; lineto</li>
+<li>H &#x3D; horizontal lineto</li>
+<li>V &#x3D; vertical lineto</li>
+<li>C &#x3D; curveto</li>
+<li>S &#x3D; smooth curveto</li>
+<li>Q &#x3D; quadratic Bézier curve</li>
+<li>T &#x3D; smooth quadratic Bézier curveto</li>
+<li>A &#x3D; elliptical Arc</li>
+<li>Z &#x3D; closepath</li>
 </ul>
 <p>接下來就用以上的資料，嘗試畫一個圖形。</p>
 
@@ -540,10 +206,12 @@ svg text{
 }
 </style>
 
+
 <h4 id="Example-M、L"><a href="#Example-M、L" class="headerlink" title="Example M、L"></a>Example M、L</h4><p><code>M</code>、<code>L</code>使用方法：</p>
 <pre><code>M x y
 L x y
 </code></pre>
+
 <svg width="100%" height="200">
 	<path d="M150 3 L300 150 L3 150 Z" style=" stroke: #333; stroke-width:3; fill: MediumOrchid"/>
 	<!-- 硬派Circles! -->
@@ -555,6 +223,7 @@ L x y
 	<text x="3" y="140" fill="red">3, 150</text>
 </svg>
 
+
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M150 3 L300 150 L3 150 Z&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot; stroke: #333; stroke-width:3; fill: MediumOrchid&quot;</span>/&gt;</span>
 	<span class="hljs-comment">&lt;!-- 硬派Circles! --&gt;</span>
@@ -565,12 +234,15 @@ L x y
 	<span class="hljs-tag">&lt;<span class="hljs-name">circle</span> <span class="hljs-attr">cx</span>=<span class="hljs-string">&quot;3&quot;</span> <span class="hljs-attr">cy</span>=<span class="hljs-string">&quot;150&quot;</span> <span class="hljs-attr">r</span>=<span class="hljs-string">&quot;3&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;red&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;3&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;140&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;red&quot;</span>&gt;</span>3, 150<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
+
+
 <p>這個三角形的範例，<code>M150 3</code> 這樣是一個群組，所以第一個點是移動到<code>M150 3</code>開始，接下來劃線到<code>L300 150</code>這個點，再來是劃線到<code>L3 150</code>，最後直接用<code>Z</code>來封閉曲線。</p>
 <p><strong>因此，path的第一點通常是M: move to</strong></p>
 <h4 id="Example-H、V"><a href="#Example-H、V" class="headerlink" title="Example H、V"></a>Example H、V</h4><p><code>H</code>、<code>V</code>使用方法：</p>
 <pre><code>M x
 V y
 </code></pre>
+
 <svg width="100%" height="100">
 	<path d="M10 10 H 90 V 90 H 10 L 10 10" fill="black"/>
 	<!-- 硬派Circles! -->
@@ -584,6 +256,7 @@ V y
 	<text x="90" y="20" fill="red">90, 10</text>
 </svg>
 
+
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M10 10 H 90 V 90 H 10 L 10 10&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;black&quot;</span>/&gt;</span>
 	<span class="hljs-comment">&lt;!-- 硬派Circles! --&gt;</span>
@@ -596,13 +269,15 @@ V y
 	<span class="hljs-tag">&lt;<span class="hljs-name">circle</span> <span class="hljs-attr">cx</span>=<span class="hljs-string">&quot;90&quot;</span> <span class="hljs-attr">cy</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">r</span>=<span class="hljs-string">&quot;3&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;red&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;90&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;20&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;red&quot;</span>&gt;</span>90, 10<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
+
 <p>這一個範例，是利用<code>H</code>、<code>V</code>來取代垂直以及水平移動。這一段的內容是移動到<code>10 10</code>，再來垂直到x90的位置，再來是水平到y90，然後再到垂直向上到x10，最後用<code>L</code>拉線回到<code>10 10</code>的位置。</p>
 <p><strong>最後的<code>L</code>也可以直接用<code>Z</code>來close path</strong></p>
 <h4 id="Example-C-貝茲曲線"><a href="#Example-C-貝茲曲線" class="headerlink" title="Example C 貝茲曲線"></a>Example C 貝茲曲線</h4><p><code>C</code>使用方法：</p>
 <pre><code>C x1 y1, x2 y2, x y
-</code></pre><p>這是Mozilla所提供的示意圖，看了這個圖，認為還是自己畫一個可能比較了解，所以動手來試試看吧～。</p>
-<p><img src="https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png" alt=""></p>
-<p>圖片來源：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png">https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png</a></p>
+</code></pre>
+<p>這是Mozilla所提供的示意圖，看了這個圖，認為還是自己畫一個可能比較了解，所以動手來試試看吧～。</p>
+<p><img src="https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png"></p>
+<p>圖片來源：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/@api/deki/files/159/=Cubic_Bezier_Curves.png">https:&#x2F;&#x2F;developer.mozilla.org&#x2F;@api&#x2F;deki&#x2F;files&#x2F;159&#x2F;&#x3D;Cubic_Bezier_Curves.png</a></p>
 
 <svg width="100%" height="200px">
   <path d="M10 10 C140 140,160 140,300 10" stroke="black" fill="none"/>
@@ -619,6 +294,7 @@ V y
 	<line x1="160" y1="140" x2="300" y2="10" style="stroke: Tomato;"/>
 </svg>
 
+
 <p>用這樣的圖是不是更了解呢，首先定義第一個起始點位置<code>M10 10</code>，接下來加入C貝茲曲線，這邊開始就幻想著自己正在畫Illustrator，首先加入<code>C140 140</code>，這是第一根手把的位置，之後補一個<code>,</code>，在依序把後面的點完成。這之間可以對照上面的範例。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200px&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M10 10 C140 140,160 140,300 10&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;black&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>/&gt;</span>
@@ -634,9 +310,11 @@ V y
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;140&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;140&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: Tomato;&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;160&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;140&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;300&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: Tomato;&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
+
 <h4 id="Example-S"><a href="#Example-S" class="headerlink" title="Example S"></a>Example S</h4><p><code>s</code>使用方法：</p>
 <pre><code>S x2 y2, x y
-</code></pre><p>我用超硬派學習法，徹底了解了它的特徵…。</p>
+</code></pre>
+<p>我用超硬派學習法，徹底了解了它的特徵…。</p>
 
 <svg width="100%" height="200px">
   <path d="M10 80 C140 140,160 140 , 300 80 S 520 20,600 80" stroke="black" fill="none"/>
@@ -660,6 +338,7 @@ V y
 	<line x1="300" y1="80" x2="440" y2="20" style="stroke: green;"/>
 </svg>
 
+
 <p>透過超硬派學習法，一個一個刻出每個點的位置，感受到腦細胞的大量死亡，上圖的紅點是<code>C</code>所在的位置，<code>C</code>總共會有三個坐標，包含兩個手把以及最後一個點，而<code>S</code>是緊接在最後一個點的後方，延伸出一個綠色的手把(這一個不需要給坐標)，再補上一個藍色手把以及做後一個藍色點。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200px&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M10 80 C140 140,160 140 , 300 80 S 520 20,600 80&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;black&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>/&gt;</span>
@@ -682,10 +361,12 @@ V y
 	<span class="hljs-tag">&lt;<span class="hljs-name">circle</span> <span class="hljs-attr">cx</span>=<span class="hljs-string">&quot;440&quot;</span> <span class="hljs-attr">cy</span>=<span class="hljs-string">&quot;20&quot;</span> <span class="hljs-attr">r</span>=<span class="hljs-string">&quot;3&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;green&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;300&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;80&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;440&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;20&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: green;&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
+
 <h4 id="Example-Q-T"><a href="#Example-Q-T" class="headerlink" title="Example Q T"></a>Example Q T</h4><p><code>Q</code>、<code>T</code>使用方法：</p>
 <pre><code>Q x1 y1, x y
 T x y
-</code></pre><p>剛剛提到，C有三個點，兩個是手把，一個是終點，Q則是兩個點，一個共用手把，加上終點。T則是在Q後方，在複製一個相同的點，有點類似S的翻版。</p>
+</code></pre>
+<p>剛剛提到，C有三個點，兩個是手把，一個是終點，Q則是兩個點，一個共用手把，加上終點。T則是在Q後方，在複製一個相同的點，有點類似S的翻版。</p>
 
 <svg width="100%" height="200px">
 	<path d="M10 80 Q150 150, 300 80 T590 80" stroke="black" fill="none"/>
@@ -703,6 +384,7 @@ T x y
 	<polyline points="300,80 445,10 590,80" style="fill:none; stroke:green; fill: none"/>
 </svg>
 
+
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;200px&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M10 80 Q150 150, 300 80 T590 80&quot;</span> <span class="hljs-attr">stroke</span>=<span class="hljs-string">&quot;black&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;none&quot;</span>/&gt;</span>
 	<span class="hljs-comment">&lt;!-- 硬派Circles! --&gt;</span>
@@ -718,1060 +400,229 @@ T x y
 	<span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;590&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;red&quot;</span>&gt;</span>T590 80<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">polyline</span> <span class="hljs-attr">points</span>=<span class="hljs-string">&quot;300,80 445,10 590,80&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;fill:none; stroke:green; fill: none&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
+
 <h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>透過本篇的超硬派教學，對於幾種線段應該會更了解吧，至少我很了解了(泣…)。SVG的文章不會太多，D3js至少會有20篇以上，大家可以放心～。</p>
 <p>另外在D3.js的教學裡面，超複雜的Path有很簡單的處理方式…，所以只要先大致了解就可以了。</p>
-
-            </div>
-            
-                <div>
-  <script type="text/javascript">
-    document.write(
-      "<iframe scrolling='no' frameborder='0' sandbox='allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation' style='height: 212px; width: 100%;' src='https://button.like.co/in/embed/agito723/button?referrer=" +
-      encodeURIComponent(location.href.split("?")[0].split("#")[0]) + "'></iframe>");
-  </script>
-<div>
-            
-            <div style="overflow: hidden; margin: 15px 0;">
-            
-                <div class="fb-like" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-            
-            </div>
-            <!-- <div style="margin: 15px 0;">
-                <a href="http://www.hexschool.com/" target="_blank" class="fancybox" rel="group">
-                    <img no-lazy src="/images/hexschoolAd.jpg" alt="" style="max-width: 100%; border: 1px solid #ccc;">
-                </a>
-            </div> -->
-            
-                <div class="my-3">
-                    <ins class="adsbygoogle"
-     style="display:block; text-align:center;"
-     data-ad-layout="in-article"
-     data-ad-format="fluid"
-     data-ad-client="ca-pub-8296684122088055"
-     data-ad-slot="8769565283"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<div class="adsense-message">
-  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
-</div>
-                </div>
-            
-            
-
-<style>
-.article-entry .article-nav {
-  display: flex;
-  background-color: rgba(0,0,0,0.03);
-}
-.article-entry .article-nav .col-12 {
-  flex: 0 0 auto;
-  width: 50%;
-}
-</style>
-<div class="row g-0 mt-5 border-top border-bottom article-nav">
-  
-    <div class="col-12 py-3 py-md-4">
-      <div class="d-flex align-items-center position-relative">
-        <!-- Icon -->
-        <div class="bg-primary py-1">
-          <i class="bi bi-chevron-compact-left fs-3 text-white px-1 rtl-flip"></i>
-        </div>
-        <!-- Title -->
-        <div class="ms-3">
-          <h5 class="m-0">
-            <a href="/d3js/2014/10/01/Ironman-30-days-02/" class="stretched-link btn-link text-reset"
-              >上一篇：SVG 簡介</a
-            >
-          </h5>
-        </div>
-      </div>
-    </div>
-  
-  
-  <div class="col-12 py-3 py-md-4 text-sm-end">
-    <div class="d-flex align-items-center position-relative justify-content-end">
-      <!-- Title -->
-      <div class="me-3">
-        <h5 class="m-0">
-          <a href="/d3js/2014/10/03/Ironman-30-days-04/" class="stretched-link btn-link text-reset"
-            >下一篇： SVG 超硬派了解 path Arcs </a
-          >
-        </h5>
-      </div>
-      <!-- Icon -->
-      <div class="bg-primary py-1">
-        <i
-          class="bi bi-chevron-compact-right fs-3 text-white px-1 rtl-flip"
-        ></i>
-      </div>
-    </div>
-  </div>
-  
 </div>
 
-
-        </div>
-        <footer class="article-footer">
-            
-
-
-        </footer>
-        
-    <section id="comments">
+  <div class="post-foot">
     
-      
-
-  <!-- Facebook Comments Block -->
-  <div class="fb-comments"
-    data-href="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/"
-    data-width="100%">
-  </div>
+      <div class="tags post-tags"><a href="/tags/ironman/">ironman</a><a href="/tags/d3js/">d3js</a></div>
+    
+    
+<nav class="post-nav">
+  
+    <a class="prev" href="/d3js/2014/10/01/Ironman-30-days-02/">
+      <span class="lab">← 較舊一篇</span>
+      <span class="ttl">SVG 簡介</span>
+    </a>
+  
+  
+    <a class="next" href="/d3js/2014/10/03/Ironman-30-days-04/">
+      <span class="lab">較新一篇 →</span>
+      <span class="ttl">SVG 超硬派了解 path Arcs</span>
+    </a>
+  
+</nav>
 
 
     
-    </section>
+<section id="comments">
+  <div class="fb-comments" data-href="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+</section>
 
 
-    </div>
+  </div>
 </article>
+</main>
+      <aside class="sidebar">
 
-              </div>
-            </section>
-          </div>
-          <div class="col-lg-2 d-none d-lg-block">
-            <div class="sticky-top pt-3" style="top: 50px; z-index: 1000;">
-              <!-- RWD AD -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-8296684122088055"
-     data-ad-slot="8450544523"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<div class="adsense-message">
-  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
-</div>
-            </div>
-          </div>
-          <div class="col-12">
-            
-<div class="row mt-5">
-  <div class="col-lg-3 mb-3">
-    <h4>相似文章</h4>
-    <div class="list-group bg-white">
-      
-        
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-          <a href="/d3js/2014/09/30/Ironman-30-days-01/" class="list-group-item list-group-item-action">
-            <h5>2014 鐵人賽慢慢開始跑</h5>
-            <p class="small mb-0">
-              去年參加了鐵人賽，主題是CSS，這過程中讓我獲得很多，重點並不是在於得獎，而是在每天追求的過程中，必須在有限的時間內不斷地追求知識，也不斷的挖掘有什麼是可以分享的。...
-            </p>
-          </a>
-        
-      
-          
-          <a href="/d3js/2014/10/01/Ironman-30-days-02/" class="list-group-item list-group-item-action">
-            <h5>SVG 簡介</h5>
-            <p class="small mb-0">
-              這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。
-SVG(Scalable Vector Graphics)，中文直譯就是”可縮放向量圖形 “，它是以XML格式儲存，而在瀏覽器上是從I...
-            </p>
-          </a>
-        
-      
-          
-      
-          
-          <a href="/d3js/2014/10/02/Ironman-30-days-03/" class="list-group-item list-group-item-action">
-            <h5>SVG 超硬派了解 line, polygon, polyline, path (手工繪製)</h5>
-            <p class="small mb-0">
-              這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。
-今天要介紹的是線段系列，可以想像成Illustrator的鋼筆工具(也不知道為什麼要翻譯鋼筆工具，據說是設計師不會懂貝茲曲線…)，分為...
-            </p>
-          </a>
-        
-      
-          
-          <a href="/d3js/2014/10/03/Ironman-30-days-04/" class="list-group-item list-group-item-action">
-            <h5>SVG 超硬派了解 path Arcs</h5>
-            <p class="small mb-0">
-              這次來到Path的最後一個屬性A，A是所謂的弧形，和先前不同的是，弧形一個屬性可以比上一章全部的難度…。這次看看能不能用硬派的方式來學習Arcs弧形…。
-本篇建議使用超過720px裝置觀看...
-            </p>
-          </a>
-        
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-          
-      
-    </div>
-  </div>
 
-  <div class="col-lg-3 mb-3">
-    
-<div class="widget-wrap widget-list mb-3">
-    <h4 class="mb-3">粉絲專頁</h4>
+  
     <div class="widget">
-        <div class="fb-page" data-href="https://www.facebook.com/WccCasper" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/WccCasper" class="fb-xfbml-parse-ignore"><a target="_blank" rel="noopener" href="https://www.facebook.com/WccCasper">卡斯伯</a></blockquote></div>
+      <div class="author">
+        <div class="ava is-img"><img src="/img/casper-avatar.webp" alt="Wang Casper"></div>
+        <p class="nm">Wang Casper</p>
+        <p class="en">卡斯伯</p>
+        <p class="bio">前端工程師、教學者。在 Web 上寫筆記，自 2013 年至今，也在六角學院教授前端。</p>
+      </div>
     </div>
-</div>
-  </div>
 
-  <div class="col-lg-4 d-none d-lg-block mb-3">
-    
-<div class="mb-3">
-  <h4 class="mb-3">標籤雲</h4>
-  <div class="widget tagcloud" style="line-height: 1;"><a href="/tags/Bootstrap/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">Bootstrap</a> <a href="/tags/Sass/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">Sass</a> <a href="/tags/async/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">async</a> <a href="/tags/await/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">await</a> <a href="/tags/beginner/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">beginner</a> <a href="/tags/bootstrap/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">bootstrap</a> <a href="/tags/border/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">border</a> <a href="/tags/business/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">business</a> <a href="/tags/compass/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">compass</a> <a href="/tags/courses/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">courses</a> <a href="/tags/css/" style="font-size: 24px;" class="p-1 m-1 d-inline-block -10">css</a> <a href="/tags/d3/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">d3</a> <a href="/tags/d3js/" style="font-size: 20.47px;" class="p-1 m-1 d-inline-block -6">d3js</a> <a href="/tags/design/" style="font-size: 21.06px;" class="p-1 m-1 d-inline-block -7">design</a> <a href="/tags/develop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">develop</a> <a href="/tags/dns/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">dns</a> <a href="/tags/emmet/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">emmet</a> <a href="/tags/es6/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">es6</a> <a href="/tags/fire-app/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">fire.app</a> <a href="/tags/git/" style="font-size: 16.94px;" class="p-1 m-1 d-inline-block -3">git</a> <a href="/tags/github/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">github</a> <a href="/tags/grid/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">grid</a> <a href="/tags/gulp/" style="font-size: 19.88px;" class="p-1 m-1 d-inline-block -6">gulp</a> <a href="/tags/html/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">html</a> <a href="/tags/icon-fonts/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icon fonts</a> <a href="/tags/icons/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">icons</a> <a href="/tags/intro/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">intro</a> <a href="/tags/ironman/" style="font-size: 23.41px;" class="p-1 m-1 d-inline-block -9">ironman</a> <a href="/tags/javascript/" style="font-size: 22.82px;" class="p-1 m-1 d-inline-block -9">javascript</a> <a href="/tags/jekyll/" style="font-size: 19.29px;" class="p-1 m-1 d-inline-block -5">jekyll</a> <a href="/tags/jest/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">jest</a> <a href="/tags/jquery/" style="font-size: 18.12px;" class="p-1 m-1 d-inline-block -4">jquery</a> <a href="/tags/js/" style="font-size: 22.24px;" class="p-1 m-1 d-inline-block -8">js</a> <a href="/tags/life/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">life</a> <a href="/tags/mac/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">mac</a> <a href="/tags/markdown/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">markdown</a> <a href="/tags/mobile/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">mobile</a> <a href="/tags/modules/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">modules</a> <a href="/tags/node-js/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">node.js</a> <a href="/tags/nodejs/" style="font-size: 19.88px;" class="p-1 m-1 d-inline-block -6">nodejs</a> <a href="/tags/npm/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">npm</a> <a href="/tags/oocss/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">oocss</a> <a href="/tags/osx/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">osx</a> <a href="/tags/project/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">project</a> <a href="/tags/promise/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">promise</a> <a href="/tags/puppeteer/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">puppeteer</a> <a href="/tags/rails/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">rails</a> <a href="/tags/reactjs/" style="font-size: 15.76px;" class="p-1 m-1 d-inline-block -2">reactjs</a> <a href="/tags/ruby/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">ruby</a> <a href="/tags/sass/" style="font-size: 21.65px;" class="p-1 m-1 d-inline-block -8">sass</a> <a href="/tags/scss/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">scss</a> <a href="/tags/sketch/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sketch</a> <a href="/tags/ssl/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">ssl</a> <a href="/tags/study/" style="font-size: 16.35px;" class="p-1 m-1 d-inline-block -2">study</a> <a href="/tags/sublime-text/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">sublime text</a> <a href="/tags/svg/" style="font-size: 17.53px;" class="p-1 m-1 d-inline-block -4">svg</a> <a href="/tags/test/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">test</a> <a href="/tags/tool/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">tool</a> <a href="/tags/tools/" style="font-size: 18.71px;" class="p-1 m-1 d-inline-block -5">tools</a> <a href="/tags/traefik/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">traefik</a> <a href="/tags/vscode/" style="font-size: 14.59px;" class="p-1 m-1 d-inline-block -1">vscode</a> <a href="/tags/vue/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">vue</a> <a href="/tags/web/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">web</a> <a href="/tags/workshop/" style="font-size: 15.18px;" class="p-1 m-1 d-inline-block -1">workshop</a> <a href="/tags/zeplin/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">zeplin</a> <a href="/tags/%E5%B1%A5%E6%AD%B7/" style="font-size: 14px;" class="p-1 m-1 d-inline-block -0">履歷</a></div>
-</div>
+  
 
 
-  </div>
 
-  <div class="col-lg-2 d-none d-lg-block mb-3">
-    <!-- RWD AD -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-8296684122088055"
-     data-ad-slot="8450544523"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<div class="adsense-message">
-  <div class="fs-4 mb-0">撰寫一篇文章需要花上非常多的時間，如果你<strong>關閉 Adblock (廣告阻擋器)</strong>，我會非常的開心 🤗。 (╭(°A°`)╮))</div>
-</div>
-  </div>
+  
+    <div class="widget">
+      <div class="wh"><h3>我的著作</h3></div>
+      <div class="book">
+        <a class="cover" href="https://hex.school/byKCb" target="_blank" rel="noopener">
+          <img src="/img/js-interview-cover.webp" alt="JavaScript 面試力">
+        </a>
+        <div class="info">
+          <span class="t">JavaScript 面試力</span>
+          <span class="d">面試前的最後一哩路，補齊 JS 核心觀念。</span>
+          <a class="buy" href="https://hex.school/byKCb" target="_blank" rel="noopener">前往購買</a>
+        </div>
+      </div>
+    </div>
 
-</div>
-          </div>
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>社群</h3></div>
+      <div class="social">
+        
+          <a href="https://www.facebook.com/WccCasper" target="_blank" rel="noopener noreferrer">Facebook<span class="r">卡斯伯</span></a>
+        
+          <a href="https://github.com/wcc723" target="_blank" rel="noopener noreferrer">GitHub<span class="r">wcc723</span></a>
+        
+          <a href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA" target="_blank" rel="noopener noreferrer">YouTube<span class="r">六角學院</span></a>
+        
+          <a href="/atom.xml">RSS<span class="r">訂閱</span></a>
         
       </div>
     </div>
-    <footer class="bg-dark py-5 mt-4 text-muted">
-  <div class="container">
-    <div class="container-inner">
-      <a id="back-to-top" href="javascript:;"
-        ><i class="icon fa fa-angle-up"></i
-      ></a>
-      <div class="credit">
-        <h1 class="logo-wrap">
-          <a href="/" class="logo"></a>
-        </h1>
-        <p>
-          &copy; 2023 Wang Casper
-        </p>
-        <p>
-          Powered by <a href="//hexo.io/" target="_blank">Hexo</a>. Theme by
-          <a href="https://bootstrap5.hexschool.com/" target="_blank"
-            >Bootstrap</a
-          >
-        </p>
-      </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>贊助</h3></div>
+      
+  <div class="ad">廣告版位<br>Google AdSense</div>
+
+
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>標籤</h3></div>
+      <div class="tags"><a class="tag-link" href="/tags/css/" rel="tag">css</a><a class="tag-link" href="/tags/ironman/" rel="tag">ironman</a><a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a><a class="tag-link" href="/tags/js/" rel="tag">js</a><a class="tag-link" href="/tags/sass/" rel="tag">sass</a><a class="tag-link" href="/tags/design/" rel="tag">design</a><a class="tag-link" href="/tags/d3js/" rel="tag">d3js</a><a class="tag-link" href="/tags/gulp/" rel="tag">gulp</a><a class="tag-link" href="/tags/nodejs/" rel="tag">nodejs</a><a class="tag-link" href="/tags/jekyll/" rel="tag">jekyll</a><a class="tag-link" href="/tags/Bootstrap/" rel="tag">Bootstrap</a><a class="tag-link" href="/tags/tools/" rel="tag">tools</a><a class="tag-link" href="/tags/jquery/" rel="tag">jquery</a><a class="tag-link" href="/tags/svg/" rel="tag">svg</a><a class="tag-link" href="/tags/bootstrap/" rel="tag">bootstrap</a><a class="tag-link" href="/tags/oocss/" rel="tag">oocss</a><a class="tag-link" href="/tags/git/" rel="tag">git</a><a class="tag-link" href="/tags/Sass/" rel="tag">Sass</a></div>
+    </div>
+  
+
+
+</aside>
+
     </div>
   </div>
-</footer>
 
-    
-    
+  <footer class="site"><div class="wrap">
+  <p class="big">卡斯伯 Blog</p>
+  <p class="sub">前端，沒有極限 · © 2026 Wang Casper · Powered by Hexo</p>
+</div></footer>
 
+  <div class="cs-modal" id="cs-search" role="dialog" aria-modal="true" aria-label="搜尋文章">
+  <div class="cs-box" data-cs-stop>
+    <div class="cs-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="cs-input" type="search" autocomplete="off" placeholder="搜尋文章標題、分類或標籤…" aria-label="搜尋">
+      <kbd>esc</kbd>
+      <button type="button" data-cs-close class="iconbtn" style="width:30px;height:30px;border:0" aria-label="關閉">✕</button>
+    </div>
+    <div class="cs-status" id="cs-status">載入中…</div>
+    <ul class="cs-results" id="cs-results"></ul>
+    <div class="cs-foot">
+      <span>↑↓ 切換 · ↵ 開啟 · esc 關閉</span>
+      <span>共 <span id="cs-total">0</span> 篇</span>
+    </div>
+  </div>
+</div>
 
+<script>
+(function () {
+  var CONTENT_URL = '/content.json';
+  var modal = document.getElementById('cs-search');
+  var input = document.getElementById('cs-input');
+  var resultsEl = document.getElementById('cs-results');
+  var statusEl = document.getElementById('cs-status');
+  var totalEl = document.getElementById('cs-total');
+  var corpus = null, activeIdx = -1, items = [];
 
-<!-- Custom Scripts -->
+  function esc(s){ return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function hl(text,q){ if(!q) return esc(text); var t=esc(text); try{ var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'); return t.replace(re,'<mark>$1</mark>'); }catch(e){return t;} }
 
-<!-- JavaScript Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  function open(){ modal.classList.add('open'); document.documentElement.style.overflow='hidden'; setTimeout(function(){input.focus();},30); if(!corpus) load(); }
+  function close(){ modal.classList.remove('open'); document.documentElement.style.overflow=''; input.value=''; render([], ''); }
+  function toggle(){ modal.classList.contains('open') ? close() : open(); }
 
-<script src="/js/bs-layout-functions.js"></script>
+  function load(){
+    statusEl.textContent='載入中…';
+    fetch(CONTENT_URL).then(function(r){return r.json();}).then(function(data){
+      var posts = data.posts || data || [];
+      corpus = posts.map(function(p){
+        var tags = (p.tags||[]).map(function(t){return t.name||t;}).join(' ');
+        var cats = (p.categories||[]).map(function(c){return c.name||c;}).join(' ');
+        var u = p.permalink || p.path || '';
+        if (u && !/^https?:\/\//.test(u) && u.charAt(0) !== '/') u = '/' + u;
+        return { title:p.title||'（無標題）', url:u, date:p.date||'', cats:cats, hay:((p.title||'')+' '+cats+' '+tags).toLowerCase() };
+      });
+      statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。';
+      totalEl.textContent=corpus.length;
+    }).catch(function(){ statusEl.textContent='無法載入索引，請稍後再試。'; });
+  }
+
+  function search(q){ if(!corpus) return []; var query=q.trim().toLowerCase(); if(!query) return []; var m=[]; for(var i=0;i<corpus.length&&m.length<50;i++){ if(corpus[i].hay.indexOf(query)!==-1) m.push(corpus[i]); } return m; }
+
+  function render(matches,q){
+    items=matches; activeIdx=matches.length?0:-1;
+    if(!q){ resultsEl.innerHTML=''; if(corpus) statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。'; totalEl.textContent=corpus?corpus.length:0; return; }
+    if(!matches.length){ resultsEl.innerHTML=''; statusEl.textContent='找不到「'+q+'」相關文章'; totalEl.textContent=0; return; }
+    statusEl.textContent='「'+q+'」的搜尋結果'; totalEl.textContent=matches.length;
+    var html='';
+    for(var i=0;i<matches.length;i++){ var m=matches[i]; var meta=(m.date?String(m.date).slice(0,10):'')+(m.cats?'　·　'+m.cats:'');
+      html+='<li><a href="'+esc(m.url)+'" data-idx="'+i+'" role="option"><p class="t">'+hl(m.title,q)+'</p>'+(meta?'<p class="m">'+esc(meta)+'</p>':'')+'</a></li>'; }
+    resultsEl.innerHTML=html; mark();
+  }
+  function mark(){ var a=resultsEl.querySelectorAll('a[data-idx]'); for(var i=0;i<a.length;i++){ if(i===activeIdx){ a[i].setAttribute('aria-selected','true'); a[i].scrollIntoView({block:'nearest'}); } else a[i].removeAttribute('aria-selected'); } }
+
+  var timer;
+  input.addEventListener('input', function(){ var q=input.value; clearTimeout(timer); timer=setTimeout(function(){ render(search(q),q.trim()); },80); });
+  input.addEventListener('keydown', function(e){
+    if(e.key==='ArrowDown'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx+1)%items.length; mark(); } }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx-1+items.length)%items.length; mark(); } }
+    else if(e.key==='Enter'){ if(activeIdx>=0&&items[activeIdx]) window.location.href=items[activeIdx].url; }
+    else if(e.key==='Escape'){ close(); }
+  });
+  modal.addEventListener('click', function(e){ if(e.target.closest('[data-cs-close]')){ close(); return; } if(!e.target.closest('[data-cs-stop]')) close(); });
+  document.addEventListener('keydown', function(e){
+    var mac=navigator.platform.toUpperCase().indexOf('MAC')>=0;
+    if((mac?e.metaKey:e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); toggle(); }
+    else if(e.key==='/'&&document.activeElement===document.body){ e.preventDefault(); open(); }
+  });
+  document.addEventListener('click', function(e){ if(e.target.closest('[data-cs-open]')){ e.preventDefault(); open(); } });
+})();
+</script>
+
+  <script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  function icon(){ if (!btn) return; var d = document.documentElement.classList.contains('dark'); var s = btn.querySelector('span') || btn; s.textContent = d ? '☀' : '☾'; btn.setAttribute('aria-pressed', d ? 'true' : 'false'); btn.setAttribute('aria-label', d ? '切換淺色模式' : '切換深色模式'); }
+  icon();
+  if (btn) btn.addEventListener('click', function(){
+    var dark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
+    icon();
+  });
+})();
+</script>
 
 
 <div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v11.0&appId=556473851118881&autoLogAppEvents=1" nonce="drs0t5ih"></script>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v18.0&appId=556473851118881"></script>
 
 
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-  window.onload = () => {
-    $(function() {
-      if(!$('ins[class="adsbygoogle"]').data('adsbygoogleStatus')) {
-        console.log('(╭(°A°`)╮)) 拜託，別擋這個頁面的廣告，不然我一毛錢都沒得賺惹');
-        $('.adsense-message').css('display', 'block');
-      }
-    })
-  }
-  </script>
 
-
-<script>
-  /***
-   * 側欄選單滾動行為
-   */
-  ;(() => {
-    const isFirefox = navigator?.userAgent?.toLowerCase()?.indexOf('firefox') > -1 || '';
-    const h2 = [...document.querySelectorAll('.article-inner h2')];
-    const h3 = [...document.querySelectorAll('.article-inner h3')];
-    let currentHeading = '';
-    let currentHeadingLv3 = '';
-    // 確保至少有 h2 文章列表才運行
-    if (h2.length && !isFirefox) {
-      const tocListLevel3 = [...document.querySelectorAll('.toc-level-2 > ol')]
-      const tocListLink = [...document.querySelectorAll('.toc-level-2 a')]
-      const tocListLinkLv3 = [...document.querySelectorAll('.toc-level-3 a')]
-      tocListLevel3.forEach(item => item.classList.add('d-none'));
-
-      window.addEventListener('scroll', function () {
-        const headings = h2.map((item) => ({
-          uri: encodeURI(item.id),
-          id: item.id,
-          offsetTop: item.offsetTop,
-        })).reverse(); // 由後往前找
-        const headingsLevel3 = h3.map((item) => ({
-          uri: encodeURI(item.id),
-          id: item.id,
-          offsetTop: item.offsetTop,
-        })).reverse();
-
-        const windowY = window.scrollY;
-        // console.log(headings, windowY);
-        const findTarget = headings.find(item => windowY + 60 > item.offsetTop);
-        const findTargetLv3 = headingsLevel3.find(item => windowY + 60 > item.offsetTop);
-        // console.log(findTarget);
-        if (findTarget && findTarget.id !== currentHeading) {
-          currentHeading = findTarget.id;
-          const tocLink = document.querySelector(`a.toc-link[href="#${findTarget.uri}"]`);
-          tocListLevel3.forEach(item => item.classList.add('d-none'));
-          tocListLink.forEach(item => item.classList.remove('active'));
-          tocLink.classList.add('active');
-          // location.hash = findTarget.uri;
-        }
-        if (findTargetLv3 && findTargetLv3.id !== currentHeadingLv3) {
-          // console.log('findTargetLv3', findTargetLv3);
-          const tocLink = document.querySelector(`a.toc-link[href="#${findTargetLv3.uri}"]`);
-          tocListLinkLv3.forEach(item => item.classList.remove('active'));
-          tocLink.classList.add('active');
-          // location.hash = findTarget.uri;
-        }
-
-
-      });
-    }
-  })();
-</script>
-
-  </div>
 </body>
 </html>
