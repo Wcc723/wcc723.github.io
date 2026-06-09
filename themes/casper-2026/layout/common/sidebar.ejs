@@ -1,0 +1,53 @@
+<aside class="sidebar">
+<% (theme.widgets || ['author','book','social','ad','tags']).forEach(function(w){ %>
+
+  <% if (w === 'author' && theme.author) { %>
+    <div class="widget">
+      <div class="author">
+        <div class="ava<%= theme.author.avatar_img ? ' is-img' : '' %>"><% if (theme.author.avatar_img) { %><img src="<%- url_for(theme.author.avatar_img) %>" alt="<%= theme.author.name %>"><% } else { %><%= theme.author.avatar_char || '卡' %><% } %></div>
+        <p class="nm"><%= theme.author.name %></p>
+        <% if (theme.author.alias) { %><p class="en"><%= theme.author.alias %></p><% } %>
+        <p class="bio"><%= theme.author.bio %></p>
+      </div>
+    </div>
+
+  <% } else if (w === 'book' && theme.book) { %>
+    <div class="widget">
+      <div class="wh"><h3>我的著作</h3></div>
+      <div class="book">
+        <a class="cover" href="<%= theme.book.url %>" target="_blank" rel="noopener">
+          <img src="<%- url_for(theme.book.cover) %>" alt="<%= theme.book.title %>">
+        </a>
+        <div class="info">
+          <span class="t"><%= theme.book.title %></span>
+          <span class="d"><%= theme.book.desc %></span>
+          <a class="buy" href="<%= theme.book.url %>" target="_blank" rel="noopener"><%= theme.book.label || '前往購買' %></a>
+        </div>
+      </div>
+    </div>
+
+  <% } else if (w === 'social' && theme.social) { %>
+    <div class="widget">
+      <div class="wh"><h3>社群</h3></div>
+      <div class="social">
+        <% for (var s in theme.social) { var it = theme.social[s]; var ext = /^https?:/.test(it.url); %>
+          <a href="<%- url_for(it.url) %>"<%- ext ? ' target="_blank" rel="noopener noreferrer"' : '' %>><%= s %><span class="r"><%= it.note || '' %></span></a>
+        <% } %>
+      </div>
+    </div>
+
+  <% } else if (w === 'ad') { %>
+    <div class="widget">
+      <div class="wh"><h3>贊助</h3></div>
+      <%- partial('widget/adsense_rwd') %>
+    </div>
+
+  <% } else if (w === 'tags') { %>
+    <div class="widget">
+      <div class="wh"><h3>標籤</h3></div>
+      <div class="tags"><%- list_tags({ amount: 18, orderby: 'length', order: -1, show_count: false, style: false, separator: '' }) %></div>
+    </div>
+  <% } %>
+
+<% }); %>
+</aside>

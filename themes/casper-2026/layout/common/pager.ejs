@@ -1,0 +1,17 @@
+<% if (page.total > 1) {
+     var pdir = config.pagination_dir || 'page';
+     var base = page.base || '';
+%>
+<nav class="pager" aria-label="分頁導覽">
+  <% if (page.prev) { %><a href="<%- url_for(page.prev_link) %>" rel="prev">← 較新</a><% } %>
+  <span class="pager-jump">
+    <select onchange="if(this.value){window.location.href=this.value}" aria-label="跳至指定頁">
+      <% for (var p = 1; p <= page.total; p++) { var u = url_for(base + (p === 1 ? '' : pdir + '/' + p + '/')); %>
+        <option value="<%= u %>"<%= p === page.current ? ' selected' : '' %>>第 <%= p %> 頁</option>
+      <% } %>
+    </select>
+    <span class="of">／ 共 <%= page.total %> 頁</span>
+  </span>
+  <% if (page.next) { %><a href="<%- url_for(page.next_link) %>" rel="next">較舊 →</a><% } %>
+</nav>
+<% } %>

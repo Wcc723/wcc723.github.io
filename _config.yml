@@ -16,6 +16,9 @@ url: https://wcc723.github.io
 root: /
 permalink: :category/:year/:month/:day/:title/
 permalink_defaults:
+pretty_urls:
+  trailing_index: false
+  trailing_html: false
 
 # Directory
 source_dir: source
@@ -63,10 +66,17 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
+# 封存頁不分頁（全部列出）
+archive_generator:
+  per_page: 0
+  yearly: true
+  monthly: true
+  daily: false
+
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: bootstrap-5
+theme: casper-2026
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -78,6 +88,19 @@ deploy:
 search:
   path: search.xml
   field: post
+
+# 搜尋索引（casper-2026 ⌘K 用）
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    categories: true
+    tags: true
+    text: false
+    content: false
 
 feed:
   type: atom

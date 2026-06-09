@@ -1,0 +1,33 @@
+<%
+  var thumbUrl = thumbnail(post);
+  var catName = '';
+  if (post.categories && post.categories.length) { post.categories.each(function(c){ if (!catName) catName = c.name; }); }
+  var num = (typeof num !== 'undefined') ? num : null;
+  var isLead = (typeof isLead !== 'undefined') ? isLead : false;
+%>
+<article class="card<%= isLead ? ' lead' : '' %>">
+  <% if (isLead) { %><span class="seal-mark">本期<br>首選</span><% } %>
+  <a class="thumb<%= thumbUrl ? '' : ' ph' %>" href="<%- url_for(post.path) %>" aria-label="<%= post.title %>">
+    <% if (thumbUrl) { %>
+      <img src="<%- thumbUrl %>" alt="" loading="<%= isLead ? 'eager' : 'lazy' %>">
+    <% } else { %>
+      <span><%= thumb_fallback(post) %></span>
+    <% } %>
+  </a>
+  <div class="body">
+    <div class="topline">
+      <% if (num) { %><span class="no">№ <%= String(num).padStart(4, '0') %></span><span>·</span><% } %>
+      <% if (catName) { %><span><%= catName %></span><span>·</span><% } %>
+      <span><%= reading_time(post) %> 分鐘</span>
+    </div>
+    <h2><a href="<%- url_for(post.path) %>"><%= post.title %></a></h2>
+    <p class="excerpt"><%= card_excerpt(post, isLead ? 120 : 80) %></p>
+    <% if (post.tags && post.tags.length) { %>
+      <div class="chips"><% var ti = 0; post.tags.each(function(t){ if (ti < 3) { %><span class="chip"><%= t.name %></span><% } ti++; }); %></div>
+    <% } %>
+    <div class="meta">
+      <span><%= date(post.date, 'YYYY 年 MM 月 DD 日') %></span>
+      <span class="read">繼續閱讀 →</span>
+    </div>
+  </div>
+</article>

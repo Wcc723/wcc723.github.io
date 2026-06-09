@@ -1,0 +1,19 @@
+<%
+  var perPage = config.per_page || 10;
+  var showNum = (typeof showNum !== 'undefined') ? showNum : false;
+  var startNum = site.posts.length - (page.current - 1) * perPage;
+  var adsenseOn = theme.google_adsense && theme.google_adsense.enable && theme.google_adsense.client;
+%>
+<div class="feed">
+  <% var i = 0; page.posts.each(function(post){ %>
+    <%- partial('common/article-card', {
+          post: post,
+          isLead: (showNum && page.current === 1 && i === 0),
+          num: showNum ? (startNum - i) : null
+        }) %>
+    <% if (adsenseOn && (i + 1) % 6 === 0) { %>
+      <div class="ad-inline"><p class="lab">sponsored</p><%- partial('widget/adsense_inline') %></div>
+    <% } %>
+    <% i++; }); %>
+</div>
+<%- partial('common/pager') %>

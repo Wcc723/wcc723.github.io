@@ -1,0 +1,28 @@
+<%
+  var catName = '';
+  if (page.categories && page.categories.length) { page.categories.each(function(c){ if (!catName) catName = c.name; }); }
+%>
+<article class="post">
+  <header class="article-head">
+    <% if (catName) { %><p class="crumb"><%= catName %></p><% } %>
+    <h1><%= page.title %></h1>
+    <div class="meta">
+      <span><%= date(page.date, 'YYYY 年 MM 月 DD 日') %></span>
+      <span>·</span>
+      <span><%= reading_time(page) %> 分鐘閱讀</span>
+      <span>·</span>
+      <span>By <%= (theme.author && theme.author.name) || config.author %></span>
+    </div>
+    <div class="rule-d"></div>
+  </header>
+
+  <div class="prose"><%- page.content %></div>
+
+  <div class="post-foot">
+    <% if (page.tags && page.tags.length) { %>
+      <div class="tags post-tags"><% page.tags.each(function(t){ %><a href="<%- url_for(t.path) %>"><%= t.name %></a><% }); %></div>
+    <% } %>
+    <%- partial('common/post-nav') %>
+    <%- partial('comment/facebook') %>
+  </div>
+</article>

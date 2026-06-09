@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var m=localStorage.getItem('casper-theme')||'<%= theme.default_mode || "light" %>';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
+<%
+  var title = page.title;
+  if (is_archive()) {
+    title = '封存';
+    if (is_month()) { title += '：' + page.year + '/' + page.month; }
+    else if (is_year()) { title += '：' + page.year; }
+  } else if (is_category()) { title = '分類：' + page.category; }
+  else if (is_tag()) { title = '標籤：' + page.tag; }
+%>
+<title><% if (title) { %><%= title %> | <% } %><%= config.title %></title>
+<% if (page.tags && page.tags.length) { var kw = []; page.tags.each(function(t){ kw.push(t.name); }); %>
+<meta name="keywords" content="<%= kw.join(',') %>" />
+<% } %>
+<% var og_image = (page.photos && page.photos[0]) ? page.photos[0] : (thumbnail(page) || ''); %>
+<%- open_graph({ image: og_image, fb_app_id: theme.open_graph.fb_app_id, fb_admins: theme.open_graph.fb_admins, twitter_id: theme.open_graph.twitter_id }) %>
+<%- meta(page) %>
+<%
+  var _canon = config.url.replace(/\/$/, '') + url_for(page.path).replace(/index\.html$/, '');
+  var _img = og_image ? (/^https?:/.test(og_image) ? og_image : config.url.replace(/\/$/, '') + url_for(og_image)) : '';
+%>
+<link rel="canonical" href="<%= _canon %>" />
+<% if (!page.description && (is_home() || is_archive() || is_category() || is_tag())) {
+     var _desc = is_home() ? (config.description || theme.tagline || config.title)
+       : is_category() ? ('「' + page.category + '」分類的所有文章 — ' + config.title)
+       : is_tag() ? ('標籤「' + page.tag + '」的相關文章 — ' + config.title)
+       : ('文章封存 — ' + config.title); %>
+<meta name="description" content="<%= _desc %>" />
+<% } %>
+<% if (is_post()) { %>
+<script type="application/ld+json"><%- JSON.stringify({
+  '@context': 'https://schema.org', '@type': 'BlogPosting',
+  headline: page.title,
+  datePublished: page.date ? page.date.toISOString() : undefined,
+  dateModified: (page.updated || page.date) ? (page.updated || page.date).toISOString() : undefined,
+  author: { '@type': 'Person', name: (theme.author && theme.author.name) || config.author },
+  publisher: { '@type': 'Organization', name: config.title },
+  mainEntityOfPage: _canon,
+  image: _img ? [_img] : undefined
+}) %></script>
+<% } %>
+
+<% if (theme.favicon) { %><link rel="icon" href="<%- url_for(theme.favicon) %>" /><% } %>
+<link rel="alternate" href="<%- url_for('/atom.xml') %>" title="<%= config.title %>" type="application/atom+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="<%- url_for('/css/style.css') %>">
+
+<% if (page.cssdemo) { %><link href="<%- url_for('/demoFile/css/' + page.cssdemo + '.css') %>" rel="stylesheet" type="text/css" /><% } %>
+
+<% if (theme.plugins && theme.plugins.google_analytics_4) { %>
+<script async src="https://www.googletagmanager.com/gtag/js?id=<%= theme.plugins.google_analytics_4 %>"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','<%= theme.plugins.google_analytics_4 %>');</script>
+<% } %>
+<% if (theme.plugins && theme.plugins.facebook_pixel) { %>
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','<%= theme.plugins.facebook_pixel %>');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=<%= theme.plugins.facebook_pixel %>&ev=PageView&noscript=1" /></noscript>
+<% } %>
+<% if (theme.google_adsense && theme.google_adsense.enable && theme.google_adsense.client) { %>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=<%= theme.google_adsense.client %>" crossorigin="anonymous"></script>
+<% } %>
+</head>

@@ -1,0 +1,28 @@
+<%
+  var t = '封存';
+  if (page.year) { t += '：' + page.year + (page.month ? ' / ' + page.month : ''); }
+%>
+<div class="pagehead">
+  <div class="top">
+    <h1><%= t %></h1>
+    <span class="sub">共 <%= page.posts.length %> 篇</span>
+  </div>
+  <div class="rule-d"></div>
+</div>
+
+<div class="archive-list">
+  <% var lastYear = null; %>
+  <% page.posts.each(function(post){
+       var y = date(post.date, 'YYYY');
+       if (y !== lastYear) { lastYear = y; %>
+         <h2 class="archive-year"><%= y %></h2>
+     <% } %>
+     <a class="archive-row" href="<%- url_for(post.path) %>">
+       <span class="d"><%= date(post.date, 'MM/DD') %></span>
+       <span class="t"><%= post.title %></span>
+       <% if (post.categories && post.categories.length) { var c = ''; post.categories.each(function(x){ if (!c) c = x.name; }); %>
+         <span class="c"><%= c %></span>
+       <% } %>
+     </a>
+  <% }); %>
+</div>
