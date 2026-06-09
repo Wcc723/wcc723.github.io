@@ -13,7 +13,7 @@
 <meta name="description" content="本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 JavaScript。 另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch">
 <meta property="og:type" content="article">
 <meta property="og:title" content="單元測試 - 非同步及 Ajax">
-<meta property="og:url" content="https://wcc723.github.io/development/2020/02/09/jest-async/">
+<meta property="og:url" content="https://www.casper.tw/development/2020/02/09/jest-async/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="本篇延續上一篇：十分鐘上手前端單元測試 - 使用 Jest JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章一次只能做一件事情的 JavaScript。 另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch">
 <meta property="og:locale" content="zh_TW">
@@ -28,10 +28,10 @@
 <meta property="fb:app_id" content="556473851118881">
 
 
-<link rel="canonical" href="https://wcc723.github.io/development/2020/02/09/jest-async/" />
+<link rel="canonical" href="https://www.casper.tw/development/2020/02/09/jest-async/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"單元測試 - 非同步及 Ajax","datePublished":"2020-02-08T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.531Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://wcc723.github.io/development/2020/02/09/jest-async/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"單元測試 - 非同步及 Ajax","datePublished":"2020-02-08T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.531Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/02/09/jest-async/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a"]}</script>
 
 
 <link rel="icon" href="/images/blog_logo.svg" />
@@ -123,8 +123,8 @@
   </header>
 
   <div class="prose"><p>本篇延續上一篇：<a href="/development/2020/02/02/jest-intro/">十分鐘上手前端單元測試 - 使用 Jest</a></p>
-<p>JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章<a href="https://wcc723.github.io/javascript/2017/12/07/javascript-event-queue/">一次只能做一件事情的 JavaScript</a>。</p>
-<p>另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch 及許多遠端請求的套件亦是使用 Promise 作為基礎。因此在撰寫 Jest 撰寫非同步測試時也會使用到相關的概念，至於 Promise 可參考 <a href="https://wcc723.github.io/javascript/2017/12/29/javascript-proimse/">使用 Promise 處理非同步</a></p>
+<p>JavaScript 是屬於同步，單執行緒的程式語言，因此當有非同步的事件時就會被往放到事件佇列，直到所有程式碼運行過後才會執行事件佇列內的程式，如果不熟悉這段觀念就會使程式的運行不符合預期，相關概念可以看此文章<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/07/javascript-event-queue/">一次只能做一件事情的 JavaScript</a>。</p>
+<p>另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch 及許多遠端請求的套件亦是使用 Promise 作為基礎。因此在撰寫 Jest 撰寫非同步測試時也會使用到相關的概念，至於 Promise 可參考 <a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/29/javascript-proimse/">使用 Promise 處理非同步</a></p>
 <h2 id="範例函式"><a href="#範例函式" class="headerlink" title="範例函式"></a>範例函式</h2><p>這次的測試目標是使用 Ajax Get 取得遠端資料，並且確保遠端的資料是符合預期的。<a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/">JSONPlaceholder</a> 此服務可以供前端模擬 Ajax 行為，包含 GET、POST、PUT、DELETE 都可以練習，同時也可以使用 id 的方式取得固定的資料內容。</p>
 <p>使用的遠端資料 API 路徑（最後一個數字則是 id，可確保取得固定資料）：<br><a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/todos/1">https://jsonplaceholder.typicode.com/todos/1</a></p>
 <p>該路徑取得的格式及值如下，本次將會驗證 <code>title</code> 的值是否為 “delectus aut autem”：</p>
@@ -259,7 +259,7 @@
 
     
 <section id="comments">
-  <div class="fb-comments" data-href="https://wcc723.github.io/development/2020/02/09/jest-async/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2020/02/09/jest-async/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
 </section>
 
 

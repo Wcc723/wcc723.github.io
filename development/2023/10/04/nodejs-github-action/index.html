@@ -13,7 +13,7 @@
 <meta name="description" content="這是鐵人賽相關文章，影片會在活動開始後發布 本篇文章會介紹如何「使用 GitHub Action 部署專案至虛擬主機上」，虛擬主機會使用 PM2 來進行管理，整個流程與業界實戰會略有落差，主要是作為 “基礎知識” 理解所使用，實戰中還是多利用 Docker 容器化來進行管理：  虛擬主機環境準備 準備 GitHub Action 其他說明  程式碼部分可以參考 本範例，不過在環境配置上">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用 GitHub Action 部署 Node.js 專案至虛擬主機上">
-<meta property="og:url" content="https://wcc723.github.io/development/2023/10/04/nodejs-github-action/">
+<meta property="og:url" content="https://www.casper.tw/development/2023/10/04/nodejs-github-action/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="這是鐵人賽相關文章，影片會在活動開始後發布 本篇文章會介紹如何「使用 GitHub Action 部署專案至虛擬主機上」，虛擬主機會使用 PM2 來進行管理，整個流程與業界實戰會略有落差，主要是作為 “基礎知識” 理解所使用，實戰中還是多利用 Docker 容器化來進行管理：  虛擬主機環境準備 準備 GitHub Action 其他說明  程式碼部分可以參考 本範例，不過在環境配置上">
 <meta property="og:locale" content="zh_TW">
@@ -28,10 +28,10 @@
 <meta property="fb:app_id" content="556473851118881">
 
 
-<link rel="canonical" href="https://wcc723.github.io/development/2023/10/04/nodejs-github-action/" />
+<link rel="canonical" href="https://www.casper.tw/development/2023/10/04/nodejs-github-action/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"使用 GitHub Action 部署 Node.js 專案至虛擬主機上","datePublished":"2023-10-03T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.538Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://wcc723.github.io/development/2023/10/04/nodejs-github-action/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-o.jpeg?alt=media&token=70ca38c4-d431-448a-b8a8-ad47f57c2e96"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"使用 GitHub Action 部署 Node.js 專案至虛擬主機上","datePublished":"2023-10-03T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.538Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2023/10/04/nodejs-github-action/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-o.jpeg?alt=media&token=70ca38c4-d431-448a-b8a8-ad47f57c2e96"]}</script>
 
 
 <link rel="icon" href="/images/blog_logo.svg" />
@@ -138,7 +138,7 @@
 <h2 id="虛擬主機環境準備"><a href="#虛擬主機環境準備" class="headerlink" title="虛擬主機環境準備"></a>虛擬主機環境準備</h2><p>這是整個流程最複雜的地方，而本篇不會介紹 PM2 的安裝，如果不熟悉可以先參考我另一篇文章 <a href="/development/2023/10/03/unbuntu-and-pm2/">Ubuntu 虛擬主機部署 Node.js 服務，使用 PM2 服務管理</a>，會從零開始介紹 Ubuntu 環境建置、專案建置、PM2 管理。</p>
 <p>這段主要準備的是給予 GitHub Action 連線用的配置，主要是產生 SSH 金鑰，並將私鑰提供給 GitHub Action 使用，流程如下：</p>
 <h4 id="建立公私鑰，並加入到儲存庫的-secrets-中"><a href="#建立公私鑰，並加入到儲存庫的-secrets-中" class="headerlink" title="建立公私鑰，並加入到儲存庫的 secrets 中"></a>建立公私鑰，並加入到儲存庫的 secrets 中</h4><ol>
-<li>輸入以下指令以建立新的 SSH 私鑰。這裡使用的是 RSA 類型的金鑰（<a href="mailto:&#121;&#111;&#x75;&#114;&#x5f;&#x65;&#109;&#x61;&#x69;&#x6c;&#64;&#x65;&#x78;&#97;&#109;&#x70;&#108;&#x65;&#x2e;&#99;&#111;&#x6d;">your_email@example.com</a> 請替換為個人 Email）：</li>
+<li>輸入以下指令以建立新的 SSH 私鑰。這裡使用的是 RSA 類型的金鑰（<a href="mailto:&#121;&#x6f;&#117;&#114;&#95;&#x65;&#x6d;&#x61;&#x69;&#108;&#x40;&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#x65;&#46;&#x63;&#111;&#109;">your_email@example.com</a> 請替換為個人 Email）：</li>
 </ol>
 <pre><code class="hljs bash">ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">&quot;your_email@example.com&quot;</span></code></pre>
 
@@ -264,7 +264,7 @@
 
     
 <section id="comments">
-  <div class="fb-comments" data-href="https://wcc723.github.io/development/2023/10/04/nodejs-github-action/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2023/10/04/nodejs-github-action/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
 </section>
 
 

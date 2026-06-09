@@ -13,7 +13,7 @@
 <meta name="description" content="非同步在前端的做法不斷的在進行優化調整，先前介紹過 Promise 可以解決非同步過度巢狀的問題，而本篇要介紹的 async function（非同步函式） 及 await 則可以將非同步的程式碼寫成類似同步的形式。  Promise 與 async, awaitPromise 本篇不會詳細介紹，如果不熟悉可以先查看 本篇 文章，Promise 與非同步函式兩者是密不可分的，雖然 async fu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Async function &#x2F; Await 深度介紹">
-<meta property="og:url" content="https://wcc723.github.io/development/2020/10/16/async-await/">
+<meta property="og:url" content="https://www.casper.tw/development/2020/10/16/async-await/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="非同步在前端的做法不斷的在進行優化調整，先前介紹過 Promise 可以解決非同步過度巢狀的問題，而本篇要介紹的 async function（非同步函式） 及 await 則可以將非同步的程式碼寫成類似同步的形式。  Promise 與 async, awaitPromise 本篇不會詳細介紹，如果不熟悉可以先查看 本篇 文章，Promise 與非同步函式兩者是密不可分的，雖然 async fu">
 <meta property="og:locale" content="zh_TW">
@@ -29,10 +29,10 @@
 <meta property="fb:app_id" content="556473851118881">
 
 
-<link rel="canonical" href="https://wcc723.github.io/development/2020/10/16/async-await/" />
+<link rel="canonical" href="https://www.casper.tw/development/2020/10/16/async-await/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Async function / Await 深度介紹","datePublished":"2020-10-15T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.536Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://wcc723.github.io/development/2020/10/16/async-await/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fawait.jpg?alt=media&token=a8539023-9aff-4118-b80f-7344f2d02548"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Async function / Await 深度介紹","datePublished":"2020-10-15T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.536Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/16/async-await/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fawait.jpg?alt=media&token=a8539023-9aff-4118-b80f-7344f2d02548"]}</script>
 
 
 <link rel="icon" href="/images/blog_logo.svg" />
@@ -123,8 +123,8 @@
     <div class="rule-d"></div>
   </header>
 
-  <div class="prose"><p>非同步在前端的做法不斷的在進行優化調整，先前介紹過 <a href="https://wcc723.github.io/development/2020/02/16/all-new-promise/">Promise</a> 可以解決非同步過度巢狀的問題，而本篇要介紹的 <code>async function</code>（非同步函式） 及 <code>await</code> 則可以將非同步的程式碼寫成類似同步的形式。 </p>
-<h2 id="Promise-與-async-await"><a href="#Promise-與-async-await" class="headerlink" title="Promise 與 async, await"></a>Promise 與 async, await</h2><p>Promise 本篇不會詳細介紹，如果不熟悉可以先查看 <a href="https://wcc723.github.io/development/2020/02/16/all-new-promise/">本篇</a> 文章，Promise 與非同步函式兩者是密不可分的，雖然 <code>async function</code> 易讀性優於 Promise，但請先確保對於 Promise 有一定理解再來使用非同步函式。</p>
+  <div class="prose"><p>非同步在前端的做法不斷的在進行優化調整，先前介紹過 <a target="_blank" rel="noopener" href="https://wcc723.github.io/development/2020/02/16/all-new-promise/">Promise</a> 可以解決非同步過度巢狀的問題，而本篇要介紹的 <code>async function</code>（非同步函式） 及 <code>await</code> 則可以將非同步的程式碼寫成類似同步的形式。 </p>
+<h2 id="Promise-與-async-await"><a href="#Promise-與-async-await" class="headerlink" title="Promise 與 async, await"></a>Promise 與 async, await</h2><p>Promise 本篇不會詳細介紹，如果不熟悉可以先查看 <a target="_blank" rel="noopener" href="https://wcc723.github.io/development/2020/02/16/all-new-promise/">本篇</a> 文章，Promise 與非同步函式兩者是密不可分的，雖然 <code>async function</code> 易讀性優於 Promise，但請先確保對於 Promise 有一定理解再來使用非同步函式。</p>
 <p>本篇先建立一個基於 Promise 的函式，以下的範例都會不斷呼叫此函式來進行撰寫。</p>
 <pre><code class="hljs js"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 範例 Promise 函式</span>
@@ -387,7 +387,7 @@
 
     
 <section id="comments">
-  <div class="fb-comments" data-href="https://wcc723.github.io/development/2020/10/16/async-await/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2020/10/16/async-await/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
 </section>
 
 

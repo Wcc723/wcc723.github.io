@@ -13,7 +13,7 @@
 <meta name="description" content="過去到現在寫了很多 this 相關的文章，如果沒有實際運用過 this 的開發者可能會有疑惑「this 是不是只有在面試考題用到？」、「this 在實戰中會用到嗎？」、「為什麼要學 this？」。 其實 this 在實戰中的應用非常廣，已經有接觸框架的開發者對此較不陌生，基本上所有的檔案都會存在 this，而本篇也就針對 this 的應用情境進行介紹。 沒有使用元件的開發過去框架尚未盛行以前，開發">
 <meta property="og:type" content="article">
 <meta property="og:title" content="學好 this 前，先搞清楚 this 做什麼">
-<meta property="og:url" content="https://wcc723.github.io/development/2020/09/27/why-this/">
+<meta property="og:url" content="https://www.casper.tw/development/2020/09/27/why-this/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="過去到現在寫了很多 this 相關的文章，如果沒有實際運用過 this 的開發者可能會有疑惑「this 是不是只有在面試考題用到？」、「this 在實戰中會用到嗎？」、「為什麼要學 this？」。 其實 this 在實戰中的應用非常廣，已經有接觸框架的開發者對此較不陌生，基本上所有的檔案都會存在 this，而本篇也就針對 this 的應用情境進行介紹。 沒有使用元件的開發過去框架尚未盛行以前，開發">
 <meta property="og:locale" content="zh_TW">
@@ -28,10 +28,10 @@
 <meta property="fb:app_id" content="556473851118881">
 
 
-<link rel="canonical" href="https://wcc723.github.io/development/2020/09/27/why-this/" />
+<link rel="canonical" href="https://www.casper.tw/development/2020/09/27/why-this/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"學好 this 前，先搞清楚 this 做什麼","datePublished":"2020-09-26T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.534Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://wcc723.github.io/development/2020/09/27/why-this/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_12.jpg?alt=media&token=895d35d7-354b-4a38-b1c5-c0c99248b367"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"學好 this 前，先搞清楚 this 做什麼","datePublished":"2020-09-26T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.534Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/27/why-this/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_12.jpg?alt=media&token=895d35d7-354b-4a38-b1c5-c0c99248b367"]}</script>
 
 
 <link rel="icon" href="/images/blog_logo.svg" />
@@ -160,7 +160,7 @@
 &#125;
 card.<span class="hljs-title function_">trigger</span>();</code></pre>
 
-<p>當透過物件的形式進行開發時，就需要使用 <code>this</code> 來取得或呼叫物件中彼此之間的方法與資料。如果對於 <code>this</code> 觀念想補強可參考<a href="https://wcc723.github.io/javascript/2019/03/18/JS-THIS/">此文章</a>。</p>
+<p>當透過物件的形式進行開發時，就需要使用 <code>this</code> 來取得或呼叫物件中彼此之間的方法與資料。如果對於 <code>this</code> 觀念想補強可參考<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2019/03/18/JS-THIS/">此文章</a>。</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF8518C6B-85DE-4791-9320-4C883D7EAE71.png?alt=media&token=d2cbed40-01ca-4cd8-9f78-fc43eb7d0184"></p>
 <h4 id="額外問題：偏不使用-this，改用-card-不行嗎？"><a href="#額外問題：偏不使用-this，改用-card-不行嗎？" class="headerlink" title="額外問題：偏不使用 this，改用 card 不行嗎？"></a>額外問題：偏不使用 <code>this</code>，改用 <code>card</code> 不行嗎？</h4><p>這也是同學們常見的問題，在此範例中物件內的 <code>this</code> 等同於 <code>card</code> 物件，所以將上述程式碼中的 <code>this</code> 均替換為 <code>card</code> 也是可以運作的。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> card = &#123;
@@ -197,8 +197,8 @@ navbar.<span class="hljs-title function_">trigger</span>();</code></pre>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FBD7E171A-28D5-4FE8-9DF9-49D505720E5B.png?alt=media&token=e142dd22-884b-4695-89cc-ee1523f46da6"></p>
 <h2 id="框架、原型與-this"><a href="#框架、原型與-this" class="headerlink" title="框架、原型與 this"></a>框架、原型與 this</h2><p>為了讓各個物件中會<strong>重複使用的方法統一管理</strong>，並且讓其又能定義屬於各自的方法，框架中大多會使用 JavaScript 中的一特性 “Prototype” 來進行管理，關於 Prototype 的觀念本篇不會多加敘述，如需了解可參考：</p>
 <ol>
-<li>原型繼承：<a href="https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/">https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/</a></li>
-<li>建構函式：<a href="https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/">https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/</a></li>
+<li>原型繼承：<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/">https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/</a></li>
+<li>建構函式：<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/">https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/</a></li>
 </ol>
 <p>透過原型可以將物件中的方法集中定義，並且使兩者均可透過 <code>this.render()</code> 的方式呼叫此方法。</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB5EDA819-AB6C-40A0-ACB1-647FD8F61137.png?alt=media&token=eca14715-2ab8-4ac8-935e-cf6af0019e70"></p>
@@ -277,7 +277,7 @@ card.<span class="hljs-title function_">trigger</span>();</code></pre>
 
     
 <section id="comments">
-  <div class="fb-comments" data-href="https://wcc723.github.io/development/2020/09/27/why-this/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2020/09/27/why-this/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
 </section>
 
 

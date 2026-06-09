@@ -13,7 +13,7 @@
 <meta name="description" content="向量工具、Adobe XD、Sketch 也都能夠輸出 SVG 圖片，但在輸出時有些小地方也需要注意一下，避免在本地端看似沒有問題，但用戶卻看到的卻與預期不同。 首先瞭解一下 SVG 本身其實是 XML 格式的檔案，這是一個類似 HTML 格式的結構標記，如果要繪製一個方形，則會使用 &lt;rect&gt; 的標籤，並定義他的座標、尺寸、填色樣式等等。 &lt;!-- SVG tag --&amp;gt">
 <meta property="og:type" content="article">
 <meta property="og:title" content="鐵人賽：網頁設計 - SVG 輸出注意事項">
-<meta property="og:url" content="https://wcc723.github.io/design/2018/10/30/image-svg/">
+<meta property="og:url" content="https://www.casper.tw/design/2018/10/30/image-svg/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="向量工具、Adobe XD、Sketch 也都能夠輸出 SVG 圖片，但在輸出時有些小地方也需要注意一下，避免在本地端看似沒有問題，但用戶卻看到的卻與預期不同。 首先瞭解一下 SVG 本身其實是 XML 格式的檔案，這是一個類似 HTML 格式的結構標記，如果要繪製一個方形，則會使用 &lt;rect&gt; 的標籤，並定義他的座標、尺寸、填色樣式等等。 &lt;!-- SVG tag --&amp;gt">
 <meta property="og:locale" content="zh_TW">
@@ -28,10 +28,10 @@
 <meta property="fb:app_id" content="556473851118881">
 
 
-<link rel="canonical" href="https://wcc723.github.io/design/2018/10/30/image-svg/" />
+<link rel="canonical" href="https://www.casper.tw/design/2018/10/30/image-svg/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：網頁設計 - SVG 輸出注意事項","datePublished":"2018-10-29T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.527Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://wcc723.github.io/design/2018/10/30/image-svg/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2016.png?alt=media&token=9b730f32-5a97-4e1e-a76a-a6d9a0ea67e9"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：網頁設計 - SVG 輸出注意事項","datePublished":"2018-10-29T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.527Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/design/2018/10/30/image-svg/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2Fholy%2016.png?alt=media&token=9b730f32-5a97-4e1e-a76a-a6d9a0ea67e9"]}</script>
 
 
 <link rel="icon" href="/images/blog_logo.svg" />
@@ -132,7 +132,7 @@
 
 <p>接下來就會出現如下的矩形。</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2F3DA8CB58-04FC-44B8-8F52-BBC29CB9C825.png?alt=media&token=cfd7c256-1a92-4d1a-a2dd-ec12ed0760a8"></p>
-<p>SVG 一些常見的圖形原始碼可以 <a href="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/">參考</a>。所以 SVG 輸出後與其它的圖片有很大的不同，他依然是透過一些文字標記組成，再有了基本了解後，我們再透過這些觀念了解輸出的圖片為什麼可能出錯，以及怎麽從輸出後的原始碼發現錯誤。</p>
+<p>SVG 一些常見的圖形原始碼可以 <a target="_blank" rel="noopener" href="https://wcc723.github.io/d3js/2014/10/02/Ironman-30-days-03/">參考</a>。所以 SVG 輸出後與其它的圖片有很大的不同，他依然是透過一些文字標記組成，再有了基本了解後，我們再透過這些觀念了解輸出的圖片為什麼可能出錯，以及怎麽從輸出後的原始碼發現錯誤。</p>
 <h3 id="文字務必轉外框"><a href="#文字務必轉外框" class="headerlink" title="文字務必轉外框"></a>文字務必轉外框</h3><p>我們在印刷時，給予印刷廠檔案的文字都會外框筆畫，為的就是避免印刷廠沒有特定的字體，導致字體的顯示與預期並不同。</p>
 <p>以下圖來說，「Sweetaste」有分為上方的外框字體，下方則是純文字。上方的輸出後會以 “路徑” 的方式來繪製，從圖中可以看到文字周圍都是點與線的結合；而下方的文字則是純文字，只有一條下底線表示而已。</p>
 <p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201810%2FB70A169A-DDAE-43C5-AD2E-DB078CA6ADAC.png?alt=media&token=68cc3688-a2bf-4250-91ee-37afaf7fa13e"></p>
@@ -222,7 +222,7 @@
 
     
 <section id="comments">
-  <div class="fb-comments" data-href="https://wcc723.github.io/design/2018/10/30/image-svg/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+  <div class="fb-comments" data-href="https://www.casper.tw/design/2018/10/30/image-svg/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
 </section>
 
 

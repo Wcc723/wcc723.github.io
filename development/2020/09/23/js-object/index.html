@@ -13,7 +13,7 @@
 <meta name="description" content="作用域JavaScript 的變數有作用域的範圍，意思是指「宣告的變數有作用的區域限制」，如果超出了作用域則變數無法再被取得，這樣的做法優點為：  可以避免所有變數轉為全域變數 有效限制變數的作用區域  而變數作用域也會依據宣告的方式不同，產生不同的作用域：  未宣告：全域變數 var 宣告：作用域在 函式 中 let、const 宣告：作用域在 {} 中  var 宣告的變數函式內宣告的變數作用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JS 記憶體釋放機制及驗證">
-<meta property="og:url" content="https://wcc723.github.io/development/2020/09/23/js-object/">
+<meta property="og:url" content="https://www.casper.tw/development/2020/09/23/js-object/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="作用域JavaScript 的變數有作用域的範圍，意思是指「宣告的變數有作用的區域限制」，如果超出了作用域則變數無法再被取得，這樣的做法優點為：  可以避免所有變數轉為全域變數 有效限制變數的作用區域  而變數作用域也會依據宣告的方式不同，產生不同的作用域：  未宣告：全域變數 var 宣告：作用域在 函式 中 let、const 宣告：作用域在 {} 中  var 宣告的變數函式內宣告的變數作用">
 <meta property="og:locale" content="zh_TW">
@@ -28,10 +28,10 @@
 <meta property="fb:app_id" content="556473851118881">
 
 
-<link rel="canonical" href="https://wcc723.github.io/development/2020/09/23/js-object/" />
+<link rel="canonical" href="https://www.casper.tw/development/2020/09/23/js-object/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JS 記憶體釋放機制及驗證","datePublished":"2020-09-22T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.533Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://wcc723.github.io/development/2020/09/23/js-object/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_08.jpg?alt=media&token=5559f38a-09aa-4a79-a232-ff9d3e3c9919"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JS 記憶體釋放機制及驗證","datePublished":"2020-09-22T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.533Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/23/js-object/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_08.jpg?alt=media&token=5559f38a-09aa-4a79-a232-ff9d3e3c9919"]}</script>
 
 
 <link rel="icon" href="/images/blog_logo.svg" />
@@ -146,7 +146,7 @@
 &#125;)();
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(b); <span class="hljs-comment">// 無法取得 fn 函式內的 b 變數</span></code></pre>
 
-<h3 id="let、const-宣告的變數"><a href="#let、const-宣告的變數" class="headerlink" title="let、const 宣告的變數"></a>let、const 宣告的變數</h3><p>ES6 以後所新增的 <code>let</code>、<code>const</code> 作用域則與過去不同，改用 <code>{}</code> 作為作用域限制的方式，這讓 for 迴圈及部分的語法避免產生多餘變數來影響作用域（案例<a href="https://wcc723.github.io/javascript/2017/12/20/javascript-es6-let-const/">參考</a>）。</p>
+<h3 id="let、const-宣告的變數"><a href="#let、const-宣告的變數" class="headerlink" title="let、const 宣告的變數"></a>let、const 宣告的變數</h3><p>ES6 以後所新增的 <code>let</code>、<code>const</code> 作用域則與過去不同，改用 <code>{}</code> 作為作用域限制的方式，這讓 for 迴圈及部分的語法避免產生多餘變數來影響作用域（案例<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/20/javascript-es6-let-const/">參考</a>）。</p>
 <p>與 <code>var</code> 不同的是 <code>const</code> 所定義的變數作用域限制在 <code>{}</code> 之中。因此此範例中的變數 <code>c</code> 可在外部取得值，<code>d</code> 則無法取得。</p>
 <pre><code class="hljs js">&#123;
   <span class="hljs-keyword">var</span> c = <span class="hljs-number">1</span>;
@@ -161,7 +161,7 @@
 
 <p>流程如下：</p>
 <ol>
-<li>產生一個記憶體空間來存放 <code>a</code> 變數，此時還沒有賦予值（概念可參考：<a href="https://wcc723.github.io/javascript/2017/12/16/javascript-hoisting/">Hoisting</a>）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FAC425F20-2DAF-4F5E-98F3-81576B6493B7.png?alt=media&token=1fce1119-0fae-4c92-91c5-8449d1558056"></li>
+<li>產生一個記憶體空間來存放 <code>a</code> 變數，此時還沒有賦予值（概念可參考：<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/16/javascript-hoisting/">Hoisting</a>）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FAC425F20-2DAF-4F5E-98F3-81576B6493B7.png?alt=media&token=1fce1119-0fae-4c92-91c5-8449d1558056"></li>
 <li>為 <code>a</code> 指派一個值。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F17F7E119-79D7-4416-9D28-64F9785E8176.png?alt=media&token=2a3c934b-0183-45c7-9cee-677f04a90b29"></li>
 </ol>
 <p>因此所有的變數都會佔用記憶體空間，除此之外物件、陣列的屬性以及函式參數也會使用相同的概念進行佔用。呼叫一個函式時，每一個函式作用域也都會反覆的進行記憶體佔用。隨著應用程式越來越複雜的情況下，如果持續佔用記憶體沒有適當的釋放，那麼系統可能會無法負荷。</p>
@@ -215,9 +215,9 @@
     
 <nav class="post-nav">
   
-    <a class="prev" href="/development/2020/09/22/js-function/">
+    <a class="prev" href="/development/2020/09/22/javascript-training-1st/">
       <span class="lab">← 較舊一篇</span>
-      <span class="ttl">呼叫函式時，到底有多少個參數 / 變數可供使用？</span>
+      <span class="ttl">讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班</span>
     </a>
   
   
@@ -231,7 +231,7 @@
 
     
 <section id="comments">
-  <div class="fb-comments" data-href="https://wcc723.github.io/development/2020/09/23/js-object/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2020/09/23/js-object/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
 </section>
 
 
