@@ -28,10 +28,10 @@
     }
     function tick(now){
       if(!on) return;
-      var wait = 48 - (now - last);
-      if(wait > 0){ raf = setTimeout(function(){ raf = requestAnimationFrame(tick); }, wait); return; } // 節流 ~20fps（不喚醒高刷新螢幕）
+      var wait = 33 - (now - last);
+      if(wait > 0){ raf = setTimeout(function(){ raf = requestAnimationFrame(tick); }, wait); return; } // 節流 ~30fps
       var dt = (now-last)/1000; last = now;
-      ctx.fillStyle = 'rgba(6,9,10,0.13)'; ctx.fillRect(0,0,innerWidth,innerHeight);
+      ctx.clearRect(0,0,innerWidth,innerHeight);                  // 清空，落下不留尾巴
       ctx.font = '15px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
       for(var i=0;i<cols.length;i++){ var c=cols[i]; c.y += c.sp*dt;
         if(c.y > innerHeight+24){ c.y = -24; c.g = G[(Math.random()*G.length)|0]; c.ph = Math.random()*6; }
@@ -39,8 +39,7 @@
         var rot = Math.sin(now/430 + c.ph*2)*0.18;
         var g = Array.isArray(c.g) ? c.g[(Math.floor(now/250 + c.ph)) & 1] : c.g;
         ctx.save(); ctx.translate(x, c.y); ctx.rotate(rot);
-        ctx.fillStyle = 'rgba(125,247,181,.92)'; ctx.fillText(g,0,0);
-        ctx.fillStyle = 'rgba(60,224,133,.42)'; ctx.fillText(g,0,-19);
+        ctx.fillStyle = 'rgba(125,247,181,.9)'; ctx.fillText(g,0,0);   // 單一隻、無殘影
         ctx.restore();
       }
       raf = requestAnimationFrame(tick);
