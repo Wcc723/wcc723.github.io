@@ -53,6 +53,95 @@
   <div class="atmos" aria-hidden="true">
     <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
   </div>
+  
+<canvas class="fx-rain" id="fx-rain" aria-hidden="true"></canvas>
+<div class="fx-sweep" aria-hidden="true"></div>
+<script>
+(function(){
+  if (!window.matchMedia) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 尊重減少動態
+  var deskRain = matchMedia('(min-width: 1000px)'); // 雨僅桌機（顧行動裝置電量）
+  function isDark(){ return document.documentElement.classList.contains('dark'); }
+
+  /* ===== A：顏文字雨（單 canvas） ===== */
+  var rain = (function(){
+    var cv = document.getElementById('fx-rain'); if(!cv) return null;
+    var ctx = cv.getContext('2d'), cols = [], raf = null, last = 0, on = false, rz;
+    var G = [
+      ['(・ω・)ノ','ヽ(・ω・)'],['ᕕ( ᐛ )ᕗ','ᕙ( ᐛ )ᕗ'],['┌(˘ω˘)┘','└(˘ω˘)┐'],
+      ['(っ◔ω◔)っ','(づ◔ω◔)づ'],['(•◡•)/','\\(•◡•)'],['＼(^o^)／','／(^o^)＼'],
+      ['(ﾉ´ヮ`)ﾉ','ヽ(´ヮ`ヽ)'],['o(>ω<)o','o(<ω>)o'],['( ´ ▽ ` )ﾉ','ヽ( ´ ▽ ` )'],
+      '( ͡° ͜ʖ ͡°)','¯\\_(ツ)_/¯','</>','0x1A'
+    ];
+    function size(){
+      var DPR = Math.min(devicePixelRatio || 1, 1.5);
+      cv.width = innerWidth*DPR; cv.height = innerHeight*DPR;
+      cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      var n = Math.min(Math.floor(innerWidth/64), innerWidth<700 ? 14 : 22); cols = [];
+      for(var i=0;i<n;i++) cols.push({ x:(i+.5)*(innerWidth/n), y:Math.random()*innerHeight, sp:34+Math.random()*46, g:G[(Math.random()*G.length)|0], ph:Math.random()*6 });
+    }
+    function tick(now){
+      if(!on) return;
+      var wait = 33 - (now - last);
+      if(wait > 0){ raf = setTimeout(function(){ raf = requestAnimationFrame(tick); }, wait); return; } // 節流 ~30fps
+      var dt = (now-last)/1000; last = now;
+      ctx.clearRect(0,0,innerWidth,innerHeight);                  // 清空，落下不留尾巴
+      ctx.font = '15px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+      for(var i=0;i<cols.length;i++){ var c=cols[i]; c.y += c.sp*dt;
+        if(c.y > innerHeight+24){ c.y = -24; c.g = G[(Math.random()*G.length)|0]; c.ph = Math.random()*6; }
+        var x = c.x + Math.sin(now/520 + c.ph*3)*7;
+        var rot = Math.sin(now/430 + c.ph*2)*0.18;
+        var g = Array.isArray(c.g) ? c.g[(Math.floor(now/250 + c.ph)) & 1] : c.g;
+        ctx.save(); ctx.translate(x, c.y); ctx.rotate(rot);
+        ctx.fillStyle = 'rgba(125,247,181,.9)'; ctx.fillText(g,0,0);   // 單一隻、無殘影
+        ctx.restore();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    addEventListener('resize', function(){ if(!on) return; clearTimeout(rz); rz = setTimeout(size,150); });
+    return {
+      start:function(){ if(on) return; on = true; size(); last = 0; raf = requestAnimationFrame(tick); },
+      stop:function(){ if(!on) return; on = false; if(raf){ cancelAnimationFrame(raf); clearTimeout(raf); } ctx.clearRect(0,0,innerWidth,innerHeight); }
+    };
+  })();
+
+  /* ===== B：七彩像素邊框跑光（卡片，動態插入 .edge-runner） ===== */
+  var border = (function(){
+    var timer = null, on = false;
+    function run(){
+      if(!on) return;
+      var all = [].slice.call(document.querySelectorAll('.card'));
+      var vis = all.filter(function(c){ var r=c.getBoundingClientRect(); return r.top<innerHeight && r.bottom>0; });
+      var pool = vis.length ? vis : all, el = pool[(Math.random()*pool.length)|0];
+      if(el && !el.querySelector('.edge-runner')){
+        var rn = document.createElement('div'); rn.className = 'edge-runner'; el.appendChild(rn);
+        var off = function(){ rn.remove(); rn.removeEventListener('animationend', off); };
+        rn.addEventListener('animationend', off);
+        setTimeout(function(){ if(rn.parentNode) rn.remove(); }, 6000); // 保險清除
+      }
+      timer = setTimeout(run, 4000 + Math.random()*6000);
+    }
+    return {
+      start:function(){ if(on) return; on = true; timer = setTimeout(run, 1500); },
+      stop:function(){ on = false; clearTimeout(timer); var rs = document.querySelectorAll('.edge-runner'); for(var i=0;i<rs.length;i++) rs[i].remove(); }
+    };
+  })();
+
+  /* ===== 控制器：只在暗色 + 分頁可見時跑；sweep 由 CSS 控制 ===== */
+  function sync(){
+    var dark = isDark(), vis = !document.hidden;
+    if(rain){ (dark && vis && deskRain.matches) ? rain.start() : rain.stop(); }
+    (dark && vis) ? border.start() : border.stop();
+  }
+  new MutationObserver(sync).observe(document.documentElement, { attributes:true, attributeFilter:['class'] });
+  document.addEventListener('visibilitychange', sync);
+  if(deskRain.addEventListener) deskRain.addEventListener('change', sync);
+  sync();
+})();
+</script>
+
+
 
   
 <div class="dateline"><div class="in">
@@ -110,11 +199,11 @@
     
 <article class="card">
   
-  <a class="thumb ph" href="/javascript/2017/12/14/javascript-arguments/" aria-label="鐵人賽：JavaScript 函式與參數">
+  <div class="thumb ph">
     
       <span>JAV</span>
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -138,11 +227,11 @@
     
 <article class="card">
   
-  <a class="thumb ph" href="/javascript/2017/12/13/javascript-closure/" aria-label="鐵人賽：另一種方式介紹 JavaScript 閉包">
+  <div class="thumb ph">
     
       <span>JAV</span>
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -166,11 +255,11 @@
     
 <article class="card">
   
-  <a class="thumb ph" href="/javascript/2017/12/12/javascript-this/" aria-label="鐵人賽：JavaScript 的 this 到底是誰？">
+  <div class="thumb ph">
     
       <span>JAV</span>
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -194,11 +283,11 @@
     
 <article class="card">
   
-  <a class="thumb ph" href="/javascript/2017/12/11/javascript-grammar/" aria-label="鐵人賽：JavaScript 的文法學">
+  <div class="thumb ph">
     
       <span>JAV</span>
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -222,11 +311,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/javascript/2017/12/10/javascript-reference/" aria-label="鐵人賽：JavaScript 物件的連連看!? 兩個物件的值居然會一樣">
+  <div class="thumb">
     
       <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c7-1.jpg?alt=media&token=9bebf516-8c1c-47da-9ab4-0e752a9200ef" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -250,11 +339,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/javascript/2017/12/09/javascript-object/" aria-label="鐵人賽：JavaScript 就是一堆物件的概念">
+  <div class="thumb">
     
       <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c6-01.jpg?alt=media&token=f4e6e42e-02ab-4a93-a42c-fd87bf514089" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -281,11 +370,11 @@
     
 <article class="card">
   
-  <a class="thumb ph" href="/javascript/2017/12/08/javascript-typeof/" aria-label="鐵人賽：動態型別的 JavaScript">
+  <div class="thumb ph">
     
       <span>JAV</span>
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -309,11 +398,11 @@
     
 <article class="card">
   
-  <a class="thumb ph" href="/javascript/2017/12/07/javascript-event-queue/" aria-label="鐵人賽：一次只能做一件事情的 JavaScript">
+  <div class="thumb ph">
     
       <span>JAV</span>
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -337,11 +426,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/javascript/2017/12/06/javascript-variables/" aria-label="鐵人賽：JavaScript 變數的宣告與他的作用域">
+  <div class="thumb">
     
       <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FCB1DAB43-AC68-49BD-AD79-6F6CF4DEBBBA.png?alt=media&token=547987cf-fa8f-4bae-b558-f29a5ab7f6e6" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       
@@ -365,11 +454,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/javascript/2017/12/05/ironman-2017/" aria-label="鐵人賽：執行環境與堆疊">
+  <div class="thumb">
     
       <img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-01.jpg?alt=media&token=012167a0-4b4d-4900-a5ca-48e8998ae819" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       

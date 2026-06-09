@@ -53,6 +53,95 @@
   <div class="atmos" aria-hidden="true">
     <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
   </div>
+  
+<canvas class="fx-rain" id="fx-rain" aria-hidden="true"></canvas>
+<div class="fx-sweep" aria-hidden="true"></div>
+<script>
+(function(){
+  if (!window.matchMedia) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 尊重減少動態
+  var deskRain = matchMedia('(min-width: 1000px)'); // 雨僅桌機（顧行動裝置電量）
+  function isDark(){ return document.documentElement.classList.contains('dark'); }
+
+  /* ===== A：顏文字雨（單 canvas） ===== */
+  var rain = (function(){
+    var cv = document.getElementById('fx-rain'); if(!cv) return null;
+    var ctx = cv.getContext('2d'), cols = [], raf = null, last = 0, on = false, rz;
+    var G = [
+      ['(・ω・)ノ','ヽ(・ω・)'],['ᕕ( ᐛ )ᕗ','ᕙ( ᐛ )ᕗ'],['┌(˘ω˘)┘','└(˘ω˘)┐'],
+      ['(っ◔ω◔)っ','(づ◔ω◔)づ'],['(•◡•)/','\\(•◡•)'],['＼(^o^)／','／(^o^)＼'],
+      ['(ﾉ´ヮ`)ﾉ','ヽ(´ヮ`ヽ)'],['o(>ω<)o','o(<ω>)o'],['( ´ ▽ ` )ﾉ','ヽ( ´ ▽ ` )'],
+      '( ͡° ͜ʖ ͡°)','¯\\_(ツ)_/¯','</>','0x1A'
+    ];
+    function size(){
+      var DPR = Math.min(devicePixelRatio || 1, 1.5);
+      cv.width = innerWidth*DPR; cv.height = innerHeight*DPR;
+      cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      var n = Math.min(Math.floor(innerWidth/64), innerWidth<700 ? 14 : 22); cols = [];
+      for(var i=0;i<n;i++) cols.push({ x:(i+.5)*(innerWidth/n), y:Math.random()*innerHeight, sp:34+Math.random()*46, g:G[(Math.random()*G.length)|0], ph:Math.random()*6 });
+    }
+    function tick(now){
+      if(!on) return;
+      var wait = 33 - (now - last);
+      if(wait > 0){ raf = setTimeout(function(){ raf = requestAnimationFrame(tick); }, wait); return; } // 節流 ~30fps
+      var dt = (now-last)/1000; last = now;
+      ctx.clearRect(0,0,innerWidth,innerHeight);                  // 清空，落下不留尾巴
+      ctx.font = '15px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+      for(var i=0;i<cols.length;i++){ var c=cols[i]; c.y += c.sp*dt;
+        if(c.y > innerHeight+24){ c.y = -24; c.g = G[(Math.random()*G.length)|0]; c.ph = Math.random()*6; }
+        var x = c.x + Math.sin(now/520 + c.ph*3)*7;
+        var rot = Math.sin(now/430 + c.ph*2)*0.18;
+        var g = Array.isArray(c.g) ? c.g[(Math.floor(now/250 + c.ph)) & 1] : c.g;
+        ctx.save(); ctx.translate(x, c.y); ctx.rotate(rot);
+        ctx.fillStyle = 'rgba(125,247,181,.9)'; ctx.fillText(g,0,0);   // 單一隻、無殘影
+        ctx.restore();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    addEventListener('resize', function(){ if(!on) return; clearTimeout(rz); rz = setTimeout(size,150); });
+    return {
+      start:function(){ if(on) return; on = true; size(); last = 0; raf = requestAnimationFrame(tick); },
+      stop:function(){ if(!on) return; on = false; if(raf){ cancelAnimationFrame(raf); clearTimeout(raf); } ctx.clearRect(0,0,innerWidth,innerHeight); }
+    };
+  })();
+
+  /* ===== B：七彩像素邊框跑光（卡片，動態插入 .edge-runner） ===== */
+  var border = (function(){
+    var timer = null, on = false;
+    function run(){
+      if(!on) return;
+      var all = [].slice.call(document.querySelectorAll('.card'));
+      var vis = all.filter(function(c){ var r=c.getBoundingClientRect(); return r.top<innerHeight && r.bottom>0; });
+      var pool = vis.length ? vis : all, el = pool[(Math.random()*pool.length)|0];
+      if(el && !el.querySelector('.edge-runner')){
+        var rn = document.createElement('div'); rn.className = 'edge-runner'; el.appendChild(rn);
+        var off = function(){ rn.remove(); rn.removeEventListener('animationend', off); };
+        rn.addEventListener('animationend', off);
+        setTimeout(function(){ if(rn.parentNode) rn.remove(); }, 6000); // 保險清除
+      }
+      timer = setTimeout(run, 4000 + Math.random()*6000);
+    }
+    return {
+      start:function(){ if(on) return; on = true; timer = setTimeout(run, 1500); },
+      stop:function(){ on = false; clearTimeout(timer); var rs = document.querySelectorAll('.edge-runner'); for(var i=0;i<rs.length;i++) rs[i].remove(); }
+    };
+  })();
+
+  /* ===== 控制器：只在暗色 + 分頁可見時跑；sweep 由 CSS 控制 ===== */
+  function sync(){
+    var dark = isDark(), vis = !document.hidden;
+    if(rain){ (dark && vis && deskRain.matches) ? rain.start() : rain.stop(); }
+    (dark && vis) ? border.start() : border.stop();
+  }
+  new MutationObserver(sync).observe(document.documentElement, { attributes:true, attributeFilter:['class'] });
+  document.addEventListener('visibilitychange', sync);
+  if(deskRain.addEventListener) deskRain.addEventListener('change', sync);
+  sync();
+})();
+</script>
+
+
 
   
 <div class="dateline"><div class="in">
@@ -110,11 +199,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/sass/2015/12/01/bootstrap-and-compass/" aria-label="客製化屬於你的 Bootstrap 4">
+  <div class="thumb">
     
       <img src="2015/12/screen_shot_2015-12-01_01.png" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0161</span><span>·</span>
@@ -138,11 +227,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/tools/2015/11/28/ashareaday/" aria-label="過去的學習 每天一分享">
+  <div class="thumb">
     
       <img src="2015/11/screen_shot_2015-11-28_01.png" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0160</span><span>·</span>
@@ -166,11 +255,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/tools/2015/11/25/better-jekyll-markdown-editor/" aria-label="更棒的 Jekyll 編寫工具">
+  <div class="thumb">
     
       <img src="2015/11/open-source-ddd56f69d6e1b5bd2c1b44b0db1d2a6c.jpg" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0159</span><span>·</span>
@@ -194,11 +283,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/tools/2015/11/20/sketch-convert-to-web-icon-fonts/" aria-label="將 Sketch icons 轉成 web icon fonts">
+  <div class="thumb">
     
       <img src="2015/11/googleIconsToFonts.png" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0158</span><span>·</span>
@@ -222,11 +311,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/tools/2015/10/19/styling-checkbox/" aria-label="SVG 客製化 checkbox">
+  <div class="thumb">
     
       <img src="2015-10-19_01.png" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0157</span><span>·</span>
@@ -250,11 +339,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/tools/2015/10/07/hotjar-heat-map/" aria-label="Hotjar 網站熱圖">
+  <div class="thumb">
     
       <img src="/images/hotjar/screen_shot_2015-10-07_01.png" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0156</span><span>·</span>
@@ -281,11 +370,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/css/2015/08/14/css-flex/" aria-label="動手玩 CSS，快速學會Flex">
+  <div class="thumb">
     
       <img src="2015-08-14-css-flex.png" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0155</span><span>·</span>
@@ -309,11 +398,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/web/2015/08/13/nwjs-build-web-app/" aria-label="隨意玩玩的 nw.js">
+  <div class="thumb">
     
       <img src="2015-07-31_01.png" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0154</span><span>·</span>
@@ -337,11 +426,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/css/2015/07/23/css-column/" aria-label="CSS column 教學">
+  <div class="thumb">
     
       <img src="2015-07-23_screen_shot.jpg" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0153</span><span>·</span>
@@ -365,11 +454,11 @@
     
 <article class="card">
   
-  <a class="thumb" href="/css/2015/07/22/image-comparison-slider/" aria-label="用CSS呈現影像比對效果">
+  <div class="thumb">
     
       <img src="2015-07-22_screen_shot.png" alt="" loading="lazy">
     
-  </a>
+  </div>
   <div class="body">
     <div class="topline">
       <span class="no">№ 0152</span><span>·</span>

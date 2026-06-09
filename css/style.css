@@ -183,6 +183,9 @@ html.dark .pagehead .sub{font-family:var(--font-mono);font-style:normal}
 .card .topline .no{color:var(--accent);font-weight:500}
 .card h2{font-family:var(--font-head);font-size:1.42rem;font-weight:700;line-height:1.45;letter-spacing:.01em}
 .card h2 a{background-image:linear-gradient(var(--accent),var(--accent));background-size:0% 1.5px;background-position:0 100%;background-repeat:no-repeat;transition:background-size .3s}
+/* 整張卡片可點擊：標題連結以透明 ::after 延展覆蓋整卡（縮圖已改 div，避免巢狀連結）*/
+.card{cursor:pointer}
+.card h2 a::after{content:"";position:absolute;inset:0;z-index:1}
 .card:hover h2 a{background-size:100% 1.5px}
 .card .excerpt{font-size:1.02rem;color:var(--ink-soft);line-height:1.85;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .chips{display:flex;gap:8px;flex-wrap:wrap}
@@ -326,6 +329,9 @@ html.dark .tags a:hover{border-color:var(--accent-deep)}
 /* ============================================================
    文章內頁（prose）
    ============================================================ */
+/* 暗色：主要文章襯實心底色（如同列表卡片），避免動態效果從文字間透出影響閱讀 */
+html.dark .post{background:var(--surface);border:1px solid var(--card-border);border-radius:var(--radius);padding:30px 34px;box-shadow:var(--card-shadow)}
+@media(max-width:600px){html.dark .post{padding:22px 18px}}
 .article-head{margin-bottom:26px}
 .article-head .crumb{font-family:var(--font-latin);font-style:italic;font-size:.84rem;color:var(--ink-mute);margin-bottom:10px}
 .article-head h1{font-family:var(--font-head);font-size:clamp(2.25rem,5vw,3rem);line-height:1.25;font-weight:900;letter-spacing:.01em}
@@ -463,3 +469,25 @@ html.dark #creature-stage{display:none}
 #creature-stage .creature .shadow{position:absolute;left:50%;bottom:-3px;width:70%;height:5px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(26,23,21,.16),transparent 70%);border-radius:50%}
 #creature-stage .heart{position:absolute;font-size:1.05rem;color:#d27a9a;pointer-events:none;text-shadow:0 1px 0 rgba(255,255,255,.4);animation:heartUp 2.4s ease-out forwards;will-change:transform,opacity}
 @keyframes heartUp{0%{opacity:0;transform:translateY(4px) scale(.5)}20%{opacity:.95;transform:translateY(-6px) scale(1)}100%{opacity:0;transform:translateY(-46px) scale(1.12)}}
+
+/* ============================================================
+   暗色動態：顏文字雨 / 掃描掃掠 / 邊框跑光（僅暗色）
+   ============================================================ */
+.fx-rain,.fx-sweep{display:none}
+html.dark .fx-rain{display:block;position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.6;
+  -webkit-mask-image:radial-gradient(ellipse 58% 120% at 42% 50%,transparent 30%,#000 72%);
+          mask-image:radial-gradient(ellipse 58% 120% at 42% 50%,transparent 30%,#000 72%)}
+html.dark .fx-sweep{display:block;position:fixed;left:0;right:0;height:150px;z-index:1;pointer-events:none;
+  background:linear-gradient(rgba(60,224,133,0),rgba(60,224,133,.07),rgba(60,224,133,0));animation:fxsweep 9s linear infinite}
+@keyframes fxsweep{0%{transform:translateY(-170px)}100%{transform:translateY(100vh)}}
+@media (max-width:999px){html.dark .fx-rain,html.dark .fx-sweep{display:none}}
+@media (prefers-reduced-motion:reduce){html.dark .fx-rain,html.dark .fx-sweep,.edge-runner{display:none}}
+/* 邊框跑光：七彩像素跑光（JS 在暗色時於卡片內插入 .edge-runner 子元素，不搶角括號 pseudo）*/
+@property --fxang{syntax:'<angle>';inherits:false;initial-value:0turn}
+.edge-runner{position:absolute;inset:0;z-index:4;pointer-events:none;padding:2.5px;border-radius:var(--radius);
+  background:conic-gradient(from var(--fxang),transparent 0 80%,#ff2d6f 80% 82.4%,#ff7a18 82.4% 84.8%,#ffe000 84.8% 87.2%,#38e36b 87.2% 89.6%,#20c4ff 89.6% 92%,#5b6bff 92% 94.4%,#c44bff 94.4% 97%,transparent 97% 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+          mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;
+  animation:fxangrun 4.8s linear 1,fxedgefade 4.8s linear 1;image-rendering:pixelated}
+@keyframes fxangrun{to{--fxang:2turn}}
+@keyframes fxedgefade{0%,80%{opacity:1}100%{opacity:0}}
