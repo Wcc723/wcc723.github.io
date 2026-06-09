@@ -12,8 +12,12 @@
   <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
   <a class="brand" href="<%- url_for('/') %>"><% var av = theme.author && theme.author.avatar_img; %><span class="mk<%= av ? ' is-img' : '' %>"><% if (av) { %><img src="<%- url_for(av) %>" alt="<%= (theme.author && theme.author.alias) || config.author %>"><% } else { %><%= (theme.author && theme.author.avatar_char) || '卡' %><% } %></span><%= siteTitle %></a>
   <div class="menu">
-    <% for (var key in theme.menu) { %>
-      <a href="<%- url_for(theme.menu[key]) %>"<%- (key === '首頁' && is_home() && !page.prev) ? ' class="on"' : '' %>><%= key %></a>
+    <% var _here = url_for(page.path || ''); var _home = url_for('/'); %>
+    <% for (var key in theme.menu) {
+         var _t = url_for(theme.menu[key]);
+         var _active = (_t === _home) ? is_home() : (_here.indexOf(_t) === 0);
+    %>
+      <a href="<%- _t %>"<%- _active ? ' class="active"' : '' %>><%= key %></a>
     <% } %>
   </div>
   <span class="grow"></span>
