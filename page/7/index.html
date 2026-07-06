@@ -31,7 +31,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=mq6h8zmw">
+<link rel="stylesheet" href="/css/style.css?v=mq954j70">
 
 
 
@@ -147,13 +147,13 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 6 月 9 日 · 台北</span>
+  <span>2026 年 7 月 6 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
   <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
   <a class="brand" href="/"><span class="mk is-img"><img src="/img/casper-avatar.webp" alt="卡斯伯"></span>卡斯伯 Blog</a>
-  <div class="menu">
+  <div class="menu" id="primary-menu">
     
     
       <a href="/" class="active">首頁</a>
@@ -170,8 +170,12 @@
     
   </div>
   <span class="grow"></span>
-  <button class="search-trig" type="button" data-cs-open>搜尋…<kbd>⌘K</kbd></button>
+  <button class="search-trig" type="button" data-cs-open aria-label="搜尋">
+    <svg class="s-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+    <span class="s-lbl">搜尋…</span><kbd>⌘K</kbd>
+  </button>
   <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+  <button class="iconbtn nav-toggle" type="button" id="nav-toggle" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-menu"><span class="nt-ico" aria-hidden="true"></span></button>
 </nav></header>
 
 <div class="wrap"><div class="cmdbar">
@@ -297,7 +301,7 @@
     <h2><a href="/development/2019/12/01/vscode-chinese/">一分鐘切換成中文版 VSCode（完整圖文版）</a></h2>
     <p class="excerpt">雖然開發者都具有一定的英文閱讀能力，但如果在不熟悉的情況下，就比較難以快速上手一個新工具。如果要快速掌握一個完整的工具或技術，最好的方式還是先切換成熟悉的語言。…</p>
     
-      <div class="chips"><span class="chip">vscode</span><span class="chip">develop</span></div>
+      <div class="chips"><span class="chip">develop</span><span class="chip">vscode</span></div>
     
     <div class="meta">
       <span>2019 年 12 月 01 日</span>
@@ -325,7 +329,7 @@
     <h2><a href="/development/2019/11/23/ten-mins-learn-markdown/">十分鐘快速掌握 Markdown</a></h2>
     <p class="excerpt">Markdown 是目前非常普遍用來撰寫文檔的語言，一開始的目標就是使用「易讀易寫的純文字格式編寫文件」，此初衷讓使用者可以專注在文字的本身，而不需要透過其它工…</p>
     
-      <div class="chips"><span class="chip">develop</span><span class="chip">markdown</span></div>
+      <div class="chips"><span class="chip">markdown</span><span class="chip">develop</span></div>
     
     <div class="meta">
       <span>2019 年 11 月 23 日</span>
@@ -867,6 +871,20 @@
     try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
     icon();
   });
+
+  /* 行動版漢堡選單：開合主選單抽屜 */
+  var nav = document.querySelector('.nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (nav && navToggle) {
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+    navToggle.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  }
 })();
 </script>
 

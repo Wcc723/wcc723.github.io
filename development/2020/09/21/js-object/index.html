@@ -41,7 +41,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=mq6h8zmw">
+<link rel="stylesheet" href="/css/style.css?v=mq954j70">
 
 
 
@@ -157,13 +157,13 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 6 月 9 日 · 台北</span>
+  <span>2026 年 7 月 6 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
   <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
   <a class="brand" href="/"><span class="mk is-img"><img src="/img/casper-avatar.webp" alt="卡斯伯"></span>卡斯伯 Blog</a>
-  <div class="menu">
+  <div class="menu" id="primary-menu">
     
     
       <a href="/">首頁</a>
@@ -180,8 +180,12 @@
     
   </div>
   <span class="grow"></span>
-  <button class="search-trig" type="button" data-cs-open>搜尋…<kbd>⌘K</kbd></button>
+  <button class="search-trig" type="button" data-cs-open aria-label="搜尋">
+    <svg class="s-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+    <span class="s-lbl">搜尋…</span><kbd>⌘K</kbd>
+  </button>
   <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+  <button class="iconbtn nav-toggle" type="button" id="nav-toggle" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-menu"><span class="nt-ico" aria-hidden="true"></span></button>
 </nav></header>
 
 <div class="wrap"><div class="cmdbar">
@@ -655,6 +659,20 @@ keys.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword
     try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
     icon();
   });
+
+  /* 行動版漢堡選單：開合主選單抽屜 */
+  var nav = document.querySelector('.nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (nav && navToggle) {
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+    navToggle.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  }
 })();
 </script>
 

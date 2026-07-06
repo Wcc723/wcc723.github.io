@@ -331,7 +331,7 @@ html.dark .tags a:hover{border-color:var(--accent-deep)}
    ============================================================ */
 /* 暗色：主要文章襯實心底色（如同列表卡片），避免動態效果從文字間透出影響閱讀 */
 html.dark .post{background:var(--surface);border:1px solid var(--card-border);border-radius:var(--radius);padding:30px 34px;box-shadow:var(--card-shadow)}
-@media(max-width:600px){html.dark .post{padding:22px 18px}}
+@media(max-width:600px){html.dark .post{padding:18px 14px}}
 .article-head{margin-bottom:26px}
 .article-head .crumb{font-family:var(--font-latin);font-style:italic;font-size:.84rem;color:var(--ink-mute);margin-bottom:10px}
 .article-head h1{font-family:var(--font-head);font-size:clamp(2.25rem,5vw,3rem);line-height:1.25;font-weight:900;letter-spacing:.01em}
@@ -491,3 +491,70 @@ html.dark .fx-sweep{display:block;position:fixed;left:0;right:0;height:150px;z-i
   animation:fxangrun 4.8s linear 1,fxedgefade 4.8s linear 1;image-rendering:pixelated}
 @keyframes fxangrun{to{--fxang:2turn}}
 @keyframes fxedgefade{0%,80%{opacity:1}100%{opacity:0}}
+
+/* ============================================================
+   響應式：行動版（≤920 漢堡抽屜導覽；≤560 報頭／卡片）
+   ============================================================ */
+/* 桌機預設：隱藏漢堡與搜尋圖示（維持文字＋⌘K 的原樣） */
+.nav-toggle{display:none}
+.search-trig .s-ico{display:none}
+
+@media(max-width:920px){
+  .nav{gap:10px}
+  /* 搜尋鈕收成純圖示方鈕；漢堡顯示 */
+  .search-trig{width:38px;padding:0;justify-content:center}
+  .search-trig .s-ico{display:block}
+  .search-trig .s-lbl,.search-trig kbd{display:none}
+  .nav-toggle{display:grid;order:1}
+  /* 主選單 → 收進下拉抽屜（錨定 .nav，position:relative） */
+  .menu{position:absolute;top:100%;left:0;right:0;z-index:45;display:none;
+    flex-direction:column;flex-wrap:nowrap;gap:0;margin:0;padding:6px;
+    background:var(--paper);border:1px solid var(--line-strong);border-top:0;
+    box-shadow:0 18px 40px -20px rgba(26,23,21,.4)}
+  .nav.open .menu{display:flex}
+  .menu a{padding:12px 14px;font-size:1rem;border-bottom:1px solid var(--line)}
+  .menu a:last-child{border-bottom:0}
+  .menu a.active{color:var(--accent)}
+  .menu a.active::after{display:none}
+  /* 漢堡圖示：三槓 → 開啟時交叉成 X */
+  .nt-ico,.nt-ico::before,.nt-ico::after{display:block;width:18px;height:2px;background:currentColor;transition:transform .2s,top .2s,background .2s}
+  .nt-ico{position:relative}
+  .nt-ico::before,.nt-ico::after{content:"";position:absolute;left:0}
+  .nt-ico::before{top:-6px}
+  .nt-ico::after{top:6px}
+  .nav.open .nt-ico{background:transparent}
+  .nav.open .nt-ico::before{top:0;transform:rotate(45deg)}
+  .nav.open .nt-ico::after{top:0;transform:rotate(-45deg)}
+  /* 暗色：抽屜面板與漢堡圖示覆寫 */
+  html.dark .menu{background:#0d1815;border-color:rgba(60,224,133,.22)}
+  html.dark .menu a{border-bottom:1px solid rgba(60,224,133,.08);border-radius:0}
+  html.dark .menu a.active{background:var(--accent-soft)}
+}
+
+@media(max-width:600px){
+  /* 行動版內文：縮減左右 gutter（24→16），把寬度留給文章本體；
+     站台 chrome 一起縮才不會與內容錯位（暗色 .post 卡片內距另於上方縮減） */
+  .wrap{padding-left:16px;padding-right:16px}
+  .nav{padding-left:16px;padding-right:16px}
+  .dateline .in{padding-left:16px;padding-right:16px}
+  /* prose 標題在窄欄縮小，減少過度換行、改善閱讀節奏（維持 h2>h3>h4>內文 階層） */
+  .article-head h1{font-size:clamp(1.7rem,6vw,2.1rem)}
+  .prose h2{font-size:1.75rem}
+  .prose h3{font-size:1.5rem}
+  .prose h4{font-size:1.3rem}
+  /* 清單縮排與程式碼內距收斂，讓窄欄多一點可用寬度 */
+  .prose ul,.prose ol{padding-left:1.25em}
+  .prose pre{padding:1em .9em}
+}
+
+@media(max-width:560px){
+  /* 報頭日期帶：隱藏中間標語、單行不換行，避免三欄擠壓 */
+  .dateline .in{font-size:.7rem;gap:10px}
+  .dateline .in span{white-space:nowrap}
+  .dateline .in .c{display:none}
+}
+
+@media(max-width:559.98px){
+  /* 亮色文章卡：行動版單欄（<560 縮圖置頂）時，內文不要保留桌機列的左縮排 */
+  html:not(.dark) .card .body{padding:14px 2px 0 2px}
+}
