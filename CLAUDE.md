@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-卡斯伯 Blog (www.casper.tw) — a Hexo 8 static blog with ~364 posts, deployed to **Cloudflare Workers (static assets)** behind Cloudflare; post images live on **Cloudflare R2** (served at `img.casper.tw`). Node 20 (`.nvmrc`). npm scripts wrap the workflow (`npm run deploy`, `npm run images:upload`, …); no tests/linters. You can still run Hexo directly with `npx hexo …`.
+卡斯伯 Blog (www.casper.tw) — a Hexo 8 static blog with ~364 posts, deployed to **Cloudflare Workers (static assets)** behind Cloudflare; post images live on **Cloudflare R2** (served at `img.casper.tw`). Node 22 (`.nvmrc`; bumped from 20 to satisfy wrangler's engine requirement). npm scripts wrap the workflow (`npm run deploy`, `npm run images:upload`, …); no tests/linters. You can still run Hexo directly with `npx hexo …`.
 
 ## Commands
 
