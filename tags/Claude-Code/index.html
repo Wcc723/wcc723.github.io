@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var m=localStorage.getItem('casper-theme')||'light';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
+
+<title>標籤：Claude Code | 卡斯伯 Blog - 前端，沒有極限</title>
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:url" content="https://www.casper.tw/tags/Claude-Code/">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:author" content="Wang Casper">
+<meta name="twitter:card" content="summary">
+<meta property="fb:app_id" content="556473851118881">
+
+
+<link rel="canonical" href="https://www.casper.tw/tags/Claude-Code/" />
+
+<meta name="description" content="標籤「Claude Code」的相關文章 — 卡斯伯 Blog - 前端，沒有極限" />
+
+
+
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
+<link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=mq954j70">
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-97433H4032');</script>
+
+
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','152520611964487');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1" /></noscript>
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8296684122088055" crossorigin="anonymous"></script>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <div class="atmos" aria-hidden="true">
+    <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
+  </div>
+  
+<canvas class="fx-rain" id="fx-rain" aria-hidden="true"></canvas>
+<div class="fx-sweep" aria-hidden="true"></div>
+<script>
+(function(){
+  if (!window.matchMedia) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 尊重減少動態
+  var deskRain = matchMedia('(min-width: 1000px)'); // 雨僅桌機（顧行動裝置電量）
+  function isDark(){ return document.documentElement.classList.contains('dark'); }
+
+  /* ===== A：顏文字雨（單 canvas） ===== */
+  var rain = (function(){
+    var cv = document.getElementById('fx-rain'); if(!cv) return null;
+    var ctx = cv.getContext('2d'), cols = [], raf = null, last = 0, on = false, rz;
+    var G = [
+      ['(・ω・)ノ','ヽ(・ω・)'],['ᕕ( ᐛ )ᕗ','ᕙ( ᐛ )ᕗ'],['┌(˘ω˘)┘','└(˘ω˘)┐'],
+      ['(っ◔ω◔)っ','(づ◔ω◔)づ'],['(•◡•)/','\\(•◡•)'],['＼(^o^)／','／(^o^)＼'],
+      ['(ﾉ´ヮ`)ﾉ','ヽ(´ヮ`ヽ)'],['o(>ω<)o','o(<ω>)o'],['( ´ ▽ ` )ﾉ','ヽ( ´ ▽ ` )'],
+      '( ͡° ͜ʖ ͡°)','¯\\_(ツ)_/¯','</>','0x1A'
+    ];
+    function size(){
+      var DPR = Math.min(devicePixelRatio || 1, 1.5);
+      cv.width = innerWidth*DPR; cv.height = innerHeight*DPR;
+      cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      var n = Math.min(Math.floor(innerWidth/64), innerWidth<700 ? 14 : 22); cols = [];
+      for(var i=0;i<n;i++) cols.push({ x:(i+.5)*(innerWidth/n), y:Math.random()*innerHeight, sp:34+Math.random()*46, g:G[(Math.random()*G.length)|0], ph:Math.random()*6 });
+    }
+    function tick(now){
+      if(!on) return;
+      var wait = 33 - (now - last);
+      if(wait > 0){ raf = setTimeout(function(){ raf = requestAnimationFrame(tick); }, wait); return; } // 節流 ~30fps
+      var dt = (now-last)/1000; last = now;
+      ctx.clearRect(0,0,innerWidth,innerHeight);                  // 清空，落下不留尾巴
+      ctx.font = '15px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+      for(var i=0;i<cols.length;i++){ var c=cols[i]; c.y += c.sp*dt;
+        if(c.y > innerHeight+24){ c.y = -24; c.g = G[(Math.random()*G.length)|0]; c.ph = Math.random()*6; }
+        var x = c.x + Math.sin(now/520 + c.ph*3)*7;
+        var rot = Math.sin(now/430 + c.ph*2)*0.18;
+        var g = Array.isArray(c.g) ? c.g[(Math.floor(now/250 + c.ph)) & 1] : c.g;
+        ctx.save(); ctx.translate(x, c.y); ctx.rotate(rot);
+        ctx.fillStyle = 'rgba(125,247,181,.9)'; ctx.fillText(g,0,0);   // 單一隻、無殘影
+        ctx.restore();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    addEventListener('resize', function(){ if(!on) return; clearTimeout(rz); rz = setTimeout(size,150); });
+    return {
+      start:function(){ if(on) return; on = true; size(); last = 0; raf = requestAnimationFrame(tick); },
+      stop:function(){ if(!on) return; on = false; if(raf){ cancelAnimationFrame(raf); clearTimeout(raf); } ctx.clearRect(0,0,innerWidth,innerHeight); }
+    };
+  })();
+
+  /* ===== B：七彩像素邊框跑光（卡片，動態插入 .edge-runner） ===== */
+  var border = (function(){
+    var timer = null, on = false;
+    function run(){
+      if(!on) return;
+      var all = [].slice.call(document.querySelectorAll('.card'));
+      var vis = all.filter(function(c){ var r=c.getBoundingClientRect(); return r.top<innerHeight && r.bottom>0; });
+      var pool = vis.length ? vis : all, el = pool[(Math.random()*pool.length)|0];
+      if(el && !el.querySelector('.edge-runner')){
+        var rn = document.createElement('div'); rn.className = 'edge-runner'; el.appendChild(rn);
+        var off = function(){ rn.remove(); rn.removeEventListener('animationend', off); };
+        rn.addEventListener('animationend', off);
+        setTimeout(function(){ if(rn.parentNode) rn.remove(); }, 6000); // 保險清除
+      }
+      timer = setTimeout(run, 4000 + Math.random()*6000);
+    }
+    return {
+      start:function(){ if(on) return; on = true; timer = setTimeout(run, 1500); },
+      stop:function(){ on = false; clearTimeout(timer); var rs = document.querySelectorAll('.edge-runner'); for(var i=0;i<rs.length;i++) rs[i].remove(); }
+    };
+  })();
+
+  /* ===== 控制器：只在暗色 + 分頁可見時跑；sweep 由 CSS 控制 ===== */
+  function sync(){
+    var dark = isDark(), vis = !document.hidden;
+    if(rain){ (dark && vis && deskRain.matches) ? rain.start() : rain.stop(); }
+    (dark && vis) ? border.start() : border.stop();
+  }
+  new MutationObserver(sync).observe(document.documentElement, { attributes:true, attributeFilter:['class'] });
+  document.addEventListener('visibilitychange', sync);
+  if(deskRain.addEventListener) deskRain.addEventListener('change', sync);
+  sync();
+})();
+</script>
+
+
+
+  
+<div class="dateline"><div class="in">
+  <span>第 362 篇 · 第 14 卷</span>
+  <span class="c">前端，沒有極限</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
+</div></div>
+
+<header class="topbar"><nav class="nav">
+  <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  <a class="brand" href="/"><span class="mk is-img"><img src="/img/casper-avatar.webp" alt="卡斯伯"></span>卡斯伯 Blog</a>
+  <div class="menu" id="primary-menu">
+    
+    
+      <a href="/">首頁</a>
+    
+      <a href="/tags/css/">CSS</a>
+    
+      <a href="/tags/javascript/">JavaScript</a>
+    
+      <a href="/categories/life/">生活</a>
+    
+      <a href="/archives/">封存</a>
+    
+      <a href="/about/">關於</a>
+    
+  </div>
+  <span class="grow"></span>
+  <button class="search-trig" type="button" data-cs-open aria-label="搜尋">
+    <svg class="s-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+    <span class="s-lbl">搜尋…</span><kbd>⌘K</kbd>
+  </button>
+  <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+  <button class="iconbtn nav-toggle" type="button" id="nav-toggle" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-menu"><span class="nt-ico" aria-hidden="true"></span></button>
+</nav></header>
+
+<div class="wrap"><div class="cmdbar">
+  <span class="q">ls -lt ./posts --since=2013<span class="cursor"></span></span>
+  <span class="status">
+    <span class="rec"></span> REC
+    <span>·</span> node <span class="seal">362</span>
+    <span>·</span> uplink <span class="uplink"><i></i><i></i><i></i><i></i></span>
+  </span>
+</div></div>
+
+
+  <div class="wrap">
+    <div class="layout">
+      <main id="main" tabindex="-1"><div class="pagehead">
+  <div class="top">
+    <h1>標籤：<span class="seal">Claude Code</span></h1>
+    <span class="sub">1 篇</span>
+  </div>
+  <div class="rule-d"></div>
+</div>
+
+<div class="feed">
+  
+    
+<article class="card">
+  
+  <div class="thumb">
+    
+      <img src="https://img.casper.tw/posts/2026-07-07-anthropic-loop-engineering/cover.png" alt="" loading="lazy">
+    
+  </div>
+  <div class="body">
+    <div class="topline">
+      
+      <span>development</span><span>·</span>
+      <span>8 分鐘</span>
+    </div>
+    <h2><a href="/development/2026/07/07/anthropic-loop-engineering/">Anthropic Getting started with loops（Loop Engineering 入門）| 翻譯文</a></h2>
+    <p class="excerpt">Anthropic 介紹 Claude Code 如何實踐 Loop Engineering 的文章翻譯，把 agent 的工作循環依觸發與停止方式分成回合式、…</p>
+    
+      <div class="chips"><span class="chip">AI</span><span class="chip">Claude Code</span></div>
+    
+    <div class="meta">
+      <span>2026 年 07 月 07 日</span>
+      <span class="read">繼續閱讀 →</span>
+    </div>
+  </div>
+</article>
+
+    
+    
+</div>
+
+
+
+</main>
+      <aside class="sidebar">
+
+
+  
+    <div class="widget">
+      <div class="author">
+        <div class="ava is-img"><img src="/img/casper-avatar.webp" alt="Wang Casper"></div>
+        <p class="nm">Wang Casper</p>
+        <p class="en">卡斯伯</p>
+        <p class="bio">前端工程師、教學者。在 Web 上寫筆記，自 2013 年至今，也在六角學院教授前端。</p>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>我的著作</h3></div>
+      <div class="book">
+        <a class="cover" href="https://hex.school/byKCb" target="_blank" rel="noopener">
+          <img src="/img/js-interview-cover.webp" alt="JavaScript 面試力">
+        </a>
+        <div class="info">
+          <span class="t">JavaScript 面試力</span>
+          <span class="d">面試前的最後一哩路，補齊 JS 核心觀念。</span>
+          <a class="buy" href="https://hex.school/byKCb" target="_blank" rel="noopener">前往購買</a>
+        </div>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>社群</h3></div>
+      <div class="social">
+        
+          <a href="https://www.facebook.com/WccCasper" target="_blank" rel="noopener noreferrer">Facebook<span class="r">卡斯伯</span></a>
+        
+          <a href="https://github.com/wcc723" target="_blank" rel="noopener noreferrer">GitHub<span class="r">wcc723</span></a>
+        
+          <a href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA" target="_blank" rel="noopener noreferrer">YouTube<span class="r">六角學院</span></a>
+        
+          <a href="/atom.xml">RSS<span class="r">訂閱</span></a>
+        
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>贊助</h3></div>
+      
+  <div class="ad">廣告版位<br>Google AdSense</div>
+
+
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>標籤</h3></div>
+      <div class="tags"><a class="tag-link" href="/tags/css/" rel="tag">css</a><a class="tag-link" href="/tags/ironman/" rel="tag">ironman</a><a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a><a class="tag-link" href="/tags/js/" rel="tag">js</a><a class="tag-link" href="/tags/sass/" rel="tag">sass</a><a class="tag-link" href="/tags/design/" rel="tag">design</a><a class="tag-link" href="/tags/d3js/" rel="tag">d3js</a><a class="tag-link" href="/tags/gulp/" rel="tag">gulp</a><a class="tag-link" href="/tags/nodejs/" rel="tag">nodejs</a><a class="tag-link" href="/tags/jekyll/" rel="tag">jekyll</a><a class="tag-link" href="/tags/Bootstrap/" rel="tag">Bootstrap</a><a class="tag-link" href="/tags/tools/" rel="tag">tools</a><a class="tag-link" href="/tags/jquery/" rel="tag">jquery</a><a class="tag-link" href="/tags/svg/" rel="tag">svg</a><a class="tag-link" href="/tags/bootstrap/" rel="tag">bootstrap</a><a class="tag-link" href="/tags/oocss/" rel="tag">oocss</a><a class="tag-link" href="/tags/git/" rel="tag">git</a><a class="tag-link" href="/tags/Sass/" rel="tag">Sass</a></div>
+    </div>
+  
+
+
+</aside>
+
+    </div>
+  </div>
+
+  <footer class="site"><div class="wrap">
+  <p class="big">卡斯伯 Blog</p>
+  <p class="sub">前端，沒有極限 · © 2026 Wang Casper · Powered by Hexo</p>
+</div></footer>
+
+  <div class="cs-modal" id="cs-search" role="dialog" aria-modal="true" aria-label="搜尋文章">
+  <div class="cs-box" data-cs-stop>
+    <div class="cs-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="cs-input" type="search" autocomplete="off" placeholder="搜尋文章標題、分類或標籤…" aria-label="搜尋">
+      <kbd>esc</kbd>
+      <button type="button" data-cs-close class="iconbtn" style="width:30px;height:30px;border:0" aria-label="關閉">✕</button>
+    </div>
+    <div class="cs-status" id="cs-status">載入中…</div>
+    <ul class="cs-results" id="cs-results"></ul>
+    <div class="cs-foot">
+      <span>↑↓ 切換 · ↵ 開啟 · esc 關閉</span>
+      <span>共 <span id="cs-total">0</span> 篇</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CONTENT_URL = '/content.json';
+  var modal = document.getElementById('cs-search');
+  var input = document.getElementById('cs-input');
+  var resultsEl = document.getElementById('cs-results');
+  var statusEl = document.getElementById('cs-status');
+  var totalEl = document.getElementById('cs-total');
+  var corpus = null, activeIdx = -1, items = [];
+
+  function esc(s){ return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function hl(text,q){ if(!q) return esc(text); var t=esc(text); try{ var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'); return t.replace(re,'<mark>$1</mark>'); }catch(e){return t;} }
+
+  function open(){ modal.classList.add('open'); document.documentElement.style.overflow='hidden'; setTimeout(function(){input.focus();},30); if(!corpus) load(); }
+  function close(){ modal.classList.remove('open'); document.documentElement.style.overflow=''; input.value=''; render([], ''); }
+  function toggle(){ modal.classList.contains('open') ? close() : open(); }
+
+  function load(){
+    statusEl.textContent='載入中…';
+    fetch(CONTENT_URL).then(function(r){return r.json();}).then(function(data){
+      var posts = data.posts || data || [];
+      corpus = posts.map(function(p){
+        var tags = (p.tags||[]).map(function(t){return t.name||t;}).join(' ');
+        var cats = (p.categories||[]).map(function(c){return c.name||c;}).join(' ');
+        var u = p.permalink || p.path || '';
+        if (u && !/^https?:\/\//.test(u) && u.charAt(0) !== '/') u = '/' + u;
+        return { title:p.title||'（無標題）', url:u, date:p.date||'', cats:cats, hay:((p.title||'')+' '+cats+' '+tags).toLowerCase() };
+      });
+      statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。';
+      totalEl.textContent=corpus.length;
+    }).catch(function(){ statusEl.textContent='無法載入索引，請稍後再試。'; });
+  }
+
+  function search(q){ if(!corpus) return []; var query=q.trim().toLowerCase(); if(!query) return []; var m=[]; for(var i=0;i<corpus.length&&m.length<50;i++){ if(corpus[i].hay.indexOf(query)!==-1) m.push(corpus[i]); } return m; }
+
+  function render(matches,q){
+    items=matches; activeIdx=matches.length?0:-1;
+    if(!q){ resultsEl.innerHTML=''; if(corpus) statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。'; totalEl.textContent=corpus?corpus.length:0; return; }
+    if(!matches.length){ resultsEl.innerHTML=''; statusEl.textContent='找不到「'+q+'」相關文章'; totalEl.textContent=0; return; }
+    statusEl.textContent='「'+q+'」的搜尋結果'; totalEl.textContent=matches.length;
+    var html='';
+    for(var i=0;i<matches.length;i++){ var m=matches[i]; var meta=(m.date?String(m.date).slice(0,10):'')+(m.cats?'　·　'+m.cats:'');
+      html+='<li><a href="'+esc(m.url)+'" data-idx="'+i+'" role="option"><p class="t">'+hl(m.title,q)+'</p>'+(meta?'<p class="m">'+esc(meta)+'</p>':'')+'</a></li>'; }
+    resultsEl.innerHTML=html; mark();
+  }
+  function mark(){ var a=resultsEl.querySelectorAll('a[data-idx]'); for(var i=0;i<a.length;i++){ if(i===activeIdx){ a[i].setAttribute('aria-selected','true'); a[i].scrollIntoView({block:'nearest'}); } else a[i].removeAttribute('aria-selected'); } }
+
+  var timer;
+  input.addEventListener('input', function(){ var q=input.value; clearTimeout(timer); timer=setTimeout(function(){ render(search(q),q.trim()); },80); });
+  input.addEventListener('keydown', function(e){
+    if(e.key==='ArrowDown'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx+1)%items.length; mark(); } }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx-1+items.length)%items.length; mark(); } }
+    else if(e.key==='Enter'){ if(activeIdx>=0&&items[activeIdx]) window.location.href=items[activeIdx].url; }
+    else if(e.key==='Escape'){ close(); }
+  });
+  modal.addEventListener('click', function(e){ if(e.target.closest('[data-cs-close]')){ close(); return; } if(!e.target.closest('[data-cs-stop]')) close(); });
+  document.addEventListener('keydown', function(e){
+    var mac=navigator.platform.toUpperCase().indexOf('MAC')>=0;
+    if((mac?e.metaKey:e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); toggle(); }
+    else if(e.key==='/'&&document.activeElement===document.body){ e.preventDefault(); open(); }
+  });
+  document.addEventListener('click', function(e){ if(e.target.closest('[data-cs-open]')){ e.preventDefault(); open(); } });
+})();
+</script>
+
+  
+<div id="creature-stage" aria-hidden="true"></div>
+<script>
+(function(){
+  // 僅在「亮色 + 桌機 + 精準指標 + 未要求減少動態」時啟用
+  if (!window.matchMedia) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!matchMedia('(min-width: 1000px) and (pointer: fine)').matches) return; // 對齊雙欄斷點
+  var target = document.querySelector('.layout');
+  var stage = document.getElementById('creature-stage');
+  if (!target || !stage) return;
+
+  function W(){ return window.innerWidth; }
+  function H(){ return window.innerHeight; }
+  var timers = [];
+  function make(txt, color){
+    var e = document.createElement('span'); e.className = 'creature';
+    var sh = document.createElement('span'); sh.className = 'shadow';
+    var f = document.createElement('span'); f.className = 'face'; f.textContent = txt; f.style.color = color;
+    e.appendChild(sh); e.appendChild(f); stage.appendChild(e);
+    return { el:e, face:f };
+  }
+
+  var defs = [
+    { walk:['┌(・ω・)┘','└(・ω・)┐'],   flee:'(;・o・)', color:'#6f9fc4', baseDir: 1 }, // 偏男生 · 淺藍 · 順時針
+    { walk:['┌(◕ᴗ◕)┘♡','└(◕ᴗ◕)┐♡'], flee:'(>o<)♡', color:'#cf7f9f', baseDir:-1 }  // 偏女生 · 粉紅 · 逆時針
+  ];
+  var STROLL = 14/1000, FLEE = 60/1000, OFF = 14;
+
+  var bugs = defs.map(function(d){
+    var c = make(d.walk[0], d.color);
+    c.el.style.opacity = '0.9';
+    c.p = 0; c.dir = d.baseDir; c.fleeing = false; c.calmAt = 0; c.def = d; c.step = 0;
+    var t = setInterval(function(){
+      c.step ^= 1;
+      c.face.textContent = c.fleeing ? c.def.flee : c.def.walk[c.step];
+    }, 480);
+    timers.push(t);
+    return c;
+  });
+
+  function box(){
+    var r = target.getBoundingClientRect();
+    var top = Math.max(r.top - OFF, 8);
+    var bot = Math.min(r.bottom + OFF, H() - 8);
+    return { x:r.left - OFF, y:top, w:(r.right + OFF) - (r.left - OFF), h:Math.max(60, bot - top) };
+  }
+  function ptAt(B, p){
+    var per = 2*(B.w + B.h), d = (((p%1)+1)%1) * per;
+    if(d < B.w) return { x:B.x + d, y:B.y };
+    d -= B.w; if(d < B.h) return { x:B.x + B.w, y:B.y + d };
+    d -= B.h; if(d < B.w) return { x:B.x + B.w - d, y:B.y + B.h };
+    d -= B.w; return { x:B.x, y:B.y + B.h - d };
+  }
+  (function(){ var B = box(), per = 2*(B.w + B.h);
+    bugs[0].p = (B.w + 0.30*B.h) / per;
+    bugs[1].p = (2*B.w + B.h*(2 - 0.30)) / per;
+  })();
+
+  var last = performance.now(), nextHeartAt = 0, raf = null;
+
+  function onMove(ev){
+    if (document.documentElement.classList.contains('dark')) return; // 深色：不計算
+    var B = box(), per = 2*(B.w + B.h), eps = 34/per;
+    bugs.forEach(function(c){
+      var here = ptAt(B, c.p);
+      if(Math.hypot(here.x - ev.clientX, here.y - ev.clientY) < 140){
+        if(!c.fleeing){ c.fleeing = true; c.face.textContent = c.def.flee; }
+        var f = ptAt(B, c.p + eps), b = ptAt(B, c.p - eps);
+        c.dir = (Math.hypot(f.x - ev.clientX, f.y - ev.clientY) >= Math.hypot(b.x - ev.clientX, b.y - ev.clientY)) ? 1 : -1;
+        c.calmAt = performance.now() + 1700;
+      }
+    });
+  }
+  document.addEventListener('mousemove', onMove);
+
+  function spawnHeart(x, y){
+    var h = document.createElement('span'); h.className = 'heart';
+    h.textContent = (Math.random() < 0.5) ? '♡' : '♥';
+    h.style.left = (x + (Math.random()*16 - 8)) + 'px';
+    h.style.top  = (y - 16) + 'px';
+    stage.appendChild(h);
+    h.addEventListener('animationend', function(){ h.remove(); });
+    setTimeout(function(){ h.remove(); }, 3000); // 保險清除（h.remove 可重複呼叫）
+  }
+
+  function frame(now){
+    // 深色模式：不動、不生愛心（避免隱藏時愛心 DOM 累積與多餘回流）
+    if (document.documentElement.classList.contains('dark')) { last = now; raf = requestAnimationFrame(frame); return; }
+    var dt = Math.min(now - last, 40); last = now;
+    var B = box(), per = 2*(B.w + B.h);
+    bugs.forEach(function(c, i){
+      if(c.fleeing && now > c.calmAt){ c.fleeing = false; c.dir = c.def.baseDir; }
+      var spd = c.fleeing ? FLEE : STROLL;
+      c.p += c.dir * (spd * dt) / per;
+      var pt = ptAt(B, c.p); c.px = pt.x; c.py = pt.y;
+      var bob = Math.sin(now/230 + i) * 2.5;
+      c.el.style.transform = 'translate('+pt.x+'px,'+pt.y+'px)';
+      c.face.style.transform = 'translateY('+bob+'px)';
+    });
+    // 靠很近 → 低頻飄愛心（偶爾一兩顆）
+    var dd = Math.hypot(bugs[0].px - bugs[1].px, bugs[0].py - bugs[1].py);
+    if(dd < 88 && now > nextHeartAt){
+      spawnHeart((bugs[0].px + bugs[1].px)/2, Math.min(bugs[0].py, bugs[1].py));
+      nextHeartAt = now + 2200 + Math.random()*2800;
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  // 分頁切到背景時暫停，省效能
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ if(raf){ cancelAnimationFrame(raf); raf = null; } }
+    else if(!raf){ last = performance.now(); raf = requestAnimationFrame(frame); }
+  });
+  raf = requestAnimationFrame(frame);
+})();
+</script>
+
+
+  <script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  function icon(){ if (!btn) return; var d = document.documentElement.classList.contains('dark'); var s = btn.querySelector('span') || btn; s.textContent = d ? '☀' : '☾'; btn.setAttribute('aria-pressed', d ? 'true' : 'false'); btn.setAttribute('aria-label', d ? '切換淺色模式' : '切換深色模式'); }
+  icon();
+  if (btn) btn.addEventListener('click', function(){
+    var dark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
+    icon();
+  });
+
+  /* 行動版漢堡選單：開合主選單抽屜 */
+  var nav = document.querySelector('.nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (nav && navToggle) {
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+    navToggle.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  }
+})();
+</script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v18.0&appId=556473851118881"></script>
+
+
+
+
+</body>
+</html>

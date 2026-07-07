@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var m=localStorage.getItem('casper-theme')||'light';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
+
+<title>Anthropic Getting started with loops（Loop Engineering 入門）| 翻譯文 | 卡斯伯 Blog - 前端，沒有極限</title>
+
+<meta name="keywords" content="AI,Claude Code" />
+
+
+<meta name="description" content="Anthropic 介紹 Claude Code 如何實踐 Loop Engineering 的文章翻譯，把 agent 的工作循環依觸發與停止方式分成回合式、目標式、時間式、主動式四種，並說明如何控管 token 與維持程式碼品質。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Anthropic Getting started with loops（Loop Engineering 入門）| 翻譯文">
+<meta property="og:url" content="https://www.casper.tw/development/2026/07/07/anthropic-loop-engineering/">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="Anthropic 介紹 Claude Code 如何實踐 Loop Engineering 的文章翻譯，把 agent 的工作循環依觸發與停止方式分成回合式、目標式、時間式、主動式四種，並說明如何控管 token 與維持程式碼品質。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://img.casper.tw/posts/2026-07-07-anthropic-loop-engineering/cover.png">
+<meta property="article:published_time" content="2026-07-06T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-07T09:08:39.787Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="Claude Code">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.casper.tw/posts/2026-07-07-anthropic-loop-engineering/cover.png">
+<meta property="fb:app_id" content="556473851118881">
+
+
+<link rel="canonical" href="https://www.casper.tw/development/2026/07/07/anthropic-loop-engineering/" />
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Anthropic Getting started with loops（Loop Engineering 入門）| 翻譯文","datePublished":"2026-07-06T16:00:00.000Z","dateModified":"2026-07-07T09:08:39.787Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2026/07/07/anthropic-loop-engineering/","image":["https://img.casper.tw/posts/2026-07-07-anthropic-loop-engineering/cover.png"]}</script>
+
+
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
+<link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=mq954j70">
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-97433H4032');</script>
+
+
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','152520611964487');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1" /></noscript>
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8296684122088055" crossorigin="anonymous"></script>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <div class="atmos" aria-hidden="true">
+    <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
+  </div>
+  
+<canvas class="fx-rain" id="fx-rain" aria-hidden="true"></canvas>
+<div class="fx-sweep" aria-hidden="true"></div>
+<script>
+(function(){
+  if (!window.matchMedia) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 尊重減少動態
+  var deskRain = matchMedia('(min-width: 1000px)'); // 雨僅桌機（顧行動裝置電量）
+  function isDark(){ return document.documentElement.classList.contains('dark'); }
+
+  /* ===== A：顏文字雨（單 canvas） ===== */
+  var rain = (function(){
+    var cv = document.getElementById('fx-rain'); if(!cv) return null;
+    var ctx = cv.getContext('2d'), cols = [], raf = null, last = 0, on = false, rz;
+    var G = [
+      ['(・ω・)ノ','ヽ(・ω・)'],['ᕕ( ᐛ )ᕗ','ᕙ( ᐛ )ᕗ'],['┌(˘ω˘)┘','└(˘ω˘)┐'],
+      ['(っ◔ω◔)っ','(づ◔ω◔)づ'],['(•◡•)/','\\(•◡•)'],['＼(^o^)／','／(^o^)＼'],
+      ['(ﾉ´ヮ`)ﾉ','ヽ(´ヮ`ヽ)'],['o(>ω<)o','o(<ω>)o'],['( ´ ▽ ` )ﾉ','ヽ( ´ ▽ ` )'],
+      '( ͡° ͜ʖ ͡°)','¯\\_(ツ)_/¯','</>','0x1A'
+    ];
+    function size(){
+      var DPR = Math.min(devicePixelRatio || 1, 1.5);
+      cv.width = innerWidth*DPR; cv.height = innerHeight*DPR;
+      cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
+      ctx.setTransform(DPR,0,0,DPR,0,0);
+      var n = Math.min(Math.floor(innerWidth/64), innerWidth<700 ? 14 : 22); cols = [];
+      for(var i=0;i<n;i++) cols.push({ x:(i+.5)*(innerWidth/n), y:Math.random()*innerHeight, sp:34+Math.random()*46, g:G[(Math.random()*G.length)|0], ph:Math.random()*6 });
+    }
+    function tick(now){
+      if(!on) return;
+      var wait = 33 - (now - last);
+      if(wait > 0){ raf = setTimeout(function(){ raf = requestAnimationFrame(tick); }, wait); return; } // 節流 ~30fps
+      var dt = (now-last)/1000; last = now;
+      ctx.clearRect(0,0,innerWidth,innerHeight);                  // 清空，落下不留尾巴
+      ctx.font = '15px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
+      for(var i=0;i<cols.length;i++){ var c=cols[i]; c.y += c.sp*dt;
+        if(c.y > innerHeight+24){ c.y = -24; c.g = G[(Math.random()*G.length)|0]; c.ph = Math.random()*6; }
+        var x = c.x + Math.sin(now/520 + c.ph*3)*7;
+        var rot = Math.sin(now/430 + c.ph*2)*0.18;
+        var g = Array.isArray(c.g) ? c.g[(Math.floor(now/250 + c.ph)) & 1] : c.g;
+        ctx.save(); ctx.translate(x, c.y); ctx.rotate(rot);
+        ctx.fillStyle = 'rgba(125,247,181,.9)'; ctx.fillText(g,0,0);   // 單一隻、無殘影
+        ctx.restore();
+      }
+      raf = requestAnimationFrame(tick);
+    }
+    addEventListener('resize', function(){ if(!on) return; clearTimeout(rz); rz = setTimeout(size,150); });
+    return {
+      start:function(){ if(on) return; on = true; size(); last = 0; raf = requestAnimationFrame(tick); },
+      stop:function(){ if(!on) return; on = false; if(raf){ cancelAnimationFrame(raf); clearTimeout(raf); } ctx.clearRect(0,0,innerWidth,innerHeight); }
+    };
+  })();
+
+  /* ===== B：七彩像素邊框跑光（卡片，動態插入 .edge-runner） ===== */
+  var border = (function(){
+    var timer = null, on = false;
+    function run(){
+      if(!on) return;
+      var all = [].slice.call(document.querySelectorAll('.card'));
+      var vis = all.filter(function(c){ var r=c.getBoundingClientRect(); return r.top<innerHeight && r.bottom>0; });
+      var pool = vis.length ? vis : all, el = pool[(Math.random()*pool.length)|0];
+      if(el && !el.querySelector('.edge-runner')){
+        var rn = document.createElement('div'); rn.className = 'edge-runner'; el.appendChild(rn);
+        var off = function(){ rn.remove(); rn.removeEventListener('animationend', off); };
+        rn.addEventListener('animationend', off);
+        setTimeout(function(){ if(rn.parentNode) rn.remove(); }, 6000); // 保險清除
+      }
+      timer = setTimeout(run, 4000 + Math.random()*6000);
+    }
+    return {
+      start:function(){ if(on) return; on = true; timer = setTimeout(run, 1500); },
+      stop:function(){ on = false; clearTimeout(timer); var rs = document.querySelectorAll('.edge-runner'); for(var i=0;i<rs.length;i++) rs[i].remove(); }
+    };
+  })();
+
+  /* ===== 控制器：只在暗色 + 分頁可見時跑；sweep 由 CSS 控制 ===== */
+  function sync(){
+    var dark = isDark(), vis = !document.hidden;
+    if(rain){ (dark && vis && deskRain.matches) ? rain.start() : rain.stop(); }
+    (dark && vis) ? border.start() : border.stop();
+  }
+  new MutationObserver(sync).observe(document.documentElement, { attributes:true, attributeFilter:['class'] });
+  document.addEventListener('visibilitychange', sync);
+  if(deskRain.addEventListener) deskRain.addEventListener('change', sync);
+  sync();
+})();
+</script>
+
+
+
+  
+<div class="dateline"><div class="in">
+  <span>第 362 篇 · 第 14 卷</span>
+  <span class="c">前端，沒有極限</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
+</div></div>
+
+<header class="topbar"><nav class="nav">
+  <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  <a class="brand" href="/"><span class="mk is-img"><img src="/img/casper-avatar.webp" alt="卡斯伯"></span>卡斯伯 Blog</a>
+  <div class="menu" id="primary-menu">
+    
+    
+      <a href="/">首頁</a>
+    
+      <a href="/tags/css/">CSS</a>
+    
+      <a href="/tags/javascript/">JavaScript</a>
+    
+      <a href="/categories/life/">生活</a>
+    
+      <a href="/archives/">封存</a>
+    
+      <a href="/about/">關於</a>
+    
+  </div>
+  <span class="grow"></span>
+  <button class="search-trig" type="button" data-cs-open aria-label="搜尋">
+    <svg class="s-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+    <span class="s-lbl">搜尋…</span><kbd>⌘K</kbd>
+  </button>
+  <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+  <button class="iconbtn nav-toggle" type="button" id="nav-toggle" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-menu"><span class="nt-ico" aria-hidden="true"></span></button>
+</nav></header>
+
+<div class="wrap"><div class="cmdbar">
+  <span class="q">ls -lt ./posts --since=2013<span class="cursor"></span></span>
+  <span class="status">
+    <span class="rec"></span> REC
+    <span>·</span> node <span class="seal">362</span>
+    <span>·</span> uplink <span class="uplink"><i></i><i></i><i></i><i></i></span>
+  </span>
+</div></div>
+
+
+  <div class="wrap">
+    <div class="layout">
+      <main id="main" tabindex="-1">
+<article class="post">
+  <header class="article-head">
+    <p class="crumb">development</p>
+    <h1>Anthropic Getting started with loops（Loop Engineering 入門）| 翻譯文</h1>
+    <div class="meta">
+      <span>2026 年 07 月 07 日</span>
+      <span>·</span>
+      <span>8 分鐘閱讀</span>
+      <span>·</span>
+      <span>By Wang Casper</span>
+    </div>
+    <div class="rule-d"></div>
+  </header>
+
+  <div class="prose"><p>最近 Loop Engineering 這個詞非常的火紅，那 Anthropic 也推出一篇文章，專門在介紹 Claude Code 如何做到 Loop Engineering。</p>
+<p>雖然它沒有明確地提到 Loop Engineering，但是整篇文章其實都在說明這個相關的概念。如果你有興趣的話，可以透過此<a target="_blank" rel="noopener" href="https://x.com/ClaudeDevs/article/2074208949205881033">連結</a> 看到原文。</p>
+<p>本篇是翻譯成繁體中文版的版本。</p>
+<h2 id="重點摘要（TL-DR）"><a href="#重點摘要（TL-DR）" class="headerlink" title="重點摘要（TL;DR）"></a>重點摘要（TL;DR）</h2><p><strong>一句話：</strong> Loop 就是「agent 反覆執行工作循環，直到滿足停止條件為止」。依「誰觸發、何時停、用哪個功能」可分成四種——<strong>由手動到全自動、由簡單到複雜</strong>，請從最簡單的開始，按需選用。</p>
+<h3 id="四種-Loop-一覽"><a href="#四種-Loop-一覽" class="headerlink" title="四種 Loop 一覽"></a>四種 Loop 一覽</h3><table>
+<thead>
+<tr>
+<th>Loop 類型</th>
+<th>你交出去的是…</th>
+<th>何時用它</th>
+<th>觸發</th>
+<th>停止</th>
+<th>主要功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>回合式 Turn-based</strong></td>
+<td>每一回合的「檢查」由你做</td>
+<td>你在探索或還在做決定</td>
+<td>一個 prompt</td>
+<td>Claude 判斷完成</td>
+<td>自訂驗證 skill</td>
+</tr>
+<tr>
+<td><strong>目標式 Goal-based</strong></td>
+<td>交出「停止條件」讓 Claude 自己判斷</td>
+<td>你已知道「完成」長什麼樣</td>
+<td>手動 prompt</td>
+<td>達標或到回合上限</td>
+<td><code>/goal</code></td>
+</tr>
+<tr>
+<td><strong>時間式 Time-based</strong></td>
+<td>交出「觸發時機」</td>
+<td>工作在專案外、按排程發生</td>
+<td>時間間隔</td>
+<td>你取消或工作完成</td>
+<td><code>/loop</code>、<code>/schedule</code></td>
+</tr>
+<tr>
+<td><strong>主動式 Proactive</strong></td>
+<td>連「下 prompt」都交出去</td>
+<td>工作重複且定義明確</td>
+<td>事件／排程（無人即時介入）</td>
+<td>任務達標即退；routine 到你關閉</td>
+<td>以上全部 + 動態工作流</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>選擇心法：</strong> 從「你自己是瓶頸」的任務下手，問自己能把哪一塊交出去——能寫出驗證檢查？→ 回合式 skill；目標夠明確？→ <code>/goal</code>；工作按排程進來？→ <code>/loop</code>／<code>/schedule</code>。</p>
+</blockquote>
+<h3 id="兩個共通原則"><a href="#兩個共通原則" class="headerlink" title="兩個共通原則"></a>兩個共通原則</h3><ul>
+<li><strong>維持品質：</strong> 保持 codebase 乾淨、用 skill 編碼「怎樣算好」讓 Claude 自我驗證、用第二個 agent 做 code review；遇到不合標準的結果，別只修個案，把它編碼回系統。</li>
+<li><strong>控管 token：</strong> 選對 primitive 與模型、定清楚成功／停止標準、大規模前先試跑、確定性工作交給腳本、別跑得比需要更頻繁，並用 <code>/usage</code>、<code>/workflows</code> 檢視用量。</li>
+</ul>
+<hr>
+<p>現在大家常在談「設計 loop（迴圈）」而不是單純對 coding agent 下 prompt。但如果你上 X 想搞清楚 loop 到底是什麼，會看到各式各樣的說法。</p>
+<p>在 Claude Code 團隊，我們把 <strong>loop 定義為：agent 反覆執行工作循環，直到滿足某個停止條件為止</strong>。我們依據以下幾點來分類不同的 loop：</p>
+<ul>
+<li>如何被觸發（triggered）</li>
+<li>如何停止（stopped）</li>
+<li>使用了哪個 Claude Code primitive（原語 / 基礎功能）</li>
+<li>最適合哪一種任務</li>
+</ul>
+<p>以下會介紹主要的 loop 類型、各自的使用時機，以及如何在控制 token 用量的同時維持程式碼品質。<strong>並不是所有任務都需要複雜的 loop；請從最簡單的解法開始，有選擇性地使用這些模式。</strong></p>
+<h2 id="四種-Loop-類型速覽"><a href="#四種-Loop-類型速覽" class="headerlink" title="四種 Loop 類型速覽"></a>四種 Loop 類型速覽</h2><table>
+<thead>
+<tr>
+<th>Loop 類型</th>
+<th>觸發方式</th>
+<th>停止條件</th>
+<th>最適合</th>
+<th>使用的功能</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>回合式 Turn-based</strong></td>
+<td>使用者的 prompt</td>
+<td>Claude 判斷任務完成，或需要更多脈絡</td>
+<td>短任務、非例行性工作</td>
+<td>自訂驗證 skill</td>
+</tr>
+<tr>
+<td><strong>目標式 Goal-based</strong></td>
+<td>即時手動 prompt</td>
+<td>達成目標，或到達回合上限</td>
+<td>有可驗證退出條件的任務</td>
+<td><code>/goal</code></td>
+</tr>
+<tr>
+<td><strong>時間式 Time-based</strong></td>
+<td>指定的時間間隔</td>
+<td>你取消，或工作完成</td>
+<td>例行工作、對接外部系統</td>
+<td><code>/loop</code>、<code>/schedule</code></td>
+</tr>
+<tr>
+<td><strong>主動式 Proactive</strong></td>
+<td>事件或排程（過程中無人即時介入）</td>
+<td>每個任務達標即退出；routine 本身持續到你關閉</td>
+<td>定義明確的重複性工作流</td>
+<td>以上全部 + 動態工作流</td>
+</tr>
+</tbody>
+</table>
+<h2 id="1-回合式-Loop（Turn-based）"><a href="#1-回合式-Loop（Turn-based）" class="headerlink" title="1. 回合式 Loop（Turn-based）"></a>1. 回合式 Loop（Turn-based）</h2><p><img src="https://img.casper.tw/posts/2026-07-07-anthropic-loop-engineering/image.png" alt="回合式 Loop（Turn-based）示意圖"></p>
+<ul>
+<li><strong>觸發：</strong> 使用者的一個 prompt</li>
+<li><strong>停止：</strong> Claude 判斷已完成任務，或需要更多脈絡</li>
+<li><strong>最適合：</strong> 較短、不屬於例行流程或排程的任務</li>
+<li><strong>控管用量：</strong> 寫更具體的 prompt，並用 skill 強化驗證，以減少回合數</li>
+</ul>
+<p>你送出的每一個 prompt，其實都啟動了一個由你主導、逐回合推進的手動 loop。Claude 會蒐集脈絡、採取行動、檢查成果、必要時重複，最後回覆你。我們稱之為 <strong>agentic loop（代理迴圈）</strong>。</p>
+<p>例如：請 Claude 做一個「讚」按鈕。它會讀你的程式碼、進行修改、跑測試，然後把它認為可行的結果交還給你。接著換你手動檢查，再寫下一個 prompt。</p>
+<p>你可以把自己手動檢查的步驟寫成一份 <strong>SKILL.md</strong>，讓 Claude 能端到端地檢查更多自己的工作，藉此改善「驗證」這一環。這份 skill 應該包含讓 Claude 能看見、量測或操作結果的工具或連接器。<strong>檢查越量化，Claude 就越容易自我驗證。</strong></p>
+<h2 id="2-目標式-Loop（Goal-based，-goal）"><a href="#2-目標式-Loop（Goal-based，-goal）" class="headerlink" title="2. 目標式 Loop（Goal-based，/goal）"></a>2. 目標式 Loop（Goal-based，<code>/goal</code>）</h2><p><img src="https://img.casper.tw/posts/2026-07-07-anthropic-loop-engineering/image-1.png" alt="目標式 Loop（Goal-based）示意圖"></p>
+<ul>
+<li><strong>觸發：</strong> 即時的手動 prompt</li>
+<li><strong>停止：</strong> 達成目標，<strong>或</strong>到達你設定的最大回合數</li>
+<li><strong>最適合：</strong> 有可驗證退出條件的任務</li>
+<li><strong>控管用量：</strong> 設定具體的完成標準與明確的回合上限，例如「試 5 次後停止」</li>
+</ul>
+<p>有時一個回合不夠，複雜任務尤其如此。Agent 在能反覆迭代時表現更好。你可以用 <code>/goal</code> 定義「怎樣算完成」，來延長 Claude 迭代的時間。</p>
+<p>當你定義了成功標準，Claude 就不必自行判斷什麼叫「夠好」而提早結束 loop。每當 Claude 想停下來，一個評估模型（evaluator model）會檢查你的條件，若未達成就把它送回去繼續做，直到達成目標或用完你設定的回合數。</p>
+<p>這也是為什麼<strong>確定性的標準</strong>特別有效，例如「通過幾個測試」或「達到某個分數門檻」。</p>
+<p>範例：</p>
+<pre><code class="hljs bash">/goal get the homepage Lighthouse score to 90 or above, stop after 5 tries.</code></pre>
+<h2 id="3-時間式-Loop（Time-based，-loop-與-schedule）"><a href="#3-時間式-Loop（Time-based，-loop-與-schedule）" class="headerlink" title="3. 時間式 Loop（Time-based，/loop 與 /schedule）"></a>3. 時間式 Loop（Time-based，<code>/loop</code> 與 <code>/schedule</code>）</h2><ul>
+<li><strong>觸發：</strong> 指定的時間間隔</li>
+<li><strong>停止：</strong> 你取消，或工作完成（PR 已合併、佇列已清空）</li>
+<li><strong>最適合：</strong> 例行性工作，或需要對接外部環境／系統</li>
+<li><strong>控管用量：</strong> 拉長間隔，或改用「事件驅動」而非「時間驅動」</li>
+</ul>
+<p>有些代理工作是重複性的：任務不變，只有輸入改變，例如每天早上摘要 Slack 訊息。另一些工作則依賴外部系統，而對接的簡單方法就是<strong>定時去查看、並對變化做出反應</strong>，例如一個可能收到 code review 或 CI 失敗的 PR。</p>
+<p>這類情況可以用 <code>/loop</code>，它會依間隔重複執行一個 prompt。範例：</p>
+<pre><code class="hljs bash">/loop 5m check my PR, address review comments, and fix failing CI</code></pre>
+<p><code>/loop</code> 跑在你自己的電腦上，所以你關機它就停了。你可以用 <code>/schedule</code> 建立一個 routine，把 loop 搬到雲端。</p>
+<h2 id="4-主動式-Loop（Proactive）"><a href="#4-主動式-Loop（Proactive）" class="headerlink" title="4. 主動式 Loop（Proactive）"></a>4. 主動式 Loop（Proactive）</h2><p><img src="https://img.casper.tw/posts/2026-07-07-anthropic-loop-engineering/image-2.png" alt="主動式 Loop（Proactive）示意圖"></p>
+<ul>
+<li><strong>觸發：</strong> 事件或排程，過程中無人即時介入</li>
+<li><strong>停止：</strong> 每個任務達成目標就退出；routine 本身會一直跑到你把它關掉</li>
+<li><strong>最適合：</strong> 定義明確的重複性工作流：bug 回報、issue 分流、遷移、相依套件升級等</li>
+<li><strong>控管用量：</strong> 把 routine 導向較小、較快的模型，判斷性的環節才用最強的模型</li>
+</ul>
+<p>上述這些 primitive，加上 Claude Code 的其他功能——如 auto mode（自動模式）與動態工作流（dynamic workflows，研究預覽階段）——可以組合成一個處理長時間工作的 loop。</p>
+<p>例如，要處理源源不絕的意見回饋，你可以用：</p>
+<ul>
+<li><strong><code>/schedule</code></strong>（研究預覽）跑一個 routine，定時檢查是否有新回報</li>
+<li><strong><code>/goal</code></strong> 定義「怎樣算完成」，並用 skill 記錄如何驗證</li>
+<li><strong>動態工作流</strong> 來編排 agent，分流每則回報、修正它、再審查修正結果</li>
+<li><strong>Auto mode</strong> 讓 routine 不必停下來問權限就能持續執行</li>
+</ul>
+<p>組合起來的 prompt 可能長這樣：</p>
+<pre><code class="hljs bash">/schedule every hour: check the project-feedback channel <span class="hljs-keyword">for</span> bug reports. /goal: don<span class="hljs-string">&#x27;t stop until every report found this run is triaged, actioned, and responded to. When fixing a bug, use a workflow to explore three solutions in parallel worktrees and have a judge adversarially review them.</span></code></pre>
+<h2 id="維持程式碼品質"><a href="#維持程式碼品質" class="headerlink" title="維持程式碼品質"></a>維持程式碼品質</h2><p>Loop 的產出品質取決於它周遭的系統。設計系統時：</p>
+<ul>
+<li><strong>保持 codebase 本身乾淨：</strong> Claude 會沿用你 codebase 中既有的模式與慣例。</li>
+<li><strong>給 Claude 自我驗證的方法：</strong> 用 skill 把「你和團隊心中的好」編碼起來。</li>
+<li><strong>讓文件容易取得：</strong> 框架與函式庫的文件有最新的最佳實務。</li>
+<li><strong>用第二個 agent 做 code review：</strong> 一個脈絡全新的審查者比較沒有偏見，也不會被主 agent 的推理帶著走。可用內建的 <code>/code-review</code> skill，或 GitHub 的 Code Review。</li>
+</ul>
+<p>當某個結果不符標準時，別只停在修好這個個案——試著把它編碼進系統，讓未來所有迭代都受惠。</p>
+<h2 id="管理-Token-用量"><a href="#管理-Token-用量" class="headerlink" title="管理 Token 用量"></a>管理 Token 用量</h2><p>要控管 token 用量，loop 應該要有清楚的邊界：</p>
+<ul>
+<li><strong>為任務選對 primitive 與模型：</strong> 小任務不需要多個 agent 或 loop；有些任務可以用更便宜、更快的模型。</li>
+<li><strong>定義明確的成功與停止標準：</strong> 具體說明「完成」的樣子，讓 Claude 能更快抵達解答（但也別太快）。</li>
+<li><strong>大規模執行前先試跑：</strong> 動態工作流可能生出數百個 agent，先用一小部分工作估算用量。</li>
+<li><strong>確定性的工作用腳本處理：</strong> 跑腳本比逐步推理便宜。例如 PDF skill 可以附帶一支填表腳本讓 Claude 每次直接執行，而不是每次重新推導程式碼。</li>
+<li><strong>別讓 routine 跑得比需要的更頻繁：</strong> 把間隔對齊你所監看對象實際變化的頻率。</li>
+<li><strong>檢視用量：</strong> <code>/usage</code> 指令會依 skill、subagent、MCP 拆解近期用量；<code>/goal</code> 不帶參數會顯示目前的回合數與 token 用量；<code>/workflows</code> 會顯示每個 agent 的 token 用量，而且你隨時可以停掉某個 agent。</li>
+</ul>
+<h2 id="開始上手"><a href="#開始上手" class="headerlink" title="開始上手"></a>開始上手</h2><p>從你已經在做的工作著手。挑一個<strong>你自己是瓶頸</strong>的任務，問問看有哪一塊可以交出去：你能寫出驗證檢查嗎？目標夠明確嗎？工作是不是按排程進來的？</p>
+<p>有了想法就實際跑一次 loop，觀察結果——看它在哪裡卡住、在哪裡做過了頭——然後別怕去反覆調整它。</p>
+<p>更多資訊請參閱 Claude Code 文件中關於平行執行 agent、以及 loop、schedule、goal、動態工作流的頁面。</p>
+</div>
+
+  <div class="post-foot">
+    
+      <div class="tags post-tags"><a href="/tags/AI/">AI</a><a href="/tags/Claude-Code/">Claude Code</a></div>
+    
+    
+<nav class="post-nav">
+  
+    <a class="prev" href="/development/2023/10/15/ironman-collection/">
+      <span class="lab">← 較舊一篇</span>
+      <span class="ttl">Node.js 實戰密技大統整（套件運用、金流、第三方登入、雲服務、Docker）</span>
+    </a>
+  
+  
+</nav>
+
+
+    
+<section id="comments">
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2026/07/07/anthropic-loop-engineering/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+</section>
+
+
+  </div>
+</article>
+</main>
+      <aside class="sidebar">
+
+
+  
+    <div class="widget">
+      <div class="author">
+        <div class="ava is-img"><img src="/img/casper-avatar.webp" alt="Wang Casper"></div>
+        <p class="nm">Wang Casper</p>
+        <p class="en">卡斯伯</p>
+        <p class="bio">前端工程師、教學者。在 Web 上寫筆記，自 2013 年至今，也在六角學院教授前端。</p>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>我的著作</h3></div>
+      <div class="book">
+        <a class="cover" href="https://hex.school/byKCb" target="_blank" rel="noopener">
+          <img src="/img/js-interview-cover.webp" alt="JavaScript 面試力">
+        </a>
+        <div class="info">
+          <span class="t">JavaScript 面試力</span>
+          <span class="d">面試前的最後一哩路，補齊 JS 核心觀念。</span>
+          <a class="buy" href="https://hex.school/byKCb" target="_blank" rel="noopener">前往購買</a>
+        </div>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>社群</h3></div>
+      <div class="social">
+        
+          <a href="https://www.facebook.com/WccCasper" target="_blank" rel="noopener noreferrer">Facebook<span class="r">卡斯伯</span></a>
+        
+          <a href="https://github.com/wcc723" target="_blank" rel="noopener noreferrer">GitHub<span class="r">wcc723</span></a>
+        
+          <a href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA" target="_blank" rel="noopener noreferrer">YouTube<span class="r">六角學院</span></a>
+        
+          <a href="/atom.xml">RSS<span class="r">訂閱</span></a>
+        
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>贊助</h3></div>
+      
+  <div class="ad">廣告版位<br>Google AdSense</div>
+
+
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>標籤</h3></div>
+      <div class="tags"><a class="tag-link" href="/tags/css/" rel="tag">css</a><a class="tag-link" href="/tags/ironman/" rel="tag">ironman</a><a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a><a class="tag-link" href="/tags/js/" rel="tag">js</a><a class="tag-link" href="/tags/sass/" rel="tag">sass</a><a class="tag-link" href="/tags/design/" rel="tag">design</a><a class="tag-link" href="/tags/d3js/" rel="tag">d3js</a><a class="tag-link" href="/tags/gulp/" rel="tag">gulp</a><a class="tag-link" href="/tags/nodejs/" rel="tag">nodejs</a><a class="tag-link" href="/tags/jekyll/" rel="tag">jekyll</a><a class="tag-link" href="/tags/Bootstrap/" rel="tag">Bootstrap</a><a class="tag-link" href="/tags/tools/" rel="tag">tools</a><a class="tag-link" href="/tags/jquery/" rel="tag">jquery</a><a class="tag-link" href="/tags/svg/" rel="tag">svg</a><a class="tag-link" href="/tags/bootstrap/" rel="tag">bootstrap</a><a class="tag-link" href="/tags/oocss/" rel="tag">oocss</a><a class="tag-link" href="/tags/git/" rel="tag">git</a><a class="tag-link" href="/tags/Sass/" rel="tag">Sass</a></div>
+    </div>
+  
+
+
+</aside>
+
+    </div>
+  </div>
+
+  <footer class="site"><div class="wrap">
+  <p class="big">卡斯伯 Blog</p>
+  <p class="sub">前端，沒有極限 · © 2026 Wang Casper · Powered by Hexo</p>
+</div></footer>
+
+  <div class="cs-modal" id="cs-search" role="dialog" aria-modal="true" aria-label="搜尋文章">
+  <div class="cs-box" data-cs-stop>
+    <div class="cs-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="cs-input" type="search" autocomplete="off" placeholder="搜尋文章標題、分類或標籤…" aria-label="搜尋">
+      <kbd>esc</kbd>
+      <button type="button" data-cs-close class="iconbtn" style="width:30px;height:30px;border:0" aria-label="關閉">✕</button>
+    </div>
+    <div class="cs-status" id="cs-status">載入中…</div>
+    <ul class="cs-results" id="cs-results"></ul>
+    <div class="cs-foot">
+      <span>↑↓ 切換 · ↵ 開啟 · esc 關閉</span>
+      <span>共 <span id="cs-total">0</span> 篇</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CONTENT_URL = '/content.json';
+  var modal = document.getElementById('cs-search');
+  var input = document.getElementById('cs-input');
+  var resultsEl = document.getElementById('cs-results');
+  var statusEl = document.getElementById('cs-status');
+  var totalEl = document.getElementById('cs-total');
+  var corpus = null, activeIdx = -1, items = [];
+
+  function esc(s){ return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function hl(text,q){ if(!q) return esc(text); var t=esc(text); try{ var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'); return t.replace(re,'<mark>$1</mark>'); }catch(e){return t;} }
+
+  function open(){ modal.classList.add('open'); document.documentElement.style.overflow='hidden'; setTimeout(function(){input.focus();},30); if(!corpus) load(); }
+  function close(){ modal.classList.remove('open'); document.documentElement.style.overflow=''; input.value=''; render([], ''); }
+  function toggle(){ modal.classList.contains('open') ? close() : open(); }
+
+  function load(){
+    statusEl.textContent='載入中…';
+    fetch(CONTENT_URL).then(function(r){return r.json();}).then(function(data){
+      var posts = data.posts || data || [];
+      corpus = posts.map(function(p){
+        var tags = (p.tags||[]).map(function(t){return t.name||t;}).join(' ');
+        var cats = (p.categories||[]).map(function(c){return c.name||c;}).join(' ');
+        var u = p.permalink || p.path || '';
+        if (u && !/^https?:\/\//.test(u) && u.charAt(0) !== '/') u = '/' + u;
+        return { title:p.title||'（無標題）', url:u, date:p.date||'', cats:cats, hay:((p.title||'')+' '+cats+' '+tags).toLowerCase() };
+      });
+      statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。';
+      totalEl.textContent=corpus.length;
+    }).catch(function(){ statusEl.textContent='無法載入索引，請稍後再試。'; });
+  }
+
+  function search(q){ if(!corpus) return []; var query=q.trim().toLowerCase(); if(!query) return []; var m=[]; for(var i=0;i<corpus.length&&m.length<50;i++){ if(corpus[i].hay.indexOf(query)!==-1) m.push(corpus[i]); } return m; }
+
+  function render(matches,q){
+    items=matches; activeIdx=matches.length?0:-1;
+    if(!q){ resultsEl.innerHTML=''; if(corpus) statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。'; totalEl.textContent=corpus?corpus.length:0; return; }
+    if(!matches.length){ resultsEl.innerHTML=''; statusEl.textContent='找不到「'+q+'」相關文章'; totalEl.textContent=0; return; }
+    statusEl.textContent='「'+q+'」的搜尋結果'; totalEl.textContent=matches.length;
+    var html='';
+    for(var i=0;i<matches.length;i++){ var m=matches[i]; var meta=(m.date?String(m.date).slice(0,10):'')+(m.cats?'　·　'+m.cats:'');
+      html+='<li><a href="'+esc(m.url)+'" data-idx="'+i+'" role="option"><p class="t">'+hl(m.title,q)+'</p>'+(meta?'<p class="m">'+esc(meta)+'</p>':'')+'</a></li>'; }
+    resultsEl.innerHTML=html; mark();
+  }
+  function mark(){ var a=resultsEl.querySelectorAll('a[data-idx]'); for(var i=0;i<a.length;i++){ if(i===activeIdx){ a[i].setAttribute('aria-selected','true'); a[i].scrollIntoView({block:'nearest'}); } else a[i].removeAttribute('aria-selected'); } }
+
+  var timer;
+  input.addEventListener('input', function(){ var q=input.value; clearTimeout(timer); timer=setTimeout(function(){ render(search(q),q.trim()); },80); });
+  input.addEventListener('keydown', function(e){
+    if(e.key==='ArrowDown'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx+1)%items.length; mark(); } }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx-1+items.length)%items.length; mark(); } }
+    else if(e.key==='Enter'){ if(activeIdx>=0&&items[activeIdx]) window.location.href=items[activeIdx].url; }
+    else if(e.key==='Escape'){ close(); }
+  });
+  modal.addEventListener('click', function(e){ if(e.target.closest('[data-cs-close]')){ close(); return; } if(!e.target.closest('[data-cs-stop]')) close(); });
+  document.addEventListener('keydown', function(e){
+    var mac=navigator.platform.toUpperCase().indexOf('MAC')>=0;
+    if((mac?e.metaKey:e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); toggle(); }
+    else if(e.key==='/'&&document.activeElement===document.body){ e.preventDefault(); open(); }
+  });
+  document.addEventListener('click', function(e){ if(e.target.closest('[data-cs-open]')){ e.preventDefault(); open(); } });
+})();
+</script>
+
+  
+<div id="creature-stage" aria-hidden="true"></div>
+<script>
+(function(){
+  // 僅在「亮色 + 桌機 + 精準指標 + 未要求減少動態」時啟用
+  if (!window.matchMedia) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (!matchMedia('(min-width: 1000px) and (pointer: fine)').matches) return; // 對齊雙欄斷點
+  var target = document.querySelector('.layout');
+  var stage = document.getElementById('creature-stage');
+  if (!target || !stage) return;
+
+  function W(){ return window.innerWidth; }
+  function H(){ return window.innerHeight; }
+  var timers = [];
+  function make(txt, color){
+    var e = document.createElement('span'); e.className = 'creature';
+    var sh = document.createElement('span'); sh.className = 'shadow';
+    var f = document.createElement('span'); f.className = 'face'; f.textContent = txt; f.style.color = color;
+    e.appendChild(sh); e.appendChild(f); stage.appendChild(e);
+    return { el:e, face:f };
+  }
+
+  var defs = [
+    { walk:['┌(・ω・)┘','└(・ω・)┐'],   flee:'(;・o・)', color:'#6f9fc4', baseDir: 1 }, // 偏男生 · 淺藍 · 順時針
+    { walk:['┌(◕ᴗ◕)┘♡','└(◕ᴗ◕)┐♡'], flee:'(>o<)♡', color:'#cf7f9f', baseDir:-1 }  // 偏女生 · 粉紅 · 逆時針
+  ];
+  var STROLL = 14/1000, FLEE = 60/1000, OFF = 14;
+
+  var bugs = defs.map(function(d){
+    var c = make(d.walk[0], d.color);
+    c.el.style.opacity = '0.9';
+    c.p = 0; c.dir = d.baseDir; c.fleeing = false; c.calmAt = 0; c.def = d; c.step = 0;
+    var t = setInterval(function(){
+      c.step ^= 1;
+      c.face.textContent = c.fleeing ? c.def.flee : c.def.walk[c.step];
+    }, 480);
+    timers.push(t);
+    return c;
+  });
+
+  function box(){
+    var r = target.getBoundingClientRect();
+    var top = Math.max(r.top - OFF, 8);
+    var bot = Math.min(r.bottom + OFF, H() - 8);
+    return { x:r.left - OFF, y:top, w:(r.right + OFF) - (r.left - OFF), h:Math.max(60, bot - top) };
+  }
+  function ptAt(B, p){
+    var per = 2*(B.w + B.h), d = (((p%1)+1)%1) * per;
+    if(d < B.w) return { x:B.x + d, y:B.y };
+    d -= B.w; if(d < B.h) return { x:B.x + B.w, y:B.y + d };
+    d -= B.h; if(d < B.w) return { x:B.x + B.w - d, y:B.y + B.h };
+    d -= B.w; return { x:B.x, y:B.y + B.h - d };
+  }
+  (function(){ var B = box(), per = 2*(B.w + B.h);
+    bugs[0].p = (B.w + 0.30*B.h) / per;
+    bugs[1].p = (2*B.w + B.h*(2 - 0.30)) / per;
+  })();
+
+  var last = performance.now(), nextHeartAt = 0, raf = null;
+
+  function onMove(ev){
+    if (document.documentElement.classList.contains('dark')) return; // 深色：不計算
+    var B = box(), per = 2*(B.w + B.h), eps = 34/per;
+    bugs.forEach(function(c){
+      var here = ptAt(B, c.p);
+      if(Math.hypot(here.x - ev.clientX, here.y - ev.clientY) < 140){
+        if(!c.fleeing){ c.fleeing = true; c.face.textContent = c.def.flee; }
+        var f = ptAt(B, c.p + eps), b = ptAt(B, c.p - eps);
+        c.dir = (Math.hypot(f.x - ev.clientX, f.y - ev.clientY) >= Math.hypot(b.x - ev.clientX, b.y - ev.clientY)) ? 1 : -1;
+        c.calmAt = performance.now() + 1700;
+      }
+    });
+  }
+  document.addEventListener('mousemove', onMove);
+
+  function spawnHeart(x, y){
+    var h = document.createElement('span'); h.className = 'heart';
+    h.textContent = (Math.random() < 0.5) ? '♡' : '♥';
+    h.style.left = (x + (Math.random()*16 - 8)) + 'px';
+    h.style.top  = (y - 16) + 'px';
+    stage.appendChild(h);
+    h.addEventListener('animationend', function(){ h.remove(); });
+    setTimeout(function(){ h.remove(); }, 3000); // 保險清除（h.remove 可重複呼叫）
+  }
+
+  function frame(now){
+    // 深色模式：不動、不生愛心（避免隱藏時愛心 DOM 累積與多餘回流）
+    if (document.documentElement.classList.contains('dark')) { last = now; raf = requestAnimationFrame(frame); return; }
+    var dt = Math.min(now - last, 40); last = now;
+    var B = box(), per = 2*(B.w + B.h);
+    bugs.forEach(function(c, i){
+      if(c.fleeing && now > c.calmAt){ c.fleeing = false; c.dir = c.def.baseDir; }
+      var spd = c.fleeing ? FLEE : STROLL;
+      c.p += c.dir * (spd * dt) / per;
+      var pt = ptAt(B, c.p); c.px = pt.x; c.py = pt.y;
+      var bob = Math.sin(now/230 + i) * 2.5;
+      c.el.style.transform = 'translate('+pt.x+'px,'+pt.y+'px)';
+      c.face.style.transform = 'translateY('+bob+'px)';
+    });
+    // 靠很近 → 低頻飄愛心（偶爾一兩顆）
+    var dd = Math.hypot(bugs[0].px - bugs[1].px, bugs[0].py - bugs[1].py);
+    if(dd < 88 && now > nextHeartAt){
+      spawnHeart((bugs[0].px + bugs[1].px)/2, Math.min(bugs[0].py, bugs[1].py));
+      nextHeartAt = now + 2200 + Math.random()*2800;
+    }
+    raf = requestAnimationFrame(frame);
+  }
+
+  // 分頁切到背景時暫停，省效能
+  document.addEventListener('visibilitychange', function(){
+    if(document.hidden){ if(raf){ cancelAnimationFrame(raf); raf = null; } }
+    else if(!raf){ last = performance.now(); raf = requestAnimationFrame(frame); }
+  });
+  raf = requestAnimationFrame(frame);
+})();
+</script>
+
+
+  <script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  function icon(){ if (!btn) return; var d = document.documentElement.classList.contains('dark'); var s = btn.querySelector('span') || btn; s.textContent = d ? '☀' : '☾'; btn.setAttribute('aria-pressed', d ? 'true' : 'false'); btn.setAttribute('aria-label', d ? '切換淺色模式' : '切換深色模式'); }
+  icon();
+  if (btn) btn.addEventListener('click', function(){
+    var dark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
+    icon();
+  });
+
+  /* 行動版漢堡選單：開合主選單抽屜 */
+  var nav = document.querySelector('.nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (nav && navToggle) {
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+    navToggle.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  }
+})();
+</script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v18.0&appId=556473851118881"></script>
+
+
+
+
+</body>
+</html>
