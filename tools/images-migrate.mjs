@@ -53,10 +53,18 @@ function chosenAssets() {
   return targets.length ? ASSETS.filter((a) => targets.includes(a.name)) : ASSETS;
 }
 
+// 來源資料夾:優先非底線版,detach 後改用 _<name>(讓修正/重傳不必先改名回去)。
+function srcDir(a) {
+  const det = path.join(path.dirname(a.dir), '_' + a.name);
+  if (existsSync(a.dir)) return a.dir;
+  if (existsSync(det)) return det;
+  return null;
+}
+
 async function uploadAssets() {
-  const present = chosenAssets().filter((a) => existsSync(a.dir));
+  const present = chosenAssets().map((a) => ({ a, dir: srcDir(a) })).filter((x) => x.dir);
   if (!present.length) {
-    console.log('沒有可上傳的資產資料夾(可能都已 detach)。可指定:images / libs / demoFile。');
+    console.log('沒有可上傳的資產資料夾。可指定:images / libs / demoFile。');
     return;
   }
   const force = flags.has('--force');
@@ -66,13 +74,13 @@ async function uploadAssets() {
   const done = useWrangler ? loadLedger() : null;
 
   const items = [];
-  for (const a of present) {
-    for (const abs of walk(a.dir)) {
-      items.push({ abs, key: `${a.name}/${path.relative(a.dir, abs).split(path.sep).join('/')}` });
+  for (const { a, dir } of present) {
+    for (const abs of walk(dir)) {
+      items.push({ abs, key: `${a.name}/${path.relative(dir, abs).split(path.sep).join('/')}` });
     }
   }
   console.log(
-    `上傳 ${items.length} 個檔案到 R2 bucket「${cfg.bucket}」(${present.map((a) => a.name).join(', ')})` +
+    `上傳 ${items.length} 個檔案到 R2 bucket「${cfg.bucket}」(${present.map((x) => x.a.name).join(', ')})` +
     `(後端:${useWrangler ? 'wrangler OAuth' : 'aws-sdk'})…\n`
   );
 

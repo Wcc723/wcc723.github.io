@@ -84,10 +84,18 @@ export async function makeClient(cfg) {
 }
 
 const MIME = {
+  // 圖片 / 影片
   '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.gif': 'image/gif',
   '.webp': 'image/webp', '.svg': 'image/svg+xml', '.avif': 'image/avif', '.bmp': 'image/bmp',
   '.ico': 'image/x-icon', '.mp4': 'video/mp4', '.webm': 'video/webm', '.m4v': 'video/x-m4v',
   '.mov': 'video/quicktime', '.pdf': 'application/pdf',
+  // web 資產(demoFile/libs 需要,否則 CSS 變 octet-stream 不被套用)
+  '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript',
+  '.json': 'application/json', '.xml': 'application/xml', '.map': 'application/json',
+  '.csv': 'text/csv', '.txt': 'text/plain', '.html': 'text/html', '.htm': 'text/html',
+  // 字型
+  '.woff': 'font/woff', '.woff2': 'font/woff2', '.ttf': 'font/ttf',
+  '.otf': 'font/otf', '.eot': 'application/vnd.ms-fontobject',
 };
 export function contentType(key) {
   return MIME[path.extname(key).toLowerCase()] || 'application/octet-stream';
