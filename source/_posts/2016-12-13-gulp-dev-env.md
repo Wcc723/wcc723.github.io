@@ -106,7 +106,7 @@ gulp.task('iconfonts', function(done){
 
 接下來執行 `gulp iconfonts` public 就會產生一個字體檔以及 CSS 檔案，接下來我們在 HTML 中載入 CSS 檔案，就可以開始使用 icon font 囉～。
 
-![](/images/2016_ironman/13_gulp_iconfonts_01.png)
+![](https://img.casper.tw/images/2016_ironman/13_gulp_iconfonts_01.png)
 
 ## 結語
 

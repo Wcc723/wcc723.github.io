@@ -50,11 +50,11 @@ gulp.task('default', function() {
 
 這次的壓縮並沒有針對js的問題加以修正，僅是範例而已。
 
-![](/images/gulp/screen_shot_gulp-uncss-01.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp-uncss-01.png)
 
 > 壓縮前
 
-![](/images/gulp/screen_shot_gulp-uncss-02.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp-uncss-02.png)
 
 > 壓縮後
 

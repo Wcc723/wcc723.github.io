@@ -5,6 +5,21 @@
   "hexo": {
     "version": "8.1.2"
   },
+  "scripts": {
+    "server": "hexo server",
+    "build": "hexo generate",
+    "rebuild": "hexo clean && hexo generate",
+    "clean": "hexo clean",
+    "deploy": "hexo clean && hexo generate && wrangler deploy",
+    "deploy:cf": "wrangler deploy",
+    "backup": "git push origin develop",
+    "images:upload": "node tools/images-upload.mjs",
+    "images:migrate": "node tools/images-migrate.mjs"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-s3": "^3",
+    "wrangler": "^4"
+  },
   "dependencies": {
     "autoprefixer": "^6.3.3",
     "bootstrap": "^5.0.1",
@@ -18,7 +33,7 @@
     "gulp-postcss": "^6.1.0",
     "gulp-sass": "^4.1.0",
     "gulp-watch": "^4.3.5",
-    "hexo": "^5.0.2",
+    "hexo": "^8.1.2",
     "hexo-deployer-git": "^0.2.0",
     "hexo-generator-archive": "^0.1.4",
     "hexo-generator-category": "^0.1.3",

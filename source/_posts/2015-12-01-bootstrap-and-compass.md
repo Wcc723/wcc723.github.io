@@ -72,7 +72,7 @@ Bootstrap 是目前最流行的CSS Framework，第四版也釋出了開發版本
 
 接下來打開`/public/index.html`可以看到主色被改成 `purple`，這就是被調整`變數`後的 Bootstrap，通常網站的設計都會有一個主要色，只要調整`_variables.scss`中的 `$brand-primary`，就可以定義Bootstrap的主要顏色。
 
-![](/images/2015/12/screen_shot_2015-12-01_01.png)
+![](https://img.casper.tw/images/2015/12/screen_shot_2015-12-01_01.png)
 
 > 針對一個變數($brand-primary)調整，按鈕的顏色從藍色被修改成紫色。
 

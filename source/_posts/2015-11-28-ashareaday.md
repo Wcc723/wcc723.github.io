@@ -20,7 +20,7 @@ published: true
 
 SPA(sigle page application)這種名詞也是現在才知道，當時只是想要快速建立一個站點，讓我方便練習技術，所以就花一天的時間透過Javascript寫出怪異的Blog。
 
-![](/images/2015/11/screen_shot_2015-11-28_01.png)
+![](https://img.casper.tw/images/2015/11/screen_shot_2015-11-28_01.png)
 
 當時也不會 git，更別說github，所以網站是放在自己買的空間上，而空間後來也就沒有再付費，所以就關閉了...。
 

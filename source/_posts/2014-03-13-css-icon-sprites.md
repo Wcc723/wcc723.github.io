@@ -16,7 +16,7 @@ published: true
 Compass sprites來源：[http://compass-style.org/help/tutorials/spriting/](http://compass-style.org/help/tutorials/spriting/)
 
 <!-- more -->
-![/images/google_logo170_hr.png](/images/google_logo170_hr.png)
+![/images/google_logo170_hr.png](https://img.casper.tw/images/google_logo170_hr.png)
 
 ## 本篇重點
 
@@ -26,11 +26,11 @@ Compass sprites來源：[http://compass-style.org/help/tutorials/spriting/](http
 
 首先先準備些icons到自己的`images`資料夾內，而本篇的圖片是從[http://icomoon.io/](http://icomoon.io/)下載作為範例用，如下圖所示。
 
-![準備icons](/images/2014-03-1301.png)
+![準備icons](https://img.casper.tw/images/2014-03-1301.png)
 
 我在icons資料夾內放入了幾張不同size的圖檔，另外切記，製作sprites請存png。
 
-![準備icons](/images/2014-03-1302.png)
+![準備icons](https://img.casper.tw/images/2014-03-1302.png)
 
 ## Sass
 
@@ -41,7 +41,7 @@ Compass sprites來源：[http://compass-style.org/help/tutorials/spriting/](http
 
 接下來會在資料夾內看到以下的圖檔，這樣就成功一半了。
 
-![sprites](/images/2014-03-1303.png)
+![sprites](https://img.casper.tw/images/2014-03-1303.png)
 
 在CSS檔內會看到這樣的結果，`icons`是資料夾名稱，`mobile`是檔名，兩個串在一起就是一個class，但這範例缺少一個重要的屬性...，就是寬跟高。
 

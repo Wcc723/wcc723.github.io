@@ -63,6 +63,6 @@ gulp.task('default', ['others', 'sass', 'iconfonts', 'watch', 'webserver']);
 
 Gulp 介紹的目前為止，其實已經掌握大部分 Gulp 所使用的手法，接下來僅需要調整到合適的搭配環境即可；如果在開發上遇到 Gulp 不足的地方，可以到 NPM 的網站上透過 `gulp` 作為關鍵字，搜尋是否有其他套件可以使用。
 
-![](/images/2016_ironman/14_gulp_webserver_01.png)
+![](https://img.casper.tw/images/2016_ironman/14_gulp_webserver_01.png)
 
 到目前所介紹的內容，也都只要略作修改，觀念都可以運用在任何的套件上，如果遇到任何問題，也歡迎來詢問我喔～。

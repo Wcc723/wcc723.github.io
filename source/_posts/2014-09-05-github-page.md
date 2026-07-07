@@ -28,7 +28,7 @@ published: true
 
 安裝完後輸入`github-pages versions`，可以看到目前所有相關gem的版本。
 
-![](/images/jekyll/jekyll-20140905-02.png)
+![](https://img.casper.tw/images/jekyll/jekyll-20140905-02.png)
 
 ## Bundle
 
@@ -36,12 +36,12 @@ published: true
 
 	gem 'github-pages'
 
-![](/images/jekyll/jekyll-20140905-03.png)
+![](https://img.casper.tw/images/jekyll/jekyll-20140905-03.png)
 
 接下來在Terminal輸入`bundle install`，這樣專案與Github pages的gem就會綁在一起
 `。
 
-![](/images/jekyll/jekyll-20140905-05.png)
+![](https://img.casper.tw/images/jekyll/jekyll-20140905-05.png)
 
 ## 執行jekyll
 
@@ -49,6 +49,6 @@ published: true
 
 	bundle exec jekyll serve --watch
 
-![](/images/jekyll/jekyll-20140905-04.png)
+![](https://img.casper.tw/images/jekyll/jekyll-20140905-04.png)
 
 至於這樣有什麼功能呢？我也還正在閱讀中...。

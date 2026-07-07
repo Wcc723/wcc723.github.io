@@ -46,11 +46,11 @@ Gulp 是一個前端任務管理工具，它可以做到如Fire.app、Prepros、
 Node.js在
 這一個部分windows與mac其實只是安裝檔不同，
 
-![](/images/gulp/screen_shot_gulp01.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp01.png)
 
 這邊就只Show出windows版本的安裝(Mac版大致相同，而後面的介紹會兩者混用)
 
-![](/images/gulp/screen_shot_gulp02.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp02.png)
 
 下載安裝後如果是windows，請打開"命令提示字元”，輸入：
 
@@ -60,7 +60,7 @@ Node.js在
 
 預期會出現以下的版本(或者更高)
 
-![](/images/gulp/screen_shot_gulp03.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp03.png)
 
 
 如果是Mac，請打開終端機，和windows相同，輸入以下指令：
@@ -71,7 +71,7 @@ Node.js在
 
 預期會出現以下的版本(或者更高)
 
-![](/images/gulp/screen_shot_gulp04.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp04.png)
 
 接下來，大部份的操作，也都是兩者相同，就不再一一贅述。
 
@@ -79,7 +79,7 @@ Node.js在
 
 	npm install -g gulp
 
-![](/images/gulp/screen_shot_gulp05.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp05.png)
 
 到目前為止，整體的環境就算完成了，接下來就是建立專案，而這部分我會先開啟一個簡單的範例，有興趣的使用者也可以下載範例來直接使用。
 
@@ -109,14 +109,14 @@ Node.js在
 
 	npm init
 
-![](/images/gulp/screen_shot_gulp06.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp06.png)
 
 
 接下來我們就來安裝gulp以及coffeescript。
 
 	npm install --save-dev gulp gulp-coffee
 
-![](/images/gulp/screen_shot_gulp07.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp07.png)
 
 `—save-dev`的用途是將套件安裝，並且把安裝的資訊也一起寫入剛剛產生的package.json，如果打開package.json，會看到剛剛所安裝的套件名稱及版本。
 
@@ -130,7 +130,7 @@ Node.js在
 
 這時候看資料夾內，也會看到node的套件安裝到資料夾內了。
 
-![](/images/gulp/screen_shot_gulp09.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp09.png)
 
 ### 這邊開始是重點
 
@@ -152,11 +152,11 @@ gulp.task('coffee', function() { //'coffee'是排程名稱，可自定
 
 接下來在terminal輸入`gulp coffee`，就可以編譯coffee了。
 
-![](/images/gulp/screen_shot_gulp10.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp10.png)
 
 接下來就會在`assets/js`看到編譯好的兩個檔案。
 
-![](/images/gulp/screen_shot_gulp11.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp11.png)
 
 以目前的範例結果大概會像這樣。
 

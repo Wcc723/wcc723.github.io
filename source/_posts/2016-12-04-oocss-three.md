@@ -29,7 +29,7 @@ published: true
 2. 容器 B：這是一個單獨的容器，沒有額外的設定
 3. 元件 B：這是一個單獨的元件(內容)，可以在任何容器下。
 
-![](/images/2016_ironman/04_oocss_01.jpg)
+![](https://img.casper.tw/images/2016_ironman/04_oocss_01.jpg)
 
 在這個範例下，我們可以了解到 元件 B 不受到任何限制，可以自由的組裝在其他容器下，這也是 OOCSS 提到的元件就像是樂高一樣，可以依據任何需求做組裝，元件 B 正好符合這個概念。
 
@@ -37,11 +37,11 @@ published: true
 
 Bootstrap 是相當好的案例可以來說明容器與內容。以下圖來說按鈕與頁籤都是屬於 內容，而卡片是屬於容器，在 Bootstrap 的設計中都是屬於個別的元件，這些元件不會互相干擾，而且可以依據需求去組合。
 
-![](/images/2016_ironman/04_oocss_02.jpg)
+![](https://img.casper.tw/images/2016_ironman/04_oocss_02.jpg)
 
 接下來這張範例圖就是將按鈕、頁籤放到卡片這個容器內。
 
-![](/images/2016_ironman/04_oocss_03.jpg)
+![](https://img.casper.tw/images/2016_ironman/04_oocss_03.jpg)
 
 所以在設計元素的時候，如果是用以下的方式繼承就會限定元件的可用性，就以 OOCSS 的概念是需要避免這樣的設計，盡可能不要讓元件被限制在特定的容器下。
 

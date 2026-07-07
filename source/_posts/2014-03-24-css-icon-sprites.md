@@ -27,11 +27,11 @@ Hlb的簡報有介紹，本篇也是參考此簡報做的。
 
 和上篇一樣，圖片是從[http://icomoon.io/](http://icomoon.io/)下載作為範例用，但這次是要有兩種size(其實上次就有做好了)。
 
-![準備icons](/images/2014-03-1301.png)
+![準備icons](https://img.casper.tw/images/2014-03-1301.png)
 
 而兩個資料夾對應的圖片檔名也要相同，但記得尺寸寬及高是各兩倍。
 
-![準備icons](/images/2014-03-1302.png)
+![準備icons](https://img.casper.tw/images/2014-03-1302.png)
 
 ## Sass
 
@@ -60,11 +60,11 @@ Hlb的簡報有介紹，本篇也是參考此簡報做的。
 
 #### 普通size
 
-![sprites](/images/icons1-s85e9ac7815.png)
+![sprites](https://img.casper.tw/images/icons1-s85e9ac7815.png)
 
 #### 2x size
 
-![sprites](/images/icons2x-s14e8587cd4.png)
+![sprites](https://img.casper.tw/images/icons2x-s14e8587cd4.png)
 
 
 ## 使用
@@ -106,7 +106,7 @@ Hlb的簡報有介紹，本篇也是參考此簡報做的。
 
 這邊另外附上比較圖。
 
-![比較圖](/images/screen_shot_2014-03-24.png)
+![比較圖](https://img.casper.tw/images/screen_shot_2014-03-24.png)
 
 現在許多網站的icons sprites也有做for retina，像是facebook新版的網站，當然還有非常多，不妨四處觀察看看吧。
 

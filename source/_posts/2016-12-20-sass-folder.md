@@ -83,7 +83,7 @@ sass/
 6. 撰寫權限用的主題
 7. 如果有載入外部 Javascripts ，會將外部的Javascript 的 css 檔名改成 `_xxxx.scss` 丟到vendors。
 
-![](/images/2016_ironman/20_sass_01.png)
+![](https://img.casper.tw/images/2016_ironman/20_sass_01.png)
 
 ## 結語
 

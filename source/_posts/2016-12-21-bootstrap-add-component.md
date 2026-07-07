@@ -85,7 +85,7 @@ scss/
 此時，執行 `gulp` 沒有出錯的情況下就會看到 Card 模組已經載入了。以下範例為調整後的按鈕色彩及卡片模組。
 
 
-![](/images/2016_ironman/21_bootstrap_01.png)
+![](https://img.casper.tw/images/2016_ironman/21_bootstrap_01.png)
 
 ## 結語
 

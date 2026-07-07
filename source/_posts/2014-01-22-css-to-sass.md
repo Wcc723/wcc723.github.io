@@ -19,7 +19,7 @@ published: true
 
 ## 基礎的學習
 
-![](/images/2014-01-22-w3c-school.png)
+![](https://img.casper.tw/images/2014-01-22-w3c-school.png)
 
 [http://www.w3school.com.cn/css/](http://www.w3school.com.cn/css/)
 
@@ -33,7 +33,7 @@ published: true
 
 ## 透過開發工具研究他人作品
 
-![](/images/2014-01-22-develop.png)
+![](https://img.casper.tw/images/2014-01-22-develop.png)
 
 基礎了解後，活用也是一個重點，但總不能憑空就能活用，所以可以透過平常的搜尋，發現不錯的網頁設計排版，就可以透過開發者工具去一層層的了解。
 
@@ -51,7 +51,7 @@ published: true
 
 ## 廣泛的了解
 
-![](/images/2014-01-22-fb.jpg)
+![](https://img.casper.tw/images/2014-01-22-fb.jpg)
 
 除了自學外，要不斷地去了解新的動態，透過自己的搜尋探索，那簡直就是在黑暗中找物品，**透過社群以及追蹤**可以省去許多時間，只要一有新的動態，每個社群就會開始輪流發送，基本上不用擔心失去任何的訊息。這邊就推薦幾個活動力不錯的社群(台灣)：
 
@@ -71,7 +71,7 @@ published: true
 
 ## 進階的學習
 
-![](/images/20130917fireapp.jpg)
+![](https://img.casper.tw/images/20130917fireapp.jpg)
 
 還是回到一開始所說的，跨出第一步是最重要的。Sass要從哪一個專案開始用？CoffeeScript要什麼開始學？想那麼多，不如下一個專案就開始吧，只要開始後，慢慢的學習，持之以恆的做下去，那麼這一個技能就是你的了。
 

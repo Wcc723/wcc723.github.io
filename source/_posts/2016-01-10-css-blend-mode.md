@@ -26,7 +26,7 @@ published: true
 
 `mix-blend-mode` 這種混合模式就如同 Photoshop 中的 **圖層混合模式** 較為接近，會有下層圖層的色彩進行混合。
 
-![](/images/2016/01/screen_shot2016-01-10_02.png)
+![](https://img.casper.tw/images/2016/01/screen_shot2016-01-10_02.png)
 
 ## 範例
 

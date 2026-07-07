@@ -168,7 +168,7 @@ Node.js 在開發上總是會使用許多不同的套件，這些套件可以讓
 
 {% raw %}
 <a href="https://hex.school/fPKVU" target="_blank">
-  <img src="/images/2023/only-vue-banner-w2.jpg" width="60%" style="border: 1px solid gray" alt=""> 
+  <img src="https://img.casper.tw/images/2023/only-vue-banner-w2.jpg" width="60%" style="border: 1px solid gray" alt=""> 
 </a>
 {% endraw %}
 

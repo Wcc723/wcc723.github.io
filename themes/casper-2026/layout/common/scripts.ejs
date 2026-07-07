@@ -8,6 +8,20 @@
     try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
     icon();
   });
+
+  /* 行動版漢堡選單：開合主選單抽屜 */
+  var nav = document.querySelector('.nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (nav && navToggle) {
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+    navToggle.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  }
 })();
 </script>
 
@@ -16,4 +30,4 @@
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v18.0&appId=<%= theme.comment.facebook.app_id %>"></script>
 <% } %>
 
-<%# AdSense 載入器已移至 head.ejs，避免重複載入 %>
+<% /* AdSense 載入器已移至 head.ejs，避免重複載入 */ %>

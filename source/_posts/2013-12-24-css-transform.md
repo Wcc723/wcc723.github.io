@@ -20,8 +20,8 @@ thumbnail: 2013-12-23-lol-zig.png"
 {% raw %}
 <div class="demo d1223" data-demo="Hover me!">
 	<div class="transform3d">
-		<span class="ez"><img src="/images/2013-12-23-lol-f.png" alt=""></span>
-		<span class="ziggs"><img src="/images/2013-12-23-lol-zig.png" alt=""></span>
+		<span class="ez"><img src="https://img.casper.tw/images/2013-12-23-lol-f.png" alt=""></span>
+		<span class="ziggs"><img src="https://img.casper.tw/images/2013-12-23-lol-zig.png" alt=""></span>
 	</div>
 </div>
 {% endraw %}
@@ -51,8 +51,8 @@ thumbnail: 2013-12-23-lol-zig.png"
 
     <div class="demo" data-demo="Hover me!">
         <div class="transform3d">
-            <span class="ez"><img src="/images/2013-12-23-lol-f.png" alt=""></span>
-            <span class="ziggs"><img src="/images/2013-12-23-lol-zig.png" alt=""></span>
+            <span class="ez"><img src="https://img.casper.tw/images/2013-12-23-lol-f.png" alt=""></span>
+            <span class="ziggs"><img src="https://img.casper.tw/images/2013-12-23-lol-zig.png" alt=""></span>
         </div>
     </div>
 
@@ -103,8 +103,8 @@ thumbnail: 2013-12-23-lol-zig.png"
 {% raw %}
 <div class="demo d1223" data-demo="Hover me!">
     <div class="transform3d">
-        <span class="ez"><img src="/images/2013-12-23-lol-f.png" alt=""></span>
-        <span class="ziggs"><img src="/images/2013-12-23-lol-zig.png" alt=""></span>
+        <span class="ez"><img src="https://img.casper.tw/images/2013-12-23-lol-f.png" alt=""></span>
+        <span class="ziggs"><img src="https://img.casper.tw/images/2013-12-23-lol-zig.png" alt=""></span>
     </div>
 </div>
 {% endraw %}
@@ -116,8 +116,8 @@ thumbnail: 2013-12-23-lol-zig.png"
 {% raw %}
 <div class="demo d1223" data-demo="Hover me!">
     <div class="transform3d2">
-        <span class="ez"><img src="/images/2013-12-23-lol-f.png" alt=""></span>
-        <span class="ziggs"><img src="/images/2013-12-23-lol-zig.png" alt=""></span>
+        <span class="ez"><img src="https://img.casper.tw/images/2013-12-23-lol-f.png" alt=""></span>
+        <span class="ziggs"><img src="https://img.casper.tw/images/2013-12-23-lol-zig.png" alt=""></span>
     </div>
 </div>
 {% endraw %}

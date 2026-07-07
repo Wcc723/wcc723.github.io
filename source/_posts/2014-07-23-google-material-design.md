@@ -44,7 +44,7 @@ published: true
 
 而在這7月23日，最後一篇超長文章也傳來了(恰巧我的生日耶)，Material Design的翻譯也算到達一個進度，接下來就是校稿，校稿則會開放更多人一起協作，當然...，校稿前也就必須要先準備一些規範orz...。
 
-![](/images/20140723_screen_shot1.png)
+![](https://img.casper.tw/images/20140723_screen_shot1.png)
 
 > 公開的第一天，以及隔天的指標。
 

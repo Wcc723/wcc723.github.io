@@ -81,7 +81,7 @@ default.html的[原始碼](https://github.com/plusjade/jekyll-bootstrap/blob/mas
 
 而以上三個請參考這張圖，最左方的是跟目錄的`index.html`，透過一層一層的去取的Jekyll bootstrap版型。
 
-![](/images/2014-01-15-jekyll-folder.png)
+![](https://img.casper.tw/images/2014-01-15-jekyll-folder.png)
 
 
 -----------------
@@ -96,7 +96,7 @@ default.html的[原始碼](https://github.com/plusjade/jekyll-bootstrap/blob/mas
 
 首先打開`include/themes/twitter/`資料夾，並且創一個index.html檔案。
 
-![](/images/2014-01-13_215408.png)
+![](https://img.casper.tw/images/2014-01-13_215408.png)
 
 裡面程式碼請輸入以下(就這麼三行，剩下的他會去抓同層的default.html)：
 
@@ -105,15 +105,15 @@ default.html的[原始碼](https://github.com/plusjade/jekyll-bootstrap/blob/mas
 		{ { content } }
 	</div>
 
-![](/images/2014-01-13_215418.png)
+![](https://img.casper.tw/images/2014-01-13_215418.png)
 
 ### 步驟二
 
 打開`_layouts`的資料夾，並且複製`post.html`於原位置，並且修改檔名為`index.html`。
 
-![](/images/2014-01-13_215208.png)
+![](https://img.casper.tw/images/2014-01-13_215208.png)
 
-![](/images/2014-01-13_215224.png)
+![](https://img.casper.tw/images/2014-01-13_215224.png)
 
 打開`index.html`修改以下程式碼。
 
@@ -124,7 +124,7 @@ include themes/twitter/post.html
 include themes/twitter/index.html
 </pre>
 
-![](/images/2014-01-13_215330.png)
+![](https://img.casper.tw/images/2014-01-13_215330.png)
 
 ### 步驟三
 
@@ -132,11 +132,11 @@ include themes/twitter/index.html
 
 程式碼：[https://github.com/wcc723demo/wcc723demo.github.io/blob/master/index.html](https://github.com/wcc723demo/wcc723demo.github.io/blob/master/index.html)
 
-![](/images/2014-01-13_215719.png)
+![](https://img.casper.tw/images/2014-01-13_215719.png)
 
 接下來利用先前介紹的Ruby `jekyll server`來預覽看看網頁，應該會得到這樣的結果，他把目前頁面的前100字擷取了出來。
 
-![](/images/2014-01-13_215806.png)
+![](https://img.casper.tw/images/2014-01-13_215806.png)
 
 上面那一段的程式碼的內容如下(煩請自動補腦大括號)：
 
@@ -164,11 +164,11 @@ include themes/twitter/index.html
 
 	<!-- more -->
 
-![](/images/2014-01-13_215900.png)
+![](https://img.casper.tw/images/2014-01-13_215900.png)
 
 最後在首頁就能看到文章的摘要，而如果增加文章，也會依這功能擷取摘要。
 
-![](/images/2014-01-13_215950.png)
+![](https://img.casper.tw/images/2014-01-13_215950.png)
 
 範例網站：[http://wcc723demo.github.io/](http://wcc723demo.github.io/)
 

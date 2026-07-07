@@ -23,13 +23,13 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 - 系統版本：OSX 10.9.3
 
 
-![](/images/rails_base/rails_install/screen_shot_rails00.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails00.png)
 
 ## 安裝Homebrew
 
 在PDF書上第一個要安裝的，會想要記錄也是以下這原因...。
 
-![](/images/rails_base/rails_install/screen_shot_rails01.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails01.png)
 
 以上的圖是書上的範例，直接複製會得到以下的結果...，沒有空白鍵啊!!!重點是我找不到原因還卡很久...
 
@@ -39,32 +39,32 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 
 	ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 
-![](/images/rails_base/rails_install/screen_shot_rails02.png)
-![](/images/rails_base/rails_install/screen_shot_rails03.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails02.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails03.png)
 
 想說我有裝git了，跳過`brew install git`，直接升級。
 
 	brew update
 
 
-![](/images/rails_base/rails_install/screen_shot_rails04.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails04.png)
 
 	brew tap homebrew/dupes
 
 `brew install apple-gcc42`怎好像沒截到圖
 ...。
 
-![](/images/rails_base/rails_install/screen_shot_rails05.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails05.png)
 
 ## 安裝 XQuartz
 
 安裝XQuartz。
 
-![](/images/rails_base/rails_install/screen_shot_rails06.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails06.png)
 
 安裝完後登出在登入。
 
-![](/images/rails_base/rails_install/screen_shot_rails07.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails07.png)
 
 ## 安裝 ImageMagick / MySQL
 
@@ -75,12 +75,12 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 
 *透過brew安裝時，圖示都變成啤酒了...*
 
-![](/images/rails_base/rails_install/screen_shot_rails08.png)
-<!-- ![](/images/rails_base/rails_install/screen_shot_rails09.png) -->
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails08.png)
+<!-- ![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails09.png) -->
 	
 	Installing mysql
 
-![](/images/rails_base/rails_install/screen_shot_rails10.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails10.png)
 
 	unset TMDIR
 
@@ -88,11 +88,11 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 
 	mysql_install_db --verbose --user=`whoami` --basedir="$(brew--prefixmysql)" -\
 
-![](/images/rails_base/rails_install/screen_shot_rails11.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails11.png)
 
 	sudo mysqladmin -u root password '123456'
 
-![](/images/rails_base/rails_install/screen_shot_rails12.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails12.png)
 
 	mkdir -p ~/Library/LaunchAgents
 
@@ -100,7 +100,7 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 
 	
 
-![](/images/rails_base/rails_install/screen_shot_rails13.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails13.png)
 
 	find /usr/local/Cellar/mysql/ -name "homebrew.mxcl.mysql.plist" -exec cp {} ~/Library/LaunchAgents/ \;
 
@@ -108,7 +108,7 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 	launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
 
 
-![](/images/rails_base/rails_install/screen_shot_rails14.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails14.png)
 
 ## 安裝 RVM
 
@@ -116,22 +116,22 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 
 	bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer)
 
-![](/images/rails_base/rails_install/screen_shot_rails14.5.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails14.5.png)
 	
 	. ~/.profile
 	$source ~/.profile
 
-![](/images/rails_base/rails_install/screen_shot_rails15.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails15.png)
 
 ## 安裝 Ruby 2.0
 
 	brew install libyaml
 
-![](/images/rails_base/rails_install/screen_shot_rails16.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails16.png)
 
 	rvm pkg install openssl
 
-![](/images/rails_base/rails_install/screen_shot_rails17.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails17.png)
 
 	rvm install 2.0.0
 	--with-openssl-dir=$HOME/.rvm/usr
@@ -145,26 +145,26 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 	type rvm | head -n 1
 	rvm use 2.0.0
 	
-![](/images/rails_base/rails_install/screen_shot_rails18.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails18.png)
 
 ## 安裝必要 Ruby gems
 
 	gem install rails --version 4.0.0
 
-![](/images/rails_base/rails_install/screen_shot_rails19.png)
-<!-- ![](/images/rails_base/rails_install/screen_shot_rails20.png) -->
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails19.png)
+<!-- ![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails20.png) -->
 
 	gem install mysql2
 
-![](/images/rails_base/rails_install/screen_shot_rails21.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails21.png)
 
 	gem install capistrano
 
-![](/images/rails_base/rails_install/screen_shot_rails22.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails22.png)
 
 	gem install capistrano-ext
 
-![](/images/rails_base/rails_install/screen_shot_rails23.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails23.png)
 
 ## 設定 HTTP Server (使用 Pow)
 
@@ -172,12 +172,12 @@ Rails不是要打算精通後端，而是希望了解，以便往後再配合後
 
 	curl get.pow.cx | sh
 
-![](/images/rails_base/rails_install/screen_shot_rails24.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails24.png)
 
 
 	gem install powder
 
-![](/images/rails_base/rails_install/screen_shot_rails25.png)
+![](https://img.casper.tw/images/rails_base/rails_install/screen_shot_rails25.png)
 
 
 Pow用法，方法一

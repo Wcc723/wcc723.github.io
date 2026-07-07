@@ -88,15 +88,15 @@ gulp.task('default', ['svg-sprite']);
 
 接下來準備一些 SVG ，其中還加入一張包含漸層的 Skype 圖示 (如果是 icon fonts 就無法直接使用漸層色或是更豐富的色彩)。
 
-![](/images/2016/01/screen_shot_2016-01-03_01.png)
+![](https://img.casper.tw/images/2016/01/screen_shot_2016-01-03_01.png)
 
 輸入 `gulp` 編譯完會得到 `sprite.css`、`sprite.png`、`sprite.svg`以及`sprite.html`這些檔案，打開 sprite.html 會看到本次專案 sprites 的說明文件。
 
-![](/images/2016/01/screen_shot_2016-01-03_02.png)
+![](https://img.casper.tw/images/2016/01/screen_shot_2016-01-03_02.png)
 
 這個範例檔可以看到有哪些 Sprites 可以用運用，並且可以切換背景色以及 html code 的提示。
 
-![](/images/2016/01/screen_shot_2016-01-03_04.png)
+![](https://img.casper.tw/images/2016/01/screen_shot_2016-01-03_04.png)
 
 和 Compass 不同在於它是屬於另外產生的CSS，有時候和本身專案的 CSS 可能會有衝突，它也能透過 css template 客制屬於專案的範本。
 

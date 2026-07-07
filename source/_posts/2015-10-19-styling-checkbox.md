@@ -24,7 +24,7 @@ published: true
 
 ## 先準備svg
 
-![/images/2015-10-19_02.png](/images/2015-10-19_02.png)
+![/images/2015-10-19_02.png](https://img.casper.tw/images/2015-10-19_02.png)
 
 這一個範例的重點還是在svg，最簡單的產生方式還是使用向量繪圖軟體繪製，在這個範例上是透過`sketch`繪製 `50px * 50px`的手繪風格路徑，在繪製的時候有些部分還是需要注意：
 

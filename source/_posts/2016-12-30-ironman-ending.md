@@ -69,7 +69,7 @@ body, html {
 
 為了讓自己可以更熟悉 Flex，我也做了一個簡單的工具，讓自己可以透過互動的方式查詢 Flex 的語法。
 
-![](/images/2016_ironman/30_ending_02.png)
+![](https://img.casper.tw/images/2016_ironman/30_ending_02.png)
 
 連結：http://wcc723.github.io/WorkShop-gh-pages/cssFlex/
 
@@ -79,13 +79,13 @@ body, html {
 
 連結：https://wcc723.github.io/css/2015/07/23/css-column/
 
-![](/images/2015-07-23_screen_shot.jpg)
+![](https://img.casper.tw/images/2015-07-23_screen_shot.jpg)
 
 ## 據說很猛的 display: grid
 
 第一次研究 `flex` 是在 2013 年，至今也三年左右了... Q_Q，到現在使用上還是有所顧忌，現在對於排版有新的屬性：`display: grid`，依據 flex 的概念他可以等我花三年的時間慢慢研究 >O<。
 
-![](/images/2016_ironman/30_ending_01.png)
+![](https://img.casper.tw/images/2016_ironman/30_ending_01.png)
 
 以下為圖文參考的文件，就目前看來有許多語法與 `flex` 是共用的，期望 webkit 能統一瀏覽器世界，讓這些語法能夠快速進入實際運用。
 

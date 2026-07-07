@@ -42,19 +42,19 @@ published: true
 
 首先，請打開以上連結，Ico Moon有提供web-font icon的製作，以及大量的icon，另外也可以付費取得更進階的服務。
 
-![](/images/2014-02-10_140341.png)
+![](https://img.casper.tw/images/2014-02-10_140341.png)
 
 在進入網頁後，點選右上方的`Launch App`，開啟製作web-font的應用程式介面。
 
-![](/images/2014-02-10_140515.png)
+![](https://img.casper.tw/images/2014-02-10_140515.png)
 
 在應用程式內可以看到大量的icons，當然是可以把他們全部通通選起來，但要記得，選越多檔案越大...，其中我喜歡Entypo這組，我就把這群組的選起來。
 
-![](/images/2014-02-10_140534.png)
+![](https://img.casper.tw/images/2014-02-10_140534.png)
 
 選完後點下面的font。
 
-![](/images/2014-02-10_140621.png)
+![](https://img.casper.tw/images/2014-02-10_140621.png)
 
 如果不想下載下來，可以點quick used，而本篇會介紹下載到本機使用。
 
@@ -64,7 +64,7 @@ published: true
 
 在上一張圖的右上方，有Preferences的選項，裡面就有許多設定...。
 
-![](/images/2014-02-10_140830.png)
+![](https://img.casper.tw/images/2014-02-10_140830.png)
 
 這裡面有許多設定，參考如下：
 
@@ -77,7 +77,7 @@ published: true
 再都設定完後，請選擇下方的Download到本機，並且解壓縮後打開`demo.html`。
 
 
-![](/images/2014-02-10_141039.png)
+![](https://img.casper.tw/images/2014-02-10_141039.png)
 
 裡面會看到這一個範例檔，可以查詢到每一個icon所使用的Class以及範例。
 
@@ -109,4 +109,4 @@ published: true
 
 IE 7的部分，由於新的大魔王IE 11出現，測試一直有問題，所以我用Aurora 瀏覽器模擬IE7進行測試，結果是可以的，如果有純正IE 7的使用者，不妨試試看...(不是在本站測試，本站並沒有載入ie7 fix)。
 
-![](/images/2014-02-10_143144.png)
+![](https://img.casper.tw/images/2014-02-10_143144.png)

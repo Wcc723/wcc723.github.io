@@ -18,7 +18,7 @@ published: true
 
 在製作 Banner 的時候，通常需要一個 Logo 在畫面的左上，於是乎我們就會準備一個 div 把美美的 logo 往裡面塞。
 
-![](/images/2016/06/collapsing-margins-01.png)
+![](https://img.casper.tw/images/2016/06/collapsing-margins-01.png)
 
 如圖所示，我們的 Logo 還希望離上方有些為的距離，依邏輯來說物件離邊緣要有距離，我們就會幫他補上 `margin`，於是乎就會出現如下的問題。
 
@@ -27,7 +27,7 @@ published: true
 
 仔細看看上面所發生的問題，內元素的 margin 沒有起了作用，而是被外層所吸收。
 
-![](/images/2016/06/collapsing-margins-03.png)
+![](https://img.casper.tw/images/2016/06/collapsing-margins-03.png)
 
 ## 失控的 Margin top
 

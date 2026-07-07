@@ -31,11 +31,11 @@ thumbnail: 2013-12-19-banner-01.png
 
 而如果直接套用，則會有另一個問題，就是圖片是位移了，但是不夠大。如下圖，紅框假設是使用者所見到的位置，淺色的部分是目前的圖片，黑色是期望有出現，但並沒有的顯示的圖片；因為這個問題，所以需要另外再補上一張圖片。
 
-![demo1](/images/2013-12-19-banner-01-2.png)
+![demo1](https://img.casper.tw/images/2013-12-19-banner-01-2.png)
 
 在這邊我是利用偽元素`:pseudo-element`來複製出所需要的圖片，目的就是要在目前的左方先補上一張相同的圖片。
 
-![demo2](/images/2013-12-19-banner-01.png)
+![demo2](https://img.casper.tw/images/2013-12-19-banner-01.png)
 
 
 ## 製作
@@ -118,11 +118,11 @@ class的樣式如下
 
 background-position的效能
 
-![background-position](/images/2013-12-19_095400.png)
+![background-position](https://img.casper.tw/images/2013-12-19_095400.png)
 
 transform的效能(幾乎沒有感覺啊!!)
 
-![transform](/images/2013-12-19_110135.png)
+![transform](https://img.casper.tw/images/2013-12-19_110135.png)
 
 
 本篇是用sass做介紹，如果想了解所產生的css，可以參考[http://codepen.io/Wcc723/pen/wFrCn](http://codepen.io/Wcc723/pen/wFrCn)。

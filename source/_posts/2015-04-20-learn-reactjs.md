@@ -52,7 +52,7 @@ published: true
 
 在環境上可以使用jsbin，有些小地方稍微調整一下就可以簡單上手(如下圖)。
 
-![](/images/reactjs/2015-04-20-01.png)
+![](https://img.casper.tw/images/reactjs/2015-04-20-01.png)
 
 接下來隨意用個demo，選擇`run with js`，就可以看看有沒有成功了。
 

@@ -1,0 +1,25 @@
+{
+  // Cloudflare Workers — 純靜態資產(assets-only)設定
+  // 服務 Hexo 產物 `public/`,自訂網域 www.casper.tw。
+  // 部署:先 `npx hexo generate` 產出 public/,再 `npx wrangler deploy`(見 package.json 的 npm run deploy)。
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // 對齊 Cloudflare 已建立的 Workers 專案名稱(從建置 log 得知)。改名會部署到別的 worker。
+  "name": "wcc723-hexo-blog",
+  "compatibility_date": "2025-07-01",
+
+  // 沒有自訂 Worker 進入點(不寫 main),只服務靜態檔。
+  // 關鍵:directory 指到 ./public(hexo 產物),Cloudflare 才不會把整個 repo(含 .git)當資產。
+  "assets": {
+    "directory": "./public",
+    // Hexo 是 xxx/index.html 結構;auto 讓 /about 與 /about/ 皆可命中(無斜線會 307 導到有斜線)。
+    "html_handling": "auto-trailing-slash",
+    // 站上沒有 404.html。要漂亮 404 頁時,改放 source/404.html 並把此值設為 "404-page"。
+    "not_found_handling": "none"
+  }
+
+  // 自訂網域 www.casper.tw:先讓部署跑到 <name>.workers.dev 驗證 OK,再啟用下面這段,
+  // 且啟用前務必先到 Cloudflare DNS 刪除舊的 www → wcc723.github.io CNAME(否則衝突報錯)。
+  // "routes": [
+  //   { "pattern": "www.casper.tw", "custom_domain": true }
+  // ]
+}

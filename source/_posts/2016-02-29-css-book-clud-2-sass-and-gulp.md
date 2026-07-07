@@ -16,7 +16,7 @@ published: true
 
 <!-- more -->
 
-![](/images/2016/02/cssBookclub-gulp.jpg)
+![](https://img.casper.tw/images/2016/02/cssBookclub-gulp.jpg)
 
 ## 活動簡報
 
@@ -77,7 +77,7 @@ Sass 格式中，Sass Maps不能換行 = =(實際上的 Maps 會更長)，當下
 }
 ```
 
-![](/images/2016/02/step1.png)
+![](https://img.casper.tw/images/2016/02/step1.png)
 
 #### 第二階段
 
@@ -92,7 +92,7 @@ Sass 格式中，Sass Maps不能換行 = =(實際上的 Maps 會更長)，當下
 }
 ```
 
-![](/images/2016/02/step2.png)
+![](https://img.casper.tw/images/2016/02/step2.png)
 
 #### 第三階段
 
@@ -110,13 +110,13 @@ Sass 格式中，Sass Maps不能換行 = =(實際上的 Maps 會更長)，當下
 }
 ```
 
-![](/images/2016/02/step3.png)
+![](https://img.casper.tw/images/2016/02/step3.png)
 
 #### 第四階段
 
 我們會發現其實 `.side`、`.ad` 兩者 CSS 屬性差異不大，所以可以改用欄寬的方式來定義這個 class 名稱，於是乎就出現了 `.col-4`、`.col-8`，m...到了這步驟，是不是發現和 Bootstrap 2 有點像呢!?這樣的 CSS 設計模式是將網格系統模組化，增加了Class 的可複用性。
 
-![](/images/2016/02/step4.png)
+![](https://img.casper.tw/images/2016/02/step4.png)
 
 Susy 的優點在於快速建立格線系統，但如果是 `col-size` 的 Grid-system 就失去了快速建立格線系統的特色，模組化的優點是增加了 Class 的可複用性，但換個方向去思考，其實它也限制了創意的發想(畢竟 grid 都已經規劃好)，不同的方法與技巧也建議去嘗試看看，這樣才能了解何者適合目前的專案。
 

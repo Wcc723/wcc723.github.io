@@ -125,19 +125,19 @@ a.tab {
 
 這是一個排版的範例，左側是選單，右側比較大的空間是主要文章，一開始可能直接會用他所在的位置或功能性來命名，如 `.menu`、`.article`。
 
-![](/images/2016_ironman/05_oocss_01.png)
+![](https://img.casper.tw/images/2016_ironman/05_oocss_01.png)
 
 實際上呢，側面欄不會只有放選單；右方的主要內容可能也不是文章，可能會有產品、廣告、文件等其他內容，所以我們可以將命名做一些調整，用頁面上所在的位置命名，例如側面叫做 `.side`，主要內容區域叫做 `.content` 。
 
-![](/images/2016_ironman/05_oocss_02.png)
+![](https://img.casper.tw/images/2016_ironman/05_oocss_02.png)
 
 接下來，下方增加了 .ad 的區塊，寬度佔 1/3 和 .side 相同，由於是後來新增的區塊，直接稱為 .side 不太適合，所以就直接命名為 .ad。
 
-![](/images/2016_ironman/05_oocss_03.png)
+![](https://img.casper.tw/images/2016_ironman/05_oocss_03.png)
 
 這個時候，如果直接用 12欄的命名方法來命名，這樣網格的可用性就會變得更高。
 
-![](/images/2016_ironman/05_oocss_04.png)
+![](https://img.casper.tw/images/2016_ironman/05_oocss_04.png)
 
 所以我們在命名的時候，如果只能用在當下，沒有思考到未來的發展就可能會有大量相同的模組，或者是命名與實際運用的不搭，在這邊提供幾個命名概念給大家參考：
 

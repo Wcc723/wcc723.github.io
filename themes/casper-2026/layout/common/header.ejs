@@ -11,7 +11,7 @@
 <header class="topbar"><nav class="nav">
   <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
   <a class="brand" href="<%- url_for('/') %>"><% var av = theme.author && theme.author.avatar_img; %><span class="mk<%= av ? ' is-img' : '' %>"><% if (av) { %><img src="<%- url_for(av) %>" alt="<%= (theme.author && theme.author.alias) || config.author %>"><% } else { %><%= (theme.author && theme.author.avatar_char) || '卡' %><% } %></span><%= siteTitle %></a>
-  <div class="menu">
+  <div class="menu" id="primary-menu">
     <% var _here = url_for(page.path || ''); var _home = url_for('/'); %>
     <% for (var key in theme.menu) {
          var _t = url_for(theme.menu[key]);
@@ -21,8 +21,12 @@
     <% } %>
   </div>
   <span class="grow"></span>
-  <button class="search-trig" type="button" data-cs-open>搜尋…<kbd>⌘K</kbd></button>
+  <button class="search-trig" type="button" data-cs-open aria-label="搜尋">
+    <svg class="s-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+    <span class="s-lbl">搜尋…</span><kbd>⌘K</kbd>
+  </button>
   <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+  <button class="iconbtn nav-toggle" type="button" id="nav-toggle" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-menu"><span class="nt-ico" aria-hidden="true"></span></button>
 </nav></header>
 
 <div class="wrap"><div class="cmdbar">

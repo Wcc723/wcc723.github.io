@@ -69,11 +69,11 @@ $brand-info:            #5bc0de !default;
 
 原色彩
 
-![](/images/2016_ironman/17_bootstrap_02.png)
+![](https://img.casper.tw/images/2016_ironman/17_bootstrap_02.png)
 
 經調整，類似於 Bootstrap 4 的色彩
 
-![](/images/2016_ironman/17_bootstrap_01.png)
+![](https://img.casper.tw/images/2016_ironman/17_bootstrap_01.png)
 
 
 像這樣的配色就比較接近於 Bootstrap 4 的色彩，用這個方法就可以輕易地修改 Bootstrap 中各個元件中的樣式變數，修改就是這麼樣的容易，只要修改一些變數就能完成。

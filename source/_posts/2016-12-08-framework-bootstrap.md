@@ -75,7 +75,7 @@ $brand-inverse:             $gray-dark !default;
 
 Bootstrap 將模組檔案拆分得相當細，官方的文件也是依據這個架構所呈現：
 
-![](/images/2016_ironman/08_framework_bootstrap_01.png)
+![](https://img.casper.tw/images/2016_ironman/08_framework_bootstrap_01.png)
 
 Bootstrap 的說明文件
 
@@ -89,13 +89,13 @@ Bootstrap 的說明文件
 
 元件的設計除了有 Pure CSS 的結構與樣式分離外，Bootstrap 在容器與內容分離也是做得相當徹底，加上 Bootstrap 有大量的元件，彼此之間的組合變化也相當多元，就 Bootstrap 現有的架構下其實我們可以將元件分為兩大類型：
 
-![](/images/2016_ironman/08_framework_bootstrap_03.png)
+![](https://img.casper.tw/images/2016_ironman/08_framework_bootstrap_03.png)
 
 一則是在外的容器，另外則是在內的元件(內容)；像是 grid-system 就是屬於在外的容器，在外側的容器並不會影響內部的元件樣式，按鈕來說他就是屬於在內部的元件，他可以依附在任何的容器內。
 
 以下是簡單的 Bootstrap 容器與元件分類：
 
-![](/images/2016_ironman/08_framework_bootstrap_02.png)
+![](https://img.casper.tw/images/2016_ironman/08_framework_bootstrap_02.png)
 
 Bootstrap 就如同前文 OOCSS 所介紹的包含結構與樣式分離、容器與內容分離，在這架構下 Bootstrap 的可用性就會相當高，而且在後續的新增元件也會更為容易。
 

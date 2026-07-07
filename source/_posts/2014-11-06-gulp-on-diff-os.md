@@ -46,15 +46,15 @@ gulp.task('default', ['coffee','webserver','watch']); //加上web server
 
 > **特別注意：如果有開啓其他有auto refresh的軟體，可能會造成其中一方auto refresh失效(EX:Fire.app)。**
 
-![/images/gulp/screen_shot_gulp-3-01](/images/gulp/screen_shot_gulp-3-01.png)
+![/images/gulp/screen_shot_gulp-3-01](https://img.casper.tw/images/gulp/screen_shot_gulp-3-01.png)
 
 > 這時候修改index.html或者是其他檔案修改後都會自動refresh，也不需要額外安裝套件(所以沒有限定Chrome)。
 
-![](/images/gulp/screen_shot_gulp-3-02.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp-3-02.png)
 
 > 接下來直接使用wifi的內網ip加上port，也可以直接瀏覽，這個網址直接複製到使用相同wifi的裝置上也是可行的。
 
-![](/images/gulp/screen_shot_gulp-3-03.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp-3-03.png)
 
 > 修改內文也一樣，裝置上的網頁也會自動refresh。
 
@@ -64,18 +64,18 @@ gulp.task('default', ['coffee','webserver','watch']); //加上web server
 
 在剛剛所介紹的範例中，所有的gulp 套件都會安裝在`node_modules`這個資料夾內，只要透過package.json，就可以一個指令安裝回所有的套件。所以如果有使用git，就可以直接忽略這個資料夾，同理，在給其他開發者，也不需要這個資料夾。
 
-![](/images/gulp/screen_shot_gulp-3-04.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp-3-04.png)
 
 > 將整個專案移到windows內(不需要`node_modules`資料夾)。
 
-![](/images/gulp/screen_shot_gulp-3-05.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp-3-05.png)
 
 > 只需要保留gulpfile、package.json、app資料夾即可。
 
-![](/images/gulp/screen_shot_gulp-3-06.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp-3-06.png)
 
 輸入npm install ，就可還原`node_modules`資料夾，接下來一樣執行`gulp`就可以運行了。
 
-![](/images/gulp/screen_shot_gulp-3-07.png)
+![](https://img.casper.tw/images/gulp/screen_shot_gulp-3-07.png)
 
 這樣就可以還原整個專案，且在不同作業系統都可以正常運作。

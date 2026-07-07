@@ -24,7 +24,7 @@ published: true
 
 ```css
 .naruto {
-    background-image: url(/images/narutoR.png?1372854973);
+    background-image: url(https://img.casper.tw/images/narutoR.png?1372854973);
     background-color: orange;
     background-repeat: no-repeat;
     width: 107px;
@@ -40,7 +40,7 @@ published: true
 {% raw %}
 <style>
 .naruto {
-    background-image: url(/images/narutoR.png?1372854973);
+    background-image: url(https://img.casper.tw/images/narutoR.png?1372854973);
     background-color: orange;
     background-repeat: no-repeat;
     width: 107px;

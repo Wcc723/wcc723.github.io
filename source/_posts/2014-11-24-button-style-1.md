@@ -26,7 +26,7 @@ published: true
 
 自從 2 開始就是Web frontend相當主流的CSS Framework，在 3 發行之後，2 的維護也中止，使用這套Framework的開發者也相對少很多，但是在網路上還是經常可以看到由Bootstrap 2所設計的網頁，Bootstrap 2依然是一款經典的CSS Framewrok。
 
-![](/images/2014button/2014-11-24-button_02.png)
+![](https://img.casper.tw/images/2014button/2014-11-24-button_02.png)
 
 **Bootstrap 2 按鈕設計特色**
 
@@ -44,7 +44,7 @@ published: true
 
 [Bootstrap 3](http://getbootstrap.com/)
 
-![](/images/2014button/2014-11-24-button_01.png)
+![](https://img.casper.tw/images/2014button/2014-11-24-button_01.png)
 
 - [扁平化設計](http://techorange.com/2013/07/19/5-dangers-of-flat-design/)
 - [Metro UI](http://zh.wikipedia.org/wiki/Metro_UI)
@@ -67,9 +67,9 @@ published: true
 
 [Jquery Mobile 1.3](http://demos.jquerymobile.com/1.3.2/)
 
-![](/images/2014button/2014-11-24-button_06.png)
+![](https://img.casper.tw/images/2014button/2014-11-24-button_06.png)
 
-![](/images/2014button/2014-11-24-button_07.png)
+![](https://img.casper.tw/images/2014button/2014-11-24-button_07.png)
 
 [Jquery Mobile](http://jquerymobile.com/demos/)
 
@@ -90,7 +90,7 @@ Jquery mobile像對於其他CSS framework來說，視覺感較為工程導向，
 
 [Jquery Mobile 1.4](http://demos.jquerymobile.com/1.4.5/)
 
-![](/images/2014button/2014-11-24-button_05.png)
+![](https://img.casper.tw/images/2014button/2014-11-24-button_05.png)
 
 Jquery Mobile 1.4和以往的設計有很大的落差，最大的差別就是導入了扁平化設計，所以在預設的款式是沒有圓角、陰影、漸層等效果。
 
@@ -110,9 +110,9 @@ Jquery Mobile 1.4和以往的設計有很大的落差，最大的差別就是導
 
 [Pure CSS](http://purecss.io/)
 
-![](/images/2014button/2014-11-24-button_03.png)
+![](https://img.casper.tw/images/2014button/2014-11-24-button_03.png)
 
-![](/images/2014button/2014-11-24-button_04.png)
+![](https://img.casper.tw/images/2014button/2014-11-24-button_04.png)
 
 Pure CSS Framework的設計理念是為了讓CSS更為簡單化，所有的元件都分為核心以及擴充兩類別，核心通常定義元件的尺寸、瀏覽器相容性，擴充則是定義元件的色彩、更多尺寸、不同狀態等。
 

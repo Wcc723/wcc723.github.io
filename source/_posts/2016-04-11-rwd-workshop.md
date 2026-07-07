@@ -18,7 +18,7 @@ published: true
 
 ## 活動網址
 
-![](/images/2016/04/rwdWorkshop_large.jpg)
+![](https://img.casper.tw/images/2016/04/rwdWorkshop_large.jpg)
 
 KKtix 報名網址：[http://gonsakon-7655f2.kktix.cc/events/a5791ac5-f60f9c-cc9dec-eb381d-6b57e9-3a5710-61e623-17b85b](http://gonsakon-7655f2.kktix.cc/events/a5791ac5-f60f9c-cc9dec-eb381d-6b57e9-3a5710-61e623-17b85b)
 

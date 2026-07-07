@@ -20,11 +20,11 @@ published: true
 
 剛開始接觸 Sass 時發現他的 `@mixin` 真的很神，發現很多樣式可以先準備好 `@mixin` 等到需要使用的時候在載入，所以當時就以產生 **樣式庫** 的概念做設計，當時還沒有參考主流的框架，單純以自己的觀念做開發，包含按鈕、表單、jQuery 套件等常見的樣式庫都有設計。
 
-![](/images/2016_ironman/26_custom_01.png)
+![](https://img.casper.tw/images/2016_ironman/26_custom_01.png)
 
 當時文件只要輸入 `+divider($gap: 1.5em)` 就可以引用上方的範例樣式。
 
-![](/images/2016_ironman/26_custom_02.png)
+![](https://img.casper.tw/images/2016_ironman/26_custom_02.png)
 
 且設計上都是用當時主流的漸層效果在做，只要輸入一個色彩就會運算出各種狀態的漸層，真的是好潮好潮～。當時這些都是自己在維護、使用，久而久之發現每個專案都要重新 `@include` 這些樣式也真的很麻煩，心想不如直接寫一款都預設 `@include` 的好了。
 
@@ -34,11 +34,11 @@ published: true
 
 已經經歷過一次的框架歷練的我，等級已經是翻倍再翻倍，這時候是以一個完整可運用的框架去執行，所以執行時也有考慮到框架的文件、運用、擴充等問題。
 
-![](/images/2016_ironman/26_custom_03.png)
+![](https://img.casper.tw/images/2016_ironman/26_custom_03.png)
 
 樣式文件，命名還要帶點叛逆。
 
-![](/images/2016_ironman/26_custom_04.png)
+![](https://img.casper.tw/images/2016_ironman/26_custom_04.png)
 
 包含延伸運用都有製作在內。
 
@@ -48,15 +48,15 @@ published: true
 
 後來仔細研究了 Bootstrap 文件原始碼及 OOCSS 的概念，清楚了解到自己開發的框架問題點，所以就很乾脆的將 Bootstrap 給 fork 惹...。現在主要都是以 Bootstrap 作為基底來當作樣式框架開發的底層，並且依據自己喜愛的設計風格、專案需求去做調整。
 
-![](/images/2016_ironman/26_custom_05.png)
+![](https://img.casper.tw/images/2016_ironman/26_custom_05.png)
 
 色彩相對於當時的 Bootstrap 3 來說更為鮮豔，且圓角更小。
 
-![](/images/2016_ironman/26_custom_06.png)
+![](https://img.casper.tw/images/2016_ironman/26_custom_06.png)
 
 還有很愛的 outline button，在 Bootstrap 4 的版本也有加入，很開心的是當時很多概念在 Bootstrap 4 都有提供，如 Card、Spacing...。
 
-![](/images/2016_ironman/26_custom_07.png)
+![](https://img.casper.tw/images/2016_ironman/26_custom_07.png)
 
 還以 Material Design 為概念的 jQuery UI，當然這是選用的，預設的情況下是不需要載入的。
 

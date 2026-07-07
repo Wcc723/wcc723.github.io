@@ -35,11 +35,11 @@ npm install -g bower
 bower install
 ```
 
-![](/images/2016_ironman/16_bootstrap_01.png)
+![](https://img.casper.tw/images/2016_ironman/16_bootstrap_01.png)
 
 接下來專案內會新增對應的檔案，Bootstrap 的套件需要使用到 jQuery ，此時也會一並出現。
 
-![](/images/2016_ironman/16_bootstrap_02.png)
+![](https://img.casper.tw/images/2016_ironman/16_bootstrap_02.png)
 
 ## Gulp
 
@@ -83,6 +83,6 @@ body {
 @import "bootstrap";
 ```
 
-![](/images/2016_ironman/16_bootstrap_03.png)
+![](https://img.casper.tw/images/2016_ironman/16_bootstrap_03.png)
 
 最後的結果如上，一開始的 color: blue 是我們自己定義的，而後方開始就是完整的 Bootstrap，接下來我們再來了解如何去調整 Bootstrap 的樣式。

@@ -2,15 +2,20 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-卡斯伯 Blog (www.casper.tw) — a Hexo 8 static blog with ~364 posts, deployed to GitHub Pages behind Cloudflare. Node 20 (`.nvmrc`). There are no npm scripts and no tests/linters; run Hexo directly with `npx hexo …`.
+卡斯伯 Blog (www.casper.tw) — a Hexo 8 static blog with ~364 posts, deployed to **Cloudflare Workers (static assets)** behind Cloudflare; post images live on **Cloudflare R2** (served at `img.casper.tw`). Node 20 (`.nvmrc`). npm scripts wrap the workflow (`npm run deploy`, `npm run images:upload`, …); no tests/linters. You can still run Hexo directly with `npx hexo …`.
 
 ## Commands
 
 ```bash
-npx hexo server                      # local preview at http://localhost:4000, watches source/ & theme
-npx hexo generate                    # incremental build → public/  ("0 files generated" = already up to date)
-npx hexo clean && npx hexo generate  # full rebuild (use after editing _config.yml, switching theme, or stale output)
-npx hexo deploy                      # build is NOT run; deploys current public/ → live site (see Deploy below)
+npm run server        # = hexo server — local preview at http://localhost:4000, watches source/ & theme
+npm run build         # = hexo generate — incremental build → public/  ("0 files generated" = already up to date)
+npm run rebuild       # = hexo clean && hexo generate — full rebuild (after editing _config.yml, switching theme, stale output)
+npm run deploy        # clean + generate + `wrangler deploy` → Cloudflare Workers (see Deploy below)
+npm run deploy:cf     # just `wrangler deploy` (redeploy current public/ without rebuilding)
+npm run backup        # git push origin develop — backs up source
+
+npm run images:upload                       # sync r2-uploads/ → Cloudflare R2 (new pasted images)
+npm run images:migrate -- <upload|rewrite|detach>   # one-time /images → R2 migration (see 圖片與 R2 below)
 ```
 
 - Editing `themes/casper-2026/source/css/style.css` or any `layout/**.ejs` is picked up by `hexo generate` / live-reloaded by `hexo server`. **CSS is hand-written — there is no CSS build step** (no Tailwind/PostCSS in the pipeline, despite a `hexo-renderer-stylus` dep that the active theme does not use).
@@ -45,12 +50,26 @@ GA4 (`G-97433H4032`), Facebook Pixel + comments, Google AdSense (`ca-pub-8296684
 
 ## Deploy & cache (important, repo-specific)
 
-- `git remote origin` of this **source** repo is `git@github.com:Wcc723/wcc723.github.io.git` — the **same** repo that hosts the published site. Source lives on branch **`develop`**; the built site lives on **`master`**. `npx hexo deploy` (hexo-deployer-git) force-pushes `public/` → `master`; `git push origin develop` backs up the source. They do not interfere.
-- The site is served at **www.casper.tw** behind **Cloudflare**, which caches static assets (`style.css` for up to 4h). The CSS `<link>` is **cache-busted** with `?v=<mtime>` via `asset_v()` — so a CSS change ships a new URL and bypasses the CDN/browser cache. HTML is served `DYNAMIC` (not CDN-cached). The custom domain is preserved by `source/CNAME` (must stay, or `hexo deploy` would drop the GitHub Pages domain). Root `_config.yml` `url:` is `https://www.casper.tw` so canonical/og/sitemap use the real domain.
+Deployment is **Cloudflare Workers static assets** (`wrangler`), not GitHub Pages. Config is `wrangler.jsonc` at repo root: an **assets-only Worker** (no `main` entry) that serves `./public`, with `custom_domain` route `www.casper.tw`.
+
+- **Deploy**: `npm run deploy` = `hexo clean && hexo generate && wrangler deploy`. The Worker only uploads changed (hashed) assets, so it's cheap on the wire; the build is the cost. `npm run deploy:cf` redeploys `public/` without rebuilding.
+- **First-time setup**: `npx wrangler login` once. Then, **before the first deploy, delete the old `www → wcc723.github.io` CNAME** in the Cloudflare DNS panel — a `custom_domain` route cannot be created over an existing CNAME (it errors). `wrangler deploy` then creates the DNS record + cert automatically (expect a few minutes of downtime; do it off-peak).
+- **Caching**: served behind Cloudflare, which edge-caches assets automatically. HTML defaults to `Cache-Control: public, max-age=0, must-revalidate` (fresh). `themes/casper-2026/scripts/cf-headers.js` (a Hexo generator) emits `public/_headers` giving `/css/*` and `/js/*` long/immutable cache — safe because the CSS `<link>` is **cache-busted** with `?v=<mtime>` via `asset_v()`. `_headers` rules must **not overlap** (same header from two rules is comma-joined, which breaks it).
+- **Source backup**: `git remote origin` is `git@github.com:Wcc723/wcc723.github.io.git`; source lives on **`develop`**, backed up via `npm run backup`. The old published-site branch **`master`** (hexo-deployer-git force-push) is **retired** — the `deploy:` block in `_config.yml` and `source/CNAME` are now dead config (CNAME only mattered for GitHub Pages). Root `_config.yml` `url:` stays `https://www.casper.tw` for canonical/og/sitemap.
+
+## 圖片與 R2 (image workflow, repo-specific)
+
+Post images live on **Cloudflare R2**, served via custom domain **`img.casper.tw`**. The R2 **object key === the URL path** (no prefix): key `posts/foo/bar.png` → `https://img.casper.tw/posts/foo/bar.png`. Tooling is in **`tools/`** (`tools/lib/r2.mjs` = shared helpers). Uploads have **two auto-selected backends**: if `.env` (R2 API token, from `.env.example`, git-ignored) is present → `@aws-sdk/client-s3` (fast, parallel, ETag/HeadObject dedup); **otherwise it falls back to `wrangler r2 object put`** (OAuth via `wrangler login` — **no token/`.env`**, resumable via a local ledger). `--wrangler` forces the wrangler backend. Non-secret config (bucket name, `img.casper.tw`) lives in committed **`tools/r2.config.mjs`**.
+
+- **New images (paste → upload)**: VS Code **Paste Image** (`mushan.vscode-paste-image`, configured in `.vscode/settings.json`) saves a pasted image to **`r2-uploads/posts/<post-basename>/<timestamp>.png`** (outside `source/`, so Hexo never copies it into `public/`) and auto-inserts the final markdown ref `![](https://img.casper.tw/posts/<post-basename>/<img>)`. Then `npm run images:upload` mirrors `r2-uploads/**` → R2 (key = path relative to `r2-uploads/`) and deletes the local temp files (`-- --keep` to retain, `-- --dry-run` to preview). **Local preview shows the image only after upload** (the ref points at R2 from the moment you paste).
+- **Duplicate handling**: `images:upload` skips any file whose content already matches the R2 object at that key (compares R2 ETag = content MD5), so re-runs don't re-transfer; `-- --force` overrides. `images:migrate -- upload` skips keys that already exist (HeadObject). Note there is **no content-level dedup across different filenames** — the same image pasted twice gets two timestamped names → two R2 objects (Paste Image names by timestamp).
+- **R2 setup** (one-time): create the bucket (`npx wrangler r2 bucket create casper-blog-images`, or dashboard) and connect the custom domain (**bucket → Settings → Custom Domains** → `img.casper.tw`). **Auth — pick one**: (a) `npx wrangler login` once → tooling uses wrangler OAuth, **no `.env`/token needed**; or (b) **R2 → Manage R2 API Tokens** → *Object Read & Write* → `cp .env.example .env` and fill Account ID + Access Key + Secret (bucket/domain default from `tools/r2.config.mjs`).
+- **Legacy `/images` migration**: the old local `/images/*` (~100MB in `themes/casper-2026/source/images/`, 515 refs) was migrated to R2 at `https://img.casper.tw/images/*` (1:1 path map). Run order: `npm run images:migrate -- upload` (uploads the folder to R2, key `images/<rel>`, skips already-present, re-runnable) → `npm run images:migrate -- rewrite` (dry-run; then `-- rewrite --apply`) rewrites post refs (`/images/…` → `https://img.casper.tw/images/…`; anchored to real refs only — markdown/html/css/front-matter — never prose or the `firebasestorage` external URLs) → `npm run images:migrate -- detach` renames `images` → `_images` so Hexo stops copying it into `public/` (local backup kept, git-ignored). The 602 `firebasestorage.googleapis.com` refs are **left as-is** (external, still hosted).
 
 ## Conventions & gotchas
 
-- **Do not delete `themes/casper-2026/source/{images,libs,demoFile}`** — they are large (~100MB) and gitignored (kept local, deployed via `public/`); many old posts reference `/libs/…` and `/demoFile/…` (per-post `cssdemo` front-matter). New theme-specific small assets go in **`source/img/`** (not `source/images/`), which *is* committed (e.g. `casper-avatar.webp`, `js-interview-cover.webp`).
+- **Post images are on R2** (`https://img.casper.tw/…`), not local. `themes/casper-2026/source/images/` was migrated and renamed **`_images`** (underscore ⇒ Hexo skips it; kept as a git-ignored local backup, no longer deployed). New pasted images stage in **`r2-uploads/`** (git-ignored) → `npm run images:upload`. See「圖片與 R2」above.
+- **Do not delete `themes/casper-2026/source/{libs,demoFile}`** — large, git-ignored, still **deployed via `public/`**; many old posts reference `/libs/…` and `/demoFile/…` (per-post `cssdemo` front-matter). New theme-specific small assets go in **`source/img/`** (committed; e.g. `casper-avatar.webp`, `js-interview-cover.webp`).
 - `design-previews/` is gitignored scratch (standalone HTML design mockups), not part of the site.
 - `.deploy_git/` is hexo-deployer-git's working clone (gitignored).
 - Posts are date-prefixed files in `source/_posts/` (`.html` and `.md`). Custom pages (`about`, `tags`) live in `source/`; the `/tags/` index needs `layout: tags` front-matter to render the tag cloud.

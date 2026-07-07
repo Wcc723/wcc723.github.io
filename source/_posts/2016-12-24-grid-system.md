@@ -20,11 +20,11 @@ published: true
 
 灰色部分是網格中欄的區域，以下面這範例來說佔了 4 欄，為了呈現 欄 與 欄 之間的間隔，欄會左右增加 padding 讓內容保留左右的間隔。
 
-![](/images/2016_ironman/24_grid_1.png)
+![](https://img.casper.tw/images/2016_ironman/24_grid_1.png)
 
 但是 欄 所增加的 padding ，最終會影響到最外層的 .row、.container 向外擴增，所以 .row 與 .container 一則使用負值的 margin，另一則用 padding 補回這段空間。
 
-![](/images/2016_ironman/24_grid_2.png)
+![](https://img.casper.tw/images/2016_ironman/24_grid_2.png)
 
 結構分為以下
 

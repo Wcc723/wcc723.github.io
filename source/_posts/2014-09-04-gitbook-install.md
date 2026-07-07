@@ -24,7 +24,7 @@ published: true
 
 <!-- more -->
 
-![](/images/gitbook/gitbook-20140904-1.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-1.png)
 
 [https://www.gitbook.io/book/wcc723/google_design_translate](https://www.gitbook.io/book/wcc723/google_design_translate)
 
@@ -40,11 +40,11 @@ published: true
 
 Node.js在這一個部分windows與mac其實只是安裝檔不同，只要按照官方程序裝完就可以了。
 
-![](/images/gitbook/gitbook-20140904-2.jpeg)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-2.jpeg)
 
 這邊就只Show出windows版本的安裝(Mac版大致相同，而後面的介紹會兩者混用)
 
-![](/images/gitbook/gitbook-20140904-3.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-3.png)
 
 
 如果是windows，請打開"命令提示字元”，輸入：
@@ -54,7 +54,7 @@ Node.js在這一個部分windows與mac其實只是安裝檔不同，只要按照
 
 預期會出現以下的版本(或者更高)
 
-![](/images/gitbook/gitbook-20140904-4.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-4.png)
 
 
 如果是Mac，請打開終端機，和windows相同，輸入以下指令：
@@ -64,7 +64,7 @@ Node.js在這一個部分windows與mac其實只是安裝檔不同，只要按照
 
 預期會出現以下的版本(或者更高)
 
-![](/images/gitbook/gitbook-20140904-5.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-5.png)
 
 
 ### 安裝gitbook
@@ -75,11 +75,11 @@ Node.js在這一個部分windows與mac其實只是安裝檔不同，只要按照
 
      npm install -g gitbook
 
-![](/images/gitbook/gitbook-20140904-6.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-6.png)
 
 安裝完後輸入 `gitbook version`，預期會出現以下畫面。
 
-![](/images/gitbook/gitbook-20140904-7.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-7.png)
 
 ### gitbook serve
 
@@ -87,26 +87,26 @@ Node.js在這一個部分windows與mac其實只是安裝檔不同，只要按照
 
 接下來到一個專案的資料夾，輸入`gitbook serve`，它就會打開一個port，並且運行gitbook server。
 
-![](/images/gitbook/gitbook-20140904-8.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-8.png)
 
 網址輸入`localhost:4000`就可以看到這一個網站。
 
-![](/images/gitbook/gitbook-20140904-9.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-9.png)
 
 ### 可能會遇到的問題
 
 我也不知道為什麼...，Mac版會出現這個錯誤，反正有解決方式。
 
-![](/images/gitbook/gitbook-20140904-11.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-11.png)
 
 回到Terminal，輸入`ulimit -n 4096`，在執行一次`gitbook serve`。
 
      ulimit -n 4096
 
-![](/images/gitbook/gitbook-20140904-12.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-12.png)
 
 安捏，就可以正常執行了。
 
-![](/images/gitbook/gitbook-20140904-13.png)
+![](https://img.casper.tw/images/gitbook/gitbook-20140904-13.png)
 
 剩下的部分，可以參考目前[範例](https://github.com/Wcc723/google_design_translate)的架構。而最近發這篇文，是因為聽說9月9日快到了。

@@ -24,7 +24,7 @@ thumbnail: banner-01.png
 
 一開始當然要先做一張圖，圖的重點是左右方可以相連的，如下圖最左方的chrome是被切一半，和右方的另一半chrome剛好可以接起來。另外這banner的寬度是"1122px"，等等會用到這寬度。
 
-![banner](/images/banner-01.png)
+![banner](https://img.casper.tw/images/banner-01.png)
 
 ### CSS
 直接介紹CSS的寫法，會比較容易了解其原理，這是利用css3 Animation的語法製作，Animation 包含keyframes 及 animation，前者是物件運動的時間軸，相當於劇本；後者是keyframes所呈現的方式(directive)，這兩者都是必要的，缺一不可。
@@ -56,7 +56,7 @@ thumbnail: banner-01.png
 CSS3是很麻煩的語法，要依瀏覽器寫入對應的前輟詞，如果有興趣的設計師，可以直接複製下方CSS，然後把圖片略做修改就可以玩看看囉。
 
 	.banner {
-	  background: url('/images/banner-01.png') center repeat-x;
+	  background: url('https://img.casper.tw/images/banner-01.png') center repeat-x;
 	  min-height: 300px;
 	  -webkit-animation: banner-slider 180s infinite linear;
 	  -moz-animation: banner-slider 180s infinite linear;

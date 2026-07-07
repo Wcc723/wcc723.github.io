@@ -39,7 +39,7 @@ Bootstrap Sass 版本的檔案結構：https://github.com/twbs/bootstrap-sass/tr
 
 而這篇要介紹的就是廣大的 Components 類別，從官方的文件及 OOCSS 混合來看，又可以將它作為兩大類的區分，一則是易於修改樣式的 `元件` (OOCSS 的內容)，另一則是包覆個許多子元件專用的 `容器`；這段很熟悉吧，我們在一開始所介紹到的 OOCSS 與此部分又開始產生連結。
 
-![](/images/2016_ironman/18_bootstrap_01.png)
+![](https://img.casper.tw/images/2016_ironman/18_bootstrap_01.png)
 
 ### 容器
 
@@ -50,11 +50,11 @@ Bootstrap Sass 版本的檔案結構：https://github.com/twbs/bootstrap-sass/tr
 * 可以有 theme (主題)
 * 狀態不是必須的
 
-![](/images/2016_ironman/18_bootstrap_02.png)
+![](https://img.casper.tw/images/2016_ironman/18_bootstrap_02.png)
 
 ### 元件 (內容)
 
-![](/images/2016_ironman/18_bootstrap_03.png)
+![](https://img.casper.tw/images/2016_ironman/18_bootstrap_03.png)
 
 元件的特色在於包含許多樣式、狀態，是使用者在觀看網頁時主要互動的物件；以按鈕來說，使用者會滑過按鈕、按下按鈕，並且按鈕可能會回饋訊息給用戶了解，所以除了不同樣式上，元件所傳達得狀態訊息狀態也相同重要：
 

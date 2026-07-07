@@ -21,21 +21,21 @@ published: true
 
 許多網站，甚至是這次所建立的jekyll bootstrap，都應該有看過以下這個留言板，這是disqus的服務，不管是開發者或是使用者都相容易。他是用iframe嵌入在網站內，資料會存在disqus.com的server，所以開發者可以不用理會資料庫要怎麼建；而使用者可以用disqus或是facebook帳號登入就可以開始使用了。
 
-![](/images/2014-01-10_173329.png)
+![](https://img.casper.tw/images/2014-01-10_173329.png)
 
 [http://disqus.com/](http://disqus.com/)
 
 開啟以上連結並先登入(我是用facebook)，上方有兩個選項For Websites 及 Using Disqus，Using Disqus是給一般使用者管理留言用，這次會用For Websites來增加到Jekyll網站。
 
-![](/images/2014-01-10_173447.png)
+![](https://img.casper.tw/images/2014-01-10_173447.png)
 
 點完就選擇Add Disqus to Your Site來增加到網站上吧。
 
-![](/images/2014-01-10_173448.png)
+![](https://img.casper.tw/images/2014-01-10_173448.png)
 
 這邊設定其實很容易，只要輸入一個site name就可以了，其他可以不設定，sitename這個值等等也需要回填到jekyll bootstrap上。
 
-![](/images/2014-01-10_173527.png)
+![](https://img.casper.tw/images/2014-01-10_173527.png)
 
 ## 設定 `_config.yml`
 
@@ -55,7 +55,7 @@ published: true
         width: 580
         colorscheme: light
 
-![](/images/2014-01-10_173300.png)
+![](https://img.casper.tw/images/2014-01-10_173300.png)
 
 這部分就如上方所解說的一樣，把short_name修改成剛剛申請的site name。
 
@@ -72,8 +72,8 @@ published: true
 
 # 完成
 
-![](/images/2014-01-10_173833.png)
+![](https://img.casper.tw/images/2014-01-10_173833.png)
 
 接下來回到網頁上，可以試著留言，而他的留言是依據網址，如果需要管理這些內容可以到disqus的後台(連Local都建了...)。
 
-![](/images/2014-01-10_173888.png)
+![](https://img.casper.tw/images/2014-01-10_173888.png)

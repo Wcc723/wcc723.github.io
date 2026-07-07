@@ -19,7 +19,7 @@ published: true
 
 <!-- more -->
 
-![](/images/2016/01/cssBookclub-youtube.jpg)
+![](https://img.casper.tw/images/2016/01/cssBookclub-youtube.jpg)
 
 ## 活動簡報
 
