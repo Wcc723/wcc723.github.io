@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/nodejs/2016/10/18/yarn/2016/10/screen_shot_2016-10-18_07.png">
 <meta property="article:published_time" content="2016-10-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T07:18:15.516Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.180Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="nodejs">
 <meta property="article:tag" content="npm">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/nodejs/2016/10/18/yarn/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Yarn - Node.js 的套件管理工具","datePublished":"2016-10-17T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.516Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/nodejs/2016/10/18/yarn/","image":["https://www.casper.tw/2016/10/screen_shot_2016-10-18_07.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Yarn - Node.js 的套件管理工具","datePublished":"2016-10-17T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.180Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/nodejs/2016/10/18/yarn/","image":["https://www.casper.tw/2016/10/screen_shot_2016-10-18_07.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,18 +217,16 @@
 
   <div class="prose"><p>NPM 每次在安裝的時候，都會安裝很久很久，就算是好幾個類似的專案，每次在執行 <code>npm install</code> 時都需要花費大量的時間，而且在網路不穩定的環境下還可能造成中斷。Yarn 可以讓這些問題好轉些，在實測時，安裝一次以上的套件時間將只需要原本的 20% 時間(甚至更短)，將大幅減少逛 FB 的機會。</p>
 <span id="more"></span>
-
 <h2 id="安裝-Yarn"><a href="#安裝-Yarn" class="headerlink" title="安裝 Yarn"></a>安裝 Yarn</h2><p>Mac 用戶需要先安裝 Homebrew，安裝方法可以參考 <a target="_blank" rel="noopener" href="http://brew.sh/">http://brew.sh/</a>，這邊我也順便更新了 homebrew ，目前版本如下。</p>
-<p><img src="/images/2016/10/screen_shot_2016-10-18_01.png"></p>
+<p><img src="https://img.casper.tw/images/2016/10/screen_shot_2016-10-18_01.png" alt=""></p>
 <p>接下來再安裝的時候跳出一個錯誤 (<code>brew install yarn</code>)</p>
-<p><img src="/images/2016/10/screen_shot_2016-10-18_02.png"></p>
+<p><img src="https://img.casper.tw/images/2016/10/screen_shot_2016-10-18_02.png" alt=""></p>
 <p>這貌似新版的 OS Sierra 的問題，有兩個方法，一種是更新 Xcode，另一種是刪除 Xcode</p>
 <p>原本是想採用更新 Xcode 的方式，但是 Xcode 壞了打不開(-.-)，另外就是下載的大小佔 4.4 G…，無奈的情況下，只好把 Xcode 丟進垃圾桶了。</p>
 <p>好了，在下一次 <code>brew install yarn</code>，將會開使正長的安裝 Yarn (我以為 Xcode 是必備的勒…)。</p>
-<p><img src="/images/2016/10/screen_shot_2016-10-18_03.png"></p>
+<p><img src="https://img.casper.tw/images/2016/10/screen_shot_2016-10-18_03.png" alt=""></p>
 <p>下載完後檢查版本 <code>yarn --version</code> 。</p>
 <pre><code class="hljs plaintext">0.15.1</code></pre>
-
 <h2 id="使用-Yarn"><a href="#使用-Yarn" class="headerlink" title="使用 Yarn"></a>使用 Yarn</h2><p>這邊使用兩個專案來測試，測試 <strong>安裝時間</strong> 以及所需的 <strong>磁碟空間</strong>。</p>
 <h4 id="專案一"><a href="#專案一" class="headerlink" title="專案一"></a>專案一</h4><p>在當下的資料夾中，我先把原始的 <code>node_modules</code> (28.1 mb)移除，以下是 <code>package.json</code> 的部分內容。</p>
 <pre><code class="hljs plaintext">&quot;devDependencies&quot;: &#123;
@@ -240,15 +238,14 @@
   &quot;gulp-sass&quot;: &quot;^2.3.2&quot;,
   &quot;gulp-uglify&quot;: &quot;^2.0.0&quot;
 &#125;</code></pre>
-
-<p><img src="/images/2016/10/screen_shot_2016-10-18_04.png"></p>
+<p><img src="https://img.casper.tw/images/2016/10/screen_shot_2016-10-18_04.png" alt=""></p>
 <blockquote>
 <p>npm install 版本所佔的磁碟空間大小</p>
 </blockquote>
 <p>輸入 <code>yarn install</code> 就會開始安裝，安裝時會先檢查本地端有沒有，如果沒有才會線上拉。</p>
 <p>第一次安裝 37.03秒，第二次安裝 6.9秒。</p>
-<p><img src="/images/2016/10/screen_shot_2016-10-18_05.png"></p>
-<p><img src="/images/2016/10/screen_shot_2016-10-18_06.png"></p>
+<p><img src="https://img.casper.tw/images/2016/10/screen_shot_2016-10-18_05.png" alt=""></p>
+<p><img src="https://img.casper.tw/images/2016/10/screen_shot_2016-10-18_06.png" alt=""></p>
 <blockquote>
 <p>yarn install 版本所佔的磁碟空間大小</p>
 </blockquote>
@@ -270,7 +267,6 @@
     &quot;gulp-sass&quot;: &quot;^2.3.2&quot;,
     &quot;gulp-uglify&quot;: &quot;^2.0.0&quot;
   &#125;</code></pre>
-
 <p>使用 <code>npm install</code> 安裝時，所佔的磁碟空間為 38mb。</p>
 <p>用 <code>yarn</code> 所佔的磁碟空間為 26.7mb，且第一次安裝時間約 27 秒，第二次 約 8 秒。</p>
 <p>加速安裝的秘密，就在於根目錄下的 <code>.yarn-cache</code> 資料夾，這個資料夾會將每次安裝的套件先安裝一份到這來，往後如果需要相同套件，就會從這邊拉。</p>
@@ -323,7 +319,6 @@
     <td>移除再安裝 變 直接升級套件</td>
   </tr>
 </table>
-
 
 <p>更多的語法：<a target="_blank" rel="noopener" href="https://yarnpkg.com/en/docs/migrating-from-npm">https://yarnpkg.com/en/docs/migrating-from-npm</a></p>
 <p>目前 Yarn 個人還沒完全測試過，但就一開始的體驗確實不錯，入門也不太需要太多改變 (除了砍掉了 Xcode 而已!?)，算是一個值得入手的好工具。</p>

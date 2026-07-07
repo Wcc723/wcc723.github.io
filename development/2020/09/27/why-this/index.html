@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"學好 this 前，先搞清楚 this 做什麼","datePublished":"2020-09-26T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.534Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/27/why-this/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_12.jpg?alt=media&token=895d35d7-354b-4a38-b1c5-c0c99248b367"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -231,7 +231,6 @@
   <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;卡片&#x27;</span>
 &#125;
 <span class="hljs-title function_">displayData</span>(someData, <span class="hljs-string">&#x27;卡片&#x27;</span>);</code></pre>
-
 <p>透過這樣的方式，我們定義了 資料、目標位置、渲染用的函式，此階段中沒有元件的概念，彼此之間再結構上沒有任何關聯性，當程式碼較少時相當好閱讀，但在日趨複雜的情況就可能會有以下的狀況：</p>
 <ul>
 <li><strong>函式與資料分離，函式的方法不一定能夠物件內資料</strong></li>
@@ -252,9 +251,8 @@
   &#125;
 &#125;
 card.<span class="hljs-title function_">trigger</span>();</code></pre>
-
 <p>當透過物件的形式進行開發時，就需要使用 <code>this</code> 來取得或呼叫物件中彼此之間的方法與資料。如果對於 <code>this</code> 觀念想補強可參考<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2019/03/18/JS-THIS/">此文章</a>。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF8518C6B-85DE-4791-9320-4C883D7EAE71.png?alt=media&token=d2cbed40-01ca-4cd8-9f78-fc43eb7d0184"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF8518C6B-85DE-4791-9320-4C883D7EAE71.png?alt=media&amp;token=d2cbed40-01ca-4cd8-9f78-fc43eb7d0184" alt=""></p>
 <h4 id="額外問題：偏不使用-this，改用-card-不行嗎？"><a href="#額外問題：偏不使用-this，改用-card-不行嗎？" class="headerlink" title="額外問題：偏不使用 this，改用 card 不行嗎？"></a>額外問題：偏不使用 <code>this</code>，改用 <code>card</code> 不行嗎？</h4><p>這也是同學們常見的問題，在此範例中物件內的 <code>this</code> 等同於 <code>card</code> 物件，所以將上述程式碼中的 <code>this</code> 均替換為 <code>card</code> 也是可以運作的。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> card = &#123;
   <span class="hljs-attr">data</span>: <span class="hljs-string">&#x27;卡片上的資料&#x27;</span>,
@@ -269,7 +267,6 @@ card.<span class="hljs-title function_">trigger</span>();</code></pre>
   &#125;,
 &#125;;
 card.<span class="hljs-title function_">trigger</span>();</code></pre>
-
 <p>不過實戰中，以物件的方式建構元件時，會盡可能地增加其使用性，所以 <code>card</code> 在原始碼中並不會是唯一的存在，可能會有更多的相同或類似的結構來作為運用。</p>
 <p>如以下的物件可以延伸自 <code>card</code> 元件，如果使用同樣的名稱就會導致運作上的錯誤，維持 <code>this</code> 將是最好的做法。 </p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> navbar = &#123;
@@ -284,17 +281,16 @@ card.<span class="hljs-title function_">trigger</span>();</code></pre>
   &#125;
 &#125;
 navbar.<span class="hljs-title function_">trigger</span>();</code></pre>
-
 <p>而實際上是如何建立兩個接近結構的元件呢？</p>
 <p>以目前來說兩者的結構是接近的，只有 data 的內容是不同的，這段在實戰中大多都是藉由 “框架” 的特性來完成，以下會繼續介紹框架是如何做到這樣的結構，並且如何管理物件中相同的方法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FBD7E171A-28D5-4FE8-9DF9-49D505720E5B.png?alt=media&token=e142dd22-884b-4695-89cc-ee1523f46da6"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FBD7E171A-28D5-4FE8-9DF9-49D505720E5B.png?alt=media&amp;token=e142dd22-884b-4695-89cc-ee1523f46da6" alt=""></p>
 <h2 id="框架、原型與-this"><a href="#框架、原型與-this" class="headerlink" title="框架、原型與 this"></a>框架、原型與 this</h2><p>為了讓各個物件中會<strong>重複使用的方法統一管理</strong>，並且讓其又能定義屬於各自的方法，框架中大多會使用 JavaScript 中的一特性 “Prototype” 來進行管理，關於 Prototype 的觀念本篇不會多加敘述，如需了解可參考：</p>
 <ol>
 <li>原型繼承：<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/">https://wcc723.github.io/javascript/2017/12/17/javascript-prototype/</a></li>
 <li>建構函式：<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/">https://wcc723.github.io/javascript/2017/12/18/javascript-constructor/</a></li>
 </ol>
 <p>透過原型可以將物件中的方法集中定義，並且使兩者均可透過 <code>this.render()</code> 的方式呼叫此方法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB5EDA819-AB6C-40A0-ACB1-647FD8F61137.png?alt=media&token=eca14715-2ab8-4ac8-935e-cf6af0019e70"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB5EDA819-AB6C-40A0-ACB1-647FD8F61137.png?alt=media&amp;token=eca14715-2ab8-4ac8-935e-cf6af0019e70" alt=""></p>
 <p>需要定義原型，則必須運用到 “建構函式”，以下提供的建構函式範例可用來建立如上結構的物件，並且將 <code>render</code> 的方法預先定義為原型，而建構函式在此的目的為：</p>
 <ul>
 <li>定義物件的結構（方法會先放在 <code>methods</code> 內，此結構與 Vue 是接近的）</li>
@@ -317,10 +313,7 @@ navbar.<span class="hljs-title function_">trigger</span>();</code></pre>
 <span class="hljs-title class_">Component</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>.<span class="hljs-property">render</span> = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`這個是 <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.data&#125;</span>，可以繪製於 <span class="hljs-subst">$&#123;<span class="hljs-variable language_">this</span>.target&#125;</span>`</span>);
 &#125;</code></pre>
-
-
-<p>接下來，就可以透過上方定義的建構函式來建立相同的物件。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> navbar = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Component</span>(&#123;
+<p>接下來，就可以透過上方定義的建構函式來建立相同的物件。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> navbar = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Component</span>(&#123;
   <span class="hljs-attr">data</span>: <span class="hljs-string">&#x27;導覽列的資料&#x27;</span>,
   <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;導覽列&#x27;</span>,
   <span class="hljs-attr">methods</span>: &#123;
@@ -329,10 +322,9 @@ navbar.<span class="hljs-title function_">trigger</span>();</code></pre>
     &#125;
   &#125;
 &#125;);
-navbar.<span class="hljs-title function_">trigger</span>(); <span class="hljs-comment">// 這個是 導覽列的資料，可以繪製於 導覽列</span></code></pre>
-
+navbar.<span class="hljs-title function_">trigger</span>(); <span class="hljs-comment">// 這個是 導覽列的資料，可以繪製於 導覽列</span></code></pre></p>
 <p>此結構透過 Chrome Console 可看到類似於先前所列的結構，僅不過將 render 改為在原型內，呼叫方式也一樣是使用 <code>this</code>。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_19_%E4%B8%8B%E5%8D%882_24.png?alt=media&token=cad254e9-dfe1-4f40-8a31-ae0fdbe4e287"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_19_%E4%B8%8B%E5%8D%882_24.png?alt=media&amp;token=cad254e9-dfe1-4f40-8a31-ae0fdbe4e287" alt=""></p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> card = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Component</span>(&#123;
   <span class="hljs-attr">data</span>: <span class="hljs-string">&#x27;卡片的資料&#x27;</span>,
   <span class="hljs-attr">target</span>: <span class="hljs-string">&#x27;卡片&#x27;</span>,
@@ -343,7 +335,6 @@ navbar.<span class="hljs-title function_">trigger</span>(); <span class="hljs-co
   &#125;
 &#125;);
 card.<span class="hljs-title function_">trigger</span>();</code></pre>
-
 <p>透過建構函式就可不斷建立相同結構的物件，也可定義屬於各自的資料、方法，而物件之中都依然是使用 <code>this</code> 來進行該物件內的所有資料、方法的調用。也因此 <code>this</code> 是一個取得本地元件屬性的方法，如果搞清楚為何使用，也能夠發現其實它並沒有那麼複雜（觀念非常多，但實戰中只會用到一招而已）。</p>
 </div>
 

@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"爬蟲、E2E 測試兩相宜的好工具 - Puppeteer","datePublished":"2020-02-29T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.532Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/03/01/puppeteer/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fimg-puppeteer.png?alt=media&token=42d44728-9eaf-42b3-8be2-fd62d0795dd0"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,15 +217,9 @@
 
   <div class="prose"><p>Puppeteer 是 Node.js 的函式庫，它提供各種 API 來控制 Chrome 或 Chromium 瀏覽器，而此瀏覽器也是目前主流的瀏覽器，用來做為測試、爬蟲都相當合適，並且所提供的 API 語法淺顯易懂，只要具有 jQuery 的使用經驗就可以很快速地上手。</p>
 <h2 id="安裝"><a href="#安裝" class="headerlink" title="安裝"></a>安裝</h2><p>官方提供兩個版本，一個包含 Chromium，另一個則無，如果有安裝 Chrome 的情況下可以不需要另外下載 Chromium，直接運行本機的應用程式即可（選擇輕量 headless 模式運行一樣很快）。</p>
-<p>所以可以採用以下語法加入設定後跳過下載（或者也可以直接使用 puppeteer-core）：</p>
-<pre><code class="hljs plaintext">npm config set puppeteer_skip_chromium_download true</code></pre>
-
-<p>下載 Puppepeer</p>
-<pre><code class="hljs plaintext">npm i puppeteer</code></pre>
-
-
-<p>接下來可以新增一個檔案 <code>test.js</code>，使用官方提供的範例：</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> puppeteer = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;puppeteer&#x27;</span>);
+<p>所以可以採用以下語法加入設定後跳過下載（或者也可以直接使用 puppeteer-core）：<br><pre><code class="hljs plaintext">npm config set puppeteer_skip_chromium_download true</code></pre></p>
+<p>下載 Puppepeer<br><pre><code class="hljs plaintext">npm i puppeteer</code></pre></p>
+<p>接下來可以新增一個檔案 <code>test.js</code>，使用官方提供的範例：<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> puppeteer = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;puppeteer&#x27;</span>);
 
 (<span class="hljs-title function_">async</span> () =&gt; &#123;
   <span class="hljs-keyword">const</span> browser = <span class="hljs-keyword">await</span> puppeteer.<span class="hljs-title function_">launch</span>();
@@ -234,19 +228,14 @@
   <span class="hljs-keyword">await</span> page.<span class="hljs-title function_">screenshot</span>(&#123; <span class="hljs-attr">path</span>: <span class="hljs-string">&#x27;example.png&#x27;</span> &#125;);
 
   <span class="hljs-keyword">await</span> browser.<span class="hljs-title function_">close</span>();
-&#125;)();</code></pre>
-
+&#125;)();</code></pre></p>
 <p>執行 <code>node test.js</code> 則會出現錯誤，主要原因是沒有下載 Chromium，這部分可以手動設置自己的 Chrome 使用。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2FD4B77A61-3F06-4F76-8B5E-2D91D9BFE0D9.png?alt=media&token=225e5015-189e-4933-bbf3-1960d22196b2"></p>
-<p>接下來將上述原始碼中的 <code>browser</code> 變數改為如下即可運行，</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> browser = <span class="hljs-keyword">await</span> puppeteer.<span class="hljs-title function_">launch</span>(&#123;
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2FD4B77A61-3F06-4F76-8B5E-2D91D9BFE0D9.png?alt=media&amp;token=225e5015-189e-4933-bbf3-1960d22196b2" alt=""></p>
+<p>接下來將上述原始碼中的 <code>browser</code> 變數改為如下即可運行，<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> browser = <span class="hljs-keyword">await</span> puppeteer.<span class="hljs-title function_">launch</span>(&#123;
     <span class="hljs-attr">executablePath</span>:
       <span class="hljs-string">&#x27;/Applications/Google Chrome.app/Contents/MacOS/Google Chrome&#x27;</span>,
     <span class="hljs-attr">headless</span>: <span class="hljs-literal">false</span>
-  &#125;);</code></pre>
-<p>Windows 路徑可參考：</p>
-<pre><code class="hljs plaintext">&#x27;C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe&#x27;</code></pre>
-
+  &#125;);</code></pre><br>Windows 路徑可參考：<br><pre><code class="hljs plaintext">&#x27;C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe&#x27;</code></pre></p>
 <p>重新執行一次上述的原始碼，則可以發現快速打開了 Chrome 後就關閉了瀏覽器，打開你的專案資料夾可以發現多了一張圖片，在這個過程中 Chrome 已經依據腳本完成了流程，因此來看一下剛剛發生了什麼事：</p>
 <ol>
 <li>打開瀏覽器</li>
@@ -270,8 +259,7 @@
 
   <span class="hljs-keyword">await</span> browser.<span class="hljs-title function_">close</span>(); <span class="hljs-comment">// 關閉瀏覽器</span>
 &#125;)();</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2F5E922289-CABB-4762-87E7-FC088B2C80E3.png?alt=media&token=0e75f79e-b0ad-44e0-a591-b2bb527f09c7" alt="資料夾內可以看到執行截圖的畫面"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2F5E922289-CABB-4762-87E7-FC088B2C80E3.png?alt=media&amp;token=0e75f79e-b0ad-44e0-a591-b2bb527f09c7" alt="資料夾內可以看到執行截圖的畫面"></p>
 <h2 id="基礎方法說明"><a href="#基礎方法說明" class="headerlink" title="基礎方法說明"></a>基礎方法說明</h2><p>中文文件：<a target="_blank" rel="noopener" href="https://zhaoqize.github.io/puppeteer-api-zh_CN/#/">https://zhaoqize.github.io/puppeteer-api-zh_CN/#/</a></p>
 <p>Puppeteer 大部分的行為都是非同步的（都是 Promise 的方法），因為無法確認網頁點擊後多久後開啟，也無法確認輸入文字需要多長的時間，而 Promise 搭配 async、await 就能將程式碼轉成類似於同步的語言。</p>
 <p>所以使用 Puppeteer 時會看到很多 <code>await ...</code>，目的是要確保原始碼可以依序執行，因此以下介紹的方式也都建議都加上 await。</p>
@@ -296,15 +284,10 @@
 <p>方法中可以看到 selector 不斷的出現，selector 即是畫面上的元素選取方式，因為它可以模擬用戶的行為，所以 selector 的選取技巧在此工具中是非常重要的。</p>
 <h3 id="Selector-技巧"><a href="#Selector-技巧" class="headerlink" title="Selector 技巧"></a>Selector 技巧</h3><p>選取器是遵循 <code>document.querySelector</code> 的規則，基本上就是與撰寫 CSS 時的方式一致（所以才會提到熟悉 jQuery 會非常有幫助），在選擇元素的過程中，最準確的是 id（一個網頁原則上只有一個 id），所以直接的方式就是使用 id 選擇該元素。</p>
 <pre><code class="hljs js">page.<span class="hljs-title function_">click</span>(<span class="hljs-string">&#x27;#button&#x27;</span>); <span class="hljs-comment">// 點擊網頁中 id 為 button 的元素</span></code></pre>
-
 <p>但許多時候網頁元素是沒有 id 的，那麼就可以搭配 Chrome 的開發者工具直接抓出特定元素選取器。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_2_27_%E4%B8%8A%E5%8D%8811_11.png?alt=media&token=d56adac1-47a2-45e4-85c6-4dac5bab5965"></p>
-<p>如上圖，在特定的元素上按下右鍵 &gt; Copy &gt; Copy selector，接下來就可以取得絕對的元素路徑（頁面必須維持在固定的狀態）。</p>
-<pre><code class="hljs plaintext">#tsf &gt; div:nth-child(2) &gt; div.A8SBwf &gt; div.RNNXgb &gt; div &gt; div.a4bIc &gt; input</code></pre>
-
-<p>另外一種方式，如果確定元素具有特定的 HTML 屬性時，也可以使用以下的方式選取，這種寫法是使用 CSS 的屬性選取器。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">await</span> page.$(<span class="hljs-string">&#x27;input[title=&quot;Google 搜尋&quot;]&#x27;</span>)); <span class="hljs-comment">// 可以選到標籤屬性為 title=&quot;Google 搜尋&quot; 的項目</span></code></pre>
-
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_2_27_%E4%B8%8A%E5%8D%8811_11.png?alt=media&amp;token=d56adac1-47a2-45e4-85c6-4dac5bab5965" alt=""></p>
+<p>如上圖，在特定的元素上按下右鍵 &gt; Copy &gt; Copy selector，接下來就可以取得絕對的元素路徑（頁面必須維持在固定的狀態）。<br><pre><code class="hljs plaintext">#tsf &gt; div:nth-child(2) &gt; div.A8SBwf &gt; div.RNNXgb &gt; div &gt; div.a4bIc &gt; input</code></pre></p>
+<p>另外一種方式，如果確定元素具有特定的 HTML 屬性時，也可以使用以下的方式選取，這種寫法是使用 CSS 的屬性選取器。<br><pre><code class="hljs js"><span class="hljs-keyword">await</span> page.$(<span class="hljs-string">&#x27;input[title=&quot;Google 搜尋&quot;]&#x27;</span>)); <span class="hljs-comment">// 可以選到標籤屬性為 title=&quot;Google 搜尋&quot; 的項目</span></code></pre></p>
 <h2 id="流程實戰"><a href="#流程實戰" class="headerlink" title="流程實戰"></a>流程實戰</h2><p>最後，透過 Google 搜尋特定的文字，並且進入特定頁面的方式，規劃一個簡單的流程，來測試是否可以正確運行，流程如下：</p>
 <ol>
 <li>開啟 Google 頁面</li>
@@ -333,14 +316,12 @@
 
   <span class="hljs-comment">// 接下來也可插入 await browser.close(); 關閉瀏覽器</span>
 &#125;)();</code></pre>
-
 <p>在上述的範例中 <code>href*=&quot;https://wcc723.github.io&quot;]</code> 是選取網址中<strong>包含</strong> <code>https://wcc723.github.io</code> 的連結，</p>
 
 <video width="320" height="240" controls autoplay>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2FMar-01-2020%2013-26-52.mp4?alt=media&token=d586a299-a888-4084-932b-cfbf569bfb5a" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-
 
 <blockquote>
 <p>運行中的畫面</p>

@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JS 物件名詞解釋及常見觀念問題","datePublished":"2020-09-20T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.533Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/21/js-object/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_06.jpg?alt=media&token=29accf08-edf3-4bb8-9bdf-86026366a3a2"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -230,32 +230,26 @@
 </ol>
 <p>在實戰上，也不太會使用 <code>new Object()</code> 來建立一個物件，這個方法則只會在學習原型、建構式時才會用到，如果還未接觸到此部分的開發者，可先把它放在一旁。而這兩種建立方式各有些微的事項需要注意。</p>
 <h4 id="物件實字"><a href="#物件實字" class="headerlink" title="物件實字"></a>物件實字</h4><p>物件實字的定義方式不太會出錯，只不過物件實字與陳述式中的 <code>{}</code> 的符號是相同的，所以在撰寫時需要注意所使用的是 陳述式 或 建構函式。</p>
-<p>以下為 “物件實字”，可視為一個物件、表達式的結果。</p>
-<pre><code class="hljs js">&#123;
+<p>以下為 “物件實字”，可視為一個物件、表達式的結果。<br><pre><code class="hljs js">&#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;小明&#x27;</span>
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 <p>以下為 “區塊語法”，可視為一個陳述式（實戰中較少單獨使用，但可配合 <code>let</code>、<code>const</code> 限制作用域），結構上與物件相當類似，請避免搞混。</p>
 <pre><code class="hljs js">&#123;
   <span class="hljs-keyword">const</span> name = <span class="hljs-string">&#x27;小明&#x27;</span>
 &#125;</code></pre>
-
 <blockquote>
 <p>延伸問題思考：區塊語法是否可以作為表達式運用？</p>
 </blockquote>
-<h4 id="物件建構式"><a href="#物件建構式" class="headerlink" title="物件建構式"></a>物件建構式</h4><p><code>new Object</code> 預期會回傳一個新的物件，但如果傳入的結構並非為物件，依然可以正確運行，僅不過回傳的結果可能會不如預期，如以下範例會回傳一個「物件型別」的數字 1。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> num = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>(<span class="hljs-number">1</span>);
+<h4 id="物件建構式"><a href="#物件建構式" class="headerlink" title="物件建構式"></a>物件建構式</h4><p><code>new Object</code> 預期會回傳一個新的物件，但如果傳入的結構並非為物件，依然可以正確運行，僅不過回傳的結果可能會不如預期，如以下範例會回傳一個「物件型別」的數字 1。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> num = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Object</span>(<span class="hljs-number">1</span>);
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-keyword">typeof</span> num); <span class="hljs-comment">// object</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num + <span class="hljs-number">1</span>);    <span class="hljs-comment">// 2</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num == <span class="hljs-number">1</span>);   <span class="hljs-comment">// true </span>
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num === <span class="hljs-number">1</span>);  <span class="hljs-comment">// false</span></code></pre>
-
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num === <span class="hljs-number">1</span>);  <span class="hljs-comment">// false</span></code></pre></p>
 <h2 id="物件內的屬性、方法"><a href="#物件內的屬性、方法" class="headerlink" title="物件內的屬性、方法"></a>物件內的屬性、方法</h2><p>物件的名稱定義可以看到許多不同的說法，在此透過 MDN 及原文來加以介紹，物件建立後會使用一個 <code>{}</code> 包覆著屬性（<code>property</code>），每一個屬性包含著「名稱」（name）及「值」（value）。</p>
 <pre><code class="hljs js">&#123;
   <span class="hljs-attr">name</span>: value
   <span class="hljs-comment">// 名稱：值</span>
 &#125;</code></pre>
-
 <p>一個屬性可以賦予純值、物件、陣列等等，依據開發的需求我們也同樣會賦予函式，而這類型的屬性則會稱為「方法」（methods）</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> person = &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,      <span class="hljs-comment">// 屬性</span>
@@ -263,14 +257,11 @@
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;跑&#x27;</span>);
   &#125;
 &#125;;</code></pre>
-
 <h2 id="物件取值方法"><a href="#物件取值方法" class="headerlink" title="物件取值方法"></a>物件取值方法</h2><p>物件取值方式常見為<strong>點記號</strong>（Dot notation），這是精簡、好閱讀的取值方式，也算是最常運用的取值方法。以上述的程式碼來說，當取得 <code>name</code> 值時的點記號可以寫為：</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person.<span class="hljs-property">name</span>);</code></pre>
-
 <p>另一種方式是常被新手忽略的「括弧記法」（Bracket notation），寫法結構類似於一個陣列的取值方式，寫法如下：</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person[<span class="hljs-string">&#x27;name&#x27;</span>]);  <span class="hljs-comment">// 取值</span>
 person[<span class="hljs-string">&#x27;run&#x27;</span>]();              <span class="hljs-comment">// 呼叫函式</span></code></pre>
-
 <p>相對於點記號來說，<code>[]</code> 看似結構複雜難以閱讀，但它也能突破許多取值上的限制，以下皆為點記號無法運行的方式，如：</p>
 <ol>
 <li>特殊字元的賦值、取值</li>
@@ -280,13 +271,11 @@ person[<span class="hljs-string">&#x27;my-name&#x27;</span>] = <span class="hljs
 
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person[<span class="hljs-number">1</span>]);
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person[<span class="hljs-string">&#x27;my-name&#x27;</span>]);</code></pre>
-
 <ol start="2">
 <li>使用變數進行操作</li>
 </ol>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> num = <span class="hljs-number">1</span>;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person[num]);</code></pre>
-
 <p>當可以使用變數存取物件值時，如欲屬性名稱不確定時，可以搭配 <code>Object.keys</code> 列出所有的屬性名稱，並且依序取出所有的物件值，方法如下：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> person = &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,      <span class="hljs-comment">// 屬性</span>
@@ -299,7 +288,6 @@ keys.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword
    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person[name]);
    <span class="hljs-comment">// 分別結果為 &#x27;小明&#x27; 及 &#x27;run&#x27; 的方法</span>
 &#125;);</code></pre>
-
 <h2 id="何時使用物件、何時使用陣列"><a href="#何時使用物件、何時使用陣列" class="headerlink" title="何時使用物件、何時使用陣列"></a>何時使用物件、何時使用陣列</h2><p>物件與陣列同時都可以包含許多資訊，因此會難以分辨在定義時該使用陣列或是物件，以簡單的定義來說：</p>
 <ul>
 <li>物件可用來定義單一複雜的資訊</li>
@@ -311,8 +299,7 @@ keys.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword
   <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;white&#x27;</span>,
   <span class="hljs-attr">price</span>: <span class="hljs-number">1630000</span>
 &#125;;</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF4AE2B99-D87A-4807-A128-C33AAFD5F8DC.png?alt=media&token=3d36baaa-b54c-462e-a8ae-ac1709f17c7c" alt="單一品項，裡面需要不同的屬性進行描述就可使用物件"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF4AE2B99-D87A-4807-A128-C33AAFD5F8DC.png?alt=media&amp;token=3d36baaa-b54c-462e-a8ae-ac1709f17c7c" alt="單一品項，裡面需要不同的屬性進行描述就可使用物件"></p>
 <p>當定義了一台汽車以後，也可以使用同樣的概念定義更多的汽車，汽車成為複數時，則會是多台重複結構的汽車，這時就可以改用陣列來儲存這些資訊：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> cars = [&#123;
   <span class="hljs-attr">brand</span>: <span class="hljs-string">&#x27;BMW&#x27;</span>,
@@ -327,8 +314,7 @@ keys.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword
   <span class="hljs-attr">color</span>: <span class="hljs-string">&#x27;white&#x27;</span>,
   <span class="hljs-attr">price</span>: <span class="hljs-number">6300000</span>
 &#125;];</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2243DF17-C5F0-4550-8BDF-E5952CA3771C.png?alt=media&token=c6a49180-e72e-46d1-94c4-4aef56955a85" alt="多個品項，但品項內的結構大多是重複即可使用陣列"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2243DF17-C5F0-4550-8BDF-E5952CA3771C.png?alt=media&amp;token=c6a49180-e72e-46d1-94c4-4aef56955a85" alt="多個品項，但品項內的結構大多是重複即可使用陣列"></p>
 </div>
 
   <div class="post-foot">
@@ -344,9 +330,9 @@ keys.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword
     </a>
   
   
-    <a class="next" href="/development/2020/09/22/javascript-training-1st/">
+    <a class="next" href="/development/2020/09/22/js-function/">
       <span class="lab">較新一篇 →</span>
-      <span class="ttl">讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班</span>
+      <span class="ttl">呼叫函式時，到底有多少個參數 / 變數可供使用？</span>
     </a>
   
 </nav>

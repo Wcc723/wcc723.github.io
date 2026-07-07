@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"新手前端也不該犯的錯：圖片變形","datePublished":"2020-10-10T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.535Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/11/img-cover/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_26.jpg?alt=media&token=c70c3827-4da0-4b7c-bfcf-af46431d3c60"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -238,11 +238,9 @@
 </style>
 
 
-
 <div class="demo">
 <img no-lazy src="https://images.unsplash.com/photo-1565942927242-d24e59aa8e79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" alt=""> 
 </div>
-
 
 <p>常見的錯誤就是將 <code>img</code> 標籤限制了高度，卻又設定了 100% 寬度，導致圖片的比例變形（下圖會隨著不同裝置有不同的比例問題，本文在桌面版可以看到最明顯的錯誤）。 </p>
 
@@ -250,22 +248,19 @@
 <img no-lazy src="https://images.unsplash.com/photo-1565942927242-d24e59aa8e79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" width="100%" class="box" alt=""> 
 </div>
 
-
 <h2 id="使用背景圖"><a href="#使用背景圖" class="headerlink" title="使用背景圖"></a>使用背景圖</h2><p>這是相對支援度較高的做法，將 <code>img</code> 中的圖片改為使用 <code>background-image</code> 來呈現，並使用 <code>background-size: cover;</code> 的方式來限制顯示區域，同時也可搭配 <code>background-position</code> 來調整圖片的顯示位置。</p>
 
 <div class="demo">
   <div class="box background-cover" style="background-image: url(https://images.unsplash.com/photo-1565942927242-d24e59aa8e79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60);"></div> 
 </div>
 
-
 <p>原始碼參考如下，可搭配 <code>background-position</code> 來調整背景圖的位置（預設是圖片的左上方）；簡單易用，且有不錯的瀏覽器相容性。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.background-cover</span> &#123;
   <span class="hljs-attribute">background-position</span>: center center;
   <span class="hljs-attribute">background-size</span>: cover;
 &#125;</code></pre>
-
 <p><code>background-size: cover;</code> 可以讓背景圖盡可能覆蓋整個區域，此做法也會裁切掉部分圖片，因此要特別注意到<strong>保留的區塊是否為圖片的主題</strong>；如果圖片主題被裁切可試著改變 <code>background-position</code> 屬性；當無法正確呈現主題會建議替換其它圖片，或採用其它的排版方式。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_10_%E4%B8%8A%E5%8D%8810_02.png?alt=media&token=332d5ebf-977d-4265-9e27-5d1cfe13c76d"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_10_%E4%B8%8A%E5%8D%8810_02.png?alt=media&amp;token=332d5ebf-977d-4265-9e27-5d1cfe13c76d" alt=""></p>
 <blockquote>
 <p>圖片裁切概念，會盡可能將圖片覆蓋整個區域，超出區域的部分將會被裁切。</p>
 </blockquote>
@@ -275,12 +270,10 @@
   <img no-lazy src="https://images.unsplash.com/photo-1565942927242-d24e59aa8e79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60" class="box object-cover" alt="">
 </div>
 
-
 <p><code>object-fit</code> 是決定圖片填滿方式的屬性，用法與 <code>background-size</code> 相當類似，僅不過是套用上 <code>img</code> 專屬的屬性。另外，它不支援 IE11。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.object-cover</span> &#123;
   <span class="hljs-attribute">object-fit</span>: cover;
 &#125;</code></pre>
-
 <p>預設來說它的定位是在圖片的正中央，定位也可透過 <code>object-position</code> 來進行調整。</p>
 
 <div class="demo">
@@ -290,7 +283,6 @@
 <pre><code class="hljs css"><span class="hljs-selector-class">.object-bottom</span> &#123;
   <span class="hljs-attribute">object-position</span>: right bottom;
 &#125;</code></pre>
-
 <p>過去，大多會推薦使用 <code>background-size</code> 來解決圖片比例變形的問題，因為很難預期觀看者是否會使用 IE11 來檢視你的網頁，隨著微軟<a target="_blank" rel="noopener" href="https://techcommunity.microsoft.com/t5/microsoft-365-blog/microsoft-365-apps-say-farewell-to-internet-explorer-11-and/ba-p/1591666">公布不再支援 IE11</a>，開發者可以盡情地開始使用 <code>object-fit</code> 屬性了。</p>
 </div>
 

@@ -33,7 +33,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"免費申請屬於自己的 SSL 憑證(手把手帶你加上 https 綠色鎖頭)","datePublished":"2019-04-23T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.529Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/ssl/2019/04/24/free-ssl/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FArtboard%20Copy%205.png?alt=media&token=fc6b7c2b-b8b3-4c67-8ba4-53edf9aa8cd6"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -156,7 +156,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -218,41 +218,37 @@
 <p>開發環境說明：</p>
 <ul>
 <li>主機 Digital Ocean：Ubuntu 16</li>
-<li>後端語言：Node.js</li>
+<li>後端語言：Node.js </li>
 </ul>
 <p>另外，憑證的金鑰綁定是由開發者來完成，但這個服務是直接在網站上完成，開發者僅需要直接下載做好的憑證即可。</p>
 <h3 id="申請憑證"><a href="#申請憑證" class="headerlink" title="申請憑證"></a>申請憑證</h3><p>透過以下網站申請：<a target="_blank" rel="noopener" href="https://www.sslforfree.com/">SSL For Free</a> ，直接輸入要申請的網域即可。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F4DB860CA-9F37-423E-B3BD-7FB05B3B04F4.png?alt=media&token=cb06bce7-5568-46e1-9ace-3baf54c7263f"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F4DB860CA-9F37-423E-B3BD-7FB05B3B04F4.png?alt=media&amp;token=cb06bce7-5568-46e1-9ace-3baf54c7263f" alt=""></p>
 <p>申請後，他會要求認證網域是否由<strong>申請者</strong>管理，接下來會有以下的認證步驟(三選一)：</p>
 <ol>
 <li>透過 FTP 上傳驗證檔</li>
 <li>手動上傳驗證，本教學會使用此流程，順便說明一些細項</li>
 <li>DNS 驗證，這是最簡單的流程，直接在 DNS TXT Record 補上驗證訊息即可</li>
 </ol>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FDB669936-3447-42EA-8992-838D273A7E8E.png?alt=media&token=f5649ebc-9606-4d21-ad9a-572cf17feede"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FDB669936-3447-42EA-8992-838D273A7E8E.png?alt=media&amp;token=f5649ebc-9606-4d21-ad9a-572cf17feede" alt=""></p>
 <h3 id="手動驗證流程"><a href="#手動驗證流程" class="headerlink" title="手動驗證流程"></a>手動驗證流程</h3><p>選擇手動驗證會出現以下流程說明，接下來在我們的 Ubuntu 伺服器端先安裝好 node.js 及 express 環境後繼續以下動作。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FE397329A-D05D-4EC0-BECE-3BDAA4DCB818.png?alt=media&token=48f342f1-2171-4b51-abdf-d437789c30c8"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2FE397329A-D05D-4EC0-BECE-3BDAA4DCB818.png?alt=media&amp;token=48f342f1-2171-4b51-abdf-d437789c30c8" alt=""></p>
 <ol>
 <li>開啟 express 框架中的 <code>bin/www</code> 將 port 改為 80 port，並且將 DNS 指向此主機（需與 SSL 申請的網址同一個）。</li>
 <li>下載該手動驗證的檔案。</li>
 <li>在 <code>public</code> 資料夾下，建立該資料夾  <code>/.well-known/acme-challenge/</code> 並且把該檔案上傳上去(上傳方式可參考後方說明)</li>
-<li>須確保網址上的這個檔案能夠被開啟</li>
+<li>須確保網址上的這個檔案能夠被開啟 </li>
 </ol>
-<p>上傳驗證檔案的說明：<br>方法 1: 可以直接透過指令上傳驗證檔案，需要在本地端輸入以下指令，並且對應遠端的路徑。</p>
-<pre><code class="hljs plaintext">scp &#123;&#123;檔名&#125;&#125; root@&#123;&#123;主機&#125;&#125;:~&#123;&#123;資料夾路徑&#125;&#125;
+<p>上傳驗證檔案的說明：<br>方法 1: 可以直接透過指令上傳驗證檔案，需要在本地端輸入以下指令，並且對應遠端的路徑。<br><pre><code class="hljs plaintext">scp &#123;&#123;檔名&#125;&#125; root@&#123;&#123;主機&#125;&#125;:~&#123;&#123;資料夾路徑&#125;&#125;
 
 // 範例：
-scp xxx root@12.3.45.678:~/website</code></pre>
-<p>方法 2: 直接手動新增 <code>vi { 檔名 }</code>，將下載檔案的內容貼入</p>
+scp xxx root@12.3.45.678:~/website</code></pre><br>方法 2: 直接手動新增 <code>vi { 檔名 }</code>，將下載檔案的內容貼入</p>
 <h3 id="按下-Download-ssl"><a href="#按下-Download-ssl" class="headerlink" title="按下 Download ssl"></a>按下 Download ssl</h3><p>確保上述流程完成後，就可以按下 <code>Download SSL</code>，失敗也會提供訊息，<strong>但如果發生錯誤，請重新上述的步驟</strong>。</p>
 <p>接下來會核發 90 天的憑證，並且已經生成了憑證、私鑰等檔案。接下來下載這些檔案，其中 <code>certificate.crt</code>、<code>private.key</code> 這兩隻需要上傳到 server 上。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F42D626D8-4A32-4289-B667-2DD477AE3B33.png?alt=media&token=d0fb72fd-2453-4371-959b-2ec66629dd70"></p>
-<h2 id="express-with-https"><a href="#express-with-https" class="headerlink" title="express with https"></a>express with https</h2><p>步驟 1: 上傳 <code>certificate.crt</code>、<code>private.key</code> 到伺服器上，直接放到專案中方便存取的路徑即可。</p>
-<pre><code class="hljs shell">scp certificate.crt root@0.0.0.0:~/&#123;&#123; 專案路徑 &#125;&#125;/ssl/
-scp private.key root@0.0.0.0:~/&#123;&#123; 專案路徑 &#125;&#125;/ssl/</code></pre>
-
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F42D626D8-4A32-4289-B667-2DD477AE3B33.png?alt=media&amp;token=d0fb72fd-2453-4371-959b-2ec66629dd70" alt=""></p>
+<h2 id="express-with-https"><a href="#express-with-https" class="headerlink" title="express with https"></a>express with https</h2><p>步驟 1: 上傳 <code>certificate.crt</code>、<code>private.key</code> 到伺服器上，直接放到專案中方便存取的路徑即可。<br><pre><code class="hljs shell">scp certificate.crt root@0.0.0.0:~/&#123;&#123; 專案路徑 &#125;&#125;/ssl/
+scp private.key root@0.0.0.0:~/&#123;&#123; 專案路徑 &#125;&#125;/ssl/</code></pre></p>
 <p>步驟 2: 透過 <code>npm install https --save</code> 安裝 <code>https</code> 套件<br>步驟 3: 打開 <code>bin/www</code>，並且將檔案修改成以下（後方有完整的程式碼）</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_17_%E4%B8%8B%E5%8D%884_25.png?alt=media&token=5ac2f823-951e-4ee0-916c-0c457cb63dc1"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2019_4_17_%E4%B8%8B%E5%8D%884_25.png?alt=media&amp;token=5ac2f823-951e-4ee0-916c-0c457cb63dc1" alt=""></p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;fs&#x27;</span>);
 <span class="hljs-keyword">var</span> app = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;../app&#x27;</span>);
 <span class="hljs-keyword">var</span> debug = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;debug&#x27;</span>)(<span class="hljs-string">&#x27;website:server&#x27;</span>);
@@ -275,9 +271,8 @@ app.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x2
 <span class="hljs-comment"> */</span>
 
 <span class="hljs-keyword">var</span> server = https.<span class="hljs-title function_">createServer</span>(credentials, app);</code></pre>
-
 <p>完成後就可以直接連線至該網址，加上憑證後預設也會自動連線至 443 port，所以就可以直接使用當時的網址連線即可。</p>
-<p>簽核的認證範例：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F704EAA52-5D36-4E0C-9630-A992D5FD5347.png?alt=media&token=70bd9b1c-f89c-425e-96d5-e854d5a7571e"></p>
+<p>簽核的認證範例：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201904%2F704EAA52-5D36-4E0C-9630-A992D5FD5347.png?alt=media&amp;token=70bd9b1c-f89c-425e-96d5-e854d5a7571e" alt=""></p>
 </div>
 
   <div class="post-foot">

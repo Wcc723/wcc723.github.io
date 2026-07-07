@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/d3js/2014/10/23/Ironman-30-days-24/2014ironman/day23_04.png">
 <meta property="article:published_time" content="2014-10-22T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T02:47:29.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.173Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="d3js">
 <meta property="article:tag" content="ironman">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/d3js/2014/10/23/Ironman-30-days-24/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 也可以像音樂一樣動吃動吃動(1)","datePublished":"2014-10-22T16:00:00.000Z","dateModified":"2016-10-13T02:47:29.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/23/Ironman-30-days-24/","image":["https://www.casper.tw/2014ironman/day23_04.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 也可以像音樂一樣動吃動吃動(1)","datePublished":"2014-10-22T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.173Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/23/Ironman-30-days-24/","image":["https://www.casper.tw/2014ironman/day23_04.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,16 +217,15 @@
 
   <div class="prose"><p>學習D3之後會常思考有什麼樣的資料可以圖形化，除了Open data外，還想到一個就是音樂，以前使用Media Player，有許許多多的音樂視覺化的效果，都是透過聲音大小變化，所以如果有聲音大小變化的資訊，似乎就可以達到這樣的效果。</p>
 <span id="more"></span>
-
 <p>音樂來源：<a target="_blank" rel="noopener" href="http://unlimited.kptaipei.tw/">http://unlimited.kptaipei.tw/</a></p>
 <p>範例參考：<a target="_blank" rel="noopener" href="http://webfinal.herokuapp.com/slides.html">http://webfinal.herokuapp.com/slides.html</a></p>
 <h2 id="參考"><a href="#參考" class="headerlink" title="參考"></a>參考</h2><p>不久前在網路上看到一份D3.js的簡報，寫得真的不錯，文中介紹到一個很沒用的效果(他自己說沒用的..)，範例中會播放著音樂，而中間的圓圈會隨著音樂跳動，看著圓圈不斷地跳動，讓我發現很有趣的資訊，就是音樂啊，那不是我正在尋找的<strong>資料</strong>嗎～</p>
-<p><img src="/images/2014ironman/day23_01.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day23_01.png" alt=""></p>
 <p>在翻閱他的範例中，可以看到他把音軌轉換成陣列的資訊，會依據音樂的品質轉換…，大概像以下這樣的陣列。</p>
-<p><img src="/images/2014ironman/day23_02.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day23_02.png" alt=""></p>
 <p>以這個範例來說，是2048長度的陣列，數值為-1 ~ 1，更新速度相當的快，只要有這個值，就可以做出上面範例的跳動圓圈。</p>
 <h2 id="資料"><a href="#資料" class="headerlink" title="資料"></a>資料</h2><p>技術上已經找到方向，另一個問題就是音樂的來源，由於版權問題，也不太可能隨意使用歌手的音樂。再以柯P的資料做練習時，有稍微看一下創作音樂的部分，創作音樂是使用sound cloud平台，json內在提供sound cloud平台上的資訊。運氣不錯，其中剛好有串流音樂的格式(感謝野生官網、Sound Cloud)。</p>
-<p><img src="/images/2014ironman/day23_03.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day23_03.png" alt=""></p>
 <p>這樣取得的線上音樂，就可以試著放入自己設計的播放器去執行(一開始用本機的流行樂&gt; &lt;)。</p>
 <h2 id="規劃"><a href="#規劃" class="headerlink" title="規劃"></a>規劃</h2><p>一開始只有做隨機一首歌去播放，後來發現真的很有趣，而且這些音樂挺好聽的，看著自己做的曲線配合著音樂跳動，就把整個音樂清單也做出來了。</p>
 <p><strong>請先選擇右方音樂，再點選播放</strong></p>
@@ -241,7 +240,6 @@
   </div>
 </div>
 </div>
-
 
 <p><em>很抱歉，目前本範例只支援Chrome</em></p>
 <h2 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h2><p>這範例也拿去給朋友看，部分的人也說這好像沒什麼用(泣…)，不過這就是創造的浪漫啊！</p>

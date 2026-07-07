@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：JavaScript 建構式","datePublished":"2017-12-17T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.523Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/18/javascript-constructor/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c15_1.jpg?alt=media&token=5837a3bd-a2a2-4a75-a265-3112a3f1a2e4"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -244,10 +244,9 @@
 <span class="hljs-keyword">var</span> sonyPhone = phoneTemplate;
 sonyPhone.<span class="hljs-property">brand</span> = <span class="hljs-string">&#x27;Sony&#x27;</span>;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(phoneTemplate.<span class="hljs-property">brand</span>); <span class="hljs-comment">// &quot;Sony&quot;，原始的 Template 已經被修改到了</span></code></pre>
-
 <p>雖然先前有介紹到如何將值一一的取出來，但此方法也會完全與樣板斷開關聯性。</p>
 <h2 id="建構式"><a href="#建構式" class="headerlink" title="建構式"></a>建構式</h2><p>使用 JavaScript 建構式寫法，可以先建立一個範本，接下來新增的物件都會依據此範本作為延伸。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c15_1.jpg?alt=media&token=5837a3bd-a2a2-4a75-a265-3112a3f1a2e4"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c15_1.jpg?alt=media&amp;token=5837a3bd-a2a2-4a75-a265-3112a3f1a2e4" alt=""></p>
 <p>JavaScript 建構式中，我們會使用 function 來建立物件樣板 (只能使用 function，亦不能使用箭頭函式)。</p>
 <p>這個結構與前方所使用的結構接近，不同的是：</p>
 <ul>
@@ -267,7 +266,6 @@ sonyPhone.<span class="hljs-property">brand</span> = <span class="hljs-string">&
     &#125;
   &#125;
 &#125;</code></pre>
-
 <p>使用建構式時，盡可能使用大寫開頭，讓合作的朋友也能知道他準備作為建構式之用。</p>
 <p>而套用樣板會使用 <code>new</code> 這個方法，並且可以透過傳入參數的方法來改變預設值，接下來會出現兩台手機物件，包含相同的樣板套用上不同的值，但兩者並沒有任何關係。</p>
 <pre><code class="hljs js"><span class="hljs-comment">// 建立兩隻手機，分別傳入 品牌、型號、是否有相機</span>
@@ -286,11 +284,9 @@ sonyPhone.<span class="hljs-property">brand</span> = <span class="hljs-string">&
 &#125;
 
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(sonyPhone == nokiaPhone); <span class="hljs-comment">// false</span></code></pre>
-
 <p>兩者也可以獨立運行自己的方法：</p>
 <pre><code class="hljs js">sonyPhone.<span class="hljs-title function_">takePhoto</span>(); <span class="hljs-comment">// Z100 照相</span>
 nokiaPhone.<span class="hljs-title function_">takePhoto</span>(); <span class="hljs-comment">// 3310 這台沒有照相功能</span></code></pre>
-
 <p>我們這裡可以得知是使用相同樣板，但產生兩者毫無關係的物件，並且可以針對其中一個物件新增修改方法。</p>
 <pre><code class="hljs js">sonyPhone.<span class="hljs-property">call</span> = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">modal</span> + <span class="hljs-string">&#x27; 打電話&#x27;</span>);
@@ -298,9 +294,8 @@ nokiaPhone.<span class="hljs-title function_">takePhoto</span>(); <span class="h
 
 sonyPhone.<span class="hljs-title function_">call</span>(); <span class="hljs-comment">// Z100 打電話</span>
 nokiaPhone.<span class="hljs-title function_">call</span>(); <span class="hljs-comment">// nokiaPhone.call is not a function</span></code></pre>
-
 <p>到這裡我們可以得知這種建構式可以透過 “同一個物件樣板”，不斷地產生 “不同”的物件，每個物件彼此都是獨立的(不會有參考的問題)，只不過共用相同的原型。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-12-18%20%E4%B8%8A%E5%8D%8810.06.58.png?alt=media&token=08026e73-684d-40ab-9340-1525e0a4b112"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%9E%A2%E5%B9%95%E5%BF%AB%E7%85%A7%202017-12-18%20%E4%B8%8A%E5%8D%8810.06.58.png?alt=media&amp;token=08026e73-684d-40ab-9340-1525e0a4b112" alt=""></p>
 <p>其中一支手機可以看到 <code>__proto__</code> 是 PhoneTemplate，這就好像是使用同一個模具產生兩個獨立的物件，我們也可以更新這個模具讓產生的物件有更多的功能，接下來我們會再介紹 <code>原型繼承與記憶體</code> 的關係。</p>
 </div>
 

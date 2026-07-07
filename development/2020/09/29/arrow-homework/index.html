@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"箭頭函式常見陷阱題","datePublished":"2020-09-28T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.534Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/29/arrow-homework/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_14.jpg?alt=media&token=ba6d6297-030d-4495-a510-459963174ca1"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -228,16 +228,13 @@
   &#125;
 &#125;
 <span class="hljs-title class_">Ming</span>.<span class="hljs-title function_">getFriends</span>();</code></pre>
-
 <p>this 的指向因為外層的 <code>callback function</code> 而轉為 <code>全域</code>，所以最終的都列出 <code>undefined</code> 的結果。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F738B9A26-A52F-4D95-9D8E-C83492DA23B6.png?alt=media&token=241603b6-180d-4aac-b975-2df1dfb0431b"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F738B9A26-A52F-4D95-9D8E-C83492DA23B6.png?alt=media&amp;token=241603b6-180d-4aac-b975-2df1dfb0431b" alt=""></p>
 <pre><code class="hljs js">漂亮阿姨 是 <span class="hljs-literal">undefined</span> 的朋友
 杰倫 是 <span class="hljs-literal">undefined</span> 的朋友
 小美 是 <span class="hljs-literal">undefined</span> 的朋友</code></pre>
-
 <h4 id="箭頭函式的解決辦法"><a href="#箭頭函式的解決辦法" class="headerlink" title="箭頭函式的解決辦法"></a>箭頭函式的解決辦法</h4><p>箭頭函式最大的特點就是沒有自己的 <code>this</code>，因此當箭頭函式中出現了 <code>this</code>，它則會指向外層的作用域所對應的 <code>this</code>。</p>
-<p>以下範例來 <code>this.myName</code> 的值就能夠正確指向此物件，迴圈的值也會如預期產生。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title class_">Ming</span> = &#123;
+<p>以下範例來 <code>this.myName</code> 的值就能夠正確指向此物件，迴圈的值也會如預期產生。<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title class_">Ming</span> = &#123;
   <span class="hljs-attr">myName</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
   <span class="hljs-attr">friends</span>: [<span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;小美&#x27;</span>],
   <span class="hljs-title function_">getFriends</span>(<span class="hljs-params"></span>) &#123;
@@ -246,25 +243,18 @@
     &#125;);
   &#125;
 &#125;
-<span class="hljs-title class_">Ming</span>.<span class="hljs-title function_">getFriends</span>();</code></pre>
-
+<span class="hljs-title class_">Ming</span>.<span class="hljs-title function_">getFriends</span>();</code></pre></p>
 <p><strong>重點</strong>：因為箭頭函式沒有自己的 <code>this</code>，所以要找到箭頭函式的 <code>this</code> 指向時，可<strong>直接參考其外層作用域的 <code>this</code> 指向</strong>。關於 this 的指向可參考 <a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2019/03/18/JS-THIS/">this 與物件的關係</a>。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F03840F0E-FD5A-40A8-9251-0C8F436066C4.png?alt=media&token=48122365-c128-412f-9266-b93b6a6d2351"></p>
-<p>透過箭頭函式可不需要調整太多結構，就能使 <code>this</code> 的指向符合預期。</p>
-<pre><code class="hljs js">漂亮阿姨 是 小明 的朋友
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F03840F0E-FD5A-40A8-9251-0C8F436066C4.png?alt=media&amp;token=48122365-c128-412f-9266-b93b6a6d2351" alt=""></p>
+<p>透過箭頭函式可不需要調整太多結構，就能使 <code>this</code> 的指向符合預期。<br><pre><code class="hljs js">漂亮阿姨 是 小明 的朋友
 杰倫 是 小明 的朋友
-小美 是 小明 的朋友</code></pre>
-
+小美 是 小明 的朋友</code></pre></p>
 <h2 id="箭頭函式的相關測驗"><a href="#箭頭函式的相關測驗" class="headerlink" title="箭頭函式的相關測驗"></a>箭頭函式的相關測驗</h2><p>只有看介紹，難以確定觀念是否正確，所以以下補上相關題目給大家練習練習。</p>
-<p>首先，外層都會先宣告 <code>myName = &#39;全域&#39;</code>，所以以下題目需了解最終 <code>this</code> 是指向全域或區域的變數。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> myName = <span class="hljs-string">&#x27;全域&#x27;</span>;</code></pre>
-
+<p>首先，外層都會先宣告 <code>myName = &#39;全域&#39;</code>，所以以下題目需了解最終 <code>this</code> 是指向全域或區域的變數。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> myName = <span class="hljs-string">&#x27;全域&#x27;</span>;</code></pre></p>
 <h4 id="題目-1"><a href="#題目-1" class="headerlink" title="題目 1"></a>題目 1</h4><p>以下的結果為：</p>
 <ol>
 <li>小明</li>
-<li>全域</li>
-</ol>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
+<li>全域<pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
   <span class="hljs-attr">myName</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
   <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) &#123;
     <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
@@ -273,29 +263,27 @@
   &#125;
 &#125;;
 <span class="hljs-title class_">Ming</span>.<span class="hljs-title function_">fn</span>();</code></pre>
-<p>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>這題結構與一開始所介紹的其實是相同的，請記得箭頭函式沒有自己的 <code>this</code>，請向外層作用域尋找，因此會找到 <code>fn()</code> 這個傳統函式，在對應到 <code>Ming.fn()</code>，所以 <code>this</code> 會指向 <code>Ming</code>，結果為  1. 小明。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB786A949-221F-44C0-8597-AA8BC74644AA.png?alt=media&token=2ca71688-74b3-4451-892b-2e9bb8ccfd09"></p>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>這題結構與一開始所介紹的其實是相同的，請記得箭頭函式沒有自己的 <code>this</code>，請向外層作用域尋找，因此會找到 <code>fn()</code> 這個傳統函式，在對應到 <code>Ming.fn()</code>，所以 <code>this</code> 會指向 <code>Ming</code>，結果為  1. 小明。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB786A949-221F-44C0-8597-AA8BC74644AA.png?alt=media&amp;token=2ca71688-74b3-4451-892b-2e9bb8ccfd09" alt=""></p>
 <h4 id="題目-2"><a href="#題目-2" class="headerlink" title="題目 2"></a>題目 2</h4><p>以下的結果為：</p>
 <ol>
 <li>小明</li>
-<li>全域</li>
-</ol>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
+<li>全域<pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
   <span class="hljs-attr">myName</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
   <span class="hljs-attr">fn</span>:<span class="hljs-function">() =&gt;</span> &#123;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">this</span>.<span class="hljs-property">myName</span>);
   &#125;
 &#125;;
 <span class="hljs-title class_">Ming</span>.<span class="hljs-title function_">fn</span>();</code></pre>
-<p>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>實戰中，如果物件內的方法會用到 <code>this</code>，都會避免將該方法使用箭頭函式來建立，因為此時的 <code>this</code> 指向是外層的作用域，相對來說外層的作用域將更難以確立。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEF14357E-56A2-4951-A7A0-C0973884BF50.png?alt=media&token=77b8a6b9-0562-48f1-800c-efa4c54bb0f8"></p>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>實戰中，如果物件內的方法會用到 <code>this</code>，都會避免將該方法使用箭頭函式來建立，因為此時的 <code>this</code> 指向是外層的作用域，相對來說外層的作用域將更難以確立。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEF14357E-56A2-4951-A7A0-C0973884BF50.png?alt=media&amp;token=77b8a6b9-0562-48f1-800c-efa4c54bb0f8" alt=""></p>
 <p>在此外層的作用域是直接對應全域，所以此題的結果為 2. 全域。</p>
 <h4 id="題目-3"><a href="#題目-3" class="headerlink" title="題目 3"></a>題目 3</h4><p>以下的結果為：</p>
 <ol>
 <li>小明</li>
-<li>全域</li>
-</ol>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
+<li>全域<pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
   <span class="hljs-attr">myName</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
   <span class="hljs-attr">family</span>: &#123;
     <span class="hljs-attr">myName</span>: <span class="hljs-string">&#x27;小明家&#x27;</span>,
@@ -305,15 +293,14 @@
   &#125;
 &#125;;
 <span class="hljs-title class_">Ming</span>.<span class="hljs-property">family</span>.<span class="hljs-title function_">fn</span>();</code></pre>
-<p>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>此題的概念與上一題相同，雖然物件有多個層級，但在此也是直接查找最外層的最用域 <code>this</code> 指向，因此答案依然為 2. 全域。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2CD0BA86-0356-439F-8FD2-129C6658492C.png?alt=media&token=5174c287-f3f8-4293-8ef7-e6bf720e83ef"></p>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>此題的概念與上一題相同，雖然物件有多個層級，但在此也是直接查找最外層的最用域 <code>this</code> 指向，因此答案依然為 2. 全域。</li>
+</ol>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F2CD0BA86-0356-439F-8FD2-129C6658492C.png?alt=media&amp;token=5174c287-f3f8-4293-8ef7-e6bf720e83ef" alt=""></p>
 <h4 id="題目-4"><a href="#題目-4" class="headerlink" title="題目 4"></a>題目 4</h4><p>以下的結果為：</p>
 <ol>
 <li>小明</li>
 <li>全域</li>
-<li>立即函式作用域</li>
-</ol>
-<pre><code class="hljs js">(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+<li>立即函式作用域<pre><code class="hljs js">(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">var</span> myName = <span class="hljs-string">&#x27;立即函式作用域&#x27;</span>;
   <span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
     <span class="hljs-attr">myName</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
@@ -323,19 +310,17 @@
   &#125;;
   <span class="hljs-title class_">Ming</span>.<span class="hljs-title function_">fn</span>();
 &#125;)();</code></pre>
-<p>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>這題是陷阱題，立即函式屬於 <code>simple call</code>，<code>this</code> 是指向全域。</p>
-<pre><code class="hljs plaintext">(function () &#123;
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>這題是陷阱題，立即函式屬於 <code>simple call</code>，<code>this</code> 是指向全域。<pre><code class="hljs plaintext">(function () &#123;
   console.log(this === window); // 立即函式的 this 與全域相同
 &#125;)();</code></pre>
-
+</li>
+</ol>
 <p>因此本題的答案依然為 2. 全域。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FA5F41EC5-2C94-475A-85DE-3D0974F6F5D4.png?alt=media&token=a7579b9d-df70-4882-8cd8-880a5e3e6354"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FA5F41EC5-2C94-475A-85DE-3D0974F6F5D4.png?alt=media&amp;token=a7579b9d-df70-4882-8cd8-880a5e3e6354" alt=""></p>
 <h4 id="題目-5"><a href="#題目-5" class="headerlink" title="題目 5"></a>題目 5</h4><p>以下的結果為：</p>
 <ol>
 <li>小明</li>
-<li>全域</li>
-</ol>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
+<li>全域<pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title class_">Ming</span> = &#123;
   <span class="hljs-attr">myName</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
   <span class="hljs-attr">family</span>: &#123;
     <span class="hljs-attr">myName</span>: <span class="hljs-string">&#x27;小明家&#x27;</span>,
@@ -347,7 +332,8 @@
   &#125;
 &#125;;
 <span class="hljs-title class_">Ming</span>.<span class="hljs-property">family</span>.<span class="hljs-title function_">fn</span>();</code></pre>
-<p>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>如果這題會錯可能是題目做太多被搞混了，請仔細思考一下這題的 <code>this</code> 由誰而定。</p>
+.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>.<br>如果這題會錯可能是題目做太多被搞混了，請仔細思考一下這題的 <code>this</code> 由誰而定。</li>
+</ol>
 <p>本題的 <code>this</code> 是由立即函式決定，因此是指向 2. 全域。</p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>實戰中通常也不會那麼的複雜，只要清楚箭頭沒有自己的 <code>this</code>，外層的作用域 this 是什麼，它就是什麼。</p>
 <p>為了避免箭頭函式在實戰中出錯，可以有以下幾個方法：</p>

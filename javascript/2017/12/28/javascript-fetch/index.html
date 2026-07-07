@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：ES6 原生 Fetch 遠端資料方法","datePublished":"2017-12-27T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.525Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/28/javascript-fetch/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_25.jpg?alt=media&token=ade86e74-35c4-480e-a684-79e7c9b16e9a"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -237,7 +237,6 @@
 <span class="hljs-title class_">Req</span>.<span class="hljs-property">onload</span> = reqOnload; 
 <span class="hljs-comment">// 失敗就 reqError()</span>
 <span class="hljs-title class_">Req</span>.<span class="hljs-property">onerror</span> = reqError;</code></pre>
-
 <p>當然，在框架的時代我們已經習慣透過框架包裝以上的行為，讓程式碼的更為容易使用及閱讀，以 <code>randomuser</code> 網站所提供的範例來說，以上的行為可以寫成以下 (錯誤方法可參考 jQuery 文件)，不需要在另外自己包裝發送的物件。</p>
 <pre><code class="hljs js">$.<span class="hljs-title function_">ajax</span>(&#123;
   <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;https://randomuser.me/api/&#x27;</span>,
@@ -247,7 +246,6 @@
     <span class="hljs-comment">// 取得的遠端資料</span>
   &#125;
 &#125;);</code></pre>
-
 <p><code>XMLHttpRequest</code> 在製作時每次都要新建一個請求的實體，而 AJAX 的網站，通常也不會只做一次請求而已，為了讓程式碼更容易維護及開發，大多開發者都會使用框架來包裝這類行為。</p>
 <h2 id="Fetch"><a href="#Fetch" class="headerlink" title="Fetch"></a>Fetch</h2><p>Fetch 在使用時看似與 jQuery <code>$.ajax</code> 挺相近的，所以在使用上也相對容易上手，不過兩者亦有不同概念之處(可<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/Fetch_API/Using_Fetch">參考</a>)。</p>
 <p>這裡提供一個簡單的範例來取得遠端的資料，這裡與 $.ajax 不同點在於：</p>
@@ -270,13 +268,11 @@
   &#125;).<span class="hljs-title function_">catch</span>(<span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;錯誤:&#x27;</span>, err);
 &#125;);</code></pre>
-
-<p><code>fetch</code> 後方會接 <code>then()</code>，這是 Promise 的特性，資料取得後可在 then 裡面接收。<code>return response.json(); </code> 的資料則會傳到下一個 <code>then()</code>，至於詳細的 Promise 方法我們會留下一個章節介紹。</p>
+<p><code>fetch</code> 後方會接 <code>then()</code>，這是 Promise 的特性，資料取得後可在 then 裡面接收。<code>return response.json();</code> 的資料則會傳到下一個 <code>then()</code>，至於詳細的 Promise 方法我們會留下一個章節介紹。</p>
 <p>這裡如果刻意將網址打錯，會出現以下錯誤訊息。</p>
 <pre><code class="hljs js"><span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://randomuserkkk.me/api/&#x27;</span>, &#123;&#125;)</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F25102432-129A-45C6-B96D-BECE11E3499B.png?alt=media&token=f75552cf-4cee-4b95-9804-05e5f7a0177f"></p>
-<h3 id="ReadableStream"><a href="#ReadableStream" class="headerlink" title="ReadableStream"></a>ReadableStream</h3><p>Fetch API 的 Response 物件中的 body 屬性提供了一個 ReadableStream 的實體，這個階段我們無法直接讀取資料內容，而 ReadableStream 物件中可用以下對應的方法來取得資料 (<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/Body)%EF%BC%9A">https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：</a></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F25102432-129A-45C6-B96D-BECE11E3499B.png?alt=media&amp;token=f75552cf-4cee-4b95-9804-05e5f7a0177f" alt=""></p>
+<h3 id="ReadableStream"><a href="#ReadableStream" class="headerlink" title="ReadableStream"></a>ReadableStream</h3><p>Fetch API 的 Response 物件中的 body 屬性提供了一個 ReadableStream 的實體，這個階段我們無法直接讀取資料內容，而 ReadableStream 物件中可用以下對應的方法來取得資料 (<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：">https://developer.mozilla.org/zh-TW/docs/Web/API/Body)：</a></p>
 <ul>
 <li>arrayBuffer()</li>
 <li>blob()</li>
@@ -284,7 +280,7 @@
 <li>json()</li>
 <li>text()</li>
 </ul>
-<h4 id="text"><a href="#text" class="headerlink" title="text()"></a>text()</h4><p>像是以上的範例，我們可以將 <code>response.json()</code> 改為 <code>response.text()</code>，那麼取得的資料格式將會是純字串。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F390506CF-1E4F-4D86-9D82-C1E76CE997EA.png?alt=media&token=d0200785-8dc3-463c-bb04-79249d565e37"></p>
+<h4 id="text"><a href="#text" class="headerlink" title="text()"></a>text()</h4><p>像是以上的範例，我們可以將 <code>response.json()</code> 改為 <code>response.text()</code>，那麼取得的資料格式將會是純字串。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F390506CF-1E4F-4D86-9D82-C1E76CE997EA.png?alt=media&amp;token=d0200785-8dc3-463c-bb04-79249d565e37" alt=""></p>
 <h4 id="blob"><a href="#blob" class="headerlink" title="blob()"></a>blob()</h4><p>也可以將資料轉為 <code>blob</code> 物件，像是圖片就可以做這樣的轉換 (這裡的圖片並非指圖片路徑，而是圖片檔案本身)。</p>
 <pre><code class="hljs js"><span class="hljs-comment">// unsplash 上的圖片</span>
 <span class="hljs-keyword">let</span> url = <span class="hljs-string">&#x27;https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&amp;fit=crop&amp;w=634&amp;q=80&#x27;</span>
@@ -342,7 +338,6 @@ fetch(url)
   &#125;).<span class="hljs-title function_">catch</span>(<span class="hljs-function">(<span class="hljs-params">err</span>) =&gt;</span> &#123;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;錯誤:&#x27;</span>, err);
 &#125;)</code></pre>
-
 <p>所以這是第 25 篇了(表示庫存已用完)。</p>
 </div>
 

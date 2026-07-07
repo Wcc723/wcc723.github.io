@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：JavaScript Function 與 Hoisting","datePublished":"2017-12-15T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.523Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/16/javascript-hoisting/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c13.jpg?alt=media&token=847e07cd-e0b5-4846-a580-a0d11de16652"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -220,34 +220,29 @@
 <blockquote>
 <p><strong>故事說明</strong>：小明的筆記本寫了每天要做的事情，但其實他並不是要做事情時，才會翻筆記本。在一早的醒來的時候小明會將全部的內容先看一次，讓腦中先有個印象。<br>這個概念與 JavaScript Hoiting 的概念接近，先在記憶體中準備一個空間，等到執行時再將值、函式置入。</p>
 </blockquote>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c13.jpg?alt=media&token=847e07cd-e0b5-4846-a580-a0d11de16652"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c13.jpg?alt=media&amp;token=847e07cd-e0b5-4846-a580-a0d11de16652" alt=""></p>
 <blockquote>
 <p>先在腦中了解有多少事情，到時執行時才比較不會忘記的小明。</p>
 </blockquote>
 <h2 id="在變數上"><a href="#在變數上" class="headerlink" title="在變數上"></a>在變數上</h2><p>如果我們對沒有宣告的變數執行 <code>console.log()</code>，會跳出一個錯誤表示它 “尚未” 被定義過。</p>
 <pre><code class="hljs plaintext">console.log(phone); // phone is not defined</code></pre>
-
 <p>如果在 <code>var</code> 的變數前加入 <code>console.log()</code>，這個時候並不會出錯，則是會跳出 <code>undefined</code>，這表示這個變數在記憶體中已經有一個位置，只不過目前並沒有值。</p>
 <pre><code class="hljs plaintext">console.log(phone); // undefined
 var phone = &#x27;myphone&#x27;;</code></pre>
-
 <p>但如果是直接賦予在全域物件上的屬性，因為並不是使用 “宣告”，這已經屬於定義階段，所以在記憶體中他還沒有值。會在 <code>phone = &#39;myphone&#39;</code> 這段直接將值寫在全域物件上。</p>
 <pre><code class="hljs plaintext">console.log(phone); // phone is not defined
 phone = &#x27;myphone&#x27;;</code></pre>
-
 <h2 id="函式的-Hoisting"><a href="#函式的-Hoisting" class="headerlink" title="函式的 Hoisting"></a>函式的 Hoisting</h2><p>在函式概念中也是一樣的，如果在函式之前使用 <code>console.log()</code> 則會出現 <code>undefined</code>，當然這個函式也無法被使用。<br>這種函式宣告方法稱為：<code>function expression</code> 函式表達式(function 會由 <code>var</code> 定義)。</p>
 <pre><code class="hljs plaintext">console.log(callSomeone); // undefined
 callSomeone(&#x27;杰倫哥&#x27;); // callSomeone is not a function
 var callSomeone = function (name) &#123;
   console.log(&#x27;打給 &#x27; + name)
 &#125;</code></pre>
-
 <p>比較不同的是在 <code>function declaration</code> 函式陳述式中(function 放在最前方的寫法)，整個函式都會被提升到最前方，所以在函式前方直接調用方法也可以運行。</p>
 <pre><code class="hljs plaintext">callSomeone(&#x27;杰倫哥&#x27;); // 只有 function 會被提升
 function callSomeone(name) &#123;
   console.log(&#x27;打給 &#x27; + name)
 &#125;</code></pre>
-
 <p>Hoisting 這個觀念主要是要了解 JavaScript 記憶體運作的觀念，實作上也會避免在 function 前方直接呼叫函式，這樣會降低對於程式碼的可維護性。</p>
 </div>
 
@@ -260,7 +255,7 @@ function callSomeone(name) &#123;
   
     <a class="prev" href="/javascript/2017/12/15/javascript-use-strict/">
       <span class="lab">← 較舊一篇</span>
-      <span class="ttl">鐵人賽：JavaScript 的嚴格模式 &#34;use strict&#34;</span>
+      <span class="ttl">鐵人賽：JavaScript 的嚴格模式 &quot;use strict&quot;</span>
     </a>
   
   

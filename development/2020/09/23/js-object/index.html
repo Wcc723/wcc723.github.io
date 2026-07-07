@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JS 記憶體釋放機制及驗證","datePublished":"2020-09-22T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.533Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/23/js-object/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_08.jpg?alt=media&token=5559f38a-09aa-4a79-a232-ff9d3e3c9919"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -232,30 +232,24 @@
 &#125;
 <span class="hljs-title function_">fn</span>();
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a); <span class="hljs-comment">// 無法取得 fn 函式內的 a 變數</span></code></pre>
-
 <p>因此，會很常見使用 “立即函式” 來限制變數的作用域，主要是避免全域變數的產生。</p>
 <pre><code class="hljs js">(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">var</span> b = <span class="hljs-number">1</span>;
 &#125;)();
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(b); <span class="hljs-comment">// 無法取得 fn 函式內的 b 變數</span></code></pre>
-
 <h3 id="let、const-宣告的變數"><a href="#let、const-宣告的變數" class="headerlink" title="let、const 宣告的變數"></a>let、const 宣告的變數</h3><p>ES6 以後所新增的 <code>let</code>、<code>const</code> 作用域則與過去不同，改用 <code>{}</code> 作為作用域限制的方式，這讓 for 迴圈及部分的語法避免產生多餘變數來影響作用域（案例<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/20/javascript-es6-let-const/">參考</a>）。</p>
-<p>與 <code>var</code> 不同的是 <code>const</code> 所定義的變數作用域限制在 <code>{}</code> 之中。因此此範例中的變數 <code>c</code> 可在外部取得值，<code>d</code> 則無法取得。</p>
-<pre><code class="hljs js">&#123;
+<p>與 <code>var</code> 不同的是 <code>const</code> 所定義的變數作用域限制在 <code>{}</code> 之中。因此此範例中的變數 <code>c</code> 可在外部取得值，<code>d</code> 則無法取得。<br><pre><code class="hljs js">&#123;
   <span class="hljs-keyword">var</span> c = <span class="hljs-number">1</span>;
   <span class="hljs-keyword">const</span> d = <span class="hljs-number">1</span>;
 &#125;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(c); <span class="hljs-comment">// 1</span>
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(d); <span class="hljs-comment">// Uncaught ReferenceError: d is not defined，無法取得 d 的變數</span></code></pre>
-
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(d); <span class="hljs-comment">// Uncaught ReferenceError: d is not defined，無法取得 d 的變數</span></code></pre></p>
 <h2 id="記憶體與釋放機制"><a href="#記憶體與釋放機制" class="headerlink" title="記憶體與釋放機制"></a>記憶體與釋放機制</h2><p>每當我們新增一個變數則會產生一個記憶體位置來除存值，以便於接下來程式運作時可以反覆的使用同一個值。</p>
-<p>如以下範例中，就會開啟一個 <code>a</code> 的空間來儲存數字 1 的值。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span></code></pre>
-
+<p>如以下範例中，就會開啟一個 <code>a</code> 的空間來儲存數字 1 的值。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span></code></pre></p>
 <p>流程如下：</p>
 <ol>
-<li>產生一個記憶體空間來存放 <code>a</code> 變數，此時還沒有賦予值（概念可參考：<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/16/javascript-hoisting/">Hoisting</a>）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FAC425F20-2DAF-4F5E-98F3-81576B6493B7.png?alt=media&token=1fce1119-0fae-4c92-91c5-8449d1558056"></li>
-<li>為 <code>a</code> 指派一個值。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F17F7E119-79D7-4416-9D28-64F9785E8176.png?alt=media&token=2a3c934b-0183-45c7-9cee-677f04a90b29"></li>
+<li>產生一個記憶體空間來存放 <code>a</code> 變數，此時還沒有賦予值（概念可參考：<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/16/javascript-hoisting/">Hoisting</a>）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FAC425F20-2DAF-4F5E-98F3-81576B6493B7.png?alt=media&amp;token=1fce1119-0fae-4c92-91c5-8449d1558056" alt=""></li>
+<li>為 <code>a</code> 指派一個值。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F17F7E119-79D7-4416-9D28-64F9785E8176.png?alt=media&amp;token=2a3c934b-0183-45c7-9cee-677f04a90b29" alt=""></li>
 </ol>
 <p>因此所有的變數都會佔用記憶體空間，除此之外物件、陣列的屬性以及函式參數也會使用相同的概念進行佔用。呼叫一個函式時，每一個函式作用域也都會反覆的進行記憶體佔用。隨著應用程式越來越複雜的情況下，如果持續佔用記憶體沒有適當的釋放，那麼系統可能會無法負荷。</p>
 <p>JavaScript 引擎具有記憶體回收的機制，會釋放不再使用的變數記憶體，基本概念為：「沒有任何的參考指向它」時則會釋放記憶體。</p>
@@ -263,8 +257,7 @@
 <p>MDN：collectible if there are zero references pointing to it.</p>
 </blockquote>
 <h3 id="記憶體釋放的驗證"><a href="#記憶體釋放的驗證" class="headerlink" title="記憶體釋放的驗證"></a>記憶體釋放的驗證</h3><p>本段使用一個範例來說明及驗證記憶體釋放的機制，首先，我們使用一段函式來產生非常長的字串，長字串會佔用大量的記憶體空間。</p>
-<p><code>randomString</code> 函式呼叫後會回傳很長的字串：</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">randomString</span>(<span class="hljs-params">length</span>) &#123;
+<p><code>randomString</code> 函式呼叫後會回傳很長的字串：<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">randomString</span>(<span class="hljs-params">length</span>) &#123;
   <span class="hljs-keyword">var</span> result = <span class="hljs-string">&#x27;&#x27;</span>;
   <span class="hljs-keyword">var</span> characters = <span class="hljs-string">&#x27;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789&#x27;</span>;
   <span class="hljs-keyword">var</span> charactersLength = characters.<span class="hljs-property">length</span>;
@@ -272,32 +265,27 @@
     result += characters.<span class="hljs-title function_">charAt</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">floor</span>(<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() * charactersLength));
   &#125;
   <span class="hljs-keyword">return</span> result;
-&#125;</code></pre>
-
-<h5 id="案例一：使變數維持可參考的狀態（不會釋放記憶體）"><a href="#案例一：使變數維持可參考的狀態（不會釋放記憶體）" class="headerlink" title="案例一：使變數維持可參考的狀態（不會釋放記憶體）"></a>案例一：使變數維持可參考的狀態（不會釋放記憶體）</h5><p>案例一：定義一個全域變數 <code>demoData</code>，此變數會持續維持可被參考的狀態。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> demoData = []; <span class="hljs-comment">// 全域變數</span>
+&#125;</code></pre></p>
+<h5 id="案例一：使變數維持可參考的狀態（不會釋放記憶體）"><a href="#案例一：使變數維持可參考的狀態（不會釋放記憶體）" class="headerlink" title="案例一：使變數維持可參考的狀態（不會釋放記憶體）"></a>案例一：使變數維持可參考的狀態（不會釋放記憶體）</h5><p>案例一：定義一個全域變數 <code>demoData</code>，此變數會持續維持可被參考的狀態。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> demoData = []; <span class="hljs-comment">// 全域變數</span>
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">getData</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++) &#123;
     demoData.<span class="hljs-title function_">push</span>(<span class="hljs-title function_">randomString</span>(<span class="hljs-number">5000</span>))
   &#125;
 &#125;
 <span class="hljs-title function_">getData</span>()
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(demoData); <span class="hljs-comment">// 可參考 demoData 值</span></code></pre>
-
-<p>執行此段範例以後，進入 Chrome 中的 Memory 分頁，此功能可以擷取當下網頁應用程式所佔用的記憶體狀況。接下來按下 “Take snapshot”。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%8810_43.png?alt=media&token=837dedda-7f1b-467e-9c18-278a48d6ff2f"></p>
-<p>可以看到目前執行完此範例的當下佔用了 6.2MB 的記憶體空間（注意：任何瀏覽器環境、插件都會影響佔用的記憶體狀況）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F33AA2AD5-BB81-4364-B717-D2B3AD54CB35.png?alt=media&token=76c44d1c-8552-4727-80a5-4254b297967d"></p>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(demoData); <span class="hljs-comment">// 可參考 demoData 值</span></code></pre></p>
+<p>執行此段範例以後，進入 Chrome 中的 Memory 分頁，此功能可以擷取當下網頁應用程式所佔用的記憶體狀況。接下來按下 “Take snapshot”。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%8810_43.png?alt=media&amp;token=837dedda-7f1b-467e-9c18-278a48d6ff2f" alt=""></p>
+<p>可以看到目前執行完此範例的當下佔用了 6.2MB 的記憶體空間（注意：任何瀏覽器環境、插件都會影響佔用的記憶體狀況）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F33AA2AD5-BB81-4364-B717-D2B3AD54CB35.png?alt=media&amp;token=76c44d1c-8552-4727-80a5-4254b297967d" alt=""></p>
 <h5 id="案例一：使變數無法再次被參考（執行後釋放記憶體）"><a href="#案例一：使變數無法再次被參考（執行後釋放記憶體）" class="headerlink" title="案例一：使變數無法再次被參考（執行後釋放記憶體）"></a>案例一：使變數無法再次被參考（執行後釋放記憶體）</h5><p>案例二：將變數限制作用域，使變數無法再被外部參考。</p>
-<p>此段程式碼中依然會執行此函式，也會將值加入變數中，但外部無法再次參考 <code>demoData</code> 的值。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getData</span>(<span class="hljs-params"></span>) &#123;
+<p>此段程式碼中依然會執行此函式，也會將值加入變數中，但外部無法再次參考 <code>demoData</code> 的值。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getData</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">var</span> demoData = []; <span class="hljs-comment">// 區域變數</span>
   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">1000</span>; i++) &#123;
     demoData.<span class="hljs-title function_">push</span>(<span class="hljs-title function_">randomString</span>(<span class="hljs-number">5000</span>))
   &#125;
 &#125;
-<span class="hljs-title function_">getData</span>();</code></pre>
-
+<span class="hljs-title function_">getData</span>();</code></pre></p>
 <p>接下來回到 Memory 分頁按下 “Take snapshot” 重新取得記憶體的狀態，接下來會得到與上方不同的結果，此次僅占用 1.2MB 的記憶體（其中 5MB 被釋放掉了）</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF297D4D1-CEEB-449F-9D87-41750ECDAC9D.png?alt=media&token=47628889-3661-4009-8d5e-e0e1cb367fe2"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF297D4D1-CEEB-449F-9D87-41750ECDAC9D.png?alt=media&amp;token=47628889-3661-4009-8d5e-e0e1cb367fe2" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>以目前範例，我們得知了作用域以及記憶體之間的關係，而記憶體管理也是前端工程師必要學習的一環（除了掌控用量，還要在必要時保留不被釋放），往後的章節還會介紹到如何透過保留函式記憶體的特性，建構特有的函式設計模式。</p>
 </div>
 
@@ -308,9 +296,9 @@
     
 <nav class="post-nav">
   
-    <a class="prev" href="/development/2020/09/22/js-function/">
+    <a class="prev" href="/development/2020/09/22/javascript-training-1st/">
       <span class="lab">← 較舊一篇</span>
-      <span class="ttl">呼叫函式時，到底有多少個參數 / 變數可供使用？</span>
+      <span class="ttl">讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班</span>
     </a>
   
   

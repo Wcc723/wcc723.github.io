@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Javascript Promise 範例","datePublished":"2017-03-01T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.520Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/03/02/javascript-promise/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/blog%2F201703%2Fblog_cover_201603.png?alt=media&token=06845151-978c-4e96-8d35-56b7ad5fab42"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -219,10 +219,8 @@
   <div class="prose"><p>Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同步的操作是一大助力，最近在寫 Node.js 也不需要再仰賴其它套件就能夠直接處理非同步問題，以下就提供一個範例來介紹簡單的 Promise 的操作過程。</p>
 <span id="more"></span>
 
-
 <p data-height="400" data-theme-id="0" data-slug-hash="qrbKNg" data-default-tab="js" data-user="Wcc723" data-embed-version="2" data-pen-title="ES6 Promise" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/qrbKNg/">ES6 Promise</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-
 
 <pre><code class="hljs js">(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">let</span> epaAPI = <span class="hljs-string">&quot;http://opendata.epa.gov.tw/ws/Data/UV/?$orderby=PublishAgency&amp;$skip=0&amp;$top=1000&amp;format=json&amp;callback=?&quot;</span>;
@@ -266,11 +264,9 @@
     &#125;);
   
 &#125;)();</code></pre>
-
 <h2 id="說明"><a href="#說明" class="headerlink" title="說明"></a>說明</h2><h3 id="new-Promise"><a href="#new-Promise" class="headerlink" title="new Promise"></a>new Promise</h3><p><code>var getData()</code> 裡面包含非同步的 Ajax，如果直接套用 <code>getData()</code> 會無法確實取得資料後再執行其他 function，所以這時候在內部加上 <code>new Promise()</code> 確保 Ajax 完成後再回傳資料。<br><code>getData(epaAPI)</code> 套用時可以傳入 url，在後方的 <code>.then</code> 表示任務完成第一段後取得 <code>resolve()</code> 內的值，接下來就如同 jQuery Ajax 回傳後得處理方式一樣，。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> list = <span class="hljs-string">`&lt;li&gt;<span class="hljs-subst">$&#123;item.SiteName&#125;</span> <span class="hljs-subst">$&#123;item.PublishTime&#125;</span> <span class="hljs-subst">$&#123;item.SiteName&#125;</span> <span class="hljs-subst">$&#123;item.UVI&#125;</span>&lt;/li&gt;`</span></code></pre>
-
-<p>題外話：這一段則是 ES6 中的字串處理方式，用 <code> </code> 符號框住整個字串，再透過類似 jQuery 的 selector (<code>$&#123;&#125;</code>) 就能帶入字串中的變數，取代過去使用 <code>&quot; &quot; + variable + &quot; &quot;</code> 撰寫起來輕便許多。</p>
+<p>題外話：這一段則是 ES6 中的字串處理方式，用 <code></code> 符號框住整個字串，再透過類似 jQuery 的 selector (<code>$&#123;&#125;</code>) 就能帶入字串中的變數，取代過去使用 <code>&quot; &quot; + variable + &quot; &quot;</code> 撰寫起來輕便許多。</p>
 <h3 id="錯誤回傳"><a href="#錯誤回傳" class="headerlink" title="錯誤回傳"></a>錯誤回傳</h3><pre><code class="hljs js"><span class="hljs-title function_">getData</span>(errorUrl) <span class="hljs-comment">// 傳入錯誤的 url</span>
   .<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">data</span>)=&gt;</span>&#123; <span class="hljs-comment">// then 接受回傳的值 (錯誤的狀況不會跑這段)</span>
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);
@@ -278,7 +274,6 @@
   .<span class="hljs-title function_">catch</span>(<span class="hljs-function">(<span class="hljs-params">response</span>)=&gt;</span> &#123; <span class="hljs-comment">// 錯誤狀態的回傳</span>
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;errorUrl:&#x27;</span>, response);
   &#125;);</code></pre>
-
 <p>後面包含另一個 <code>getData(errorUrl)</code> 刻意傳入錯誤的連結使其產生錯誤，這時候的 <code>.then</code> 沒有辦法接受到資料，後方的 <code>.catch</code> 則可以接到由 <code>reject()</code> 回傳的訊息。</p>
 <p>參考文件：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all">https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Promise/all</a></p>
 </div>

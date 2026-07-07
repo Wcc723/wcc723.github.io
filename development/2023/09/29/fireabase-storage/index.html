@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Firebase Storage 申請設定以及 Node.js 串接方式","datePublished":"2023-09-28T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.538Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2023/09/29/fireabase-storage/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FArtboard%20Copy%2012.jpg?alt=media&token=ef9c6b6e-c510-4dce-a1c0-f1d08ccc6549"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -223,14 +223,14 @@
 <p>這是鐵人賽相關文章，影片會在活動開始後發布</p>
 <p>我很喜歡使用 Firebase Storage，相對於 AWS S3 來說，Firebase Storage 的設定、管理更加容易，而且還有提供每日免費額度，相當適合小型專案使用，而我的 Blog 圖片來說，絕大部分也都是上傳到 Firebase Storage。</p>
 <p>本篇將會介紹 Firebase Storage 及設定流程，並在後方附上相關程式碼以供直接運用。</p>
-<p>進入  <a target="_blank" rel="noopener" href="https://console.firebase.google.com/u/0/">Firebase Console</a> 選擇新增專案，輸入名稱後可以一直繼續到底（分析可以取消就是了，但不影響運作）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FECE551C1-BEA7-482A-BC7A-0689F13019DB.png?alt=media&token=0ccb4089-fa25-42e0-b983-f3d93488af54"></p>
-<p>專案建立以後，在畫面的左上方，點選齒輪符號，按下專案設定。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_27.png?alt=media&token=ef90293d-a419-40b4-a877-fe49f58271c1"></p>
-<p>其中找到「服務帳戶」，下方可以建立新的私密金鑰，私密金鑰是採用 JSON 提供，僅會提供一次，請確實地找地方儲存，並且避免遺失及落入他人手中。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_28.png?alt=media&token=e6716e4d-7a8f-47f2-ae04-e199342e0575"></p>
-<p>在左側選單，點選 Storage。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_29.png?alt=media&token=d2ab2ec8-ce8c-430a-8fe6-0940cc02fb9b"></p>
-<p>接下來會在啟用前有基本的設定。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FDC1F6B80-A4B1-497A-8D22-BEFCA64D178B.png?alt=media&token=41eb69ea-8d13-4873-9a07-1a1b8e3cb9ed"></p>
-<p>接下來可以選擇地區，一樣依據你服務的用戶位置做選擇。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F258A84C1-3EDB-46CF-8A76-7D94809A8446.png?alt=media&token=fafd02ca-9ec3-4645-bd07-bc4d4875f7f1"></p>
-<p>建立後，可以看到 <code>gs://...</code> 的路徑，請先複製起來，在後面的環境變數中需要填寫這段路徑。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_30.png?alt=media&token=a8bdb2f7-b71d-45b5-9eda-557b239bf52f"></p>
-<p>因為預設的 Storage 是無法被直接存取的，因此需要調整規則，讓檔案直接公開能夠讓任何人存取。<br>切換到「Rules」分頁，將新的規則貼入（附在下方），接下來按下「發布」。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_30%202.png?alt=media&token=7ceb7c57-7d15-4273-9f8f-5f396f90c5ea"></p>
+<p>進入  <a target="_blank" rel="noopener" href="https://console.firebase.google.com/u/0/">Firebase Console</a> 選擇新增專案，輸入名稱後可以一直繼續到底（分析可以取消就是了，但不影響運作）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FECE551C1-BEA7-482A-BC7A-0689F13019DB.png?alt=media&amp;token=0ccb4089-fa25-42e0-b983-f3d93488af54" alt=""></p>
+<p>專案建立以後，在畫面的左上方，點選齒輪符號，按下專案設定。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_27.png?alt=media&amp;token=ef90293d-a419-40b4-a877-fe49f58271c1" alt=""></p>
+<p>其中找到「服務帳戶」，下方可以建立新的私密金鑰，私密金鑰是採用 JSON 提供，僅會提供一次，請確實地找地方儲存，並且避免遺失及落入他人手中。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_28.png?alt=media&amp;token=e6716e4d-7a8f-47f2-ae04-e199342e0575" alt=""></p>
+<p>在左側選單，點選 Storage。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_29.png?alt=media&amp;token=d2ab2ec8-ce8c-430a-8fe6-0940cc02fb9b" alt=""></p>
+<p>接下來會在啟用前有基本的設定。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FDC1F6B80-A4B1-497A-8D22-BEFCA64D178B.png?alt=media&amp;token=41eb69ea-8d13-4873-9a07-1a1b8e3cb9ed" alt=""></p>
+<p>接下來可以選擇地區，一樣依據你服務的用戶位置做選擇。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F258A84C1-3EDB-46CF-8A76-7D94809A8446.png?alt=media&amp;token=fafd02ca-9ec3-4645-bd07-bc4d4875f7f1" alt=""></p>
+<p>建立後，可以看到 <code>gs://...</code> 的路徑，請先複製起來，在後面的環境變數中需要填寫這段路徑。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_30.png?alt=media&amp;token=a8bdb2f7-b71d-45b5-9eda-557b239bf52f" alt=""></p>
+<p>因為預設的 Storage 是無法被直接存取的，因此需要調整規則，讓檔案直接公開能夠讓任何人存取。<br>切換到「Rules」分頁，將新的規則貼入（附在下方），接下來按下「發布」。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_30%202.png?alt=media&amp;token=7ceb7c57-7d15-4273-9f8f-5f396f90c5ea" alt=""></p>
 <pre><code class="hljs plaintext">service firebase.storage &#123;
   match /b/&#123;bucket&#125;/o &#123;
     match /&#123;allPaths=**&#125; &#123;
@@ -239,7 +239,6 @@
     &#125;
   &#125;
 &#125;</code></pre>
-
 <h2 id="回到程式碼"><a href="#回到程式碼" class="headerlink" title="回到程式碼"></a>回到程式碼</h2><p>在此有提供完整的 Node.js 程式碼，依據需求將 Firebase Storage 申請的資料填入 <code>.env</code> 即可（請參照 <code>.env.sample</code> ）。</p>
 <p>完整範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/firebase-storage-upload">https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/firebase-storage-upload</a></p>
 <p>如果在開發上有問題，建議參考本影片，會帶你從頭開始申請並上傳圖片喔：<a target="_blank" rel="noopener" href="https://youtu.be/H4GmskFhSJQ">https://youtu.be/H4GmskFhSJQ</a></p>

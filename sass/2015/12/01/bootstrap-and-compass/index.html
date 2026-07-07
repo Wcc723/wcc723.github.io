@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/sass/2015/12/01/bootstrap-and-compass/2015/12/screen_shot_2015-12-01_01.png">
 <meta property="article:published_time" content="2015-11-30T16:00:00.000Z">
-<meta property="article:modified_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.179Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="bootstrap">
 <meta property="article:tag" content="compass">
@@ -33,10 +33,10 @@
 <link rel="canonical" href="https://www.casper.tw/sass/2015/12/01/bootstrap-and-compass/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"客製化屬於你的 Bootstrap 4","datePublished":"2015-11-30T16:00:00.000Z","dateModified":"2017-06-21T12:11:01.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/sass/2015/12/01/bootstrap-and-compass/","image":["https://www.casper.tw/2015/12/screen_shot_2015-12-01_01.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"客製化屬於你的 Bootstrap 4","datePublished":"2015-11-30T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.179Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/sass/2015/12/01/bootstrap-and-compass/","image":["https://www.casper.tw/2015/12/screen_shot_2015-12-01_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -159,7 +159,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -225,7 +225,6 @@
 </ul>
 <p>其實Bootstrap的設定檔就有許多細節可以調整，不需要 Overwite，載入前就可以先調整，而且並不是一定要全部元件載入，可以只使用部分的元件，靈活的使用框架，才能發揮更大的價值。</p>
 <span id="more"></span>
-
 <h2 id="如何開始"><a href="#如何開始" class="headerlink" title="如何開始"></a>如何開始</h2><p>這個範例會使用 <code>Node.js</code>, <code>Gulp</code>, <code>Compass</code> 所以請先確定有以上環境，其中最重要的是 <code>Compass</code>，有Compass環境，也是可以達到相同的效果。</p>
 <p><em>本篇範例需要以下環境</em></p>
 <ul>
@@ -246,13 +245,11 @@
         |- all.scss
         |- helper
             |- variables.scss # Sass 設定檔
-</code></pre>
-<p>在<code>nodejs</code>環境下執行以下指令</p>
+</code></pre><p>在<code>nodejs</code>環境下執行以下指令</p>
 <pre><code>$ npm install
 $ bower install
 $ gulp
-</code></pre>
-<p>檔案結構改變如下</p>
+</code></pre><p>檔案結構改變如下</p>
 <pre><code>|- package.json      # ---
 |- gulpfile.js       # ---
 |- config.rb         # ---
@@ -266,17 +263,15 @@ $ gulp
     |- index.html    # copy 過來的
     |- stylesheets   # 編譯後的 CSS 在這
     |- js            # jQuery.js 與 Bootstrap.js 的合併檔
-</code></pre>
-<p>接下來打開<code>/public/index.html</code>可以看到主色被改成 <code>purple</code>，這就是被調整<code>變數</code>後的 Bootstrap，通常網站的設計都會有一個主要色，只要調整<code>_variables.scss</code>中的 <code>$brand-primary</code>，就可以定義Bootstrap的主要顏色。</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-01_01.png"></p>
+</code></pre><p>接下來打開<code>/public/index.html</code>可以看到主色被改成 <code>purple</code>，這就是被調整<code>變數</code>後的 Bootstrap，通常網站的設計都會有一個主要色，只要調整<code>_variables.scss</code>中的 <code>$brand-primary</code>，就可以定義Bootstrap的主要顏色。</p>
+<p><img src="https://img.casper.tw/images/2015/12/screen_shot_2015-12-01_01.png" alt=""></p>
 <blockquote>
 <p>針對一個變數($brand-primary)調整，按鈕的顏色從藍色被修改成紫色。</p>
 </blockquote>
 <h4 id="打開-config-rb"><a href="#打開-config-rb" class="headerlink" title="打開 config.rb"></a>打開 <code>config.rb</code></h4><p>載入 bower bootstrap 的關鍵在於<code>config.rb</code>內的 <code>additional_import_paths</code>，這是 compass 載入外部 sass 檔案的方法，透過這個方法引用 Bootstrap 就像是本地端資料夾引用一樣。</p>
 <pre><code># 匯入 Bootstrap v4
 additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
-</code></pre>
-<h2 id="調整變數"><a href="#調整變數" class="headerlink" title="調整變數"></a>調整變數</h2><p>Bootstrap 的變數在 <code>bower_components\bootstrap\scss\_variables.scss</code>，直接複製此檔案到 <code>source\scss\</code> 內。</p>
+</code></pre><h2 id="調整變數"><a href="#調整變數" class="headerlink" title="調整變數"></a>調整變數</h2><p>Bootstrap 的變數在 <code>bower_components\bootstrap\scss\_variables.scss</code>，直接複製此檔案到 <code>source\scss\</code> 內。</p>
 <p><em>我的習慣架構是放在 <code>source\scss\helpers\_variables.scss</code>。</em></p>
 <p>以基本色彩來說，原始檔案內會有<code>變數 + 值 + !default</code>，修改只要加入新的值，並移除 <code>!default</code> 即可。</p>
 <pre><code class="hljs scss"><span class="hljs-variable">$brand-primary</span>:             <span class="hljs-number">#0275d8</span> !default;
@@ -284,7 +279,6 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
 <span class="hljs-variable">$brand-info</span>:                <span class="hljs-number">#5bc0de</span> !default;
 <span class="hljs-variable">$brand-warning</span>:             <span class="hljs-number">#f0ad4e</span> !default;
 <span class="hljs-variable">$brand-danger</span>:              <span class="hljs-number">#d9534f</span> !default;</code></pre>
-
 <p>接下來可以看看範例檔案，我調整了其中一個顏色，再載入後，Sass 就會以我的設定檔為優先去編譯它。</p>
 <p><em>m…，其實我是打算顏色全部換掉，後來發現我只加了紫色。</em></p>
 <pre><code class="hljs scss"><span class="hljs-variable">$brand-primary</span>:             purple;
@@ -292,11 +286,8 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
 <span class="hljs-variable">$brand-info</span>:                <span class="hljs-number">#5bc0de</span>;
 <span class="hljs-variable">$brand-warning</span>:             <span class="hljs-number">#f0ad4e</span>;
 <span class="hljs-variable">$brand-danger</span>:              <span class="hljs-number">#d9534f</span>;</code></pre>
-
 <p>當會修改顏色以後，可以在看Bootstrap有提供多少的變數供修改。</p>
-<div style="overflow-y: auto; height: 450px;">
-<script src="https://gist.github.com/Wcc723/de2942e7341cdf210c6d.js"> </script>
-</div>
+<div style="overflow-y: auto; height: 450px;"><br><script src="https://gist.github.com/Wcc723/de2942e7341cdf210c6d.js"> </script><br></div>
 
 <p><em>注意：這份是複製檔，並非最新版 Bootstrap的設定檔</em></p>
 <h2 id="自定載入元件"><a href="#自定載入元件" class="headerlink" title="自定載入元件"></a>自定載入元件</h2><p>Bootstrap 是一個良好<code>OOCSS</code>範例，所有的CSS元件都模組化，基本上分為以下幾大類型。</p>
@@ -305,7 +296,7 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
 <li>重置 (Reset and dependencies)：主要是讓HTML標籤樣式一致，建議載入，有需求可透過變數修改</li>
 <li>核心 CSS (Core CSS)：主要、常用的 CSS</li>
 <li>元件 (Components)：基於核心或是Web經常使用的CSS元件，可以選擇是否載入</li>
-<li>JavaScript 套件 (Components w&#x2F; JavaScript)：好用的 Bootstrap js 套件，如果沒有需求可以不載入</li>
+<li>JavaScript 套件 (Components w/ JavaScript)：好用的 Bootstrap js 套件，如果沒有需求可以不載入</li>
 <li>雜項 (Utility classes)：主要是單一的CSS樣式，建議載入</li>
 </ul>
 <p>接下來再打開 <code>source\scss\all.scss</code>，Sass載入 Bootstrap 的方式也有兩種，一種是全部載入，另一種是載入特定元件。</p>
@@ -345,7 +336,6 @@ additional_import_paths = &quot;./bower_components/bootstrap/scss/&quot;
 <span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;button-group&quot;</span>;
 <span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;input-group&quot;</span>;
 <span class="hljs-comment">//...... 略</span></code></pre>
-
 <p>Bootstrap 是很重視行動版的框架，但有時在行動版上，有時少可以再更少，如果想減少載入的 CSS 不妨從元件、js套件上開始移除。</p>
 <h2 id="優缺點"><a href="#優缺點" class="headerlink" title="優缺點"></a>優缺點</h2><p>這樣做法可以節省大量的時間，並且減少CSS的錯誤(相容性、延展性等等)，但有些問題也是必須去思考：</p>
 <h4 id="優點："><a href="#優點：" class="headerlink" title="優點："></a>優點：</h4><ul>

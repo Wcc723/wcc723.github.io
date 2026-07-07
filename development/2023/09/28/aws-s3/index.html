@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AWS S3 申請設定以及 Node.js 串接方式","datePublished":"2023-09-27T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.538Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2023/09/28/aws-s3/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FAWS-S3-cover.jpg?alt=media&token=478ccefa-a57f-4756-b4f3-6c5e64d31d8f"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -228,27 +228,26 @@
 <li>建立 S3 Bucket：接下來就能開始準備上傳流程，也會說明相關的權限設置。</li>
 <li>撰寫程式碼～</li>
 </ol>
-<h2 id="建立-IAM-帳號"><a href="#建立-IAM-帳號" class="headerlink" title="建立 IAM 帳號"></a>建立 IAM 帳號</h2><p>可以在 AWS 導覽列中輸入 IAM，接下來就會在彈出視窗中找到 IAM 管理工具。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_52.png?alt=media&token=c432e033-9821-4159-bc55-83344e139bdf"></p>
-<p>接下來建立一個新的使用者，我們會賦予他 S3 的管理權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_53.png?alt=media&token=5105397d-8592-4fa2-8a68-d1ae4b01c4f8"></p>
-<p>顧名思義，你可以定義使用者的名稱，在此不需要給予額外的管理控制台權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F884D3207-26DC-4377-8D78-060E112FFE67.png?alt=media&token=786a66de-7128-4641-bb90-b39e6945bc6d"></p>
-<p>在設定許可中，選擇「直接連接政策」，搜尋欄中可以輸入「S3」，許可政策選擇「AmazonS3FullAccess」，接下來按下下一步、建立使用者即可。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_55.png?alt=media&token=7893bb72-dab0-4d25-bbfe-acf69608f0ff"></p>
+<h2 id="建立-IAM-帳號"><a href="#建立-IAM-帳號" class="headerlink" title="建立 IAM 帳號"></a>建立 IAM 帳號</h2><p>可以在 AWS 導覽列中輸入 IAM，接下來就會在彈出視窗中找到 IAM 管理工具。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_52.png?alt=media&amp;token=c432e033-9821-4159-bc55-83344e139bdf" alt=""></p>
+<p>接下來建立一個新的使用者，我們會賦予他 S3 的管理權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_53.png?alt=media&amp;token=5105397d-8592-4fa2-8a68-d1ae4b01c4f8" alt=""></p>
+<p>顧名思義，你可以定義使用者的名稱，在此不需要給予額外的管理控制台權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F884D3207-26DC-4377-8D78-060E112FFE67.png?alt=media&amp;token=786a66de-7128-4641-bb90-b39e6945bc6d" alt=""></p>
+<p>在設定許可中，選擇「直接連接政策」，搜尋欄中可以輸入「S3」，許可政策選擇「AmazonS3FullAccess」，接下來按下下一步、建立使用者即可。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_55.png?alt=media&amp;token=7893bb72-dab0-4d25-bbfe-acf69608f0ff" alt=""></p>
 <p>在這個流程中已經建立了一個使用者，接下來會需要取得這使用者的存取方式，用來作為 Node.js 存取的方法。</p>
-<p>回到 IAM 使用者列表，點選剛剛所建立的使用者，在畫面的上方可以找到建立存取金鑰。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_58.png?alt=media&token=e7584bc0-0b09-490e-8d80-57e9bf64b62b"></p>
-<p>他會問你做什麼用的，據說選什麼沒太大關係，但我們還是乖乖選擇本機代碼。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_59.png?alt=media&token=30b10b06-26a0-46f9-b4e5-9fbdc9d105bc"></p>
-<p>最後，把這個金鑰存起來，記得這個畫面只能進來一次，請準備好有地方存再開啟。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_00.png?alt=media&token=509953bd-dac2-4d25-8d01-a6517e3289c5"></p>
+<p>回到 IAM 使用者列表，點選剛剛所建立的使用者，在畫面的上方可以找到建立存取金鑰。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_58.png?alt=media&amp;token=e7584bc0-0b09-490e-8d80-57e9bf64b62b" alt=""></p>
+<p>他會問你做什麼用的，據說選什麼沒太大關係，但我們還是乖乖選擇本機代碼。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_10_59.png?alt=media&amp;token=30b10b06-26a0-46f9-b4e5-9fbdc9d105bc" alt=""></p>
+<p>最後，把這個金鑰存起來，記得這個畫面只能進來一次，請準備好有地方存再開啟。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_00.png?alt=media&amp;token=509953bd-dac2-4d25-8d01-a6517e3289c5" alt=""></p>
 <h2 id="建立-S3-Bucket"><a href="#建立-S3-Bucket" class="headerlink" title="建立 S3 Bucket"></a>建立 S3 Bucket</h2><p>Bucket 策略有兩種，本篇會直接調整 Bucket 的公開政策，讓在此 Bucket 的圖片均可以直接存取，為什麼這麼做可以參考 <a target="_blank" rel="noopener" href="https://aws.amazon.com/tw/blogs/security/iam-policies-and-bucket-policies-and-acls-oh-my-controlling-access-to-s3-resources/">AWS 所提供的文件</a>。</p>
-<p>回到 S3 的服務中，選擇建立儲存貯體（Bucket）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_02.png?alt=media&token=8b1b2a50-5f9f-48be-b726-11059b7b51a5"></p>
+<p>回到 S3 的服務中，選擇建立儲存貯體（Bucket）。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_02.png?alt=media&amp;token=8b1b2a50-5f9f-48be-b726-11059b7b51a5" alt=""></p>
 <p>接下來就按照需求輸入名稱以及選擇區域，區域會影響：</p>
 <ul>
 <li>存取速度</li>
-<li>價格<br>而其中的價格影響較小，會建議依據服務受眾所在地區進行選擇。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_03.png?alt=media&token=599ca8ab-a296-441a-98ea-cbd772354728"></li>
+<li>價格<br>而其中的價格影響較小，會建議依據服務受眾所在地區進行選擇。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_03.png?alt=media&amp;token=599ca8ab-a296-441a-98ea-cbd772354728" alt=""></li>
 </ul>
-<p>接下來回到建立的 Bucket，選擇「許可」，在此會開放此 Bucket 的公開權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_04.png?alt=media&token=907121ee-60ac-4181-9222-341e5db92b4e"></p>
-<p>按照下圖的設定方式並儲存。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F044FED66-048A-4C36-AA46-9A9845F1B10E.png?alt=media&token=3f17e406-b7bb-4f1d-a3ff-a61b785e5156"></p>
-<p>接下來政策也需要調整，按下編輯。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_05.png?alt=media&token=916aa9ad-7d0b-47f9-96ce-c7e75ffb58a3"></p>
-<p>依據下圖輸入（下方有附上程式碼），確認後進行儲存<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4FD690EB-8FFF-4FE3-A059-0EBAD6D4723A.png?alt=media&token=87b6632f-d94b-4c47-af57-d5266490ee93"></p>
-<p>Bucket 政策原始碼。</p>
-<pre><code class="hljs plaintext">&#123;
+<p>接下來回到建立的 Bucket，選擇「許可」，在此會開放此 Bucket 的公開權限。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_04.png?alt=media&amp;token=907121ee-60ac-4181-9222-341e5db92b4e" alt=""></p>
+<p>按照下圖的設定方式並儲存。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F044FED66-048A-4C36-AA46-9A9845F1B10E.png?alt=media&amp;token=3f17e406-b7bb-4f1d-a3ff-a61b785e5156" alt=""></p>
+<p>接下來政策也需要調整，按下編輯。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2023_9_17_11_05.png?alt=media&amp;token=916aa9ad-7d0b-47f9-96ce-c7e75ffb58a3" alt=""></p>
+<p>依據下圖輸入（下方有附上程式碼），確認後進行儲存<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F4FD690EB-8FFF-4FE3-A059-0EBAD6D4723A.png?alt=media&amp;token=87b6632f-d94b-4c47-af57-d5266490ee93" alt=""></p>
+<p>Bucket 政策原始碼。<br><pre><code class="hljs plaintext">&#123;
     &quot;Version&quot;: &quot;2012-10-17&quot;,
     &quot;Statement&quot;: [
         &#123;
@@ -258,9 +257,7 @@
             &quot;Resource&quot;: &quot;arn:aws:s3:::&#123;&#123; bucket name &#125;&#125;/*&quot;
         &#125;
     ]
-&#125;</code></pre>
-
-
+&#125;</code></pre></p>
 <h2 id="回到程式碼"><a href="#回到程式碼" class="headerlink" title="回到程式碼"></a>回到程式碼</h2><p>在此有提供完整的 Node.js 程式碼，依據需求將 IAM 及 Bucket 申請的資料填入 <code>.env</code> 即可（請參照 <code>.env.sample</code> ）。</p>
 <p>完整範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/aws-s3-upload">https://github.com/Wcc723/node-ironman-sample-2023/tree/feature/aws-s3-upload</a></p>
 <p>如果在開發上有問題，建議參考本影片，會帶你從頭開始申請並上傳圖片喔：<a target="_blank" rel="noopener" href="https://youtu.be/y12KO8XM6jw">https://youtu.be/y12KO8XM6jw</a></p>

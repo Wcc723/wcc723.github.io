@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：使用 Promise 處理非同步","datePublished":"2017-12-28T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.525Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/29/javascript-proimse/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_26.jpg?alt=media&token=581d4746-f732-4aa6-a218-da1519d039dc"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,7 +217,7 @@
   </header>
 
   <div class="prose"><p>JavaScript 中有很多非同步的事件，而這些事件我們很常使用 callback，在一層包一層後就會出現知名的 callback 地獄，而 Promise 就是為了解決此問題而生的，因此每次介紹到 Promise 都會先下以下這張圖鎮鎮樓。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FE555E697-1EA5-460A-86BF-C640B2E568CF.png?alt=media&token=ab652109-4e45-4862-9ab3-b424922db2c8"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FE555E697-1EA5-460A-86BF-C640B2E568CF.png?alt=media&amp;token=ab652109-4e45-4862-9ab3-b424922db2c8" alt=""></p>
 <p>上一篇所介紹到的 <code>Fetch()</code> 就是使用 Promise，資料接收後才會繼續跑 <code>then()</code> 的內容。而 <code>fetch()</code> 是已經包裝好的 Promise，本篇介紹如何自己運用 Promise 以及自行建立 Promise 實體。</p>
 <h2 id="Promise-的狀態與流程"><a href="#Promise-的狀態與流程" class="headerlink" title="Promise 的狀態與流程"></a>Promise 的狀態與流程</h2><p>Promise 中主要有以下幾個狀態，從一進入 Promise 就進入 <code>pending</code> (等待事件完成)，接下來會依據事件的成功與否回傳成功或拒絕理由，通常我們會使用 <code>resolve</code>、<code>reject</code> 兩個變數來傳送成功與失敗的訊息。</p>
 <ul>
@@ -226,9 +226,9 @@
 <li>rejected: 已拒絕，操作失敗</li>
 </ul>
 <p>以下圖來說，我們可以假想跑步的過程就是 pending 的狀態，如果成功到達目的地就是成功，也就是上方那條綠色線 (fulfilled)；過程中如果失敗也會說明失敗理由(rejected: 跌倒、累了、想找媽媽…)。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_26.jpg?alt=media&token=581d4746-f732-4aa6-a218-da1519d039dc"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_26.jpg?alt=media&amp;token=581d4746-f732-4aa6-a218-da1519d039dc" alt=""></p>
 <p>回到程式碼架構如下，我們會建立 Promise 的事件，等待需要調用的時候呼叫它，而這類型的事件也有可能失敗或成功，因此會透過 resolve 及 reject 來帶入成功與否的訊息；與此相對應的會有 <code>then()</code> 及 <code>catch()</code>來接收。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_26_2.jpg?alt=media&token=eda1364e-545a-4867-a7ca-4338065ee221"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_26_2.jpg?alt=media&amp;token=eda1364e-545a-4867-a7ca-4338065ee221" alt=""></p>
 <h2 id="製作自己的-Promise"><a href="#製作自己的-Promise" class="headerlink" title="製作自己的 Promise"></a>製作自己的 Promise</h2><blockquote>
 <p>很久沒出現的小明，今天與 <code>杰倫</code>、<code>漂亮阿姨</code> 相約一起來跑步，小明笨手笨腳常常在跑步過程中跌倒，不過如果路途順利他應該會在三秒內跑完。</p>
 </blockquote>
@@ -257,7 +257,6 @@
   <span class="hljs-comment">// 失敗訊息 (立即)</span>
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)
 &#125;);</code></pre>
-
 <h3 id="Race-與-All"><a href="#Race-與-All" class="headerlink" title="Race 與 All"></a>Race 與 All</h3><blockquote>
 <p>接下來小明與漂亮阿姨一起跑，在這次的比賽中只會回傳第一個到達終點的人，而另一個成功與否倒不是很重要(哭哭)。</p>
 </blockquote>
@@ -277,7 +276,6 @@
     &#125;
   &#125;);
 &#125;</code></pre>
-
 <p>可以使用 Promise.race 傳入多個 promise 事件，這個方法僅會回傳第一個完成的事件。</p>
 <pre><code class="hljs js"><span class="hljs-comment">// Race</span>
 <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">race</span>([<span class="hljs-title function_">runPromise</span>(<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-number">3000</span>), <span class="hljs-title function_">runPromise</span>(<span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>, <span class="hljs-number">2500</span>)]).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> &#123;
@@ -287,7 +285,6 @@
   <span class="hljs-comment">// 失敗訊息 (立即)</span>
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)
 &#125;);</code></pre>
-
 <blockquote>
 <p>當然，每次都跑輸的小明不希望每次都沒被記錄到，他希望就算最後一名也能一起紀錄</p>
 </blockquote>
@@ -300,7 +297,6 @@
   <span class="hljs-comment">// 失敗訊息 (立即)</span>
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)
 &#125;);</code></pre>
-
 <p>不過如果 all() 其中有事件 reject，那麼此 promise 也均視為失敗 (<code>catch</code>)。</p>
 <h3 id="Chain-鏈接方法"><a href="#Chain-鏈接方法" class="headerlink" title="Chain 鏈接方法"></a>Chain 鏈接方法</h3><blockquote>
 <p>接下來他們三人想要依序跑，等一個人跑到定位後，下一位會接續著跑</p>
@@ -316,7 +312,6 @@
 &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">jayString</span>) =&gt;</span> &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(jayString); <span class="hljs-comment">// 杰倫 跑 2 秒時間(fulfilled)</span>
 &#125;);</code></pre>
-
 <p>以上就是對於 <code>Promise</code> 的介紹，不過非同步的主題還沒結束，明天還有喔。</p>
 </div>
 

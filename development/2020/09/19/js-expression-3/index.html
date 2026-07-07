@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"開發總是沒問題，上線老是各種錯","datePublished":"2020-09-18T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.533Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/19/js-expression-3/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_04.jpg?alt=media&token=69f67bbb-c006-48cd-a2a2-b2f27424b280"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,9 +217,7 @@
 
   <div class="prose"><p>不果是新手或老手都可能遇過這樣的狀況，程式碼在測試時運作上看起來都很正常，雖然有一些些地方還不是很熟悉，不過<strong>打從心裡</strong>認定它是正確的，但麻煩卻上線後才發現出錯，仔細檢查也看不出任何問題，殊不知是表達式的觀念錯誤。</p>
 <p>程式碼的問題千萬種，本篇就持續在「表達式的觀念」挑出常見的問題，看看是否大家有遇到類似的狀況勒。</p>
-<h2 id="連續賦值這麼屌，為何文件都說這不好"><a href="#連續賦值這麼屌，為何文件都說這不好" class="headerlink" title="連續賦值這麼屌，為何文件都說這不好"></a>連續賦值這麼屌，為何文件都說這不好</h2><p>連續賦值（chain variable assignments）的結構如下：</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> a = b = <span class="hljs-number">1</span>;</code></pre>
-
+<h2 id="連續賦值這麼屌，為何文件都說這不好"><a href="#連續賦值這麼屌，為何文件都說這不好" class="headerlink" title="連續賦值這麼屌，為何文件都說這不好"></a>連續賦值這麼屌，為何文件都說這不好</h2><p>連續賦值（chain variable assignments）的結構如下：<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> a = b = <span class="hljs-number">1</span>;</code></pre></p>
 <p>以上這段程式碼中最常見的問題為，<code>a</code> 的值是來自於？</p>
 <ol>
 <li>1 先賦予至 b，b 再將值賦予至 <code>a</code></li>
@@ -243,7 +241,6 @@ b = <span class="hljs-number">3</span>;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;a&#x27;</span>, a); <span class="hljs-comment">// 1</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;b&#x27;</span>, b); <span class="hljs-comment">// 2</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a === b); <span class="hljs-comment">// false</span></code></pre>
-
 <p>程式碼執行結果如下：</p>
 <ul>
 <li><code>b</code> 值始終為 2</li>
@@ -253,8 +250,7 @@ b = <span class="hljs-number">3</span>;
 <p>所以結論，<code>a</code> 的值並不是來自於 <code>b</code>。</p>
 <h4 id="1-同時會賦予兩次"><a href="#1-同時會賦予兩次" class="headerlink" title="1 同時會賦予兩次"></a>1 同時會賦予兩次</h4><p>這個邏輯中 1 會將值賦予給 <code>a</code> 與 <code>b</code>，這個概念為<strong>數字 1 會被取值兩次</strong>，因此我們透過一個方法來記錄最右側的值被取得的次數。</p>
 <p>在此我們會使用到 <code>get</code> 的方法來進行紀錄，當變數每次被取值時，會記錄次數乙次。</p>
-<p>範例程式碼 1：驗證當每次被取值時 <code>num</code> 數值會增加 1，範例中被取值了兩次，因此結果為 2。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> objWithGetter = &#123;
+<p>範例程式碼 1：驗證當每次被取值時 <code>num</code> 數值會增加 1，範例中被取值了兩次，因此結果為 2。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> objWithGetter = &#123;
   <span class="hljs-attr">num</span>: <span class="hljs-number">0</span>,
   <span class="hljs-keyword">get</span> <span class="hljs-title function_">variable</span>() &#123;
     <span class="hljs-variable language_">this</span>.<span class="hljs-property">num</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">num</span> + <span class="hljs-number">1</span>;
@@ -263,10 +259,8 @@ b = <span class="hljs-number">3</span>;
 &#125;
 <span class="hljs-keyword">var</span> a = objWithGetter.<span class="hljs-property">variable</span>;
 <span class="hljs-keyword">var</span> b = objWithGetter.<span class="hljs-property">variable</span>;
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(objWithGetter.<span class="hljs-property">num</span>); <span class="hljs-comment">// 當變數被取得時， num 的值會增加 1，在此被取得兩次，所以結果為 2</span></code></pre>
-
-<p>範例程式碼 2：當連續賦值的時候，最終的結果也僅會有一次。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> objWithGetter = &#123;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(objWithGetter.<span class="hljs-property">num</span>); <span class="hljs-comment">// 當變數被取得時， num 的值會增加 1，在此被取得兩次，所以結果為 2</span></code></pre></p>
+<p>範例程式碼 2：當連續賦值的時候，最終的結果也僅會有一次。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> objWithGetter = &#123;
   <span class="hljs-attr">num</span>: <span class="hljs-number">0</span>,
   <span class="hljs-keyword">get</span> <span class="hljs-title function_">variable</span>() &#123;
     <span class="hljs-variable language_">this</span>.<span class="hljs-property">num</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">num</span> + <span class="hljs-number">1</span>;
@@ -275,16 +269,14 @@ b = <span class="hljs-number">3</span>;
 &#125;
 
 <span class="hljs-keyword">var</span> a = b = objWithGetter.<span class="hljs-property">variable</span>;
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(objWithGetter.<span class="hljs-property">num</span>); <span class="hljs-comment">// 1</span></code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F56E3F327-6DA0-49F6-8512-E0628F38B039.png?alt=media&token=9b7e2cf8-eb14-46df-9861-634c65cb63f9" alt="實際連續賦值的運作"></p>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(objWithGetter.<span class="hljs-property">num</span>); <span class="hljs-comment">// 1</span></code></pre></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F56E3F327-6DA0-49F6-8512-E0628F38B039.png?alt=media&amp;token=9b7e2cf8-eb14-46df-9861-634c65cb63f9" alt="實際連續賦值的運作"></p>
 <p>因此，在連續賦值的概念下中，兩個變數會被視為完全獨立的存在，在一些特殊情況時可能會有出乎意料的情況，就以 ESLint 的說明來說，最常見的即為在函式中使用連續賦值，導致<strong>其中轉為全域變數</strong>影響其它程式碼的運作。</p>
 <pre><code class="hljs js">(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">var</span> a = b = <span class="hljs-number">1</span>;
 &#125;)();
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(b); <span class="hljs-comment">// b 沒有被宣告，屬於全域屬性</span>
 <span class="hljs-comment">// console.log(a); // 立即函式內的區域變數</span></code></pre>
-
 <p>ESLint 文件：<a target="_blank" rel="noopener" href="https://eslint.org/docs/rules/no-multi-assign">https://eslint.org/docs/rules/no-multi-assign</a></p>
 <blockquote>
 <p>Chaining the assignment of variables can <strong>lead to unexpected results</strong> and be difficult to read.<br>連續賦值可能導致不可預期的結果，以及難以被閱讀</p>
@@ -293,31 +285,27 @@ b = <span class="hljs-number">3</span>;
 <blockquote>
 <p>Why? Chaining variable assignments <strong>creates implicit global variables</strong>.<br>為何不使用連續賦值？這會產生全域變數</p>
 </blockquote>
-<h2 id="不管輸入什麼，判斷式的結果總為-true"><a href="#不管輸入什麼，判斷式的結果總為-true" class="headerlink" title="不管輸入什麼，判斷式的結果總為 true"></a>不管輸入什麼，判斷式的結果總為 true</h2><p>請檢視以下程式碼，請問其中的 <code>console.log</code> 是否會執行呢？</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-literal">false</span>;
+<h2 id="不管輸入什麼，判斷式的結果總為-true"><a href="#不管輸入什麼，判斷式的結果總為-true" class="headerlink" title="不管輸入什麼，判斷式的結果總為 true"></a>不管輸入什麼，判斷式的結果總為 true</h2><p>請檢視以下程式碼，請問其中的 <code>console.log</code> 是否會執行呢？<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-literal">false</span>;
 <span class="hljs-keyword">if</span> (a = <span class="hljs-literal">true</span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;請問此段是否會執行&#x27;</span>);
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 <p>.<br>.<br>.<br>.<br>.<br>.<br>.<br>答案：這段程式碼 “會” 執行。</p>
 <p>這段程式碼是新手常見的錯誤，就是將 <code>if</code> 中的判斷式寫成了 <code>=</code> 賦值，再來回顧一下 if 判斷式的結構。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">if</span> (condition)
    statement1
 [<span class="hljs-keyword">else</span>
    statement2]</code></pre>
-
 <p>其中的 <code>condition</code> 可以使用任何的表達式進行替代，而 <code>=</code> 不僅是 JS 中用來賦予值的語法，同時也是屬於運算子的其中一種，所以在此它<strong>不僅會賦予值，同時還會回傳一個結果</strong>，以此段程式碼來說，就發生了以下狀況：</p>
 <ul>
 <li><code>a</code> 的值與原始不同，在此被賦予成 <code>false</code></li>
 <li><code>=</code> 表達式會賦予值，同時會回傳一個值，在此總是會回傳 <code>true</code>（無論是否有成功賦予）</li>
 </ul>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F58B7B572-86B2-490D-BABC-186145A9B5A8.png?alt=media&token=fe793296-afcc-4b4d-9455-74fcf5213ea7" alt="判斷結果為表達式的回傳"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F58B7B572-86B2-490D-BABC-186145A9B5A8.png?alt=media&amp;token=fe793296-afcc-4b4d-9455-74fcf5213ea7" alt="判斷結果為表達式的回傳"></p>
 <p>所以當下次的判斷式不如預期，除了檢查來源值以外，也要同時檢查其中的判斷式（表達式）結構是否符合預期喔。</p>
 <h2 id="1-還是-1-，兩個到底有什麼差"><a href="#1-還是-1-，兩個到底有什麼差" class="headerlink" title="++1 還是 1++，兩個到底有什麼差"></a>++1 還是 1++，兩個到底有什麼差</h2><pre><code class="hljs js"><span class="hljs-keyword">var</span> num = <span class="hljs-number">1</span>;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(++num);
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num++);
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num);</code></pre>
-
 <p>請檢視以上程式碼，請問過程中的 num 的值分別為？</p>
 <ul>
 <li>1, 2, 3</li>
@@ -326,23 +314,16 @@ b = <span class="hljs-number">3</span>;
 </ul>
 <pre><code class="hljs plaintext">運算元 運算子 num++
 運算子 運算元 ++1</code></pre>
-
-<h4 id="觀念"><a href="#觀念" class="headerlink" title="觀念"></a>觀念</h4><p>變數也是屬於表達式，因此會<strong>先回傳變數值</strong>後再進行運算。所以過程會先回傳原始值，最終再將 <code>num</code> 值增加 1。</p>
-<pre><code class="hljs plaintext">num++</code></pre>
-
-<p>運算子屬於表達式，因此 <code>++1</code> 會直接進行運算後回傳，因此會直接得到 2 的結果。</p>
-<pre><code class="hljs plaintext">++num</code></pre>
-
-
+<h4 id="觀念"><a href="#觀念" class="headerlink" title="觀念"></a>觀念</h4><p>變數也是屬於表達式，因此會<strong>先回傳變數值</strong>後再進行運算。所以過程會先回傳原始值，最終再將 <code>num</code> 值增加 1。<br><pre><code class="hljs plaintext">num++</code></pre></p>
+<p>運算子屬於表達式，因此 <code>++1</code> 會直接進行運算後回傳，因此會直接得到 2 的結果。<br><pre><code class="hljs plaintext">++num</code></pre></p>
 <p>所以執行上還是回到了表達式的概念，如果熟悉回傳的時機點將會更容易看出以下題目的結果，請問 a 值為？</p>
 <ul>
 <li>1</li>
-<li>2</li>
-</ul>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> b = <span class="hljs-number">1</span>;
+<li>2<pre><code class="hljs js"><span class="hljs-keyword">var</span> b = <span class="hljs-number">1</span>;
 <span class="hljs-keyword">var</span> a = b++;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a);</code></pre>
-
+</li>
+</ul>
 <p>回到初始的題目我們可以給予以下結論：</p>
 <ul>
 <li>無論是哪一種結果是不變的</li>
@@ -352,7 +333,6 @@ b = <span class="hljs-number">3</span>;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(++num); <span class="hljs-comment">// 回傳先 ++ 後的結果</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num++); <span class="hljs-comment">// 先回傳 num，再進行 ++</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(num);</code></pre>
-
 <h2 id="結論"><a href="#結論" class="headerlink" title="結論"></a>結論</h2><p>JS 的知識分為應用及基礎兩大區塊，好的應用知識能夠增加開發效率，基礎知識則是能夠增加除錯的能量，兩者在實戰中缺一不可。再快的速度遇到錯誤無法排除，也是會耗去大量時間找問題；只有基礎知識缺乏應用技巧，技能也淪為紙上功夫。最好還是相輔相成，以對等的知識量進行成長，能夠獲得最有效的開發能力。</p>
 </div>
 

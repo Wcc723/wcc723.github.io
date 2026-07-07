@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/sass/2015/12/25/replace-compass-with-node-sass-2/2015/12/screen_shot_2015-12-25-00.png">
 <meta property="article:published_time" content="2015-12-24T16:00:00.000Z">
-<meta property="article:modified_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.179Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="compass">
 <meta property="article:tag" content="gulp">
@@ -32,10 +32,10 @@
 <link rel="canonical" href="https://www.casper.tw/sass/2015/12/25/replace-compass-with-node-sass-2/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Compass 替代方案(2) - 透過 PostCSS，停止加入不必要的 prefix","datePublished":"2015-12-24T16:00:00.000Z","dateModified":"2017-06-21T12:11:01.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/sass/2015/12/25/replace-compass-with-node-sass-2/","image":["https://www.casper.tw/2015/12/screen_shot_2015-12-25-00.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Compass 替代方案(2) - 透過 PostCSS，停止加入不必要的 prefix","datePublished":"2015-12-24T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.179Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/sass/2015/12/25/replace-compass-with-node-sass-2/","image":["https://www.casper.tw/2015/12/screen_shot_2015-12-25-00.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -220,7 +220,6 @@
 <p>Prefix 的減少速度也是相當快速，像是 <code>box-shadow</code> 的 Prefix 可能消失超過一年， <code>transform</code> 也大約一年左右不需要 Prefix，如果不想要明年慢慢的移除自己所種的 Prefix，或許可以參考看看 <code>post-css</code>的 autoprefixer 工具。</p>
 <p><em>如果還在使用Compass的使用者可以當作參考就好，工具還是要用得上手比較重要～</em></p>
 <span id="more"></span>
-
 <h2 id="什麼是-PostCSS"><a href="#什麼是-PostCSS" class="headerlink" title="什麼是 PostCSS"></a>什麼是 PostCSS</h2><p>Sass、Less、Stylus 這些工具稱為預處理器，意指本身無法被直接使用，需要再編譯的語言，編譯後就能夠被瀏覽器渲染，副檔名也會從 <code>.sass</code> 改為 <code>.css</code>；而 <code>post-css</code> 本身就是 <code>.css</code>，只是透過工具去優化目前的 CSS。</p>
 <p>目前 post-css 的社群就已經相當龐大，有許多插件也廣泛地被使用，如：</p>
 <ul>
@@ -263,22 +262,20 @@ gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#
 &#125;);
 
 gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#x27;default&#x27;</span>, [<span class="hljs-string">&#x27;css&#x27;</span>]);</code></pre>
-
 <p>這段程式碼僅是局部，在我的範例內是由 <code>node-sass</code> 編譯完再由 <code>post-css</code> 處理。</p>
 <p>就已最新版的瀏覽器設定來說，其實大部分 <code>prefix</code> 其實都已經不用加入了，如：<code>flex</code>、<code>transform</code>、<code>backgroud</code>等，就下面的範例來說，只有 <code>filter</code> 需要 prefix。</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-25-00.png"></p>
+<p><img src="https://img.casper.tw/images/2015/12/screen_shot_2015-12-25-00.png" alt=""></p>
 <p>如果說，產品的使用者客群略微廣些，只要大於一個百分比的使用者都需要重視，可以修改插件的設定檔，如下 (市佔率大於 1%，且連IE 7 都不放過)。</p>
 <pre><code>var processors = [
-    autoprefixer({browsers: [&#39;&gt; 1%&#39;, &#39;IE 7&#39;]})
+    autoprefixer({browsers: [&apos;&gt; 1%&apos;, &apos;IE 7&apos;]})
   ];
-</code></pre>
-<p>那麼如果有支援的 prefix 他都會加入，會得到以下結果：</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-25-01.png"></p>
+</code></pre><p>那麼如果有支援的 prefix 他都會加入，會得到以下結果：</p>
+<p><img src="https://img.casper.tw/images/2015/12/screen_shot_2015-12-25-01.png" alt=""></p>
 <p>其實會發現，<code>-moz-</code>、<code>-o-</code>這些也不存在啊啊啊啊，<strong>Oprea</strong> 已經改用webkit，<strong>Firefox</strong> 強制更新，目前市面上的版本不需要 Prefix。</p>
 <h2 id="線上玩玩-PostCSS"><a href="#線上玩玩-PostCSS" class="headerlink" title="線上玩玩 PostCSS"></a>線上玩玩 PostCSS</h2><p>另外 <a target="_blank" rel="noopener" href="http://codepen.io/pen/">Codepen</a> 也有提供 post-css 的環境，只要在 CSS 的區域下選擇設定 &gt; <code>CSS Preprocessor</code> &gt; <code>PostCSS</code> 就可以使用 <code>@use</code> 加入想使用的 <code>post-css</code> 插件。</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-25-02.png"></p>
+<p><img src="https://img.casper.tw/images/2015/12/screen_shot_2015-12-25-02.png" alt=""></p>
 <p>如下圖，透過 <code>@use cssnext;</code> 就可以使用 <code>cssnext</code> 插件。</p>
-<p><img src="/images/2015/12/screen_shot_2015-12-25-03.png"></p>
+<p><img src="https://img.casper.tw/images/2015/12/screen_shot_2015-12-25-03.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>Autoprefixer 是目前 post-css 看到最必須導入的工具，有效減少 prefix 的問題。其他的工具 <code>cssnext</code>、<code>lost</code>等等，目前僅會做測試或研究並不會導入。</p>
 </div>
 

@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/css/2016/12/17/bootstrap-custom/2016_ironman/17_bootstrap_header.jpg">
 <meta property="article:published_time" content="2016-12-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T07:18:15.518Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.182Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="Bootstrap">
 <meta property="article:tag" content="css">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/css/2016/12/17/bootstrap-custom/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 17 - Bootstrap 自定義樣式超簡單","datePublished":"2016-12-16T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.518Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/17/bootstrap-custom/","image":["https://www.casper.tw/2016_ironman/17_bootstrap_header.jpg"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 17 - Bootstrap 自定義樣式超簡單","datePublished":"2016-12-16T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.182Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/17/bootstrap-custom/","image":["https://www.casper.tw/2016_ironman/17_bootstrap_header.jpg"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,18 +217,15 @@
 
   <div class="prose"><p>在導入框架至網站時，還要考慮框架是否符合網站風格以及往後的維護性。Bootstrap 雖然設計上是要給開發者直接運用的，但實際上他所設計的彈性非常之高，也很適合做客製化，甚至 fork 作為公司團體的 Style Guide。</p>
 <span id="more"></span>
-
 <p>本篇範例：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component">https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component</a></p>
 <h2 id="複製-Variables"><a href="#複製-Variables" class="headerlink" title="複製 Variables"></a>複製 Variables</h2><p>Bootstrap 所有設定都是放在 <code>_variables.scss</code> 這隻檔案下，但要學會怎麼修改其實沒有那麼困難，最簡單的方式就是將以下路徑的 <code>_variables.scss</code> 複製到專案目錄下的 <code>./source/scss</code>，這邊我個人是更習慣放在 <code>helpers</code> 資料夾內，算是寫 Sass 的習慣。</p>
 <pre><code class="hljs plaintext">bower_components/bootstrap-sass/assets/stylesheets/bootstrap/_variables.scss
 
 // 複製到
 /source/scss</code></pre>
-
 <p>接下來我們將 <code>./source/scss/all.scss</code> 打開後加入 <code>@import &quot;helpers/variables&quot;;</code> 再次執行 gulp ，如果沒有跳任何錯誤代表正確。</p>
 <pre><code class="hljs css"><span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;helpers/variables&quot;</span>;
 <span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;bootstrap&quot;</span>;</code></pre>
-
 <h2 id="修改-變數"><a href="#修改-變數" class="headerlink" title="修改 變數"></a>修改 變數</h2><p>打開 Bootstrap 變數稍微閱讀一下其實會發現非常好懂，以下色彩這段來說，分為灰色系列色與品牌系列色，而品牌系列色就是我們看到 Bootstrap 各個元件的主要配色。</p>
 <pre><code class="hljs plaintext">//== Colors
 //
@@ -246,17 +243,15 @@ $brand-success:         #5cb85c !default;
 $brand-info:            #5bc0de !default;
 $brand-warning:         #f0ad4e !default;
 $brand-danger:          #d9534f !default;</code></pre>
-
 <p>然後每一個變數的後方都會接上一個 <code>!default</code> 在後方做為預設，所以在修改變數時需要同時將 <code>!default</code> 移除，請參考以下範例：</p>
 <pre><code class="hljs plaintext">$brand-primary:         #0275d8; //darken(#428bca, 6.5%) !default; // #337ab7
 $brand-success:         #5cb85c !default;
 $brand-info:            #5bc0de !default;</code></pre>
-
 <p>加入一個新色彩 <code>#0275d8</code> 並將原本色彩註解在後方，這時候在執行 <code>gulp</code> 就能看到結果。</p>
 <p>原色彩</p>
-<p><img src="/images/2016_ironman/17_bootstrap_02.png"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/17_bootstrap_02.png" alt=""></p>
 <p>經調整，類似於 Bootstrap 4 的色彩</p>
-<p><img src="/images/2016_ironman/17_bootstrap_01.png"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/17_bootstrap_01.png" alt=""></p>
 <p>像這樣的配色就比較接近於 Bootstrap 4 的色彩，用這個方法就可以輕易地修改 Bootstrap 中各個元件中的樣式變數，修改就是這麼樣的容易，只要修改一些變數就能完成。</p>
 </div>
 

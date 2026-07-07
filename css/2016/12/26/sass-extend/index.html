@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 26 - 實戰心法 - 應避免的 Sass @extend","datePublished":"2016-12-25T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.519Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/26/sass-extend/","image":["https://www.casper.tw/2016_ironman/26_heart_header.jpg"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -218,7 +218,6 @@
   <div class="prose"><p>Sass 的 <code>@extend</code> 可以將相同的樣式整理再一起，在其他語言來說是非常帥氣的技法，但在 CSS 中請警慎使用。</p>
 <p>就如同本篇鐵人賽一開始所介紹到的 OOCSS 概念，在撰寫 CSS 時要盡可能符合兩個原則，結構與樣式分離、容器與內容分離，所以到這邊為止還是要貫徹這個概念，當使用 <code>@extend</code> 時如果會造成這個缺陷時，請避免使用。</p>
 <span id="more"></span>
-
 <h2 id="帥氣的-extend"><a href="#帥氣的-extend" class="headerlink" title="帥氣的 @extend"></a>帥氣的 <code>@extend</code></h2><p><code>@extend</code> 能夠將重複的樣式整理再一起，以下面的範例來說，我就將 <code>.clearfix</code> 與 <code>.row</code> 中所需要的清除浮動做整理。</p>
 <p>編譯前：</p>
 <pre><code class="hljs plaintext">%clearfix &#123;
@@ -236,18 +235,14 @@
 .row &#123;
   @extend %clearfix;
 &#125;</code></pre>
-
-<p>編譯後：</p>
-<pre><code class="hljs plaintext">.clearfix:after, .row:after &#123;
+<p>編譯後：<br><pre><code class="hljs plaintext">.clearfix:after, .row:after &#123;
   content: &quot; &quot;;
   display: table;
   clear: both;
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 
 <p data-height="265" data-theme-id="0" data-slug-hash="qqGKYP" data-default-tab="css" data-user="Wcc723" data-embed-version="2" data-pen-title="clearfix sass extend" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/qqGKYP/">clearfix sass extend</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-
 
 <p>這手法可以有效減少散落在各處的樣式，無論他在第幾行，都會被往前統一整理。</p>
 <h2 id="錯誤的案例"><a href="#錯誤的案例" class="headerlink" title="錯誤的案例"></a>錯誤的案例</h2><p>本篇繼續上一篇的範例，上一篇中我們是將 <code>.btn</code> 作為獨立的 Class，且此 Class 身負作為按鈕結構的重任。</p>
@@ -282,7 +277,6 @@
     @include button-variant($color, $bg, $border-color);
   &#125;
 &#125;</code></pre>
-
 <p>此作法 HTML 會看起來相當簡潔。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;section&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;btn-default&quot;</span>&gt;</span>這是一個按鈕<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
@@ -290,17 +284,14 @@
   <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;btn-accent&quot;</span>&gt;</span>這是一個按鈕<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
 
-
 <p data-height="265" data-theme-id="0" data-slug-hash="JbqZOJ" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="應該避開的 @extend" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/JbqZOJ/">應該避開的 @extend</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-
 
 <p>雖然說，這樣的在寫的時候看似非常簡潔，但其實所產出的 CSS 檔案非常之肥大，所有樣式結構的 Class 會被拉到前面在寫再一起，無形之中會重複大量的 Class name，如以下所產出的 <code>disabled</code> 的樣式。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-class">.disabled</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-class">.disabled</span><span class="hljs-selector-pseudo">:hover</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-class">.disabled</span><span class="hljs-selector-pseudo">:focus</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-class">.disabled</span><span class="hljs-selector-class">.focus</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-class">.disabled</span><span class="hljs-selector-pseudo">:active</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-class">.disabled</span><span class="hljs-selector-class">.active</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-attr">[disabled]</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-attr">[disabled]</span><span class="hljs-selector-pseudo">:hover</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-attr">[disabled]</span><span class="hljs-selector-pseudo">:focus</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-attr">[disabled]</span><span class="hljs-selector-class">.focus</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-attr">[disabled]</span><span class="hljs-selector-pseudo">:active</span>, <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-attr">[disabled]</span><span class="hljs-selector-class">.active</span>, <span class="hljs-selector-tag">fieldset</span><span class="hljs-selector-attr">[disabled]</span> <span class="hljs-selector-class">.btn-primary</span>, <span class="hljs-selector-tag">fieldset</span><span class="hljs-selector-attr">[disabled]</span> <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-pseudo">:hover</span>, <span class="hljs-selector-tag">fieldset</span><span class="hljs-selector-attr">[disabled]</span> <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-pseudo">:focus</span>, <span class="hljs-selector-tag">fieldset</span><span class="hljs-selector-attr">[disabled]</span> <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-class">.focus</span>, <span class="hljs-selector-tag">fieldset</span><span class="hljs-selector-attr">[disabled]</span> <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-pseudo">:active</span>, <span class="hljs-selector-tag">fieldset</span><span class="hljs-selector-attr">[disabled]</span> <span class="hljs-selector-class">.btn-primary</span><span class="hljs-selector-class">.active</span> &#123;
   <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#009AFF</span>;
   <span class="hljs-attribute">border-color</span>: <span class="hljs-number">#009AFF</span>;
 &#125;</code></pre>
-
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>其實學到現在，要安全點其實是避開 <code>@extend</code> 不使用，就連 Bootstrap 的原始碼中也不怎麼使用 <code>@extend</code> 這手法，但為什麼本篇會特別提出呢…!?因為我以前就是敗在這上的啊 Q_Q。</p>
 </div>
 

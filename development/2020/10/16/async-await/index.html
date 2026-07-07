@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Async function / Await 深度介紹","datePublished":"2020-10-15T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.536Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/16/async-await/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fawait.jpg?alt=media&token=a8539023-9aff-4118-b80f-7344f2d02548"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -218,8 +218,7 @@
 
   <div class="prose"><p>非同步在前端的做法不斷的在進行優化調整，先前介紹過 <a target="_blank" rel="noopener" href="https://wcc723.github.io/development/2020/02/16/all-new-promise/">Promise</a> 可以解決非同步過度巢狀的問題，而本篇要介紹的 <code>async function</code>（非同步函式） 及 <code>await</code> 則可以將非同步的程式碼寫成類似同步的形式。 </p>
 <h2 id="Promise-與-async-await"><a href="#Promise-與-async-await" class="headerlink" title="Promise 與 async, await"></a>Promise 與 async, await</h2><p>Promise 本篇不會詳細介紹，如果不熟悉可以先查看 <a target="_blank" rel="noopener" href="https://wcc723.github.io/development/2020/02/16/all-new-promise/">本篇</a> 文章，Promise 與非同步函式兩者是密不可分的，雖然 <code>async function</code> 易讀性優於 Promise，但請先確保對於 Promise 有一定理解再來使用非同步函式。</p>
-<p>本篇先建立一個基於 Promise 的函式，以下的範例都會不斷呼叫此函式來進行撰寫。</p>
-<pre><code class="hljs js"><span class="hljs-comment">/**</span>
+<p>本篇先建立一個基於 Promise 的函式，以下的範例都會不斷呼叫此函式來進行撰寫。<br><pre><code class="hljs js"><span class="hljs-comment">/**</span>
 <span class="hljs-comment"> * 範例 Promise 函式</span>
 <span class="hljs-comment"> * </span>
 <span class="hljs-comment"> * <span class="hljs-doctag">@param</span> &#123;<span class="hljs-type">Number</span>&#125; num 數值：作為判斷非同步成功與否的條件</span>
@@ -232,8 +231,7 @@
       num ? <span class="hljs-title function_">resolve</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;num&#125;</span>, 成功`</span>) : <span class="hljs-title function_">reject</span>(<span class="hljs-string">&#x27;失敗&#x27;</span>);
     &#125;, time);
   &#125;);
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 <p><code>promise</code> 函式呼叫時可以使用 <code>then</code> 來接收 <code>resolve</code> 的結果，當要串接兩個 <code>promise</code> 函式時可以使用 <code>return</code> 來做 “鏈接”。 </p>
 <pre><code class="hljs js"><span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">1</span>)
   .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
@@ -243,12 +241,11 @@
   .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res); <span class="hljs-comment">// 2, 成功</span>
   &#125;);</code></pre>
-
 <p>基於 Promise 的方法相當單純，就是不斷的呼叫 Promise 函式以及使用 <code>then</code> 來進行鏈接，<code>Promise</code> 可以解決過巢及串接 <code>callback function</code> 語法不一致等問題，但它依然在 JS 的同步語言中插入了一段非同步的片段。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEB9377A4-D477-4459-9CCE-9D095C1D1AB1.png?alt=media&token=470f44b6-c274-4572-bc2d-d0948ccc92b9"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEB9377A4-D477-4459-9CCE-9D095C1D1AB1.png?alt=media&amp;token=470f44b6-c274-4572-bc2d-d0948ccc92b9" alt=""></p>
 <h3 id="Async-function-及-Await"><a href="#Async-function-及-Await" class="headerlink" title="Async function 及 Await"></a>Async function 及 Await</h3><p><code>async function</code> 可以用來定義一個非同步函式，讓這個函式本體是屬於非同步，但其內部以“<strong>同步的方式運行非同步</strong>”程式碼。</p>
 <p><code>await</code> 則是可以暫停非同步函式的運行（中止 <code>Promise</code> 的運行），直到非同步進入 <code>resolve</code> 或 <code>reject</code>，當接收完回傳值後繼續非同步函式的運行。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-pending.png?alt=media&token=f5a5607b-4436-44e6-ab1f-0d8dd4bf59b3"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-pending.png?alt=media&amp;token=f5a5607b-4436-44e6-ab1f-0d8dd4bf59b3" alt=""></p>
 <blockquote>
 <p>Promise 的回傳狀態，需要進入 <code>resolve</code> 或 <code>reject</code> 後，非同步函式才會繼續運行</p>
 </blockquote>
@@ -263,50 +260,42 @@
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data1, data2); <span class="hljs-comment">// 1, 成功 2, 成功</span>
 &#125;
 <span class="hljs-title function_">getData</span>();</code></pre>
-
 <p>以上這段程式碼的結果與使用 <code>then</code> 是一致的，但就結構上更加平整，在 <code>getData</code> 這個函式中都是以 “<strong>同步</strong>“ 的方式運行，不會產生同步、非同步程式碼混合的狀況。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3D5EF627-D878-49BD-A076-09B2471BFD9A.png?alt=media&token=a8a75d3b-ea33-4ac3-ac9b-308a4d944258"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3D5EF627-D878-49BD-A076-09B2471BFD9A.png?alt=media&amp;token=a8a75d3b-ea33-4ac3-ac9b-308a4d944258" alt=""></p>
 <blockquote>
 <p>無論是不是 Promise，大家都是同步程式碼逐行執行。</p>
 </blockquote>
-<h2 id="Async-Await-語法解析"><a href="#Async-Await-語法解析" class="headerlink" title="Async &#x2F; Await 語法解析"></a>Async &#x2F; Await 語法解析</h2><p>Async &#x2F; Await 目的是讓程式碼的結構變得更加簡潔、易懂，所以運用上也如上述一樣單純（如果沒有 “錯誤”，它確實很單純），本段則額外補充說明這兩者新加入的語法是如何在 JS 中運作的。</p>
+<h2 id="Async-Await-語法解析"><a href="#Async-Await-語法解析" class="headerlink" title="Async / Await 語法解析"></a>Async / Await 語法解析</h2><p>Async / Await 目的是讓程式碼的結構變得更加簡潔、易懂，所以運用上也如上述一樣單純（如果沒有 “錯誤”，它確實很單純），本段則額外補充說明這兩者新加入的語法是如何在 JS 中運作的。</p>
 <h4 id="async-function-非同步函式"><a href="#async-function-非同步函式" class="headerlink" title="async function 非同步函式"></a><code>async function</code> 非同步函式</h4><p><code>async function</code> 的用法相當特別，用此語法所宣告的函式，可在其內以“<strong>同步的方式運行非同步</strong>”程式碼；但就名稱上 <code>async</code> 是稱為非同步，那麼它的 <code>非同步</code> 又存在哪呢？</p>
 <pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">asyncFn</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;a&#x27;</span>;
 &#125;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">asyncFn</span>());</code></pre>
-
 <p><code>非同步</code> 稱的就是 <code>async function</code> 所定義的函式本體，當使用 <code>console.log</code> 查看 <code>async function</code> 那麼將可以得到與 <strong>Promise 結構相似的函式</strong>，該函式是以非同步的方式運行，無法直接使用 <code>console.log</code> 取得其值。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FDB02D90A-660C-4EF6-A65E-2E150CBACEE5.png?alt=media&token=b563a7f4-5a05-470d-82ea-6d69eff4279f"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FDB02D90A-660C-4EF6-A65E-2E150CBACEE5.png?alt=media&amp;token=b563a7f4-5a05-470d-82ea-6d69eff4279f" alt=""></p>
 <p>在 Promise 中，如果要取得 <code>resolve</code> 的結果會使用 <code>then</code>，而 <code>async function</code> 也是相同使用 <code>then()</code>。</p>
 <pre><code class="hljs js"><span class="hljs-title function_">asyncFn</span>().<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">r</span> =&gt;</span> &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(r)
 &#125;);</code></pre>
-
 <blockquote>
 <p>雖說如此，實戰中不太會這麼做，回到目的性來說：「<code>async function</code> 是讓函式內的語法同步執行」。也因為 <code>async function</code> 與一般函式定義的不同，所以請避免將所有的 <code>function</code> 前方都補上 <code>async</code>，這會產生運行及概念上不同的函式。</p>
 </blockquote>
 <h4 id="Await-運算子"><a href="#Await-運算子" class="headerlink" title="Await 運算子"></a>Await 運算子</h4><p><code>await</code> 是屬於一元運算子，它會直接回傳後方表達式的值；但如果是 <strong>Promise 時則會 “等待” resovle 的結果並回傳</strong>。</p>
-<p>雖然是運算子，但是在原始碼中直接運行 <code>await</code> 則會出現錯誤，它只能在 <code>async function</code> 中運行，所以  <code>async/await</code> 基本上是一體的，不會單獨出現。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">await</span> <span class="hljs-number">1</span>;
-<span class="hljs-comment">// Uncaught SyntaxError: await is only valid in async function</span></code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC7D8B9EC-6C5E-4E88-B459-649F11018B74.png?alt=media&token=d027262a-0008-4b45-b9bb-5d8339bb2255"></p>
+<p>雖然是運算子，但是在原始碼中直接運行 <code>await</code> 則會出現錯誤，它只能在 <code>async function</code> 中運行，所以  <code>async/await</code> 基本上是一體的，不會單獨出現。<br><pre><code class="hljs js"><span class="hljs-keyword">await</span> <span class="hljs-number">1</span>;
+<span class="hljs-comment">// Uncaught SyntaxError: await is only valid in async function</span></code></pre></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FC7D8B9EC-6C5E-4E88-B459-649F11018B74.png?alt=media&amp;token=d027262a-0008-4b45-b9bb-5d8339bb2255" alt=""></p>
 <blockquote>
 <p>比較神奇的是 <code>await expression</code> 卻可以直接在 Chrome console 中運行。</p>
 </blockquote>
-<p><code>await</code> 可以直接回傳後方的表達式，或者將非同步函式中的 Promise 暫停，如以下範例的 <code>await promiseFn(2)</code> 會 <strong>“等待”</strong> <code>resolve</code> 結果回傳後，在賦予至 <code>data2</code> 才會回傳。 </p>
-<pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getData</span>(<span class="hljs-params"></span>) &#123;
+<p><code>await</code> 可以直接回傳後方的表達式，或者將非同步函式中的 Promise 暫停，如以下範例的 <code>await promiseFn(2)</code> 會 <strong>“等待”</strong> <code>resolve</code> 結果回傳後，在賦予至 <code>data2</code> 才會回傳。<br><pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getData</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">const</span> data1 = <span class="hljs-keyword">await</span> <span class="hljs-number">1</span>;
   <span class="hljs-keyword">const</span> data2 = <span class="hljs-keyword">await</span> <span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">2</span>);
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data1, data2); <span class="hljs-comment">// 1 &quot;2, 成功&quot;</span>
 &#125;
-<span class="hljs-title function_">getData</span>();</code></pre>
-
+<span class="hljs-title function_">getData</span>();</code></pre></p>
 <h2 id="使用-try…catch-進行錯誤的處理"><a href="#使用-try…catch-進行錯誤的處理" class="headerlink" title="使用 try…catch 進行錯誤的處理"></a>使用 try…catch 進行錯誤的處理</h2><p>前面幾段都僅有提到 <code>resolve</code> 的結果，但實際上程式碼的運行不會都只有成功，在 Promise 定義也就包含了 <code>resolve</code> 及 <code>reject</code> 的回傳，而調用 Promise 的方法時也就可以使用 <code>then</code> 及 <code>catch</code> 來接收成功及失敗的結果。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-resovle_reject.png?alt=media&token=88067e09-92d4-4c67-9455-d13e4c5f22cc"></p>
-<p><code>then</code>、<code>catch</code> 範例程式碼，如果運行正確則會繼續往下運行，當遭遇失敗則會跳到 catch 的流程。</p>
-<pre><code class="hljs js"><span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">1</span>)
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-promise-resovle_reject.png?alt=media&amp;token=88067e09-92d4-4c67-9455-d13e4c5f22cc" alt=""></p>
+<p><code>then</code>、<code>catch</code> 範例程式碼，如果運行正確則會繼續往下運行，當遭遇失敗則會跳到 catch 的流程。<br><pre><code class="hljs js"><span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">1</span>)
   .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res);
     <span class="hljs-keyword">return</span> <span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">0</span>);
@@ -316,13 +305,12 @@
   &#125;)
   .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> &#123;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(err)
-  &#125;);</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEAE3E326-8008-421B-BB94-9B36DE206EAF.png?alt=media&token=f449a84c-1919-4de9-86a9-045a768bb48d"></p>
+  &#125;);</code></pre></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEAE3E326-8008-421B-BB94-9B36DE206EAF.png?alt=media&amp;token=f449a84c-1919-4de9-86a9-045a768bb48d" alt=""></p>
 <blockquote>
 <p>相對來說 Promise 的成功、失敗流程的混合撰寫，容易在維護上難以除錯。</p>
 </blockquote>
-<p>**重要：**當使用 <code>async/await</code> 時，因為該片段程式碼已轉為同步的形式，如果遇到錯誤沒有進行例外處理，則會造成後續的程式碼無法繼續運行。</p>
+<p><strong>重要：</strong>當使用 <code>async/await</code> 時，因為該片段程式碼已轉為同步的形式，如果遇到錯誤沒有進行例外處理，則會造成後續的程式碼無法繼續運行。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getData2</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">const</span> data1 = <span class="hljs-keyword">await</span> <span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">1</span>);
   <span class="hljs-keyword">const</span> data2 = <span class="hljs-keyword">await</span> <span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">0</span>);
@@ -334,8 +322,7 @@
 <p>此段程式碼會直接中止，不會出現 <code>console.log</code> 的結果。</p>
 </blockquote>
 <p><code>async/await</code> 錯誤流程可以使用 <code>try...catch</code> 陳述式管理流程，將原有的程式碼直接置入於 <code>try</code> 流程內，當遇到例外的錯誤時則撰寫在 <code>catch</code> 區塊內。</p>
-<p>以下範例來說 <code>try</code> 內的程式碼與原本介紹的一般流程是相同的，僅不過加入了 <code>catch</code> 來處理 <code>reject</code> 的錯誤流程。這樣的結構下，就可以將程式碼區分為成功、錯誤兩個流程，閱讀上也會更加容易。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getData2</span>(<span class="hljs-params"></span>) &#123;
+<p>以下範例來說 <code>try</code> 內的程式碼與原本介紹的一般流程是相同的，僅不過加入了 <code>catch</code> 來處理 <code>reject</code> 的錯誤流程。這樣的結構下，就可以將程式碼區分為成功、錯誤兩個流程，閱讀上也會更加容易。<br><pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getData2</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">try</span> &#123; <span class="hljs-comment">// 專注在成功</span>
     <span class="hljs-keyword">const</span> data1 = <span class="hljs-keyword">await</span> <span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">1</span>);
     <span class="hljs-keyword">const</span> data2 = <span class="hljs-keyword">await</span> <span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">0</span>);
@@ -345,9 +332,8 @@
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;catch&#x27;</span>, err);
   &#125;
 &#125;
-<span class="hljs-title function_">getData2</span>();</code></pre>
-
-<p>圖解概念：正常流程與錯誤流程分離，且一般流程中還可維持同步執行的特色，避免巢狀的程式碼。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD43D3597-5DAC-4F8F-BD32-18F6C4E2F7D6.png?alt=media&token=843ce9a4-580b-4b3a-9f5d-7dba9ff39aa6"></p>
+<span class="hljs-title function_">getData2</span>();</code></pre></p>
+<p>圖解概念：正常流程與錯誤流程分離，且一般流程中還可維持同步執行的特色，避免巢狀的程式碼。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD43D3597-5DAC-4F8F-BD32-18F6C4E2F7D6.png?alt=media&amp;token=843ce9a4-580b-4b3a-9f5d-7dba9ff39aa6" alt=""></p>
 <h2 id="執行順序的技巧"><a href="#執行順序的技巧" class="headerlink" title="執行順序的技巧"></a>執行順序的技巧</h2><p>Promise 是透過鏈接及 Promise 的方法（Promise.all, Promise.race）來達到不同的執行順序方法。<code>async/await</code> 則讓非同步有了同步的寫法，因此許多原有的 JS 語法都可以一起搭配做使用，如迴圈、判斷式都是可利用的技巧，在了解這段以前，需要先知道非同步主要有兩個時間點：</p>
 <ol>
 <li>送出 “請求” 的時間</li>
@@ -360,35 +346,30 @@
 <li>回應依序列出：依據請求發出的順序，依序列出資源</li>
 <li>回應統一列出：不管什麼時候取得都統一列出</li>
 </ul>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5890C266-A6E5-47AF-9A9C-05D3D829BD4B.png?alt=media&token=89e34972-25eb-4624-8120-09f3f6b7ecaa"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5890C266-A6E5-47AF-9A9C-05D3D829BD4B.png?alt=media&amp;token=89e34972-25eb-4624-8120-09f3f6b7ecaa" alt=""></p>
 <blockquote>
 <p>請求依序發出時：下一個請求必須等待前一個取得回應後才能繼續動作</p>
 </blockquote>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F71FA7BB4-7A1C-484B-B15F-0FEB3EAA05FE.png?alt=media&token=01687f8a-6efc-4949-b91e-6c70727990dd"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F71FA7BB4-7A1C-484B-B15F-0FEB3EAA05FE.png?alt=media&amp;token=01687f8a-6efc-4949-b91e-6c70727990dd" alt=""></p>
 <blockquote>
 <p>請求為平行發出時：無論先後順序都將同時發出請求。</p>
 </blockquote>
-<h3 id="Promise-all-平行執行，統一列出回應資訊"><a href="#Promise-all-平行執行，統一列出回應資訊" class="headerlink" title="Promise.all 平行執行，統一列出回應資訊"></a>Promise.all 平行執行，統一列出回應資訊</h3><p><code>Promise.all()</code> 是 Promise 物件下的方法，此方法可傳入一個陣列，陣列包含多個 promise，<code>Promise.all()</code>可以統一發出所有陣列內的請求，並取得所有回應時統一回傳，<code>async/await</code> 可搭配此語法得到一次性的所有回應。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">promiseAll</span>(<span class="hljs-params"></span>) &#123;
+<h3 id="Promise-all-平行執行，統一列出回應資訊"><a href="#Promise-all-平行執行，統一列出回應資訊" class="headerlink" title="Promise.all 平行執行，統一列出回應資訊"></a>Promise.all 平行執行，統一列出回應資訊</h3><p><code>Promise.all()</code> 是 Promise 物件下的方法，此方法可傳入一個陣列，陣列包含多個 promise，<code>Promise.all()</code>可以統一發出所有陣列內的請求，並取得所有回應時統一回傳，<code>async/await</code> 可搭配此語法得到一次性的所有回應。<br><pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">promiseAll</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">all</span>([<span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">1</span>, <span class="hljs-number">3000</span>), <span class="hljs-title function_">promiseFn</span>(<span class="hljs-number">2</span>)]);
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data)
 &#125;
-<span class="hljs-title function_">promiseAll</span>(); <span class="hljs-comment">// [&quot;1, 成功&quot;, &quot;2, 成功&quot;]</span></code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F05A2971C-1B03-42A1-8418-55857DE8224B.png?alt=media&token=157839c4-992c-491a-88d5-a19b8047beb6"></p>
+<span class="hljs-title function_">promiseAll</span>(); <span class="hljs-comment">// [&quot;1, 成功&quot;, &quot;2, 成功&quot;]</span></code></pre></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F05A2971C-1B03-42A1-8418-55857DE8224B.png?alt=media&amp;token=157839c4-992c-491a-88d5-a19b8047beb6" alt=""></p>
 <blockquote>
 <p>取得結果與送出的陣列順序相同。</p>
 </blockquote>
 <h3 id="依序發出請求的方式"><a href="#依序發出請求的方式" class="headerlink" title="依序發出請求的方式"></a>依序發出請求的方式</h3><p><code>for...loop</code> 是可以被中斷的迴圈形式（使用 <code>break</code> 中斷），所以其實可以理解他是屬於依序執行的陳述式，當 <code>for</code> 內包含 <code>await</code> 時就必須等待 <code>await</code> 取得回應後才能執行下一個迴圈。</p>
-<p>本範例中先建立一個陣列 <code>arrayData</code>，其中包含數值及執行時間。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> arrayData = [&#123;<span class="hljs-attr">num</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">time</span>: <span class="hljs-number">500</span>&#125;,
+<p>本範例中先建立一個陣列 <code>arrayData</code>，其中包含數值及執行時間。<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> arrayData = [&#123;<span class="hljs-attr">num</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">time</span>: <span class="hljs-number">500</span>&#125;,
   &#123;<span class="hljs-attr">num</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">time</span>: <span class="hljs-number">3000</span>&#125;,
   &#123;<span class="hljs-attr">num</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">time</span>: <span class="hljs-number">1500</span>&#125;,
   &#123;<span class="hljs-attr">num</span>: <span class="hljs-number">4</span>, <span class="hljs-attr">time</span>: <span class="hljs-number">1000</span>&#125;
-];</code></pre>
-
-<p>透過 <code>for...loop</code> 的迴圈形式依序執行 <code>promiseFn</code> 並帶入陣列內的資訊，待前一個執行完畢後才會進入下一個迴圈，待陣列內容執行完畢後則會列出所有的回應結果。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">seriesFn</span>(<span class="hljs-params"></span>) &#123;
+];</code></pre></p>
+<p>透過 <code>for...loop</code> 的迴圈形式依序執行 <code>promiseFn</code> 並帶入陣列內的資訊，待前一個執行完畢後才會進入下一個迴圈，待陣列內容執行完畢後則會列出所有的回應結果。<br><pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">seriesFn</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">const</span> data = [];
 
   <span class="hljs-comment">// 依序執行</span>
@@ -399,20 +380,17 @@
   &#125;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data); <span class="hljs-comment">// [&quot;1, 成功&quot;, &quot;2, 成功&quot;, &quot;3, 成功&quot;, &quot;4, 成功&quot;]</span>
 &#125;
-<span class="hljs-title function_">seriesFn</span>();</code></pre>
-
+<span class="hljs-title function_">seriesFn</span>();</code></pre></p>
 
 <video width="100%" muted autoplay controls>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FOct-06-2020%2015-11-29.mp4?alt=media&token=b1d6125e-adbc-4f99-9eca-cebdbb30f7bd" type="video/mp4">
 </video>
 
-
 <blockquote>
 <p>執行順序影片</p>
 </blockquote>
 <h3 id="平行執行、依序列出"><a href="#平行執行、依序列出" class="headerlink" title="平行執行、依序列出"></a>平行執行、依序列出</h3><p>相對於 <code>for...loop</code> 來說 <code>forEach</code> 無法被中斷，並且會幾乎同時運行所有的迴圈內容。</p>
-<p>本範例是使用 <code>map</code> 取代 <code>forEach</code> 的方法（兩者概念是接近的）。雖然請求幾乎在同一個時間執行，但執行的時間順序是不確定的，還是會等待執行完成後才統一列出。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">parallelFn</span>(<span class="hljs-params"></span>) &#123;
+<p>本範例是使用 <code>map</code> 取代 <code>forEach</code> 的方法（兩者概念是接近的）。雖然請求幾乎在同一個時間執行，但執行的時間順序是不確定的，還是會等待執行完成後才統一列出。<br><pre><code class="hljs js"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">parallelFn</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">const</span> data = arrayData.<span class="hljs-title function_">map</span>(<span class="hljs-keyword">async</span> item =&gt; &#123;
     <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">promiseFn</span>(item.<span class="hljs-property">num</span>, item.<span class="hljs-property">time</span>); <span class="hljs-comment">// 此行的 await 不會暫停函式運行</span>
     <span class="hljs-keyword">return</span> res;
@@ -423,8 +401,7 @@
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-keyword">await</span> res);
   &#125;
 &#125;
-<span class="hljs-title function_">parallelFn</span>();</code></pre>
-<p><code>map</code> 會在執行時就取得結果，此時 <code>data</code> 內的 promise 是尚未 <code>resolve</code> 的狀態，因此需要在後續使用 <code>for...of</code> 等待回應的內容。</p>
+<span class="hljs-title function_">parallelFn</span>();</code></pre><br><code>map</code> 會在執行時就取得結果，此時 <code>data</code> 內的 promise 是尚未 <code>resolve</code> 的狀態，因此需要在後續使用 <code>for...of</code> 等待回應的內容。</p>
 
 <video width="100%" muted autoplay controls>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FOct-06-2020%2015-48-26.mp4?alt=media&token=792294e5-5f8e-4363-912d-5560964d505e" type="video/mp4">
@@ -433,27 +410,24 @@
 <blockquote>
 <p>時間順序上分別為 500, 3000, 1500, 1000，其中第二個所花的時間較長，因此在第二個執行完成後，剩下以後也會統一列出。</p>
 </blockquote>
-<h2 id="async-await-搭配-fetch"><a href="#async-await-搭配-fetch" class="headerlink" title="async&#x2F;await 搭配 fetch"></a>async&#x2F;await 搭配 fetch</h2><p><code>fetch</code> 也是基於 Promise 的 Web API，因此它也同樣能夠使用 <code>async/await</code> 來進行改寫，<code>fetch</code> 與一般 AJAX 套件比較不同之處是在 JSON 回傳後，必須在使用 <code>json()</code> 的方法將資料輸出成 JSON 格式（相關介紹可以參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/Fetch_API/Using_Fetch">MDN Fetch</a>）。</p>
+<h2 id="async-await-搭配-fetch"><a href="#async-await-搭配-fetch" class="headerlink" title="async/await 搭配 fetch"></a>async/await 搭配 fetch</h2><p><code>fetch</code> 也是基於 Promise 的 Web API，因此它也同樣能夠使用 <code>async/await</code> 來進行改寫，<code>fetch</code> 與一般 AJAX 套件比較不同之處是在 JSON 回傳後，必須在使用 <code>json()</code> 的方法將資料輸出成 JSON 格式（相關介紹可以參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/Fetch_API/Using_Fetch">MDN Fetch</a>）。</p>
 <p>當使用 Promise <code>then</code> 時，則會使用 return 來呼叫 json() 方法（箭頭函式縮寫，所以省略了 <code>return</code>），</p>
 <pre><code class="hljs js"><span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://jsonplaceholder.typicode.com/todos/1&#x27;</span>)
   <span class="hljs-comment">// 取得遠端資源，並透過 return 方式回傳鏈接</span>
   .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> response.<span class="hljs-title function_">json</span>())
   <span class="hljs-comment">// 接收 `response.json()` 轉換的結果</span>
   .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">json</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(json));</code></pre>
-
-<p>透過 <code>async</code> 改寫範例如下，結構上更為平整易於閱讀。</p>
-<pre><code class="hljs js">(<span class="hljs-title function_">async</span> ()=&gt; &#123;
+<p>透過 <code>async</code> 改寫範例如下，結構上更為平整易於閱讀。<br><pre><code class="hljs js">(<span class="hljs-title function_">async</span> ()=&gt; &#123;
   <span class="hljs-comment">// 取得遠端資源</span>
   <span class="hljs-keyword">const</span> res = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://jsonplaceholder.typicode.com/todos/1&#x27;</span>);
   <span class="hljs-comment">// 使用 response.json() 將資源轉為 JSON 格式</span>
   <span class="hljs-keyword">const</span> json = <span class="hljs-keyword">await</span> res.<span class="hljs-title function_">json</span>();
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(json);
-&#125;)();</code></pre>
-
+&#125;)();</code></pre></p>
 <p>參考資源：</p>
 <ul>
 <li>Google 開發者文件：<a target="_blank" rel="noopener" href="https://developers.google.com/web/fundamentals/primers/async-functions">https://developers.google.com/web/fundamentals/primers/async-functions</a></li>
-<li>MDN Async&#x2F;Await：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/learn/JavaScript/%E5%BC%82%E6%AD%A5/Async_await">https://developer.mozilla.org/zh-CN/docs/learn/JavaScript/%E5%BC%82%E6%AD%A5/Async_await</a></li>
+<li>MDN Async/Await：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/learn/JavaScript/%E5%BC%82%E6%AD%A5/Async_await">https://developer.mozilla.org/zh-CN/docs/learn/JavaScript/%E5%BC%82%E6%AD%A5/Async_await</a></li>
 </ul>
 </div>
 

@@ -33,7 +33,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Flex 空間計算規則","datePublished":"2020-03-07T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.532Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2020/03/08/flex-size/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-cover.png?alt=media&token=ce7a29ec-255b-40b3-a724-33dd4407ee2c"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -156,7 +156,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -234,8 +234,6 @@
 </p>
 <script async src="https://static.codepen.io/assets/embed/ei.js"></script>
 
-
-
 <p>接下來，為了讓接下來的實驗更好驗證，對於這些元素再補上一些設定：</p>
 <ol>
 <li>外層容器設定為 600px</li>
@@ -250,7 +248,6 @@
   on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
-
 <p>接下來，將最右方的元素 flex-grow 改為 2，則可以看到以下的結果。</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="GRJMrbe" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則">
@@ -258,8 +255,6 @@
   Flex 寬度計算規則 - 3</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
   on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
-
-
 
 <p>由於 Flex 是按比例分配剩餘空間，因此在前面的範例中，兩者 flex-grow 都是 1 的情況下，會呈現 1:1 的結果，這次改為 1:2 那麼寬度的計算上也會改為 1:2，重點如下：</p>
 <ul>
@@ -270,12 +265,12 @@
 <ol>
 <li>總寬度為 600px，最左方的元素佔用 200px 寬度，因此剩餘 400px</li>
 <li>flex-grow 分別為 2、1，因此總和為 3</li>
-<li>比例分配上為 400px &#x2F; 3 &#x3D; 133.33333px</li>
-<li>左方寬度為 133 * 1，右方元素為 133 * 2 &#x3D; 266</li>
+<li>比例分配上為 400px / 3 = 133.33333px</li>
+<li>左方寬度為 133 * 1，右方元素為 133 * 2 = 266</li>
 </ol>
 <p>圖文說明：</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-1.jpg?alt=media&token=945065be-e215-44c9-a5f6-82030c32399a" alt="依據可分配剩餘空間，依據比例劃分"></p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-2.jpg?alt=media&token=c0211b2d-453f-47d3-bbb6-1513f59169a5" alt="重新分配大小"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-1.jpg?alt=media&amp;token=945065be-e215-44c9-a5f6-82030c32399a" alt="依據可分配剩餘空間，依據比例劃分"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-2.jpg?alt=media&amp;token=c0211b2d-453f-47d3-bbb6-1513f59169a5" alt="重新分配大小"></p>
 <p>接下來，請使用你的開發者工具檢視上方的結果（左方約為 134px，右方為 266px）。</p>
 <h3 id="注意，可分配的空間"><a href="#注意，可分配的空間" class="headerlink" title="注意，可分配的空間"></a>注意，可分配的空間</h3><p>flex 的可分配空間會隨著條件不同而改變，以下範例來說，中間的元素補上了 100px，我們會發現他的寬度計算會與上一個的範例有所不同。</p>
 <ul>
@@ -288,17 +283,16 @@
   on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
-
 <p>此段的計算邏輯：</p>
 <ol>
-<li>計算出可分配的空間：總寬(600px) - 左方元素(200px) - 中間元素的固定寬(100px) &#x3D; 300px</li>
-<li>計算比例：300px &#x2F; 3(<code>flex-grow</code> 總值) &#x3D; 100px</li>
-<li>重新分配：</li>
-</ol>
-<ul>
-<li>右方元素(grow: 2) 100px * 2 &#x3D; 200px</li>
-<li>中間元素(basis: 100px; grow: 1) 100px + 100px * 1 &#x3D; 200px</li>
+<li>計算出可分配的空間：總寬(600px) - 左方元素(200px) - 中間元素的固定寬(100px) = 300px</li>
+<li>計算比例：300px / 3(<code>flex-grow</code> 總值) = 100px</li>
+<li>重新分配：<ul>
+<li>右方元素(grow: 2) 100px * 2 = 200px</li>
+<li>中間元素(basis: 100px; grow: 1) 100px + 100px * 1 = 200px</li>
 </ul>
+</li>
+</ol>
 <p>接下來，透過開發者工具會得到 <em>接近</em> 上述的結果。</p>
 <blockquote>
 <p>問題：為什麼是接近上述的結果，而不是完全符合呢？</p>
@@ -313,7 +307,6 @@
   on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
-
 <p>接下來，將右邊兩個元素 <code>flex-shrink</code> 設為 <code>1</code>，會看到兩個元素多餘的內容收縮到外容器內部並維持相同的寬度，最左方的元素則維持原本的寬度不變。</p>
 
 <p class="codepen" data-height="420" data-theme-id="light" data-default-tab="result" data-user="Wcc723" data-slug-hash="WNvXjYz" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Flex 寬度計算規則 - 5">
@@ -321,7 +314,6 @@
   Flex 寬度計算規則 - 5</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
   on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
-
 
 <p>接下來，一樣進行 2:1 的 shrink 設置實驗，左方為 <code>flex-shrink: 1</code>，右方為 <code>flex-shrink: 1</code>，接下來你可能會猜想兩者的尺寸應為 <code>2: 1</code> 吧！</p>
 
@@ -331,11 +323,10 @@
   on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 
-
 <p>實際結果：當然不是～</p>
 <p>上面有提到 <code>shrink</code> 是分配多餘的空間，因此不是全部的空間上都重新分配，所以運作的結果如下：</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-3.jpg?alt=media&token=a691be48-f1fd-4650-804b-3691f76b8081" alt="先計算超出範圍的空間及比例"></p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-4.jpg?alt=media&token=3422ac1d-6c5c-42e8-ad10-31ac034a1dc2" alt="依據比例重新扣除"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-3.jpg?alt=media&amp;token=a691be48-f1fd-4650-804b-3691f76b8081" alt="先計算超出範圍的空間及比例"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2Fflex-4.jpg?alt=media&amp;token=3422ac1d-6c5c-42e8-ad10-31ac034a1dc2" alt="依據比例重新扣除"></p>
 <p>接下來，重新使用你的開發者工具，檢視上方的結果吧（會得到中間元素寬度 200px，右方元素寬度 150px）。</p>
 <h2 id="遵循軸線"><a href="#遵循軸線" class="headerlink" title="遵循軸線"></a>遵循軸線</h2><p>Flex 撇除了原本的寬度、高度的空間定義，改用三個屬性（basis、grow、shrink）來定義一個容器的尺寸，不僅是為了提高容器的空間彈性，除此之外計算出來的空間尺寸還能依據 Flex 的軸線重新計算，大大增加了空間的彈性。</p>
 <p>以下範例來說，將 Flex 主軸線切換為 <code>flex-direction: column;</code>，內層元素依然可依據垂直的方式重新分配空間大小，且計算邏輯一致。</p>
@@ -345,7 +336,6 @@
   Flex 寬度計算規則 - 3 - cloumn</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>)
   on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
-
 
 <p>如果透過文字還是不容易理解，可以看我過去線上教學的<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=0QjOO-M2gs8">影片 - Flex 寬度計算方法</a>，或是<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lmBM7_OTDBQ">Flex 完整教學</a></p>
 </div>

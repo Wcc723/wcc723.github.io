@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AJAX 完整解說系列：輕鬆搞懂 HTTP 狀態碼（HTTP Status Code）","datePublished":"2020-10-02T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.535Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/03/about-ajax-4/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_18.jpg?alt=media&token=ddebf02c-7873-436b-b737-04722e0981fc"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -226,7 +226,7 @@
 <p>再給予回饋以前，新手則需要了解「有哪些地方可能出錯」、「錯誤回饋有哪些」，本篇就透過 Chrome 開發者工具呈現常見的錯誤，讓大家可以先依循找出錯誤，再將錯誤的資訊回饋給予用戶。</p>
 <p>AJAX 運行中錯誤的可能性相當多，前端、後端在介接的過程中雙方都有可能會出錯。但與後端確認前，前端可以先試著依據本篇所列出的方法，一一確認可能出錯的環節，當無法排除再與後端溝通討論錯誤的可能性。</p>
 <h2 id="HTTP-狀態碼（HTTP-Status）"><a href="#HTTP-狀態碼（HTTP-Status）" class="headerlink" title="HTTP 狀態碼（HTTP Status）"></a>HTTP 狀態碼（HTTP Status）</h2><p>HTTP 狀態碼是優先確認 AJAX 成功與否的方式，它將成功、錯誤透過數字進行不同的分類，讓開發者可以優先專注在可能出錯的環節，完整的文章可以參考 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/HTTP/Status">MDN</a>，本篇則是列出常見的狀態碼。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_2_%E4%B8%8A%E5%8D%8810_03.png?alt=media&token=d1bb076a-a4cf-417b-b154-eedce5d0726c"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_2_%E4%B8%8A%E5%8D%8810_03.png?alt=media&amp;token=d1bb076a-a4cf-417b-b154-eedce5d0726c" alt=""></p>
 <blockquote>
 <p>打開 Chrome &gt; DevTools &gt; Network 可以看到 XHR 行為中都會帶有 Status 的欄位。</p>
 </blockquote>
@@ -247,8 +247,7 @@
 <h2 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h2><p>AJAX 中只要有 HTTP 狀態碼回應就是好的開始（除了 404 以外），在 Chrome DevTools 中也可以觀察到 HTTP 狀態碼是 2 開頭的則會判斷為成功（黑色文字），當如果是 4, 5 開頭的則會判斷為失敗（紅色文字）。</p>
 <p>而 5 開頭的不一定能夠由前端能夠解決，但如果是 4 開頭可以試著從後端所回應的內容進行判斷，了解哪部分的環節出現問題再進行重新調整，以下透過「六角學院」的課程 API 給予大家進行參考部分情境及除錯方法。</p>
 <p>範例程式碼：<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/VwaOXdw?editors=0010">https://codepen.io/Wcc723/pen/VwaOXdw?editors=0010</a></p>
-<p>原始碼可參考如下，而本範例是使用基於 Promise 的 <a target="_blank" rel="noopener" href="https://github.com/axios/axios">axios</a> 套件，依據 Promise 的規則 <code>then</code> 是成功的流程，<code>catch</code> 則是失敗的流程，兩者在本範例中接有透過 <code>console.log</code> 呈現錯誤內容。</p>
-<pre><code class="hljs plaintext">function addToCart() &#123;
+<p>原始碼可參考如下，而本範例是使用基於 Promise 的 <a target="_blank" rel="noopener" href="https://github.com/axios/axios">axios</a> 套件，依據 Promise 的規則 <code>then</code> 是成功的流程，<code>catch</code> 則是失敗的流程，兩者在本範例中接有透過 <code>console.log</code> 呈現錯誤內容。<br><pre><code class="hljs plaintext">function addToCart() &#123;
   axios.post(path, data)
   // AJAX 成功的流程
   .then(res =&gt; &#123;
@@ -261,19 +260,17 @@
     console.log(error.response);
     showText(error.response, &#x27;POST 失敗&#x27;);
   &#125;);
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 <h4 id="422-流程錯誤"><a href="#422-流程錯誤" class="headerlink" title="422 流程錯誤"></a>422 流程錯誤</h4><p>在上述範例中，連續選擇 “新增兩次”，就會出現 422 的錯誤，打開 Chrome Devtools &gt; Console 就可以看到以下資訊，如果有在 <code>.catch</code> 內加入 <code>console.log()</code>  就可以看到回傳的錯誤訊息（該商品已放入購物車當中。），或者也可直接點擊該網址查看回應的錯誤。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_2_%E4%B8%8A%E5%8D%8810_37.png?alt=media&token=6e3863e1-b0b7-4331-b4ee-067fbe777a83"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_2_%E4%B8%8A%E5%8D%8810_37.png?alt=media&amp;token=6e3863e1-b0b7-4331-b4ee-067fbe777a83" alt=""></p>
 <p>Network 中可以看到狀態碼為 422，好在是前端可以解決的問題。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_2_%E4%B8%8A%E5%8D%8810_44.png?alt=media&token=f1d2d6df-9cfa-493c-9ee3-e63b9852eb13"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_2_%E4%B8%8A%E5%8D%8810_44.png?alt=media&amp;token=f1d2d6df-9cfa-493c-9ee3-e63b9852eb13" alt=""></p>
 <p>在 Preview 的分頁可以看到後端所回傳的訊息，此訊息會與 .catch 所看到的節果一致，這僅是流程上的錯誤，將此訊息告知使用者即可。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F754D22E5-C772-4ECA-A052-AB5EB8D56D30.png?alt=media&token=421e9967-72c8-4a57-9fb6-b43d447cc7eb"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F754D22E5-C772-4ECA-A052-AB5EB8D56D30.png?alt=media&amp;token=421e9967-72c8-4a57-9fb6-b43d447cc7eb" alt=""></p>
 <h4 id="401-未授權"><a href="#401-未授權" class="headerlink" title="401 未授權"></a>401 未授權</h4><p>接下來可以將原始碼中的路徑改為如下，此 API 是後台的的訂單列表，必須取得授權才能繼續進行。</p>
 <pre><code class="hljs plaintext">const path = `https://course-ec-api.hexschool.io/api/$&#123;uuid&#125;/admin/ec/orders`;</code></pre>
-
 <p>相同的流程下可以看到 <code>Unauthenticated.</code> 身份未驗證的提示，出現此錯誤請先依據 API 文件完成驗證流程；使用者端可導回登入、註冊頁面，請使用者重新驗證。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F57C727E0-AA6C-44D2-AE67-9F0AE96F691E.png?alt=media&token=222cc714-b556-4000-8e79-f3216c26325e"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F57C727E0-AA6C-44D2-AE67-9F0AE96F691E.png?alt=media&amp;token=222cc714-b556-4000-8e79-f3216c26325e" alt=""></p>
 <h2 id="與後端的配合"><a href="#與後端的配合" class="headerlink" title="與後端的配合"></a>與後端的配合</h2><p>隨著網頁應用越來越複雜，職務的分工也越來越多元，這樣的情況下不同領域的隔閡也會越加明顯，因此在開發過程中溝通就非常的重要。</p>
 <p>不過 “溝通” 並不是遇到問題就立即就開始建立溝通，而是需要有適當的準備，以本篇介紹的除錯概念來說，就是希望再與後端建立溝通以前，先了解問題點可能在哪，如果正確的方式都無法正確串接，再將遇到的問題與後端詢問。避免落入還沒有準備好就發問的狀態，這會讓雙方的關係產生不信任，對於長期的專案合作將有不良的影響。</p>
 </div>

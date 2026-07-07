@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"使用 GitHub Action 部署 Node.js 專案至虛擬主機上","datePublished":"2023-10-03T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.538Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2023/10/04/nodejs-github-action/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-o.jpeg?alt=media&token=70ca38c4-d431-448a-b8a8-ad47f57c2e96"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -231,10 +231,9 @@
 <h2 id="虛擬主機環境準備"><a href="#虛擬主機環境準備" class="headerlink" title="虛擬主機環境準備"></a>虛擬主機環境準備</h2><p>這是整個流程最複雜的地方，而本篇不會介紹 PM2 的安裝，如果不熟悉可以先參考我另一篇文章 <a href="/development/2023/10/03/unbuntu-and-pm2/">Ubuntu 虛擬主機部署 Node.js 服務，使用 PM2 服務管理</a>，會從零開始介紹 Ubuntu 環境建置、專案建置、PM2 管理。</p>
 <p>這段主要準備的是給予 GitHub Action 連線用的配置，主要是產生 SSH 金鑰，並將私鑰提供給 GitHub Action 使用，流程如下：</p>
 <h4 id="建立公私鑰，並加入到儲存庫的-secrets-中"><a href="#建立公私鑰，並加入到儲存庫的-secrets-中" class="headerlink" title="建立公私鑰，並加入到儲存庫的 secrets 中"></a>建立公私鑰，並加入到儲存庫的 secrets 中</h4><ol>
-<li>輸入以下指令以建立新的 SSH 私鑰。這裡使用的是 RSA 類型的金鑰（<a href="mailto:&#121;&#111;&#117;&#x72;&#x5f;&#101;&#x6d;&#97;&#x69;&#x6c;&#64;&#x65;&#x78;&#x61;&#109;&#x70;&#108;&#101;&#x2e;&#99;&#x6f;&#x6d;">your_email@example.com</a> 請替換為個人 Email）：</li>
+<li>輸入以下指令以建立新的 SSH 私鑰。這裡使用的是 RSA 類型的金鑰（<a href="mailto:your_email@example.com">your_email@example.com</a> 請替換為個人 Email）：</li>
 </ol>
 <pre><code class="hljs bash">ssh-keygen -t rsa -b 4096 -C <span class="hljs-string">&quot;your_email@example.com&quot;</span></code></pre>
-
 <ol start="2">
 <li><p>當提示您 <code>Enter a file in which to save the key</code>（輸入一個文件來保存鑰匙）時，只需按 Enter。這將會將私鑰保存在預設位置，即您的 home 目錄下的 <code>.ssh/id_rsa</code> 文件。</p>
 </li>
@@ -252,25 +251,24 @@
 </blockquote>
 <ol start="5">
 <li><p>接下來將公鑰加入至 Server 中</p>
-</li>
-<li><p><code>cat ~/.ssh/id_rsa.pub</code> 查看公鑰並複製</p>
-</li>
-<li><p>執行指令 <code>echo &#39;ssh-rsa AAAA...&#39; &gt;&gt; ~/.ssh/authorized_keys</code> 其中的 <code>&#39;ssh-rsa AAAA...&#39;</code> 替換成剛剛複製的公鑰</p>
+<ol>
+<li><code>cat ~/.ssh/id_rsa.pub</code> 查看公鑰並複製</li>
+<li>執行指令 <code>echo &#39;ssh-rsa AAAA...&#39; &gt;&gt; ~/.ssh/authorized_keys</code> 其中的 <code>&#39;ssh-rsa AAAA...&#39;</code> 替換成剛剛複製的公鑰</li>
+</ol>
 </li>
 <li><p>設置權限，讓他可以被讀取</p>
 </li>
 </ol>
 <pre><code class="hljs bash"><span class="hljs-built_in">chmod</span> 700 ~/.ssh
 <span class="hljs-built_in">chmod</span> 600 ~/.ssh/authorized_keys</code></pre>
-
 <h4 id="將-SSH-私鑰加入到儲存庫的-secrets-中"><a href="#將-SSH-私鑰加入到儲存庫的-secrets-中" class="headerlink" title="將 SSH 私鑰加入到儲存庫的 secrets 中"></a>將 SSH 私鑰加入到儲存庫的 secrets 中</h4><ol>
 <li>打開 GitHub 儲存庫，進入上方的 Settings，左側找到 Secrets and variables，展開選擇 Actions，然後按下 “New repository secret”，然後在虛擬主機上使用 <code>cat ~/.ssh/id_rsa</code> 查看並複製私鑰。</li>
 </ol>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-01.png?alt=media&token=4ce6b89d-235d-4dc0-bc84-7ecb0f953f84"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-01.png?alt=media&amp;token=4ce6b89d-235d-4dc0-bc84-7ecb0f953f84" alt=""></p>
 <ol start="2">
 <li>加入名稱 “DEPLOY_SSH_KEY” 然後把完整的私鑰加入。</li>
 </ol>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-02.png?alt=media&token=a9424a8d-8f36-4725-b482-f3f0d6f83bfd"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-02.png?alt=media&amp;token=a9424a8d-8f36-4725-b482-f3f0d6f83bfd" alt=""></p>
 <p>之後以此類推，只要需要加入 secrets 的地方，都可以使用此方式加入。</p>
 <h2 id="準備-GitHub-Action"><a href="#準備-GitHub-Action" class="headerlink" title="準備 GitHub Action"></a>準備 GitHub Action</h2><p>在專案中，建立資料夾 <code>.github/workflows</code>，並且建立 <code>deploy.yml</code> 檔案，內容如下：</p>
 <pre><code class="hljs yml"><span class="hljs-attr">name:</span> <span class="hljs-string">部署</span> <span class="hljs-string">PM2</span> <span class="hljs-string">專案</span>
@@ -322,16 +320,15 @@
 
       <span class="hljs-bullet">-</span> <span class="hljs-attr">name:</span> <span class="hljs-string">Restart</span> <span class="hljs-string">PM2</span>  <span class="hljs-comment"># 第八步，重啟 PM2</span>
         <span class="hljs-attr">run:</span> <span class="hljs-string">ssh</span> <span class="hljs-string">root@$&#123;&#123;</span> <span class="hljs-string">secrets.hostname</span> <span class="hljs-string">&#125;&#125;</span> <span class="hljs-string">&#x27;cd ~/website-sample/node-ironman-sample-2023/ &amp;&amp; pm2 restart www --update-env&#x27;</span>  <span class="hljs-comment"># 透過 SSH 連到虛擬主機，然後進到應用程式的目錄，並重啟所有 PM2 管理的應用程式</span></code></pre>
-
 <p>專案加入 GitHub Action 後，每次 push 就會觸發部署，並且會在 GitHub Action 中看到部署的狀態，如下圖</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-03.png?alt=media&token=fa331f44-c0d2-43d8-b7c0-1b126b547b23"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-03.png?alt=media&amp;token=fa331f44-c0d2-43d8-b7c0-1b126b547b23" alt=""></p>
 <p>如果成功會出現如下的綠色勾勾，並且可以點進去看到詳細的部署過程。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-04.png?alt=media&token=b5b132e9-97c8-43cf-9255-f7f59b66f52c"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-04.png?alt=media&amp;token=b5b132e9-97c8-43cf-9255-f7f59b66f52c" alt=""></p>
 <p>反之，當遇到錯誤，則會出現紅色的叉叉，並且可以點進去看到詳細的錯誤訊息。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-06.png?alt=media&token=d0b0c794-f9c1-4e18-9ec2-364f32e682d7"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-06.png?alt=media&amp;token=d0b0c794-f9c1-4e18-9ec2-364f32e682d7" alt=""></p>
 <h2 id="其他說明"><a href="#其他說明" class="headerlink" title="其他說明"></a>其他說明</h2><p>GitHub Action 是目前相當主流的自動化工具之一，只要是 GitHub 儲存庫都可以使用，而且可以部署各種語言的專案，例如 Node.js、Python、Java、Go、Ruby、PHP 等等，甚至可以使用 Docker 來進行部署，這邊只是介紹其中一種方式，如果有興趣可以參考 <a target="_blank" rel="noopener" href="https://docs.github.com/en/actions">GitHub Action 官方文件</a>。</p>
 <p>然而 GitHub Action 並非免費的服務，可以在個人設定 &gt; Billing and plans &gt; plans and usage 中找到相關的使用量及說明。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-05.png?alt=media&token=8ab5fcb4-b67e-4eda-a5fd-e1987ae40e3a"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fgithub-action-05.png?alt=media&amp;token=8ab5fcb4-b67e-4eda-a5fd-e1987ae40e3a" alt=""></p>
 </div>
 
   <div class="post-foot">

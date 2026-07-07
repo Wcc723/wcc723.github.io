@@ -32,7 +32,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CSS + html 冷知識","datePublished":"2014-05-22T16:00:00.000Z","dateModified":"2017-06-21T12:10:28.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2014/05/23/css-cold-knows/"}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="/css/style.css?v=mq954j70">
 
-<link href="/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
+<link href="https://img.casper.tw/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
@@ -155,7 +155,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -215,14 +215,14 @@
 
   <div class="prose"><p>CSS及HTML已經學了有段時間，但還有許多不清楚的點都會在(偶然)的情況下發現，而有些只是有趣，但有些發現，或許是以前忽略的，但在卻是那麼的實用…。</p>
 <span id="more"></span>
-
 <h2 id="label-不一定要配for"><a href="#label-不一定要配for" class="headerlink" title="label 不一定要配for"></a>label 不一定要配for</h2><p>再用sublime text 時，如果輸入label + tab，就會出現<code>&lt;label for=&quot;&quot;&gt;&lt;/label&gt;</code>，我也一直認為<code>&lt;label&gt;</code>裡面就是要有for，但<code>label</code>沒有for也可以call到指定的input。</p>
-<p><label> <input type="checkbox"/> This is a check box</label></p>
+<label> <input type="checkbox"/> This is a check box</label>
+
 <pre><code>&lt;label&gt; &lt;input type=&quot;checkbox&quot;&gt; This is a check box&lt;/label&gt;
-</code></pre>
-<p><em>上方的checkbox，只要點擊文字，就可以讓checkbox轉換為checked。</em></p>
+</code></pre><p><em>上方的checkbox，只要點擊文字，就可以讓checkbox轉換為checked。</em></p>
 <p>如上面的範例，label如果裡面有<code>input</code>，那麼點擊到input範圍，都可以focus到內部的input。</p>
-<p><label> <input type="checkbox"/> This is a check box <input type="checkbox"/> </label></p>
+<label> <input type="checkbox"/> This is a check box <input type="checkbox"/> </label>
+
 <p><strong>注意，兩個input就只會一個有效…。</strong></p>
 <h2 id="UTF-8-字符-也能作為class-name"><a href="#UTF-8-字符-也能作為class-name" class="headerlink" title="UTF-8 字符 也能作為class name"></a>UTF-8 字符 也能作為class name</h2><p>簡單來說，uff-8的小圖形也能作為class name。</p>
 
@@ -231,42 +231,37 @@
 	<div class="☯-power"> ☯ 神秘力量</div>
 </div>
 
-
 <p>HTML code</p>
 <pre><code>&lt;div class=&quot;demo d0524&quot;&gt;
-	&lt;div class=&quot;anti-☢&quot;&gt;核能 ☢ !?&lt;/div&gt;
-	&lt;div class=&quot;☯-power&quot;&gt; ☯ 神秘力量&lt;/div&gt;
+    &lt;div class=&quot;anti-☢&quot;&gt;核能 ☢ !?&lt;/div&gt;
+    &lt;div class=&quot;☯-power&quot;&gt; ☯ 神秘力量&lt;/div&gt;
 &lt;/div&gt;
-</code></pre>
-<p>Sass code</p>
+</code></pre><p>Sass code</p>
 <pre><code>//sass
 .anti-☢
-	color: orange
+    color: orange
 .☯-power
-	color: white
-	text-shadow: 0 0 3px black
-</code></pre>
-<h2 id="利用-before-來做垂直置中"><a href="#利用-before-來做垂直置中" class="headerlink" title="利用:before 來做垂直置中"></a>利用:before 來做垂直置中</h2><p>利用<code>inline-block</code>的特性來做到垂直置中，優點是支援before就可以，缺點是要置中的元素，也必須設定為<code>inline-block</code>。</p>
+    color: white
+    text-shadow: 0 0 3px black
+</code></pre><h2 id="利用-before-來做垂直置中"><a href="#利用-before-來做垂直置中" class="headerlink" title="利用:before 來做垂直置中"></a>利用:before 來做垂直置中</h2><p>利用<code>inline-block</code>的特性來做到垂直置中，優點是支援before就可以，缺點是要置中的元素，也必須設定為<code>inline-block</code>。</p>
 
 <div class="demo d0524 vertical">
 	<div>這段字想要垂直至中</div>
 </div>
 
-
 <p>Sass code</p>
 <pre><code>.vertical
-	height: 200px
-	border: orange 1px solid
-	&amp;:before
-		content: &quot;&quot;
-		display: inline-block
-		vertical-align: middle
-		width: 1px
-		height: 100%
-	div
-		display: inline-block
-</code></pre>
-</div>
+    height: 200px
+    border: orange 1px solid
+    &amp;:before
+        content: &quot;&quot;
+        display: inline-block
+        vertical-align: middle
+        width: 1px
+        height: 100%
+    div
+        display: inline-block
+</code></pre></div>
 
   <div class="post-foot">
     

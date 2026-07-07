@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/css/2016/12/10/gulp-init/2016_ironman/10_gulp_header.jpg">
 <meta property="article:published_time" content="2016-12-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T07:18:15.517Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.181Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="css">
 <meta property="article:tag" content="gulp">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/css/2016/12/10/gulp-init/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 10 - Gulp 與 Sass 開發環境","datePublished":"2016-12-09T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.517Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/10/gulp-init/","image":["https://www.casper.tw/2016_ironman/10_gulp_header.jpg"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 10 - Gulp 與 Sass 開發環境","datePublished":"2016-12-09T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.181Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/10/gulp-init/","image":["https://www.casper.tw/2016_ironman/10_gulp_header.jpg"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,7 +217,6 @@
 
   <div class="prose"><p>Gulp 是我目前最使用的自動化工具，在先前一篇也有介紹有哪些自動化工具，這篇開始會介紹 Gulp 自動化工具如何使用、有哪些推薦的工具以及一些經驗上的分享。而本次系列文都是著重在 CSS 的開發，所以不會介紹 Javascript 的自動化工具。</p>
 <span id="more"></span>
-
 <h2 id="Gulp-可以做什麼？"><a href="#Gulp-可以做什麼？" class="headerlink" title="Gulp 可以做什麼？"></a>Gulp 可以做什麼？</h2><p>Gulp 是一個前端任務管理工具，它可以做到如Fire.app、Prepros、Grunt等等所能做的事情，簡單內容如下：</p>
 <ul>
 <li>編譯 SASS、Coffeescript</li>
@@ -235,8 +234,6 @@
 <p>下載後，在 Terminal 打開這個專案，並輸入以下指令：</p>
 <pre><code class="hljs shell">npm install gulp -g
 npm install</code></pre>
-
-
 <p>這就是透過 npm 來安裝相關所需的套件，<code>npm install gulp -g</code> 會在全域環境下安裝 <code>gulp</code>，<code>npm install</code> 則是會安裝專案內的 <code>package.json</code> 所列出的需要元件。</p>
 <p>package json 如下，這範例中只會安裝 gulp、gulp-sass。</p>
 <pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span>
@@ -254,18 +251,15 @@ npm install</code></pre>
     <span class="hljs-attr">&quot;gulp-sass&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.3.2&quot;</span>
   <span class="hljs-punctuation">&#125;</span>
 <span class="hljs-punctuation">&#125;</span></code></pre>
-
 <p>接下來在執行：</p>
 <pre><code class="hljs shell">gulp sass</code></pre>
-
-<p><img src="/images/2016_ironman/10_gulp_sass_01.png"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/10_gulp_sass_01.png" alt=""></p>
 <p>執行後就會將 <code>source/scss/all.scss</code> 編譯到 <code>public/stylesheets/all.css</code> ，此時整個範例流程也就結束。</p>
 <h2 id="解說"><a href="#解說" class="headerlink" title="解說"></a>解說</h2><p>在一開始下載時檔案結構如下：</p>
 <pre><code class="hljs plaintext">|- /source/scss   # 專案資料夾 (sass 位置)
 |- .gitignore
 |- gulpfile.js    # gulp 腳本檔案
 |- package.json   # 套件管理 json</code></pre>
-
 <p>執行完以上步驟後，資料夾結構會如下，<code>node_modules</code> 是運行 gulp 的套件資料工具資料夾，<code>public</code> 就是前端匯出的專案資料夾，在這個範例中我們可以將 public 指定任何的資料夾名稱與後端結構配合。</p>
 <pre><code class="hljs plaintext">|- /source/scss   # 專案資料夾 (sass 位置)
 |- /mode_modules  # node.js 套件資料夾
@@ -273,8 +267,6 @@ npm install</code></pre>
 |- .gitignore
 |- gulpfile.js    # gulp 腳本檔案
 |- package.json   # 套件管理 json</code></pre>
-
-
 <p><code>gulpfile.js</code> 是整個 gulp 的核心，相當於一齣戲的劇本，開發者可以在腳本中定義自動化的運行流程，這邊用相當簡單的 gulp-sass 來介紹怎麼撰寫一份 gulpfile。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>);  <span class="hljs-comment">// 將 node_modules 的檔案載入</span>
 <span class="hljs-keyword">var</span> sass = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-sass&#x27;</span>);
@@ -291,7 +283,6 @@ gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#
   gulp.<span class="hljs-title function_">watch</span>(<span class="hljs-string">&#x27;./source/scss/**/*.scss&#x27;</span>, [<span class="hljs-string">&#x27;sass&#x27;</span>]); 
   <span class="hljs-comment">// 監控資料夾，當有變化時執行 &#x27;sass&#x27; 任務</span>
 &#125;);</code></pre>
-
 <blockquote>
 <p>範例中的 watch 資料夾有誤，請稍做調整如本文</p>
 </blockquote>

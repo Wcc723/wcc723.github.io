@@ -17,24 +17,24 @@
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="透過以上兩篇，基本上已經可以套用許多gulp的工具，而這篇要介紹的是gulp webserver，以及在不同環境使用gulp (mac OS, Windows)。">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.casper.tw/images/gulp/screen_shot_gulp-3-01.png">
+<meta property="og:image" content="https://img.casper.tw/images/gulp/screen_shot_gulp-3-01.png">
 <meta property="article:published_time" content="2014-11-05T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T03:49:13.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.175Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="gulp">
 <meta property="article:tag" content="nodejs">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.casper.tw/images/gulp/screen_shot_gulp-3-01.png">
+<meta name="twitter:image" content="https://img.casper.tw/images/gulp/screen_shot_gulp-3-01.png">
 <meta property="fb:app_id" content="556473851118881">
 
 
 <link rel="canonical" href="https://www.casper.tw/gulp/2014/11/06/gulp-on-diff-os/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Gulp webserver 以及在不同系統上運作 Gulp","datePublished":"2014-11-05T16:00:00.000Z","dateModified":"2016-10-13T03:49:13.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/gulp/2014/11/06/gulp-on-diff-os/","image":["https://www.casper.tw/images/gulp/screen_shot_gulp-3-01.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Gulp webserver 以及在不同系統上運作 Gulp","datePublished":"2014-11-05T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.175Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/gulp/2014/11/06/gulp-on-diff-os/","image":["https://img.casper.tw/images/gulp/screen_shot_gulp-3-01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,11 +217,9 @@
 
   <div class="prose"><p>透過以上兩篇，基本上已經可以套用許多gulp的工具，而這篇要介紹的是gulp webserver，以及在不同環境使用gulp (mac OS, Windows)。</p>
 <span id="more"></span>
-
 <h2 id="Gulp-web-server"><a href="#Gulp-web-server" class="headerlink" title="Gulp web server"></a>Gulp web server</h2><p>首先，先裝gulp-webserver，這一套已經包含許多功能，甚至livereload都已經含在內部。</p>
 <pre><code>npm install --save-dev gulp-webserver
-</code></pre>
-<p>一樣打開Gulpfile.js，加上以下js。</p>
+</code></pre><p>一樣打開Gulpfile.js，加上以下js。</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>),
 	concat = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-concat&#x27;</span>),
 	uglify = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-uglify&#x27;</span>),
@@ -239,36 +237,35 @@ gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#
 &#125;);
 
 gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#x27;default&#x27;</span>, [<span class="hljs-string">&#x27;coffee&#x27;</span>,<span class="hljs-string">&#x27;webserver&#x27;</span>,<span class="hljs-string">&#x27;watch&#x27;</span>]); <span class="hljs-comment">//加上web server</span></code></pre>
-
 <p>接下來一樣回到<code>terminal</code>，輸入<code>gulp</code>，就會直接打開web，webserver這一套直接可以auto refresh，而且在跨裝置的情況下一樣可行。</p>
 <blockquote>
 <p><strong>特別注意：如果有開啓其他有auto refresh的軟體，可能會造成其中一方auto refresh失效(EX:Fire.app)。</strong></p>
 </blockquote>
-<p><img src="/images/gulp/screen_shot_gulp-3-01.png" alt="&#x2F;images&#x2F;gulp&#x2F;screen_shot_gulp-3-01"></p>
+<p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-3-01.png" alt="/images/gulp/screen_shot_gulp-3-01"></p>
 <blockquote>
 <p>這時候修改index.html或者是其他檔案修改後都會自動refresh，也不需要額外安裝套件(所以沒有限定Chrome)。</p>
 </blockquote>
-<p><img src="/images/gulp/screen_shot_gulp-3-02.png"></p>
+<p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-3-02.png" alt=""></p>
 <blockquote>
 <p>接下來直接使用wifi的內網ip加上port，也可以直接瀏覽，這個網址直接複製到使用相同wifi的裝置上也是可行的。</p>
 </blockquote>
-<p><img src="/images/gulp/screen_shot_gulp-3-03.png"></p>
+<p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-3-03.png" alt=""></p>
 <blockquote>
 <p>修改內文也一樣，裝置上的網頁也會自動refresh。</p>
 </blockquote>
 <h2 id="在windows上執行Gulp"><a href="#在windows上執行Gulp" class="headerlink" title="在windows上執行Gulp"></a>在windows上執行Gulp</h2><p>先前的所有範例，都是在Mac上做範例，如果此時加入使用其他環境的開發該如何配合？且Git上如何管理？</p>
 <p>在剛剛所介紹的範例中，所有的gulp 套件都會安裝在<code>node_modules</code>這個資料夾內，只要透過package.json，就可以一個指令安裝回所有的套件。所以如果有使用git，就可以直接忽略這個資料夾，同理，在給其他開發者，也不需要這個資料夾。</p>
-<p><img src="/images/gulp/screen_shot_gulp-3-04.png"></p>
+<p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-3-04.png" alt=""></p>
 <blockquote>
 <p>將整個專案移到windows內(不需要<code>node_modules</code>資料夾)。</p>
 </blockquote>
-<p><img src="/images/gulp/screen_shot_gulp-3-05.png"></p>
+<p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-3-05.png" alt=""></p>
 <blockquote>
 <p>只需要保留gulpfile、package.json、app資料夾即可。</p>
 </blockquote>
-<p><img src="/images/gulp/screen_shot_gulp-3-06.png"></p>
+<p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-3-06.png" alt=""></p>
 <p>輸入npm install ，就可還原<code>node_modules</code>資料夾，接下來一樣執行<code>gulp</code>就可以運行了。</p>
-<p><img src="/images/gulp/screen_shot_gulp-3-07.png"></p>
+<p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-3-07.png" alt=""></p>
 <p>這樣就可以還原整個專案，且在不同作業系統都可以正常運作。</p>
 </div>
 

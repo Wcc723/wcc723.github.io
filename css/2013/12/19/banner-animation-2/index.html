@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/css/2013/12/19/banner-animation-2/2013-12-19-banner-01.png">
 <meta property="article:published_time" content="2013-12-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.167Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="css">
 <meta property="article:tag" content="sass">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/css/2013/12/19/banner-animation-2/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"效能更好的banner animation","datePublished":"2013-12-18T16:00:00.000Z","dateModified":"2017-06-21T12:10:28.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2013/12/19/banner-animation-2/","image":["https://www.casper.tw/2013-12-19-banner-01.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"效能更好的banner animation","datePublished":"2013-12-18T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.167Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2013/12/19/banner-animation-2/","image":["https://www.casper.tw/2013-12-19-banner-01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -215,8 +215,7 @@
     <div class="rule-d"></div>
   </header>
 
-  <div class="prose"><p>之前有一篇介紹利用background-position製作動態的banner，不久後就接到效能不好的問題，所以我就重新用另一種方式製作，發現效能有明顯的提升，也很有成就感，本篇就介紹不同的動態banner作法。</p>
-<span id="more"></span>
+  <div class="prose"><p>之前有一篇介紹利用background-position製作動態的banner，不久後就接到效能不好的問題，所以我就重新用另一種方式製作，發現效能有明顯的提升，也很有成就感，本篇就介紹不同的動態banner作法。<br><span id="more"></span></p>
 <h2 id="本篇重點"><a href="#本篇重點" class="headerlink" title="本篇重點"></a>本篇重點</h2><p>利用css transform的方式，去改善動態banner的效能。(由於本篇主要是CSS3，所以會用sass作範例。)</p>
 <h4 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h4><p><a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/full/wFrCn">iframe 連結</a></p>
 <iframe src="http://codepen.io/Wcc723/full/wFrCn" frameborder="0" height="320" width="100%"></iframe>
@@ -224,89 +223,85 @@
 <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>這是利用transform配合animation來進行位移。</p>
 <pre><code>+keyframes(&quot;banner-slider&quot;)
 //建立一個keyframe
-	from
-		+transform(translate3d(0, 0, 0))
-		//起始點
-	to
-		+transform(translate3d(image-width(&quot;banner-01.png&quot;), 0, 0))
-		//位移x，值為圖片的寬度
-</code></pre>
-<p>而如果直接套用，則會有另一個問題，就是圖片是位移了，但是不夠大。如下圖，紅框假設是使用者所見到的位置，淺色的部分是目前的圖片，黑色是期望有出現，但並沒有的顯示的圖片；因為這個問題，所以需要另外再補上一張圖片。</p>
-<p><img src="/images/2013-12-19-banner-01-2.png" alt="demo1"></p>
+    from
+        +transform(translate3d(0, 0, 0))
+        //起始點
+    to
+        +transform(translate3d(image-width(&quot;banner-01.png&quot;), 0, 0))
+        //位移x，值為圖片的寬度
+</code></pre><p>而如果直接套用，則會有另一個問題，就是圖片是位移了，但是不夠大。如下圖，紅框假設是使用者所見到的位置，淺色的部分是目前的圖片，黑色是期望有出現，但並沒有的顯示的圖片；因為這個問題，所以需要另外再補上一張圖片。</p>
+<p><img src="https://img.casper.tw/images/2013-12-19-banner-01-2.png" alt="demo1"></p>
 <p>在這邊我是利用偽元素<code>:pseudo-element</code>來複製出所需要的圖片，目的就是要在目前的左方先補上一張相同的圖片。</p>
-<p><img src="/images/2013-12-19-banner-01.png" alt="demo2"></p>
+<p><img src="https://img.casper.tw/images/2013-12-19-banner-01.png" alt="demo2"></p>
 <h2 id="製作"><a href="#製作" class="headerlink" title="製作"></a>製作</h2><p>由於製作方式不同，所以html的結構也有所改變，目前的html如下。</p>
 <pre><code>&lt;div class=&quot;banner&quot;&gt;
 &lt;div class=&quot;banner-wrap&quot;&gt;
-	&lt;span&gt;&lt;/span&gt;
+    &lt;span&gt;&lt;/span&gt;
 &lt;/div&gt;
 &lt;/div&gt;
-</code></pre>
-<ol>
-<li>class&#x3D;”banner” 主要是用來定位，以及裁切多餘的部分</li>
-<li>class&#x3D;”banner-wrap” 主要用來做動畫</li>
+</code></pre><ol>
+<li>class=”banner” 主要是用來定位，以及裁切多餘的部分</li>
+<li>class=”banner-wrap” 主要用來做動畫</li>
 <li>span 圖片的位置</li>
 </ol>
 <h3 id="Sass"><a href="#Sass" class="headerlink" title="Sass"></a>Sass</h3><p>首先製作keyframe的部分</p>
 <pre><code>//由於compass 目前沒有animation，所以可以自己做animation的功能
 =keyframes($name) //keyframes @mixin
-	@-webkit-keyframes #{$name}
-		@content
-	@-moz-keyframes #{$name}
-		@content
-	@-ms-keyframes #{$name}
-		@content
-	@keyframes #{$name}
-		@content
+    @-webkit-keyframes #{$name}
+        @content
+    @-moz-keyframes #{$name}
+        @content
+    @-ms-keyframes #{$name}
+        @content
+    @keyframes #{$name}
+        @content
 
 =animation($content) //animation @mixin
-	-webkit-animation: $content
-	-moz-animation: $content
-	-o-animation: $content
-	animation: $content
+    -webkit-animation: $content
+    -moz-animation: $content
+    -o-animation: $content
+    animation: $content
 
 +keyframes(&quot;banner-slider&quot;)
 //建立一個keyframe
-	from
-		+transform(translate3d(0, 0, 0))
-		//起始點
-	to
-		+transform(translate3d(image-width(&quot;banner-01.png&quot;), 0, 0))
-		//位移x，值為圖片的寬度
+    from
+        +transform(translate3d(0, 0, 0))
+        //起始點
+    to
+        +transform(translate3d(image-width(&quot;banner-01.png&quot;), 0, 0))
+        //位移x，值為圖片的寬度
 
 //這部分我原本是用translate3d去做
 //後來改成2D效果及效能也是差不多的
-</code></pre>
-<p>class的樣式如下</p>
+</code></pre><p>class的樣式如下</p>
 <pre><code>.banner
-	position: relative
-	min-height: $headerHeight
-	width: 100%
-	overflow: hidden //超出範圍的部分不顯示
+    position: relative
+    min-height: $headerHeight
+    width: 100%
+    overflow: hidden //超出範圍的部分不顯示
 
-	.banner-wrap
-		+animation(banner-slider 180s infinite linear)
-		//載入剛剛的動畫keyframe
+    .banner-wrap
+        +animation(banner-slider 180s infinite linear)
+        //載入剛剛的動畫keyframe
 
-	span,span:after //span以及其偽元素的樣式
-		display: block
-		min-height: $headerHeight
-		width: 100%
-		background: image-url(&quot;banner-01.png&quot;) top left repeat-x
-		//top left的功能是要讓圖片從左邊開始
+    span,span:after //span以及其偽元素的樣式
+        display: block
+        min-height: $headerHeight
+        width: 100%
+        background: image-url(&quot;banner-01.png&quot;) top left repeat-x
+        //top left的功能是要讓圖片從左邊開始
 
-	span:after //補上偽元素所需要的屬性
-		background-position: top right
-		//偽元素從右邊開始，使其可以左右相接
-		content: &quot;&quot;
-		+transform(translate(-100%, 0))
-		//將偽元素移到目前位置左方
-</code></pre>
-<h2 id="效能"><a href="#效能" class="headerlink" title="效能"></a>效能</h2><p>原本的background-position作法我在測試時都是用不太差的桌上型主機做測試，所以完全沒注意到效能的問題，但經過反映以後，利用chrome去測試，效能真的不好。</p>
+    span:after //補上偽元素所需要的屬性
+        background-position: top right
+        //偽元素從右邊開始，使其可以左右相接
+        content: &quot;&quot;
+        +transform(translate(-100%, 0))
+        //將偽元素移到目前位置左方
+</code></pre><h2 id="效能"><a href="#效能" class="headerlink" title="效能"></a>效能</h2><p>原本的background-position作法我在測試時都是用不太差的桌上型主機做測試，所以完全沒注意到效能的問題，但經過反映以後，利用chrome去測試，效能真的不好。</p>
 <p>background-position的效能</p>
-<p><img src="/images/2013-12-19_095400.png" alt="background-position"></p>
+<p><img src="https://img.casper.tw/images/2013-12-19_095400.png" alt="background-position"></p>
 <p>transform的效能(幾乎沒有感覺啊!!)</p>
-<p><img src="/images/2013-12-19_110135.png" alt="transform"></p>
+<p><img src="https://img.casper.tw/images/2013-12-19_110135.png" alt="transform"></p>
 <p>本篇是用sass做介紹，如果想了解所產生的css，可以參考<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/wFrCn">http://codepen.io/Wcc723/pen/wFrCn</a>。</p>
 </div>
 

@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：ES6 解構賦值","datePublished":"2017-12-24T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.524Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/25/javascript-destructuring/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,7 +217,7 @@
   </header>
 
   <div class="prose"><p>解構賦值這是在 MDN 文件上的翻譯名詞，如果簡單來說他是個語法糖，讓我們在寫 物件、陣列 的時候可以使用縮寫來達到相同的效果，了解其中的規則再運用上最會很便利，且可以有效增加閱讀性 (程式碼短非常多)。</p>
-<p>解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&token=47b8a9d0-f8fb-4de7-b114-32f96e53e478"></p>
+<p>解構賦值可以想像是鏡子的概念，將右方的資料往左邊送，然後會一個位置對一個值 (但沒有像鏡子左右顛倒)。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_22.jpg?alt=media&amp;token=47b8a9d0-f8fb-4de7-b114-32f96e53e478" alt=""></p>
 <h2 id="陣列"><a href="#陣列" class="headerlink" title="陣列"></a>陣列</h2><p>解構賦值就像是鏡子一樣，將值從右邊鏡射到左邊，所以左邊的陣列基本上就是從右方一個一個對映。因此右方的的五個值(字串)直接對應左方陣列的五個變數。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> family = [<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;阿姨&#x27;</span>, <span class="hljs-string">&#x27;老媽&#x27;</span>, <span class="hljs-string">&#x27;老爸&#x27;</span>];
 <span class="hljs-keyword">let</span> ming = family[<span class="hljs-number">0</span>];
@@ -226,30 +226,25 @@
 <span class="hljs-comment">// ... 略</span>
 
 <span class="hljs-keyword">let</span> [ming, jay, auntie, mom, papa] = family;</code></pre>
-
 <p>如果遇到空的變數，這些值也會跳過。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> family = [<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;阿姨&#x27;</span>, <span class="hljs-string">&#x27;老媽&#x27;</span>, <span class="hljs-string">&#x27;老爸&#x27;</span>];
 <span class="hljs-keyword">let</span> [ming, , , mom, papa] = family;
 <span class="hljs-comment">// ming: 小明</span>
 <span class="hljs-comment">// mom: 老媽</span>
 <span class="hljs-comment">// papa: 老爸</span></code></pre>
-
 <p>如果左方多於右方，左方的變數會出現 <code>undefined</code>。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> family = [<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;阿姨&#x27;</span>, <span class="hljs-string">&#x27;老媽&#x27;</span>, <span class="hljs-string">&#x27;老爸&#x27;</span>];
 <span class="hljs-keyword">let</span> [, , , , , who] = family;
 <span class="hljs-comment">// who: undefined</span></code></pre>
-
 <p>至於傳值是否有順序性，在這個範例中直接將右邊的變數交換到左邊，可以看到是<strong>同時</strong>交換變數，所以在互換變數值時是非常方便的。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> <span class="hljs-title class_">Goku</span> = <span class="hljs-string">&#x27;悟空&#x27;</span>;
 <span class="hljs-keyword">let</span> <span class="hljs-title class_">Ginyu</span> = <span class="hljs-string">&#x27;基紐&#x27;</span>;
 [<span class="hljs-title class_">Goku</span>, <span class="hljs-title class_">Ginyu</span>] = [<span class="hljs-title class_">Ginyu</span>, <span class="hljs-title class_">Goku</span>];
 <span class="hljs-comment">// Goku: &#x27;基紐&#x27;</span>
 <span class="hljs-comment">// Ginyu: &#x27;悟空&#x27;</span></code></pre>
-
 <p>遇到字串則會將字串拆解成一個一個字元，賦予到左方的變數上。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> str = <span class="hljs-string">&#x27;基紐特攻隊&#x27;</span>;
 [a, b, c, d, e] = str;</code></pre>
-
 <h2 id="物件解構"><a href="#物件解構" class="headerlink" title="物件解構"></a>物件解構</h2><p>物件解構也是和陣列解構有著相同的概念，只不過陣列是使用順序的索引值對應，但物件則是使用物件的屬性名稱來做對應(因此沒有順序性)。在以下範例則是快速將物件值解構在變數上。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> family = &#123;
   <span class="hljs-attr">ming</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
@@ -264,7 +259,6 @@
 <span class="hljs-keyword">let</span> &#123; ming, jay &#125; = family
 <span class="hljs-comment">// ming: 小明</span>
 <span class="hljs-comment">// jay: 杰倫</span></code></pre>
-
 <p>而物件的解構方法，還能重新賦予變數的名稱，如以下 <code>Ginyu</code> 在取得值後，將變數名稱改為 <code>Goku</code>，因此 <code>Goku === &#39;基紐&#39;</code>。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> <span class="hljs-title class_">GinyuTeam</span> = &#123;
   <span class="hljs-title class_">Ginyu</span>: <span class="hljs-string">&#x27;基紐&#x27;</span>,
@@ -274,11 +268,8 @@
 &#125;
 <span class="hljs-keyword">let</span> &#123; <span class="hljs-title class_">Ginyu</span>: <span class="hljs-title class_">Goku</span> &#125; = <span class="hljs-title class_">GinyuTeam</span>;
 <span class="hljs-comment">// Goku: &#x27;基紐&#x27;</span></code></pre>
-
-<h3 id="混合使用"><a href="#混合使用" class="headerlink" title="混合使用"></a>混合使用</h3><p>相同的觀念，只要了解以上的觀念，這題也能了解到最終會產生怎樣的變數。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">let</span> &#123; <span class="hljs-attr">ming</span>: <span class="hljs-title class_">Goku</span>, <span class="hljs-attr">family</span>: [, mom] &#125; = &#123; <span class="hljs-attr">ming</span>: <span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-attr">family</span>: [<span class="hljs-string">&#x27;阿姨&#x27;</span>, <span class="hljs-string">&#x27;老媽&#x27;</span>, <span class="hljs-string">&#x27;老爸&#x27;</span>] &#125;
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Goku</span>, mom); <span class="hljs-comment">// 請問答案是什麼？</span></code></pre>
-
+<h3 id="混合使用"><a href="#混合使用" class="headerlink" title="混合使用"></a>混合使用</h3><p>相同的觀念，只要了解以上的觀念，這題也能了解到最終會產生怎樣的變數。<br><pre><code class="hljs js"><span class="hljs-keyword">let</span> &#123; <span class="hljs-attr">ming</span>: <span class="hljs-title class_">Goku</span>, <span class="hljs-attr">family</span>: [, mom] &#125; = &#123; <span class="hljs-attr">ming</span>: <span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-attr">family</span>: [<span class="hljs-string">&#x27;阿姨&#x27;</span>, <span class="hljs-string">&#x27;老媽&#x27;</span>, <span class="hljs-string">&#x27;老爸&#x27;</span>] &#125;
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Goku</span>, mom); <span class="hljs-comment">// 請問答案是什麼？</span></code></pre></p>
 <p>說明：</p>
 <ul>
 <li><code>ming</code> 取得右方的 ‘小明’ 後，將變數名稱改為 <code>Goku</code></li>
@@ -289,11 +280,9 @@
 <span class="hljs-comment">// 第一個會被賦值，第二個會用預設</span>
 <span class="hljs-comment">// ming: &quot;阿明&quot;</span>
 <span class="hljs-comment">// jay: &quot;杰倫&quot;</span></code></pre>
-
 <p>物件的預設值也是相同的概念。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> &#123; <span class="hljs-attr">family</span>: ming = <span class="hljs-string">&#x27;小明&#x27;</span> &#125; = &#123;&#125;
 <span class="hljs-comment">// ming: &#x27;小明&#x27;</span></code></pre>
-
 <h2 id="函式"><a href="#函式" class="headerlink" title="函式"></a>函式</h2><p>除了以上的方法外，解構也能使用在函式的參數，使用方式如同將傳入的物件對應到函式參數上。這樣參數一樣能夠能夠自訂變數名稱、順序、預設值等。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">callSomeone</span> (<span class="hljs-params">&#123;person = <span class="hljs-string">&#x27;小明&#x27;</span>, person2&#125;</span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;person&#125;</span> 呼叫 <span class="hljs-subst">$&#123;person2&#125;</span>`</span>)
@@ -303,7 +292,6 @@
 <span class="hljs-title function_">callSomeone</span>(&#123; <span class="hljs-attr">person2</span>: <span class="hljs-string">&#x27;阿姨&#x27;</span> &#125;); <span class="hljs-comment">// 小明 呼叫 阿姨</span>
 <span class="hljs-title function_">callSomeone</span>(&#123; <span class="hljs-attr">person2</span>: <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-attr">person</span>: <span class="hljs-string">&#x27;啊罵&#x27;</span> &#125;); <span class="hljs-comment">// 啊罵 呼叫 杰倫</span>
 <span class="hljs-title function_">callSomeone</span>(&#123;&#125;); <span class="hljs-comment">// 小明 呼叫 undefined</span></code></pre>
-
 </div>
 
   <div class="post-foot">

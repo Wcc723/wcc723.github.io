@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"純 CSS 毛玻璃特效 - backdrop-filter 屬性介紹","datePublished":"2020-10-11T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.535Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/12/frosted-glass/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_27.jpg?alt=media&token=1249e1f4-1fb9-48e7-a4b5-c450022a46dc"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -244,11 +244,9 @@
 }
 </style>
 
-
 <p>這是本文會使用到的圖片，圖片來自於 Unsplash，如果失連歡迎與我聯絡。</p>
 
 <img no-lazy src="https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80" alt=""> 
-
 
 <h2 id="偽元素-Filter-的做法"><a href="#偽元素-Filter-的做法" class="headerlink" title="偽元素 + Filter 的做法"></a>偽元素 + Filter 的做法</h2><p>在新的語法推出以前，純 CSS 製作毛玻璃特效僅有此方法，原理：</p>
 <ol>
@@ -256,8 +254,7 @@
 <li>上層區塊內的圖片尺寸需超過該區塊</li>
 <li>將區塊內的圖片轉為模糊</li>
 </ol>
-<p>原始碼及說明：</p>
-<pre><code class="hljs css"><span class="hljs-selector-class">.filter</span><span class="hljs-selector-class">.box</span> &#123;
+<p>原始碼及說明：<br><pre><code class="hljs css"><span class="hljs-selector-class">.filter</span><span class="hljs-selector-class">.box</span> &#123;
   <span class="hljs-attribute">position</span>: relative;
   <span class="hljs-comment">/* 裁切多餘區域 */</span>
   <span class="hljs-attribute">overflow</span>: hidden;
@@ -278,8 +275,7 @@
   <span class="hljs-comment">/* 加入模糊 */</span>
   <span class="hljs-attribute">filter</span>: <span class="hljs-built_in">blur</span>(<span class="hljs-number">5px</span>);
   <span class="hljs-attribute">z-index</span>: -<span class="hljs-number">1</span>;
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 
 <style>
 .filter.box {
@@ -310,16 +306,12 @@
   </div>
 </div>
 
-
 <p>這個手法兩層的圖片必須完全相同，所以作為背景的區塊無法有任何的其它元素。</p>
 <h2 id="backdrop-filter，一行就能搞定"><a href="#backdrop-filter，一行就能搞定" class="headerlink" title="backdrop-filter，一行就能搞定"></a>backdrop-filter，一行就能搞定</h2><p>在 Chrome 76 版加入的新屬性 <code>backdrop-filter</code>，此屬性能夠將區塊內的背景統一加入特效，此語法就不需要用到偽元素，僅需要短短的一行即可搞定。</p>
-<p>範例程式碼（就這樣而已）：</p>
-<pre><code class="hljs css"><span class="hljs-selector-class">.backdrop-blur</span> &#123;
+<p>範例程式碼（就這樣而已）：<br><pre><code class="hljs css"><span class="hljs-selector-class">.backdrop-blur</span> &#123;
   <span class="hljs-attribute">backdrop-filter</span>: <span class="hljs-built_in">blur</span>(<span class="hljs-number">5px</span>);
-&#125;</code></pre>
-
-<p>實際範例，不管背景圖如何，區塊內的 <code>backdrop-filter</code> 都能夠將背景加入特效。</p>
-
+&#125;</code></pre></p>
+<p>實際範例，不管背景圖如何，區塊內的 <code>backdrop-filter</code> 都能夠將背景加入特效。<br>
 <style>
 .backdrop-blur {
   backdrop-filter: blur(5px);
@@ -331,8 +323,7 @@
     毛玻璃特效 by backdrop-filter
   </div>
 </div>
-
-
+</p>
 <p><code>backdrop-filter</code> 具有許多特點，除了能夠將圖片加上特效外，更嚴格來說它是將<strong>整個區塊的下層</strong>加上特效，只要在套用的區塊下都能運作。以下範例來說，於底部加上了一段文字，在 <code>hover</code> 後的視覺效果也能套用 <code>backdrop-filter</code> 的特效（在此使用 <code>invert</code>）。</p>
 <pre><code class="hljs css">&lt;style&gt;
 <span class="hljs-selector-class">.backdrop-invert</span> &#123;
@@ -342,7 +333,6 @@
   <span class="hljs-attribute">background-color</span>: <span class="hljs-built_in">rgba</span>(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, .<span class="hljs-number">25</span>);
   <span class="hljs-attribute">backdrop-filter</span>: <span class="hljs-built_in">invert</span>(<span class="hljs-number">80%</span>);
 &#125;</code></pre>
-
 
 <style>
 .absolute {
@@ -369,7 +359,6 @@
     請用滑鼠 Hover 過此區塊 
   </div>
 </div>
-
 
 <h2 id="更多-backdrop-filter"><a href="#更多-backdrop-filter" class="headerlink" title="更多 backdrop-filter"></a>更多 backdrop-filter</h2><p><code>backdrop-filter</code> 除了毛玻璃以外，亦有包含非常多的特效（就如同 Photoshop 一樣），語法列表如下：</p>
 <ul>

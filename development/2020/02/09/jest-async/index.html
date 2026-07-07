@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"單元測試 - 非同步及 Ajax","datePublished":"2020-02-08T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.531Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/02/09/jest-async/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-jest-async.png?alt=media&token=93d54d69-2808-4f8a-91df-c84dd2f9629a"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -220,19 +220,14 @@
 <p>另外，現在的非同步大多都使用 Promise 來撰寫，包含 ES6 的 Fetch 及許多遠端請求的套件亦是使用 Promise 作為基礎。因此在撰寫 Jest 撰寫非同步測試時也會使用到相關的概念，至於 Promise 可參考 <a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/12/29/javascript-proimse/">使用 Promise 處理非同步</a></p>
 <h2 id="範例函式"><a href="#範例函式" class="headerlink" title="範例函式"></a>範例函式</h2><p>這次的測試目標是使用 Ajax Get 取得遠端資料，並且確保遠端的資料是符合預期的。<a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/">JSONPlaceholder</a> 此服務可以供前端模擬 Ajax 行為，包含 GET、POST、PUT、DELETE 都可以練習，同時也可以使用 id 的方式取得固定的資料內容。</p>
 <p>使用的遠端資料 API 路徑（最後一個數字則是 id，可確保取得固定資料）：<br><a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/todos/1">https://jsonplaceholder.typicode.com/todos/1</a></p>
-<p>該路徑取得的格式及值如下，本次將會驗證 <code>title</code> 的值是否為 “delectus aut autem”：</p>
-<pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span>
+<p>該路徑取得的格式及值如下，本次將會驗證 <code>title</code> 的值是否為 “delectus aut autem”：<br><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span>
   userId<span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   id<span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span>
   title<span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;delectus aut autem&quot;</span><span class="hljs-punctuation">,</span>
   completed<span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span>
-<span class="hljs-punctuation">&#125;</span></code></pre>
-
-<p>除此之外，我們還會使用 axios 此套件來取得遠端資料，這是一個基於 Promise 開發的 HTTP 請求工具，可運用於瀏覽器或 Node.js 上（<a target="_blank" rel="noopener" href="https://github.com/axios/axios">axios</a>），使用以下指令安裝 axios：</p>
-<pre><code class="hljs plaintext">npm install axios</code></pre>
-
-<p>接下來在範例專案引入 axios，並且取得遠端資料。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> axios = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;axios&#x27;</span>);
+<span class="hljs-punctuation">&#125;</span></code></pre></p>
+<p>除此之外，我們還會使用 axios 此套件來取得遠端資料，這是一個基於 Promise 開發的 HTTP 請求工具，可運用於瀏覽器或 Node.js 上（<a target="_blank" rel="noopener" href="https://github.com/axios/axios">axios</a>），使用以下指令安裝 axios：<br><pre><code class="hljs plaintext">npm install axios</code></pre></p>
+<p>接下來在範例專案引入 axios，並且取得遠端資料。<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> axios = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;axios&#x27;</span>);
 
 <span class="hljs-keyword">const</span> fns = &#123;
   <span class="hljs-attr">fetchData</span>: <span class="hljs-function">(<span class="hljs-params">num = <span class="hljs-number">1</span></span>) =&gt;</span> &#123;
@@ -241,27 +236,18 @@
       .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> res.<span class="hljs-property">data</span>)
       .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> <span class="hljs-string">&#x27;error&#x27;</span>);
   &#125;
-&#125;</code></pre>
-
-<p>如果透過 <code>console.log()</code> 檢視此段函式，可以發現他所回傳的是 Promise 函式，並非遠端的值。</p>
-<pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(fns.<span class="hljs-title function_">fetchData</span>())</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2F11509BFB-F255-4C09-8A79-F12EDB14D609.png?alt=media&token=0c0b0157-1e19-4e20-b5ff-ab25a86309e7"></p>
-<p>如果要正確取得遠端值，則必需使用 <code>then</code> 這個方法。</p>
-<pre><code class="hljs js">fn.<span class="hljs-title function_">fetchData</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
+&#125;</code></pre></p>
+<p>如果透過 <code>console.log()</code> 檢視此段函式，可以發現他所回傳的是 Promise 函式，並非遠端的值。<br><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(fns.<span class="hljs-title function_">fetchData</span>())</code></pre></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2F11509BFB-F255-4C09-8A79-F12EDB14D609.png?alt=media&amp;token=0c0b0157-1e19-4e20-b5ff-ab25a86309e7" alt=""></p>
+<p>如果要正確取得遠端值，則必需使用 <code>then</code> 這個方法。<br><pre><code class="hljs js">fn.<span class="hljs-title function_">fetchData</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">res</span> =&gt;</span> &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res);
-&#125;);</code></pre>
-
-
-
+&#125;);</code></pre></p>
 <h2 id="錯誤範例"><a href="#錯誤範例" class="headerlink" title="錯誤範例"></a>錯誤範例</h2><p>JavaScript 特性是同步的，它會依序執行所有的程式碼，但遇到「非同步的事件」則會將事件移動到事件佇列內最後執行。因此，測試的預期結果如果是直接放到非同步的後方，則會無法正確取得資料。</p>
 <p>以下範例來說：</p>
 <ol>
 <li><code>fn.fetchData(1)</code> 是屬於非同步事件，因此<strong>會最後才執行</strong>。</li>
 <li>因為 fn.fetchData(1)  是最後執行，所以 <code>expect(data.title)</code> 中的 data 是一開始定義的 <code>{}</code></li>
-<li>所以結果必定為 <code>failed</code>（<code>fn.fetchData(1)</code> 不可能先執行完）。</li>
-</ol>
-<pre><code class="hljs js"><span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;should 返回值必定為 &quot;delectus aut autem&quot;（沒有正確套用 Promise）&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+<li>所以結果必定為 <code>failed</code>（<code>fn.fetchData(1)</code> 不可能先執行完）。<pre><code class="hljs js"><span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;should 返回值必定為 &quot;delectus aut autem&quot;（沒有正確套用 Promise）&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;
   <span class="hljs-comment">// 非同步必定需要加上 return，才能正確驗證結果</span>
   <span class="hljs-keyword">let</span> data = &#123;&#125;;
   
@@ -273,12 +259,11 @@
   <span class="hljs-title function_">expect</span>(data.<span class="hljs-property">title</span>).<span class="hljs-title function_">toEqual</span>(<span class="hljs-string">&#x27;delectus aut autem&#x27;</span>);
 &#125;);
 </code></pre>
-
-
+</li>
+</ol>
 <h2 id="非同步"><a href="#非同步" class="headerlink" title="非同步"></a>非同步</h2><p>Promise 是常見的非同步的方法，基於 Promise 上還可以使用 Async、Await，這兩種寫法在 Node.js 中都可以運行，因此也都可以導入 Jest 中撰寫。</p>
 <h3 id="使用-Promise"><a href="#使用-Promise" class="headerlink" title="使用 Promise"></a>使用 Promise</h3><p>由於上述提到 <code>fn.fetchData</code> 會直接回傳 Promise 函式，Promise 執行完後回傳的值則必須使用 then 來取出，測試的期望及匹配也就必須寫在 then 之內，確保 Promise 已經執行完成。</p>
-<p>所以只要將先前範例中的 <code>expect()</code> 移動到 <code>then</code> 內部基本上就能運作。</p>
-<pre><code class="hljs js"><span class="hljs-comment">// 非同步：Promise 寫法</span>
+<p>所以只要將先前範例中的 <code>expect()</code> 移動到 <code>then</code> 內部基本上就能運作。<br><pre><code class="hljs js"><span class="hljs-comment">// 非同步：Promise 寫法</span>
 <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;should 返回值必定為 &quot;delectus aut autem&quot;&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;
   <span class="hljs-comment">// 斷言，確保非同步有正確取得資料</span>
   expect.<span class="hljs-title function_">assertions</span>(<span class="hljs-number">1</span>);
@@ -288,23 +273,18 @@
   <span class="hljs-keyword">return</span> fn.<span class="hljs-title function_">fetchData</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> &#123;
     <span class="hljs-title function_">expect</span>(data.<span class="hljs-property">title</span>).<span class="hljs-title function_">toEqual</span>(<span class="hljs-string">&#x27;delectus aut autem&#x27;</span>);
   &#125;)
-&#125;);</code></pre>
-
-<h3 id="斷言"><a href="#斷言" class="headerlink" title="斷言"></a>斷言</h3><p>在前面的範例中，如果移除 <code>expect.assertions</code> 還是可以正確運作，而 <code>assertions</code> 的目的是確保有完整取得 Promise 資料，可以將程式碼改為如下將得到不同結果：</p>
-<pre><code class="hljs js"><span class="hljs-comment">// 此段範例中，Promise 直接進入 Catch 則會通過驗證</span>
+&#125;);</code></pre></p>
+<h3 id="斷言"><a href="#斷言" class="headerlink" title="斷言"></a>斷言</h3><p>在前面的範例中，如果移除 <code>expect.assertions</code> 還是可以正確運作，而 <code>assertions</code> 的目的是確保有完整取得 Promise 資料，可以將程式碼改為如下將得到不同結果：<br><pre><code class="hljs js"><span class="hljs-comment">// 此段範例中，Promise 直接進入 Catch 則會通過驗證</span>
 <span class="hljs-comment">// 因為 catch 回傳的 &#x27;error&#x27; 與期望值一致</span>
 <span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;assertions 驗證&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;
   <span class="hljs-keyword">return</span> fn.<span class="hljs-title function_">fetchData</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> <span class="hljs-title function_">expect</span>(e).<span class="hljs-title function_">toMatch</span>(<span class="hljs-string">&#x27;error&#x27;</span>));
-&#125;);</code></pre>
-
+&#125;);</code></pre></p>
 <p>如果要確保程式碼正確取得 Promise Resolve 的結果，就可以使用 <code>expect.assertions(num)</code>（num 表示斷言的數量）。</p>
-<p>當補上 <code>expect.assertions(1)</code> 就必須使用 resolve 的結果才能通過驗證，<code>expect.assertions</code> 在 async 的寫法上也會更顯得重要。 </p>
-<pre><code class="hljs js"><span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;assertions 驗證&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;
+<p>當補上 <code>expect.assertions(1)</code> 就必須使用 resolve 的結果才能通過驗證，<code>expect.assertions</code> 在 async 的寫法上也會更顯得重要。<br><pre><code class="hljs js"><span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;assertions 驗證&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;
   expect.<span class="hljs-title function_">assertions</span>(<span class="hljs-number">1</span>);
 
   <span class="hljs-keyword">return</span> fn.<span class="hljs-title function_">fetchData</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">e</span> =&gt;</span> <span class="hljs-title function_">expect</span>(e).<span class="hljs-title function_">toMatch</span>(<span class="hljs-string">&#x27;error&#x27;</span>));
-&#125;);</code></pre>
-
+&#125;);</code></pre></p>
 <h3 id="使用-ES6-Async-Await"><a href="#使用-ES6-Async-Await" class="headerlink" title="使用 ES6 Async, Await"></a>使用 ES6 Async, Await</h3><p>JavaScript 特性是同步的，它會依序執行所有的程式碼。但在 ES6 中，只要將函式轉為 Async 函式，就可以使用 <code>await</code> 來接受 Promise 回傳的結果，相對於 Promise 來說，await 不需要另外使用 then 或函式的巢狀結構，並且會<strong>依序執行</strong> Promise 的事件，也因為這個特性使非同步原始碼不需要寫得很 “巢”。</p>
 <pre><code class="hljs js"><span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;should 回傳值必定為 &quot;delectus aut autem&quot;（async）&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; &#123;
   expect.<span class="hljs-title function_">assertions</span>(<span class="hljs-number">1</span>);
@@ -313,7 +293,6 @@
   <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> fn.<span class="hljs-title function_">fetchData</span>(<span class="hljs-number">1</span>);
   <span class="hljs-title function_">expect</span>(data.<span class="hljs-property">title</span>).<span class="hljs-title function_">toEqual</span>(<span class="hljs-string">&#x27;delectus aut autem&#x27;</span>);
 &#125;);</code></pre>
-
 <h3 id="驗證特定屬性是否存在"><a href="#驗證特定屬性是否存在" class="headerlink" title="驗證特定屬性是否存在"></a>驗證特定屬性是否存在</h3><p>除此之外，遠端資料相對於本地端是更不可預期的，因為蝴蝶效應的關係，後端改了程式碼可能沒有知會前端，導致前端程式碼發生不可預期的錯誤（但開發者可能找不到原因），測試中也可以導入特定欄位是否存在的驗證。</p>
 <pre><code class="hljs js"><span class="hljs-title function_">test</span>(<span class="hljs-string">&#x27;驗證非同步 特定屬性是否已被定義&#x27;</span>, <span class="hljs-title function_">async</span> () =&gt; &#123;
   expect.<span class="hljs-title function_">assertions</span>(<span class="hljs-number">1</span>);
@@ -321,7 +300,6 @@
   <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> fn.<span class="hljs-title function_">fetchData</span>(<span class="hljs-number">1</span>);
   <span class="hljs-title function_">expect</span>(data.<span class="hljs-property">title1</span>).<span class="hljs-title function_">toBeDefined</span>();
 &#125;);</code></pre>
-
 <p>參考資料：<br>參考：</p>
 <ul>
 <li>官方文件：<a target="_blank" rel="noopener" href="https://jestjs.io/en/">https://jestjs.io/en/</a></li>

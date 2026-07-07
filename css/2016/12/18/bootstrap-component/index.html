@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/css/2016/12/18/bootstrap-component/2016_ironman/18_bootstrap_header.jpg">
 <meta property="article:published_time" content="2016-12-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T07:18:15.518Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.182Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="Bootstrap">
 <meta property="article:tag" content="css">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/css/2016/12/18/bootstrap-component/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 18 - Bootstrap 元件分類概觀 (content, container)","datePublished":"2016-12-17T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.518Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/18/bootstrap-component/","image":["https://www.casper.tw/2016_ironman/18_bootstrap_header.jpg"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 18 - Bootstrap 元件分類概觀 (content, container)","datePublished":"2016-12-17T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.182Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/18/bootstrap-component/","image":["https://www.casper.tw/2016_ironman/18_bootstrap_header.jpg"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,7 +217,6 @@
 
   <div class="prose"><p>接下來我們依循著 OOCSS 與 Bootstrap 的設計模式繼續擴資、修改元件，不過在繼續下一個階段以前，我們先來了解一下 Bootstrap 的設計模式。</p>
 <span id="more"></span>
-
 <h2 id="Bootstrap-檔案結構"><a href="#Bootstrap-檔案結構" class="headerlink" title="Bootstrap 檔案結構"></a>Bootstrap 檔案結構</h2><p>還記得我們一開始所說到的 OOCSS 中結構與樣式、容器與內容這兩者的概念嗎？無論是哪一個版本，Bootstrap 所有樣式模組都是以元件為基礎作為設計，基於這個概念我們可以很快得了解 Bootstrap 3 的結構。</p>
 <p>Bootstrap Sass 版本的檔案結構：<a target="_blank" rel="noopener" href="https://github.com/twbs/bootstrap-sass/tree/master/assets/stylesheets/bootstrap">https://github.com/twbs/bootstrap-sass/tree/master/assets/stylesheets/bootstrap</a></p>
 <pre><code class="hljs plaintext">/bootstrap
@@ -227,16 +226,15 @@
 |- ....scss
 |- _components.scss
 |- _utilities.scss</code></pre>
-
 <p>主要資料夾如上，這邊略為介紹：</p>
 <ul>
-<li>&#x2F;mixins&#x2F; 資料夾：樣式運算的函式庫，這部分可以先忽略他</li>
+<li>/mixins/ 資料夾：樣式運算的函式庫，這部分可以先忽略他</li>
 <li><code>_variables.scss</code>：變數檔案，上一篇有介紹過，大部分的 Bootstrap 樣式變數都從這檔案設定。</li>
 <li><code>_button.scss</code> ~ <code>_components.scss</code>：剩下這層的檔案幾乎都是元件。</li>
 <li><code>_utilities.scss</code>：雖然說是元件，但又沒有完整的形體，像是 .clearfix 清除浮動就被歸在此類。</li>
 </ul>
 <p>而這篇要介紹的就是廣大的 Components 類別，從官方的文件及 OOCSS 混合來看，又可以將它作為兩大類的區分，一則是易於修改樣式的 <code>元件</code> (OOCSS 的內容)，另一則是包覆個許多子元件專用的 <code>容器</code>；這段很熟悉吧，我們在一開始所介紹到的 OOCSS 與此部分又開始產生連結。</p>
-<p><img src="/images/2016_ironman/18_bootstrap_01.png"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/18_bootstrap_01.png" alt=""></p>
 <h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><p>作為外層的容器，主要就是要包覆著在其內的內容及元件，在網頁上的功能偏向於排版用途，通常不會有滑鼠事件互動，所以在設計上會遵循著以下概念：</p>
 <ul>
 <li>不設定高度且具有彈性</li>
@@ -244,8 +242,8 @@
 <li>可以有 theme (主題)</li>
 <li>狀態不是必須的</li>
 </ul>
-<p><img src="/images/2016_ironman/18_bootstrap_02.png"></p>
-<h3 id="元件-內容"><a href="#元件-內容" class="headerlink" title="元件 (內容)"></a>元件 (內容)</h3><p><img src="/images/2016_ironman/18_bootstrap_03.png"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/18_bootstrap_02.png" alt=""></p>
+<h3 id="元件-內容"><a href="#元件-內容" class="headerlink" title="元件 (內容)"></a>元件 (內容)</h3><p><img src="https://img.casper.tw/images/2016_ironman/18_bootstrap_03.png" alt=""></p>
 <p>元件的特色在於包含許多樣式、狀態，是使用者在觀看網頁時主要互動的物件；以按鈕來說，使用者會滑過按鈕、按下按鈕，並且按鈕可能會回饋訊息給用戶了解，所以除了不同樣式上，元件所傳達得狀態訊息狀態也相同重要：</p>
 <ul>
 <li>有固定的外型</li>
@@ -255,23 +253,25 @@
 <table>
 <thead>
 <tr>
-<th align="left">容器型</th>
-<th align="left">元件型</th>
+<th style="text-align:left">容器型</th>
+<th style="text-align:left">元件型</th>
 </tr>
 </thead>
-<tbody><tr>
-<td align="left">grid-system</td>
-<td align="left">form</td>
+<tbody>
+<tr>
+<td style="text-align:left">grid-system</td>
+<td style="text-align:left">form</td>
 </tr>
 <tr>
-<td align="left">button-group</td>
-<td align="left">buttons</td>
+<td style="text-align:left">button-group</td>
+<td style="text-align:left">buttons</td>
 </tr>
 <tr>
-<td align="left">panel</td>
-<td align="left">breadcrumbs</td>
+<td style="text-align:left">panel</td>
+<td style="text-align:left">breadcrumbs</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <p>這設計在 Bootstrap 4 更為明顯，但本篇還是以 Bootstrap 作為介紹。</p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>樣式雖然不是一定為哪種容器或是元件，但我們在設計一項新的物件時，一定要去思考他是傾向于哪種類型的物件，假設我們需要新增一個容器型物件，我們就要測試他有內容物及無內容物時的差異，甚至在大量的內容時是否會造成破版的問題。反之，設計元件型的樣式時則要思考在不同情境下使用的狀態，基本上就要補上 <code>啟用中</code>、<code>無法使用</code> 的狀態，這樣的設計會影響往後樣式在套用時的靈活性，與其在後續補上，不如在初期則做到一定的彈性。</p>
 </div>

@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"怎樣也不會失手的 Bootstrap 格線運用技巧","datePublished":"2020-10-08T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.535Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/09/bootstrap-grid/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_24.jpg?alt=media&token=eff1db4b-9fc3-4683-9e84-7794b0c8a58a"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -237,17 +237,15 @@
 }
 </style>
 
-
 <p>Bootstrap 令人稱羨的其中之一就是它的格線系統，不僅易用且符合網頁視覺設計概念。雖說如此，在<a target="_blank" rel="noopener" href="https://getbootstrap.com/docs/4.5/layout/grid/">官網文件</a> 落落長的文件還是令許多開發者不知如何快速上手，本篇介紹幾個核心小撇步，讓開發者僅需要記得一個口訣，就能輕鬆上手 Bootstrap 的格線系統。</p>
 <h2 id="Bootstrap-格線設計概念"><a href="#Bootstrap-格線設計概念" class="headerlink" title="Bootstrap 格線設計概念"></a>Bootstrap 格線設計概念</h2><p>Bootstrap 設計上都是遵循 OOCSS 的概念（關於 OOCSS 可<a target="_blank" rel="noopener" href="https://wcc723.github.io/css/2016/12/02/oocss-one/">參考</a>），格線在此是套用其中的 <strong>容器與內容</strong> 的概念。格線表示為容器，而網頁所呈現的資訊就稱為內容。</p>
 <p>在這個概念下，格線所代表的容器將會決定定位、寬度大小，內容不會有自己的寬度，都是由容器決定</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_8_%E4%B8%8B%E5%8D%881_26.png?alt=media&token=34f514a5-e908-421a-932e-52b57a1f5235"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_8_%E4%B8%8B%E5%8D%881_26.png?alt=media&amp;token=34f514a5-e908-421a-932e-52b57a1f5235" alt=""></p>
 <p>因此我們先定義一個方塊作為內容，高度 100px、寬度不限，接下來由格線決定的方塊的寬度、位置。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.box</span> &#123;
   <span class="hljs-attribute">height</span>: <span class="hljs-number">100px</span>;
   <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#69F0AE</span>;
 &#125;</code></pre>
-
 
 <div class="demo">
   <div class="box"></div>
@@ -269,14 +267,11 @@
 </ul>
 <h4 id="row-的內層必定為-col"><a href="#row-的內層必定為-col" class="headerlink" title=".row 的內層必定為 .col"></a>.row 的內層必定為 .col</h4><p>Bootstrap 使用 <code>.row</code> 作為水平列的定義，它會包覆著不同數量的欄線 <code>.col</code>，作為水平列的 <code>.row</code> 有包含許多樣式（如：<code>flex</code>、負值的 <code>margin</code>），這些樣式必須搭配 <code>.container</code> 及 <code>.col</code> 進行修正。因此，如果在 .row 內置入非 .col 的物件就可能會出錯。</p>
 <p>所以第一點，請先記得：<strong>.row 的內層必定為 .col</strong></p>
-<h6 id="正確範例："><a href="#正確範例：" class="headerlink" title="正確範例："></a>正確範例：</h6><p><code>.row</code> 的內層僅會使用 .col，不會有其它的。</p>
-<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>
+<h6 id="正確範例："><a href="#正確範例：" class="headerlink" title="正確範例："></a>正確範例：</h6><p><code>.row</code> 的內層僅會使用 .col，不會有其它的。<br><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-6&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span>格線內的 .box <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-6&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span>格線內的 .box <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
-<p>正確的套用情況下，不管有無使用格線，左右邊線的對齊都是一致的。</p>
-
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></p>
+<p>正確的套用情況下，不管有無使用格線，左右邊線的對齊都是一致的。<br>
 <div class="demo">
   <div class="box">沒有套用任何格線的 .box</div>
   <hr>
@@ -285,15 +280,11 @@
     <div class="col-6"><div class="box">格線內的 .box </div></div>
   </div>
 </div> 
-
-
-<h6 id="錯誤範例"><a href="#錯誤範例" class="headerlink" title="錯誤範例"></a>錯誤範例</h6><p>當 <code>.row</code> 的內層套用了其它元素，有無套用格線系統的元素左右將無法正確對齊。</p>
-<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>
+</p>
+<h6 id="錯誤範例"><a href="#錯誤範例" class="headerlink" title="錯誤範例"></a>錯誤範例</h6><p>當 <code>.row</code> 的內層套用了其它元素，有無套用格線系統的元素左右將無法正確對齊。<br><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;width: 100%&quot;</span>&gt;</span>其它的元素會超出格線範圍，並且預設必須加入寬度才能顯示<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
-<p>不正確的套用情況下，<code>.row</code> 內的元素無法與外部元素左右邊線對齊。</p>
-
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></p>
+<p>不正確的套用情況下，<code>.row</code> 內的元素無法與外部元素左右邊線對齊。<br>
 <div class="demo">
   <div class="box">沒有套用任何格線的 .box</div>
   <hr>
@@ -301,16 +292,12 @@
     <div class="box" style="width: 100%">其它的元素會超出格線範圍，並且預設必須加入寬度才能顯示</div>
   </div>
 </div> 
-
-
+</p>
 <h4 id="col-的外層必定為-row"><a href="#col-的外層必定為-row" class="headerlink" title=".col 的外層必定為 .row"></a>.col 的外層必定為 .row</h4><p>由於 <code>.col</code> 會修正 <code>.row</code> 的部分樣式，因此 <code>.col</code> 獨立出現時，為了修正 <code>.row</code> 的額外 <code>padding</code> 就會使得物件無法對齊。</p>
-<h6 id="正確範例：-1"><a href="#正確範例：-1" class="headerlink" title="正確範例："></a>正確範例：</h6><p><code>.col-*</code> 的外層必定會有 <code>.row</code>。</p>
-<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>
+<h6 id="正確範例：-1"><a href="#正確範例：-1" class="headerlink" title="正確範例："></a>正確範例：</h6><p><code>.col-*</code> 的外層必定會有 <code>.row</code>。<br><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-12&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span>格線內的 .box <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
-<p>無論多少數量的 <code>.col-*</code>，只要外層具有 <code>.row</code> 就會正確對齊。</p>
-
+<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></p>
+<p>無論多少數量的 <code>.col-*</code>，只要外層具有 <code>.row</code> 就會正確對齊。<br>
 <div class="demo">
   <div class="box">沒有套用任何格線的 .box</div>
   <hr>
@@ -318,22 +305,16 @@
     <div class="col-12"><div class="box">格線內的 .box </div></div>
   </div>
 </div> 
-
-
-<h6 id="錯誤範例："><a href="#錯誤範例：" class="headerlink" title="錯誤範例："></a>錯誤範例：</h6><p><code>.col-*</code> 必定在 <code>.row</code> 的內側，不可獨立出現 </p>
-<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span>格線內的 .box <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-12&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span>格線內的 .box <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
-<p>獨立出現的 <code>.col-*</code> 無法與其它元素正確對齊，它會加入額外的 <code>padding</code>。</p>
-
+</p>
+<h6 id="錯誤範例："><a href="#錯誤範例：" class="headerlink" title="錯誤範例："></a>錯誤範例：</h6><p><code>.col-*</code> 必定在 <code>.row</code> 的內側，不可獨立出現<br><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span>格線內的 .box <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-12&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span>格線內的 .box <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre></p>
+<p>獨立出現的 <code>.col-*</code> 無法與其它元素正確對齊，它會加入額外的 <code>padding</code>。<br>
 <div class="demo">
   <div class="box">沒有套用任何格線的 .box</div>
   <hr>
   <div class="col-12"><div class="box">格線內的 .box </div></div>
 </div> 
-
-
-
+</p>
 <h2 id="相同口訣、延伸運用"><a href="#相同口訣、延伸運用" class="headerlink" title="相同口訣、延伸運用"></a>相同口訣、延伸運用</h2><p>這兩句話看起來有很多的限制，但其實又具有很高的彈性，像是 <code>.row</code> 的內層必定為 <code>.col</code>，但只要內層是 <code>.col</code> 即可，沒有數量上的限制，並且 .col 的內層並沒有任何的限制。因此本段提供許多不同的變化型給大家做參考。</p>
 <ul>
 <li>.row 的內層必定為 .col</li>
@@ -352,7 +333,6 @@
     <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-6&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
 <p>正確的套用下，左右邊線也是可以完全對齊的。</p>
 
 <div class="demo">
@@ -367,7 +347,6 @@
   </div>
 </div>
 
-
 <h5 id="巢狀"><a href="#巢狀" class="headerlink" title="巢狀"></a>巢狀</h5><p><code>.col</code> 的內部依然可以有 <code>.row</code>，並且有獨立的欄線，它會用內層有限的空間持續進行格線分割。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;row&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;col-6&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;box&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
@@ -378,7 +357,6 @@
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
 <p>就算使用多層分割，間距、對齊都會是一致的，如果使用另一個類似概念的單層結構也是能夠完全對齊。</p>
 
 <div class="demo">
@@ -403,7 +381,6 @@
   </div>
 </div>
 
-
 <h2 id="最後，請別忘了-container"><a href="#最後，請別忘了-container" class="headerlink" title="最後，請別忘了 container"></a>最後，請別忘了 container</h2><p>前面有提到 <code>.row</code> 會產生額外的<strong>負值 margin</strong>，當如果 .row 是直接置於最外層時會讓網頁產生水平捲軸，請避免網頁產生不必要的水平捲軸，這會使開發者看起來就像新手一樣。</p>
 <p>如果要避免此問題，請維持一個 .container 或 container-fluid 在外層（無論你有多少個 .row，都僅需要一個在最外層）</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span><span class="hljs-comment">&lt;!-- 請維持一個 container 在最外層 --&gt;</span>
@@ -416,7 +393,6 @@
     <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
 <p>如果網頁有多個區塊，則可以在每個區塊都有獨立的 .container，不一定只用一個 container 包覆全網站。如以下範例有多個區塊時，也可以有各自的 container 或 container-fluid，讓每個區塊的容器有更多的變化。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>
   ...
@@ -427,7 +403,6 @@
 <span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;container&quot;</span>&gt;</span>
   ...
 <span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span></code></pre>
-
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>Bootstrap 格線是很棒的格線工具，無論是在切版或網頁設計得格線教學，我都很推薦使用 Bootstrap 的概念，它是目前可行性優及泛用性廣的格線系統，但也為了達到此概念，其中加入了許多 “HACK” 讓這個格線能夠具有許多特性（如：負值的 margin 是為了多列呈現，在 Bootstrap 2 時的格線就不能換列）。</p>
 <p>也因為這些 “HACK” 我們在使用 Bootstrap 格線需要更加小心，如果沒有正確對齊會造成畫面無法對齊，開發者也會花上許多時間為了修正這些沒對齊的項目，並產生許多不必要的樣式。</p>
 </div>

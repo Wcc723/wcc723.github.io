@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：JavaScript 的原型繼承","datePublished":"2017-12-16T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.523Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/17/javascript-prototype/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_2.jpg?alt=media&token=d880e22d-0931-471c-a0cb-ccc587f8ea7e"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -227,19 +227,16 @@
 person.<span class="hljs-title function_">run</span>(); <span class="hljs-comment">// &quot;小明 跑向世界的另一端&quot;</span>
 person.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&#x27;run&#x27;</span>); <span class="hljs-comment">// true</span>
 person.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hljs-string">&#x27;friend&#x27;</span>); <span class="hljs-comment">// false</span></code></pre>
-
 <p>但除此以外還有一些額外的方法可以使用，像是 <code>hasOwnProperty()</code>，但奇怪的事情是 <code>hasOwnProperty()</code> 這個方法，沒有在 person 這個物件下，為何還可以使用此 <code>hasOwnProperty()</code> 的方法，原因在於 “原型繼承”。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_1.jpg?alt=media&token=934dd4b5-494b-464c-9463-f45cc5f034bb"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_1.jpg?alt=media&amp;token=934dd4b5-494b-464c-9463-f45cc5f034bb" alt=""></p>
 <p>上圖中 <code>person</code> 這個是我們剛剛宣告的物件，它的上層是則是他的原型物件(它是半透明的喔，所以我們平常會沒注意到)，當他在使用 <code>hasOwnProperty()</code> 時，就是在使用它原型物件的方法。</p>
 <h4 id="透過錯誤範例了解原型"><a href="#透過錯誤範例了解原型" class="headerlink" title="透過錯誤範例了解原型"></a>透過錯誤範例了解原型</h4><p><strong>錯誤範例</strong>：這裡提供一個觀念上的錯誤範例，實際執行時我們不會用此方法來增加原型方法。JavaScript 中所有的物件、函式都有 <code>__proto__</code> 的原型屬性，這一個原形屬性會不斷的向上尋找他的上層原型。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> ming = &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;小明&#x27;</span>
 &#125;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ming);</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FCEE32FA8-B533-4189-8E50-B61D83FA709A.png?alt=media&token=91ceb969-30ac-4567-a3f8-623029c1eb4a"></p>
-<p>我們在 <code>ming</code> 下的 <code>__proto__</code> 直接掛上 <code>run</code> 的方法，使其產生在 <code>__proto__</code> 下 <strong>注意：請不要這樣做，只是為了方便理解</strong>。 </p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> ming = &#123;
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FCEE32FA8-B533-4189-8E50-B61D83FA709A.png?alt=media&amp;token=91ceb969-30ac-4567-a3f8-623029c1eb4a" alt=""></p>
+<p>我們在 <code>ming</code> 下的 <code>__proto__</code> 直接掛上 <code>run</code> 的方法，使其產生在 <code>__proto__</code> 下 <strong>注意：請不要這樣做，只是為了方便理解</strong>。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> ming = &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;小明&#x27;</span>
 &#125;
 <span class="hljs-keyword">var</span> run = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
@@ -247,9 +244,8 @@ person.<span class="hljs-title function_">hasOwnProperty</span>(<span class="hlj
 &#125;
 ming.<span class="hljs-property">__proto__</span>.<span class="hljs-property">run</span> = run;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ming.<span class="hljs-property">name</span>); <span class="hljs-comment">// &#123;name: &quot;小明&quot;&#125;</span>
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ming.<span class="hljs-title function_">run</span>()); <span class="hljs-comment">// &quot;小明 跑向世界的另一端&quot;</span></code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FEC9D6B41-AAED-4697-AAB5-263FCC075BC5.png?alt=media&token=56953efd-7fbd-4ff4-bea3-1e143075c6b3"></p>
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ming.<span class="hljs-title function_">run</span>()); <span class="hljs-comment">// &quot;小明 跑向世界的另一端&quot;</span></code></pre></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FEC9D6B41-AAED-4697-AAB5-263FCC075BC5.png?alt=media&amp;token=56953efd-7fbd-4ff4-bea3-1e143075c6b3" alt=""></p>
 <p>雖然直接 <code>console.log(ming)</code> 並不會看到 <code>run()</code> 這個方法，但執行時他會不斷的向上尋找到原型內的 <code>run()</code> 方法來執行它。</p>
 <h2 id="共用原型"><a href="#共用原型" class="headerlink" title="共用原型"></a>共用原型</h2><p>其中原型還有個特性，我們如果在物件原型下直接建立新的方法，就會造成以下的問題，兩個看似沒有關係的物件將會共用相同的原型方法 (因為兩者的原型都是物件)，這種情況會出現管理上的問題。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> ming = &#123;
@@ -265,9 +261,8 @@ ming.<span class="hljs-property">__proto__</span>.<span class="hljs-property">ru
 ming.<span class="hljs-property">__proto__</span>.<span class="hljs-property">run</span> = run;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ming.<span class="hljs-title function_">run</span>()); <span class="hljs-comment">// &quot;小明 跑向世界的另一端&quot;</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(casper.<span class="hljs-title function_">run</span>()); <span class="hljs-comment">// &quot;卡斯伯 跑向世界的另一端&quot;</span></code></pre>
-
 <p>這個範例中，我們強制將函式寫到了 <code>物件</code> 這個原型上，所以新增的物件都會 <strong>共用</strong> 此屬性。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_2.jpg?alt=media&token=d880e22d-0931-471c-a0cb-ccc587f8ea7e"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_2.jpg?alt=media&amp;token=d880e22d-0931-471c-a0cb-ccc587f8ea7e" alt=""></p>
 <p>在後面的章節我們會介紹如何正確地使用原型繼承。</p>
 <h2 id="原型鍊的的頂端是物件"><a href="#原型鍊的的頂端是物件" class="headerlink" title="原型鍊的的頂端是物件"></a>原型鍊的的頂端是物件</h2><p>JavaScript 只有一個建構物：”物件”，如果上述程式碼以下我們繼續往下增加：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> mingFamily = [<span class="hljs-string">&#x27;ming&#x27;</span>, <span class="hljs-string">&#x27;mom&#x27;</span>, <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>];
@@ -289,7 +284,7 @@ casperFamily.<span class="hljs-title function_">getFirst</span>(); <span class="
 ming.<span class="hljs-title function_">getFirst</span>();
 <span class="hljs-comment">// ming.getFirst is not a function</span></code></pre>
 <p>在此段，我們對任一陣列原型加入新的函式，此時兩個陣列都可以套用此函式，但對於物件來說卻不能執行此方法，因為在原型鍊上物件屬於陣列的頂端。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_3.jpg?alt=media&token=9ab2ad7a-ad01-4fc4-85f6-5710f70492ca"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c14_3.jpg?alt=media&amp;token=9ab2ad7a-ad01-4fc4-85f6-5710f70492ca" alt=""></p>
 <p>由於原型有不斷向上查找的特性，如果在上一層找不到可用的方法，他就會繼續往上找，這個也就稱為原型鍊，所以在 <code>mingFamily</code> 這個陣列才會取用到剛剛物件原型所增加的方法，本篇只是簡單介紹原型的概念，接下來幾篇則會開始讓大家了解這有什麼樣的用處。</p>
 </div>
 

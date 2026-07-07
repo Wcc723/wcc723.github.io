@@ -7,7 +7,7 @@
 
 <title>CSS + SVG stroke 動態描繪 | 卡斯伯 Blog - 前端，沒有極限</title>
 
-<meta name="keywords" content="svg,css" />
+<meta name="keywords" content="css,svg" />
 
 
 <meta name="description" content="SVG有很多有趣的效果，尤其是stroke，它有許多不同的屬性參數，套用上css animation就有意想不到的效果，雖然不能達到豐富的互動，但至少可以在視覺上令人為之一亮。 這篇要利用stroke的dash特性，做出圖形描繪的動態效果。">
@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CSS + SVG stroke 動態描繪","datePublished":"2014-06-14T16:00:00.000Z","dateModified":"2016-10-12T06:42:59.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/svg/2014/06/15/svg-css-stroke-animation/","image":["https://www.casper.tw/20140615-svg-css-ani.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="/css/style.css?v=mq954j70">
 
-<link href="/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
+<link href="https://img.casper.tw/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -216,24 +216,20 @@
   </header>
 
   <div class="prose"><p>SVG有很多有趣的效果，尤其是stroke，它有許多不同的屬性參數，套用上css animation就有意想不到的效果，雖然不能達到豐富的互動，但至少可以在視覺上令人為之一亮。</p>
-<p>這篇要利用stroke的dash特性，做出圖形描繪的動態效果。</p>
-<span id="more"></span>
-
+<p>這篇要利用stroke的dash特性，做出圖形描繪的動態效果。<br><span id="more"></span></p>
 <h2 id="參考來源"><a href="#參考來源" class="headerlink" title="參考來源"></a>參考來源</h2><p><a target="_blank" rel="noopener" href="http://cssdeck.com/labs/ironman-svg-line-animation">http://cssdeck.com/labs/ironman-svg-line-animation</a></p>
 <p>作者是把這效果用在描繪鋼鐵人上，做得很酷，而本篇是介紹它的原理。</p>
 <h2 id="stroke-dasharray-stroke-dashoffset"><a href="#stroke-dasharray-stroke-dashoffset" class="headerlink" title="stroke-dasharray + stroke-dashoffset"></a>stroke-dasharray + stroke-dashoffset</h2><p><code>stroke-dasharray</code>是把stroke做成了是虛線的效果，線段會被拆成<strong>線段、空白、線段、空白</strong>，效果就像下面這樣。</p>
 <pre><code>/*這邊是CSS*/
 line &#123;
-	stroke-dasharray: 60;
+    stroke-dasharray: 60;
 &#125;
 </code></pre>
-
 <div class="demo d0615">
 	<svg height="30" width="100%" >
 		<line x1="0"  y1="20" x2="500"   y2="20"/>
 	</svg>
 </div>
-
 
 <p>如上顯示，線段被拆成<code>60px</code>的<code>line</code>在空<code>60px</code>的<code>space</code>。</p>
 <h4 id="stroke-dashoffset"><a href="#stroke-dashoffset" class="headerlink" title="stroke-dashoffset"></a>stroke-dashoffset</h4><p>而<code>stroke-dashoffset</code>屬性是將上面的虛線推移，兩者會有以下幾點特性：</p>
@@ -245,54 +241,49 @@ line &#123;
 <p>所以這部分就再加上40的<code>stroke-dashoffset</code>來看看結果。</p>
 <pre><code>/*這邊是CSS*/
 line.l2&#123;
-	stroke-dashoffset: 40;
+    stroke-dashoffset: 40;
 &#125;
 </code></pre>
-
 <div class="demo d0615">
 	<svg height="30" width="100%" >
 		<line class="l2" x1="0"  y1="20" x2="500"   y2="20"/>
 	</svg>
 </div>
 
-
 <p>如果兩者數值相等，線段的起始點就會呈現空白，這邊先設較小的值(200)。</p>
 <pre><code>line.l3&#123;
-	stroke-dasharray: 200;
-	stroke-dashoffset: 200;
+    stroke-dasharray: 200;
+    stroke-dashoffset: 200;
 &#125;
 </code></pre>
-
 <div class="demo d0615">
 	<svg height="30" width="100%" >
 		<line class="l3" x1="0"  y1="20" x2="500"   y2="20"/>
 	</svg>
 </div>
 
-
 <p>如果數值相當的大，就能夠將整個線段隱藏。</p>
-<h2 id="結合CSS-aniamtion"><a href="#結合CSS-aniamtion" class="headerlink" title="結合CSS aniamtion"></a>結合CSS aniamtion</h2><p><em>aniamtion 相關的瀏覽器前輟詞問題，可參考<a href="/css/2013/10/17/css-animation-keyframe/">&#x2F;css&#x2F;2013&#x2F;10&#x2F;17&#x2F;css-animation-keyframe&#x2F;</a></em></p>
+<h2 id="結合CSS-aniamtion"><a href="#結合CSS-aniamtion" class="headerlink" title="結合CSS aniamtion"></a>結合CSS aniamtion</h2><p><em>aniamtion 相關的瀏覽器前輟詞問題，可參考<a href="/css/2013/10/17/css-animation-keyframe/">/css/2013/10/17/css-animation-keyframe/</a></em></p>
 <p>這邊就show重要的CSS code，利用上面的原理將線段隱藏，然後透過animation將線段拉回來，這樣就會有動態描繪的感覺。</p>
 <pre><code>//先將stroke隱藏
 .stroke&#123;
-	stroke-dashoffset: 2000
-	stroke-dasharray: 2000
+    stroke-dashoffset: 2000
+    stroke-dasharray: 2000
 &#125;
 
 //動畫效果 10秒 線性動畫 無限循環
 .ani &#123;
-	animation: circle-draw 10s linear infinite
+    animation: circle-draw 10s linear infinite
 &#125;
 
 //keyframes的值
 //將dashoffset拉回至0
 @keyframes circle-draw&#123;
-	80% &#123;
-		stroke-dashoffset: 0;
-		&#125;
-	&#125;
+    80% &#123;
+        stroke-dashoffset: 0;
+        &#125;
+    &#125;
 </code></pre>
-
 <div class="demo d0615">
 	<svg class="stroke ani" height="400" width="100%" >
 	<g>
@@ -316,36 +307,33 @@ line.l2&#123;
 	</svg>
 </div>
 
-
-
 <pre><code>&lt;svg class=&quot;stroke ani&quot; height=&quot;400&quot; width=&quot;100%&quot; &gt;
-	&lt;g&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;10&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;20&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;30&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;40&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;50&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;60&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;70&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;80&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;90&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;100&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;110&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;120&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;130&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;140&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;150&quot;/&gt;
-		&lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;160&quot;/&gt;
-	&lt;/g&gt;
+    &lt;g&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;10&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;20&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;30&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;40&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;50&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;60&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;70&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;80&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;90&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;100&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;110&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;120&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;130&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;140&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;150&quot;/&gt;
+        &lt;circle cx=&quot;200&quot; cy=&quot;200&quot; r=&quot;160&quot;/&gt;
+    &lt;/g&gt;
 &lt;/svg&gt;
-</code></pre>
-<p>以上的SVG code，當然這也可以用Illustrator來繪製，只要把svg code換掉就可以了。</p>
+</code></pre><p>以上的SVG code，當然這也可以用Illustrator來繪製，只要把svg code換掉就可以了。</p>
 <p><strong>注意，儘量不要在網頁上做無限循環的重復播放，很耗效能。</strong></p>
 </div>
 
   <div class="post-foot">
     
-      <div class="tags post-tags"><a href="/tags/svg/">svg</a><a href="/tags/css/">css</a></div>
+      <div class="tags post-tags"><a href="/tags/css/">css</a><a href="/tags/svg/">svg</a></div>
     
     
 <nav class="post-nav">

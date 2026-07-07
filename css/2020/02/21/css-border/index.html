@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CSS Border 運用技巧（手繪框線、三角形、空間運用）","datePublished":"2020-02-20T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.532Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2020/02/21/css-border/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202002%2Fimg-border.png?alt=media&token=a2b06e55-8ca4-4e1a-a52d-f19aa0942437"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -247,7 +247,6 @@
 }
 </style>
 
-
 <h4 id="Border-可以搭配圓角"><a href="#Border-可以搭配圓角" class="headerlink" title="Border 可以搭配圓角"></a>Border 可以搭配圓角</h4><p>CSS 中的圓角 <code>border-radius</code> 是一個偉大的發明，他並不會使元素的邊緣被裁切，而是能夠產生滑順的圓角。除此之外，雖然名稱為 <strong>border</strong>-radius 但運用上並不只限於 border，在大部分的元素上都可以運用 border-radius，而 border-radius 運用上具有以下的技巧：</p>
 <ul>
 <li>不需要所有角都使用等距空間，每個角可自訂獨立的數值（左二範例）</li>
@@ -277,7 +276,6 @@
 }
 </style>
 
-
 <h4 id="不同的樣式"><a href="#不同的樣式" class="headerlink" title="不同的樣式"></a>不同的樣式</h4><p>大部分來說 border 運用都是以 <code>solid</code> 為大宗，其次為 <code>dashed</code> 及 <code>dotted</code>，以下列出所有的 border 樣式，除此之外 border 的樣式還可以混合使用喔。</p>
 
 <div class="demo d-flex">
@@ -306,15 +304,11 @@
 .border-mix {border-style: dotted dashed solid double;}
 </style>
 
-
-
 <hr>
 <h2 id="技巧"><a href="#技巧" class="headerlink" title="技巧"></a>技巧</h2><h3 id="空間運用"><a href="#空間運用" class="headerlink" title="空間運用"></a>空間運用</h3><p>Border 很常運用在選單的 hover 或 active 的視覺效果，但如果沒有注意到就可能因為 border 的空間讓選單產生位移，如以下範例來說，滑鼠移入選單時就會造成選單位移。</p>
-<p>關鍵程式碼：</p>
-<pre><code class="hljs css"><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.demo-item</span><span class="hljs-selector-pseudo">:hover</span> &#123;
+<p>關鍵程式碼：<br><pre><code class="hljs css"><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.demo-item</span><span class="hljs-selector-pseudo">:hover</span> &#123;
   <span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">3px</span> solid <span class="hljs-number">#00cc99</span>;
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 
 <div class="demo d-flex">
   <div class="demo-navbar d-flex">
@@ -339,18 +333,15 @@ a.demo-item:hover {
 }
 </style>
 
-
 <p>會造成這樣的原因在於「Border 本身是具有空間的」，因此直接在 hover 上新增 border 時就會發生此問題，其中一種解決方法則是預先加入 “透明的 border 空間”，在 hover 或其它的行為時再來切換 border 的色彩。</p>
-<p>關鍵程式碼：</p>
-<pre><code class="hljs css"><span class="hljs-selector-class">.demo-navbar</span> &#123;
+<p>關鍵程式碼：<br><pre><code class="hljs css"><span class="hljs-selector-class">.demo-navbar</span> &#123;
   <span class="hljs-comment">/* 將部分的空間先扣除 */</span>
   <span class="hljs-attribute">padding</span>: <span class="hljs-number">0</span> <span class="hljs-number">27px</span>;
 &#125;
 <span class="hljs-selector-class">.demo-navbar</span> <span class="hljs-selector-class">.demo-item</span> &#123;
   <span class="hljs-comment">/* 加入下方透明的 Border */</span>
   <span class="hljs-attribute">border-bottom</span>: <span class="hljs-number">3px</span> solid transparent;
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 
 <div class="demo d-flex">
   <div class="demo-navbar demo-navbar-update d-flex">
@@ -367,13 +358,10 @@ a.demo-item:hover {
 }
 </style>
 
-
 <p>由於 Border 本身是佔有空間的，所以也可以使用其它不含空間的視覺效果來達到此效果，以下範例則是使用 <code>box-shadow</code> 做到類似的效果。</p>
-<p>關鍵程式碼：</p>
-<pre><code class="hljs css"><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.demo-item</span><span class="hljs-selector-pseudo">:hover</span> &#123;
+<p>關鍵程式碼：<br><pre><code class="hljs css"><span class="hljs-selector-tag">a</span><span class="hljs-selector-class">.demo-item</span><span class="hljs-selector-pseudo">:hover</span> &#123;
   <span class="hljs-attribute">box-shadow</span>: <span class="hljs-number">0</span> -<span class="hljs-number">3px</span> <span class="hljs-number">#00cc99</span> inset; 
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 
 <div class="demo d-flex">
   <div class="demo-navbar demo-navbar-update2 d-flex">
@@ -387,9 +375,6 @@ a.demo-item:hover {
   box-shadow: 0 -3px #00cc99 inset; 
 }
 </style>
-
-
-
 
 <h3 id="三角形"><a href="#三角形" class="headerlink" title="三角形"></a>三角形</h3><p>接續一開始所提到 border 本身是佔有空間的，當有兩個邊線的 border 重疊的部分就會產生 “實體的交疊”，這個實體的交疊就會產生三角形的視覺效果。</p>
 <p>下方的範例來說，上者是下邊、右邊的 border 產生，下者則是四邊的 border 產生。</p>
@@ -417,17 +402,14 @@ a.demo-item:hover {
 }
 </style>
 
-
 <p>當四邊均為 border 時，就能產生四個三角形，當如果僅需要一個方向的三角時，就可以使用到前一個段落所提到的技巧 “透明 border”。</p>
-<p>關鍵程式碼：</p>
-<pre><code class="hljs css"><span class="hljs-selector-class">.message-box</span><span class="hljs-selector-pseudo">:after</span> &#123;
+<p>關鍵程式碼：<br><pre><code class="hljs css"><span class="hljs-selector-class">.message-box</span><span class="hljs-selector-pseudo">:after</span> &#123;
   <span class="hljs-attribute">content</span>: <span class="hljs-string">&quot;&quot;</span>;
   <span class="hljs-comment">/* 四邊透明的 border */</span>
   <span class="hljs-attribute">border</span>: transparent <span class="hljs-number">10px</span> solid;
   <span class="hljs-comment">/* 將其中一補上色彩 */</span>
   <span class="hljs-attribute">border-top-color</span>: <span class="hljs-number">#00cc99</span>;
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 <p>透過此方法就能做到類似訊息框的視覺效果。</p>
 
 <div class="demo d-flex">
@@ -453,7 +435,6 @@ a.demo-item:hover {
 }
 </style>
 
-
 <h3 id="多層次"><a href="#多層次" class="headerlink" title="多層次"></a>多層次</h3><p>除了 Border 以外，有很多方法可以做到類似的視覺效果，而其中一個很常利用的就是 <code>box-shadow</code>，與 border 最大不同之處就是 <code>box-shadow</code> 不佔有任何空間。兩者在此也可以作為好朋友產生多層次的邊框效果。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.border-multi</span> &#123;
   <span class="hljs-attribute">border</span>: <span class="hljs-number">5px</span> solid red;
@@ -464,7 +445,6 @@ a.demo-item:hover {
     <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">20px</span> blue;
   <span class="hljs-attribute">margin</span>: <span class="hljs-number">25px</span>  
 &#125;</code></pre>
-
 
 <div class="demo d-flex">
   <div class="border-multi box bg-gray"></div>
@@ -481,7 +461,6 @@ a.demo-item:hover {
 }
 </style>
 
-
 <h3 id="手繪邊框"><a href="#手繪邊框" class="headerlink" title="手繪邊框"></a>手繪邊框</h3><p>最後，展示比較特別的視覺風格 “手繪邊框”，前幾個範例都是圍繞在 border-radius 上，這個也不例外，最重要的關鍵點在於 border-radius 可以在同一個角設定兩個以上的參數。</p>
 <p>如以兩個範例</p>
 <ul>
@@ -497,7 +476,6 @@ a.demo-item:hover {
   <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">15px</span> / <span class="hljs-number">100px</span>;
 &#125;</code></pre>
 
-
 <div class="demo d-flex">
   <div class="border-4 box bg-gray border-top-left-radius"></div>
   <div class="border-4 box bg-gray border-2-size"></div>
@@ -511,7 +489,6 @@ a.demo-item:hover {
 }
 </style>
 
-
 <p>最後也補充此風格的技巧說明：</p>
 <ul>
 <li>border-width：可設定不同的粗細變化，做出手繪過程中的不同粗細變化</li>
@@ -521,8 +498,7 @@ a.demo-item:hover {
 </li>
 <li>border-style：也可試著加入不同樣式的邊線，做出不同的手繪視覺效果</li>
 </ul>
-<p>關鍵程式碼：</p>
-<pre><code class="hljs css"><span class="hljs-selector-class">.ink-box</span> &#123;
+<p>關鍵程式碼：<br><pre><code class="hljs css"><span class="hljs-selector-class">.ink-box</span> &#123;
   <span class="hljs-attribute">border-width</span>: <span class="hljs-number">2px</span> <span class="hljs-number">3px</span> <span class="hljs-number">2px</span> <span class="hljs-number">5px</span>;
   <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">90%</span> <span class="hljs-number">6%</span> <span class="hljs-number">93%</span> <span class="hljs-number">5%</span> / <span class="hljs-number">5%</span> <span class="hljs-number">94%</span> <span class="hljs-number">7%</span> <span class="hljs-number">95%</span>;
   <span class="hljs-comment">/* 做出傾斜的視覺感 */</span>
@@ -534,8 +510,7 @@ a.demo-item:hover {
 <span class="hljs-selector-class">.box-inner</span> &#123;
   <span class="hljs-comment">/* 將傾斜的部分修正 */</span>
   <span class="hljs-attribute">transform</span>: <span class="hljs-built_in">rotate</span>(-<span class="hljs-number">2deg</span>);
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 
 <div class="demo d-flex">
   <div class="ink-box">
@@ -568,7 +543,6 @@ a.demo-item:hover {
   transform: rotate(-2deg);
 }
 </style>
-
 
 <p>參考文件：</p>
 <ul>

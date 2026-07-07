@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/css/2016/12/04/oocss-three/2016_ironman/04_oocss_header.png">
 <meta property="article:published_time" content="2016-12-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T07:18:15.516Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.181Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="css">
 <meta property="article:tag" content="oocss">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/css/2016/12/04/oocss-three/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 4 - OOCSS 容器與內容分離 (最佳實踐)","datePublished":"2016-12-03T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.516Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/04/oocss-three/","image":["https://www.casper.tw/2016_ironman/04_oocss_header.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 4 - OOCSS 容器與內容分離 (最佳實踐)","datePublished":"2016-12-03T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.181Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/04/oocss-three/","image":["https://www.casper.tw/2016_ironman/04_oocss_header.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -223,7 +223,6 @@
 </ul>
 <p>而不同類型的元件設計上應當分離，避免混寫限制元件的搭配。</p>
 <span id="more"></span>
-
 <p>容器：白話文來說是盛裝物品的器具，在這邊我們可以思考成可以裝其它元素的外元件。<br>內容：這裡解釋在容器內的元素。</p>
 <p>以下圖來說，我們就區分為三個模組</p>
 <ol>
@@ -231,12 +230,12 @@
 <li>容器 B：這是一個單獨的容器，沒有額外的設定</li>
 <li>元件 B：這是一個單獨的元件(內容)，可以在任何容器下。</li>
 </ol>
-<p><img src="/images/2016_ironman/04_oocss_01.jpg"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/04_oocss_01.jpg" alt=""></p>
 <p>在這個範例下，我們可以了解到 元件 B 不受到任何限制，可以自由的組裝在其他容器下，這也是 OOCSS 提到的元件就像是樂高一樣，可以依據任何需求做組裝，元件 B 正好符合這個概念。</p>
 <h2 id="Bootstrap-的容器與內容"><a href="#Bootstrap-的容器與內容" class="headerlink" title="Bootstrap 的容器與內容"></a>Bootstrap 的容器與內容</h2><p>Bootstrap 是相當好的案例可以來說明容器與內容。以下圖來說按鈕與頁籤都是屬於 內容，而卡片是屬於容器，在 Bootstrap 的設計中都是屬於個別的元件，這些元件不會互相干擾，而且可以依據需求去組合。</p>
-<p><img src="/images/2016_ironman/04_oocss_02.jpg"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/04_oocss_02.jpg" alt=""></p>
 <p>接下來這張範例圖就是將按鈕、頁籤放到卡片這個容器內。</p>
-<p><img src="/images/2016_ironman/04_oocss_03.jpg"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/04_oocss_03.jpg" alt=""></p>
 <p>所以在設計元素的時候，如果是用以下的方式繼承就會限定元件的可用性，就以 OOCSS 的概念是需要避免這樣的設計，盡可能不要讓元件被限制在特定的容器下。</p>
 <pre><code class="hljs css"><span class="hljs-comment">/* 盡量不要這麼做 */</span>
 <span class="hljs-selector-class">.card</span> &#123;
@@ -253,12 +252,10 @@
 <span class="hljs-selector-class">.btn</span> &#123;
   …
 &#125;</code></pre>
-
 <h2 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h2><p>上一回我們用結構與樣式分離的概念製作出一組按鈕，接下來在製作另一組模組 <code>card</code> ，按鈕模組除了可以獨立使用外，在 Card 內也是可正常運用。</p>
 
 <p data-height="300" data-theme-id="0" data-slug-hash="EKwQEJ" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="OOCSS (Demo 1)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/EKwQEJ/">OOCSS (Demo 1)</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-
 
 <pre><code class="hljs css"><span class="hljs-comment">/* card */</span>
 <span class="hljs-selector-class">.card</span> &#123;
@@ -283,7 +280,6 @@
     <span class="hljs-attribute">text-align</span>: right;
   &#125;
 &#125;</code></pre>
-
 <p>不過其中 <code>.card-body  ul</code> 這個 ul 就被限制住了，只有卡片內才能這樣顯示，此時就要思考是不是只有卡片內才需要這樣的 ul 顯示？或者將它拉出來更好？</p>
 <p>就當下這個設計，我們其實可以略作調整，將 <code>ul</code> 及 <code>img</code> 拉出來製作，然元件的容器與內容分離。</p>
 <p>這樣就學會了兩大 OOCSS 的觀念，而這兩個觀念下還有些細節可以注意，等到看完這幾天的介紹，就能掌握整個 CSS 模組的核心概念。</p>

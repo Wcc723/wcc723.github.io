@@ -17,24 +17,24 @@
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="最後一篇，來介紹gulp-compass，這一篇的內容較短，但是要特別注意系統是否可以運作ruby以及ruby compass(由於compass有更新)，所以和前一篇的差別會是多了ruby。">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.casper.tw/images/gulp/screen_shot_gulp-4-01.png">
+<meta property="og:image" content="https://img.casper.tw/images/gulp/screen_shot_gulp-4-01.png">
 <meta property="article:published_time" content="2014-11-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T03:49:13.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.175Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="gulp">
 <meta property="article:tag" content="nodejs">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.casper.tw/images/gulp/screen_shot_gulp-4-01.png">
+<meta name="twitter:image" content="https://img.casper.tw/images/gulp/screen_shot_gulp-4-01.png">
 <meta property="fb:app_id" content="556473851118881">
 
 
 <link rel="canonical" href="https://www.casper.tw/gulp/2014/11/07/gulp-on-diff-os/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Gulp RUN ruby-compass","datePublished":"2014-11-06T16:00:00.000Z","dateModified":"2016-10-13T03:49:13.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/gulp/2014/11/07/gulp-on-diff-os/","image":["https://www.casper.tw/images/gulp/screen_shot_gulp-4-01.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Gulp RUN ruby-compass","datePublished":"2014-11-06T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.175Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/gulp/2014/11/07/gulp-on-diff-os/","image":["https://img.casper.tw/images/gulp/screen_shot_gulp-4-01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,25 +217,21 @@
 
   <div class="prose"><p>最後一篇，來介紹gulp-compass，這一篇的內容較短，但是要特別注意系統是否可以運作ruby以及ruby compass(由於compass有更新)，所以和前一篇的差別會是多了ruby。</p>
 <span id="more"></span>
-
 <p>gulp-compass是呼叫ruby compass來運作，所以電腦內必須有ruby環境，所以建議先確認電腦內的ruby compass是否能正常運作，再來進行以下步驟。而目前compass的版本是1.01^，詳情就請參照compass官方網站。</p>
-<p><a target="_blank" rel="noopener" href="http://compass-style.org/">http://compass-style.org</a></p>
+<p><a target="_blank" rel="noopener" href="http://compass-style.org">http://compass-style.org</a></p>
 <h2 id="安裝Compass"><a href="#安裝Compass" class="headerlink" title="安裝Compass"></a>安裝Compass</h2><p>記得，在安裝compass與susy前，請確認電腦裡是否有ruby的環境，terminal內輸入<code>ruby -v</code>。</p>
 <pre><code>ruby -v  
-</code></pre>
-<p><img src="/images/gulp/screen_shot_gulp-4-01.png"></p>
+</code></pre><p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-4-01.png" alt=""></p>
 <p>接下來輸入以下指令來安裝compass。可參考<a target="_blank" rel="noopener" href="http://compass-style.org/install/">http://compass-style.org/install/</a></p>
 <pre><code>gem update —system
 
 gem install compass
-</code></pre>
-<p>輸入<code>gem install susy</code>，來安裝susy。可參考<a target="_blank" rel="noopener" href="http://susydocs.oddbird.net/en/latest/install/">http://susydocs.oddbird.net/en/latest/install/</a></p>
+</code></pre><p>輸入<code>gem install susy</code>，來安裝susy。可參考<a target="_blank" rel="noopener" href="http://susydocs.oddbird.net/en/latest/install/">http://susydocs.oddbird.net/en/latest/install/</a></p>
 <p>輸入以下指令來驗證是否安裝成功</p>
 <pre><code>compass -v
 
 gem -v susy
-</code></pre>
-<p><img src="/images/gulp/screen_shot_gulp-4-02.png"></p>
+</code></pre><p><img src="https://img.casper.tw/images/gulp/screen_shot_gulp-4-02.png" alt=""></p>
 <h2 id="gulp-compass"><a href="#gulp-compass" class="headerlink" title="gulp-compass"></a>gulp-compass</h2><p>這一段和之前也相同，打開terminal輸入<code>npm install —save-dev</code>，安裝完後打開gulpfile.js。</p>
 <p>這個範例已經包含常用的設定，當然也可以參考<a target="_blank" rel="noopener" href="https://www.npmjs.org/package/gulp-compass">https://www.npmjs.org/package/gulp-compass</a>。</p>
 <pre><code class="hljs javascript"><span class="hljs-comment">//gulpfile.js</span>
@@ -265,8 +261,6 @@ gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#
 &#125;);
 
 gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#x27;default&#x27;</span>, [<span class="hljs-string">&#x27;coffee&#x27;</span>,<span class="hljs-string">&#x27;compass&#x27;</span>,<span class="hljs-string">&#x27;webserver&#x27;</span>,<span class="hljs-string">&#x27;watch&#x27;</span>]);</code></pre>
-
-
 <p>接下來輸入gulp，就可以開始使用compass 1.0了，當然這邊要特別注意susy，這susy的版本是2，與1差異很大，如果安裝後想使用susy1，sass內import請輸入 @import “susyone”。</p>
 <pre><code class="hljs sass">//sass 檔案內容
 @import &quot;compass/reset&quot;
@@ -281,7 +275,6 @@ body
 .span6
      color: orange
      +span(6 of 12)</code></pre>
-
 <p>會輸出成像下面這樣，還會包含source map。</p>
 <pre><code class="hljs css"><span class="hljs-comment">/*css reset…. 略*/</span>
 
@@ -293,8 +286,6 @@ body
 <span class="hljs-selector-class">.span6</span> &#123; <span class="hljs-attribute">color</span>: orange; <span class="hljs-attribute">width</span>: <span class="hljs-number">49.15254%</span>; <span class="hljs-attribute">float</span>: left; <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">1.69492%</span>; &#125;
 
 <span class="hljs-comment">/*# sourceMappingURL=style.css.map */</span></code></pre>
-
-
 <p>如果是從前面的相關文章開始看，目前gulpfile.js檔案結果會像下面這樣。</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> gulp = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp&#x27;</span>),
      concat = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;gulp-concat&#x27;</span>),
@@ -340,9 +331,6 @@ gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#
 &#125;);
 
 gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#x27;default&#x27;</span>, [<span class="hljs-string">&#x27;coffee&#x27;</span>,<span class="hljs-string">&#x27;compass&#x27;</span>,<span class="hljs-string">&#x27;webserver&#x27;</span>,<span class="hljs-string">&#x27;watch&#x27;</span>]);</code></pre>
-
-
-
 <p>Gulp 系列文章</p>
 <ul>
 <li><a href="/gulp/2014/09/22/gulp-install">Gulp 環境安裝

@@ -33,7 +33,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Github 中的 ssh、https 路徑有什麼差異？ - 如何設定 Github SSH 金鑰","datePublished":"2018-02-11T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.525Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/git/2018/02/12/github-ssh-https/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2Fgithub-ssh.jpg?alt=media&token=64417bac-8ddd-406c-809d-e1f4c1083f99"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -156,7 +156,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -225,8 +225,7 @@
 <p>本篇文章以 Mac 的為主，如果你使用的是其它作業系統，上述文章也有詳細描述，整體差異不會太大喔。金鑰本身是一對的一個公鑰及一個私鑰，流程會是在本地端產生一組公私鑰，然後將公鑰上傳到 Github 上，接下來再上傳儲存庫時 Github 就會透過公鑰與電腦中的私鑰比對驗證，藉此不需要再輸入帳密。</p>
 <h3 id="步驟一：產生金鑰"><a href="#步驟一：產生金鑰" class="headerlink" title="步驟一：產生金鑰"></a>步驟一：產生金鑰</h3><p>輸入以下指令，來產生新的 SSH Key。</p>
 <pre><code class="hljs shell">ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8810_59.png?alt=media&token=ccac64a2-8c4e-4499-9cf5-f005304029ff"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8810_59.png?alt=media&amp;token=ccac64a2-8c4e-4499-9cf5-f005304029ff" alt=""></p>
 <pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">Enter file <span class="hljs-keyword">in</span> <span class="hljs-built_in">which</span> to save the key (/Users/casper/.ssh/id_rsa):</span>
 <span class="hljs-meta prompt_"># </span><span class="language-bash">這行只是確定存在哪</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">Overwrite (y/n)?</span>
@@ -234,25 +233,22 @@
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">Enter passphrase (empty <span class="hljs-keyword">for</span> no passphrase):</span>
 <span class="hljs-meta prompt_">$ </span><span class="language-bash">Enter same passphrase again:</span>
 <span class="hljs-meta prompt_"># </span><span class="language-bash">輸入密碼</span></code></pre>
-
 <p>此密碼與 Github 密碼無關，只是使用這個金鑰的密碼，為了寫這篇文章，我真的覆蓋了 Q_Q</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_08.png?alt=media&token=e1252b33-503f-43fb-a423-244e9f2604bb"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_08.png?alt=media&amp;token=e1252b33-503f-43fb-a423-244e9f2604bb" alt=""></p>
 <h3 id="步驟二：設定金鑰代理-Adding-your-SSH-key-to-the-ssh-agent"><a href="#步驟二：設定金鑰代理-Adding-your-SSH-key-to-the-ssh-agent" class="headerlink" title="步驟二：設定金鑰代理 (Adding your SSH key to the ssh-agent)"></a>步驟二：設定金鑰代理 (Adding your SSH key to the ssh-agent)</h3><p>啟用 SSH 代理伺服器，這個步驟可以讓之後使用此金鑰不需要再輸入額外的密碼(剛剛的自訂密碼)，如果跳過此步驟，之後就要輸入自訂密碼。</p>
 <pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash"><span class="hljs-built_in">eval</span> <span class="hljs-string">&quot;<span class="hljs-subst">$(ssh-agent -s)</span>&quot;</span></span></code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_16.png?alt=media&token=f2670aff-8186-4dde-91c5-09293e272709"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_16.png?alt=media&amp;token=f2670aff-8186-4dde-91c5-09293e272709" alt=""></p>
 <p>將私鑰及加入到 SSH 代理上，並且同時儲存剛剛的自訂密碼：</p>
 <pre><code class="hljs shell"><span class="hljs-meta prompt_">$ </span><span class="language-bash">ssh-add -K ~/.ssh/id_rsa</span></code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_20.png?alt=media&token=9e28a98b-4fe2-4e39-8968-39ec344d2c4c"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_20.png?alt=media&amp;token=9e28a98b-4fe2-4e39-8968-39ec344d2c4c" alt=""></p>
 <h3 id="步驟三：上傳公鑰"><a href="#步驟三：上傳公鑰" class="headerlink" title="步驟三：上傳公鑰"></a>步驟三：上傳公鑰</h3><p>Mac 內的個人目錄下可以找到 <code>.ssh/</code> 資料夾，以下會分別有 <code>id_rsa</code>、<code>id_rsa.pub</code> 兩個檔案，也分別為私鑰及公鑰，此步驟就是將 <code>id_rsa.pub</code> 檔案的內容上傳到 Github 上。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8B%E5%8D%881_14.png?alt=media&token=99ec8f46-1e61-4ec6-889e-86daf3fe5f24"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8B%E5%8D%881_14.png?alt=media&amp;token=99ec8f46-1e61-4ec6-889e-86daf3fe5f24" alt=""></p>
 <p>請用文字編輯器打開以上檔案並複製其內容。接下來到 Github &gt; Settings &gt; SSH and GPG keys 的設定頁面，選擇 New SSH Key。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_56.png?alt=media&token=8da055e9-d2f6-4f12-a5dd-576a113486c5"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_56.png?alt=media&amp;token=8da055e9-d2f6-4f12-a5dd-576a113486c5" alt=""></p>
 <p>接下來會出現設定頁面，上方標題可以自訂名稱，下方則可以貼上剛剛所複製的 Key，都確定後再輸入 Github 密碼則完成綁定，</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_59.png?alt=media&token=4a87c4ee-ea63-45cc-8c55-255e53e40066"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8A%E5%8D%8811_59.png?alt=media&amp;token=4a87c4ee-ea63-45cc-8c55-255e53e40066" alt=""></p>
 <p>然後進行一次 <code>git push</code>，如果可以進行推送就完成了，在剛剛所設定頁面重新整理後也會看到 <code>Last used within the last week</code> 最近一週有使用的字眼。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8B%E5%8D%881_19.png?alt=media&token=191290b5-a5d7-4b80-86b3-39dd6bcf20b9"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201802%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2018_2_13_%E4%B8%8B%E5%8D%881_19.png?alt=media&amp;token=191290b5-a5d7-4b80-86b3-39dd6bcf20b9" alt=""></p>
 <p>雖然官方是推薦使用 <code>https</code>，但不用輸入帳密真的很方便。</p>
 </div>
 

@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/css/2014/03/13/css-icon-sprites/google_logo170_hr.png">
 <meta property="article:published_time" content="2014-03-12T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T07:18:15.515Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.170Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="css">
 <meta property="article:tag" content="sass">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/css/2014/03/13/css-icon-sprites/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Spriting with Compass","datePublished":"2014-03-12T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.515Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2014/03/13/css-icon-sprites/","image":["https://www.casper.tw/google_logo170_hr.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Spriting with Compass","datePublished":"2014-03-12T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.170Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2014/03/13/css-icon-sprites/","image":["https://www.casper.tw/google_logo170_hr.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="/css/style.css?v=mq954j70">
 
-<link href="/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
+<link href="https://img.casper.tw/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -219,50 +219,44 @@
 <p>這次來介紹利用Compass製作sprites，sprites 就像是的Google icons，他把許多的icons集合在同一張的png，這樣可以減少用戶對於伺服器的請求數。而這次會有兩篇sprites文章，本篇是介紹基本的sprites，下次介紹retina版sprites。</p>
 <p>Compass sprites來源：<a target="_blank" rel="noopener" href="http://compass-style.org/help/tutorials/spriting/">http://compass-style.org/help/tutorials/spriting/</a></p>
 <span id="more"></span>
-<p><img src="/images/google_logo170_hr.png" alt="&#x2F;images&#x2F;google_logo170_hr.png"></p>
+<p><img src="https://img.casper.tw/images/google_logo170_hr.png" alt="/images/google_logo170_hr.png"></p>
 <h2 id="本篇重點"><a href="#本篇重點" class="headerlink" title="本篇重點"></a>本篇重點</h2><p>利用compass製作css sprites，而在下一篇會介紹如何製作retina版本css srpites。</p>
 <h2 id="準備工作"><a href="#準備工作" class="headerlink" title="準備工作"></a>準備工作</h2><p>首先先準備些icons到自己的<code>images</code>資料夾內，而本篇的圖片是從<a target="_blank" rel="noopener" href="http://icomoon.io/">http://icomoon.io/</a>下載作為範例用，如下圖所示。</p>
-<p><img src="/images/2014-03-1301.png" alt="準備icons"></p>
+<p><img src="https://img.casper.tw/images/2014-03-1301.png" alt="準備icons"></p>
 <p>我在icons資料夾內放入了幾張不同size的圖檔，另外切記，製作sprites請存png。</p>
-<p><img src="/images/2014-03-1302.png" alt="準備icons"></p>
+<p><img src="https://img.casper.tw/images/2014-03-1302.png" alt="準備icons"></p>
 <h2 id="Sass"><a href="#Sass" class="headerlink" title="Sass"></a>Sass</h2><p>接下來開始Sass吧。</p>
 <pre><code>@import &quot;icons/*.png&quot; //匯入圖檔
 @include all-icons-sprites //將圖檔轉成 sprites
-</code></pre>
-<p>接下來會在資料夾內看到以下的圖檔，這樣就成功一半了。</p>
-<p><img src="/images/2014-03-1303.png" alt="sprites"></p>
+</code></pre><p>接下來會在資料夾內看到以下的圖檔，這樣就成功一半了。</p>
+<p><img src="https://img.casper.tw/images/2014-03-1303.png" alt="sprites"></p>
 <p>在CSS檔內會看到這樣的結果，<code>icons</code>是資料夾名稱，<code>mobile</code>是檔名，兩個串在一起就是一個class，但這範例缺少一個重要的屬性…，就是寬跟高。</p>
 <pre><code>.icons-mobile &#123;
-	background-position: 0 -134px;
+    background-position: 0 -134px;
 &#125;
-</code></pre>
-<h2 id="Compass-sprites-設定值"><a href="#Compass-sprites-設定值" class="headerlink" title="Compass sprites 設定值"></a>Compass sprites 設定值</h2><p><a target="_blank" rel="noopener" href="http://compass-style.org/help/tutorials/spriting/customization-options/">http://compass-style.org/help/tutorials/spriting/customization-options/</a></p>
+</code></pre><h2 id="Compass-sprites-設定值"><a href="#Compass-sprites-設定值" class="headerlink" title="Compass sprites 設定值"></a>Compass sprites 設定值</h2><p><a target="_blank" rel="noopener" href="http://compass-style.org/help/tutorials/spriting/customization-options/">http://compass-style.org/help/tutorials/spriting/customization-options/</a></p>
 <p>Compass sprites有提供許多的設定值，相關的參數如以上網址，我們以<code>$&lt;map&gt;-spacing</code>為例，這是可以讓產生的sprites每張縮圖產生間距，只要把<code>&lt;map&gt;</code>替換成資料夾名稱即可。</p>
 <p>如以下sass，就可以讓每張縮圖額外有1px的間距，這樣的sprites icons也比較不會互相干擾。</p>
 <pre><code>//$&lt;map&gt;-spacing
 $icons-spacing: 1px
-</code></pre>
-<p>而另一個設定是讓每一個class都會寫入當初匯入的png寬與高，<code>$&lt;map&gt;-sprite-dimensions</code>預設值為<code>false</code>，只要改為<code>true</code>就會將每個icon加上寬與高。</p>
+</code></pre><p>而另一個設定是讓每一個class都會寫入當初匯入的png寬與高，<code>$&lt;map&gt;-sprite-dimensions</code>預設值為<code>false</code>，只要改為<code>true</code>就會將每個icon加上寬與高。</p>
 <p>只要將這些設定值，寫在匯入的png前方，在匯入後就會依據這些設定做成sprites。</p>
 <pre><code>$icons-spacing: 1px
 $icons-sprite-dimensions: true
 @import &quot;icons/*.png&quot;
 @include all-icons-sprites
-</code></pre>
-<p>這樣匯入的每張圖，都會被補上寬與高。</p>
+</code></pre><p>這樣匯入的每張圖，都會被補上寬與高。</p>
 <pre><code>.icons-mobile &#123;
-	background-position: 0 -137px;
-	height: 49px;
-	width: 30px;
+    background-position: 0 -137px;
+    height: 49px;
+    width: 30px;
 &#125;
-</code></pre>
-<h2 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h2><p>在tag內直接填上對應的class名稱，就可以使用了。</p>
+</code></pre><h2 id="完成"><a href="#完成" class="headerlink" title="完成"></a>完成</h2><p>在tag內直接填上對應的class名稱，就可以使用了。</p>
 <pre><code>&lt;div class=&quot;icons1-mobile&quot;&gt; &lt;/div&gt;
 &lt;div class=&quot;icons1-phone&quot;&gt; &lt;/div&gt;
 &lt;div class=&quot;icons1-nice&quot;&gt; &lt;/div&gt;
 &lt;div class=&quot;icons1-setting&quot;&gt; &lt;/div&gt;
 </code></pre>
-
 <div class="demo d0311">
 
 	<div class="icons1-mobile">  </div>
@@ -271,7 +265,6 @@ $icons-sprite-dimensions: true
 	<div class="icons1-setting"> </div>
 
 </div>
-
 
 <p>這樣就可以省去一大半用css算sprites位置的時間囉～。</p>
 </div>

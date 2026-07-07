@@ -17,23 +17,23 @@
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="前幾篇有介紹過 CSS Grid Layout 的使用方法，當我們學習排版類型的 CSS 時，最好的方式是先作分類，以 Flex 與 Grid Layout 來說都有共同的特徵，就是他們有分為外容器屬性與內元件屬性。">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.casper.tw/images/2017/flex/flex-cover.png">
+<meta property="og:image" content="https://img.casper.tw/images/2017/flex/flex-cover.png">
 <meta property="article:published_time" content="2017-07-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T07:18:15.521Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.183Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="css">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.casper.tw/images/2017/flex/flex-cover.png">
+<meta name="twitter:image" content="https://img.casper.tw/images/2017/flex/flex-cover.png">
 <meta property="fb:app_id" content="556473851118881">
 
 
 <link rel="canonical" href="https://www.casper.tw/css/2017/07/21/css-flex/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"圖解：CSS Flex 屬性一點也不難","datePublished":"2017-07-20T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.521Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2017/07/21/css-flex/","image":["https://www.casper.tw/images/2017/flex/flex-cover.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"圖解：CSS Flex 屬性一點也不難","datePublished":"2017-07-20T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.183Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2017/07/21/css-flex/","image":["https://img.casper.tw/images/2017/flex/flex-cover.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -156,7 +156,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -216,10 +216,8 @@
 
   <div class="prose"><p>前幾篇有介紹過 CSS Grid Layout 的使用方法，當我們學習排版類型的 CSS 時，最好的方式是先作分類，以 Flex 與 Grid Layout 來說都有共同的特徵，就是他們有分為外容器屬性與內元件屬性。</p>
 <span id="more"></span>
-
 <h2 id="Flex-的外容器與內元件"><a href="#Flex-的外容器與內元件" class="headerlink" title="Flex 的外容器與內元件"></a>Flex 的外容器與內元件</h2><p>屬性放錯地方就沒有作用(廢話)，學習的過程中如果可以先了解正確的擺放位置，可以減少許多除錯的時間；Flex 中分為外容器與內元件，下方這張圖就是解釋這兩個的差異。</p>
-<img no-lazy src="/images/2017/flex/flex.png" alt="">
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/flex.png" alt=""></p>
 <p>Flex 外容器屬性：</p>
 <ul>
 <li>display</li>
@@ -247,71 +245,54 @@
 <pre><code class="hljs css"><span class="hljs-selector-class">.flex-container</span> &#123;
   <span class="hljs-attribute">display</span>: flex | inline-flex;
 &#125;</code></pre>
-
 <h3 id="flex-direction"><a href="#flex-direction" class="headerlink" title="flex-direction"></a>flex-direction</h3><p>Flex 決定內元件排序方向的重要屬性，這也直接影響了 flex 的軸線 (主軸及交錯軸)，flex 中的對齊屬性都與此有很大的相關聯，下圖中是預設狀態的軸線方向。</p>
-<img no-lazy src="/images/2017/flex/flex-axis.png" alt="">
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/flex-axis.png" alt=""></p>
 <p><code>flex-direction</code> 就是來改變上圖中的軸線方向，可以將軸線做水平反轉、轉為垂直、垂直反轉等，下圖是四種軸線排列的示意圖：</p>
-<img no-lazy src="/images/2017/flex/flex-direction.png" alt="">
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/flex-direction.png" alt=""></p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.flex-container</span> &#123;
   <span class="hljs-attribute">flex-direction</span>: row | row-reverse | column | column-reverse;
 &#125;</code></pre>
-
 <p>這個範例則是將主軸線設定為垂直的方向，所以 flex 的內容都是以垂直做排列。</p>
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
 <p data-height="381" data-theme-id="0" data-slug-hash="yXdVXz" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-direction)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/yXdVXz/">Flex 介紹 (flex-direction)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
-
 <h3 id="flex-wrap"><a href="#flex-wrap" class="headerlink" title="flex-wrap"></a>flex-wrap</h3><p>超出範圍時是否換行的屬性，分為換行、不換行、換行時反轉。</p>
-<img no-lazy src="/images/2017/flex/flex-wrap.png" alt="">
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/flex-wrap.png" alt=""></p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.flex-container</span> &#123;
   <span class="hljs-attribute">flex-wrap</span>: nowrap | wrap | wrap-reverse;
 &#125;</code></pre>
-
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
 <p data-height="378" data-theme-id="0" data-slug-hash="xroRaB" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-wrap)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/xroRaB/">Flex 介紹 (flex-wrap)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 <script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
 
-
 <h3 id="flex-flow"><a href="#flex-flow" class="headerlink" title="flex-flow"></a>flex-flow</h3><p>這僅僅是 <code>flex-direction</code> 與 <code>flex-wrap</code> 的縮寫，所以只要在這前後帶上相對應的值即可。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.flex-container</span> &#123;
   <span class="hljs-attribute">flex-flow</span>: &lt;<span class="hljs-string">&#x27;flex-direction&#x27;</span>&gt; || &lt;<span class="hljs-string">&#x27;flex-wrap&#x27;</span>&gt;
 &#125;</code></pre>
-
 <h3 id="justify-content"><a href="#justify-content" class="headerlink" title="justify-content"></a>justify-content</h3><p>這個屬性和下方屬性很像，很接近水平對齊的設定，但嚴格說來是稱為主軸對齊，主軸的設定是上方的 <code>flex-direction</code>；所以實際是水平或垂直，要依主軸的方向而定喔。</p>
-<img no-lazy src="/images/2017/flex/justify-content.png" alt="">
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/justify-content.png" alt=""></p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.flex-container</span> &#123;
   <span class="hljs-attribute">justify-content</span>: flex-start | flex-end | center | space-between | space-around;
 &#125;</code></pre>
-
 <h3 id="align-items"><a href="#align-items" class="headerlink" title="align-items"></a>align-items</h3><p>相對於上一個屬性，這是交錯軸的對齊設定。</p>
-<img no-lazy src="/images/2017/flex/align-items.png" alt="">
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/align-items.png" alt=""></p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.flex-container</span> &#123;
   <span class="hljs-attribute">align-items</span>: flex-start | flex-end | center | baseline | stretch;
 &#125;</code></pre>
-
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
 <p data-height="381" data-theme-id="0" data-slug-hash="VWJPaa" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex-justify)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/VWJPaa/">Flex 介紹 (flex-justify)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
-
 <h3 id="align-content"><a href="#align-content" class="headerlink" title="align-content"></a>align-content</h3><p>上一個屬性的多行版本，排列方式也有多一些，但注意 <code>stretch</code> 在高度被限制的情況下不會正常伸展。</p>
-<img no-lazy src="/images/2017/flex/align-content.png" alt="">
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/align-content.png" alt=""></p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.flex-container</span> &#123;
   <span class="hljs-attribute">align-content</span>: flex-start | flex-end | center | space-between | space-around | stretch;
 &#125;</code></pre>
-
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
 <p data-height="375" data-theme-id="0" data-slug-hash="JJQEOY" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (align-content)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/JJQEOY/">Flex 介紹 (align-content)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
-
 
 <h2 id="內元件"><a href="#內元件" class="headerlink" title="內元件"></a>內元件</h2><p>內元件的設定其中之一 <code>flex</code> 是這當中最特別的，只要搞懂 <code>flex</code> 的設定就了解了 flex 最困難的部分，所以我們就從這部份開始介紹喔。</p>
 <h3 id="flex"><a href="#flex" class="headerlink" title="flex"></a>flex</h3><p>flex 是縮寫，裡面依序包含三個屬性 <code>flex-grow</code>、<code>flex-shrink</code> 和 <code>flex-basis</code>，如果只設定一個則是 <code>flex-grow</code>。</p>
@@ -321,28 +302,20 @@
 <li>flex-basis: 元件的基準值，可使用不同的單位值。</li>
 </ul>
 <p>以下圖為例，伸展值為 2 的空間會佔更多。</p>
-<img no-lazy src="/images/2017/flex/flex-grow.png" alt="">
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/flex-grow.png" alt=""></p>
 <p>可點擊 Edit on Codepen 自己玩看看更了解：</p>
 
 <p data-height="383" data-theme-id="0" data-slug-hash="BZqrVW" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (flex)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/BZqrVW/">Flex 介紹 (flex)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
-
 <h2 id="align-self"><a href="#align-self" class="headerlink" title="align-self"></a>align-self</h2><p><code>align-self</code> 可以調整內元件交錯軸的對齊設定(主軸線則不能另外做設定)，且可以個別設定單一元件的值。</p>
-<img no-lazy src="/images/2017/flex/align-self.png" alt="">
-
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/align-self.png" alt=""></p>
 
 <p data-height="381" data-theme-id="0" data-slug-hash="pwMBem" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (align-self)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/pwMBem/">Flex 介紹 (align-self)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
 
-
 <h2 id="Order"><a href="#Order" class="headerlink" title="Order"></a>Order</h2><p>這是一個相當特別的屬性，可以重新定義元件的排列順序，順序會依據數值的大小排列。</p>
-<img no-lazy src="/images/2017/flex/order.png" alt="">
-
-
+<p><img no-lazy src="https://img.casper.tw/images/2017/flex/order.png" alt=""></p>
 
 <p data-height="381" data-theme-id="0" data-slug-hash="OgKGjw" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Flex 介紹 (order)" class="codepen">See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/OgKGjw/">Flex 介紹 (order)</a> by Wcc723 (<a target="_blank" rel="noopener" href="https://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</p>
-
 
 <p>和過去不同，Flex 已經是主流的 CSS 屬性，現在許多 CSS 框架也都是使用 Flex 來作網格排版。搭配著範例，動手玩玩看能夠更快速的了解 Flex 喔。</p>
 <p>延伸介紹：<a href="/css/2020/03/08/flex-size/">Flex 空間計算規則</a></p>

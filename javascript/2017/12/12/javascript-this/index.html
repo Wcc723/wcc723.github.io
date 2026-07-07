@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：JavaScript 的 this 到底是誰？","datePublished":"2017-12-11T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.523Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/12/javascript-this/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c9-01.jpg?alt=media&token=9dc270e8-68a3-4cb3-b732-ebdcaf14e0f7"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -226,7 +226,6 @@
 &#125;
 
 <span class="hljs-title function_">callAuntie</span>();</code></pre>
-
 <p>這裡將 function 內在包覆著 function，但只要是直接呼叫，this 都是屬於全域。</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">window</span>.<span class="hljs-property">auntie</span> = <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>;
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">callAuntie</span> (<span class="hljs-params"></span>) &#123;
@@ -240,7 +239,6 @@
 &#125;
 
 <span class="hljs-title function_">callAuntie</span>();</code></pre>
-
 <p>無論在哪一層，純粹的調用方式 <code>this</code> 都會指向 window。</p>
 <h2 id="物件的方法調用-As-an-object-method"><a href="#物件的方法調用-As-an-object-method" class="headerlink" title="物件的方法調用 (As an object method)"></a>物件的方法調用 (As an object method)</h2><p>如果 function 是在物件下調用，那麼 this 則會指向此物件，無論 function 是在哪裡宣告。以下的範例中一個是純粹的調用，另一個則是使用物件的方法調用，物件的方法調用時 <code>this</code> 會指向調用的物件。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">callName</span>(<span class="hljs-params"></span>) &#123;
@@ -256,7 +254,6 @@
 
 <span class="hljs-title function_">callName</span>()        <span class="hljs-comment">// &#x27;全域阿婆&#x27;</span>
 auntie.<span class="hljs-title function_">callName</span>() <span class="hljs-comment">// &#x27;漂亮阿姨&#x27;，呼叫是在物件下調用，那麼 this 則是該物件</span></code></pre>
-
 <p>相同的道理，宣告的位置不重要，重要的是呼叫的方法。如果將物件內的<code>函式</code>賦予在一個純粹的變數上並調用它時，這個 <code>this</code> 將會指向全域。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;全域阿婆&#x27;</span>;
 <span class="hljs-keyword">var</span> auntie = &#123;
@@ -269,7 +266,6 @@ auntie.<span class="hljs-title function_">callName</span>() <span class="hljs-co
 <span class="hljs-comment">// 將 function 指向物件內的 function，不過不重要</span>
 callThisName = auntie.<span class="hljs-property">callName</span>; 
 <span class="hljs-title function_">callThisName</span>()                  <span class="hljs-comment">// &#x27;全域阿婆&#x27;</span></code></pre>
-
 <h4 id="DOM-物件調用-As-a-DOM-event-handler-同此方法"><a href="#DOM-物件調用-As-a-DOM-event-handler-同此方法" class="headerlink" title="DOM 物件調用 (As a DOM event handler) 同此方法"></a>DOM 物件調用 (As a DOM event handler) 同此方法</h4><p>DOM 搭配 addEventListener 時，此 this 所指向的則是該 DOM。以下這段程式碼可以貼在任何網頁下的 Console，接下來點擊畫面上任何一區域，該區域則會加上紅線。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> elements = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">&#x27;div&#x27;</span>);
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">changeDOM</span>(<span class="hljs-params"></span>) &#123;
@@ -280,7 +276,6 @@ callThisName = auntie.<span class="hljs-property">callName</span>;
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; elements.<span class="hljs-property">length</span>; i++) &#123;
   elements[i].<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, changeDOM, <span class="hljs-literal">false</span>);
 &#125;</code></pre>
-
 <h2 id="建構式的調用-As-a-constructor"><a href="#建構式的調用-As-a-constructor" class="headerlink" title="建構式的調用 (As a constructor)"></a>建構式的調用 (As a constructor)</h2><p>在建構式下會 new 一個新物件，此時的 this 會指向新的物件。建構式在後續的章節會介紹，此部分只要了解建構式的 <code>this</code> 也是指像物件本身即可。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">FamilyConstructor</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">this</span>.<span class="hljs-property">mom</span> = <span class="hljs-string">&#x27;老媽&#x27;</span>
@@ -288,7 +283,6 @@ callThisName = auntie.<span class="hljs-property">callName</span>;
 
 <span class="hljs-keyword">var</span> myFamily = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FamilyConstructor</span>();
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(myFamily.<span class="hljs-property">mom</span>);</code></pre>
-
 <p>這一個 this 不會是全域且可以在生成的物件上重新定義 (所以他指向的是該生成的物件)。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> mom = <span class="hljs-string">&#x27;全域老媽&#x27;</span>;
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">FamilyConstructor</span>(<span class="hljs-params">newMom</span>) &#123;
@@ -299,7 +293,6 @@ callThisName = auntie.<span class="hljs-property">callName</span>;
 <span class="hljs-keyword">var</span> realFamily = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FamilyConstructor</span>();
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;我的&#x27;</span>, myFamily.<span class="hljs-property">mom</span>);    <span class="hljs-comment">// 我的 希望是漂亮阿姨</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;現實&#x27;</span>, realFamily.<span class="hljs-property">mom</span>);  <span class="hljs-comment">// 現實 老媽</span></code></pre>
-
 <h2 id="使用-Call-來呼叫-function"><a href="#使用-Call-來呼叫-function" class="headerlink" title="使用 Call 來呼叫 function"></a>使用 Call 來呼叫 function</h2><p><code>call</code> 調用的函式可以直接傳入新的物件，使其作為 this 所指向的物件。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> name = <span class="hljs-string">&#x27;全域阿婆&#x27;</span>;
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">callName</span>(<span class="hljs-params"></span>) &#123;
@@ -308,7 +301,6 @@ callThisName = auntie.<span class="hljs-property">callName</span>;
 
 <span class="hljs-title function_">callName</span>();                        <span class="hljs-comment">// &#x27;全域阿婆&#x27;</span>
 callName.<span class="hljs-title function_">call</span>(&#123;<span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>&#125;);  <span class="hljs-comment">// &#x27;漂亮阿姨&#x27;</span></code></pre>
-
 <p>call, bind, apply 這三者均可，都可以傳入新的 <code>this</code> 給予函式使用，三者僅是使用方法不同，可參考：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Reference/Global_Objects/Function/apply">Function.prototype.apply() - JavaScript | MDN</a>。</p>
 <h2 id="重新指向-this"><a href="#重新指向-this" class="headerlink" title="重新指向 this"></a>重新指向 this</h2><p>在實際運作時，立即函式 (IIFE) 或是非同步的事件 (setTimeout) 大多都會指向全域，如果需調用的則是物件本身的話，可以先用一個變數指向 <code>this</code>，等到調用後再重新使用它。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">callName</span>(<span class="hljs-params"></span>) &#123;
@@ -328,7 +320,6 @@ callName.<span class="hljs-title function_">call</span>(&#123;<span class="hljs-
 &#125;
 
 auntie.<span class="hljs-title function_">callName</span>();</code></pre>
-
 <p>這個變數名稱可以自己定義，常見有 <code>that</code>、<code>vm</code>、<code>self</code> 等等，可以使用自己或團隊習慣的為主即可。</p>
 </div>
 

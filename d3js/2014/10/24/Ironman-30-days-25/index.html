@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/d3js/2014/10/24/Ironman-30-days-25/2014ironman/day23_04.png">
 <meta property="article:published_time" content="2014-10-23T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T02:47:29.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.174Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="d3js">
 <meta property="article:tag" content="ironman">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/d3js/2014/10/24/Ironman-30-days-25/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 也可以像音樂一樣動吃動吃動(2)","datePublished":"2014-10-23T16:00:00.000Z","dateModified":"2016-10-13T02:47:29.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/24/Ironman-30-days-25/","image":["https://www.casper.tw/2014ironman/day23_04.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 也可以像音樂一樣動吃動吃動(2)","datePublished":"2014-10-23T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.174Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/24/Ironman-30-days-25/","image":["https://www.casper.tw/2014ironman/day23_04.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -218,7 +218,6 @@
   <div class="prose"><p>上一篇介紹了資料的來源以及動機，這篇就來介紹執行的層面吧。</p>
 <p>在原本的範例中，是只有一個圓在跳動，但是音樂所能擷取的資料是一段很長的陣列，我就思考著是不是有辦法做成折線圖，並且讓他有躍動的感覺。</p>
 <span id="more"></span>
-
 <p>音樂來源：<a target="_blank" rel="noopener" href="http://unlimited.kptaipei.tw/">http://unlimited.kptaipei.tw/</a></p>
 <p>範例參考：<a target="_blank" rel="noopener" href="http://webfinal.herokuapp.com/slides.html">http://webfinal.herokuapp.com/slides.html</a></p>
 <h2 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h2><p>先看一下HTML的結構，在左邊呈現圖像化的效果，右邊是柯P的音樂選單，重要的是下方的<code>class=&quot;controller&quot;</code>，這並不是js的套件或是code，僅僅是Chrome的html5物件。</p>
@@ -232,18 +231,16 @@
   <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
-<p><img src="/images/2014ironman/day24_02.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day24_02.png" alt=""></p>
 <h2 id="柯P資料"><a href="#柯P資料" class="headerlink" title="柯P資料"></a>柯P資料</h2><p>直接透過d3.json去接柯P的資料，之前有提過KP這方面處理得相當好，用d3.js就可以直接接資料，接回來的範例如下，也可以直接打開chrome console看更完整資料。</p>
-<p><img src="/images/2014ironman/day24_03.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day24_03.png" alt=""></p>
 <pre><code class="hljs javascript">d3.<span class="hljs-title function_">json</span>(kpMusic, <span class="hljs-keyword">function</span>(<span class="hljs-params">data</span>)&#123; <span class="hljs-comment">//取得柯P音樂資料</span>
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data.<span class="hljs-property">data</span>)
   dataMusic = data.<span class="hljs-property">data</span>; <span class="hljs-comment">//存到dataMusic</span>
   <span class="hljs-title function_">playlist</span>() <span class="hljs-comment">//執行下一個function</span>
 &#125;);</code></pre>
-
 <h2 id="Line-Chart"><a href="#Line-Chart" class="headerlink" title="Line Chart"></a>Line Chart</h2><p>這一段是特別需要注意的，因為音樂的所傳回的陣列長度是2048，值大概像下面這樣，範圍由-1 ~ 1，也因為長度過長，在繪製成圖形上會有效能上的問題，所以擷取其中一段即可。</p>
-<p><img src="/images/2014ironman/day23_02.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day23_02.png" alt=""></p>
 <p>所以該段js大概像這樣：</p>
 <pre><code class="hljs javascript"><span class="hljs-comment">//buffer 為傳來的值</span>
 
@@ -263,7 +260,6 @@ newBuffer = <span class="hljs-title class_">Array</span>.<span class="hljs-prope
       &#125;);
 
   path.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-title function_">line</span>(newBuffer)); <span class="hljs-comment">//將音樂資料套用至曲線</span></code></pre>
-
 <h2 id="DEMO"><a href="#DEMO" class="headerlink" title="DEMO"></a>DEMO</h2><p><strong>請先選擇右方音樂，再點選播放</strong></p>
 
 <div class="demo">
@@ -276,7 +272,6 @@ newBuffer = <span class="hljs-title class_">Array</span>.<span class="hljs-prope
   </div>
 </div>
 </div>
-
 
 <p><em>很抱歉，目前本範例只支援Chrome</em></p>
 <h2 id="完整Code"><a href="#完整Code" class="headerlink" title="完整Code"></a>完整Code</h2><p>如果有興趣想要跟著實驗，只要把這段貼回家就可以玩囉</p>
@@ -417,7 +412,6 @@ d3.<span class="hljs-title function_">select</span>(<span class="hljs-string">&q
     processor.<span class="hljs-title function_">connect</span>(context.<span class="hljs-property">destination</span>);
   &#125;);
 &#125;</code></pre>
-
 <p>還有CSS要補上喔～</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.player</span> &#123;
   <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#000</span>;
@@ -452,7 +446,6 @@ d3.<span class="hljs-title function_">select</span>(<span class="hljs-string">&q
 <span class="hljs-selector-class">.controller</span>&#123;
   <span class="hljs-attribute">clear</span>: both;
 &#125;</code></pre>
-
 <h2 id="後記"><a href="#後記" class="headerlink" title="後記"></a>後記</h2><p>鐵人賽快要結束了，不過我到快結束才更了解D3js，有很多豐富的技巧還沒介紹的說…。</p>
 
 <style>

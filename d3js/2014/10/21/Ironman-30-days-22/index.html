@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 資料數量增減","datePublished":"2014-10-20T16:00:00.000Z","dateModified":"2016-10-13T02:55:13.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/21/Ironman-30-days-22/","image":["https://www.casper.tw/2014ironman/day21_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,23 +217,18 @@
 
   <div class="prose"><p>資料很多時候需要比較、切換，所以可能會同時加入多筆資料，前一篇文章所介紹的是相同數量的資料，這次要做隨機的資料量。</p>
 <span id="more"></span>
-
 <h2 id="資料轉換"><a href="#資料轉換" class="headerlink" title="資料轉換"></a>資料轉換</h2><p>資料數量不同時，如果增加到沒什麼，因為原本就是從無到有，都是利用Append去增加新的物件：</p>
-<pre><code>bars.enter().append(&#39;rect&#39;);
-</code></pre>
-<p>但是如果資料比原本還要少時，就要選取多餘的元件(exit)，並且移除它(remove)。</p>
+<pre><code>bars.enter().append(&apos;rect&apos;);
+</code></pre><p>但是如果資料比原本還要少時，就要選取多餘的元件(exit)，並且移除它(remove)。</p>
 <pre><code>bars.exit() //選擇多餘的部分
-	.remove() //清除物件
-</code></pre>
-<p>下面這個範例，預設會先用20筆資料，接下來點擊button，就會隨機的增減資料，另外動態做稍微誇張一些，覺得挺有趣的，玩了幾個動態模式，這個最彈了…。</p>
+    .remove() //清除物件
+</code></pre><p>下面這個範例，預設會先用20筆資料，接下來點擊button，就會隨機的增減資料，另外動態做稍微誇張一些，覺得挺有趣的，玩了幾個動態模式，這個最彈了…。</p>
 
 <div class="demo">
 
 
 <button class="btn update_btn"> Click Me </button>
 </div>
-
-
 
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> dataset = [];
 <span class="hljs-keyword">var</span> numValues = <span class="hljs-number">20</span>; <span class="hljs-comment">//一開始的資料數量是固定的</span>
@@ -394,7 +389,6 @@ dataText.<span class="hljs-title function_">text</span>(<span class="hljs-keywor
 d3.<span class="hljs-title function_">select</span>(<span class="hljs-string">&#x27;.update_btn&#x27;</span>).<span class="hljs-title function_">on</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)&#123;
 	<span class="hljs-title function_">chartFn</span>();
 &#125;);</code></pre>
-
 <p>接下來，明天又要來亂抓Open data來玩囉～</p>
 
 <script>

@@ -32,7 +32,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SVG 簡介","datePublished":"2014-09-30T16:00:00.000Z","dateModified":"2016-10-13T02:15:17.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/01/Ironman-30-days-02/"}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -155,7 +155,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -216,7 +216,6 @@
   <div class="prose"><p>這部分會持續幾篇，主要是我先前Blog整理出來的，不會相當的深入，是為了解SVG的使用方式。另外這次鐵人賽也有高手是介紹SVG，如果有興趣也可以參考其他高手的文章。</p>
 <p>SVG(Scalable Vector Graphics)，中文直譯就是”可縮放向量圖形 “，它是以XML格式儲存，而在瀏覽器上是從IE9後才開始支援SVG。也因為是XML格式，所以D3對它特別容易進行操作。</p>
 <span id="more"></span>
-
 <p>教程參考：<a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/svg/">http://tutorials.jenkov.com/svg/</a></p>
 <h2 id="SVG-範例-直接繪製"><a href="#SVG-範例-直接繪製" class="headerlink" title="SVG 範例(直接繪製)"></a>SVG 範例(直接繪製)</h2><p>在svg標簽內就可以直接開始繪製向量圖型，而其中<code>xmlns=&quot;http://www.w3.org/2000/</code>svg”在微軟MSDN的解釋為定義SVG區段的命名空間，移除也沒什麼差別。</p>
 <p>在定義SVG時，也建議同時給予寬與高，如果沒有，預設是100%。</p>
@@ -225,65 +224,53 @@
 	<rect x="2" y="2" width="100" height="100" style="stroke: #333; stroke-width: 3; fill: MediumTurquoise;"/>
 </svg>
 
-
 <pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- SVG tag --&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;120&quot;</span>&gt;</span>
 	<span class="hljs-comment">&lt;!-- 矩行 tag --&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: #333; stroke-width: 3; fill: MediumTurquoise;&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
-
 <h2 id="SVG-基本型"><a href="#SVG-基本型" class="headerlink" title="SVG 基本型"></a>SVG 基本型</h2><p>SVG是屬於向量的圖形，所以他有許多的繪圖概念與Illustrator相似，如矩行、圓形、多邊形等等…。</p>
 <h3 id="矩形"><a href="#矩形" class="headerlink" title="矩形"></a>矩形</h3><p>在定義一個形狀時，通常會定義以下屬性，形狀、位置、尺寸以及樣式。矩行是相當基本的圖形，所以就依序定義以下屬性。</p>
 <pre><code>&quot;shapes tag&quot; &quot;x&quot; &quot;y&quot; &quot;width&quot; &quot;height&quot; &quot;style&quot;
 </code></pre>
-
 <svg width="100%" height="105">
 	<rect x="2" y="2" width="100" height="100" style="stroke: #333; stroke-width: 3; fill: FireBrick;"/>
 	<rect x="120" y="2" width="200" height="100" style="stroke: #333; stroke-width: 3; fill: LightSkyBlue;"/>
 </svg>
-
 
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;105&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: #333; stroke-width: 3; fill: FireBrick;&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;120&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;200&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: #333; stroke-width: 3; fill: LightSkyBlue;&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
 
-
 <svg width="100%" height="105">
 	<rect x="2" y="2" width="100" height="100" rx="10" style="stroke: #333; stroke-width: 3; fill: FireBrick;"></rect>
 	<rect x="120" y="2" width="200" height="100" rx="40" ry="10" style="stroke: #333; stroke-width: 3; fill: LightSkyBlue;"></rect>
 </svg>
-
 
 <p>而矩形除了一般的方形、長方形以外，也可以增加圓角的屬性rx、ry，但這就沒有像css的border-radius那麼的自由了，只能四個角設定相同的值；rx、ry也僅僅是設定其圓角垂直以及水平的半徑而已。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;105&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">rx</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: #333; stroke-width: 3; fill: FireBrick;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">rect</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;120&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;0&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;200&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">rx</span>=<span class="hljs-string">&quot;40&quot;</span> <span class="hljs-attr">ry</span>=<span class="hljs-string">&quot;10&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: #333; stroke-width: 3; fill: LightSkyBlue;&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">rect</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
-
 <h3 id="圓形"><a href="#圓形" class="headerlink" title="圓形"></a>圓形</h3><p>圓形中有一點要特別注意，圓形的cx,cy所代表的是圓心(r)的位置，所以在定義圓形的位置，如果不想跑到圖框外，務必cx、cy要大於r的值。</p>
 
 <svg width="100%" height="105">
 	<circle cx="100" cy="51" r="50" style="stroke: #333; stroke-width: 3; fill: SeaShell;"/>
 </svg>
 
-
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;105&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">circle</span> <span class="hljs-attr">cx</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">cy</span>=<span class="hljs-string">&quot;51&quot;</span> <span class="hljs-attr">r</span>=<span class="hljs-string">&quot;50&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: #333; stroke-width: 3; fill: SeaShell;&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
-
-
 <h3 id="橢圓形"><a href="#橢圓形" class="headerlink" title="橢圓形"></a>橢圓形</h3><p>橢圓形概念和圓形也相當類似，只是將半徑r的值改成垂直及水平半徑rx、ry。</p>
 
 <svg width="100%" height="105">
 	<ellipse cx="100" cy="51" rx="80" ry="30" style="stroke: #333; stroke-width: 3; fill: MediumVioletRed;"/>
 </svg>
 
-
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">ellipse</span> <span class="hljs-attr">cx</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">cy</span>=<span class="hljs-string">&quot;51&quot;</span> <span class="hljs-attr">rx</span>=<span class="hljs-string">&quot;80&quot;</span> <span class="hljs-attr">ry</span>=<span class="hljs-string">&quot;30&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: #333; stroke-width: 3; fill: MediumVioletRed;&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
-
 <h2 id="CSS樣式控制"><a href="#CSS樣式控制" class="headerlink" title="CSS樣式控制"></a>CSS樣式控制</h2><p>SVG就像HTML的物件一樣很好控制，但不同的是他有屬於它自己的屬性，就好比我們要將顏色填滿在一般html物件會使用<code>background-color</code>，而在SVG內會使用<code>fill</code>，這部分也會運用到D3。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">style</span>&gt;</span><span class="language-css"></span>
 <span class="language-css"><span class="hljs-selector-class">.rect</span>&#123;</span>
@@ -296,13 +283,11 @@
 <span class="language-css">	<span class="hljs-attribute">fill</span>: SlateGray;</span>
 <span class="language-css">&#125;</span>
 <span class="language-css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span></code></pre>
-
 <p>先產生一個SVG物件，但不要設定Style，只增加<code>class</code>。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;105&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">rect</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;rect&quot;</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;120&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;2&quot;</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;200&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;100&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
-
 <p>接下來寫一段CSS，針對剛剛增加的class，控制它的填滿以及筆畫寬度(跟Illustrator很像吧)，還可以補上<code>:hover</code>。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.rect</span>&#123;
 	<span class="hljs-attribute">fill</span>: HotPink;
@@ -313,14 +298,12 @@
 <span class="hljs-selector-class">.rect</span><span class="hljs-selector-pseudo">:hover</span>&#123;
 	<span class="hljs-attribute">fill</span>: SlateGray;
 &#125;</code></pre>
-
 <p>結果我們會看到以下這樣的結果，左邊沒有設定會是黑色(沒設定是黑色、不會是透明！)，右邊就是剛剛所設定的樣式。</p>
 
 <svg width="100%" height="105">
 	<rect x="2" y="2" width="100" height="100"/>
 	<rect class="rect" x="120" y="2" width="200" height="100"/>
 </svg>
-
 
 <h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>如果對於SVG有興趣的設計師，也可以試試看把Illustrator的檔案轉出成SVG，在一個個拆解，就會發現SVG跟Illustrator根本就是太像了。用canvas的概念來思考，當然也可以將Photoshop轉成png，只是最終發現他還是一張圖…(認真)。</p>
 </div>

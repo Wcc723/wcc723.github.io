@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/css/2016/06/08/css-margin-collapsing/2016/06/collapsing-margins-04.jpg">
 <meta property="article:published_time" content="2016-06-07T16:00:00.000Z">
-<meta property="article:modified_time" content="2017-06-21T12:10:28.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.180Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="css">
 <meta name="twitter:card" content="summary">
@@ -30,10 +30,10 @@
 <link rel="canonical" href="https://www.casper.tw/css/2016/06/08/css-margin-collapsing/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CSS 失控的 Margin top","datePublished":"2016-06-07T16:00:00.000Z","dateModified":"2017-06-21T12:10:28.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/06/08/css-margin-collapsing/","image":["https://www.casper.tw/2016/06/collapsing-margins-04.jpg"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CSS 失控的 Margin top","datePublished":"2016-06-07T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.180Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/06/08/css-margin-collapsing/","image":["https://www.casper.tw/2016/06/collapsing-margins-04.jpg"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -156,7 +156,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -216,16 +216,15 @@
 
   <div class="prose"><p>失控的 margin-top 是指在使用 margin 時常出現的問題，內元素的 margin 被外層所吸收，導致無法正確的顯示，這我們稱為 <strong>Collapsing margins</strong>，本篇來教大家怎麼應對這個問題。</p>
 <span id="more"></span>
-
 <h2 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h2><p>在製作 Banner 的時候，通常需要一個 Logo 在畫面的左上，於是乎我們就會準備一個 div 把美美的 logo 往裡面塞。</p>
-<p><img src="/images/2016/06/collapsing-margins-01.png"></p>
+<p><img src="https://img.casper.tw/images/2016/06/collapsing-margins-01.png" alt=""></p>
 <p>如圖所示，我們的 Logo 還希望離上方有些為的距離，依邏輯來說物件離邊緣要有距離，我們就會幫他補上 <code>margin</code>，於是乎就會出現如下的問題。</p>
-<p data-height="265" data-theme-id="0" data-slug-hash="JKYNOp" data-default-tab="result" data-user="Wcc723" data-embed-version="2" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/JKYNOp/">Collapsing margins (for blog)</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="JKYNOp" data-default-tab="result" data-user="Wcc723" data-embed-version="2" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/JKYNOp/">Collapsing margins (for blog)</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p></p>
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
 <p>仔細看看上面所發生的問題，內元素的 margin 沒有起了作用，而是被外層所吸收。</p>
-<p><img src="/images/2016/06/collapsing-margins-03.png"></p>
-<h2 id="失控的-Margin-top"><a href="#失控的-Margin-top" class="headerlink" title="失控的 Margin top"></a>失控的 Margin top</h2><p><img src="http://i.imgur.com/Q3cUg29.gif"></p>
+<p><img src="https://img.casper.tw/images/2016/06/collapsing-margins-03.png" alt=""></p>
+<h2 id="失控的-Margin-top"><a href="#失控的-Margin-top" class="headerlink" title="失控的 Margin top"></a>失控的 Margin top</h2><p><img src="http://i.imgur.com/Q3cUg29.gif" alt=""></p>
 <p>在遇到這個問題時，如果不熟的情況下就會說：「Bug 啦！」，通常只能用各種<del>拋開羞恥心</del>其它的方式去解決這個問題，但只要拿抓住發生的原因，就能輕易的去克服它。</p>
 <p>這個問題在 w3c 有提到這問題稱為「<a target="_blank" rel="noopener" href="https://www.w3.org/TR/CSS21/box.html#propdef-margin">Collapsing margins</a>」，我將這部分縮減為以下幾點：</p>
 <ol>
@@ -234,7 +233,7 @@
 <li>內層第一個塊狀元素(空元素不算)，不包含 float、absolute。</li>
 </ol>
 <p>所以如果要避開發生這個問題，就是避免存在以上這些問題，比如說不使用塊狀元素、外層加入padding、內層加入 float 等等，以下就列出一些解決方案。</p>
-<p data-height="265" data-theme-id="0" data-slug-hash="GqpYde" data-default-tab="result" data-user="Wcc723" data-embed-version="2" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/GqpYde/">Collapsing margins (resolve for blog)</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p>
+<p><p data-height="265" data-theme-id="0" data-slug-hash="GqpYde" data-default-tab="result" data-user="Wcc723" data-embed-version="2" class="codepen">See the Pen <a target="_blank" rel="noopener" href="http://codepen.io/Wcc723/pen/GqpYde/">Collapsing margins (resolve for blog)</a> by Wcc723 (<a target="_blank" rel="noopener" href="http://codepen.io/Wcc723">@Wcc723</a>) on <a target="_blank" rel="noopener" href="http://codepen.io">CodePen</a>.</p></p>
 <script async src="//assets.codepen.io/assets/embed/ei.js"></script>
 
 <p>這也是我們在與學員之間的問答中常遇到的，這次找個機會寫個文章跟大家分享分享。</p>

@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/tools/2015/10/19/styling-checkbox/2015-10-19_01.png">
 <meta property="article:published_time" content="2015-10-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T06:28:27.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.178Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="tools">
 <meta name="twitter:card" content="summary">
@@ -30,10 +30,10 @@
 <link rel="canonical" href="https://www.casper.tw/tools/2015/10/19/styling-checkbox/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SVG 客製化 checkbox","datePublished":"2015-10-18T16:00:00.000Z","dateModified":"2016-10-13T06:28:27.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/tools/2015/10/19/styling-checkbox/","image":["https://www.casper.tw/2015-10-19_01.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SVG 客製化 checkbox","datePublished":"2015-10-18T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.178Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/tools/2015/10/19/styling-checkbox/","image":["https://www.casper.tw/2015-10-19_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,7 +42,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="/css/style.css?v=mq954j70">
 
-<link href="/demoFile/css/2015-summer.css" rel="stylesheet" type="text/css" />
+<link href="https://img.casper.tw/demoFile/css/2015-summer.css" rel="stylesheet" type="text/css" />
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
@@ -156,7 +156,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -216,13 +216,12 @@
 
   <div class="prose"><p>先前有看到<a target="_blank" rel="noopener" href="http://tympanus.net/Development/AnimatedCheckboxes/">酷炫的checkbox效果</a>，一直想要做看看，最近在整理資料的時候發現還沒做(因為坑還很多)，這次就來介紹這樣的效果要怎麼完成。</p>
 <span id="more"></span>
-
 <p>在很久之前有寫一篇文章，是透過svg的stroke做動態描繪效果(<a target="_blank" rel="noopener" href="http://wcc723.github.io/svg/2014/06/15/svg-css-stroke-animation/">CSS + SVG stroke動態描繪</a>)，本篇也是利用類似的方法達成，另外還有參考一些文章。</p>
 <h4 id="參考"><a href="#參考" class="headerlink" title="參考"></a>參考</h4><ul>
 <li><a target="_blank" rel="noopener" href="http://tympanus.net/Development/AnimatedCheckboxes/">http://tympanus.net/Development/AnimatedCheckboxes/</a></li>
 <li><a target="_blank" rel="noopener" href="http://blogs.adobe.com/dreamweaver/2015/08/css-vs-svg-styling-checkboxes-and-radio-buttons.html">http://blogs.adobe.com/dreamweaver/2015/08/css-vs-svg-styling-checkboxes-and-radio-buttons.html</a></li>
 </ul>
-<h2 id="先準備svg"><a href="#先準備svg" class="headerlink" title="先準備svg"></a>先準備svg</h2><p><img src="/images/2015-10-19_02.png" alt="&#x2F;images&#x2F;2015-10-19_02.png"></p>
+<h2 id="先準備svg"><a href="#先準備svg" class="headerlink" title="先準備svg"></a>先準備svg</h2><p><img src="https://img.casper.tw/images/2015-10-19_02.png" alt="/images/2015-10-19_02.png"></p>
 <p>這一個範例的重點還是在svg，最簡單的產生方式還是使用向量繪圖軟體繪製，在這個範例上是透過<code>sketch</code>繪製 <code>50px * 50px</code>的手繪風格路徑，在繪製的時候有些部分還是需要注意：</p>
 <ul>
 <li>圖片大小與實際圖最好一樣大</li>
@@ -237,7 +236,6 @@
   <span class="hljs-comment">&lt;!-- 剛剛轉出的svg請放這 --&gt;</span>
   <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span></code></pre>
-
 <h2 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h2><p>CSS的重點一個部分是<code>checkbox</code>的選取器，透過 <code>:checked ~</code> 來控制後方的svg動畫是否啟用。</p>
 <p>另一個重點就是 <code>stroke-dashoffset: 500;</code> 及 <code>stroke-dasharray: 500;</code> ，這就是效果繪製的重點，相關的細節可以參考<a target="_blank" rel="noopener" href="http://wcc723.github.io/svg/2014/06/15/svg-css-stroke-animation/">http://wcc723.github.io/svg/2014/06/15/svg-css-stroke-animation/</a>，只要將<code>stroke-dashoffset</code>的值修改為0，就會有描繪動畫的效果。</p>
 <pre><code class="hljs css"><span class="hljs-selector-id">#checkbox</span> &#123;
@@ -268,7 +266,6 @@
 <span class="hljs-selector-id">#checkbox</span><span class="hljs-selector-pseudo">:checked</span> ~ <span class="hljs-selector-tag">label</span> <span class="hljs-selector-class">.checkbox-draw</span> <span class="hljs-selector-tag">path</span> &#123;
   <span class="hljs-attribute">stroke-dashoffset</span>: <span class="hljs-number">0</span>;
 &#125;</code></pre>
-
 <h4 id="完成效果"><a href="#完成效果" class="headerlink" title="完成效果"></a>完成效果</h4><p>記得點一下看效果唷。</p>
 <iframe src="http://wcc723.github.io/WorkShop-gh-pages/stylingCheckbox/" frameborder="0" height="120px" width="100%"> </iframe>
 

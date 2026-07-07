@@ -32,7 +32,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"純CSS Drop Menu","datePublished":"2014-05-19T16:00:00.000Z","dateModified":"2017-06-21T12:10:28.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2014/05/20/pure-css-drop-menu/"}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="/css/style.css?v=mq954j70">
 
-<link href="/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
+<link href="https://img.casper.tw/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
@@ -155,7 +155,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,48 +217,45 @@
 <iframe src="http://codepen.io/Wcc723/full/yCpae/" frameborder="0" width="100%" height="300"> </iframe>
 
 <span id="more"></span>
-
 <h2 id="重點提示"><a href="#重點提示" class="headerlink" title="重點提示"></a>重點提示</h2><p>這是利用<code>max-hegiht</code> + <code>transition</code>所達到的效果，好處是不用配合jquery的slider function，壞處就是…，drop-menu一定會包含<code>overflow</code>的屬性，如果設計不能有這屬性的話，就會被限制住。</p>
 <h2 id="Html"><a href="#Html" class="headerlink" title="Html"></a>Html</h2><p>HTML架構如下，而這篇是真的純CSS，所以會插入一個input去做切換的效果，實際製作的時候，可以直接用js來切換class，也能達到相同的效果。</p>
 <pre><code>&lt;div class=&quot;drop-menu&quot;&gt;
-	&lt;label for=&quot;drop-menu&quot;&gt;
-		下拉式選單
-	&lt;/label&gt;
-	&lt;input type=&quot;checkbox&quot; id=&quot;drop-menu&quot;&gt;
+    &lt;label for=&quot;drop-menu&quot;&gt;
+        下拉式選單
+    &lt;/label&gt;
+    &lt;input type=&quot;checkbox&quot; id=&quot;drop-menu&quot;&gt;
 
-	&lt;ul class=&quot;menu-list&quot;&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;list-1&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;list-2&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;list-3&lt;/a&gt;&lt;/li&gt;
-		&lt;li&gt;&lt;a href=&quot;#&quot;&gt;list-4&lt;/a&gt;&lt;/li&gt;
-	&lt;/ul&gt;
+    &lt;ul class=&quot;menu-list&quot;&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;list-1&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;list-2&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;list-3&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href=&quot;#&quot;&gt;list-4&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
 &lt;/div&gt;
-</code></pre>
-<h2 id="sass"><a href="#sass" class="headerlink" title="sass"></a>sass</h2><p>除了排版的樣式外，其餘的重點我都直接標示在sass code裡，而最重要的是用max-height來達到這樣的效果(height不可以喲)。</p>
+</code></pre><h2 id="sass"><a href="#sass" class="headerlink" title="sass"></a>sass</h2><p>除了排版的樣式外，其餘的重點我都直接標示在sass code裡，而最重要的是用max-height來達到這樣的效果(height不可以喲)。</p>
 <pre><code>.drop-menu
-	max-width: 300px
-	label
-		display: block
-		border: 1px solid #ccc
-		padding: 6px
-		cursor: pointer
-	input
-		display: none
-	.menu-list
-		background-color: #FFF
-		+box-shadow(0 0 8px rgba(black, .6))
-		overflow: hidden //重點
-		max-height: 0 //重點
-		+transition(max-height .3s) //重點
-		a
-			display: block
-			padding: 4px
-			border-bottom: 1px dashed #ccc
+    max-width: 300px
+    label
+        display: block
+        border: 1px solid #ccc
+        padding: 6px
+        cursor: pointer
+    input
+        display: none
+    .menu-list
+        background-color: #FFF
+        +box-shadow(0 0 8px rgba(black, .6))
+        overflow: hidden //重點
+        max-height: 0 //重點
+        +transition(max-height .3s) //重點
+        a
+            display: block
+            padding: 4px
+            border-bottom: 1px dashed #ccc
 
-	input:checked + .menu-list
-		max-height: 300px //重點
-</code></pre>
-<h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2>
+    input:checked + .menu-list
+        max-height: 300px //重點
+</code></pre><h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2>
 <div class="demo d0520">
 	<div class="drop-menu">
 	<label for="drop-menu"> 下拉式選單 </label>
@@ -271,7 +268,6 @@
 		</ul>
 	</div>
 </div>
-
 
 <p>很容易吧～</p>
 </div>

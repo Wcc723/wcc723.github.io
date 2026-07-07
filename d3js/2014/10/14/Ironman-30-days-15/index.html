@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 折線圖(Line Chart)","datePublished":"2014-10-13T16:00:00.000Z","dateModified":"2016-10-13T02:58:10.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/14/Ironman-30-days-15/","image":["https://www.casper.tw/2014ironman/day14_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,12 +217,8 @@
 
   <div class="prose"><p>在開始有題到<a target="_blank" rel="noopener" href="http://www.books.com.tw/products/0010621239">網頁互動式資料視覺化：使用D3</a>這本書，整本大致上都看完了，但是裡面居然沒有折線圖！雖然這本書主要教的是觀念，不過折線圖還是很重要，所以還是另外找了折線圖的範例來仔細學習一下。</p>
 <span id="more"></span>
-
-
-
 <h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>先前有介紹過SVG:Path，大概像下面這樣：</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M12,294.11764705882354L24,300L36,270.5882352941176L48,294.11764705882354L60,282.3529411764706L72,276.47058823529414L84.1,264.70588235294116L96,276.47058823529414L108,247.05882352941177L120,241.1764705882353L132,229.41176470588235L144,241.1764705882353L156,223.52941176470588L168.3,217.6470588235294L180,200L192,223.52941176470588L204.3,200L216,211.76470588235293L228,211.76470588235293L240,223.52941176470588L252,217.6470588235294L264,200L276,188.23529411764707L288,164.7058823529412L300,176.47058823529414L312,200L324,217.6470588235294L336.6,188.23529411764707L348,158.8235294117647L360,152.94117647058823L372,135.2941176470588L384,117.64705882352942L396,100L408.6,111.76470588235296L420.6,88.23529411764707L432,76.47058823529412L444,47.05882352941177L456,41.176470588235304L468,52.94117647058826L480,47.05882352941177L492.6,17.64705882352939L504,29.411764705882376L516,29.411764705882376L528,23.529411764705912L540,35.29411764705884L552,23.529411764705912L564,17.64705882352939L576,0L588,17.64705882352939L600,41.176470588235304&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span></code></pre>
-
 <p>雖然之前有介紹過自幹的方式…，可是用來上資料真的會有點痛，不過還好d3有一個function <code>d3.svg.line()</code>可以用來繪製svg “path”，只要給予<code>x</code>、<code>y</code>，剩下d3都會處理。</p>
 <p>本篇的範例參考自<a target="_blank" rel="noopener" href="http://bl.ocks.org/benjchristensen/2579599">http://bl.ocks.org/benjchristensen/2579599</a></p>
 <p>範例我可是花了點時間調的比他漂亮呢！(挺</p>
@@ -230,8 +226,6 @@
 <div class="demo">
 
 </div>
-
-
 
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> margin = &#123;<span class="hljs-attr">top</span>: <span class="hljs-number">60</span>, <span class="hljs-attr">right</span>: <span class="hljs-number">40</span>, <span class="hljs-attr">bottom</span>: <span class="hljs-number">50</span>, <span class="hljs-attr">left</span>: <span class="hljs-number">60</span>&#125;;
 <span class="hljs-keyword">var</span> w = <span class="hljs-number">580</span> ; <span class="hljs-comment">// 寬</span>
@@ -293,7 +287,6 @@ svg.<span class="hljs-title function_">append</span>(<span class="hljs-string">&
 	.<span class="hljs-title function_">call</span>(yAxisLeft);
 
 svg.<span class="hljs-title function_">append</span>(<span class="hljs-string">&#x27;path&#x27;</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-title function_">line</span>(dataset)); <span class="hljs-comment">//將資料套用d3.svg.line()</span></code></pre>
-
 <p>CSS</p>
 <pre><code class="hljs css"><span class="hljs-selector-tag">path</span> &#123;
 	<span class="hljs-attribute">stroke</span>: DodgerBlue;
@@ -321,7 +314,6 @@ svg.<span class="hljs-title function_">append</span>(<span class="hljs-string">&
   <span class="hljs-attribute">fill</span>: none;
   <span class="hljs-attribute">stroke</span>: lightgrey;
 &#125;</code></pre>
-
 <p>不知道大家對於到目前的範例難度感覺如何，對我而言還挺難的，尤其資料、json的處理我相當的不擅長，不過既然稱為D3.js，還是要來玩一些資料，明天開始來找資料玩玩吧～</p>
 
 <script>

@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/d3js/2014/10/15/Ironman-30-days-16/2014ironman/day15_01.png">
 <meta property="article:published_time" content="2014-10-14T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T03:25:22.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.172Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="d3js">
 <meta property="article:tag" content="ironman">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/d3js/2014/10/15/Ironman-30-days-16/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 究竟搭不搭捷運與死亡率有沒有關係？(1)","datePublished":"2014-10-14T16:00:00.000Z","dateModified":"2016-10-13T03:25:22.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/15/Ironman-30-days-16/","image":["https://www.casper.tw/2014ironman/day15_01.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 究竟搭不搭捷運與死亡率有沒有關係？(1)","datePublished":"2014-10-14T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.172Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/15/Ironman-30-days-16/","image":["https://www.casper.tw/2014ironman/day15_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -218,7 +218,6 @@
   <div class="prose"><p>D3js最終還是需要與資料串接，在玩了一段時間基本的功能後，就會想找點東西試試看，於是就到處搜尋可以用的資料(希望與時事結合)，雖然取得資料方法相當多，但是能夠派上用場而且又要會使用，就沒有那麼容易。</p>
 <p>因為我的jsonp，或者json能力並不是挺好，所以在找資料前，有先研究怎麼與Google Drive做介接，所以這幾篇還會介紹怎麼從Google試算表取得資料。</p>
 <span id="more"></span>
-
 <p><strong>本篇統計僅供參考</strong></p>
 <h2 id="資料來源"><a href="#資料來源" class="headerlink" title="資料來源"></a>資料來源</h2><p>資料來源<a target="_blank" rel="noopener" href="http://statis.moi.gov.tw/micst/stmain.jsp?sys=100">http://statis.moi.gov.tw/micst/stmain.jsp?sys=100</a></p>
 <p>無意間剛好逛到這個網站，發現裡面有許多的人口資料，裡面包含了死亡人數統計，也恰巧有”粗死亡率”，想說最近有討論到<strong>搭不搭捷運與死亡率的關係</strong>，所以就來試試看這份資料可不可行。</p>
@@ -229,11 +228,11 @@
 <li>高雄縣市合併(來源資料)：2011年1月</li>
 </ul>
 <p>這份資料是抓取兩個都市的<strong>粗死亡率</strong>(所以不呈現人口數)，另外在高雄市2010年以前是合併前的資料，2011年以後是合併資料，來源當然是能撈多少就多少。</p>
-<p><img src="/images/2014ironman/day15_02.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day15_02.png" alt=""></p>
 <h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>雖然有很多工具可以呈現這樣的資料，但是就以目前的主題我選擇d3js + Jquery。</p>
 <p>資料在確定要哪些後，就把原始的資料轉貼到<a target="_blank" rel="noopener" href="https://docs.google.com/spreadsheets/d/1hX3lqWLHFuwYiQeaBL0WevleUEOBAPKzshj2fJHogsM/edit#gid=1272070461">Google Drive</a>，除了可以將資料統一格式外，也可以降低我對於跨網域的煩惱…。</p>
 <p>資料上我以都市為單位拆成三個資料表，每個圖表都包含了id、時間、死亡人數、粗死亡率。</p>
-<p><img src="/images/2014ironman/day15_03.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day15_03.png" alt=""></p>
 <p>接下來就開始串啦～，結果大概像下面這樣，Hover到點上，會顯示該時間點的資料。</p>
 <h4 id="高雄市與台北市粗死亡率"><a href="#高雄市與台北市粗死亡率" class="headerlink" title="高雄市與台北市粗死亡率"></a>高雄市與台北市粗死亡率</h4>
 <div class="demo" style="padding: 0">
@@ -243,12 +242,9 @@
 	</div>
 </div>
 
-
 <p><em>以上資料來源：<a target="_blank" rel="noopener" href="http://statis.moi.gov.tw/micst/stmain.jsp?sys=100">http://statis.moi.gov.tw/micst/stmain.jsp?sys=100</a></em></p>
 <p><em>高雄縣市合併時間(來源資料)：2011年1月</em></p>
 <pre><code class="hljs javascript"></code></pre>
-
-
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>至於搭不搭捷運與死亡率有沒有關係，恩…可能研究不夠透徹，所以看不太出來，不過城鄉差距與死亡率關係倒是挺明顯的(可參考<a target="_blank" rel="noopener" href="http://statis.moi.gov.tw/micst/stmain.jsp?sys=100">http://statis.moi.gov.tw/micst/stmain.jsp?sys=100</a>)，所以縣市合併以後，高雄市的死亡率確實有略微增高。</p>
 <p>另外為什麼每年二、三月似乎死亡率高些…(抖)，尤其在2009年二月高很多，稍微有查詢一下，可能是經濟不景氣的關係(<a target="_blank" rel="noopener" href="http://zh.wikipedia.org/wiki/2009%E5%B9%B4%E8%87%BA%E7%81%A3">Wiki 2009台灣年表</a>)。</p>
 <p>透過這些圖表，可以容易看到表格資料不易發現的地方，這或許也是圖像化迷人的點吧。</p>

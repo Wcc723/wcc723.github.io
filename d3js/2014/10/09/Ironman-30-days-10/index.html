@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/d3js/2014/10/09/Ironman-30-days-10/2014ironman/day09_01.png">
 <meta property="article:published_time" content="2014-10-08T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T03:08:57.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.172Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="d3js">
 <meta property="article:tag" content="ironman">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/d3js/2014/10/09/Ironman-30-days-10/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js Scale 尺度","datePublished":"2014-10-08T16:00:00.000Z","dateModified":"2016-10-13T03:08:57.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/09/Ironman-30-days-10/","image":["https://www.casper.tw/2014ironman/day09_01.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js Scale 尺度","datePublished":"2014-10-08T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.172Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/09/Ironman-30-days-10/","image":["https://www.casper.tw/2014ironman/day09_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,23 +217,20 @@
 
   <div class="prose"><p>上一篇其實就已經介紹了D3.js相當重要的<code>data()</code>以及<code>enter()</code>，今天要介紹的也是很重要，就是(Scale)尺度。</p>
 <span id="more"></span>
-
-<h2 id="尺度"><a href="#尺度" class="headerlink" title="尺度"></a>尺度</h2><p>尺度是一個D3的函式可以設定輸入以及輸出的範圍，就以下方的圖來說，如果來源的資料範圍是10<del>990，目標輸出的範圍必須限制在0</del>100，透過尺度函式後，所有的資料就會依據這尺度進行轉換，就像是輸入的資料值如果是500，那麼在目標輸出值就會是50。</p>
-<p><img src="/images/2014ironman/day09_01.png"></p>
+<h2 id="尺度"><a href="#尺度" class="headerlink" title="尺度"></a>尺度</h2><p>尺度是一個D3的函式可以設定輸入以及輸出的範圍，就以下方的圖來說，如果來源的資料範圍是10~990，目標輸出的範圍必須限制在0~100，透過尺度函式後，所有的資料就會依據這尺度進行轉換，就像是輸入的資料值如果是500，那麼在目標輸出值就會是50。</p>
+<p><img src="https://img.casper.tw/images/2014ironman/day09_01.png" alt=""></p>
 <p>所以在使用時必須定義輸入及輸出的資料範圍，就以這個範例來說，他的函式會如下，<code>domain([10, 990])</code>表示輸入範圍，<code>range([0, 100])</code>表示輸出範圍。</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> d3Scale = d3.<span class="hljs-property">scale</span>.<span class="hljs-title function_">linear</span>() <span class="hljs-comment">//產生一個線性尺度</span>
 		.<span class="hljs-title function_">domain</span>([<span class="hljs-number">10</span>, <span class="hljs-number">999</span>]) <span class="hljs-comment">//傳入的值</span>
 		.<span class="hljs-title function_">range</span>([<span class="hljs-number">0</span> , <span class="hljs-number">100</span>]) <span class="hljs-comment">//輸出的範圍</span>
 
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;輸出的值 = &quot;</span> + <span class="hljs-title function_">d3Scale</span>(<span class="hljs-number">500</span>))</code></pre>
-
 <p><em>在本頁可以打開瀏覽器的開發工具 &gt; console，就可以看到輸出的值是”50”。</em></p>
 <h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><p>接下來我們利用這個概念來做一個範例，這個範例的值是隨機產生的，值得範圍很不一定，因此還必須取得資料的最大值及最小值，這部分d3也有提供函式可以處理，<code>d3.max()</code>、<code>d3.min()</code>這兩個函式可以取得最大值及最小值。</p>
 
 <div class="demo">
 
 </div>
-
 
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> w = <span class="hljs-number">600</span>,h = <span class="hljs-number">250</span>,padding = <span class="hljs-number">20</span>;
 <span class="hljs-comment">//定義SVG的大小</span>
@@ -286,7 +283,6 @@ svg.<span class="hljs-title function_">selectAll</span>(<span class="hljs-string
 	<span class="hljs-string">&#x27;fill&#x27;</span>: <span class="hljs-string">&#x27;red&#x27;</span>, <span class="hljs-comment">//文字填滿為紅色</span>
 	<span class="hljs-string">&#x27;font-size&#x27;</span>: <span class="hljs-string">&#x27;10px&#x27;</span> <span class="hljs-comment">//Fill、font-size也可以用CSS寫喔～</span>
 &#125;);</code></pre>
-
 <p>有了這些函式，就可以讓圖形資料乖乖的在範圍內呈現了。</p>
 
 <script>

@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Amazon book 書籍封面展示效果 (CSS 3D)","datePublished":"2014-01-26T16:00:00.000Z","dateModified":"2017-06-21T12:10:28.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2014/01/27/amazon-books/","image":["https://www.casper.tw/2014-01-27_084528.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -216,9 +216,8 @@
   </header>
 
   <div class="prose"><p>自從學了CSS 3D後，就一直想嘗試使用在網頁上，但除了形象網頁外，使用CSS 3D的網站似乎不是很多，畢竟這不是必要的效果。而最近在Amazon Books的購物商城上，發現他們有用CSS 3D在展示書籍的正反面。</p>
-<p><a target="_blank" rel="noopener" href="http://www.amazon.com/gp/product/1936608367/ref=s9_simh_bw_p14_d2_i1?pf_rd_m=ATVPDKIKX0DER&pf_rd_s=merchandised-search-4&pf_rd_r=0DRH0KAG65P45DCXEKPW&pf_rd_t=101&pf_rd_p=1401488422&pf_rd_i=283155">Amazon books</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.amazon.com/gp/product/1936608367/ref=s9_simh_bw_p14_d2_i1?pf_rd_m=ATVPDKIKX0DER&amp;pf_rd_s=merchandised-search-4&amp;pf_rd_r=0DRH0KAG65P45DCXEKPW&amp;pf_rd_t=101&amp;pf_rd_p=1401488422&amp;pf_rd_i=283155">Amazon books</a></p>
 <span id="more"></span>
-
 <h2 id="本篇重點"><a href="#本篇重點" class="headerlink" title="本篇重點"></a>本篇重點</h2><p>試試看Amazon Books中的書籍展示效果，到底包含了些什麼CSS 語法。</p>
 <h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><p>這效果我是做在codepen 上，裡面的封面圖片是直接連結台灣博客來書店，所以如果掉圖就是…被下架了。</p>
 <iframe src="http://codepen.io/Wcc723/full/DjGBi" frameborder="0" width="100%" height="600px"></iframe>
@@ -228,14 +227,13 @@
 <h2 id="語法結構"><a href="#語法結構" class="headerlink" title="語法結構"></a>語法結構</h2><p>題外話，最近我正在學slim，所以codepen上的html是用slim寫的，這邊就先介紹一下html的結構吧。</p>
 <h3 id="html結構"><a href="#html結構" class="headerlink" title="html結構"></a>html結構</h3><pre><code>&lt;div class=&quot;wrap&quot;&gt;
 &lt;div class=&quot;imgWrap&quot;&gt;
-	&lt;img src=&quot;#...&quot; alt=&quot;&quot; class=&quot;first-child&quot;&gt;
-	&lt;img src=&quot;#...&quot; alt=&quot;&quot; class=&quot;second-child&quot;&gt;
+    &lt;img src=&quot;#...&quot; alt=&quot;&quot; class=&quot;first-child&quot;&gt;
+    &lt;img src=&quot;#...&quot; alt=&quot;&quot; class=&quot;second-child&quot;&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 
 &lt;a href=&quot;#&quot; class=&quot;fliptoBack&quot;&gt;|flip to back&lt;/a&gt;
-</code></pre>
-<ul>
+</code></pre><ul>
 <li>.wrap 用途是來定位整體的位置</li>
 <li>.imgWrap 書本的外圍架構，並且做翻轉書本的效果</li>
 <li>img .first-child 書的正面</li>
@@ -243,82 +241,80 @@
 </ul>
 <h3 id="Js"><a href="#Js" class="headerlink" title="Js"></a>Js</h3><p>在看CSS前，我想先說明js的部分，有些地方沒有辦法用css達成的，會用js去完成，避免等等css的誤解，先介紹一下我的script寫了什麼。</p>
 <pre><code>先取得第一張封面的寬高定義為w,h
-w = $(&#39;.first-child&#39;).width();
-h = $(&#39;.first-child&#39;).height();
+w = $(&apos;.first-child&apos;).width();
+h = $(&apos;.first-child&apos;).height();
 
 //將外框及第二張圖設定成相同的寬高
-$(&#39;.imgWrap, .wrap, .second-child&#39;).width(w);
-$(&#39;.imgWrap, .wrap, .second-child&#39;).height(h);
+$(&apos;.imgWrap, .wrap, .second-child&apos;).width(w);
+$(&apos;.imgWrap, .wrap, .second-child&apos;).height(h);
 
-滑過下方文字時，將書本套用&#39;.flip&#39;的class
-$(&#39;.fliptoBack&#39;).hover(function() {
-  $(&#39;.imgWrap&#39;).toggleClass(&#39;flip&#39;);
+滑過下方文字時，將書本套用&apos;.flip&apos;的class
+$(&apos;.fliptoBack&apos;).hover(function() {
+  $(&apos;.imgWrap&apos;).toggleClass(&apos;flip&apos;);
 });
 
-點擊下方文字時，將書本套用&#39;.flip180&#39;的class
-$(&#39;.fliptoBack&#39;).click(function() {
-  $(&#39;.imgWrap&#39;).toggleClass(&#39;flip180&#39;);
+點擊下方文字時，將書本套用&apos;.flip180&apos;的class
+$(&apos;.fliptoBack&apos;).click(function() {
+  $(&apos;.imgWrap&apos;).toggleClass(&apos;flip180&apos;);
 });
-</code></pre>
-<h3 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h3><p>依慣例，我是用sass寫…，另外就是有點長。</p>
+</code></pre><h3 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h3><p>依慣例，我是用sass寫…，另外就是有點長。</p>
 <pre><code>$bookwidth: 60px //先定義書本的&quot;厚度&quot;
 
 .wrap
-	+perspective(1200px) //3D的景深
-	position: relative
-	margin: 40px auto 20px auto
+    +perspective(1200px) //3D的景深
+    position: relative
+    margin: 40px auto 20px auto
 
 .fliptoBack  //下方文字的位置
-	display: block
-	text-align: center
+    display: block
+    text-align: center
 
 .imgWrap
-	+transform-style(preserve-3d) //先定義成transform3d的模式
-	+transition(transform .5s ease) //針對transform進行動畫
-	position: absolute
-	&amp;:before  //這一塊是要假裝成書的內頁
-		content: &quot;&quot;
-		position: absolute
-		width: 100%
-		height: 100%
-		+border-right-radius(5px)
-		background: black
-	&amp;:after  //這邊是書背
-		content: &quot;&quot;
-		position: absolute
-		left: 0
-		top: 0
-		height: 100%
-		width: $bookwidth
-		background: black
-		+transform3d(rotateY(90deg))
-		+transform-origin(0)
+    +transform-style(preserve-3d) //先定義成transform3d的模式
+    +transition(transform .5s ease) //針對transform進行動畫
+    position: absolute
+    &amp;:before  //這一塊是要假裝成書的內頁
+        content: &quot;&quot;
+        position: absolute
+        width: 100%
+        height: 100%
+        +border-right-radius(5px)
+        background: black
+    &amp;:after  //這邊是書背
+        content: &quot;&quot;
+        position: absolute
+        left: 0
+        top: 0
+        height: 100%
+        width: $bookwidth
+        background: black
+        +transform3d(rotateY(90deg))
+        +transform-origin(0)
 
-	&amp;.flip  //在滑鼠掠過下方文字時，套用的&#39;.flip&#39;
-		+transform3d(rotateY(30deg)) //翻轉30度
-	&amp;.flip180  //點擊時套用的&#39;.flip180&#39;，用來翻轉180度
-		+transform3d(rotateY(180deg) translateZ($bookwidth))
-		//另外再翻轉180度後，必須調整書本的Z軸，讓他在視覺上位置不變
+    &amp;.flip  //在滑鼠掠過下方文字時，套用的&apos;.flip&apos;
+        +transform3d(rotateY(30deg)) //翻轉30度
+    &amp;.flip180  //點擊時套用的&apos;.flip180&apos;，用來翻轉180度
+        +transform3d(rotateY(180deg) translateZ($bookwidth))
+        //另外再翻轉180度後，必須調整書本的Z軸，讓他在視覺上位置不變
 
-	img  //兩張圖片的設定
-		position: absolute
-		top: 0
-		left: 0
-		border: #ccc 1px solid
-		+transition(transform .3s ease)
-		+backface-visibility(hidden)  //不顯示背面
-		+border-right-radius(3px)
-		+box-sizing(border-box)    
-	&amp;.first-child  //定義第一張圖片，並且滑鼠滑過時旋轉30度
-		+transform3d(rotateY(0deg))
-		+transform-origin(0)
-		z-index: 2      
-		&amp;:hover
-			+transform3d(rotateY(-30deg))
-	&amp;.second-child  //讓封底一開始時就反轉到另一面
-		+transform3d(rotateY(-180deg) translateZ($bookwidth))
-</code></pre>
-<p>CSS 3D很有趣，只是看起來code有點長，但是玩一段時間會很有成就感。  </p>
+    img  //兩張圖片的設定
+        position: absolute
+        top: 0
+        left: 0
+        border: #ccc 1px solid
+        +transition(transform .3s ease)
+        +backface-visibility(hidden)  //不顯示背面
+        +border-right-radius(3px)
+        +box-sizing(border-box)    
+    &amp;.first-child  //定義第一張圖片，並且滑鼠滑過時旋轉30度
+        +transform3d(rotateY(0deg))
+        +transform-origin(0)
+        z-index: 2      
+        &amp;:hover
+            +transform3d(rotateY(-30deg))
+    &amp;.second-child  //讓封底一開始時就反轉到另一面
+        +transform3d(rotateY(-180deg) translateZ($bookwidth))
+</code></pre><p>CSS 3D很有趣，只是看起來code有點長，但是玩一段時間會很有成就感。  </p>
 </div>
 
   <div class="post-foot">

@@ -10,12 +10,12 @@
 <meta name="keywords" content="javascript,js" />
 
 
-<meta name="description" content="過去，當有一個陣列的內容需要依序取值時，都會使用 for... 迴圈(for loop)的形式將值一一取出，原始碼的結構如下： var array &#x3D; [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;漂亮阿姨&#x27;, &#x27;小美&#x27;] for (var i &#x3D; 0; i &lt; array.length; i++) &#123;   const">
+<meta name="description" content="過去，當有一個陣列的內容需要依序取值時，都會使用 for... 迴圈(for loop)的形式將值一一取出，原始碼的結構如下：var array &#x3D; [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;漂亮阿姨&#x27;, &#x27;小美&#x27;] for (var i &#x3D; 0; i &lt; array.length; i++) &#123;   const i">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JS - for 迴圈與 forEach 有什麼不同">
 <meta property="og:url" content="https://www.casper.tw/development/2020/10/05/js-for-loop-vs-for-each/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="過去，當有一個陣列的內容需要依序取值時，都會使用 for... 迴圈(for loop)的形式將值一一取出，原始碼的結構如下： var array &#x3D; [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;漂亮阿姨&#x27;, &#x27;小美&#x27;] for (var i &#x3D; 0; i &lt; array.length; i++) &#123;   const">
+<meta property="og:description" content="過去，當有一個陣列的內容需要依序取值時，都會使用 for... 迴圈(for loop)的形式將值一一取出，原始碼的結構如下：var array &#x3D; [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;漂亮阿姨&#x27;, &#x27;小美&#x27;] for (var i &#x3D; 0; i &lt; array.length; i++) &#123;   const i">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_20.jpg?alt=media&token=fac330e3-b516-421d-b072-1ed4f70cab8a">
 <meta property="article:published_time" content="2020-10-04T16:00:00.000Z">
@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JS - for 迴圈與 forEach 有什麼不同","datePublished":"2020-10-04T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.535Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/05/js-for-loop-vs-for-each/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_20.jpg?alt=media&token=fac330e3-b516-421d-b072-1ed4f70cab8a"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -215,37 +215,28 @@
     <div class="rule-d"></div>
   </header>
 
-  <div class="prose"><p>過去，當有一個陣列的內容需要依序取值時，都會使用 <code>for...</code> 迴圈(for loop)的形式將值一一取出，原始碼的結構如下：</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> array = [<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>, <span class="hljs-string">&#x27;小美&#x27;</span>]
+  <div class="prose"><p>過去，當有一個陣列的內容需要依序取值時，都會使用 <code>for...</code> 迴圈(for loop)的形式將值一一取出，原始碼的結構如下：<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> array = [<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>, <span class="hljs-string">&#x27;小美&#x27;</span>]
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++) &#123;
   <span class="hljs-keyword">const</span> item = array[i];
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i, item);
-&#125;</code></pre>
-
+&#125;</code></pre></p>
 <p>現在，陣列執行迴圈不像過去那麼麻煩，陣列的原型中增加了許多方法可以直接運用（陣列方法可<a target="_blank" rel="noopener" href="https://wcc723.github.io/javascript/2017/06/29/es6-native-array/">參考</a>），其中的 <code>forEach</code> 基本上可以達到 <code>for...</code> 迴圈的所有需求（基本上用了 <code>forEach</code> 不太會再去使用 for loop）。</p>
-<p>相同的結果，使用 <code>forEach</code> 後更容易被閱讀、理解。 </p>
-<pre><code class="hljs js">array.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">item, i</span>) &#123;
+<p>相同的結果，使用 <code>forEach</code> 後更容易被閱讀、理解。<br><pre><code class="hljs js">array.<span class="hljs-title function_">forEach</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">item, i</span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i, item)
-&#125;);</code></pre>
-
-
+&#125;);</code></pre></p>
 <p>不過實際上這兩者還是略有差異，本篇就來介紹 for 迴圈與 forEach 的那些小差別。</p>
 <h2 id="for-loop-可能會產生全域變數"><a href="#for-loop-可能會產生全域變數" class="headerlink" title="for loop 可能會產生全域變數"></a>for loop 可能會產生全域變數</h2><p>因為 JS 作用域是屬於函式作用域，而 for loop 在執行時使用 <code>var</code> 所建立的變數是屬於在區塊 <code>{}</code> 內，因此 for loop 運行時所定義的變數很常會是建立在 <strong>全域</strong> 的環境下。</p>
-<p>以下範例來說，下列變數 <code>i</code> 就屬於全域的變數。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++) &#123;
+<p>以下範例來說，下列變數 <code>i</code> 就屬於全域的變數。<br><pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++) &#123;
   <span class="hljs-keyword">const</span> item = array[i];
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i, item);
 &#125;
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i); <span class="hljs-comment">// 4</span></code></pre>
-
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i); <span class="hljs-comment">// 4</span></code></pre></p>
 <p>相對來說 <code>forEach</code> 使用 <code>callback function</code> 就不容易踩到這個雷，不過 for loop 依然可以使用 ES6 的 <code>let, const</code> 來解決作用域的問題。</p>
-<p>目前主流的文字編輯器，輸入 <code>for</code> 後預設都會使用 <code>let</code> 來定義索引 <code>i</code> 的變數。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++) &#123;
+<p>目前主流的文字編輯器，輸入 <code>for</code> 後預設都會使用 <code>let</code> 來定義索引 <code>i</code> 的變數。<br><pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++) &#123;
   <span class="hljs-keyword">const</span> item = array[i];
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i, item);
 &#125;
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i) <span class="hljs-comment">// 無法取得 i</span></code></pre>
-
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i) <span class="hljs-comment">// 無法取得 i</span></code></pre></p>
 <h2 id="for-可以被中斷"><a href="#for-可以被中斷" class="headerlink" title="for 可以被中斷"></a>for 可以被中斷</h2><p>雖然 for loop 目前的使用率較不如 <code>forEach</code>，不過它可中斷運行的方式在 <code>forEach</code> 中是沒有的，如果迴圈中有必要停止運行，就可以使用 for loop 搭配 <code>break</code>。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; array.<span class="hljs-property">length</span>; i++) &#123;
   <span class="hljs-keyword">const</span> item = array[i];
@@ -254,12 +245,10 @@
   &#125;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i, item);
 &#125;</code></pre>
-
 <p>執行到索引 2 就會被中斷，中斷後的迴圈將不會繼續運行。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FA00A7474-3448-46FA-B958-1163C0181871.png?alt=media&token=f9a93963-2ffd-4421-b6b6-3dbd8db8e89a"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FA00A7474-3448-46FA-B958-1163C0181871.png?alt=media&amp;token=f9a93963-2ffd-4421-b6b6-3dbd8db8e89a" alt=""></p>
 <h2 id="並非所有陣列都能使用-forEach"><a href="#並非所有陣列都能使用-forEach" class="headerlink" title="並非所有陣列都能使用 forEach"></a>並非所有陣列都能使用 forEach</h2><p>JavaScript 中的陣列依據原型的不同，也有另一種分支稱為類陣列（array-like），類陣列中的原型方法與一般定義的陣列就有所不同，其中的方法就可能不包含 <code>forEach</code>。</p>
-<p>函式中的 <code>arguments</code> 就屬於類陣列，它的方法就不包含 <code>forEach</code> 的方法，因此它無法直接運行 <code>forEach</code>。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) &#123;
+<p>函式中的 <code>arguments</code> 就屬於類陣列，它的方法就不包含 <code>forEach</code> 的方法，因此它無法直接運行 <code>forEach</code>。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">arguments</span>);
   <span class="hljs-comment">// for loop 可以正常運行</span>
   <span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-variable language_">arguments</span>.<span class="hljs-property">length</span>; i++) &#123;
@@ -273,19 +262,16 @@
   &#125;);
 &#125;
 
-<span class="hljs-title function_">fn</span>(<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>, <span class="hljs-string">&#x27;小美&#x27;</span>);</code></pre>
-
-<p>純陣列的原型中可以找到 <code>forEach</code> 的方法。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_2_%E4%B8%8B%E5%8D%882_54.png?alt=media&token=aefbe6f9-4d1e-4de1-856c-2ebf0bf4b1a8"></p>
-<p><code>arguments</code>  類陣列中不包含 <code>forEach</code> 或任何的陣列方法。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F60E5A62F-0197-42B0-AF2C-6CD44D5C7F90.png?alt=media&token=5d9fcbef-21de-4a02-ac87-0c1192e1be5e"></p>
+<span class="hljs-title function_">fn</span>(<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>, <span class="hljs-string">&#x27;小美&#x27;</span>);</code></pre></p>
+<p>純陣列的原型中可以找到 <code>forEach</code> 的方法。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_10_2_%E4%B8%8B%E5%8D%882_54.png?alt=media&amp;token=aefbe6f9-4d1e-4de1-856c-2ebf0bf4b1a8" alt=""></p>
+<p><code>arguments</code>  類陣列中不包含 <code>forEach</code> 或任何的陣列方法。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F60E5A62F-0197-42B0-AF2C-6CD44D5C7F90.png?alt=media&amp;token=5d9fcbef-21de-4a02-ac87-0c1192e1be5e" alt=""></p>
 <p>類陣列可以直接使用 for loop 來運行它，如果要使用 <code>forEach</code> 的陣列方法也是可行，只要將類陣列透過 ES6 的 “展開” 語法轉換為純陣列即可（<code>[...]</code>）。</p>
-<p>如以下程式碼中就透過展開將 <code>arguments</code> 轉變為純陣列 <code>arg</code>，那麼 <code>arg</code> 變數就可以使用 <code>forEach</code> 的陣列方法。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) &#123;
+<p>如以下程式碼中就透過展開將 <code>arguments</code> 轉變為純陣列 <code>arg</code>，那麼 <code>arg</code> 變數就可以使用 <code>forEach</code> 的陣列方法。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">const</span> arg = [...<span class="hljs-variable language_">arguments</span>];
   arg.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(item))
 &#125;
 
-<span class="hljs-title function_">fn</span>(<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>, <span class="hljs-string">&#x27;小美&#x27;</span>);</code></pre>
-
+<span class="hljs-title function_">fn</span>(<span class="hljs-string">&#x27;小明&#x27;</span>, <span class="hljs-string">&#x27;杰倫&#x27;</span>, <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>, <span class="hljs-string">&#x27;小美&#x27;</span>);</code></pre></p>
 <p>你是屬於 <code>forEach</code> 還是 <code>for...loop</code> 派呢？歡迎留言討論看看喔。</p>
 </div>
 

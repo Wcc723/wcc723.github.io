@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：箭頭函式 (Arrow functions)","datePublished":"2017-12-20T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.524Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/21/javascript-es6-arrow-function/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_18.png?alt=media&token=a4d8b729-9c90-40f4-98a0-b628219f213b"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -235,11 +235,9 @@
 <span class="hljs-comment">// 沒有參數時，一定要有括號</span>
 <span class="hljs-keyword">var</span> <span class="hljs-title function_">callSomeone</span> = (<span class="hljs-params"></span>) =&gt; <span class="hljs-string">&#x27;小明&#x27;</span> + <span class="hljs-string">&#x27;吃飯了&#x27;</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">callSomeone</span>(<span class="hljs-string">&#x27;小明&#x27;</span>))</code></pre>
-
 <p>不過這個上述有個小地方也要注意一下，在大括號內的 <code>{}</code> 是需要自行加入 <code>return</code>，如果沒有傳入值則會出現 <code>undefined</code>。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> <span class="hljs-title function_">callSomeone</span> = (<span class="hljs-params">someone</span>) =&gt; &#123; someone + <span class="hljs-string">&#x27;吃飯了&#x27;</span> &#125;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">callSomeone</span>(<span class="hljs-string">&#x27;小明&#x27;</span>)) <span class="hljs-comment">// undefined</span></code></pre>
-
 <h2 id="沒有-arguments-參數"><a href="#沒有-arguments-參數" class="headerlink" title="沒有 arguments 參數"></a>沒有 arguments 參數</h2><p>在先前有一個小故事，小明要儲值悠遊卡，他投入不同的金額要加值，要使用 <code>arguments</code> 這個參數了解總共傳入了幾次並加總，但在箭頭函式內是沒有此變數的。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> originCash = <span class="hljs-number">1000</span>;
 <span class="hljs-keyword">const</span> <span class="hljs-title function_">updateEasyCard</span> = (<span class="hljs-params"></span>) =&gt; &#123;
@@ -248,7 +246,6 @@
 &#125;
 
 <span class="hljs-title function_">updateEasyCard</span>(<span class="hljs-number">10</span>, <span class="hljs-number">50</span>, <span class="hljs-number">100</span>, <span class="hljs-number">50</span>, <span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">1</span>, <span class="hljs-number">500</span>);</code></pre>
-
 <p>所以當需要使用 <code>arguments</code> 請維持使用 <code>function</code>。</p>
 <h2 id="綁定的-this-不同"><a href="#綁定的-this-不同" class="headerlink" title="綁定的 this 不同"></a>綁定的 this 不同</h2><ul>
 <li>傳統函式：依呼叫的方法而定</li>
@@ -277,7 +274,6 @@
 
 auntie.<span class="hljs-title function_">callName</span>();
 auntie.<span class="hljs-title function_">callName2</span>();</code></pre>
-
 <p><code>綁定到其定義時所在的物件</code>，我們要了解一般函式在建立時是在 window 下，所以在 window 下使用箭頭函式自然會指向 window，要確實將箭頭函式宣告在物件內部，這樣 <code>this</code> 才會指向該物件。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> func = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">var</span> func2 = <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
@@ -296,7 +292,6 @@ auntie.<span class="hljs-title function_">callName2</span>();</code></pre>
 &#125;
 <span class="hljs-title function_">func</span>(); 
 <span class="hljs-comment">// 就算在這裡新增一個 function，也不會影響到內層的箭頭函式</span></code></pre>
-
 <p>這個範例稍作複雜些，但只是要解釋不同建立方式的差異，注意：如果 <strong>不是</strong> 建立在物件內的函式，並不會影響箭頭函示的 <code>this</code>：</p>
 <ul>
 <li><code>func()</code> 是最外層的函式，他對於內層的箭頭不會有影響。</li>
@@ -315,7 +310,6 @@ auntie.<span class="hljs-title function_">callName2</span>();</code></pre>
   &#125;
 &#125;
 auntie.<span class="hljs-title function_">callName</span>();</code></pre>
-
 <h2 id="不可使用的情況"><a href="#不可使用的情況" class="headerlink" title="不可使用的情況"></a>不可使用的情況</h2><h4 id="apply-call-bind"><a href="#apply-call-bind" class="headerlink" title="apply, call, bind"></a>apply, call, bind</h4><p><code>this</code> 在 Arrow function 中是被綁定的，所以套用 <code>call</code> 的方法時是無法修改 <code>this</code>。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> family = &#123;
   <span class="hljs-attr">ming</span>: <span class="hljs-string">&#x27;小明&#x27;</span>
@@ -328,7 +322,6 @@ auntie.<span class="hljs-title function_">callName</span>();</code></pre>
 &#125;
 func.<span class="hljs-title function_">call</span>(family); <span class="hljs-comment">// 箭頭函式的情況，this 依然是 window</span>
 func2.<span class="hljs-title function_">call</span>(family); <span class="hljs-comment">// 一般函示 this 則是傳入的物件</span></code></pre>
-
 <h4 id="不能用在建構式"><a href="#不能用在建構式" class="headerlink" title="不能用在建構式"></a>不能用在建構式</h4><p>由於 this 的是在物件下建立，所以箭頭函式不能像 function 一樣作為建構式的函式，如果嘗試使用此方法則會出現錯誤 (<code>... is not a constructor</code>)。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">const</span> <span class="hljs-title function_">PhoneTemplate</span> = (<span class="hljs-params">brand, modal, withCamera</span>) =&gt; &#123;
   <span class="hljs-variable language_">this</span>.<span class="hljs-property">brand</span> = brand;
@@ -338,7 +331,6 @@ func2.<span class="hljs-title function_">call</span>(family); <span class="hljs-
 
 <span class="hljs-keyword">const</span> sonyPhone = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PhoneTemplate</span>(<span class="hljs-string">&#x27;Sony&#x27;</span>, <span class="hljs-string">&#x27;Z100&#x27;</span>, <span class="hljs-literal">true</span>);
 <span class="hljs-comment">// 錯誤：PhoneTemplate is not a constructor</span></code></pre>
-
 <h4 id="DOM-事件監聽"><a href="#DOM-事件監聽" class="headerlink" title="DOM 事件監聽"></a>DOM 事件監聽</h4><p>同先前說的， <code>this</code> 是指向所建立的物件上，如果是用在監聽 DOM 上一樣會指向 window，所以無法使用在此情境。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> elements = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementsByTagName</span>(<span class="hljs-string">&#x27;div&#x27;</span>);
 <span class="hljs-keyword">var</span> <span class="hljs-title function_">changeDOM</span> = (<span class="hljs-params"></span>) =&gt; &#123;
@@ -349,7 +341,6 @@ func2.<span class="hljs-title function_">call</span>(family); <span class="hljs-
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; elements.<span class="hljs-property">length</span>; i++) &#123;
   elements[i].<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, changeDOM, <span class="hljs-literal">false</span>);
 &#125;</code></pre>
-
 <h4 id="Prototype-中使用-this"><a href="#Prototype-中使用-this" class="headerlink" title="Prototype 中使用 this"></a>Prototype 中使用 this</h4><p>一樣是 this 的問題，如果原型上新增一個箭頭函式，並嘗試使用 this 的話會指向全域。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">PhoneTemplate</span> (<span class="hljs-params">brand, modal, withCamera</span>) &#123;
   <span class="hljs-variable language_">this</span>.<span class="hljs-property">brand</span> = brand;
@@ -367,7 +358,6 @@ func2.<span class="hljs-title function_">call</span>(family); <span class="hljs-
 <span class="hljs-keyword">const</span> sonyPhone = <span class="hljs-keyword">new</span> <span class="hljs-title class_">PhoneTemplate</span>(<span class="hljs-string">&#x27;Sony&#x27;</span>, <span class="hljs-string">&#x27;Z100&#x27;</span>, <span class="hljs-literal">true</span>);
 sonyPhone.<span class="hljs-title function_">callSomeone</span>(<span class="hljs-string">&#x27;小明&#x27;</span>); <span class="hljs-comment">// Sony 打通電話給 小明</span>
 sonyPhone.<span class="hljs-title function_">callSomeone2</span>(<span class="hljs-string">&#x27;杰哥&#x27;</span>); <span class="hljs-comment">// undefined 打通電話給 杰哥</span></code></pre>
-
 <h2 id="善用的方式"><a href="#善用的方式" class="headerlink" title="善用的方式"></a>善用的方式</h2><p>過去我們在寫物件內的函式時，為了確保 this 能夠正確運作會先將它賦予在另一個變數上 (that, self, vm…)。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie = &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>,
@@ -380,7 +370,6 @@ sonyPhone.<span class="hljs-title function_">callSomeone2</span>(<span class="hl
   &#125;
 &#125;
 auntie.<span class="hljs-title function_">callName</span>();</code></pre>
-
 <p>箭頭函式本就會指向他所生成的物件上，所以可以不需要另外指向另一個物件。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie = &#123;
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>,

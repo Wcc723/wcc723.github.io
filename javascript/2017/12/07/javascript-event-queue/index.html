@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：一次只能做一件事情的 JavaScript","datePublished":"2017-12-06T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.522Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/07/javascript-event-queue/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c3-01.jpg?alt=media&token=33d7975b-42e9-4e59-b878-c1a578a382d1"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -255,13 +255,9 @@
 <span class="hljs-comment">// 洗碗</span>
 <span class="hljs-comment">//</span>
 <span class="hljs-comment">// 漂亮阿姨回電</span></code></pre>
-
 <h2 id="Event-queue-事件佇列"><a href="#Event-queue-事件佇列" class="headerlink" title="Event queue (事件佇列)"></a>Event queue (事件佇列)</h2><p>像小明先把事情擱置在心中，等待條件觸發在 JavaScript 稱為 Event queue。像是 setTimeout, addEventListener, XMLHttpRequest 等等，這些方法在執行時會先將事件放到這地方，並將所有的事件堆疊<strong>完成後</strong>，才會開始讓 <code>event queue</code> 內的事件被觸發。</p>
 <p>我們透過以下的短影片來了解一下 <code>event queue</code> 是怎麼樣概念 (影片下方是時間軸，用來解釋事件堆疊)。</p>
-<video width="100%" controls autoplay loop>
-  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2Fevent_queue.mp4?alt=media&token=77b9bb26-d3dc-4c1e-af5f-3233e7e4c11c" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+<video width="100%" controls autoplay loop><br>  <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2Fevent_queue.mp4?alt=media&token=77b9bb26-d3dc-4c1e-af5f-3233e7e4c11c" type="video/mp4"><br>Your browser does not support the video tag.<br></video>
 
 <p>影片中我們可以看到</p>
 <ul>
@@ -286,13 +282,11 @@ Your browser does not support the video tag.
 &#125;
 
 <span class="hljs-title function_">doWork</span>();   <span class="hljs-comment">// 執行</span></code></pre>
-
 <p>他一樣會將所有事件完成後，再讓 setTimeout 完成，以上這段程式碼也可以貼在 Chrome  開發者工具內試試看。</p>
 <pre><code class="hljs plaintext">打給阿姨
 洗碗
 // &quot;完成事件堆疊&quot;
 漂亮阿姨回電</code></pre>
-
 <p>在所有非同步事件如 <code>click</code>、<code>setTimeout</code>、<code>ajax</code>…，都不會立即執行這些行為，而是將這些行為放到 <code>event queue</code> 中，等待事件觸發後再回來執行。</p>
 </div>
 

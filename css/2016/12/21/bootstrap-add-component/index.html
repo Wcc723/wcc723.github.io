@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/css/2016/12/21/bootstrap-add-component/2016_ironman/21_bootstrap_header.jpg">
 <meta property="article:published_time" content="2016-12-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2026-05-31T07:18:15.519Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.182Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="Bootstrap">
 <meta property="article:tag" content="css">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/css/2016/12/21/bootstrap-add-component/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 21 - Bootstrap 透過 Sass 新增自定義元件","datePublished":"2016-12-20T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.519Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/21/bootstrap-add-component/","image":["https://www.casper.tw/2016_ironman/21_bootstrap_header.jpg"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 21 - Bootstrap 透過 Sass 新增自定義元件","datePublished":"2016-12-20T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.182Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/21/bootstrap-add-component/","image":["https://www.casper.tw/2016_ironman/21_bootstrap_header.jpg"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,7 +217,6 @@
 
   <div class="prose"><p>許多人在使用 Bootstrap 時，如果有需要新增、調整，都是寫在 CSS 的後方或是另開一個新檔透過 “覆蓋” 的特性來新增、調整。先前的文章已經介紹了如何調整 Bootstrap 的 CSS，透過變數的方式，我們可以調整整體的樣式設定，而 “新增” 我們也應該用相同的方法來製作，這樣的方法更有一致性，且能夠調用 Bootstrap 原有的變數及 @mixin。</p>
 <span id="more"></span>
-
 <h2 id="新增一個元件"><a href="#新增一個元件" class="headerlink" title="新增一個元件"></a>新增一個元件</h2><p>範例連結<br><a target="_blank" rel="noopener" href="https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component">https://github.com/Wcc723/ironman-gulp-sass/tree/v.0.7.component</a></p>
 <p>先前的文章介紹到 Sass 的架構，所以我們的專案結構會做些許的調整，目前已經有了 <code>all.scss</code> 以及 <code>helpers/_variables.scss</code> 這兩隻 .scss 檔案，接下來新增 <code>components</code> 資料夾，預計新增的元件就會放在這裡。</p>
 <pre><code class="hljs plaintext">scss/
@@ -228,7 +227,6 @@
 |
 |– components/
 |   |– _card.scss        # 預計新增的模組</code></pre>
-
 <p>元件來源：<a target="_blank" rel="noopener" href="https://github.com/doabit/semantic-ui-sass/blob/master/app/assets/stylesheets/semantic-ui/views/_card.scss">https://github.com/doabit/semantic-ui-sass/blob/master/app/assets/stylesheets/semantic-ui/views/_card.scss</a></p>
 <p>我在 Sematic UI 上找到了一個現成的 Card 模組，這個模組所使用的變數不多，刪除後面的段落後，就可以直接加入 <code>components/_card.scss</code> 內。</p>
 <p>參考加入內容：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/ironman-gulp-sass/blob/v.0.7.component/source/scss/components/_card.scss">https://github.com/Wcc723/ironman-gulp-sass/blob/v.0.7.component/source/scss/components/_card.scss</a></p>
@@ -264,15 +262,13 @@
 &#125;
 
 <span class="hljs-comment">/* 略 .. */</span></code></pre>
-
 <p>新增元件的心法在前面幾個章節有詳細的描述，本篇就直接運用半成品來說明，在 <code>_card.scss</code> 加入後，如果直接運行 <code>gulp</code> 是不會看到 card 加入至你的 CSS 內，所以必須要在 <code>all.scss</code> 補上以下內容確認載入才行。</p>
 <pre><code class="hljs css"><span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;helpers/variables&quot;</span>;
 <span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;bootstrap&quot;</span>;
 
 <span class="hljs-keyword">@import</span> <span class="hljs-string">&quot;components/card&quot;</span>;</code></pre>
-
 <p>此時，執行 <code>gulp</code> 沒有出錯的情況下就會看到 Card 模組已經載入了。以下範例為調整後的按鈕色彩及卡片模組。</p>
-<p><img src="/images/2016_ironman/21_bootstrap_01.png"></p>
+<p><img src="https://img.casper.tw/images/2016_ironman/21_bootstrap_01.png" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>透過這一段的教學，大家能夠更靈活的使用 Bootstrap，其實這段流程並沒有那麼複雜，只要稍作練習，就能夠彈性的運用這些技能，且能有效地增加工作效率。</p>
 </div>
 

@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"在 Ubuntu 上加入 Docker 環境並部署 Node.js 專案","datePublished":"2023-10-07T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.539Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2023/10/08/ubuntu-docker/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fubuntu-docker.jpg?alt=media&token=3112bf6d-7951-458e-9def-b158a6c72609"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -233,12 +233,10 @@
 <li>首先更新你的現有列表套件：</li>
 </ol>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get update</code></pre>
-
 <ol start="2">
 <li>允許使用 HTTPS 進行套件安裝：</li>
 </ol>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install ca-certificates curl gnupg</code></pre>
-
 <ol start="3">
 <li>添加 Docker 的 GPG 鑰匙：</li>
 </ol>
@@ -247,7 +245,6 @@
 <span class="hljs-built_in">sudo</span> install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | <span class="hljs-built_in">sudo</span> gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 <span class="hljs-built_in">sudo</span> <span class="hljs-built_in">chmod</span> a+r /etc/apt/keyrings/docker.gpg</code></pre>
-
 <ol start="4">
 <li>添加 Docker 的 repository：</li>
 </ol>
@@ -256,28 +253,24 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | <span class="hljs-buil
 <span class="hljs-string">  &quot;</span>$(. /etc/os-release &amp;&amp; <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;<span class="hljs-variable">$VERSION_CODENAME</span>&quot;</span>)<span class="hljs-string">&quot; stable&quot;</span> | \
   <span class="hljs-built_in">sudo</span> <span class="hljs-built_in">tee</span> /etc/apt/sources.list.d/docker.list &gt; /dev/null
 <span class="hljs-built_in">sudo</span> apt-get update</code></pre>
-
 <ol start="5">
 <li>再次更新套件：</li>
 </ol>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get update</code></pre>
-
 <ol start="6">
 <li>安裝 Docker：</li>
 </ol>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin</code></pre>
-
 <ol start="7">
 <li>驗證是否有安裝成功：</li>
 </ol>
 <pre><code class="hljs html">docker -v</code></pre>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fubuntu-docker-1.png?alt=media&token=57f34fe2-90ee-4e04-9cc0-4a3a443127f7" alt="檢視安裝的 Docker 版本"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fubuntu-docker-1.png?alt=media&amp;token=57f34fe2-90ee-4e04-9cc0-4a3a443127f7" alt="檢視安裝的 Docker 版本"></p>
 <ol start="8">
 <li>驗證 Docker 是否已成功安裝，並運行：</li>
 </ol>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> docker run hello-world</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fubuntu-docker-2.png?alt=media&token=19817044-4443-4ca4-a0a3-90977a7afc10" alt="運行官方提供的範例"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fubuntu-docker-2.png?alt=media&amp;token=19817044-4443-4ca4-a0a3-90977a7afc10" alt="運行官方提供的範例"></p>
 <p>官方的範例僅會出現上方提示文字，表示已經成功運行。可以直接使用 <code>docker ps</code> 列出所有容器，然後再使用 <code>docker rm &lt;container id&gt;</code> 移除該容器。</p>
 <h2 id="本地端上傳-Docker-Image"><a href="#本地端上傳-Docker-Image" class="headerlink" title="本地端上傳 Docker Image"></a>本地端上傳 Docker Image</h2><p>首先，在你的本地系統中保存 Docker Image 成 tar 檔案： <code>-o</code> 表示輸出 output（請先使用 build 指令建立映像檔）。</p>
 <pre><code class="hljs bash">docker save -o &lt;tar文件名稱.tar&gt; &lt;image名稱:tag&gt;</code></pre>
@@ -287,46 +280,34 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | <span class="hljs-buil
 <pre><code class="hljs bash">docker load -i &lt;tar文件名稱.tar&gt;</code></pre>
 <p>接下來使用 <code>docker images</code> 檢視已經準備好的 image，可以看到剛剛的 image 已經加入列表中，並使用 <code>docker run -d &lt;image名稱:tag&gt;</code> 運行 docker 環境。</p>
 <pre><code class="hljs html">docker run -d -p 8080:3000 <span class="hljs-tag">&lt;<span class="hljs-name">image名稱:tag</span>&gt;</span></code></pre>
-
 <p>上述指令中的：    </p>
 <ul>
 <li><code>-d</code> 選項意為 “detach”，意即在背景模式下運行容器。使用 <code>-d</code> 選項後，Docker 會在背景中運行容器，並返回容器 ID，不會看到任何的輸出，終端機會直接返回。</li>
 <li><code>-p 8080:3000</code> 表示將容器的 3000 port 對應到主機的 8080 port，這樣就可以在主機上透過 8080 port 來訪問容器中的應用程式。</li>
 </ul>
-<p>可能遇到的錯誤：</p>
-<pre><code class="hljs plaintext">WARNING: The requested image&#x27;s platform (linux/arm64/v8) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested</code></pre>
+<p>可能遇到的錯誤：<br><pre><code class="hljs plaintext">WARNING: The requested image&#x27;s platform (linux/arm64/v8) does not match the detected host platform (linux/amd64/v3) and no specific platform was requested</code></pre></p>
 <p>錯誤是因為試圖在一個系統環境（如 <code>linux/amd64</code>）上運行為另一個系統環境（本範例為 <code>linux/arm64/v8</code>）建立的 Docker 映像。解決方式需要在建立時指定平台，例如：</p>
 <pre><code class="hljs bash">docker build --platform=linux/amd64 -t &#123;tag name&#125;</code></pre>
-
 <p>完成後再重複上述的流程即可。</p>
 <h4 id="Docker-服務遇到錯誤終止的解決方式"><a href="#Docker-服務遇到錯誤終止的解決方式" class="headerlink" title="Docker 服務遇到錯誤終止的解決方式"></a>Docker 服務遇到錯誤終止的解決方式</h4><p>在執行時加入 <code>--restart=always</code> 參數，表示當服務終止時，Docker 會自動重啟服務。</p>
 <pre><code class="hljs bash">docker run --restart=always -d my-node-app</code></pre>
-
 <h2 id="伺服器-Docker-Daemon-未啟動的解決方式"><a href="#伺服器-Docker-Daemon-未啟動的解決方式" class="headerlink" title="伺服器 Docker Daemon 未啟動的解決方式"></a>伺服器 Docker Daemon 未啟動的解決方式</h2><p>如果機器出現錯誤，導致 Docker Daemon 未啟動，可以使用以下指令啟動 Docker Daemon：</p>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl start docker</code></pre>
-
 <p>如果你想要在系統開機時自動啟動 Docker，可以使用以下指令：（雖然這樣，重啟後的 container 依然不會自動運行）</p>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">enable</span> docker</code></pre>
-
 <p>要停止 Docker daemon，可以使用以下指令：</p>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl stop docker</code></pre>
-
-
 <p>如果你不希望在系統開機時自動啟動 Docker，可以使用以下指令：</p>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl <span class="hljs-built_in">disable</span> docker</code></pre>
-
 <p>要檢查 Docker daemon 的狀態，可以使用以下指令：</p>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl status docker</code></pre>
-
 <p>這些指令都需要 root 權限，所以需要使用 <code>sudo</code> 指令。如果你已經將用戶添加到了 <code>docker</code> 群組，則可以直接執行 Docker 指令，不再需要 <code>sudo</code>。</p>
 <h4 id="如果無法停止"><a href="#如果無法停止" class="headerlink" title="如果無法停止"></a>如果無法停止</h4><p>如果會看到以下錯誤，主要原因是因為 docker socket 仍在運行中（部分容器還在運行）：</p>
 <pre><code class="hljs bash">Warning: Stopping docker.service, but it can still be activated by:
 docker.socket</code></pre>
-
 <p>需要將完整的 docker service 關閉，可使用以下指令：</p>
 <pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> systemctl stop docker.service
 <span class="hljs-built_in">sudo</span> systemctl stop docker.socket</code></pre>
-
 <h2 id="總結"><a href="#總結" class="headerlink" title="總結"></a>總結</h2><p>本篇文章介紹如何在 Ubuntu 上安裝 Docker 環境，並且部署 Node.js 專案，另外也介紹了如何在本地端上傳 Docker Image 到虛擬主機上，以及 Docker Daemon 未啟動的解決方式。</p>
 </div>
 

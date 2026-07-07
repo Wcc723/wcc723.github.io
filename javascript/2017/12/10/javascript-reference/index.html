@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：JavaScript 物件的連連看!? 兩個物件的值居然會一樣","datePublished":"2017-12-09T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.522Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/10/javascript-reference/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c7-2.jpg?alt=media&token=c21e14c5-a0b5-48ee-b445-a4c5a69d5245"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -231,12 +231,10 @@
 &#125;;
 
 <span class="hljs-keyword">var</span> auntie2 = auntie;   <span class="hljs-comment">// 將漂亮阿姨得值 連到姊姊上</span></code></pre>
-
 <p>接下來，調整一下姊姊的名字</p>
 <pre><code class="hljs js">auntie2.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;陳美美&#x27;</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(auntie.<span class="hljs-property">name</span>); <span class="hljs-comment">// 請問這裡會輸出什麼？</span></code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c7-1.jpg?alt=media&token=9bebf516-8c1c-47da-9ab4-0e752a9200ef"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c7-1.jpg?alt=media&amp;token=9bebf516-8c1c-47da-9ab4-0e752a9200ef" alt=""></p>
 <p>小明將兩個人的名字，對應到相同的資料結構上，阿姨與她的姊姊都是同一份資料。因此，小明將阿姨姊姊的名字寫到阿姨的名字上了 (明天醒來就會搞不清楚是誰了!?)。</p>
 <h2 id="傳值與傳參考"><a href="#傳值與傳參考" class="headerlink" title="傳值與傳參考"></a>傳值與傳參考</h2><p>一般而言，我們在傳遞變數的時候，如果是單一的值賦予到另一個變數後，兩者是毫無關係的。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-string">&#x27;a&#x27;</span>;
@@ -244,15 +242,13 @@
 b = <span class="hljs-string">&#x27;c&#x27;</span>;
 
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a); <span class="hljs-comment">// a 依然是 &#x27;a&#x27;，不受影響</span></code></pre>
-
 <p>但就上面小明故事來說，會發現兩者的物件好像是綁定再一起的，改動其中一個，另一個物件也會跟著更動，這個因為在 JavaScript 中的物件是 “傳參考(by Reference)”，其結果就像是小明筆記本所發生的狀況。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c7-2.jpg?alt=media&token=c21e14c5-a0b5-48ee-b445-a4c5a69d5245"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c7-2.jpg?alt=media&amp;token=c21e14c5-a0b5-48ee-b445-a4c5a69d5245" alt=""></p>
 <p>如果使用資料表的概念在思考，可以想像資料表的 Address 就是變數，Value 就是值，一個 Address 只能對應一個值，那麼物件在組成的時候就會產生另一個表，然後透過 address 來做傳遞，所以才會兩個變數共用同一個資料表。</p>
 <p>這樣的結果有好處也有壞處，好處是我們在操作物件時，可以輕易地用更短的變數來操作，以下面範例來說，我們可以將 DOM 物件賦予在一個更精簡名稱的變數上，然後修改其中的值。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> input = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;sb_ifc0&#x27;</span>);
 input.<span class="hljs-property">style</span>.<span class="hljs-property">backgroundColor</span> = <span class="hljs-string">&quot;red&quot;</span>;
 <span class="hljs-comment">// 在 Google 首頁的 Console 套用此段程式碼，可以將 input 背景改成紅色</span></code></pre>
-
 <p>壞處可以參考小明所遭遇到的問題，操作資料格式時將兩份資料給搞混了，所以在處理資料時，如果他實際並非 “同一份”，而僅是相似時就要特別注意此問題。</p>
 <h2 id="複製物件不含參考"><a href="#複製物件不含參考" class="headerlink" title="複製物件不含參考"></a>複製物件不含參考</h2><p>我們來介紹不同方式來複製物件且不含參考，而以下是基礎的資料格式。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie = &#123; 
@@ -265,7 +261,6 @@ input.<span class="hljs-property">style</span>.<span class="hljs-property">backg
   &#125;,
   <span class="hljs-attr">single</span>: <span class="hljs-literal">true</span>
 &#125;;</code></pre>
-
 <p>另外複製也會有區分 深度 (Deep Copy)及淺度 (Shallow Copy)，差異在於一層傳值，還是所有層級皆傳值，在 <code>bwh</code> 這一層就可以做此測試。</p>
 <h3 id="手動賦值"><a href="#手動賦值" class="headerlink" title="手動賦值"></a>手動賦值</h3><p>這是很直接的觀念，把物件的參考賦予方式改用值的方式來傳遞，此時手動傳值的部分將會完全獨立。不過注意，在內層物件還是依據參考的方式傳遞 (<code>bwh</code> 的物件)。</p>
 <pre><code class="hljs js">auntie2 = &#123;
@@ -274,26 +269,20 @@ input.<span class="hljs-property">style</span>.<span class="hljs-property">backg
   <span class="hljs-attr">bwh</span>: auntie.<span class="hljs-property">bwh</span>,
   <span class="hljs-attr">single</span>: auntie.<span class="hljs-property">single</span>
 &#125;</code></pre>
-
 <h3 id="for…in"><a href="#for…in" class="headerlink" title="for…in"></a>for…in</h3><p>和手動賦值的方式接近，不過是使用 <code>for...in</code> 的語法將原本的物件屬性，傳到新的物件上，這種方式同上也是屬於淺層賦值。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie3 = &#123;&#125;;
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> prop <span class="hljs-keyword">in</span> auntie) &#123;
   auntie3[prop] = auntie[prop];
 &#125;</code></pre>
-
-
 <h3 id="轉字串"><a href="#轉字串" class="headerlink" title="轉字串"></a>轉字串</h3><p>將物件轉換為一個不相干的字串，再將字串轉回物件，這種方式就會使兩個物件毫無關聯，屬於完全複製沒有深度限制。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> str = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(auntie);
 <span class="hljs-keyword">var</span> auntie4 = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(str);</code></pre>
-
 <h3 id="使用套件"><a href="#使用套件" class="headerlink" title="使用套件"></a>使用套件</h3><p>jQuery 套件中的 extend 可以複製物件，他也可以將加入參數使用深度複製 (deep copy)，不虧是萬年 jQuery，各種好用工具都在其中。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie5 = jQuery.<span class="hljs-title function_">extend</span>(&#123;&#125;, auntie);       <span class="hljs-comment">// 淺複製</span>
 <span class="hljs-keyword">var</span> auntie6 = jQuery.<span class="hljs-title function_">extend</span>(<span class="hljs-literal">true</span>, &#123;&#125;, auntie); <span class="hljs-comment">// 深度複製</span></code></pre>
-
 <p>jQuery extend 詳細文件: <a target="_blank" rel="noopener" href="https://api.jquery.com/jquery.extend/">jQuery.extend() | jQuery API Documentation</a></p>
 <h3 id="ES6"><a href="#ES6" class="headerlink" title="ES6"></a>ES6</h3><p>原生 ES6 中也有提供類似 jQuery 的複製方法，但此方法僅適用於淺複製，並沒有提供深度複製。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">const</span> auntie6 = <span class="hljs-title class_">Object</span>.<span class="hljs-title function_">assign</span>(&#123;&#125;, auntie);</code></pre>
-
 <p>By Reference, By Value 在 JavaScript Object 中一值屬於很常見的問題，不管新手老手都曾經錯在其中 T_T。</p>
 </div>
 

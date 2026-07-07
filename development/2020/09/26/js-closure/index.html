@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"閉包，原來這就是閉包啊！","datePublished":"2020-09-25T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.534Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/26/js-closure/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_11.jpg?alt=media&token=6f0bb2b6-7d3a-42d5-a785-291c15680546"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -225,9 +225,8 @@
   <span class="hljs-title function_">fn1</span>();
 &#125;
 <span class="hljs-title function_">fn2</span>();</code></pre>
-
 <p>上方兩個函式的作用域完全獨立，不會因為運行的過程讓函式可存取領一個函式的變數。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCE66B6E3-A1E4-4688-ABEE-3CC63148496C.png?alt=media&token=532c4d14-0eee-40c9-a67a-74e1ba7c4baa"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCE66B6E3-A1E4-4688-ABEE-3CC63148496C.png?alt=media&amp;token=532c4d14-0eee-40c9-a67a-74e1ba7c4baa" alt=""></p>
 <p>雖然變數的作用域是獨立的，但<strong>函式內的函式</strong>則可以取用外層作用域的變數。</p>
 <p>如以下範例：<code>addString</code> 函式內並沒有 <code>name</code> 的變數，因此他會從外層尋找，在外層的 <code>sayHi</code> 函式則可以找到 <code>name</code> 變數。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">sayHi</span>(<span class="hljs-params"></span>) &#123;
@@ -239,8 +238,7 @@
   <span class="hljs-title function_">addString</span>();
 &#125;
 <span class="hljs-title function_">sayHi</span>();</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F53D2F7AE-B05E-4908-88FA-149C0361784F.png?alt=media&token=db3725b4-e13a-4226-a78c-2deb62f6cb58"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F53D2F7AE-B05E-4908-88FA-149C0361784F.png?alt=media&amp;token=db3725b4-e13a-4226-a78c-2deb62f6cb58" alt=""></p>
 <p>在巢狀函式中，如果內層的函式沒有可以取用的特定變數則會向外查找，此時內部的函式就可以稱為閉包。</p>
 <p>內層函式取用外層函式的變數，就這樣而已？當然不止，這個概念可以有非常多延伸的變化。</p>
 <h2 id="私有變數：把內層的函式丟出來"><a href="#私有變數：把內層的函式丟出來" class="headerlink" title="私有變數：把內層的函式丟出來"></a>私有變數：把內層的函式丟出來</h2><p>前幾篇文章有提到「記憶體釋放」的<a target="_blank" rel="noopener" href="https://wcc723.github.io/development/2020/09/23/js-object/">觀念</a>，當函式中的變數無法再被參考時，該變數所佔用的記憶體就會被釋放掉，而閉包的技巧正好可以維持記憶體的參考。</p>
@@ -251,11 +249,7 @@
 <li><code>addString</code> 沒有在 <code>sayHi</code> 函式內運行，而是透過 return 傳出到 mingSayHi 的變數上（小明說你好）。</li>
 <li>當運行 <code>mingSayHi</code> 時：<ul>
 <li>會運行內層的 <code>addString</code> 函式，並且嘗試存取 <code>name</code> 變數…</li>
-<li><strong>重點：</strong><code>name</code> 變數因為還會持續維持參考，所以不會被釋放記憶體，因此成為了 <code>mingSayHi</code> 函式的私有變數（僅存與此函式中，無法透過其它方式調整）</li>
-</ul>
-</li>
-</ul>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">sayHi</span>(<span class="hljs-params">name</span>) &#123;
+<li><strong>重點：</strong><code>name</code> 變數因為還會持續維持參考，所以不會被釋放記憶體，因此成為了 <code>mingSayHi</code> 函式的私有變數（僅存與此函式中，無法透過其它方式調整）<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">sayHi</span>(<span class="hljs-params">name</span>) &#123;
 
   <span class="hljs-keyword">function</span> <span class="hljs-title function_">addString</span>(<span class="hljs-params"></span>) &#123;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;name&#125;</span> 你好`</span>)
@@ -265,18 +259,20 @@
 
 <span class="hljs-keyword">var</span> mingSayHi = <span class="hljs-title function_">sayHi</span>(<span class="hljs-string">&#x27;小明&#x27;</span>);
 <span class="hljs-title function_">mingSayHi</span>();</code></pre>
-
+</li>
+</ul>
+</li>
+</ul>
 <p>圖解概念：</p>
 <ul>
 <li>addString 函式可以存取 sayHi 函式的變數</li>
 <li>addString 沒有直接運行，而是將 addString 函式回傳並儲存於外部的變數 <code>mingSayHi</code> 上</li>
 <li>外部變數 <code>mingSayHi</code> 是一個函式變數，當運行時可以存取 sayHi 的變數，此時的 <code>name</code> 變數為 <code>mingSayHi</code> 的私有變數。</li>
 </ul>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F30093298-CD38-4184-BFE3-BE6F29DC4AB7.png?alt=media&token=6a26e9f8-f422-4c67-8083-945f9097fc88"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F30093298-CD38-4184-BFE3-BE6F29DC4AB7.png?alt=media&amp;token=6a26e9f8-f422-4c67-8083-945f9097fc88" alt=""></p>
 <p>閉包是內部的函式可以取用外部作用域變數的概念，單就此概念來說僅是函式及詞法作用域的關係，但如果將內層的函式向外傳出，使其保留了原始函式結構中的作用域使其產生私有變數，更能凸顯閉包的價值。</p>
 <h4 id="延伸說明"><a href="#延伸說明" class="headerlink" title="延伸說明"></a>延伸說明</h4><p>在這個結構中出現了兩層函式，第一次呼叫時會運行 <code>sayHi</code> 函式，第二次呼叫則會運行<strong>內部回傳</strong>的 <code>addString</code> 函式；除了上述介紹私有變數時將回傳函式儲存於 <code>mingSayHi</code> 外，也可直接使用兩個括號來執行內部的函式。</p>
 <pre><code class="hljs js"><span class="hljs-title function_">sayHi</span>(<span class="hljs-string">&#x27;杰倫&#x27;</span>)(); <span class="hljs-comment">// 杰倫 你好</span></code></pre>
-
 <p>呼叫流程如下</p>
 <ol>
 <li>第一個 <code>(&#39;杰倫&#39;)</code>：運行 <code>sayHi</code>，並傳入 ‘杰倫’</li>
@@ -300,7 +296,6 @@
 <span class="hljs-title function_">mingMoney</span>(<span class="hljs-number">100</span>); <span class="hljs-comment">// 900</span>
 <span class="hljs-title function_">mingMoney</span>(<span class="hljs-number">100</span>); <span class="hljs-comment">// 800</span>
 <span class="hljs-title function_">mingMoney</span>(<span class="hljs-number">100</span>); <span class="hljs-comment">// 700</span></code></pre>
-
 <p>模擬事件更新：用戶不僅一名，會有另外一名共同使用此方法，但兩者的金錢不能混合計算。</p>
 <p>在上方所建立包含<strong>私有變數</strong>的函式中就可以解決此問題，可使用另一個變數來建立一個新函式，兩個函式會擁有各自的私有變數。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> jayMoney = <span class="hljs-title function_">buyItem</span>(); <span class="hljs-comment">// 存取內部函式的變數</span>
@@ -309,7 +304,6 @@
 <span class="hljs-title function_">jayMoney</span>(<span class="hljs-number">500</span>); <span class="hljs-comment">// 350</span>
 
 <span class="hljs-title function_">mingMoney</span>(<span class="hljs-number">100</span>); <span class="hljs-comment">// 600，mingMoney 與上方的 jayMoney 變數不會共用</span></code></pre>
-
 <p>除了單一的方法匯出以外，閉包另有私有方法（可參考 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/JavaScript/Closures#%E4%BD%BF%E7%94%A8%E9%96%89%E5%8C%85%E6%A8%A1%E6%93%AC%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95">MDN 文件</a>）。</p>
 <p>閉包，除了是面試常見的考題外，實戰中也有私有變數的優點（函式的作用域內，外部無法取得函式內的變數）。因此，無論匯出的是哪一種方法，閉包的優點是<strong>變數僅存在於函式之中</strong>，如果匯出的方法沒有提供原始值，將無法用任何方式取得原始變數，如果需要刻意隱藏變數值，避免用戶透過其他工具或方式取得，閉包也會是一個好方法。</p>
 </div>

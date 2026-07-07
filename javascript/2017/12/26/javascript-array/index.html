@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：ES6 陣列方法","datePublished":"2017-12-25T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.524Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/26/javascript-array/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_23.jpg?alt=media&token=9b3510d2-0327-44e4-be39-420760891ae0"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -241,30 +241,25 @@
 <span class="hljs-comment">// 小明 有 500 元</span>
 <span class="hljs-comment">// 漂亮阿姨 有 3000 元</span>
 <span class="hljs-comment">// 杰倫 有 60000 元</span></code></pre>
-
 <p>幾年前 jQuery 幾乎是每個 Web 頁面必備的框架，除了很好的 DOM 操作外，裡面已經包含了許多好用的 JavaScript 方法，其中之一當然就是 <code>$.each</code>。</p>
 <pre><code class="hljs js">$.<span class="hljs-title function_">each</span>(people, <span class="hljs-function">(<span class="hljs-params">i, person</span>) =&gt;</span> &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;person.name&#125;</span> 有 <span class="hljs-subst">$&#123;person.money&#125;</span> 元`</span>);
 &#125;);
 <span class="hljs-comment">// 結果同上</span></code></pre>
-
 <p>不僅 jQuery 會提供這樣的方法，同時期的框架也大多會提供，但到了現在的主流框架(React, Vue, Angular 2+)大多會搭配 ES6 編譯工具，所以就不會另外提供陣列的 Each 方法。</p>
 <pre><code class="hljs js"><span class="hljs-comment">// 過去 angular 1 也有類似方法，不過參數的位置與 jQuery 有點不同</span>
 angular.<span class="hljs-title function_">forEach</span>(people, <span class="hljs-function">(<span class="hljs-params">person, i</span>) =&gt;</span> &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;person.name&#125;</span> 有 <span class="hljs-subst">$&#123;person.money&#125;</span> 元`</span>);
 &#125;);
 <span class="hljs-comment">// 結果同上</span></code></pre>
-
 <p>除了以上兩個框架外，另外也有一個專門處理物件、陣列的框架 <a target="_blank" rel="noopener" href="http://underscorejs.org/">underscore</a>，不管前後端都非常適合使用。</p>
 <pre><code class="hljs js">_.<span class="hljs-title function_">forEach</span>(people, <span class="hljs-function">(<span class="hljs-params">person, i</span>) =&gt;</span> &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;person.name&#125;</span> 有 <span class="hljs-subst">$&#123;person.money&#125;</span> 元`</span>);
 &#125;);
 <span class="hljs-comment">// 結果同上</span></code></pre>
-
 <h2 id="ES6-一行解決"><a href="#ES6-一行解決" class="headerlink" title="ES6 一行解決"></a>ES6 一行解決</h2><p>ES6 開始提供了不同的 JavaScript 方法，並且搭配 <code>箭頭函式</code>、<code>Template String</code> 讓程式碼變得更簡短。</p>
 <pre><code class="hljs js">people.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">person</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;person.name&#125;</span> 有 <span class="hljs-subst">$&#123;person.money&#125;</span> 元`</span>));
 <span class="hljs-comment">// 結果同上</span></code></pre>
-
 <p><code>forEach</code> 傳入的參數有三，大多會只使用前兩者 <code>單一物件</code> 及 <code>物件索引</code>，而最後一個則是完整的陣列本體。</p>
 <pre><code class="hljs js">people.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">person, i, array</span>) =&gt;</span> &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person, i, array);
@@ -272,7 +267,6 @@ angular.<span class="hljs-title function_">forEach</span>(people, <span class="h
   <span class="hljs-comment">// i: 陣列的索引值 0, 1, 2, ...</span>
   <span class="hljs-comment">// array: 傳入的陣列本體</span>
 &#125;)</code></pre>
-
 <p>另外 <code>forEach</code> 這類型的方法無法中斷，如果想要中斷迴圈的執行會建議使用傳統的 <code>for...loop</code>。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; people.<span class="hljs-property">length</span>; i++) &#123;
   <span class="hljs-keyword">let</span> person = people[i]
@@ -287,7 +281,6 @@ people.<span class="hljs-title function_">forEach</span>(<span class="hljs-keywo
   &#125;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(person);
 &#125;)</code></pre>
-
 <h2 id="無法使用的陣列"><a href="#無法使用的陣列" class="headerlink" title="無法使用的陣列"></a>無法使用的陣列</h2><p>先前提過物件原型的概念，有很多類陣列有著陣列的外觀，但其實並不是真正的陣列(如：<code>arguments</code>)，這些就無法直接使用 <code>forEach</code>。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">const</span> callAll = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">arguments</span>)
@@ -297,7 +290,6 @@ people.<span class="hljs-title function_">forEach</span>(<span class="hljs-keywo
   &#125;);
 &#125;
 <span class="hljs-title function_">callAll</span>(people[<span class="hljs-number">0</span>], people[<span class="hljs-number">1</span>], people[<span class="hljs-number">2</span>])</code></pre>
-
 <p>不過可以使用前文介紹的展開語法 <code>...</code> 將 <code>array-like</code> 轉成 <code>array</code>。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">const</span> callAll = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">arguments</span>);
@@ -308,16 +300,14 @@ people.<span class="hljs-title function_">forEach</span>(<span class="hljs-keywo
   &#125;);
 &#125;
 <span class="hljs-title function_">callAll</span>(people[<span class="hljs-number">0</span>], people[<span class="hljs-number">1</span>], people[<span class="hljs-number">2</span>]);</code></pre>
-
 <p>但也有部分的類陣列是可以使用 <code>forEach</code>，DOM 的就是屬於其中一種。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> doms = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelectorAll</span>(<span class="hljs-string">&#x27;p&#x27;</span>);
 <span class="hljs-comment">// 不會跳錯</span>
 doms.<span class="hljs-title function_">forEach</span>(<span class="hljs-function">(<span class="hljs-params">ele</span>) =&gt;</span> &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ele);
 &#125;);</code></pre>
-
 <p>至於類陣列這麼多，怎知道哪些可以哪些不行，其實可以從原型中查找，像是上述的 dom 陣列，我們就可以從 <code>console.log()</code> 查看 <code>__proto__</code> 找到 <code>forEach</code> 的方法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_12_22_%E4%B8%8A%E5%8D%8810_37.png?alt=media&token=40ad30c1-11e2-4ec9-aa35-9fc96e249fc3"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_12_22_%E4%B8%8A%E5%8D%8810_37.png?alt=media&amp;token=40ad30c1-11e2-4ec9-aa35-9fc96e249fc3" alt=""></p>
 </div>
 
   <div class="post-foot">

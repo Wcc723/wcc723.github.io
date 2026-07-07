@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/d3js/2014/10/22/Ironman-30-days-23/2014ironman/day22_01.png">
 <meta property="article:published_time" content="2014-10-21T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T02:50:19.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.173Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="d3js">
 <meta property="article:tag" content="ironman">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/d3js/2014/10/22/Ironman-30-days-23/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"像jQuery 一樣的D3.js，柯P野生官網API","datePublished":"2014-10-21T16:00:00.000Z","dateModified":"2016-10-13T02:50:19.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/22/Ironman-30-days-23/","image":["https://www.casper.tw/2014ironman/day22_01.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"像jQuery 一樣的D3.js，柯P野生官網API","datePublished":"2014-10-21T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.173Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/22/Ironman-30-days-23/","image":["https://www.casper.tw/2014ironman/day22_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -218,13 +218,12 @@
   <div class="prose"><p>D3.js其實最重要的還是資料，恰巧有一位候選人做了Open data，他的API格式相當優良，如果對於找不到合適資料，但需要做些練習，不如試試看柯文哲野生官網吧！</p>
 <p><a target="_blank" rel="noopener" href="http://unlimited.kptaipei.tw/">http://unlimited.kptaipei.tw/</a></p>
 <span id="more"></span>
-
 <p>野生官網的使用相當容易，對於會使用jquery的開發者，也可以很快瞭解，這邊也簡單介紹一下野生官網API的使用方式吧。</p>
 <h2 id="申請Token"><a href="#申請Token" class="headerlink" title="申請Token"></a>申請Token</h2><p>在使用API前，需要先申請一組Token，野生官網在這部分也做得相當乾脆，只要填入暱稱、電子郵件之後，系統就會發一組Token及介紹信給申請者。</p>
 <p>畫面如下，填入相關資料即可：</p>
-<p><img src="/images/2014ironman/day22_02.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day22_02.png" alt=""></p>
 <p>收到Mail後，隨信會附上Token，開始動手試試看吧。</p>
-<p><img src="/images/2014ironman/day22_03.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day22_03.png" alt=""></p>
 <h2 id="用D3-js撈撈看"><a href="#用D3-js撈撈看" class="headerlink" title="用D3.js撈撈看"></a>用D3.js撈撈看</h2><p>D3.js原則上不能進行跨站請求資料(jsonp)，但野生官網這部分已經處理掉了，所以可以直接用D3處理這一段。</p>
 <p><em>先前介紹撈Google drive資料，是用jQuery處理jsonp。</em></p>
 <p>參考官網提供的Api [<strong>類別內容查詢</strong>]這部分很適合做練習，就直接用官網提供的範例，用D3來試試看(結果如下)。</p>
@@ -244,7 +243,6 @@ d3.json(kpapi, function(d){
 });
 </script>
 
-
 <pre><code class="hljs javascript">kpapi = <span class="hljs-string">&quot;http://api.kptaipei.tw/v1/category/41/?accessToken=kp54103aa1efbe14.85567715&quot;</span>;
 <span class="hljs-comment">//柯p API路徑</span>
 
@@ -255,7 +253,6 @@ d3.<span class="hljs-title function_">json</span>(kpapi, <span class="hljs-keywo
 	demo.<span class="hljs-title function_">select</span>(<span class="hljs-string">&#x27;.demo article&#x27;</span>).<span class="hljs-title function_">html</span>(data[num].<span class="hljs-property">content</span>);
 	<span class="hljs-comment">//將文章插入</span>
 &#125;);</code></pre>
-
 <p>上面這一個範例，就是用d3.js來抓柯P的API，並且隨機抓一篇文章，寫法大致上都很是不是很像jquery呢？</p>
 <h2 id="剛開始的相簿"><a href="#剛開始的相簿" class="headerlink" title="剛開始的相簿"></a>剛開始的相簿</h2><p>在一剛開始介紹D3.js時，有展示一個柯P的相簿，作法其實類似上一個範例，不同的是用<code>d3.data</code>來做<code>jQuery.each</code>的動作，再來回顧一次這個範例吧。</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> url = <span class="hljs-string">&quot;http://api.kptaipei.tw/v1/albums/72157646559528926&quot;</span>;
@@ -271,7 +268,6 @@ d3.<span class="hljs-title function_">json</span>( url ,<span class="hljs-keywor
 		.<span class="hljs-title function_">append</span>(<span class="hljs-string">&#x27;img&#x27;</span>).<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;class&#x27;</span>, <span class="hljs-string">&#x27;img-responsive&#x27;</span>)
 		.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;src&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>)&#123; <span class="hljs-keyword">return</span> d.<span class="hljs-property">images</span>.<span class="hljs-property">large_square</span>; &#125;);
 &#125;);</code></pre>
-
 <p><em>如果下方視窗沒有顯示範例，請點選Run with JS</em></p>
 <p><a class="jsbin-embed" target="_blank" rel="noopener" href="http://jsbin.com/wipam/3/embed?js,output">JS Bin</a> <script src="http://static.jsbin.com/js/embed.js"></script></p>
 <p>這樣來回介紹，應該會更了解D3.js吧～</p>

@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JS 常見陣列方法 [push(), unshift(), pop(), shift(), splice(), reverse(), concat(), include(), indexOf(), join()]","datePublished":"2020-10-03T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.535Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/04/js-array-methods/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_19.jpg?alt=media&token=8d6a40c4-0b89-4e5c-b7cd-d512cc400264"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -229,57 +229,36 @@
 <li><a href="#Array-prototype-indexOf">indexOf()</a></li>
 <li><a href="#Array-prototype-join">join()</a></li>
 </ul>
-<h2 id="初始資料"><a href="#初始資料" class="headerlink" title="初始資料"></a>初始資料</h2><p>本篇的篇幅較長，因此就不會將初始得陣列附在每個段落上，而所有範例都可以在 <code>Chrome Console</code> 上運行，如果遇到錯誤可先確認變數是否有宣告成陣列。</p>
-<pre><code class="hljs plaintext">var array = [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;漂亮阿姨&#x27;, &#x27;小美&#x27;]</code></pre>
-
-
+<h2 id="初始資料"><a href="#初始資料" class="headerlink" title="初始資料"></a>初始資料</h2><p>本篇的篇幅較長，因此就不會將初始得陣列附在每個段落上，而所有範例都可以在 <code>Chrome Console</code> 上運行，如果遇到錯誤可先確認變數是否有宣告成陣列。<br><pre><code class="hljs plaintext">var array = [&#x27;小明&#x27;, &#x27;杰倫&#x27;, &#x27;漂亮阿姨&#x27;, &#x27;小美&#x27;]</code></pre></p>
 <h2 id="Array-prototype-push"><a href="#Array-prototype-push" class="headerlink" title="Array.prototype.push()"></a>Array.prototype.push()</h2><p>當需要在陣列的尾端新增一個值，你可以使用 <code>push()</code>。</p>
 <pre><code class="hljs js">array.<span class="hljs-title function_">push</span>(<span class="hljs-string">&#x27;老媽&#x27;</span>);
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;小明&quot;, &quot;杰倫&quot;, &quot;漂亮阿姨&quot;, &quot;小美&quot;, &quot;老媽&quot;]</span></code></pre>
-
 <blockquote>
 <p>額外說明：<code>.push()</code> 運行時也會回傳值，回傳結果為 “陣列長度”。</p>
 </blockquote>
 <h2 id="Array-prototype-unshift"><a href="#Array-prototype-unshift" class="headerlink" title="Array.prototype.unshift()"></a>Array.prototype.unshift()</h2><p>相反的，如果需要加入在第一個則可以使用 <code>unshift()</code>。</p>
 <pre><code class="hljs js">array.<span class="hljs-title function_">unshift</span>(<span class="hljs-string">&#x27;老媽&#x27;</span>);
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;老媽&quot;, &quot;小明&quot;, &quot;杰倫&quot;, &quot;漂亮阿姨&quot;, &quot;小美&quot;]</span></code></pre>
-
 <blockquote>
 <p>額外說明： <code>unshift()</code>一樣會回傳 “陣列長度”，概念上與 <code>push()</code> 是相同的。</p>
 </blockquote>
-<h2 id="Array-prototype-shift"><a href="#Array-prototype-shift" class="headerlink" title="Array.prototype.shift()"></a>Array.prototype.shift()</h2><p><code>shift()</code> 則可以移除第一個陣列值。</p>
-<pre><code class="hljs js">array.<span class="hljs-title function_">shift</span>();
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;杰倫&quot;, &quot;漂亮阿姨&quot;, &quot;小美&quot;]</span></code></pre>
-
-<p>呼叫此方法不僅會移除陣列值，同時會將移除得陣列值進行回傳。</p>
-<pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">shift</span>()); <span class="hljs-comment">// 小明</span></code></pre>
-
-<h2 id="Array-prototype-pop"><a href="#Array-prototype-pop" class="headerlink" title="Array.prototype.pop()"></a>Array.prototype.pop()</h2><p><code>pop()</code> 則是移除最後一個陣列值。</p>
-<pre><code class="hljs js">array.<span class="hljs-title function_">pop</span>();
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;小明&quot;, &quot;杰倫&quot;, &quot;漂亮阿姨&quot;]</span></code></pre>
-
-<p>與 <code>shift()</code> 相同，<code>pop()</code> 也會回傳被移除的值。</p>
-<pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">shift</span>()); <span class="hljs-comment">// 小明</span></code></pre>
-
-
-<h2 id="Array-prototype-splice"><a href="#Array-prototype-splice" class="headerlink" title="Array.prototype.splice()"></a>Array.prototype.splice()</h2><p><code>splice()</code> 可以移除指定位置、指定數量的陣列值，語法參考如下：</p>
-<pre><code class="hljs js"><span class="hljs-title function_">splice</span>(索引位置, 數量)</code></pre>
-
-<p>以下範例來說就刪除了索引位置為 <code>1</code>（<code>&#39;杰倫&#39;</code>），並且刪除數量 1 的陣列值，因此結果就只有刪除 <code>&#39;杰倫&#39;</code>。</p>
-<pre><code class="hljs js">array.<span class="hljs-title function_">splice</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;小明&quot;, &quot;漂亮阿姨&quot;, &quot;小美&quot;]</span></code></pre>
-
-<p>以下範例則是刪除索引位置為 <code>2</code>（<code>&#39;漂亮阿姨&#39;</code>），並且刪除數量 2 的陣列值，因此結果就刪除了 <code>&#39;漂亮阿姨&#39;</code> 及 <code>&#39;小美&#39;</code></p>
-<pre><code class="hljs js">array.<span class="hljs-title function_">splice</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;小明&quot;, &quot;杰倫&quot;]</span></code></pre>
-
+<h2 id="Array-prototype-shift"><a href="#Array-prototype-shift" class="headerlink" title="Array.prototype.shift()"></a>Array.prototype.shift()</h2><p><code>shift()</code> 則可以移除第一個陣列值。<br><pre><code class="hljs js">array.<span class="hljs-title function_">shift</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;杰倫&quot;, &quot;漂亮阿姨&quot;, &quot;小美&quot;]</span></code></pre></p>
+<p>呼叫此方法不僅會移除陣列值，同時會將移除得陣列值進行回傳。<br><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">shift</span>()); <span class="hljs-comment">// 小明</span></code></pre></p>
+<h2 id="Array-prototype-pop"><a href="#Array-prototype-pop" class="headerlink" title="Array.prototype.pop()"></a>Array.prototype.pop()</h2><p><code>pop()</code> 則是移除最後一個陣列值。<br><pre><code class="hljs js">array.<span class="hljs-title function_">pop</span>();
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;小明&quot;, &quot;杰倫&quot;, &quot;漂亮阿姨&quot;]</span></code></pre></p>
+<p>與 <code>shift()</code> 相同，<code>pop()</code> 也會回傳被移除的值。<br><pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">shift</span>()); <span class="hljs-comment">// 小明</span></code></pre></p>
+<h2 id="Array-prototype-splice"><a href="#Array-prototype-splice" class="headerlink" title="Array.prototype.splice()"></a>Array.prototype.splice()</h2><p><code>splice()</code> 可以移除指定位置、指定數量的陣列值，語法參考如下：<br><pre><code class="hljs js"><span class="hljs-title function_">splice</span>(索引位置, 數量)</code></pre></p>
+<p>以下範例來說就刪除了索引位置為 <code>1</code>（<code>&#39;杰倫&#39;</code>），並且刪除數量 1 的陣列值，因此結果就只有刪除 <code>&#39;杰倫&#39;</code>。<br><pre><code class="hljs js">array.<span class="hljs-title function_">splice</span>(<span class="hljs-number">1</span>, <span class="hljs-number">1</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;小明&quot;, &quot;漂亮阿姨&quot;, &quot;小美&quot;]</span></code></pre></p>
+<p>以下範例則是刪除索引位置為 <code>2</code>（<code>&#39;漂亮阿姨&#39;</code>），並且刪除數量 2 的陣列值，因此結果就刪除了 <code>&#39;漂亮阿姨&#39;</code> 及 <code>&#39;小美&#39;</code><br><pre><code class="hljs js">array.<span class="hljs-title function_">splice</span>(<span class="hljs-number">2</span>, <span class="hljs-number">2</span>);
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;小明&quot;, &quot;杰倫&quot;]</span></code></pre></p>
 <blockquote>
 <p>額外說明：<code>splice</code> 也會回傳值，回傳結果為陣列的本身。</p>
 </blockquote>
 <h2 id="Array-prototype-reverse"><a href="#Array-prototype-reverse" class="headerlink" title="Array.prototype.reverse()"></a>Array.prototype.reverse()</h2><p>就如同字面上的意思，<code>reverse()</code> 會反轉陣列的本身。</p>
 <pre><code class="hljs js">array.<span class="hljs-title function_">reverse</span>();
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array); <span class="hljs-comment">// [&quot;小美&quot;, &quot;漂亮阿姨&quot;, &quot;杰倫&quot;, &quot;小明&quot;]</span></code></pre>
-
 <blockquote>
 <p>額外說明：回傳結果一樣為陣列的本身。</p>
 </blockquote>
@@ -293,32 +272,25 @@
 <h2 id="Array-prototype-include"><a href="#Array-prototype-include" class="headerlink" title="Array.prototype.include()"></a>Array.prototype.include()</h2><p><code>include</code> 可以用來檢查陣列中是否包含特定值，結果會透過回傳的方式取得。</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>)); <span class="hljs-comment">// true</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;阿明&#x27;</span>));    <span class="hljs-comment">// false</span></code></pre>
-
-
 <h2 id="Array-prototype-indexOf"><a href="#Array-prototype-indexOf" class="headerlink" title="Array.prototype.indexOf()"></a>Array.prototype.indexOf()</h2><p>與 <code>include()</code> 運作上相當類似，僅不過 <code>include()</code> 是回傳 <code>true</code>、<code>false</code>，而 <code>indexOf</code> 則是回傳該值的索引位置。</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>)); <span class="hljs-comment">// 2</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">indexOf</span>(<span class="hljs-string">&#x27;阿明&#x27;</span>));    <span class="hljs-comment">// -1</span></code></pre>
-
 <blockquote>
 <p>額外說明：當值如果不存在於陣列中，則會回傳 <code>-1</code></p>
 </blockquote>
 <h2 id="Array-prototype-join"><a href="#Array-prototype-join" class="headerlink" title="Array.prototype.join()"></a>Array.prototype.join()</h2><p>可以將陣列中的值轉變為字串，並且加入特定字元作為值相間的符號。</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(array.<span class="hljs-title function_">join</span>(<span class="hljs-string">&#x27;, &#x27;</span>)); <span class="hljs-comment">// 小明, 杰倫, 漂亮阿姨, 小美</span></code></pre>
-
 <p>簡單的語法，但是搭配 ES6 中的 Template literal 可以用極短的程式碼組合出複雜的字串結構。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> newHTML = <span class="hljs-string">`&lt;ul&gt;<span class="hljs-subst">$&#123; array.map((item)=&gt; <span class="hljs-string">`</span></span></span>
 <span class="hljs-string"><span class="hljs-subst"><span class="hljs-string">  &lt;li&gt;<span class="hljs-subst">$&#123;item&#125;</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">&#x27; &#x27;</span>)&#125;</span></span>
 <span class="hljs-string">&lt;/ul&gt;`</span>;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(newHTML);</code></pre>
-
-<p>輸出的 HTML 結構：</p>
-<pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
+<p>輸出的 HTML 結構：<br><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>小明<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span> 
   <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>杰倫<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span> 
   <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>漂亮阿姨<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span> 
   <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>小美<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre>
-
+<span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></code></pre></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>JS 的語法非常多，但不必要求記住這些語法，只需要有概括的理解，待需要用時直接查詢即可。</p>
 </div>
 

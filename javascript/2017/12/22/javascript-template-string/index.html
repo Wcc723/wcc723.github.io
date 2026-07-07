@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：JavaScript Template String 樣板字串","datePublished":"2017-12-21T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.524Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/22/javascript-template-string/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_19.png?alt=media&token=ba14bb6d-cb7d-4409-83b7-7ad890cadb48"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -238,11 +238,9 @@
 <span class="hljs-string">  &lt;li&gt;我叫做 &#x27;</span> + people[<span class="hljs-number">1</span>].<span class="hljs-property">name</span> + <span class="hljs-string">&#x27;&lt;/li&gt;\</span>
 <span class="hljs-string">  &lt;li&gt;我叫做 &#x27;</span> + people[<span class="hljs-number">2</span>].<span class="hljs-property">name</span> + <span class="hljs-string">&#x27;&lt;/li&gt;\</span>
 <span class="hljs-string">&lt;/ul&gt;&#x27;</span>; <span class="hljs-comment">// 多行的寫法 </span></code></pre>
-
 <p>ES6 借鏡了許多開發工具 (這種寫法真的很像 <code>CoffeeScript</code>，不過在這語言是使用 <code>&quot;</code> + <code>#{}</code> 插入變數)，可以使用 反引號 來插入一段字串，並且可以使用 <code>${}</code> 來加入變數或函式，如以下範例可以直接輸入字串，並且使用 <code>${people[0].name}</code> 來插入變數，省去一堆 <code>+</code>來做串接。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> string = <span class="hljs-string">`我叫做 <span class="hljs-subst">$&#123;people[<span class="hljs-number">0</span>].name&#125;</span>`</span> <span class="hljs-comment">// ES6 String Template</span>
 <span class="hljs-comment">// &quot;我叫做 小明&quot;</span></code></pre>
-
 <p>再多行的時候也是直接撰寫即可，不需要額外的符號。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> ul = <span class="hljs-string">`</span>
 <span class="hljs-string">  &lt;ul&gt;</span>
@@ -258,16 +256,12 @@
 <span class="hljs-comment">//     &lt;li&gt;我叫做 杰倫&lt;/li&gt;</span>
 <span class="hljs-comment">//   &lt;/ul&gt;</span>
 <span class="hljs-comment">// &quot;</span></code></pre>
-
-<p>甚至可以在 <code>${}</code> 內使用函式 (函式內可在使用 Template String)。不過這裡特別注意，單行的箭頭函式會自動 <code>return</code>，所以在這裡是省略了 <code>return</code>。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">let</span> ul2 = <span class="hljs-string">`</span>
+<p>甚至可以在 <code>${}</code> 內使用函式 (函式內可在使用 Template String)。不過這裡特別注意，單行的箭頭函式會自動 <code>return</code>，所以在這裡是省略了 <code>return</code>。<br><pre><code class="hljs js"><span class="hljs-keyword">let</span> ul2 = <span class="hljs-string">`</span>
 <span class="hljs-string">  &lt;ul&gt;</span>
 <span class="hljs-string">    <span class="hljs-subst">$&#123;people.map(person =&gt; <span class="hljs-string">`&lt;li&gt;我叫做 <span class="hljs-subst">$&#123;person.name&#125;</span>&lt;/li&gt;`</span>).join(<span class="hljs-string">&#x27;&#x27;</span>)&#125;</span></span>
 <span class="hljs-string">  &lt;/ul&gt;</span>
-<span class="hljs-string">`</span></code></pre>
-
-<p>也可以在函式內增添更多的判斷式。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">let</span> ul2 = <span class="hljs-string">`</span>
+<span class="hljs-string">`</span></code></pre></p>
+<p>也可以在函式內增添更多的判斷式。<br><pre><code class="hljs js"><span class="hljs-keyword">let</span> ul2 = <span class="hljs-string">`</span>
 <span class="hljs-string">  &lt;ul&gt;</span>
 <span class="hljs-string">    <span class="hljs-subst">$&#123;people.map((person) =&gt; &#123;</span></span>
 <span class="hljs-subst"><span class="hljs-string">        <span class="hljs-keyword">if</span> (person.friends) &#123;</span></span>
@@ -283,8 +277,7 @@
 <span class="hljs-comment">//   &lt;ul&gt;</span>
 <span class="hljs-comment">//     &lt;li&gt;小明 有 2 朋友&lt;/li&gt;&lt;li&gt;阿姨 有 999 朋友&lt;/li&gt;&lt;li&gt;杰倫 邊緣人&lt;/li&gt;</span>
 <span class="hljs-comment">//   &lt;/ul&gt;</span>
-<span class="hljs-comment">// &quot;</span></code></pre>
-
+<span class="hljs-comment">// &quot;</span></code></pre></p>
 <h2 id="巢狀-String-Template"><a href="#巢狀-String-Template" class="headerlink" title="巢狀 String Template"></a>巢狀 String Template</h2><p>如同上述的方法 <code>${}</code> 內可以加入函式及其更內層的 Template String，所以也可以在 <code>${}</code> 插入另一組的函式的 Template String。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">const</span> travelers = &#123;
   <span class="hljs-attr">leader</span>: <span class="hljs-string">&#x27;老媽&#x27;</span>,
@@ -318,16 +311,12 @@
   
 <span class="hljs-comment">//   &lt;/div&gt;</span>
 <span class="hljs-comment">// &quot;</span></code></pre>
-
 <h2 id="跳脫字元"><a href="#跳脫字元" class="headerlink" title="跳脫字元"></a>跳脫字元</h2><p>如果有需要插入特殊字元，一樣可以使用 <code>\</code> 反斜線來插入：</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`\\`</span>);</code></pre>
-
 <p>如果要計算字元數，或是需要將字串做額外處理，跳脫字元是不佔字符數的：</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`\\`</span>.<span class="hljs-property">length</span>); <span class="hljs-comment">// 1</span></code></pre>
-
 <p>要取得含特殊字元的字串可用 <code>String.raw()</code>：</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">String</span>.<span class="hljs-property">raw</span><span class="hljs-string">`\\`</span>.<span class="hljs-property">length</span>)</code></pre>
-
 <p>ES6 就是加入了這些好用的功能，讓 JavaScript 在撰寫時變得更容易、快速、易讀，使得用過的人都回不去了 T_T。</p>
 </div>
 

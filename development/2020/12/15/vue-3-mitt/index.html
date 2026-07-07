@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Vue3 中使用 Event Bus","datePublished":"2020-12-14T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.536Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/12/15/vue-3-mitt/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Fvue3_event_bus.jpg?alt=media&token=093fc9df-f971-4bb7-b6f4-bd45a7b57e0c"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -220,7 +220,7 @@
 <p>在 Vue 3 的官方文件中也有提如果有類似的功能需求，可以<a target="_blank" rel="noopener" href="https://v3.vuejs.org/guide/migration/events-api.html#migration-strategy">參考相關的套件</a> <code>mitt</code> 或 <code>tiny-emitter</code>，兩者運作上差異不大，在此就針對 <code>mitt</code> 來進行介紹。</p>
 <h2 id="mitt"><a href="#mitt" class="headerlink" title="mitt"></a>mitt</h2><p><code>mitt</code> 套件可用於 Vue 3，但不僅限於在 Vue 應用中使用，當有跨模組的溝通功能時都可以引用此套件，優點是寫法及運用上都會與 Vue 2 的 Event bus 相當接近（而且不需要在 Vue 的 Prototype 上加入額外的方法）。</p>
 <p>mitt: <a target="_blank" rel="noopener" href="https://github.com/developit/mitt">https://github.com/developit/mitt</a></p>
-<p><img src="https://camo.githubusercontent.com/9ad02d3d760df07fe6ed0428acd937ad8ffb871e4d825e4c435c4f195e872755/68747470733a2f2f692e696d6775722e636f6d2f42717358394e542e706e67"></p>
+<p><img src="https://camo.githubusercontent.com/9ad02d3d760df07fe6ed0428acd937ad8ffb871e4d825e4c435c4f195e872755/68747470733a2f2f692e696d6775722e636f6d2f42717358394e542e706e67" alt=""></p>
 <blockquote>
 <p>可愛的拳頭</p>
 </blockquote>
@@ -228,7 +228,6 @@
 <li>匯入 mitt 的元件並調用它。</li>
 </ol>
 <pre><code class="hljs js"><span class="hljs-keyword">const</span> emitter = <span class="hljs-title function_">mitt</span>();</code></pre>
-
 <ol start="2">
 <li>建立 HTML 結構，並且加入兩個元件，本範例中會將 <code>component-a</code> 的資料傳送至 <code>component-b</code>。</li>
 </ol>
@@ -237,7 +236,6 @@
   <span class="hljs-tag">&lt;<span class="hljs-name">hr</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">component-b</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">component-b</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></code></pre>
-
 <ol start="3">
 <li>元件 <code>component-a</code>，會使用 <code>emitter.emit</code> 的方法推送資料至另一個元件上。</li>
 </ol>
@@ -254,7 +252,6 @@
     &#125;
   &#125;
 &#125;);</code></pre>
-
 <ol start="4">
 <li>在 <code>component-b</code> 製作監聽，使用 <code>emitter.on</code> 接收來自於 <code>component-a</code> 的資料。</li>
 </ol>
@@ -271,7 +268,6 @@
     &#125;);
   &#125;
 &#125;);</code></pre>
-
 <h2 id="完整範例"><a href="#完整範例" class="headerlink" title="完整範例"></a>完整範例</h2>
 <p class="codepen" data-height="265" data-theme-id="light" data-default-tab="js,result" data-user="Wcc723" data-slug-hash="JjREJNe" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="Vue 3.x 使用 Event Bus">
   <span>See the Pen <a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/JjREJNe">
@@ -279,7 +275,6 @@
   on <a target="_blank" rel="noopener" href="https://codepen.io">CodePen</a>.</span>
 </p>
 <script async src="https://cpwebassets.codepen.io/assets/embed/ei.js"></script>
-
 
 <p>可點擊畫面中的 「發送至另一個元件」，<code>component-a</code> 的 text 將會透過事件 <code>getData</code> 傳遞至 <code>component-b</code>。</p>
 </div>

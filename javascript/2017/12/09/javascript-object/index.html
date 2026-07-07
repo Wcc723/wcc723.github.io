@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：JavaScript 就是一堆物件的概念","datePublished":"2017-12-08T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.522Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/09/javascript-object/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c6-01.jpg?alt=media&token=f4e6e42e-02ab-4a93-a42c-fd87bf514089"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -220,7 +220,7 @@
 <h2 id="故事說明"><a href="#故事說明" class="headerlink" title="故事說明"></a>故事說明</h2><blockquote>
 <p>小明的記事本都是用物件的概念在做紀錄，他會將要做的事情、筆記分門別類的做巢狀紀錄，這樣的好處可以讓他在尋找資料時比較好處理，並且可以自由地新增屬性及值。</p>
 </blockquote>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c6-01.jpg?alt=media&token=f4e6e42e-02ab-4a93-a42c-fd87bf514089"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c6-01.jpg?alt=media&amp;token=f4e6e42e-02ab-4a93-a42c-fd87bf514089" alt=""></p>
 <p>那麼小明筆記本資料如果使用 JavaScript 寫的話會如下，可以發現其實大家做筆記的方式也是這樣的巢狀概念：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> note = &#123;
   <span class="hljs-string">&#x27;聯絡人資料&#x27;</span>: &#123;
@@ -246,7 +246,6 @@
     &#125;
   &#125;
 &#125;</code></pre>
-
 <p>我們簡化一下資料內容，紀錄單人資料時也是用巢狀的方式在記錄，如果要尋找一個人的特定屬性時也會比較快。(ex: 漂亮阿姨的力量值在 auntie -&gt; bwh -&gt; strength 可以找到)。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie = &#123; 
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;陳小美&#x27;</span>, 
@@ -258,14 +257,12 @@
   &#125;,
   <span class="hljs-attr">single</span>: <span class="hljs-literal">true</span>
 &#125;;</code></pre>
-
 <h2 id="如何存取物件"><a href="#如何存取物件" class="headerlink" title="如何存取物件"></a>如何存取物件</h2><p>物件本身的組成是由一個 <code>{屬性(property) / 值(value)}</code> 組成的，可以透過 JavaScript 的規則定義一個物件的名稱，舉例來說上述的阿姨可以用以下方式定義：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie = &#123;&#125;;
 
 auntie.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;陳小美&#x27;</span>;
 auntie.<span class="hljs-property">ages</span> = <span class="hljs-number">22</span>;
 auntie.<span class="hljs-property">single</span> = <span class="hljs-literal">true</span>;</code></pre>
-
 <p>相同的概念，我們能夠使用一樣的方式取出物件的值，但如果是未定義的屬性則會出現 <code>undefined</code>，嘗試取出未定義屬性的子屬性則會出錯：</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(auntie.<span class="hljs-property">name</span>); <span class="hljs-comment">// &#x27;陳小美&#x27;</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(auntie.<span class="hljs-property">name</span>); <span class="hljs-comment">// 22</span>
@@ -273,7 +270,6 @@ auntie.<span class="hljs-property">single</span> = <span class="hljs-literal">tr
 <span class="hljs-comment">// 假設以下值位定義</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(auntie.<span class="hljs-property">bwh</span>);  <span class="hljs-comment">// undefined</span>
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(auntie.<span class="hljs-property">bwh</span>.<span class="hljs-property">strength</span>);  <span class="hljs-comment">// 錯誤</span></code></pre>
-
 <p>另外也可以使用中括號來取用變數的值：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> str = <span class="hljs-string">&#x27;name&#x27;</span>
 
@@ -281,7 +277,6 @@ auntie[<span class="hljs-string">&#x27;name&#x27;</span>];      <span class="hlj
 auntie[str];         <span class="hljs-comment">// 使用變數</span>
 auntie[<span class="hljs-number">0</span>];           <span class="hljs-comment">// 使用數字，就如同存取陣列一樣 (如果有此值)</span>
 auntie[<span class="hljs-string">&#x27;some-name&#x27;</span>]; <span class="hljs-comment">// 使用字串，就算此名稱不符合 JS 的變數命名規則 (如果有此值)</span></code></pre>
-
 <h2 id="列舉物件"><a href="#列舉物件" class="headerlink" title="列舉物件"></a>列舉物件</h2><p>有時候，我們無法預設了解物件內有什麼屬性，此時我們可以使用列舉 <code>(for ... in)</code> 來取出物件內的屬性及值。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie = &#123; 
   <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;陳小美&#x27;</span>, 
@@ -296,9 +291,8 @@ auntie[<span class="hljs-string">&#x27;some-name&#x27;</span>]; <span class="hlj
 <span class="hljs-keyword">for</span> (prop <span class="hljs-keyword">in</span> auntie) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(auntie[prop]);  <span class="hljs-comment">// 陳小美, 22, &#123;bwh&#125;,true</span>
 &#125;</code></pre>
-
 <h2 id="除了原始型別以外都是物件"><a href="#除了原始型別以外都是物件" class="headerlink" title="除了原始型別以外都是物件"></a>除了原始型別以外都是物件</h2><p>JavaScript 本身可以運行在瀏覽器、伺服器端，以瀏覽器來說全域本身就是一個大物件 (window)，裡面包含許多瀏覽器的 API、開發者定義變數、DOM 物件… 、方法等，只要在開發者工具下輸入 console.log(window) 就可以看到。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FE5865D7B-361A-467A-B46F-E32D51DD6966.png?alt=media&token=e7c52737-cd79-4b3e-b931-4020e4f7cc61"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2FE5865D7B-361A-467A-B46F-E32D51DD6966.png?alt=media&amp;token=e7c52737-cd79-4b3e-b931-4020e4f7cc61" alt=""></p>
 <p>上圖可以看到剛剛宣告的物件也存在於 window 的物件下。</p>
 <p>接下來可能會思考到為何陣列、函式都是物件？如果說陣列本身是物件可能也許好理解，他的存取方式與物件是非常相似的 (下方範例)：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> auntie = [<span class="hljs-string">&#x27;陳小美&#x27;</span>, <span class="hljs-number">22</span>, &#123;
@@ -308,9 +302,8 @@ auntie[<span class="hljs-string">&#x27;some-name&#x27;</span>]; <span class="hlj
 &#125;, <span class="hljs-literal">true</span>];
 
 auntie[<span class="hljs-number">0</span>];  <span class="hljs-comment">// &#x27;陳小美&#x27;</span></code></pre>
-
 <p>但偏偏他還多了許多陣列方法 (像是：<code>push</code>, <code>shift</code>, <code>unshift</code>)，為何還會說是陣列呢？</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_12_9_%E4%B8%8A%E5%8D%8810_51.png?alt=media&token=ec593d80-640b-4968-8217-035ea1dc72df"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2017_12_9_%E4%B8%8A%E5%8D%8810_51.png?alt=media&amp;token=ec593d80-640b-4968-8217-035ea1dc72df" alt=""></p>
 <p>這段都與原型繼承有關，我們在更後續的章節再來介紹這一段。</p>
 </div>
 

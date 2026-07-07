@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"初入D3.js","datePublished":"2014-10-06T16:00:00.000Z","dateModified":"2016-10-13T02:47:29.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/07/Ironman-30-days-08/","image":["https://www.casper.tw/2014ironman/day08_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,13 +217,11 @@
 
   <div class="prose"><p>先前的練習差不多了，接下來要開始實作，不過要先聲明本文是學習過程的記錄，所以很多範例是參考<a target="_blank" rel="noopener" href="http://www.books.com.tw/products/0010621239">網頁互動式資料視覺化: 使用D3</a>，當然到了後面也會有很多不同的運用，並不會重頭到尾都是這本書的內容，就像上一篇一樣，還可以玩玩柯P的API。</p>
 <span id="more"></span>
-
 <h2 id="D3-的強項"><a href="#D3-的強項" class="headerlink" title="D3 的強項"></a>D3 的強項</h2><p>就許多資料所介紹D3js是一套js library，D3是利用資料(Data)來”驅動”文件的物件(DOM)，所以就這點就和Jquery有很大的差別，Jquery容易上手，就在於它對DOM的操作相對容易；而D3js在操作DOM上有點類似Jquery，但它的重點在於使用資料來控制文件。</p>
 <h4 id="資料"><a href="#資料" class="headerlink" title="資料"></a>資料</h4><p>資料的格式相當多種，在學習D3js之前(到現在也是)，我對於資料的處理相當的不在行，就連基本陣列都有問題，更不用提到json，所以就…慢慢開始吧。</p>
 <p>最基本的資料就是陣列，D3js只要有陣列就可以開始驅動文件，一般來說最基本的陣列像下面這樣：</p>
 <pre><code>[30,26,27,31,13,10,20,20,24,25,25,21,17,21,6,7,13,23,27,31]
-</code></pre>
-<p>這個陣列是用隨機的方式去產生的，可以用以下的Js程式碼來產生：</p>
+</code></pre><p>這個陣列是用隨機的方式去產生的，可以用以下的Js程式碼來產生：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> dataset = []; <span class="hljs-comment">//定義空的陣列</span>
 
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++)&#123; <span class="hljs-comment">//如果數量少於20</span>
@@ -232,13 +230,10 @@
 	dataset.<span class="hljs-title function_">push</span>(newNum);
 	<span class="hljs-comment">//將整數送到剛剛的空陣列</span>
 &#125;</code></pre>
-
 <p>如果對於上面這段程式碼覺得沒有問題，那麼就可以繼續的往下學習了。</p>
 <h2 id="使用-D3js"><a href="#使用-D3js" class="headerlink" title="使用 D3js"></a>使用 D3js</h2><p>首先，當然要先把d3.js加到HTML上。</p>
 <pre><code class="hljs javascript">&lt;script src=<span class="hljs-string">&quot;/js/d3.min.js&quot;</span>&gt;&lt;/script&gt;</code></pre>
-
-
-<p>接下來要寫點Script	，範例如下：</p>
+<p>接下來要寫點Script    ，範例如下：</p>
 <pre><code class="hljs javascript"><span class="hljs-keyword">var</span> dataset = []; <span class="hljs-comment">//建立空的資料陣列</span>
 
 <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i=<span class="hljs-number">0</span>; i &lt; <span class="hljs-number">20</span>; i++)&#123;
@@ -255,8 +250,6 @@ d3.<span class="hljs-title function_">select</span>(<span class="hljs-string">&#
 	.<span class="hljs-title function_">style</span>(<span class="hljs-string">&#x27;height&#x27;</span>, <span class="hljs-keyword">function</span>(<span class="hljs-params">d</span>)&#123; <span class="hljs-comment">//將data的值取出作為高</span>
 		<span class="hljs-keyword">return</span> (d*<span class="hljs-number">3</span>)  + <span class="hljs-string">&#x27;px&#x27;</span>
 	&#125;)</code></pre>
-
-
 <p>這一段程式碼中要特別注意的是<code>.data(dataset).enter()</code>這一段，這段是將剛剛所產生的陣列用迴圈的方式執行，所以在這之後的<code>append(&#39;div&#39;)</code>就會依據資料的量去執行，如果量有20筆，那麼就會執行<code>append(&#39;div&#39;)</code>20次。</p>
 <p>DEMO</p>
 
@@ -264,11 +257,9 @@ d3.<span class="hljs-title function_">select</span>(<span class="hljs-string">&#
 
 </div>
 
-
 <p>隨機的資料。</p>
 
 <pre class="pre"> </pre>
-
 
 <p>最後再補點樣式。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.bar</span> &#123;
@@ -278,10 +269,6 @@ d3.<span class="hljs-title function_">select</span>(<span class="hljs-string">&#
 	<span class="hljs-attribute">margin-right</span>: <span class="hljs-number">3px</span>;
 	<span class="hljs-attribute">background-color</span>: RoyalBlue;
 &#125;</code></pre>
-
-
-
-
 <p>D3js我就是這樣開始的，當然為了學這個，也是翻遍了許多資料，希望剩下文章能夠帶給大家學習上的參考。</p>
 
 <script>

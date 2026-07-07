@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：執行環境與堆疊","datePublished":"2017-12-04T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.522Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/05/ironman-2017/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-cover.jpg?alt=media&token=b19f2731-7567-4d4c-a809-df264b8f04ee"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -253,7 +253,6 @@
 &#125;
 
 <span class="hljs-title function_">doMorningWork</span>();   <span class="hljs-comment">// 執行</span></code></pre>
-
 <p>這個地方我們得到了三個執行環境(Execution Context)，其中一個是 (global context)，另外兩個則是在 global 下的 <code>doMorningWork</code> 內。</p>
 <blockquote>
 <p><strong>故事說明</strong>：小明得了一個症狀，每天早上都是全新的一天，他會忘記先前的人事物(簡直電影故事劇情，細節不重要)，他會將每天該做的事情記錄下來，也分為主要任務及主要任務下的次要任務，並且把任務的相關人等寫下，並且一件一件事情完成它 (小明只有一個，一次只能做一件事情)。</p>
@@ -275,14 +274,14 @@
 </ol>
 <p>要做的事情往後會越來越多，小明會把要做的事情存在腦內，然後依據順序來執行。</p>
 <p>糟糕的事情是，遇到他不知道該怎麼做下去的事情，他會卡在那邊一整天 (<code>xxx is not defined</code>)。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-01.jpg?alt=media&token=012167a0-4b4d-4900-a5ca-48e8998ae819"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-01.jpg?alt=media&amp;token=012167a0-4b4d-4900-a5ca-48e8998ae819" alt=""></p>
 <blockquote>
 <p>小明的筆記本與 JavaScript 有著接近的邏輯，有著一件一件要做的事情等待他去完成。</p>
 </blockquote>
 <h2 id="執行堆疊"><a href="#執行堆疊" class="headerlink" title="執行堆疊"></a>執行堆疊</h2><p>在這個故事中也可以說明 JavaScript 的執行堆疊，一開始會先進入 global 執行環境，接下來再進入內層的環境，執行完的堆疊就會被釋放掉 (function 內的 return 即是完成)，然後逐步地完成所有堆疊，最後將控制權交還給 Global。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-02.jpg?alt=media&token=e87ef86d-0ced-4556-b6f8-455ffa39dcb1"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-02.jpg?alt=media&amp;token=e87ef86d-0ced-4556-b6f8-455ffa39dcb1" alt=""></p>
 <p>每個執行堆疊都會一層一層地向內執行，等到都執行完以後才會回到外層執行下一個任務。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-03.jpg?alt=media&token=38486c48-eb61-4096-a492-20a8cb240457"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F18_ironman_c1-03.jpg?alt=media&amp;token=38486c48-eb61-4096-a492-20a8cb240457" alt=""></p>
 <p>這段概念影響了什麼？</p>
 <ol>
 <li>JavaScript 由外而內執行，執行完才會進行下一個動作</li>

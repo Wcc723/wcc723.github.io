@@ -10,12 +10,12 @@
 <meta name="keywords" content="javascript,js" />
 
 
-<meta name="description" content="這個議題許多論壇、文件都有討論，在 ESlint 的規範中也可從加不加分號區分為兩大派系，至於加不加分號關鍵點則需要了解分號對於 JavaScript 的影響，開始之前可以先看看以下題目。 下方程式碼的運行預期為：  宣告 a 的值為 1 執行立即函式 於 console 中呈現 2  請問這段程式碼運行是否正確？ var a &#x3D; 1 (function() &#123;   console.lo">
+<meta name="description" content="這個議題許多論壇、文件都有討論，在 ESlint 的規範中也可從加不加分號區分為兩大派系，至於加不加分號關鍵點則需要了解分號對於 JavaScript 的影響，開始之前可以先看看以下題目。 下方程式碼的運行預期為：  宣告 a 的值為 1 執行立即函式 於 console 中呈現 2  請問這段程式碼運行是否正確？var a &#x3D; 1 (function() &#123;   console.log">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JS 加不加分號差在哪？">
 <meta property="og:url" content="https://www.casper.tw/development/2020/09/20/js-semi/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="這個議題許多論壇、文件都有討論，在 ESlint 的規範中也可從加不加分號區分為兩大派系，至於加不加分號關鍵點則需要了解分號對於 JavaScript 的影響，開始之前可以先看看以下題目。 下方程式碼的運行預期為：  宣告 a 的值為 1 執行立即函式 於 console 中呈現 2  請問這段程式碼運行是否正確？ var a &#x3D; 1 (function() &#123;   console.lo">
+<meta property="og:description" content="這個議題許多論壇、文件都有討論，在 ESlint 的規範中也可從加不加分號區分為兩大派系，至於加不加分號關鍵點則需要了解分號對於 JavaScript 的影響，開始之前可以先看看以下題目。 下方程式碼的運行預期為：  宣告 a 的值為 1 執行立即函式 於 console 中呈現 2  請問這段程式碼運行是否正確？var a &#x3D; 1 (function() &#123;   console.log">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_05.jpg?alt=media&token=a7055b63-fea5-4c67-a4b8-e8c8e6c61447">
 <meta property="article:published_time" content="2020-09-19T16:00:00.000Z">
@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JS 加不加分號差在哪？","datePublished":"2020-09-19T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.533Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/20/js-semi/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_05.jpg?alt=media&token=a7055b63-fea5-4c67-a4b8-e8c8e6c61447"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -222,34 +222,26 @@
 <li>執行立即函式</li>
 <li>於 console 中呈現 2</li>
 </ol>
-<p>請問這段程式碼運行是否正確？</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span>
+<p>請問這段程式碼運行是否正確？<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span>
 (<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>)
-&#125;)()</code></pre>
-
-<p>.<br>.<br>.<br>.<br>如果你嘗試運行這段程式碼，則會出現此錯誤：</p>
-<pre><code class="hljs plaintext">Uncaught TypeError: 1 is not a function</code></pre>
-
+&#125;)()</code></pre></p>
+<p>.<br>.<br>.<br>.<br>如果你嘗試運行這段程式碼，則會出現此錯誤：<br><pre><code class="hljs plaintext">Uncaught TypeError: 1 is not a function</code></pre></p>
 <p>什麼？ <code>1 is not a function</code> ？我們沒有打算運行數字 1，為何要說數字 1 不是函式，這種錯誤很難查找到原因，常常會在錯誤的行數上打轉。這個錯誤主要原因是上述程式碼運行時被視為同一行，概念如下：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">/* */</span> &#125;)()</code></pre>
-
 <p>因此立即函式的 <code>()</code> 附加在 1 上，這是一個呼叫函式的語法，所以會造成 <code>1 is not a function</code> 的錯誤，如果要避免此錯誤就需要使用分號將其隔開：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> a = <span class="hljs-number">1</span> <span class="hljs-comment">// 用分號隔開就對了</span>
 ;(<span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-number">2</span>)
 &#125;)()</code></pre>
-
 <h2 id="ASI-自動加入分號"><a href="#ASI-自動加入分號" class="headerlink" title="ASI 自動加入分號"></a>ASI 自動加入分號</h2><p>ASI 是 「Automatic Semicolon Insertion」的縮寫，部分的斷行程式碼運行時會<strong>自動插入分號</strong>，這個機制可以部分程式碼如果沒有加入分號也能正確運行，如以下範例：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> b = <span class="hljs-number">1</span>
 ++b
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;b&#x27;</span>, b)</code></pre>
-
 <p>此範例中，由於 <code>++</code> 是屬於一元表達式，它在僅能在表達式的左方<strong>或</strong>右方置入運算元，如果沒有 ASI 的機制程式碼會轉為「<code>var b = 1 ++ b</code>」 的錯誤結構。不過好在有 ASI，實際運行時他會被加入分號如下，也就不會出現如上的錯誤。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">var</span> b = <span class="hljs-number">1</span>;
 ++b;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;b&#x27;</span>, b); <span class="hljs-comment">// 2</span></code></pre>
-
 <h3 id="return-與分號的關係"><a href="#return-與分號的關係" class="headerlink" title="return 與分號的關係"></a>return 與分號的關係</h3><p>再來看一個有感的片段，以下程式碼中在 return 的後方空一行後再回傳值，請問運行結果是什麼呢？</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">return</span> 
@@ -257,15 +249,12 @@
 &#125;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">fn</span>())
 </code></pre>
-
 <p>這段程式碼因為 ASI 的修正，return 後方會被加上一個分號，也因為如此 return 與預期回傳的值被分了開來，所以 return 的內容為空值，最終函式也僅能接收到 <code>undefined</code> 的結果。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fn</span>(<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">return</span>;
   <span class="hljs-string">&#x27;小明&#x27;</span>;
 &#125;
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">fn</span>()); <span class="hljs-comment">// undefined</span></code></pre>
-
-
 <h2 id="所以，分號到底要怎麼處理呢？"><a href="#所以，分號到底要怎麼處理呢？" class="headerlink" title="所以，分號到底要怎麼處理呢？"></a>所以，分號到底要怎麼處理呢？</h2><p>ASI 是出自於善意，用來修正沒有加入分號的片段程式碼，但偏偏有些地方沒有發揮其用途（如本篇一開始所介紹到的立即函式），導致程式碼出現了錯誤；甚至有些程式碼不會出錯，但會讓你的程式碼運行結果不如預期。</p>
 <p>要解決 ASI 的問題，解決方式如下：</p>
 <ul>
@@ -289,15 +278,12 @@ var a = 1
 var a = 1
 var b = a
 /test/.test(b)</code></pre>
-
-
 <ol start="2">
 <li>新的一行以 <code>+</code>、<code>-</code>、<code>*</code>、<code>%</code> 作開始，這類型大多會影響運算結果，建議合併為一行撰寫（<code>+</code> 與 <code>++</code> 結果是不同的）。</li>
 </ol>
 <pre><code class="hljs plaintext">var a = 2
 var b = a
 +a</code></pre>
-
 <ol start="3">
 <li>新的一行以 <code>,</code>、<code>.</code> 作開始，這類型在實戰中很常會運用，主要是避免程式碼過長所加入的分段，並不會影響運行，多加善用可使程式碼更易於閱讀。</li>
 </ol>
@@ -308,19 +294,14 @@ console.log(typeof b)
  
 var a = 1
 ,b = 2 // b 一樣會 var 被宣告</code></pre>
-
-
 <p>因此，遇到以上的標點符號前方加入分號也是解決辦法</p>
-<p>如果需要加入分號的狀況，除了在語句的末端加入分號外，也可將分號改在「不會自動加入分號」的最前方，如 <code>()</code> 本身不會自動加入分號，當有此需求時可以將 <code>;</code> 加入至前方（<a target="_blank" rel="noopener" href="https://standardjs.com/rules-zhtw.html#%E5%88%86%E8%99%9F">ESLint Standard JS</a> 規範就選擇此方法避免錯誤）。</p>
-<pre><code class="hljs plaintext">// 執行錯誤
+<p>如果需要加入分號的狀況，除了在語句的末端加入分號外，也可將分號改在「不會自動加入分號」的最前方，如 <code>()</code> 本身不會自動加入分號，當有此需求時可以將 <code>;</code> 加入至前方（<a target="_blank" rel="noopener" href="https://standardjs.com/rules-zhtw.html#%E5%88%86%E8%99%9F">ESLint Standard JS</a> 規範就選擇此方法避免錯誤）。<br><pre><code class="hljs plaintext">// 執行錯誤
 (function() &#123; &#125;)()
 (function() &#123; &#125;)()
  
 // 正確
 ;(function() &#123; &#125;)()
-;(function() &#123; &#125;)()</code></pre>
-
-
+;(function() &#123; &#125;)()</code></pre></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>不加入分號可以讓程式碼看起來更乾淨、精簡（對於習慣加入分號的開發者不這麼認為就是了），且在大部分正確的分段下並不會出現錯誤，僅有少部分的語句會出現執行上的錯誤（很少，大多都可避免），因此許多開發者也會選擇不加入分號，而我過去也是屬於這類型規範的愛好者。</p>
 <p>不過在教學上，我會更傾向選擇嚴格的規範提供範例給學員，所以近幾年開發都轉為選用加入分號的規則。至於選擇何種，只要清楚運行上的限制，只要團隊允許都是好的方法。</p>
 </div>

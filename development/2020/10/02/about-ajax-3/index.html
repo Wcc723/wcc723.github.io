@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"AJAX 完整解說系列：使用 Chrome Devtools 檢視請求及回應","datePublished":"2020-10-01T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.534Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/10/02/about-ajax-3/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_17.jpg?alt=media&token=453d818d-ab2d-40ca-abca-d3c150a692d9"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -216,33 +216,31 @@
   </header>
 
   <div class="prose"><p>從上一篇內容我們介紹到 AJAX 都是由瀏覽器發出請求，伺服器則會依據請求的內容進行回應。所以在這之中的 “請求”、“回應” 都會夾帶著不同資源，供瀏覽器及伺服器進行辨識及運用，所以此篇就針對瀏覽器與伺服器溝通的內容進行說明，帶大家更深入的認識 AJAX。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF28A52EE-54A6-4976-880E-B1141029419B.png?alt=media&token=6615b732-12c9-40b0-91ed-64a5778a7ef4"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FF28A52EE-54A6-4976-880E-B1141029419B.png?alt=media&amp;token=6615b732-12c9-40b0-91ed-64a5778a7ef4" alt=""></p>
 <blockquote>
 <p>發出請求到回應的過程示意圖</p>
 </blockquote>
 <p>注意：本篇以 “成功” 的請求為主，失敗不在本篇的介紹重點。</p>
 <h2 id="所有的資訊都在-Chrome-Network"><a href="#所有的資訊都在-Chrome-Network" class="headerlink" title="所有的資訊都在 Chrome Network"></a>所有的資訊都在 Chrome Network</h2><p>本篇接續上篇的範例程式碼，使用的資源及範例程式碼如下：</p>
 <ul>
-<li>API 來源：<a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com/">https://jsonplaceholder.typicode.com</a></li>
+<li>API 來源：<a target="_blank" rel="noopener" href="https://jsonplaceholder.typicode.com">https://jsonplaceholder.typicode.com</a></li>
 <li>axios cdn：<code>https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js</code></li>
 </ul>
-<p>原始碼：</p>
-<pre><code class="hljs js">axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;https://jsonplaceholder.typicode.com/posts/1&#x27;</span>)
+<p>原始碼：<br><pre><code class="hljs js">axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;https://jsonplaceholder.typicode.com/posts/1&#x27;</span>)
   .<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">res</span>) =&gt;</span> &#123;
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(res);
-&#125;);</code></pre>
-
+&#125;);</code></pre></p>
 <p>範例程式碼：<br><a target="_blank" rel="noopener" href="https://codepen.io/Wcc723/pen/YzqMpNR?editors=1010">https://codepen.io/Wcc723/pen/YzqMpNR?editors=1010</a></p>
-<h3 id="先打開-Chrome-開發者工具-Network"><a href="#先打開-Chrome-開發者工具-Network" class="headerlink" title="先打開 Chrome 開發者工具 &gt; Network"></a>先打開 Chrome 開發者工具 &gt; Network</h3><p>本次的主角是 Chrome 開發者工具中的 Network，它會列出所有網頁對伺服器的請求，而我們這次的重點是 XHR（XMLHttpRequest，可<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/XMLHttpRequest">參考</a>），使用 Network 工具的流程重點：</p>
+<h3 id="先打開-Chrome-開發者工具-gt-Network"><a href="#先打開-Chrome-開發者工具-gt-Network" class="headerlink" title="先打開 Chrome 開發者工具 &gt; Network"></a>先打開 Chrome 開發者工具 &gt; Network</h3><p>本次的主角是 Chrome 開發者工具中的 Network，它會列出所有網頁對伺服器的請求，而我們這次的重點是 XHR（XMLHttpRequest，可<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-TW/docs/Web/API/XMLHttpRequest">參考</a>），使用 Network 工具的流程重點：</p>
 <ol>
 <li><strong>一定要先開啟該分頁</strong>，並維持紀錄的狀態（recording）</li>
 <li>重新整理網頁</li>
 <li>打開過濾器，並選擇 XHR 的過濾選項</li>
 </ol>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_29_%E4%B8%8A%E5%8D%8811_19.png?alt=media&token=c8223c58-0c18-43a4-9e62-17602e45dfae" alt="過濾選項可避免過多的內容呈現，除錯時請專注在目標上"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_29_%E4%B8%8A%E5%8D%8811_19.png?alt=media&amp;token=c8223c58-0c18-43a4-9e62-17602e45dfae" alt="過濾選項可避免過多的內容呈現，除錯時請專注在目標上"></p>
 <p>重新整理網頁後，如果是成功的狀態會以白色底呈現，失敗的回應則會是紅色狀態，一開始進入本介面會覺得資訊量龐大，下圖標示了資源欄位的說明，而第一次進入本頁面請專注在「你預期發出的請求上」，請先避免被過多的資訊所干擾（那些都很重要，但不是當下需要了解的）。</p>
 <p>當找到所發出的資源回應後，也就可以試著慢慢理解它包含哪些內容，點擊它繼續下一步吧！</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_29_%E4%B8%8A%E5%8D%8811_28.png?alt=media&token=1aad7e50-e2f3-44dc-9d3e-dd9d0f7b55a8" alt="Network 欄位說明"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_29_%E4%B8%8A%E5%8D%8811_28.png?alt=media&amp;token=1aad7e50-e2f3-44dc-9d3e-dd9d0f7b55a8" alt="Network 欄位說明"></p>
 <p>接下來會看到以下幾個大項目：</p>
 <ul>
 <li>Headers：請求及回應的標頭，這些標頭就如同我們發實體信件時，信封袋上所寫的內容，必須要明確的標註住址、收件人、電話等等資訊，才能確保信件能正確寄達，Headers 所挾帶就是這些資訊，不管是瀏覽器、伺服器都會有一份</li>
@@ -250,7 +248,7 @@
 <li>Timing：本次請求至回應所耗費的時間。</li>
 <li>Cookie：本次請求、回應相關的 Cookie 內容。</li>
 </ul>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_29_%E4%B8%8A%E5%8D%8811_34.png?alt=media&token=d69446a3-c35a-4e38-bf8d-f1d8ff0f629f" alt="Network 欄位說明"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_29_%E4%B8%8A%E5%8D%8811_34.png?alt=media&amp;token=d69446a3-c35a-4e38-bf8d-f1d8ff0f629f" alt="Network 欄位說明"></p>
 <h4 id="Headers"><a href="#Headers" class="headerlink" title="Headers"></a>Headers</h4><p>標頭在 AJAX 中是非常重要的項目，就如同我們寄信時，信封袋上的資訊正確與否，將會影響信件是否正確寄達，而標頭的內容資訊相當多，本篇僅會介紹其中常見的問題。</p>
 <h6 id="General"><a href="#General" class="headerlink" title="General"></a>General</h6><p>請求的描述，在請求發出時所套用的相關資訊（並非夾帶內容，而是接口的描述）。</p>
 <ul>
@@ -275,19 +273,19 @@
 </ul>
 <h6 id="Request-Payload、Query-String-Parameters"><a href="#Request-Payload、Query-String-Parameters" class="headerlink" title="Request Payload、Query String Parameters"></a>Request Payload、Query String Parameters</h6><p>當請求時需要帶入更多資源，如上傳資料、取得特定索引時，就會利用到 <code>Request Payload</code>、<code>Query String Parameters</code>。</p>
 <p>POST、PATCH、PUT 請求需要將資源網後端傳送時就會用到 Request Payload。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F17FBB09C-E7B2-46C2-A3F6-B3DC5B336DDF.png?alt=media&token=b91ab5ea-2479-4c4e-b511-7f54bed13f70"></p>
-<p>當 GET 請求多筆資料<br>GET 通常不會夾帶資源傳送至後端，但需要從多筆資源加入篩選條件就會用到 Query 參數，如：一次取得多數的的頁面但僅需要取得第一頁時，就會帶入 page&#x3D;1 的 Query String Parameters。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F05C2DEC7-E169-4EDD-9315-764E2B4E4BB5.png?alt=media&token=06b7ffee-f8c9-452a-8bb5-d226e468b9dd"></p>
-<h2 id="Preview-Response"><a href="#Preview-Response" class="headerlink" title="Preview, Response"></a>Preview, Response</h2><p>相對於 Headers 來說其它幾個內容就單純許多，Preview, Response 這兩者內容完全相同，只不過 Preview 是經過 format 美化的版本，兩者可以隨時切換檢視，只要能從中取得所要資訊即可。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F85C4777A-03C7-4A4C-9ABC-A6F7FBCAF660.png?alt=media&token=088f6f3c-a3ec-457c-90b7-703e0afc0b3d" alt="Network Response"></p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F8CA8ECEC-3063-4B81-A746-40C80FD4D6D6.png?alt=media&token=0f70d680-6bfd-4490-9ae7-82d2587d8e09" alt="Network Response Preview"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F17FBB09C-E7B2-46C2-A3F6-B3DC5B336DDF.png?alt=media&amp;token=b91ab5ea-2479-4c4e-b511-7f54bed13f70" alt=""></p>
+<p>當 GET 請求多筆資料<br>GET 通常不會夾帶資源傳送至後端，但需要從多筆資源加入篩選條件就會用到 Query 參數，如：一次取得多數的的頁面但僅需要取得第一頁時，就會帶入 page=1 的 Query String Parameters。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F05C2DEC7-E169-4EDD-9315-764E2B4E4BB5.png?alt=media&amp;token=06b7ffee-f8c9-452a-8bb5-d226e468b9dd" alt=""></p>
+<h2 id="Preview-Response"><a href="#Preview-Response" class="headerlink" title="Preview, Response"></a>Preview, Response</h2><p>相對於 Headers 來說其它幾個內容就單純許多，Preview, Response 這兩者內容完全相同，只不過 Preview 是經過 format 美化的版本，兩者可以隨時切換檢視，只要能從中取得所要資訊即可。<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F85C4777A-03C7-4A4C-9ABC-A6F7FBCAF660.png?alt=media&amp;token=088f6f3c-a3ec-457c-90b7-703e0afc0b3d" alt="Network Response"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F8CA8ECEC-3063-4B81-A746-40C80FD4D6D6.png?alt=media&amp;token=0f70d680-6bfd-4490-9ae7-82d2587d8e09" alt="Network Response Preview"></p>
 <blockquote>
 <p>兩者內容是相同的，Preview 是相對易讀的版本</p>
 </blockquote>
 <h2 id="Timing"><a href="#Timing" class="headerlink" title="Timing"></a>Timing</h2><p>Timing 是網頁開啟後，從發出請求直到回應內容完全接受的時間軸，一般會看到的圖片結構如下：</p>
-<p>Connection Start: 發出請求一直到伺服器前的狀態（伺服器還沒接收到請求），這段通常與用戶所使用的網路服務、電信商有比較大的關係。<br>Request&#x2F;Response: 伺服器接收到請求。<br>Request sent: 請求發出<br>Waiting (TTFB): 伺服器接收到第一個字節直到伺服器產生回應的時間，這段取決於伺服器的距離、處理效能等等。<br>Content Download: 資源下載的所花費時間，取決於用戶、伺服器兩者的頻寬、距離等因素。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FE069034B-CADE-4773-8D11-D1D409782B69.png?alt=media&token=b04fd704-dd37-40db-8495-e51a23335bc2"></p>
+<p>Connection Start: 發出請求一直到伺服器前的狀態（伺服器還沒接收到請求），這段通常與用戶所使用的網路服務、電信商有比較大的關係。<br>Request/Response: 伺服器接收到請求。<br>Request sent: 請求發出<br>Waiting (TTFB): 伺服器接收到第一個字節直到伺服器產生回應的時間，這段取決於伺服器的距離、處理效能等等。<br>Content Download: 資源下載的所花費時間，取決於用戶、伺服器兩者的頻寬、距離等因素。</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FE069034B-CADE-4773-8D11-D1D409782B69.png?alt=media&amp;token=b04fd704-dd37-40db-8495-e51a23335bc2" alt=""></p>
 <h2 id="Cookies"><a href="#Cookies" class="headerlink" title="Cookies"></a>Cookies</h2><p>伺服器儲存於瀏覽器的小片段資訊，此分頁中可以看到伺服器對於瀏覽器端進行了哪些 Cookie 儲存，Cookie 常見的屬性如下：<br>Name: Cookie 的名稱<br>Value: Cookie 的值<br>Domain: Cookie 所１屬的網域<br>Expires: Cookie 的到期日（時間到後會自動移除）</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F9B5BB779-E541-4376-BC0E-F9DFC21765BC.png?alt=media&token=2408c53f-c6b1-4593-9188-3d6dab310552"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F9B5BB779-E541-4376-BC0E-F9DFC21765BC.png?alt=media&amp;token=2408c53f-c6b1-4593-9188-3d6dab310552" alt=""></p>
 <h2 id="結語"><a href="#結語" class="headerlink" title="結語"></a>結語</h2><p>雖然 AJAX 在程式碼上僅會看到短短的兩三行程式碼，但其實在背後有大量的資訊持續在運行，當能夠了解這些資訊，在除錯上也能夠更佳順利。</p>
 </div>
 

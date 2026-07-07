@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"JavaScript 一級函式 （First Class Functions）","datePublished":"2020-09-23T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.534Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/24/first-class-function/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_09.jpg?alt=media&token=354cf855-6cf6-4f73-82ce-65297eed1b40"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -227,19 +227,15 @@
 <li>函式也可以被回傳（return）</li>
 <li>函式也是物件的物件（傳參考特性、具有屬性）</li>
 </ul>
-<p>範例：將函式指定到一個變數，這是函式表達式，建立匿名函式後指定到變數 <code>callSomeone</code> 上。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> callSomeone = <span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) &#123;
+<p>範例：將函式指定到一個變數，這是函式表達式，建立匿名函式後指定到變數 <code>callSomeone</code> 上。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> callSomeone = <span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`呼叫 <span class="hljs-subst">$&#123;name&#125;</span>`</span>);
 &#125;
-<span class="hljs-title function_">callSomeone</span>(<span class="hljs-string">&#x27;小明&#x27;</span>);</code></pre>
-
+<span class="hljs-title function_">callSomeone</span>(<span class="hljs-string">&#x27;小明&#x27;</span>);</code></pre></p>
 <h2 id="函式作為參數來傳遞-回呼函式-Callback-function"><a href="#函式作為參數來傳遞-回呼函式-Callback-function" class="headerlink" title="函式作為參數來傳遞 - 回呼函式 Callback function"></a>函式作為參數來傳遞 - 回呼函式 Callback function</h2><p>因為一級函式的特性，函式可被視為變數一樣隨意使用，當然作為參數的傳遞也是沒有問題的。所以在呼叫變數時，也一樣可以將函式作為參數傳遞，而這也被稱為 callback function（函式傳入另一個函式後被呼叫）。</p>
-<p>以下範例就是將函式作為參數傳遞入另一個函式，由於函式本身結構就比較複雜，加上傳遞的過程可以改變名稱，因此會讓新手常常在查看程式碼中感到混亂。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">sayHi</span>(<span class="hljs-params">fn</span>) &#123;
+<p>以下範例就是將函式作為參數傳遞入另一個函式，由於函式本身結構就比較複雜，加上傳遞的過程可以改變名稱，因此會讓新手常常在查看程式碼中感到混亂。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">sayHi</span>(<span class="hljs-params">fn</span>) &#123;
   <span class="hljs-title function_">fn</span>(<span class="hljs-string">&#x27;小明&#x27;</span>);
 &#125;
-<span class="hljs-title function_">sayHi</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) &#123; <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name + <span class="hljs-string">&#x27; 您好&#x27;</span>); &#125;);</code></pre>
-
+<span class="hljs-title function_">sayHi</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) &#123; <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name + <span class="hljs-string">&#x27; 您好&#x27;</span>); &#125;);</code></pre></p>
 <p>接下來，我們透過圖片加上文字說明解釋這段問題：</p>
 <ol>
 <li>呼叫 <code>sayHi</code> 函式同時傳入一個函式（在此我們先稱它為 <code>函式Ｂ</code>）</li>
@@ -247,7 +243,7 @@
 <li>在 <code>sayHi</code> 函式內呼叫 <code>fn</code> 參數（原本的 <code>函式Ｂ</code>）</li>
 <li>呼叫 <code>fn</code> 參數時，傳入 ‘小明’ 作為參數傳遞至 <code>函式Ｂ</code></li>
 </ol>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F084B07D1-2BAE-40CA-AA26-EC9EFAC6044B.png?alt=media&token=4797bfc2-1332-475a-b883-251b027b7ee8"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F084B07D1-2BAE-40CA-AA26-EC9EFAC6044B.png?alt=media&amp;token=4797bfc2-1332-475a-b883-251b027b7ee8" alt=""></p>
 <p>如果你接觸 JavaScript 還不是很久，或者是常常被 callback function 搞混，試著用以下的方法：</p>
 <ul>
 <li>從定義的函式開始找 callback 及參數名稱，callback 常用的名稱會如 <code>cb</code>、<code>callback</code>、<code>fn</code>。 -&gt; 本範例中使用 <code>fn</code> 的名稱。</li>
@@ -260,31 +256,25 @@
 </ul>
 <p>接下來，大家可以拆解看到的 callback function 或者用此觀念撰寫一個 callback function 將更能熟悉此觀念。</p>
 <h3 id="使用函式變數來傳遞"><a href="#使用函式變數來傳遞" class="headerlink" title="使用函式變數來傳遞"></a>使用函式變數來傳遞</h3><p>Callback function 除了直接在參數中撰寫一個函式外，也可以直接透過函式變數來傳遞（前面提到一級函式的特性，函式也可以指定到一個變數上）。</p>
-<p>如以下範例：<code>callSomeone</code> 函式可以視為一個變數，並且透過參數的方式來進行傳遞。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">callSomeone</span>(<span class="hljs-params">name</span>) &#123;
+<p>如以下範例：<code>callSomeone</code> 函式可以視為一個變數，並且透過參數的方式來進行傳遞。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">callSomeone</span>(<span class="hljs-params">name</span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name + <span class="hljs-string">&#x27; 您好&#x27;</span>);
 &#125;
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">functionB</span>(<span class="hljs-params">fn</span>) &#123;
   <span class="hljs-title function_">fn</span>(<span class="hljs-string">&#x27;小明&#x27;</span>);
 &#125;
-<span class="hljs-title function_">functionB</span>(callSomeone)</code></pre>
-
+<span class="hljs-title function_">functionB</span>(callSomeone)</code></pre></p>
 <blockquote>
 <p>可試著用前面的拆解方式來了解此段是如何運作的</p>
 </blockquote>
 <h3 id="Callback-function-可以用來做什麼？"><a href="#Callback-function-可以用來做什麼？" class="headerlink" title="Callback function 可以用來做什麼？"></a>Callback function 可以用來做什麼？</h3><p>在 ES6 中的 <code>Promise</code> 語法還未能使用前，就很常使用 callback function 來接收非同步的資料（當資料取得後，繼續執行其它的函式）。</p>
-<p>以下範例是使用 <code>setTimeout</code> 取代 Ajax，當一秒時間過去以後，才能繼續執行 callback 的程式碼內容。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">callSomeone</span>(<span class="hljs-params">callback</span>) &#123;
+<p>以下範例是使用 <code>setTimeout</code> 取代 Ajax，當一秒時間過去以後，才能繼續執行 callback 的程式碼內容。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">callSomeone</span>(<span class="hljs-params">callback</span>) &#123;
   <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;
     <span class="hljs-title function_">callback</span>(<span class="hljs-string">&#x27;非同步完成&#x27;</span>)
   &#125;, <span class="hljs-number">1000</span>);
 &#125;
 <span class="hljs-title function_">callSomeone</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">done</span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(done);
-&#125;);</code></pre>
-
-
-
+&#125;);</code></pre></p>
 <h2 id="回傳一個函式-高階函式-Higher-Order-Function"><a href="#回傳一個函式-高階函式-Higher-Order-Function" class="headerlink" title="回傳一個函式 - 高階函式 Higher-Order Function"></a>回傳一個函式 - 高階函式 Higher-Order Function</h2><p>當函式可以回傳一個函式時，就可稱為高階函式（Higher-Order Function），JavaScript 中的函式因為沒有太多限制，就算作為變數回傳也是沒有問題的。</p>
 <p>以下範例中的函式會在回傳另一個函式，因此在呼叫 <code>method</code> 時，此函式具有以下特性：</p>
 <ul>
@@ -292,8 +282,7 @@
 <li>可以建立多個新函式，並且賦予到不同的變數上</li>
 <li>這些建立的新函式彼此並無關聯</li>
 </ul>
-<p>在此就建立了 <code>num1</code>、<code>num2</code> 兩個新函式，兩者都可以再次被呼叫。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">method</span>(<span class="hljs-params">num</span>) &#123;
+<p>在此就建立了 <code>num1</code>、<code>num2</code> 兩個新函式，兩者都可以再次被呼叫。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">method</span>(<span class="hljs-params">num</span>) &#123;
   <span class="hljs-keyword">return</span> <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;
     <span class="hljs-keyword">return</span> <span class="hljs-string">`這是來自於編號 <span class="hljs-subst">$&#123;num&#125;</span> 的方法`</span>;
   &#125;
@@ -302,12 +291,9 @@
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">num1</span>()); <span class="hljs-comment">// 這是來自於編號 1 的方法</span>
 
 <span class="hljs-keyword">var</span> num2 = <span class="hljs-title function_">method</span>(<span class="hljs-number">2</span>);
-<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">num2</span>()); <span class="hljs-comment">// 這是來自於編號 2 的方法</span></code></pre>
-
+<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">num2</span>()); <span class="hljs-comment">// 這是來自於編號 2 的方法</span></code></pre></p>
 <p>除了將回傳函式賦予到一個變數上以外，還可以直接使用雙括號 <code>()()</code> 的方式直接運行，這種運行方式運行後將會直接釋放記憶體。</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title function_">method</span>(<span class="hljs-number">3</span>)());</code></pre>
-
-
 <p>因為 JavaScript 函式的隨性（？）造就了此語言更多的彈性，這些專有名詞看似很複雜，但別忘了專有名詞只是方便說明一個特性，實際運行還是要看大家所轉寫的程式，並不會因為了解這些專有名詞寫的程式就跑得更起勁。</p>
 <p>另外，高階函式的觀念已經很接近 “閉包”，接下來整合這幾個篇章重新再介紹一次閉包給大家認識。</p>
 </div>

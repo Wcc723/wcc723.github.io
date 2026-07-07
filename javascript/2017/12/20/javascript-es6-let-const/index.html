@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：ES6 開始的新生活 let, const","datePublished":"2017-12-19T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.524Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/20/javascript-es6-let-const/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_cover_17.png?alt=media&token=c2f9dfdc-35cc-4657-9ba7-b45388e126ff"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -235,7 +235,6 @@
 (<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(mom);
 &#125;)();</code></pre>
-
 <p>將以上的 <code>var</code> 修改成 <code>let</code>。</p>
 <pre><code class="hljs js"><span class="hljs-comment">// 將 var 改成 let</span>
 <span class="hljs-keyword">let</span> mom = <span class="hljs-string">&#x27;老媽&#x27;</span>;
@@ -243,7 +242,6 @@
 (<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(mom);
 &#125;)();</code></pre>
-
 <p>和先前沒什麼不同，這個 <code>console.log</code> 的結果是 <code>老媽</code>，如果不去探究原理，其實還真的沒什麼感覺，不過現在在實戰上已經推薦多用 <code>let</code> 少用 <code>var</code>，接下來我們來看看差在哪裡。</p>
 <h3 id="let-與-var"><a href="#let-與-var" class="headerlink" title="let 與 var"></a><code>let</code> 與 <code>var</code></h3><p>先前提到 <code>var</code> 的重要觀念，在於變數的範圍在 <code>function</code>，而 <code>let</code> 的作用域在 <code>block</code>，block 意指 <code>{}</code> 這個符號(許多文件稱它為花括號，我自己則喜歡稱它大括號)，除了 <code>function</code> 以外 <code>if</code>、<code>for</code> 的 <code>{}</code> 都屬於 <code>let</code> 的作用域。</p>
 <p>下面的範例可以看到，小明這個變數在兩者的結尾是不同的，因為 <code>{}</code> 所定義的空間並不同。</p>
@@ -265,7 +263,6 @@
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(ming);  <span class="hljs-comment">// &#x27;小明&#x27;</span>
 &#125;
 <span class="hljs-title function_">varMing</span>(); <span class="hljs-title function_">letMing</span>();</code></pre>
-
 <h3 id="let-與-for-loop"><a href="#let-與-for-loop" class="headerlink" title="let 與 for loop"></a>let 與 for loop</h3><p>但我們知道，大多時候我們並不會這樣寫，常見的習慣中我們會將變數宣告放在 function 的前方，那麼我們再來看另一個情境：</p>
 <pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(i);
@@ -273,7 +270,6 @@
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;這執行第&#x27;</span> + i + <span class="hljs-string">&#x27;次&#x27;</span>);
   &#125;, <span class="hljs-number">10</span>);
 &#125;</code></pre>
-
 <p>如果先不講結果，你會認為以上出現什麼樣的結果呢？</p>
 <ol>
 <li>這執行第 0 次, 這執行第 1 次, 這執行第 2 次… (延續 10 次)</li>
@@ -287,14 +283,12 @@
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;這執行第&#x27;</span> + i + <span class="hljs-string">&#x27;次&#x27;</span>);
   &#125;, <span class="hljs-number">10</span>);
 &#125;</code></pre>
-
 <p>用此種方法，就會正確的出現，因為 let 是屬於 <code>block</code> 變數。</p>
 <pre><code class="hljs plaintext">這執行第0次
 這執行第1次
 這執行第2次
 這執行第3次
 ...</code></pre>
-
 <p>除此之外，在先前有介紹過，var 在全域下的變數會直接再 <code>window</code> 上，可以在這裡使用 <code>console.log()</code> 看看兩者之間的差異：</p>
 <pre><code class="hljs js"><span class="hljs-comment">// 這段宣告擇一執行</span>
 <span class="hljs-keyword">var</span> mom = <span class="hljs-string">&quot;老媽&quot;</span>;
@@ -302,7 +296,6 @@
 <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">mom</span>);
 <span class="hljs-comment">// var 會出現 &quot;老媽&quot;</span>
 <span class="hljs-comment">// let 會出現 undefined</span></code></pre>
-
 <p>這也是 let 的一大特性，他並不會讓整個 <code>window</code> 物件掛上在全域環境所宣告的變數，對於愛乾淨不喜歡污染全域的開發者會是一大福音。</p>
 <h2 id="const"><a href="#const" class="headerlink" title="const"></a>const</h2><p><code>const</code> 是宣告一個常數，簡單來說就是不可以再做修改的變數(常數)，以下面這個範例來說，小明如果使用 <code>const</code> 做宣告，那麼就無法再使用 <code>let</code>、<code>const</code> 做調整了。 </p>
 <pre><code class="hljs js"><span class="hljs-keyword">const</span> ming = <span class="hljs-string">&#x27;鐵錚錚男子漢&#x27;</span>;
@@ -311,19 +304,15 @@
 
 <span class="hljs-keyword">const</span> ming = <span class="hljs-string">&#x27;弱雞&#x27;</span>;
 <span class="hljs-comment">// 錯誤：Identifier &#x27;ming&#x27; has already been declared</span></code></pre>
-
 <h3 id="const-必須一定要有值"><a href="#const-必須一定要有值" class="headerlink" title="const 必須一定要有值"></a>const 必須一定要有值</h3><p>過去可以先宣告變數 (還記得吧，宣告變數未賦予值會是 undefined)，但 <code>const</code> 在宣告時一定要賦予值。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">const</span> ming;
 <span class="hljs-comment">// 錯誤：Missing initializer in const declaration</span></code></pre>
-
-<h3 id="物件依然是參考"><a href="#物件依然是參考" class="headerlink" title="物件依然是參考"></a>物件依然是參考</h3><p>使用 <code>const</code> 宣告的物件，其內層屬性依然可以做調整，因為物件是傳參考，所以在此依然可以修改屬性。(一家人的成員依然可以更動)</p>
-<pre><code class="hljs js"><span class="hljs-keyword">const</span> family = &#123;
+<h3 id="物件依然是參考"><a href="#物件依然是參考" class="headerlink" title="物件依然是參考"></a>物件依然是參考</h3><p>使用 <code>const</code> 宣告的物件，其內層屬性依然可以做調整，因為物件是傳參考，所以在此依然可以修改屬性。(一家人的成員依然可以更動)<br><pre><code class="hljs js"><span class="hljs-keyword">const</span> family = &#123;
   <span class="hljs-attr">mom</span>: <span class="hljs-string">&#x27;老媽&#x27;</span>,
   <span class="hljs-attr">me</span>: <span class="hljs-string">&#x27;小明&#x27;</span>,
   <span class="hljs-attr">sister</span>: <span class="hljs-string">&#x27;小橙&#x27;</span>
 &#125;;
-family.<span class="hljs-property">father</span> = <span class="hljs-string">&#x27;爸爸&#x27;</span>;</code></pre>
-
+family.<span class="hljs-property">father</span> = <span class="hljs-string">&#x27;爸爸&#x27;</span>;</code></pre></p>
 <p>承上，已經被明確宣告的物件，沒有辦法再調整其參考的物件(一家人的成員並不會被另一家取代)。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">let</span> jayFamily = &#123;
   <span class="hljs-attr">mom</span>: <span class="hljs-string">&#x27;杰哥媽&#x27;</span>,
@@ -331,7 +320,6 @@ family.<span class="hljs-property">father</span> = <span class="hljs-string">&#x
 &#125;;
 
 family = jayFamily <span class="hljs-comment">// 錯誤</span></code></pre>
-
 <h2 id="var-的額外問題"><a href="#var-的額外問題" class="headerlink" title="var 的額外問題"></a>var 的額外問題</h2><p>相信上述對於 <code>let</code>、<code>const</code>都有了基本的了解，那麼不管你有沒有開始寫 ES6，請問一下下述問題如何修正：</p>
 <p>沒有使用 <code>let</code> 的情況下要如何修正成可以依序執行？</p>
 <pre><code class="hljs js"><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">10</span>; i++) &#123;
@@ -340,7 +328,6 @@ family = jayFamily <span class="hljs-comment">// 錯誤</span></code></pre>
     <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;這執行第&#x27;</span> + i + <span class="hljs-string">&#x27;次&#x27;</span>);
   &#125;, <span class="hljs-number">10</span>);
 &#125;</code></pre>
-
 <p>答案在下方</p>
 <hr>
 <pre><code class="hljs js"><span class="hljs-comment">// for (var i = 0; i &lt; 10; i++) &#123;</span>
@@ -350,7 +337,6 @@ family = jayFamily <span class="hljs-comment">// 錯誤</span></code></pre>
 <span class="hljs-comment">//     &#125;, 10);</span>
 <span class="hljs-comment">//   &#125;)(i);</span>
 <span class="hljs-comment">// &#125;</span></code></pre>
-
 <p>成功了嗎!?或許你能想到更棒的解法喔～</p>
 </div>
 

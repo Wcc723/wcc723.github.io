@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 12 - Gulp - 定義預設開發環境","datePublished":"2016-12-11T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.517Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/12/gulp-dev-env/","image":["https://www.casper.tw/2016_ironman/12_gulp_header.jpg"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,7 +217,6 @@
 
   <div class="prose"><p>今天的進度來做個小調整，讓大家在使用 Gulp 時就能相容於目前的環境，目前使用的主要套件有：<code>gulp-sass</code>、<code>gulp-postcss</code>，這次調整後會有一個主要的前端專案資料夾，可以配合各個後端語言做調整，大家也可用相同的概念加入習慣的開發環境。</p>
 <span id="more"></span>
-
 <h2 id="定義輸入及輸出"><a href="#定義輸入及輸出" class="headerlink" title="定義輸入及輸出"></a>定義輸入及輸出</h2><p>範例程式碼：<a target="_blank" rel="noopener" href="https://github.com/Wcc723/ironman-gulp-sass/tree/v0.3.gulp-default">https://github.com/Wcc723/ironman-gulp-sass/tree/v0.3.gulp-default</a></p>
 <p>為了優化前端的效能會使用工具再將前端的內容編譯一次，如壓縮合併 Javascript、CSS；這時候會有一個原始碼以及壓縮後的程式碼，主要作業都是在原始碼，壓縮後的程式碼是用來部署使用。</p>
 <p>在 <code>gulpfile.js</code> 內可以準備以下的變數：</p>
@@ -225,14 +224,12 @@
   <span class="hljs-attr">source</span>: <span class="hljs-string">&#x27;./source/&#x27;</span>, <span class="hljs-comment">// 原始碼</span>
   <span class="hljs-attr">public</span>: <span class="hljs-string">&#x27;./public/&#x27;</span>  <span class="hljs-comment">// 輸出位置</span>
 &#125;</code></pre>
-
 <p>這些變數可以依序套用在先前準備的 Task 上，開發時無論是配合什麼後端語言，只要調整原始碼、輸出位置就能夠配合各種語言。</p>
 <pre><code class="hljs js">gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#x27;sass&#x27;</span>, <span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">return</span> gulp.<span class="hljs-title function_">src</span>(path.<span class="hljs-property">source</span> + <span class="hljs-string">&#x27;scss/**/*.scss&#x27;</span>)  <span class="hljs-comment">// 輸入點</span>
     <span class="hljs-comment">/* Task 的其他工作 */</span>
     .<span class="hljs-title function_">pipe</span>(gulp.<span class="hljs-title function_">dest</span>(path.<span class="hljs-property">public</span> + <span class="hljs-string">&#x27;stylesheets&#x27;</span>)); <span class="hljs-comment">// 輸出點</span>
 &#125;);</code></pre>
-
 <h2 id="複製主要工作項以外的檔案"><a href="#複製主要工作項以外的檔案" class="headerlink" title="複製主要工作項以外的檔案"></a>複製主要工作項以外的檔案</h2><p>原始碼之中有許多檔案是不需要編譯的，但為了方便整理，我們可以將全部原始碼先放在 <code>source</code><br>資料夾，再透過 gulp 一起輸出到另一個資料夾。</p>
 <p>透過 <code>!</code> 可以避掉特定的檔案，所以我們可以匯入全部檔案後，再排除不需要複製檔案，以下程式碼就可以直接完成以下流程。</p>
 <pre><code class="hljs js"><span class="hljs-comment">// 其它不編譯的物件</span>
@@ -248,11 +245,9 @@ gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#
     .<span class="hljs-title function_">pipe</span>(<span class="hljs-title function_">plumber</span>())
     .<span class="hljs-title function_">pipe</span>(gulp.<span class="hljs-title function_">dest</span>(path.<span class="hljs-property">public</span>));
 &#125;);</code></pre>
-
 <p>這個步驟會新增一個 Task，所以我們需要使用 <code>gulp others</code> 來執行這段流程，此時我們也有幾個 Task，這時可以加入一個整合性的 Task 將所有的任務串接再一起。</p>
 <p><code>default</code> 是預設 gulp 會執行的 Task，後方的陣列內在加入要一起執行的 Task 即可。</p>
 <pre><code class="hljs js">gulp.<span class="hljs-title function_">task</span>(<span class="hljs-string">&#x27;default&#x27;</span>, [<span class="hljs-string">&#x27;others&#x27;</span>, <span class="hljs-string">&#x27;sass&#x27;</span>, <span class="hljs-string">&#x27;watch&#x27;</span>]);</code></pre>
-
 <p>完成到這個步驟，只要執行 <code>gulp</code> 就會自動將以上流程一次完成，並且監聽相關的檔案是否有異動。</p>
 <p>到目前為止，基本的 Gulp 運用已經足夠應付 CSS 在前端上的需求，在後面的章節會介紹更進階的 Gulp 套件運用。</p>
 </div>

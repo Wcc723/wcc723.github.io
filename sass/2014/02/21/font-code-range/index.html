@@ -17,24 +17,24 @@
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
 <meta property="og:description" content="Just font中的字型學文章都相當有意思，而有一篇是關於中英文字搭配的問題；這篇雖然是以windows word為例，但裡面的概念在網頁上也是很有幫助，而其中一段”以 Windows 內建的三種字型為例，表現最好的是微軟正黑體，英文部分採用了微軟的 Segoe UI，粗細與中文較一致“，在目前web中當然也可以有這樣的設定，只要用CSS3的unicode-range，就能夠在中文字中套用”微軟">
 <meta property="og:locale" content="zh_TW">
-<meta property="og:image" content="https://www.casper.tw/images/2014-02-23_180951.png">
+<meta property="og:image" content="https://img.casper.tw/images/2014-02-23_180951.png">
 <meta property="article:published_time" content="2014-02-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2017-06-21T12:11:01.000Z">
+<meta property="article:modified_time" content="2026-07-07T03:26:01.169Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="css">
 <meta property="article:tag" content="sass">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://www.casper.tw/images/2014-02-23_180951.png">
+<meta name="twitter:image" content="https://img.casper.tw/images/2014-02-23_180951.png">
 <meta property="fb:app_id" content="556473851118881">
 
 
 <link rel="canonical" href="https://www.casper.tw/sass/2014/02/21/font-code-range/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CSS設定中英文不同的字體","datePublished":"2014-02-20T16:00:00.000Z","dateModified":"2017-06-21T12:11:01.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/sass/2014/02/21/font-code-range/","image":["https://www.casper.tw/images/2014-02-23_180951.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CSS設定中英文不同的字體","datePublished":"2014-02-20T16:00:00.000Z","dateModified":"2026-07-07T03:26:01.169Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/sass/2014/02/21/font-code-range/","image":["https://img.casper.tw/images/2014-02-23_180951.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +43,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
 <link rel="stylesheet" href="/css/style.css?v=mq954j70">
 
-<link href="/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
+<link href="https://img.casper.tw/demoFile/css/2014-spring.css" rel="stylesheet" type="text/css" />
 
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -231,28 +231,25 @@
 	</div>
 </div>
 
-
-<p><img src="/images/2014-02-23_180951.png"></p>
+<p><img src="https://img.casper.tw/images/2014-02-23_180951.png" alt=""></p>
 <p>以上面這一段文字為例，在windows內，”我”這一個文字會被替換成微軟正黑體，而其他文字沒有變化。</p>
 <p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range">https://developer.mozilla.org/en-US/docs/Web/CSS/unicode-range</a></p>
 <p>如果參考Mozilla 的MDN可以了解到，</p>
 <pre><code>unicode-range: U+26               /* 單一字符 */
 unicode-range: U+0025-00FF        /* 範圍字符 */
 unicode-range: U+4??              /* 萬用字符 */
-unicode-range: U+0025-00FF, U+4?? /* 利用&#39;,&#39;，多選取字符 */
-</code></pre>
-<p><a target="_blank" rel="noopener" href="http://unicode-table.com/cn/">http://unicode-table.com/cn/</a></p>
+unicode-range: U+0025-00FF, U+4?? /* 利用&apos;,&apos;，多選取字符 */
+</code></pre><p><a target="_blank" rel="noopener" href="http://unicode-table.com/cn/">http://unicode-table.com/cn/</a></p>
 <p>再參考uni code的表，可以查詢各文字的unicode。</p>
 <p>用這樣的方式就能夠選取特定的文字，或是語系等等。</p>
 <pre><code>@font-face
-	font-family: custom-Iam
-	src: local(&quot;Heiti TC&quot;), local(&quot;微軟正黑體&quot;), local(&quot;Microsoft JhengHei&quot;)
-	unicode-range: U+6211
+    font-family: custom-Iam
+    src: local(&quot;Heiti TC&quot;), local(&quot;微軟正黑體&quot;), local(&quot;Microsoft JhengHei&quot;)
+    unicode-range: U+6211
 
 .custom-Iam
-	font-family: custom-Iam
-</code></pre>
-<h2 id="針對指定語系設定"><a href="#針對指定語系設定" class="headerlink" title="針對指定語系設定"></a>針對指定語系設定</h2><p>在一般來說，通常換字體沒有針對語系，就像下方這一個範例，我將字體換成了’Mac OS 黑體-繁’、’Windows 微軟正黑體’，但在中英文排版中，用同一種字體不一定合適(請看just font)。</p>
+    font-family: custom-Iam
+</code></pre><h2 id="針對指定語系設定"><a href="#針對指定語系設定" class="headerlink" title="針對指定語系設定"></a>針對指定語系設定</h2><p>在一般來說，通常換字體沒有針對語系，就像下方這一個範例，我將字體換成了’Mac OS 黑體-繁’、’Windows 微軟正黑體’，但在中英文排版中，用同一種字體不一定合適(請看just font)。</p>
 
 <div class="demo d0218">
 	<div class="custom-Heiti">
@@ -260,8 +257,7 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&#39;,&#39;，多選取字符 */
 	</div>
 </div>
 
-
-<p><img src="/images/2014-02-23_182250.png"></p>
+<p><img src="https://img.casper.tw/images/2014-02-23_182250.png" alt=""></p>
 <p>中文的語系的unicode-range為<code>U+4E00-9FFF</code>，英語系為<code>U+00-024F</code>，將這個值加入到@font-face內，就能為特定語系換字體。如下範例中文還是’Mac OS 黑體-繁’、’Windows 微軟正黑體’，但英文的部份已經替換成’Helvetica’、’Segoe UI’，範例如下。</p>
 
 <div class="demo d0218">
@@ -270,23 +266,21 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&#39;,&#39;，多選取字符 */
 	</div>
 </div>
 
-
-<p><img src="/images/2014-02-23_182302.png"></p>
+<p><img src="https://img.casper.tw/images/2014-02-23_182302.png" alt=""></p>
 <p>在css內只要將兩者的font-family皆設定相同名稱，但指向不同的<code>unicode-range</code>，就可以達到這樣的效果。</p>
 <pre><code>@font-face
-	font-family: custom-sans-serif
-	src: local(&quot;Heiti TC&quot;), local(&quot;微軟正黑體&quot;), local(&quot;Microsoft JhengHei&quot;)
-	unicode-range: U+4E00-9FFF
+    font-family: custom-sans-serif
+    src: local(&quot;Heiti TC&quot;), local(&quot;微軟正黑體&quot;), local(&quot;Microsoft JhengHei&quot;)
+    unicode-range: U+4E00-9FFF
 
 @font-face
-	font-family: custom-sans-serif
-	src: local(Helvetica), local(Segoe UI)
-	unicode-range: U+00-024F
+    font-family: custom-sans-serif
+    src: local(Helvetica), local(Segoe UI)
+    unicode-range: U+00-024F
 
 .custom-sans-serif
-	font-family: custom-sans-serif
-</code></pre>
-<h2 id="其他範例"><a href="#其他範例" class="headerlink" title="其他範例"></a>其他範例</h2><p>不只在黑體能夠這樣做，明體當然也可以。</p>
+    font-family: custom-sans-serif
+</code></pre><h2 id="其他範例"><a href="#其他範例" class="headerlink" title="其他範例"></a>其他範例</h2><p>不只在黑體能夠這樣做，明體當然也可以。</p>
 
 <div class="demo d0218">
 	<div class="custom-serif">
@@ -294,21 +288,19 @@ unicode-range: U+0025-00FF, U+4?? /* 利用&#39;,&#39;，多選取字符 */
 	</div>
 </div>
 
-
 <pre><code>@font-face
-	font-family: custom-serif
-	src: local(&quot;LiSong Pro&quot;), local(&quot;新細明體&quot;), local(&quot;PMingLiU&quot;)
-	unicode-range: U+4E00-9FFF
+    font-family: custom-serif
+    src: local(&quot;LiSong Pro&quot;), local(&quot;新細明體&quot;), local(&quot;PMingLiU&quot;)
+    unicode-range: U+4E00-9FFF
 
 @font-face
-	font-family: custom-serif
-	src: local(Times), local(Times New Roman)
-	unicode-range: U+00-024F
+    font-family: custom-serif
+    src: local(Times), local(Times New Roman)
+    unicode-range: U+00-024F
 
 .custom-serif
-	font-family: custom-serif
-</code></pre>
-<h2 id="延伸發現"><a href="#延伸發現" class="headerlink" title="延伸發現"></a>延伸發現</h2><p>在<a target="_blank" rel="noopener" href="http://unicode-table.com/cn/">字符百科</a>中，不僅可以查詢的文字的unicode 編號，其實還可以查到許多符號性的文字，這些文字其實可以直接當作web font使用，還免載入外部的字型檔，就像下方的幾個不同雪花一樣。</p>
+    font-family: custom-serif
+</code></pre><h2 id="延伸發現"><a href="#延伸發現" class="headerlink" title="延伸發現"></a>延伸發現</h2><p>在<a target="_blank" rel="noopener" href="http://unicode-table.com/cn/">字符百科</a>中，不僅可以查詢的文字的unicode 編號，其實還可以查到許多符號性的文字，這些文字其實可以直接當作web font使用，還免載入外部的字型檔，就像下方的幾個不同雪花一樣。</p>
 
 <div class="demo d0218">
 	❄❅❆

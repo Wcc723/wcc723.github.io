@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script>(function(){try{var m=localStorage.getItem('casper-theme')||'light';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
 
-<title>鐵人賽：JavaScript 的嚴格模式 &#34;use strict&#34; | 卡斯伯 Blog - 前端，沒有極限</title>
+<title>鐵人賽：JavaScript 的嚴格模式 &quot;use strict&quot; | 卡斯伯 Blog - 前端，沒有極限</title>
 
 <meta name="keywords" content="javascript,js,ironman" />
 
@@ -35,7 +35,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽：JavaScript 的嚴格模式 \"use strict\"","datePublished":"2017-12-14T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.523Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/javascript/2017/12/15/javascript-use-strict/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F201712%2F18_ironman_c12.jpg?alt=media&token=7471b24d-b970-4ed8-831d-5112ffa359d9"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,7 +158,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -205,7 +205,7 @@
 <article class="post">
   <header class="article-head">
     <p class="crumb">javascript</p>
-    <h1>鐵人賽：JavaScript 的嚴格模式 &#34;use strict&#34;</h1>
+    <h1>鐵人賽：JavaScript 的嚴格模式 &quot;use strict&quot;</h1>
     <div class="meta">
       <span>2017 年 12 月 15 日</span>
       <span>·</span>
@@ -219,18 +219,15 @@
   <div class="prose"><p>JavaScript 不斷的演進下，許多不嚴謹的寫法都應該逐漸被修正，但哪些是需要修正的字詞呢!? <code>&#39;use strict&#39;</code> 則是新加入的標準，目的是為了讓編寫「具穩定性的 JavaScript 更容易」，在不穩定的語法或妨礙最佳化的語意都會跳出警告，讓開發者避開這些寫法。</p>
 <p>而在傳統的瀏覽器下 <code>&#39;use strict&#39;</code> 僅會被視為沒有用處的字串，所以不會對舊有的瀏覽器產生影響。</p>
 <h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><p><code>&#39;use strict&#39;</code> 直接加入在程式碼的前方就可以開始運作，特別值得注意的是它也可以單獨使用在 function 下，如果要靠 <code>&#39;use strict&#39;</code> 來修正目前語法上的問題，可以先針對部分的 function 來做調整。</p>
-<p>簡單示範一個錯誤 (未定義的變數不能直接賦予值)：</p>
-<pre><code class="hljs js"><span class="hljs-meta">&#x27;use strict&#x27;</span>;
+<p>簡單示範一個錯誤 (未定義的變數不能直接賦予值)：<br><pre><code class="hljs js"><span class="hljs-meta">&#x27;use strict&#x27;</span>;
 auntie = <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>;
-<span class="hljs-comment">// Uncaught ReferenceError: auntie is not defined</span></code></pre>
-
+<span class="hljs-comment">// Uncaught ReferenceError: auntie is not defined</span></code></pre></p>
 <p>嚴謹模式也能僅用在函式內，這樣將只有此函式套用。</p>
 <pre><code class="hljs js">(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-string">&#x27;use strict&#x27;</span>;
   auntie = <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>;
   <span class="hljs-comment">// Uncaught ReferenceError: auntie is not defined</span>
 &#125;)();</code></pre>
-
 <p>如果使用在函式的開頭，那將只會在此函式套用 “嚴謹模式”，函式的外部將不受影響。</p>
 <pre><code class="hljs js">(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-string">&#x27;use strict&#x27;</span>;
@@ -238,14 +235,11 @@ auntie = <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>;
 
 mom = <span class="hljs-string">&#x27;老媽管不到&#x27;</span>;
 <span class="hljs-comment">// 不會跳錯</span></code></pre>
-
-<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>只有將 <code>&#39;use strict&#39;</code> 放在函式開頭才會有作用。</p>
-<pre><code class="hljs js">(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
+<h4 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h4><p>只有將 <code>&#39;use strict&#39;</code> 放在函式開頭才會有作用。<br><pre><code class="hljs js">(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-keyword">var</span> aa;
   <span class="hljs-string">&#x27;use strict&#x27;</span>;  <span class="hljs-comment">// 無效</span>
   auntie = <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>;
-&#125;)();</code></pre>
-
+&#125;)();</code></pre></p>
 <h2 id="常見錯誤"><a href="#常見錯誤" class="headerlink" title="常見錯誤"></a>常見錯誤</h2><p>基本錯誤如下：</p>
 <ul>
 <li>不宣告直接賦予變數</li>
@@ -265,13 +259,11 @@ mom = <span class="hljs-string">&#x27;老媽管不到&#x27;</span>;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(family.<span class="hljs-property">mom</span>); <span class="hljs-comment">// 老媽</span>
   family.<span class="hljs-property">mom</span> = <span class="hljs-string">&#x27;老爸&#x27;</span>; <span class="hljs-comment">// 跳錯</span>
 &#125;)();</code></pre>
-
 <p>不可以嘗試刪除一個不可刪除的屬性(此為原型，在後面的章節會介紹到)：</p>
 <pre><code class="hljs js">(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;
   <span class="hljs-string">&#x27;use strict&#x27;</span>;
   <span class="hljs-keyword">delete</span> <span class="hljs-title class_">Object</span>.<span class="hljs-property"><span class="hljs-keyword">prototype</span></span>;
 &#125;)();</code></pre>
-
 <h2 id="‘use-strict’-及-this"><a href="#‘use-strict’-及-this" class="headerlink" title="‘use strict’ 及 this"></a>‘use strict’ 及 this</h2><p>在先前介紹 this 的時有介紹到不同的呼叫方法，在 ‘use strict’ 的環境下的 <code>純粹的調用 (Simple call)</code> 的 this 不在是全域變數。</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">window</span>.<span class="hljs-property">auntie</span> = <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>;
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">callAuntie</span>(<span class="hljs-params"></span>) &#123;
@@ -281,7 +273,6 @@ mom = <span class="hljs-string">&#x27;老媽管不到&#x27;</span>;
 
 callAuntie.<span class="hljs-title function_">call</span>(&#123; <span class="hljs-attr">auntie</span>: <span class="hljs-string">&#x27;叫阿姨&#x27;</span> &#125;); <span class="hljs-comment">// Ok</span>
 <span class="hljs-title function_">callAuntie</span>(); <span class="hljs-comment">// 錯誤，此呼叫會導致 this 為全域</span></code></pre>
-
 <p>但 this 依然可作為 window 的方式傳入。</p>
 <pre><code class="hljs js"><span class="hljs-variable language_">window</span>.<span class="hljs-property">auntie</span> = <span class="hljs-string">&#x27;漂亮阿姨&#x27;</span>;
 <span class="hljs-keyword">function</span> <span class="hljs-title function_">callAuntie</span>(<span class="hljs-params"></span>) &#123;
@@ -290,7 +281,6 @@ callAuntie.<span class="hljs-title function_">call</span>(&#123; <span class="hl
 &#125;
 
 callAuntie.<span class="hljs-title function_">call</span>(<span class="hljs-variable language_">this</span>); <span class="hljs-comment">// Ok，call: 漂亮阿姨</span></code></pre>
-
 <p>現在會建議寫 JavaScript 的時候加入 <code>&#39;use strict&#39;</code>，這可以改正一些編寫時的不良習慣，但也有可以因此導致專案無法運作，此時可以考慮將 <code>&#39;use strict&#39;</code> 加在函式內，避免影響過去的程式碼及相關套件。</p>
 </div>
 

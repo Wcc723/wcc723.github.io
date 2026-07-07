@@ -19,7 +19,7 @@
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://www.casper.tw/d3js/2014/10/11/Ironman-30-days-12/2014ironman/day11_02.png">
 <meta property="article:published_time" content="2014-10-10T16:00:00.000Z">
-<meta property="article:modified_time" content="2016-10-13T03:08:17.000Z">
+<meta property="article:modified_time" content="2026-07-07T06:53:03.573Z">
 <meta property="article:author" content="Wang Casper">
 <meta property="article:tag" content="d3js">
 <meta property="article:tag" content="ironman">
@@ -31,10 +31,10 @@
 <link rel="canonical" href="https://www.casper.tw/d3js/2014/10/11/Ironman-30-days-12/" />
 
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 利用Excel建立資料(CSV)","datePublished":"2014-10-10T16:00:00.000Z","dateModified":"2016-10-13T03:08:17.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/11/Ironman-30-days-12/","image":["https://www.casper.tw/2014ironman/day11_02.png"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"D3.js 利用Excel建立資料(CSV)","datePublished":"2014-10-10T16:00:00.000Z","dateModified":"2026-07-07T06:53:03.573Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/11/Ironman-30-days-12/","image":["https://www.casper.tw/2014ironman/day11_02.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,23 +217,21 @@
 
   <div class="prose"><p>做了那麼多，資料都是隨機產生的，雖然每次打開都不一樣，但是還是假的資料，這次來試試看讀取Excel的資料吧。</p>
 <span id="more"></span>
-
 <h2 id="CSV"><a href="#CSV" class="headerlink" title="CSV"></a>CSV</h2><p>Excel可以轉出一種稱為csv(Comma-Separated Values)格式的檔案，檔案的資料內容都是用逗點隔開的，大概像下面這樣：</p>
 <pre><code>name,value
 Tyler,234
 Boy,124
 Joe,357
-</code></pre>
-<p>第一行的<code>name,value</code>可以當作是標題或者是變數名稱，第二行開始的<code>Tyler,234....</code>都是值，d3.js可以將csv轉換成Json檔案格式，可以直接用來作為繪圖所需要的資料。</p>
+</code></pre><p>第一行的<code>name,value</code>可以當作是標題或者是變數名稱，第二行開始的<code>Tyler,234....</code>都是值，d3.js可以將csv轉換成Json檔案格式，可以直接用來作為繪圖所需要的資料。</p>
 <h2 id="Excel"><a href="#Excel" class="headerlink" title="Excel"></a>Excel</h2><p>今天又是假日，所以code就短一點，來介紹Excel怎麼做CSV，打開Excel以後，建立如下的資料。</p>
-<p><img src="/images/2014ironman/day11_01.png" alt="&#x2F;images&#x2F;2014ironman&#x2F;day11_01.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day11_01.png" alt="/images/2014ironman/day11_01.png"></p>
 <p>接下來選擇另存新檔，附檔名選擇.CSV。</p>
-<p><img src="/images/2014ironman/day11_02.png" alt="&#x2F;images&#x2F;2014ironman&#x2F;day11_02.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day11_02.png" alt="/images/2014ironman/day11_02.png"></p>
 <p>如果用文字編輯器打開，預期會出現下面的結果，而這就是D3所需要的csv格式。</p>
-<p><img src="/images/2014ironman/day11_03.png" alt="&#x2F;images&#x2F;2014ironman&#x2F;day11_03.png"></p>
-<p>如果不想自己做，也可以下載我做好的<a href="/demoFile/d3data/d3demoData141011.csv">範例</a>。</p>
+<p><img src="https://img.casper.tw/images/2014ironman/day11_03.png" alt="/images/2014ironman/day11_03.png"></p>
+<p>如果不想自己做，也可以下載我做好的<a target="_blank" rel="noopener" href="https://img.casper.tw/demoFile/d3data/d3demoData141011.csv">範例</a>。</p>
 <h2 id="D3-js"><a href="#D3-js" class="headerlink" title="D3.js"></a>D3.js</h2><p>接下了Excel的工作就完成了，來試試看用D3js讀取看看吧，其實方式也相當簡單，只要用<code>d3.csv()</code>就可以讀取並且轉換成json資料格式，只要給d3.js路徑即可。</p>
-<pre><code class="hljs javascript">dataPath = <span class="hljs-string">&#x27;/demoFile/d3data/&#x27;</span>; <span class="hljs-comment">//檔案路徑</span>
+<pre><code class="hljs javascript">dataPath = <span class="hljs-string">&#x27;https://img.casper.tw/demoFile/d3data/&#x27;</span>; <span class="hljs-comment">//檔案路徑</span>
 dataFile = <span class="hljs-string">&#x27;d3demoData141011.csv&#x27;</span>; <span class="hljs-comment">//檔名</span>
 dataUrl = dataPath + dataFile; <span class="hljs-comment">//路徑加檔名</span>
 <span class="hljs-comment">//定義SVG的大小</span>
@@ -241,20 +239,18 @@ d3.<span class="hljs-title function_">csv</span>(dataUrl, <span class="hljs-keyw
 	<span class="hljs-variable language_">console</span>.<span class="hljs-title function_">table</span>(data); <span class="hljs-comment">//用table的方式在console呈現json</span>
 	d3.<span class="hljs-title function_">select</span>(<span class="hljs-string">&#x27;.demo&#x27;</span>).<span class="hljs-title function_">text</span>(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(data)) <span class="hljs-comment">//把json寫到.demo上</span>
 &#125;);</code></pre>
-
 <p>如果對於json還認為不好閱讀的人，可以使用<code>console.table()</code>來呈現json，這樣會好閱讀很多。</p>
-<p><img src="/images/2014ironman/day11_04.png" alt="&#x2F;images&#x2F;2014ironman&#x2F;day11_04.png"></p>
+<p><img src="https://img.casper.tw/images/2014ironman/day11_04.png" alt="/images/2014ironman/day11_04.png"></p>
 <p>而這個範例所轉換出來的json格式就像下面這樣。</p>
 
 <pre class="demo">
 
 </pre>
 
-
 <p>那麼有了資料，我們明天再跟先前所練習的範例做結合吧。</p>
 
 <script>
-dataPath = '/demoFile/d3data/'; //檔案路徑
+dataPath = 'https://img.casper.tw/demoFile/d3data/'; //檔案路徑
 dataFile = 'd3demoData141011.csv'; //檔名
 dataUrl = dataPath + dataFile; //路徑加檔名
 //定義SVG的大小

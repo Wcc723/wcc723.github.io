@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"SVG 超硬派了解 path Arcs","datePublished":"2014-10-02T16:00:00.000Z","dateModified":"2016-10-13T02:23:04.000Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/d3js/2014/10/03/Ironman-30-days-04/","image":["https://www.casper.tw/2014ironman/day04_01.png"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -218,7 +218,6 @@
   <div class="prose"><p>這次來到Path的最後一個屬性<code>A</code>，<code>A</code>是所謂的弧形，和先前不同的是，弧形一個屬性可以比上一章全部的難度…。這次看看能不能用硬派的方式來學習Arcs弧形…。</p>
 <p><em>本篇建議使用超過720px裝置觀看</em></p>
 <span id="more"></span>
-
 <p>教程參考：<a target="_blank" rel="noopener" href="http://tutorials.jenkov.com/svg/">http://tutorials.jenkov.com/svg/</a></p>
 <h2 id="Arcs"><a href="#Arcs" class="headerlink" title="Arcs"></a>Arcs</h2>
 <style>
@@ -227,12 +226,10 @@ svg text{
 }
 </style>
 
-
 <p>弧形就本質上來說，是屬於圓形或是橢圓的一部份，因此Mozilla MDN也介紹他擁有以下的屬性，我認為直接觀看這些屬性還是很難理解，所以決定都用硬派的方式標上坐標！。</p>
 <p><code>a</code>使用方法：</p>
 <pre><code>A rx ry x-axis-rotation large-arc-flag sweep-flag x y
-</code></pre>
-<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h4><p>參考<a target="_blank" rel="noopener" href="http://www.oxxostudio.tw/articles/201406/svg-05-path-2.html">http://www.oxxostudio.tw/articles/201406/svg-05-path-2.html</a>。</p>
+</code></pre><h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example 1"></a>Example 1</h4><p>參考<a target="_blank" rel="noopener" href="http://www.oxxostudio.tw/articles/201406/svg-05-path-2.html">http://www.oxxostudio.tw/articles/201406/svg-05-path-2.html</a>。</p>
 
 <svg width="100%" height="250">
 	<path d="M10 215
@@ -250,13 +247,11 @@ svg text{
 	<text x="210" y="110" fill="green">h 200(ry)</text>
 </svg>
 
-
 <pre><code>A rx ry x-axis-rotation large-arc-flag sweep-flag x y
 
 //剛剛的值
 A 1 2 0 0 1 310 215
-</code></pre>
-<p>rx、ry如果小於起點到終點的長度，那麼會是依比率的，所以是1:2的橢圓形；sweep-flag為1，是順時鐘方向(逆時鐘會往下跑)；310 215是終點的位置。</p>
+</code></pre><p>rx、ry如果小於起點到終點的長度，那麼會是依比率的，所以是1:2的橢圓形；sweep-flag為1，是順時鐘方向(逆時鐘會往下跑)；310 215是終點的位置。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;250&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M10 215</span></span>
 <span class="hljs-string"><span class="hljs-tag">		L 110 215</span></span>
@@ -272,7 +267,6 @@ A 1 2 0 0 1 310 215
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;210&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;215&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;210&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;15&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: green;&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;210&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;110&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;green&quot;</span>&gt;</span>h 200(ry)<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
-
 <h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example 2"></a>Example 2</h4><p>接下來我們在旋轉的角度上補了30，弧形的角度就會旋轉(綠色的線，僅有旋轉，並沒有修正成圓心的位置)。</p>
 
 <svg width="100%" height="250">
@@ -289,7 +283,6 @@ A 1 2 0 0 1 310 215
 	<line x1="210" y1="215" x2="210" y2="15" style="stroke: green;" transform="rotate(30, 210, 215)"/>
 </svg>
 
-
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;250&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M10 215</span></span>
 <span class="hljs-string"><span class="hljs-tag">		L 110 215</span></span>
@@ -303,8 +296,7 @@ A 1 2 0 0 1 310 215
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;110&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;215&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;310&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;215&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: green;&quot;</span> <span class="hljs-attr">transform</span>=<span class="hljs-string">&quot;rotate(30, 210, 215)&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;210&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;215&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;210&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;15&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: green;&quot;</span> <span class="hljs-attr">transform</span>=<span class="hljs-string">&quot;rotate(30, 210, 215)&quot;</span>/&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
-
-<h4 id="Example-sweep-flag-large-arc-flag"><a href="#Example-sweep-flag-large-arc-flag" class="headerlink" title="Example sweep-flag &amp; large-arc-flag"></a>Example sweep-flag &amp; large-arc-flag</h4><p>範例取自於<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths">https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths</a>。</p>
+<h4 id="Example-sweep-flag-amp-large-arc-flag"><a href="#Example-sweep-flag-amp-large-arc-flag" class="headerlink" title="Example sweep-flag &amp; large-arc-flag"></a>Example sweep-flag &amp; large-arc-flag</h4><p>範例取自於<a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths">https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths</a>。</p>
 
 <svg width="325px" height="325px">
 	<path d="M80 80
@@ -325,18 +317,16 @@ A 1 2 0 0 1 310 215
     <text x="125" y="135" fill="red">125 125 終點</text>
 </svg>
 
-
 <p><em><a target="_blank" rel="noopener" href="http://www.oxxostudio.tw/articles/201406/svg-05-path-2.html">http://www.oxxostudio.tw/articles/201406/svg-05-path-2.html</a> 有很棒的解釋，這部分我要用個人的方式解釋囉～</em></p>
 <p>這張圖，據說可以解釋 “sweep-flag &amp; large-arc-flag”，那麼就來試著說說看吧。</p>
 <pre><code>//這個範例僅有改變 large-arc-flag sweep-flag 兩個值，其餘皆相同
-	A rx ry x-axis-rotation large-arc-flag sweep-flag x y
-</code></pre>
-<p>思考一下這以下可能代表什麼</p>
+ A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+</code></pre><p>思考一下這以下可能代表什麼</p>
 <ul>
-<li>sweep-flag:1 &#x3D; 順時鐘</li>
-<li>sweep-flag:0 &#x3D; 逆時鐘</li>
-<li>large-arc-flag:1 &#x3D; 取較長的弧線</li>
-<li>large-arc-flag:0 &#x3D; 取較短的弧線</li>
+<li>sweep-flag:1 = 順時鐘</li>
+<li>sweep-flag:0 = 逆時鐘</li>
+<li>large-arc-flag:1 = 取較長的弧線</li>
+<li>large-arc-flag:0 = 取較短的弧線</li>
 </ul>
 <p><strong>rx ry必須大於半徑才能產生長弧線及短弧線</strong></p>
 <ul>
@@ -366,7 +356,6 @@ A 1 2 0 0 1 310 215
 	<text x="214" y="144" fill="green">A 120 120</text>
 </svg>
 
-
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">svg</span> <span class="hljs-attr">width</span>=<span class="hljs-string">&quot;100%&quot;</span> <span class="hljs-attr">height</span>=<span class="hljs-string">&quot;250&quot;</span>&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">path</span> <span class="hljs-attr">d</span>=<span class="hljs-string">&quot;M10 215</span></span>
 <span class="hljs-string"><span class="hljs-tag">		L 110 215</span></span>
@@ -385,7 +374,6 @@ A 1 2 0 0 1 310 215
 	<span class="hljs-tag">&lt;<span class="hljs-name">line</span> <span class="hljs-attr">x1</span>=<span class="hljs-string">&quot;210&quot;</span> <span class="hljs-attr">y1</span>=<span class="hljs-string">&quot;215&quot;</span> <span class="hljs-attr">x2</span>=<span class="hljs-string">&quot;330&quot;</span> <span class="hljs-attr">y2</span>=<span class="hljs-string">&quot;215&quot;</span> <span class="hljs-attr">style</span>=<span class="hljs-string">&quot;stroke: green;&quot;</span> <span class="hljs-attr">transform</span>=<span class="hljs-string">&quot;translate(0 -67)&quot;</span>/&gt;</span>
 	<span class="hljs-tag">&lt;<span class="hljs-name">text</span> <span class="hljs-attr">x</span>=<span class="hljs-string">&quot;214&quot;</span> <span class="hljs-attr">y</span>=<span class="hljs-string">&quot;144&quot;</span> <span class="hljs-attr">fill</span>=<span class="hljs-string">&quot;green&quot;</span>&gt;</span>A 120 120<span class="hljs-tag">&lt;/<span class="hljs-name">text</span>&gt;</span>
 <span class="hljs-tag">&lt;/<span class="hljs-name">svg</span>&gt;</span></code></pre>
-
 <p>真的超級難懂，不過自己試著做一次，就會好懂很多。</p>
 </div>
 

@@ -32,7 +32,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"鐵人賽 29 - CSS 實戰小技巧 - 不使用 important 的高優先值技巧","datePublished":"2016-12-28T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.520Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/css/2016/12/29/one-class/"}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -155,7 +155,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -216,7 +216,6 @@
   <div class="prose"><p>在維護舊的專案很多必須放下自尊，用一些手段來維持成果的運作，但有些作法如果過於殘暴可能會影響到未來的維護，<code>CSS !important</code> 就是一個很好用的手段，他可以直接將 CSS 的優先值拉到最高，並且超過標籤的 <code>style</code> 屬性樣式，那麼在未來就變成要修正這一段樣式無法再用 style 的方式覆蓋。</p>
 <p>這邊介紹一招只需要用 <code>className</code> 就能夠大幅提升優先值的手法，讓想快速結束這回合，但又怕傷了未來萌新的善良人參考。</p>
 <span id="more"></span>
-
 <h2 id="情境"><a href="#情境" class="headerlink" title="情境"></a>情境</h2><p>現在 CSS 的樣式如下，有一個 blue 的藍色字體，另外還有一組 <code>ul, li</code>，先前的開發者為了讓呈現綠色的 <code>ul, li</code> 中的 <code>.blue</code> 改成橘色，所以用很多階層的手法拉高優先值。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.blue</span> &#123;
   <span class="hljs-attribute">color</span>: blue;
@@ -231,7 +230,6 @@
   <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> dashed orange;
   <span class="hljs-attribute">padding</span>: <span class="hljs-number">15px</span>;
 &#125;</code></pre>
-
 <p>前一個開發者使用了許多巢狀的 CSS 來提高優先值，進而改變 <code>.blue</code> 的色彩。</p>
 <pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;demo&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">p</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;blue&quot;</span>&gt;</span>這是一段藍色的話<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
@@ -293,7 +291,6 @@ ul.green li ul li.blue {
   </ul>
 </div>
 
-
 <p>此時，如果身為 <code>.blue</code> 的藍色 (<code>ul.green li ul li.blue</code>)，如果想改變回藍色且不能修改原有的 CSS 程式碼情況下，這邊就提供一個小撇步來提高 CSS 權重。</p>
 
 <style>
@@ -332,12 +329,10 @@ ul.green li ul li.blue {
   </ul>
 </div>
 
-
 <p>只要將 <code>.blue</code> 這一個 className 不斷堆疊就能做到這樣的效果。</p>
 <pre><code class="hljs css"><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span><span class="hljs-selector-class">.blue</span> &#123;
   <span class="hljs-attribute">color</span>: blue;
 &#125;</code></pre>
-
 <p>這個手法是不斷提升堆疊單一個 className 的權重，並使它可以超過其它巢狀元素的優先值，所以並不會影響到標籤的 <code>style</code> 及 <code>!important</code> 的權重。</p>
 <p>那麼，如果這個情況下還需要更高的權重呢？那…就慢慢加長吧。</p>
 </div>

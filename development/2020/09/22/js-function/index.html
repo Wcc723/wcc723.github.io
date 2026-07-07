@@ -10,12 +10,12 @@
 <meta name="keywords" content="javascript,js" />
 
 
-<meta name="description" content="建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？ 函式中的可用變數本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？ 以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 &#x2F; 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。  注意：此段是針對傳統函式的說明，箭頭">
+<meta name="description" content="建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？ 函式中的可用變數本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？ 以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 &#x2F; 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。  注意：此段是針對傳統函式的說明，箭頭函式的運行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="呼叫函式時，到底有多少個參數 &#x2F; 變數可供使用？">
 <meta property="og:url" content="https://www.casper.tw/development/2020/09/22/js-function/">
 <meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
-<meta property="og:description" content="建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？ 函式中的可用變數本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？ 以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 &#x2F; 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。  注意：此段是針對傳統函式的說明，箭頭">
+<meta property="og:description" content="建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？ 函式中的可用變數本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？ 以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 &#x2F; 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。  注意：此段是針對傳統函式的說明，箭頭函式的運行">
 <meta property="og:locale" content="zh_TW">
 <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_07.jpg?alt=media&token=d6da2623-6897-4016-bb83-4a85638c9df3">
 <meta property="article:published_time" content="2020-09-21T16:00:00.000Z">
@@ -34,7 +34,7 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"呼叫函式時，到底有多少個參數 / 變數可供使用？","datePublished":"2020-09-21T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.533Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2020/09/22/js-function/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2Firon2020_07.jpg?alt=media&token=d6da2623-6897-4016-bb83-4a85638c9df3"]}</script>
 
 
-<link rel="icon" href="/images/blog_logo.svg" />
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
 <link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -157,7 +157,7 @@
 <div class="dateline"><div class="in">
   <span>第 361 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 6 日 · 台北</span>
+  <span>2026 年 7 月 7 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -217,11 +217,9 @@
 
   <div class="prose"><p>建立一個函式並呼叫時我們可以傳入一些參數，或者在這個參數中引用全域的變數，不過一個被呼叫的函式中究竟有多少可取用的變數或參數呢？</p>
 <h2 id="函式中的可用變數"><a href="#函式中的可用變數" class="headerlink" title="函式中的可用變數"></a>函式中的可用變數</h2><p>本篇會著重在參數的介紹，但一個函式中到底有哪些參數及變數呢？</p>
-<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 &#x2F; 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
+<p>以下透過一段範例程式碼來檢驗呼叫函式會有哪些變數 / 參數，在此可以透過「無痕模式」直接運行此段程式碼（無痕模式較能避免瀏覽器插件影響運行）。</p>
 <blockquote>
-<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。</p>
-</blockquote>
-<pre><code class="hljs js"><span class="hljs-keyword">var</span> globalVariable = <span class="hljs-string">&#x27;全域變數&#x27;</span>;
+<p>注意：此段是針對傳統函式的說明，箭頭函式的運行變數與傳統函式不同，在此不討論。<br><pre><code class="hljs js"><span class="hljs-keyword">var</span> globalVariable = <span class="hljs-string">&#x27;全域變數&#x27;</span>;
 <span class="hljs-keyword">var</span> obj = &#123;
   <span class="hljs-attr">aFunction</span>: <span class="hljs-keyword">function</span> (<span class="hljs-params">para</span>) &#123;
     <span class="hljs-keyword">var</span> localVariables = <span class="hljs-string">&#x27;區域變數&#x27;</span>;
@@ -229,12 +227,12 @@
     <span class="hljs-comment">// 包含傳入的參數</span>
   &#125;
 &#125;
-obj.<span class="hljs-title function_">aFunction</span>(<span class="hljs-string">&#x27;一段描述&#x27;</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);</code></pre>
-
+obj.<span class="hljs-title function_">aFunction</span>(<span class="hljs-string">&#x27;一段描述&#x27;</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>);</code></pre></p>
+</blockquote>
 <p>運行時，可切換到「Source」分頁，並使用 Chrome 的 JavaScript 除錯模式來進行驗證（除錯模式的<a target="_blank" rel="noopener" href="https://developers.google.com/web/tools/chrome-devtools/javascript/reference">教學</a>）。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&token=f7433765-ce8c-46f6-92b4-7347a5551b90"></p>
-<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8"></p>
-<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 &#x2F; 參數會包含：</p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_29.png?alt=media&amp;token=f7433765-ce8c-46f6-92b4-7347a5551b90" alt=""></p>
+<p>接下來進入到 aFunction 的函式中時，可以切換到 <code>console.log(...)</code> 這行停下來，畫面結果如下：<br><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_1_%E4%B8%8B%E5%8D%883_28.png?alt=media&amp;token=d2fa9700-d67d-4b08-a3a0-2b575ca591d8" alt=""></p>
+<p>接下來會看到 Scope 表示目前<strong>函式的作用域</strong>，此作用域可呼叫的變數也會依序列出，在此可以看到的變數 / 參數會包含：</p>
 <ul>
 <li><strong>para</strong>: 呼叫時傳入的參數。</li>
 <li><strong>arguments</strong>: 傳統函式預設會帶入的外部參數，此參數來自於外部所傳入的參數，就算函式本身未帶入在此也可以取值，本文後方會有更詳細的介紹。</li>
@@ -256,9 +254,8 @@ obj.<span class="hljs-title function_">aFunction</span>(<span class="hljs-string
 <span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
 <span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
 <span class="hljs-title function_">callMore</span>(a, b, c);</code></pre>
-
 <p>正確來說，函式參數的名稱是在定義函式就已經確定了，如下圖：參數取值是依序帶入，並「<strong>不會受到呼叫名稱的影響</strong>」。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&token=2f07b706-0d03-42e5-8180-7cda532dad0a"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_9_6_%E4%B8%8A%E5%8D%889_16.png?alt=media&amp;token=2f07b706-0d03-42e5-8180-7cda532dad0a" alt=""></p>
 <p>簡單的結論：</p>
 <ul>
 <li>參數名稱不會受到呼叫名稱影響</li>
@@ -267,12 +264,10 @@ obj.<span class="hljs-title function_">aFunction</span>(<span class="hljs-string
 </ul>
 <h4 id="ES6-的參數預設值"><a href="#ES6-的參數預設值" class="headerlink" title="ES6 的參數預設值"></a>ES6 的參數預設值</h4><p>如果已經定義了參數，但卻沒有傳入則會以 <code>undefined</code> 呈現，遇到這樣的情況程式碼就必須加入許多的除錯機制，避免 <code>undefined</code> 造成了語法錯誤，使函式沒有辦法依預期的狀況執行。</p>
 <p>ES6 中新增了「參數預設值」可預先給予特定參數預設值，除了避免 <code>undefined</code> 所造成的錯誤外，更可以增加函式運用的彈性。</p>
-<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getMoney</span>(<span class="hljs-params">money = <span class="hljs-number">1000</span></span>) &#123;
+<p>以下範例透過簡單的語法就可加上「參數預設值」，當外部沒有傳入值時則會使用預設值；反之，如果有傳入值則使用外部的傳入的值。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getMoney</span>(<span class="hljs-params">money = <span class="hljs-number">1000</span></span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`我有 <span class="hljs-subst">$&#123; money &#125;</span>`</span>); <span class="hljs-comment">// 我有 1000</span>
 &#125;
-<span class="hljs-title function_">getMoney</span>(); <span class="hljs-comment">// 不需要傳入參數</span></code></pre>
-
+<span class="hljs-title function_">getMoney</span>(); <span class="hljs-comment">// 不需要傳入參數</span></code></pre></p>
 <h3 id="arguments"><a href="#arguments" class="headerlink" title="arguments"></a>arguments</h3><p>如果無法確認傳入的參數數量該怎麼辦呢？</p>
 <p>這是專案開發比較少見的情況，但在製作框架、函式庫卻非常的常見，就如同前段所提「如果未定義，但有<strong>更多的傳入</strong>則需要使用其它方式取值」，會用到的就是本段所介紹的 <code>arguments</code> 參數（ES6 有更棒的方法）。</p>
 <pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">callMore</span>(<span class="hljs-params">d, c, b, a</span>) &#123;
@@ -283,10 +278,9 @@ obj.<span class="hljs-title function_">aFunction</span>(<span class="hljs-string
 <span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
 <span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
 <span class="hljs-title function_">callMore</span>(a, b, c);</code></pre>
-
 <p>任何的傳統函式都有 <code>arguments</code> 參數（注意：箭頭函式沒有此參數），不需要另外定義即可直接呼叫，且作用域僅限於本函式中。</p>
 <p><code>arguments</code> 結構上是屬於類陣列，其中會包含呼叫<strong>所傳入的所有值</strong>，在未確認傳入的參數數量時，是一個不錯的作法。</p>
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&token=a343a045-d3fc-4e00-aea1-1985dc781be5"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD122FB8A-99CE-429C-B962-23D69981DC2F.png?alt=media&amp;token=a343a045-d3fc-4e00-aea1-1985dc781be5" alt=""></p>
 <h4 id="ES6-的其餘參數"><a href="#ES6-的其餘參數" class="headerlink" title="ES6 的其餘參數"></a>ES6 的其餘參數</h4><p>因為 <code>arguments</code> 有些許的缺點，如：</p>
 <ul>
 <li>結構屬於類陣列，無法直接使用大部分的陣列方法</li>
@@ -300,17 +294,15 @@ obj.<span class="hljs-title function_">aFunction</span>(<span class="hljs-string
 <span class="hljs-keyword">var</span> b = <span class="hljs-string">&#x27;b&#x27;</span>;
 <span class="hljs-keyword">var</span> c = <span class="hljs-string">&#x27;c&#x27;</span>;
 <span class="hljs-title function_">callMore</span>(a, b, c);</code></pre>
-
-<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&token=0d19fafb-4b58-4151-8519-8926d570637a"></p>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F21D87990-BBED-4C71-9DFC-5BC4F15CE3F9.png?alt=media&amp;token=0d19fafb-4b58-4151-8519-8926d570637a" alt=""></p>
 <p>結果類似以上範例，但會是純陣列的方式呈現，並且僅會取得未定義的參數內容（<code>a</code> 會被跳過）。另外，箭頭函式是可以使用其餘參數的。</p>
 <h3 id="函式也可作為參數"><a href="#函式也可作為參數" class="headerlink" title="函式也可作為參數"></a>函式也可作為參數</h3><p>最後則是新手的夢魘，函式除了可以傳入純值、陣列、物件以外，還可以傳入「物件」作為參數，讓函式運作上更加豐富且…複雜（新手常常會不知道傳來傳去是傳到哪裡去）。</p>
-<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。</p>
-<pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">functionB</span>(<span class="hljs-params">fn</span>) &#123;
+<p>如以下範例來說，呼叫了 <code>functionB</code> 時，還可以傳入另一個函式作為參數，此手法我們則稱為 <code>callback function</code>。<br><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">functionB</span>(<span class="hljs-params">fn</span>) &#123;
   <span class="hljs-title function_">fn</span>(<span class="hljs-string">&#x27;小明&#x27;</span>);
 &#125;
 <span class="hljs-title function_">functionB</span>(<span class="hljs-keyword">function</span>(<span class="hljs-params">name</span>) &#123;
   <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name + <span class="hljs-string">&#x27; 您好&#x27;</span>);
-&#125;);</code></pre>
+&#125;);</code></pre></p>
 <blockquote>
 <p>可以試著看看其中的參數是如何傳遞的</p>
 </blockquote>
@@ -324,15 +316,15 @@ obj.<span class="hljs-title function_">aFunction</span>(<span class="hljs-string
     
 <nav class="post-nav">
   
-    <a class="prev" href="/development/2020/09/22/javascript-training-1st/">
+    <a class="prev" href="/development/2020/09/21/js-object/">
       <span class="lab">← 較舊一篇</span>
-      <span class="ttl">讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班</span>
+      <span class="ttl">JS 物件名詞解釋及常見觀念問題</span>
     </a>
   
   
-    <a class="next" href="/development/2020/09/23/js-object/">
+    <a class="next" href="/development/2020/09/22/javascript-training-1st/">
       <span class="lab">較新一篇 →</span>
-      <span class="ttl">JS 記憶體釋放機制及驗證</span>
+      <span class="ttl">讓我們一起到達終點！超過 60% 完課率的直播課程 - JavaScript 作品實戰直播班</span>
     </a>
   
 </nav>
