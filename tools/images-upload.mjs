@@ -1,21 +1,18 @@
 #!/usr/bin/env node
-// 日常圖片上傳:把專案根目錄 `r2-uploads/` 底下的檔案同步到 R2。
-//   本機路徑 r2-uploads/<key>  ->  R2 物件 key = <key>  ->  https://img.casper.tw/<key>
-// 因為 VS Code Paste Image 存到 r2-uploads/posts/<文章檔名>/xxx.png,
-// 上傳後即對應貼上時已插入的 https://img.casper.tw/posts/<文章檔名>/xxx.png。
+// 日常圖片上傳(搭配 VS Code 內建 Markdown 貼圖):
+//   1) 貼圖(Cmd+V)→ VS Code 存到 r2-uploads/posts/<文章檔名>/,並在文章插入相對路徑
+//      如 ![](../../r2-uploads/posts/<文章檔名>/image.png)(編輯器預覽可直接看到)。
+//   2) 本指令把 r2-uploads/** 同步到 R2(key = 相對於 r2-uploads 的路徑),
+//      並把文章中對應的相對路徑改寫成 https://img.casper.tw/<key>,最後刪掉本機暫存。
 //
-// 兩種後端(自動偵測):
-//   - 有 .env(R2 API 金鑰)→ 走 aws-sdk(快;支援 ETag 內容去重、--force)。
-//   - 沒有 .env → 自動改用 wrangler(靠 `wrangler login` 的 OAuth,免金鑰、免 .env);
-//     也可用 --wrangler 明確指定。bucket/網域讀 tools/r2.config.mjs。
+// 後端自動偵測:有 .env(R2 API 金鑰)走 aws-sdk;沒有則用 wrangler(需 wrangler login)。--wrangler 強制。
 //
 // 用法:
-//   npm run images:upload            # 上傳;成功後刪除本機暫存
-//   npm run images:upload -- --keep  # 上傳後保留本機檔
-//   npm run images:upload -- --wrangler   # 強制用 wrangler(即使有 .env)
+//   npm run images:upload            # 上傳 + 改寫文章 + 刪本機暫存
+//   npm run images:upload -- --keep  # 保留本機檔(仍會改寫文章為 R2 網址)
 //   npm run images:upload -- --force # (aws-sdk)不比對 ETag,一律重傳
 //   npm run images:upload -- --dry-run
-import { rmSync, statSync, readFileSync, readdirSync, rmdirSync } from 'node:fs';
+import { rmSync, statSync, readFileSync, writeFileSync, readdirSync, rmdirSync } from 'node:fs';
 import path from 'node:path';
 import {
   ROOT, getConfig, getBucket, getPublicBase, hasS3Creds, makeClient,
@@ -39,12 +36,13 @@ const cfg = useWrangler ? { bucket: getBucket(), publicBase: getPublicBase() } :
 const items = files.map((abs) => ({ abs, key: path.relative(dir, abs).split(path.sep).join('/') }));
 
 console.log(
-  `${dryRun ? '[dry-run] ' : ''}準備上傳 ${items.length} 個檔案到 R2 bucket「${cfg.bucket}」` +
+  `${dryRun ? '[dry-run] ' : ''}上傳 ${items.length} 個檔案到 R2 bucket「${cfg.bucket}」` +
   `(後端:${useWrangler ? 'wrangler OAuth' : 'aws-sdk'})…\n`
 );
 
 const conn = (useWrangler || dryRun) ? null : await makeClient(cfg);
 let ok = 0, skip = 0, fail = 0;
+const doneKeys = new Set(); // 已確認在 R2 的 key(上傳成功或內容相同)
 
 await runPool(items, useWrangler ? 6 : 8, async ({ abs, key }) => {
   const url = publicUrl(cfg, key);
@@ -58,14 +56,14 @@ await runPool(items, useWrangler ? 6 : 8, async ({ abs, key }) => {
     } else {
       const buf = readFileSync(abs);
       if (!force && (await headETag(conn, cfg, key)) === md5hex(buf)) {
-        if (!keep) rmSync(abs);
+        doneKeys.add(key);
         skip++;
         console.log(`  = ${url}(內容已在 R2,略過)`);
         return;
       }
       await putObject(conn, cfg, key, buf);
     }
-    if (!keep) rmSync(abs);
+    doneKeys.add(key);
     ok++;
     console.log(`  ✓ ${url}`);
   } catch (e) {
@@ -74,10 +72,38 @@ await runPool(items, useWrangler ? 6 : 8, async ({ abs, key }) => {
   }
 });
 
-if (!dryRun && !keep) pruneEmptyDirs(dir);
+// 改寫文章中對應的相對路徑 → R2 網址(只改已確認在 R2 的 key)
+let rw = { files: 0, refs: 0 };
+if (!dryRun && doneKeys.size) rw = rewritePostRefs(doneKeys, cfg.publicBase);
 
-console.log(`\n完成:上傳 ${ok}、略過(內容相同)${skip}、失敗 ${fail}${keep ? '(保留本機檔)' : ''}。`);
+// 刪除已上傳的本機暫存(除非 --keep)
+if (!dryRun && !keep) {
+  for (const { abs, key } of items) if (doneKeys.has(key)) { try { rmSync(abs); } catch {} }
+  pruneEmptyDirs(dir);
+}
+
+console.log(
+  `\n完成:上傳 ${ok}、略過 ${skip}、失敗 ${fail}` +
+  `${dryRun ? '' : `;改寫文章 ${rw.files} 檔、${rw.refs} 處 → ${cfg.publicBase}/…`}` +
+  `${keep ? '(保留本機檔)' : ''}。`
+);
 if (fail) process.exit(1);
+
+// 把文章中的 (相對前綴)r2-uploads/<key> 改寫成 <R2 網域>/<key>。只改已上傳的 key。
+function rewritePostRefs(doneKeys, base) {
+  const postFiles = walk(path.join(ROOT, 'source')).filter((f) => /\.(md|markdown|html)$/i.test(f));
+  const re = /(\]\(|(?:src|href)=["'])((?:\.{1,2}\/)*)r2-uploads\/([^)"'\s]+)/g;
+  let filesChanged = 0, refs = 0;
+  for (const file of postFiles) {
+    const before = readFileSync(file, 'utf8');
+    const after = before.replace(re, (m, anchor, _prefix, rest) => {
+      if (doneKeys.has(rest) || doneKeys.has(decodeURIComponent(rest))) { refs++; return `${anchor}${base}/${rest}`; }
+      return m;
+    });
+    if (after !== before) { writeFileSync(file, after); filesChanged++; }
+  }
+  return { files: filesChanged, refs };
+}
 
 // 上傳並刪檔後,清掉空掉的暫存資料夾(保留 r2-uploads/ 本身)。
 function pruneEmptyDirs(root) {

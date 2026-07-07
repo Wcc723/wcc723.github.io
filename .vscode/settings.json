@@ -2,13 +2,10 @@
   "vsicons.presets.angular": false,
   "eslint.enable": false,
 
-  // Paste Image 擴充(mushan.vscode-paste-image):在文章中貼上剪貼簿圖片時,
-  //   1) 存到專案根目錄 r2-uploads/posts/<文章檔名>/<時間戳>.png(source/ 之外,不會被 Hexo 帶進 public)
-  //   2) 自動插入對應的 R2 網址 ![](https://img.casper.tw/posts/<文章檔名>/<時間戳>.png)
-  // 之後執行 `npm run images:upload` 把 r2-uploads/ 同步到 R2,網址即生效。
-  "pasteImage.path": "${projectRoot}/r2-uploads/posts/${currentFileNameWithoutExt}",
-  "pasteImage.insertPattern": "![](https://img.casper.tw/posts/${currentFileNameWithoutExt}/${imageFileName})",
-  "pasteImage.defaultName": "Y-MM-DD-HH-mm-ss",
-  "pasteImage.showFilePathConfirmInputBox": false,
-  "pasteImage.encodePath": "urlEncodeSpace"
+  // VS Code 內建 Markdown 貼圖(Cmd+V):把貼上的圖存到 r2-uploads/posts/<文章檔名>/,
+  // 插入相對路徑(編輯器預覽可直接看到圖)。之後 `npm run images:upload` 會上傳 R2,
+  // 並把文章裡的相對路徑改寫成 https://img.casper.tw/… 網址。
+  "markdown.copyFiles.destination": {
+    "/source/_posts/**": "${documentWorkspaceFolder}/r2-uploads/posts/${documentBaseName}/"
+  }
 }
