@@ -3,6 +3,7 @@
   if (page.categories && page.categories.length) { page.categories.each(function(c){ if (!catName) catName = c.name; }); }
 %>
 <article class="post">
+  <% var cover = post_cover(page); %>
   <header class="article-head">
     <% if (catName) { %><p class="crumb"><%= catName %></p><% } %>
     <h1><%= page.title %></h1>
@@ -15,6 +16,10 @@
     </div>
     <div class="rule-d"></div>
   </header>
+
+  <% if (cover) { %>
+    <figure class="post-cover"><img src="<%- cover %>" alt="" loading="eager"></figure>
+  <% } %>
 
   <div class="prose"><%- page.content %></div>
 

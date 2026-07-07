@@ -1,10 +1,15 @@
 <%- partial('common/head') %>
 <body>
   <a class="skip-link" href="#main">跳到主要內容</a>
+  <%
+    // 閱讀內文頁(單篇文章、自訂頁面)關閉背景動畫特效,避免干擾閱讀;
+    // 列表/首頁/彙整/標籤等 feed 頁維持特效。
+    var readingView = is_post() || page.layout === 'page';
+  %>
   <div class="atmos" aria-hidden="true">
     <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
   </div>
-  <%- partial('common/dark-fx') %>
+  <% if (!readingView) { %><%- partial('common/dark-fx') %><% } %>
 
   <%- partial('common/header') %>
 
@@ -17,7 +22,7 @@
 
   <%- partial('common/footer') %>
   <%- partial('search/casper') %>
-  <%- partial('common/creatures') %>
+  <% if (!readingView) { %><%- partial('common/creatures') %><% } %>
   <%- partial('common/scripts') %>
 </body>
 </html>

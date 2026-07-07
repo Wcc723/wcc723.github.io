@@ -27,6 +27,16 @@ hexo.extend.helper.register('thumb_fallback', function (post) {
   return t.slice(0, 2) || '?';
 });
 
+// 文章內頁頂部首圖：只用明確設定的 front-matter thumbnail，且需為可解析的絕對網址
+// （設計過的封面，如 R2 cover.png），並排除「與內文第一張圖相同」以免頂部與內文重複。
+// 相對路徑（舊文多為相對於文章 URL、實際 404 的舊值）一律不顯示。
+hexo.extend.helper.register('post_cover', function (post) {
+  var url = post.thumbnail || '';
+  if (!/^https?:\/\//i.test(url)) return '';
+  if ((post.content || '').indexOf(url) !== -1) return ''; // 封面已出現在內文任何位置 → 不重複顯示
+  return url;
+});
+
 // 取文章描述（front-matter description 優先，否則用 excerpt 純文字裁切）
 hexo.extend.helper.register('card_excerpt', function (post, len) {
   len = len || 90;
