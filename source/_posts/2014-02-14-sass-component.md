@@ -5,7 +5,7 @@ category: sass
 tagline: sass沒有極限
 tags: [css, sass]
 cssdemo: 2014-spring
-thumbnail: 2014-02-14_152727.png
+thumbnail: https://img.casper.tw/images/2014-02-14_152727.png
 published: true
 ---
 

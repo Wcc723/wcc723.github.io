@@ -4,7 +4,7 @@ title: Just Another Beginner~
 category: jekyll
 tagline: "只是另一個開始"
 tags: [intro, beginner, jekyll]
-thumbnail: 2013-12-11_150540.png
+thumbnail: https://img.casper.tw/images/2013-12-11_150540.png
 ---
 
 告別了一百多天的[aShareaDay](http://ashareaday.wcc.tw/#2013-11-30)，在這裡即將有新的開始。在結束aShareaDay前一直在思考要用什麼樣的平台繼續寫文章，其中的選項有：

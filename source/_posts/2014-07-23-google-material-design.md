@@ -6,7 +6,7 @@ tagline:
 tags: [design]
 cssdemo: 
 jsdemo: 
-thumbnail: 20140723_google_design_translate.jpeg
+thumbnail: https://img.casper.tw/images/20140723_google_design_translate.jpeg
 published: true
 ---
 

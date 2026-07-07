@@ -6,7 +6,7 @@ tagline:
 tags: [css]
 cssdemo:
 jsdemo:
-thumbnail: 2016_ironman/20161201.jpg
+thumbnail: https://img.casper.tw/images/2016_ironman/20161201.jpg
 published: true
 ---
 

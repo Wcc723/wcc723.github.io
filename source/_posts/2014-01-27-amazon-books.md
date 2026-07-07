@@ -5,7 +5,7 @@ category: css
 tagline:
 tags: [css, sass]
 cssdemo:
-thumbnail: 2014-01-27_084528.png
+thumbnail: https://img.casper.tw/images/2014-01-27_084528.png
 published: true
 ---
 

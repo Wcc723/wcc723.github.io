@@ -6,7 +6,7 @@ tagline:
 tags: [css, gulp]
 cssdemo:
 jsdemo:
-thumbnail: 2016_ironman/13_gulp_header.jpg
+thumbnail: https://img.casper.tw/images/2016_ironman/13_gulp_header.jpg
 published: true
 ---
 

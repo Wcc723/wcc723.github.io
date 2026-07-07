@@ -5,7 +5,7 @@ category: tools
 tagline: 
 tags: [tools]
 cssdemo: 
-thumbnail: 2013-12-27-01.png
+thumbnail: https://img.casper.tw/images/2013-12-27-01.png
 ---
 
 #### 情境

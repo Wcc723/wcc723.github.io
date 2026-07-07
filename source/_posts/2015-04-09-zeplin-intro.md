@@ -6,7 +6,7 @@ tagline:
 tags: [tools, zeplin]
 cssdemo: 
 jsdemo: 
-thumbnail: zeplin/2015_04_09_zeplin_00.png
+thumbnail: https://img.casper.tw/images/zeplin/2015_04_09_zeplin_00.png
 published: true
 ---
 

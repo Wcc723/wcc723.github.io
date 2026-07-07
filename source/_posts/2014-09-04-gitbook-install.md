@@ -6,7 +6,7 @@ tagline:
 tags: [design]
 cssdemo:
 jsdemo:
-thumbnail: gitbook/gitbook-20140904-1.png
+thumbnail: https://img.casper.tw/images/gitbook/gitbook-20140904-1.png
 published: true
 ---
 

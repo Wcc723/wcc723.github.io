@@ -5,7 +5,7 @@ category: jekyll
 tagline: 之Mac OSX可以跳過一大段
 tags: [jekyll, github, git]
 cssdemo: 
-thumbnail: 2013-11-30_213819.png
+thumbnail: https://img.casper.tw/images/2013-11-30_213819.png
 published: true
 ---
 

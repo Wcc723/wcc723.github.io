@@ -6,7 +6,7 @@ tagline: 一本適合所有人閱讀的書
 tags: [study]
 cssdemo:
 jsdemo:
-thumbnail: 2015/12/IMG_0204.jpg
+thumbnail: https://img.casper.tw/images/2015/12/IMG_0204.jpg
 published: true
 ---
 

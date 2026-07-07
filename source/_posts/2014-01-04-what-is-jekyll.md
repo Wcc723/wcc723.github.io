@@ -5,7 +5,7 @@ category: jekyll
 tagline: 建立超有個性 Bolg
 tags: [jekyll]
 cssdemo: 
-thumbnail: 2013-12-14-jekyll.png
+thumbnail: https://img.casper.tw/images/2013-12-14-jekyll.png
 ---
 本篇開始會重頭介紹Jekyll，如果對jekyll有興趣的開發者，請先必備以下的技能。
 

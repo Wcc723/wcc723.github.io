@@ -5,7 +5,7 @@ category: css
 tagline:
 tags: [css, sass]
 cssdemo: 2014-spring
-thumbnail: google_logo170_hr.png
+thumbnail: https://img.casper.tw/images/google_logo170_hr.png
 published: true
 ---
 

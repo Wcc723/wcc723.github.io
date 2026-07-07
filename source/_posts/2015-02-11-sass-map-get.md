@@ -6,7 +6,7 @@ tagline:
 tags: [css, sass]
 cssdemo: 2015-spring
 jsdemo:
-thumbnail: 2015-02-11-sass-map.png
+thumbnail: https://img.casper.tw/images/2015-02-11-sass-map.png
 published: true
 ---
 

@@ -6,7 +6,7 @@ tagline:
 tags: [d3js]
 cssdemo:
 jsdemo:
-thumbnail: 2014-11-25-01.png
+thumbnail: https://img.casper.tw/images/2014-11-25-01.png
 published: true
 ---
 

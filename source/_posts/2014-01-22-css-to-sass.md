@@ -5,7 +5,7 @@ category: css
 tagline: 
 tags: [css, sass]
 cssdemo: 
-thumbnail: banner-01.png
+thumbnail: https://img.casper.tw/images/banner-01.png
 published: true
 ---
 

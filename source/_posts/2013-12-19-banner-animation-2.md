@@ -4,7 +4,7 @@ title: 效能更好的banner animation
 category: css
 tagline:
 tags: [css, sass]
-thumbnail: 2013-12-19-banner-01.png
+thumbnail: https://img.casper.tw/images/2013-12-19-banner-01.png
 ---
 之前有一篇介紹利用background-position製作動態的banner，不久後就接到效能不好的問題，所以我就重新用另一種方式製作，發現效能有明顯的提升，也很有成就感，本篇就介紹不同的動態banner作法。
 <!-- more -->

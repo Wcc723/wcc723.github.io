@@ -5,7 +5,7 @@ category: sass
 tagline: 
 tags: [sass]
 cssdemo: 2014-spring
-thumbnail: 20140602_sass_source_maps05.png
+thumbnail: https://img.casper.tw/images/20140602_sass_source_maps05.png
 published: true
 ---
 

@@ -6,7 +6,7 @@ tagline:
 tags: [sass, compass, gulp]
 cssdemo:
 jsdemo:
-thumbnail: 2016/01/screen_shot_2016-01-03_02.png
+thumbnail: https://img.casper.tw/images/2016/01/screen_shot_2016-01-03_02.png
 published: true
 ---
 

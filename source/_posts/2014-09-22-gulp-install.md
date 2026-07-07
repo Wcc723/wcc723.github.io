@@ -6,7 +6,7 @@ tagline:
 tags: [gulp]
 cssdemo:
 jsdemo:
-thumbnail: gulp/screen_shot_gulp01.png
+thumbnail: https://img.casper.tw/images/gulp/screen_shot_gulp01.png
 published: true
 ---
 

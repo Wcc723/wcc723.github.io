@@ -5,7 +5,7 @@ category: rails
 tagline: 
 tags: [ruby, rails]
 cssdemo: 2014-spring
-thumbnail: screen_shot_rails101_0622.png
+thumbnail: https://img.casper.tw/images/screen_shot_rails101_0622.png
 published: true
 ---
 

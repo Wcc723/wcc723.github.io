@@ -4,7 +4,7 @@ title: jQuery step by step 教學
 category: jquery
 tagline:
 tags: [jquery]
-thumbnail: JQuery_logo.png
+thumbnail: https://img.casper.tw/images/JQuery_logo.png
 ---
 不久前在高雄前端社群有介紹[jquery教學](https://kktix.com/events/476891)，我的部分盡量做成一個步驟一個步驟，且就算沒有人教，也可以看著講義做下去。
 <!-- more -->

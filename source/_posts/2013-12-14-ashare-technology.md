@@ -4,7 +4,7 @@ title: aShare使用技術
 category: jekyll
 tagline: 本站的特色
 tags: [intro, beginner, jekyll]
-thumbnail: 2013-12-14-jekyll.png
+thumbnail: https://img.casper.tw/images/2013-12-14-jekyll.png
 ---
 
 上一篇簡單介紹了本站為什麼選擇jekyll，但是這其中並不是只有這一項技術就可以達成，其中除了我已經很熟悉的html、css、sass外，必須要了解Git、Liquid、Markdown等等的技術，當然其中會有許多困難，但是不斷的突破困境是進步最快的方式。

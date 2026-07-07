@@ -6,7 +6,7 @@ tagline:
 tags: [tools, icon fonts, sketch]
 cssdemo:
 jsdemo:
-thumbnail: 2015/11/googleIconsToFonts.png
+thumbnail: https://img.casper.tw/images/2015/11/googleIconsToFonts.png
 published: true
 ---
 

@@ -6,7 +6,7 @@ tagline:
 tags: [jekyll]
 cssdemo:
 jsdemo:
-thumbnail: jekyll/jekyll-20140905-01.png
+thumbnail: https://img.casper.tw/images/jekyll/jekyll-20140905-01.png
 published: true
 ---
 

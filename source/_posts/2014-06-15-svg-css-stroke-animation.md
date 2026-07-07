@@ -5,7 +5,7 @@ category: svg
 tagline:
 tags: [svg,css]
 cssdemo: 2014-spring
-thumbnail: 20140615-svg-css-ani.png
+thumbnail: https://img.casper.tw/images/20140615-svg-css-ani.png
 published: true
 ---
 

@@ -6,7 +6,7 @@ tagline:
 tags: [study]
 cssdemo:
 jsdemo:
-thumbnail: 2016/04/photo-1453227588063-bb302b62f50b.jpg
+thumbnail: https://img.casper.tw/images/2016/04/photo-1453227588063-bb302b62f50b.jpg
 published: true
 ---
 

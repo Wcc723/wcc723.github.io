@@ -6,7 +6,7 @@ tagline:
 tags: [css]
 cssdemo: 2015-summer
 jsdemo:
-thumbnail: 2015-07-22_screen_shot.png
+thumbnail: https://img.casper.tw/images/2015-07-22_screen_shot.png
 published: true
 ---
 

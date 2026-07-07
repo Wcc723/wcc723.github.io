@@ -6,7 +6,7 @@ tagline:
 tags: [tools, jekyll]
 cssdemo:
 jsdemo:
-thumbnail: 2015/11/open-source-ddd56f69d6e1b5bd2c1b44b0db1d2a6c.jpg
+thumbnail: https://img.casper.tw/images/2015/11/open-source-ddd56f69d6e1b5bd2c1b44b0db1d2a6c.jpg
 published: true
 ---
 

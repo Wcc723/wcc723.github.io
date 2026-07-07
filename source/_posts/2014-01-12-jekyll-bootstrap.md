@@ -5,7 +5,7 @@ category: jekyll
 tagline: 之到處都可以看到的 Bootstrap
 tags: [jekyll, github, git]
 cssdemo: 
-thumbnail: 2014-01-02_165953.png
+thumbnail: https://img.casper.tw/images/2014-01-02_165953.png
 published: true
 ---
 Bootstrap是一套好用的framework，而jekyll就利用bootstrap的便利建立一套jekyll framework，稱作為Jekyll Bootstrap。除了版型外，還另外增加許多實用的模組，如Disqus、google analytic等等，本篇就來介紹如何在github上建立jekyll bootstrap。

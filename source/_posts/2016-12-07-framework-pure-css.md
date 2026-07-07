@@ -6,7 +6,7 @@ tagline:
 tags: [css, oocss]
 cssdemo:
 jsdemo:
-thumbnail: 2016_ironman/07_framework_purecss.png
+thumbnail: https://img.casper.tw/images/2016_ironman/07_framework_purecss.png
 published: true
 ---
 

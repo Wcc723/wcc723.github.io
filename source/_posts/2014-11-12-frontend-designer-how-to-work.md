@@ -6,7 +6,7 @@ tagline:
 tags: [design]
 cssdemo: 
 jsdemo: 
-thumbnail: 2014-11-12-01.png
+thumbnail: https://img.casper.tw/images/2014-11-12-01.png
 published: true
 ---
 

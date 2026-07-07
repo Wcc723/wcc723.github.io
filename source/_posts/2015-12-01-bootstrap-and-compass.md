@@ -6,7 +6,7 @@ tagline: 透過Compass 以及 Gulp
 tags: [bootstrap, sass, gulp, compass]
 cssdemo:
 jsdemo:
-thumbnail: 2015/12/screen_shot_2015-12-01_01.png
+thumbnail: https://img.casper.tw/images/2015/12/screen_shot_2015-12-01_01.png
 published: true
 ---
 

@@ -5,7 +5,7 @@ category: css
 tagline: 那就用Ico Moon吧
 tags: [css, sass, icons]
 cssdemo: iconmoon-2014
-thumbnail: 2014-02-10_140244.png
+thumbnail: https://img.casper.tw/images/2014-02-10_140244.png
 published: true
 ---
 

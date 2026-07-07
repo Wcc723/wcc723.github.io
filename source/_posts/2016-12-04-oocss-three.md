@@ -6,7 +6,7 @@ tagline:
 tags: [css, oocss]
 cssdemo:
 jsdemo:
-thumbnail: 2016_ironman/04_oocss_header.png
+thumbnail: https://img.casper.tw/images/2016_ironman/04_oocss_header.png
 published: true
 ---
 

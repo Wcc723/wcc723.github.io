@@ -5,7 +5,7 @@ category: jekyll
 tagline: 之超級簡單
 tags: [jekyll, github, git]
 cssdemo: 
-thumbnail: 2014-01-10_173447.png
+thumbnail: https://img.casper.tw/images/2014-01-10_173447.png
 published: true
 ---
 

@@ -6,7 +6,7 @@ tagline:
 tags: [tools]
 cssdemo: 
 jsdemo: 
-thumbnail: middleman/20150323-middleman01.png
+thumbnail: https://img.casper.tw/images/middleman/20150323-middleman01.png
 published: true
 ---
 

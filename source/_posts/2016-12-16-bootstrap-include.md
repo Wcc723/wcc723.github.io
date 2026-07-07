@@ -6,7 +6,7 @@ tagline:
 tags: [css, Bootstrap]
 cssdemo:
 jsdemo:
-thumbnail: 2016_ironman/16_bootstrap_header.jpg
+thumbnail: https://img.casper.tw/images/2016_ironman/16_bootstrap_header.jpg
 published: true
 ---
 

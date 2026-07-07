@@ -6,7 +6,7 @@ tagline:
 tags: [css, Sass ]
 cssdemo:
 jsdemo:
-thumbnail: 2016_ironman/30_ending_header.jpg
+thumbnail: https://img.casper.tw/images/2016_ironman/30_ending_header.jpg
 published: true
 ---
 

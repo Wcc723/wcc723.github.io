@@ -5,7 +5,7 @@ category: css
 tagline:
 tags: [css, sass]
 cssdemo: 2013-winter
-thumbnail: 2013-12-23-lol-zig.png"
+thumbnail: https://img.casper.tw/images/2013-12-23-lol-zig.png
 ---
 
 在先前範例中可以得知，CSS transform 來做視覺特效，效能會比原始的CSS2還要好，所以本篇就利用css transform 以及hover來簡單做一個互動的效果吧！

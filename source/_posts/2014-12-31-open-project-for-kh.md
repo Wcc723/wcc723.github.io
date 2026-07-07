@@ -6,7 +6,7 @@ tagline: 線上即時分享圖表
 tags: [project]
 cssdemo: 2013-autumn
 jsdemo:
-thumbnail: 2014-12-31-00.png
+thumbnail: https://img.casper.tw/images/2014-12-31-00.png
 published: true
 ---
 

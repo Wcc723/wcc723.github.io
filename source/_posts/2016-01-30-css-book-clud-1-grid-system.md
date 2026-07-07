@@ -6,7 +6,7 @@ tagline:
 tags: [css]
 cssdemo:
 jsdemo:
-thumbnail: 2016/01/cssBookclub-youtube.jpg
+thumbnail: https://img.casper.tw/images/2016/01/cssBookclub-youtube.jpg
 published: true
 ---
 
