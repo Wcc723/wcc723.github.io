@@ -42,7 +42,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
-<link rel="stylesheet" href="/css/style.css?v=mq954j70">
+<link rel="stylesheet" href="/css/style.css?v=mrahjy61">
 
 
 
@@ -61,104 +61,17 @@
 
 <body>
   <a class="skip-link" href="#main">跳到主要內容</a>
+  
   <div class="atmos" aria-hidden="true">
     <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
   </div>
   
-<canvas class="fx-rain" id="fx-rain" aria-hidden="true"></canvas>
-<div class="fx-sweep" aria-hidden="true"></div>
-<script>
-(function(){
-  if (!window.matchMedia) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return; // 尊重減少動態
-  var deskRain = matchMedia('(min-width: 1000px)'); // 雨僅桌機（顧行動裝置電量）
-  function isDark(){ return document.documentElement.classList.contains('dark'); }
-
-  /* ===== A：顏文字雨（單 canvas） ===== */
-  var rain = (function(){
-    var cv = document.getElementById('fx-rain'); if(!cv) return null;
-    var ctx = cv.getContext('2d'), cols = [], raf = null, last = 0, on = false, rz;
-    var G = [
-      ['(・ω・)ノ','ヽ(・ω・)'],['ᕕ( ᐛ )ᕗ','ᕙ( ᐛ )ᕗ'],['┌(˘ω˘)┘','└(˘ω˘)┐'],
-      ['(っ◔ω◔)っ','(づ◔ω◔)づ'],['(•◡•)/','\\(•◡•)'],['＼(^o^)／','／(^o^)＼'],
-      ['(ﾉ´ヮ`)ﾉ','ヽ(´ヮ`ヽ)'],['o(>ω<)o','o(<ω>)o'],['( ´ ▽ ` )ﾉ','ヽ( ´ ▽ ` )'],
-      '( ͡° ͜ʖ ͡°)','¯\\_(ツ)_/¯','</>','0x1A'
-    ];
-    function size(){
-      var DPR = Math.min(devicePixelRatio || 1, 1.5);
-      cv.width = innerWidth*DPR; cv.height = innerHeight*DPR;
-      cv.style.width = innerWidth+'px'; cv.style.height = innerHeight+'px';
-      ctx.setTransform(DPR,0,0,DPR,0,0);
-      var n = Math.min(Math.floor(innerWidth/64), innerWidth<700 ? 14 : 22); cols = [];
-      for(var i=0;i<n;i++) cols.push({ x:(i+.5)*(innerWidth/n), y:Math.random()*innerHeight, sp:34+Math.random()*46, g:G[(Math.random()*G.length)|0], ph:Math.random()*6 });
-    }
-    function tick(now){
-      if(!on) return;
-      var wait = 33 - (now - last);
-      if(wait > 0){ raf = setTimeout(function(){ raf = requestAnimationFrame(tick); }, wait); return; } // 節流 ~30fps
-      var dt = (now-last)/1000; last = now;
-      ctx.clearRect(0,0,innerWidth,innerHeight);                  // 清空，落下不留尾巴
-      ctx.font = '15px "JetBrains Mono",monospace'; ctx.textAlign = 'center';
-      for(var i=0;i<cols.length;i++){ var c=cols[i]; c.y += c.sp*dt;
-        if(c.y > innerHeight+24){ c.y = -24; c.g = G[(Math.random()*G.length)|0]; c.ph = Math.random()*6; }
-        var x = c.x + Math.sin(now/520 + c.ph*3)*7;
-        var rot = Math.sin(now/430 + c.ph*2)*0.18;
-        var g = Array.isArray(c.g) ? c.g[(Math.floor(now/250 + c.ph)) & 1] : c.g;
-        ctx.save(); ctx.translate(x, c.y); ctx.rotate(rot);
-        ctx.fillStyle = 'rgba(125,247,181,.9)'; ctx.fillText(g,0,0);   // 單一隻、無殘影
-        ctx.restore();
-      }
-      raf = requestAnimationFrame(tick);
-    }
-    addEventListener('resize', function(){ if(!on) return; clearTimeout(rz); rz = setTimeout(size,150); });
-    return {
-      start:function(){ if(on) return; on = true; size(); last = 0; raf = requestAnimationFrame(tick); },
-      stop:function(){ if(!on) return; on = false; if(raf){ cancelAnimationFrame(raf); clearTimeout(raf); } ctx.clearRect(0,0,innerWidth,innerHeight); }
-    };
-  })();
-
-  /* ===== B：七彩像素邊框跑光（卡片，動態插入 .edge-runner） ===== */
-  var border = (function(){
-    var timer = null, on = false;
-    function run(){
-      if(!on) return;
-      var all = [].slice.call(document.querySelectorAll('.card'));
-      var vis = all.filter(function(c){ var r=c.getBoundingClientRect(); return r.top<innerHeight && r.bottom>0; });
-      var pool = vis.length ? vis : all, el = pool[(Math.random()*pool.length)|0];
-      if(el && !el.querySelector('.edge-runner')){
-        var rn = document.createElement('div'); rn.className = 'edge-runner'; el.appendChild(rn);
-        var off = function(){ rn.remove(); rn.removeEventListener('animationend', off); };
-        rn.addEventListener('animationend', off);
-        setTimeout(function(){ if(rn.parentNode) rn.remove(); }, 6000); // 保險清除
-      }
-      timer = setTimeout(run, 4000 + Math.random()*6000);
-    }
-    return {
-      start:function(){ if(on) return; on = true; timer = setTimeout(run, 1500); },
-      stop:function(){ on = false; clearTimeout(timer); var rs = document.querySelectorAll('.edge-runner'); for(var i=0;i<rs.length;i++) rs[i].remove(); }
-    };
-  })();
-
-  /* ===== 控制器：只在暗色 + 分頁可見時跑；sweep 由 CSS 控制 ===== */
-  function sync(){
-    var dark = isDark(), vis = !document.hidden;
-    if(rain){ (dark && vis && deskRain.matches) ? rain.start() : rain.stop(); }
-    (dark && vis) ? border.start() : border.stop();
-  }
-  new MutationObserver(sync).observe(document.documentElement, { attributes:true, attributeFilter:['class'] });
-  document.addEventListener('visibilitychange', sync);
-  if(deskRain.addEventListener) deskRain.addEventListener('change', sync);
-  sync();
-})();
-</script>
-
-
 
   
 <div class="dateline"><div class="in">
   <span>第 362 篇 · 第 14 卷</span>
   <span class="c">前端，沒有極限</span>
-  <span>2026 年 7 月 7 日 · 台北</span>
+  <span>2026 年 7 月 8 日 · 台北</span>
 </div></div>
 
 <header class="topbar"><nav class="nav">
@@ -203,6 +116,7 @@
     <div class="layout">
       <main id="main" tabindex="-1">
 <article class="post">
+  
   <header class="article-head">
     <p class="crumb">javascript</p>
     <h1>鐵人賽：JavaScript Await 與 Async</h1>
@@ -215,6 +129,8 @@
     </div>
     <div class="rule-d"></div>
   </header>
+
+  
 
   <div class="prose"><p>不知道上一篇大家對於 Promise 概念如何，本篇介紹的內容與 Promise 依然有相關性，因為這兩者就是建構於 Promise 之上的，如果直接從原始碼看可能不是很好瞭解這語法怎麼使用，不過可以先直接用 Google 翻譯了解大概意思：</p>
 <ul>
@@ -508,124 +424,6 @@
 </script>
 
   
-<div id="creature-stage" aria-hidden="true"></div>
-<script>
-(function(){
-  // 僅在「亮色 + 桌機 + 精準指標 + 未要求減少動態」時啟用
-  if (!window.matchMedia) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (!matchMedia('(min-width: 1000px) and (pointer: fine)').matches) return; // 對齊雙欄斷點
-  var target = document.querySelector('.layout');
-  var stage = document.getElementById('creature-stage');
-  if (!target || !stage) return;
-
-  function W(){ return window.innerWidth; }
-  function H(){ return window.innerHeight; }
-  var timers = [];
-  function make(txt, color){
-    var e = document.createElement('span'); e.className = 'creature';
-    var sh = document.createElement('span'); sh.className = 'shadow';
-    var f = document.createElement('span'); f.className = 'face'; f.textContent = txt; f.style.color = color;
-    e.appendChild(sh); e.appendChild(f); stage.appendChild(e);
-    return { el:e, face:f };
-  }
-
-  var defs = [
-    { walk:['┌(・ω・)┘','└(・ω・)┐'],   flee:'(;・o・)', color:'#6f9fc4', baseDir: 1 }, // 偏男生 · 淺藍 · 順時針
-    { walk:['┌(◕ᴗ◕)┘♡','└(◕ᴗ◕)┐♡'], flee:'(>o<)♡', color:'#cf7f9f', baseDir:-1 }  // 偏女生 · 粉紅 · 逆時針
-  ];
-  var STROLL = 14/1000, FLEE = 60/1000, OFF = 14;
-
-  var bugs = defs.map(function(d){
-    var c = make(d.walk[0], d.color);
-    c.el.style.opacity = '0.9';
-    c.p = 0; c.dir = d.baseDir; c.fleeing = false; c.calmAt = 0; c.def = d; c.step = 0;
-    var t = setInterval(function(){
-      c.step ^= 1;
-      c.face.textContent = c.fleeing ? c.def.flee : c.def.walk[c.step];
-    }, 480);
-    timers.push(t);
-    return c;
-  });
-
-  function box(){
-    var r = target.getBoundingClientRect();
-    var top = Math.max(r.top - OFF, 8);
-    var bot = Math.min(r.bottom + OFF, H() - 8);
-    return { x:r.left - OFF, y:top, w:(r.right + OFF) - (r.left - OFF), h:Math.max(60, bot - top) };
-  }
-  function ptAt(B, p){
-    var per = 2*(B.w + B.h), d = (((p%1)+1)%1) * per;
-    if(d < B.w) return { x:B.x + d, y:B.y };
-    d -= B.w; if(d < B.h) return { x:B.x + B.w, y:B.y + d };
-    d -= B.h; if(d < B.w) return { x:B.x + B.w - d, y:B.y + B.h };
-    d -= B.w; return { x:B.x, y:B.y + B.h - d };
-  }
-  (function(){ var B = box(), per = 2*(B.w + B.h);
-    bugs[0].p = (B.w + 0.30*B.h) / per;
-    bugs[1].p = (2*B.w + B.h*(2 - 0.30)) / per;
-  })();
-
-  var last = performance.now(), nextHeartAt = 0, raf = null;
-
-  function onMove(ev){
-    if (document.documentElement.classList.contains('dark')) return; // 深色：不計算
-    var B = box(), per = 2*(B.w + B.h), eps = 34/per;
-    bugs.forEach(function(c){
-      var here = ptAt(B, c.p);
-      if(Math.hypot(here.x - ev.clientX, here.y - ev.clientY) < 140){
-        if(!c.fleeing){ c.fleeing = true; c.face.textContent = c.def.flee; }
-        var f = ptAt(B, c.p + eps), b = ptAt(B, c.p - eps);
-        c.dir = (Math.hypot(f.x - ev.clientX, f.y - ev.clientY) >= Math.hypot(b.x - ev.clientX, b.y - ev.clientY)) ? 1 : -1;
-        c.calmAt = performance.now() + 1700;
-      }
-    });
-  }
-  document.addEventListener('mousemove', onMove);
-
-  function spawnHeart(x, y){
-    var h = document.createElement('span'); h.className = 'heart';
-    h.textContent = (Math.random() < 0.5) ? '♡' : '♥';
-    h.style.left = (x + (Math.random()*16 - 8)) + 'px';
-    h.style.top  = (y - 16) + 'px';
-    stage.appendChild(h);
-    h.addEventListener('animationend', function(){ h.remove(); });
-    setTimeout(function(){ h.remove(); }, 3000); // 保險清除（h.remove 可重複呼叫）
-  }
-
-  function frame(now){
-    // 深色模式：不動、不生愛心（避免隱藏時愛心 DOM 累積與多餘回流）
-    if (document.documentElement.classList.contains('dark')) { last = now; raf = requestAnimationFrame(frame); return; }
-    var dt = Math.min(now - last, 40); last = now;
-    var B = box(), per = 2*(B.w + B.h);
-    bugs.forEach(function(c, i){
-      if(c.fleeing && now > c.calmAt){ c.fleeing = false; c.dir = c.def.baseDir; }
-      var spd = c.fleeing ? FLEE : STROLL;
-      c.p += c.dir * (spd * dt) / per;
-      var pt = ptAt(B, c.p); c.px = pt.x; c.py = pt.y;
-      var bob = Math.sin(now/230 + i) * 2.5;
-      c.el.style.transform = 'translate('+pt.x+'px,'+pt.y+'px)';
-      c.face.style.transform = 'translateY('+bob+'px)';
-    });
-    // 靠很近 → 低頻飄愛心（偶爾一兩顆）
-    var dd = Math.hypot(bugs[0].px - bugs[1].px, bugs[0].py - bugs[1].py);
-    if(dd < 88 && now > nextHeartAt){
-      spawnHeart((bugs[0].px + bugs[1].px)/2, Math.min(bugs[0].py, bugs[1].py));
-      nextHeartAt = now + 2200 + Math.random()*2800;
-    }
-    raf = requestAnimationFrame(frame);
-  }
-
-  // 分頁切到背景時暫停，省效能
-  document.addEventListener('visibilitychange', function(){
-    if(document.hidden){ if(raf){ cancelAnimationFrame(raf); raf = null; } }
-    else if(!raf){ last = performance.now(); raf = requestAnimationFrame(frame); }
-  });
-  raf = requestAnimationFrame(frame);
-})();
-</script>
-
-
   <script>
 (function(){
   var btn = document.getElementById('theme-toggle');
