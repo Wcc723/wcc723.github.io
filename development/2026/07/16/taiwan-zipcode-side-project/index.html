@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var m=localStorage.getItem('casper-theme')||'light';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
+
+<title>打造「台灣郵遞區號查詢」：一個純靜態 side project 的開發記 | 卡斯伯 Blog - 前端，沒有極限</title>
+
+<meta name="keywords" content="Vue,Cloudflare,side project" />
+
+
+<meta name="description" content="一個 side project 開發記：為了不想在中華郵政官網一層層下拉選單查 3+3 郵遞區號、也不想為了地址英譯輸入驗證碼，我用 Vue 3 + vite-ssg 做了台灣郵遞區號查詢工具，記錄自己寫 DBF parser、build-time 資料切塊與地址 parser 的幾個技術決策。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="打造「台灣郵遞區號查詢」：一個純靜態 side project 的開發記">
+<meta property="og:url" content="https://www.casper.tw/development/2026/07/16/taiwan-zipcode-side-project/">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="一個 side project 開發記：為了不想在中華郵政官網一層層下拉選單查 3+3 郵遞區號、也不想為了地址英譯輸入驗證碼，我用 Vue 3 + vite-ssg 做了台灣郵遞區號查詢工具，記錄自己寫 DBF parser、build-time 資料切塊與地址 parser 的幾個技術決策。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://img.casper.tw/posts/2026-07-16-taiwan-zipcode-side-project/cover.png">
+<meta property="article:published_time" content="2026-07-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-07-16T07:03:27.459Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="Cloudflare">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="side project">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.casper.tw/posts/2026-07-16-taiwan-zipcode-side-project/cover.png">
+<meta property="fb:app_id" content="556473851118881">
+
+
+<link rel="canonical" href="https://www.casper.tw/development/2026/07/16/taiwan-zipcode-side-project/" />
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"打造「台灣郵遞區號查詢」：一個純靜態 side project 的開發記","datePublished":"2026-07-15T16:00:00.000Z","dateModified":"2026-07-16T07:03:27.459Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2026/07/16/taiwan-zipcode-side-project/","image":["https://img.casper.tw/posts/2026-07-16-taiwan-zipcode-side-project/cover.png"]}</script>
+
+
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
+<link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=mrahjy61">
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-97433H4032');</script>
+
+
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','152520611964487');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1" /></noscript>
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8296684122088055" crossorigin="anonymous"></script>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  
+  <div class="atmos" aria-hidden="true">
+    <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
+  </div>
+  
+
+  
+<div class="dateline"><div class="in">
+  <span>第 363 篇 · 第 14 卷</span>
+  <span class="c">前端，沒有極限</span>
+  <span>2026 年 7 月 16 日 · 台北</span>
+</div></div>
+
+<header class="topbar"><nav class="nav">
+  <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  <a class="brand" href="/"><span class="mk is-img"><img src="/img/casper-avatar.webp" alt="卡斯伯"></span>卡斯伯 Blog</a>
+  <div class="menu" id="primary-menu">
+    
+    
+      <a href="/">首頁</a>
+    
+      <a href="/tags/css/">CSS</a>
+    
+      <a href="/tags/javascript/">JavaScript</a>
+    
+      <a href="/categories/life/">生活</a>
+    
+      <a href="/archives/">封存</a>
+    
+      <a href="/about/">關於</a>
+    
+  </div>
+  <span class="grow"></span>
+  <button class="search-trig" type="button" data-cs-open aria-label="搜尋">
+    <svg class="s-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+    <span class="s-lbl">搜尋…</span><kbd>⌘K</kbd>
+  </button>
+  <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+  <button class="iconbtn nav-toggle" type="button" id="nav-toggle" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-menu"><span class="nt-ico" aria-hidden="true"></span></button>
+</nav></header>
+
+<div class="wrap"><div class="cmdbar">
+  <span class="q">ls -lt ./posts --since=2013<span class="cursor"></span></span>
+  <span class="status">
+    <span class="rec"></span> REC
+    <span>·</span> node <span class="seal">363</span>
+    <span>·</span> uplink <span class="uplink"><i></i><i></i><i></i><i></i></span>
+  </span>
+</div></div>
+
+
+  <div class="wrap">
+    <div class="layout">
+      <main id="main" tabindex="-1">
+<article class="post">
+  
+  <header class="article-head">
+    <p class="crumb">development</p>
+    <h1>打造「台灣郵遞區號查詢」：一個純靜態 side project 的開發記</h1>
+    <div class="meta">
+      <span>2026 年 07 月 16 日</span>
+      <span>·</span>
+      <span>7 分鐘閱讀</span>
+      <span>·</span>
+      <span>By Wang Casper</span>
+    </div>
+    <div class="rule-d"></div>
+  </header>
+
+  
+    <figure class="post-cover"><img src="https://img.casper.tw/posts/2026-07-16-taiwan-zipcode-side-project/cover.png" alt="" loading="eager"></figure>
+  
+
+  <div class="prose"><p>前陣子要寄一份文件，需要填 3+3（六碼）郵遞區號。我打開中華郵政官網，先用下拉選單選縣市，再選鄉鎮市區，接著在一長串路名裡找到自己那條，最後還要看門牌號落在哪個區間。查一個地址點了五、六下，填錯還要重來。</p>
+<p>還有「中文地址英譯」。填國外表單或訂單常常需要英文地址，官網有這個功能，但要先輸入一組圖形驗證碼才給你查一次。查兩個地址就要認兩次驗證碼。</p>
+<p>這些資料都是公開的，查一次卻要這麼多步驟。所以我利用零碎時間做了一個 <a target="_blank" rel="noopener" href="https://zipcode.pocketool.app/">台灣郵遞區號查詢</a>。你輸入完整地址，它直接把結果給你，沒有下拉選單，也沒有驗證碼。這篇記錄一下這個 side project 的動機、做了哪些東西，還有幾個技術決策。</p>
+<span id="more"></span>
+<h2 id="做了什麼"><a href="#做了什麼" class="headerlink" title="做了什麼"></a>做了什麼</h2><p>整個站的做法就是一句話：你把完整地址貼進去，它把答案給你。</p>
+<p><strong>郵遞區號查詢</strong>：輸入像「臺北市中正區重慶南路一段122號」這樣的完整地址，畫面就顯示 5 碼（3+2）與最新的 3+3 碼（6 碼），旁邊有一鍵複製。台北市和臺北市這種「台」和「臺」的寫法都查得到。</p>
+<p><img src="https://img.casper.tw/posts/2026-07-16-taiwan-zipcode-side-project/home-query.png" alt="台灣郵遞區號查詢：輸入完整地址，直接顯示 5 碼與 3+3 碼，並標出命中的門牌範圍"></p>
+<p><strong><a target="_blank" rel="noopener" href="https://zipcode.pocketool.app/address-to-english/">地址中翻英</a></strong>：輸入中文地址，轉成中華郵政官方寫法的英文地址：</p>
+<pre><code class="hljs plaintext">3F., No. 122, Sec. 1, Chongqing S. Rd., Zhongzheng Dist., Taipei City 100005, Taiwan (R.O.C.)</code></pre>
+<p>一樣免驗證碼、附上 3+3 郵遞區號、可以一鍵複製。查完郵遞區號之後，還可以一鍵把同一個地址帶去中翻英，不用再貼一次。</p>
+<p><img src="https://img.casper.tw/posts/2026-07-16-taiwan-zipcode-side-project/address-to-english.png" alt="地址中翻英：輸入中文地址轉成英文地址，附 3+3 郵遞區號，並逐段對照每個地址欄位的英譯"></p>
+<p>除了這兩個工具，站上還有全台 22 縣市、368 個鄉鎮市區的郵遞區號一覽頁，以及一些寄件相關的文章。</p>
+<p>接下來講幾個做的時候花比較多時間的技術決策。</p>
+<h2 id="決策一：整站純靜態，沒有執行期-API"><a href="#決策一：整站純靜態，沒有執行期-API" class="headerlink" title="決策一：整站純靜態，沒有執行期 API"></a>決策一：整站純靜態，沒有執行期 API</h2><p>這種查詢工具，一般會做成前端一個輸入框、後端一支 API 查資料庫。但我一開始就決定不做後端。</p>
+<p>整站用 Vue 3 加 <a target="_blank" rel="noopener" href="https://github.com/antfu/vite-ssg">vite-ssg</a> 做純靜態 SSG，約 400 個頁面在 build 階段全部預先渲染成 HTML，部署在 Cloudflare Workers 的靜態資源上，沒有執行期 API。每一個縣市頁、每一個行政區頁都是一份已經寫好的 HTML，Google 爬進來就是完整內容，不用等 JavaScript 跑完才看到郵遞區號表格。</p>
+<p>好處是沒有伺服器要顧、沒有資料庫要備份，維運成本接近零，流量大也是 CDN 在扛靜態檔。對一個下班之後做的 side project 來說，不用維運這點就值得。</p>
+<p>代價是所有查詢邏輯都要搬到前端，資料也要塞進瀏覽器。這就帶出下面兩個問題。</p>
+<h2 id="決策二：資料只用中華郵政官方檔案，連-DBF-都自己解"><a href="#決策二：資料只用中華郵政官方檔案，連-DBF-都自己解" class="headerlink" title="決策二：資料只用中華郵政官方檔案，連 DBF 都自己解"></a>決策二：資料只用中華郵政官方檔案，連 DBF 都自己解</h2><p>做郵遞區號工具最省事的做法，是去 GitHub 抓別人整理好的 CSV。我試了幾個開源資料集，大多是舊的，而且只有 3+2 五碼，沒有最新的 3+3。所以我定了一條規則：資料只用中華郵政官方檔案，不用第三方來源。</p>
+<p>問題是官方的 3+3 資料不是一份 CSV，而是包在一個中華郵政的 Windows 應用程式裡，資料存在 <code>rall1.dbf</code> 這個 dBASE 格式的檔案，而且是 Big5 編碼。為了把這 8 萬多筆資料拿出來，我自己寫了一個 DBF 的 binary parser，直接讀檔頭、逐筆解 record，再把 Big5 解碼成 UTF-8。</p>
+<p>官方資料裡的門牌也不是一個地址對一個碼，而是一堆範圍描述字串，長這樣：</p>
+<pre><code class="hljs plaintext">全
+單 5號以上
+雙 2號至 168號
+162號
+102號 2樓以下</code></pre>
+<p>所以光有資料還不夠，我還要寫一個 parser 去理解「單號 5 號以上」「雙號 2 號到 168 號」「162 號這一戶」「102 號的 2 樓以下自成一區」這些規則，才能把使用者輸入的門牌對到正確的 3+3 碼。這部分後面會再提到。</p>
+<h2 id="決策三：地址英譯不能用音譯拼，要查官方對照表"><a href="#決策三：地址英譯不能用音譯拼，要查官方對照表" class="headerlink" title="決策三：地址英譯不能用音譯拼，要查官方對照表"></a>決策三：地址英譯不能用音譯拼，要查官方對照表</h2><p>地址中翻英這塊，我本來以為用拼音套件把中文轉成羅馬拼音就好。實際做下去才發現，台灣的路名英譯有不少要查表才對得到的特例，不是規則能推出來的。</p>
+<p>幾個例子：</p>
+<ul>
+<li>羅斯福路是 <strong>Roosevelt</strong> Rd.，不是 Luosifu</li>
+<li>凱達格蘭大道是 <strong>Ketagalan</strong> Blvd.</li>
+</ul>
+<p>這些是歷史地名和外來語音譯，用拼音演算法拼不出來。所以英譯這邊我一樣只用官方資料，也就是中華郵政的「路街中英對照檔」，大約 3 萬筆。流程是先查官方對照表，查得到就用官方寫法；查不到的少數路名，才 fallback 到拼音音譯，並且在畫面上標註這筆是機器音譯、非官方。</p>
+<p>這也是官網那個中翻英要放驗證碼的原因，它其實是即時去查一份對照表。而我把整份對照表在 build 階段就處理好、切成靜態資料，查詢就不需要驗證碼，也不需要後端。</p>
+<h2 id="決策四：build-階段切資料塊，順便讓-build-幫我守體積"><a href="#決策四：build-階段切資料塊，順便讓-build-幫我守體積" class="headerlink" title="決策四：build 階段切資料塊，順便讓 build 幫我守體積"></a>決策四：build 階段切資料塊，順便讓 build 幫我守體積</h2><p>決策一說整站純靜態、資料要塞進瀏覽器，但 8 萬筆郵遞區號加 3 萬筆英譯，全部打包成一個 JSON 丟給前端不可行，首次載入會太慢。</p>
+<p>我的做法是在 build 階段，把資料依行政區切成一塊一塊的 JSON，前端只在使用者查到某個區時，才去 fetch 那一個區的檔案。你查中正區，就只下載中正區那幾 KB，不會把全台灣的資料都拉下來。</p>
+<p>切塊之後有個問題：資料會更新，哪天中華郵政多了一批門牌，某個區的檔案可能就變大，而我不會知道。所以我在 build 流程裡加了一道 gzip size budget，每一類檔案都設一個壓縮後的體積上限：</p>
+<pre><code class="hljs plaintext">單一區的 3+3 明細  ≤ 30 KB (gzip)
+搜尋索引            ≤ 25 KB (gzip)
+縣市清單            ≤  5 KB (gzip)</code></pre>
+<p>只要任何一個檔案超標，build 就直接失敗。這樣一來，效能預算就變成一條會擋下我的線，不會等上線後才發現某頁變慢。</p>
+<h2 id="那些台灣地址的邊角"><a href="#那些台灣地址的邊角" class="headerlink" title="那些台灣地址的邊角"></a>那些台灣地址的邊角</h2><p>最後講一下地址 parser。台灣地址的不規則比我想像的多，處理這些狀況大概花了我一半的開發時間。</p>
+<p><strong>「台」和「臺」</strong>：官方用「臺」，但多數人打「台」。台北和臺北、台中和臺中、台南和臺南、台東和臺東這四組，我在 build 索引時就同時產出兩種寫法，加上 runtime 也做 normalize，讓使用者怎麼打都查得到，網址則統一導到官方的「臺」字版本。</p>
+<p><strong>門牌副號「7之2號」</strong>：有些門牌是「23之1號」這種帶副號的。這時候不能只比對主號，要優先命中「23 之 1 號」這個更精確的範圍，對到才算。</p>
+<p><strong>樓層寫成「3樓之五」</strong>：門牌後面的樓層有人打阿拉伯數字、有人打中文數字。前面提到官方資料裡「102號 2樓以下」這種是真的會自成一個郵遞區，所以 parser 還要排序哪個範圍最精確，同樣精確度時再依樓層排，地下樓層排在最前面，跟中華郵政的預設一致。</p>
+<p>這些規則單獨看都很瑣碎，但官網就是把這些狀況用一層層下拉選單推給使用者。我想做的是把它們吞進 parser 裡，使用者只要貼一個地址就好。</p>
+<h2 id="小結"><a href="#小結" class="headerlink" title="小結"></a>小結</h2><p>這個 side project 的起點很單純，就是我自己覺得查郵遞區號很煩，做出來之後自己天天在用。回頭看，幾個技術決策都圍繞同一個想法：把麻煩留在 build 階段，把乾淨的結果留給使用者。用官方資料、自己解 DBF、build 階段切塊並守住體積、把台灣地址的各種狀況塞進 parser，這些工都是為了讓最後那個輸入框可以貼上、得到答案、複製。</p>
+<p>如果你也常查郵遞區號或填英文地址，可以試試 <a target="_blank" rel="noopener" href="https://zipcode.pocketool.app/">台灣郵遞區號查詢</a> 和 <a target="_blank" rel="noopener" href="https://zipcode.pocketool.app/address-to-english/">地址中翻英</a>。這個工具也收在我的小工具站 <a target="_blank" rel="noopener" href="https://pocketool.app/tools/zipcode">pocketool</a> 裡。</p>
+</div>
+
+  <div class="post-foot">
+    
+      <div class="tags post-tags"><a href="/tags/Vue/">Vue</a><a href="/tags/Cloudflare/">Cloudflare</a><a href="/tags/side-project/">side project</a></div>
+    
+    
+<nav class="post-nav">
+  
+    <a class="prev" href="/development/2026/07/07/anthropic-loop-engineering/">
+      <span class="lab">← 較舊一篇</span>
+      <span class="ttl">Anthropic Getting started with loops（Loop Engineering 入門）| 翻譯文</span>
+    </a>
+  
+  
+</nav>
+
+
+    
+<section id="comments">
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2026/07/16/taiwan-zipcode-side-project/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+</section>
+
+
+  </div>
+</article>
+</main>
+      <aside class="sidebar">
+
+
+  
+    <div class="widget">
+      <div class="author">
+        <div class="ava is-img"><img src="/img/casper-avatar.webp" alt="Wang Casper"></div>
+        <p class="nm">Wang Casper</p>
+        <p class="en">卡斯伯</p>
+        <p class="bio">前端工程師、教學者。在 Web 上寫筆記，自 2013 年至今，也在六角學院教授前端。</p>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>我的著作</h3></div>
+      <div class="book">
+        <a class="cover" href="https://hex.school/byKCb" target="_blank" rel="noopener">
+          <img src="/img/js-interview-cover.webp" alt="JavaScript 面試力">
+        </a>
+        <div class="info">
+          <span class="t">JavaScript 面試力</span>
+          <span class="d">面試前的最後一哩路，補齊 JS 核心觀念。</span>
+          <a class="buy" href="https://hex.school/byKCb" target="_blank" rel="noopener">前往購買</a>
+        </div>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>社群</h3></div>
+      <div class="social">
+        
+          <a href="https://www.facebook.com/WccCasper" target="_blank" rel="noopener noreferrer">Facebook<span class="r">卡斯伯</span></a>
+        
+          <a href="https://github.com/wcc723" target="_blank" rel="noopener noreferrer">GitHub<span class="r">wcc723</span></a>
+        
+          <a href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA" target="_blank" rel="noopener noreferrer">YouTube<span class="r">六角學院</span></a>
+        
+          <a href="/atom.xml">RSS<span class="r">訂閱</span></a>
+        
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>贊助</h3></div>
+      
+  <div class="ad">廣告版位<br>Google AdSense</div>
+
+
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>標籤</h3></div>
+      <div class="tags"><a class="tag-link" href="/tags/css/" rel="tag">css</a><a class="tag-link" href="/tags/ironman/" rel="tag">ironman</a><a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a><a class="tag-link" href="/tags/js/" rel="tag">js</a><a class="tag-link" href="/tags/sass/" rel="tag">sass</a><a class="tag-link" href="/tags/design/" rel="tag">design</a><a class="tag-link" href="/tags/d3js/" rel="tag">d3js</a><a class="tag-link" href="/tags/gulp/" rel="tag">gulp</a><a class="tag-link" href="/tags/nodejs/" rel="tag">nodejs</a><a class="tag-link" href="/tags/jekyll/" rel="tag">jekyll</a><a class="tag-link" href="/tags/Bootstrap/" rel="tag">Bootstrap</a><a class="tag-link" href="/tags/tools/" rel="tag">tools</a><a class="tag-link" href="/tags/jquery/" rel="tag">jquery</a><a class="tag-link" href="/tags/svg/" rel="tag">svg</a><a class="tag-link" href="/tags/bootstrap/" rel="tag">bootstrap</a><a class="tag-link" href="/tags/oocss/" rel="tag">oocss</a><a class="tag-link" href="/tags/git/" rel="tag">git</a><a class="tag-link" href="/tags/Sass/" rel="tag">Sass</a></div>
+    </div>
+  
+
+
+</aside>
+
+    </div>
+  </div>
+
+  <footer class="site"><div class="wrap">
+  <p class="big">卡斯伯 Blog</p>
+  <p class="sub">前端，沒有極限 · © 2026 Wang Casper · Powered by Hexo</p>
+</div></footer>
+
+  <div class="cs-modal" id="cs-search" role="dialog" aria-modal="true" aria-label="搜尋文章">
+  <div class="cs-box" data-cs-stop>
+    <div class="cs-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="cs-input" type="search" autocomplete="off" placeholder="搜尋文章標題、分類或標籤…" aria-label="搜尋">
+      <kbd>esc</kbd>
+      <button type="button" data-cs-close class="iconbtn" style="width:30px;height:30px;border:0" aria-label="關閉">✕</button>
+    </div>
+    <div class="cs-status" id="cs-status">載入中…</div>
+    <ul class="cs-results" id="cs-results"></ul>
+    <div class="cs-foot">
+      <span>↑↓ 切換 · ↵ 開啟 · esc 關閉</span>
+      <span>共 <span id="cs-total">0</span> 篇</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CONTENT_URL = '/content.json';
+  var modal = document.getElementById('cs-search');
+  var input = document.getElementById('cs-input');
+  var resultsEl = document.getElementById('cs-results');
+  var statusEl = document.getElementById('cs-status');
+  var totalEl = document.getElementById('cs-total');
+  var corpus = null, activeIdx = -1, items = [];
+
+  function esc(s){ return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function hl(text,q){ if(!q) return esc(text); var t=esc(text); try{ var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'); return t.replace(re,'<mark>$1</mark>'); }catch(e){return t;} }
+
+  function open(){ modal.classList.add('open'); document.documentElement.style.overflow='hidden'; setTimeout(function(){input.focus();},30); if(!corpus) load(); }
+  function close(){ modal.classList.remove('open'); document.documentElement.style.overflow=''; input.value=''; render([], ''); }
+  function toggle(){ modal.classList.contains('open') ? close() : open(); }
+
+  function load(){
+    statusEl.textContent='載入中…';
+    fetch(CONTENT_URL).then(function(r){return r.json();}).then(function(data){
+      var posts = data.posts || data || [];
+      corpus = posts.map(function(p){
+        var tags = (p.tags||[]).map(function(t){return t.name||t;}).join(' ');
+        var cats = (p.categories||[]).map(function(c){return c.name||c;}).join(' ');
+        var u = p.permalink || p.path || '';
+        if (u && !/^https?:\/\//.test(u) && u.charAt(0) !== '/') u = '/' + u;
+        return { title:p.title||'（無標題）', url:u, date:p.date||'', cats:cats, hay:((p.title||'')+' '+cats+' '+tags).toLowerCase() };
+      });
+      statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。';
+      totalEl.textContent=corpus.length;
+    }).catch(function(){ statusEl.textContent='無法載入索引，請稍後再試。'; });
+  }
+
+  function search(q){ if(!corpus) return []; var query=q.trim().toLowerCase(); if(!query) return []; var m=[]; for(var i=0;i<corpus.length&&m.length<50;i++){ if(corpus[i].hay.indexOf(query)!==-1) m.push(corpus[i]); } return m; }
+
+  function render(matches,q){
+    items=matches; activeIdx=matches.length?0:-1;
+    if(!q){ resultsEl.innerHTML=''; if(corpus) statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。'; totalEl.textContent=corpus?corpus.length:0; return; }
+    if(!matches.length){ resultsEl.innerHTML=''; statusEl.textContent='找不到「'+q+'」相關文章'; totalEl.textContent=0; return; }
+    statusEl.textContent='「'+q+'」的搜尋結果'; totalEl.textContent=matches.length;
+    var html='';
+    for(var i=0;i<matches.length;i++){ var m=matches[i]; var meta=(m.date?String(m.date).slice(0,10):'')+(m.cats?'　·　'+m.cats:'');
+      html+='<li><a href="'+esc(m.url)+'" data-idx="'+i+'" role="option"><p class="t">'+hl(m.title,q)+'</p>'+(meta?'<p class="m">'+esc(meta)+'</p>':'')+'</a></li>'; }
+    resultsEl.innerHTML=html; mark();
+  }
+  function mark(){ var a=resultsEl.querySelectorAll('a[data-idx]'); for(var i=0;i<a.length;i++){ if(i===activeIdx){ a[i].setAttribute('aria-selected','true'); a[i].scrollIntoView({block:'nearest'}); } else a[i].removeAttribute('aria-selected'); } }
+
+  var timer;
+  input.addEventListener('input', function(){ var q=input.value; clearTimeout(timer); timer=setTimeout(function(){ render(search(q),q.trim()); },80); });
+  input.addEventListener('keydown', function(e){
+    if(e.key==='ArrowDown'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx+1)%items.length; mark(); } }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx-1+items.length)%items.length; mark(); } }
+    else if(e.key==='Enter'){ if(activeIdx>=0&&items[activeIdx]) window.location.href=items[activeIdx].url; }
+    else if(e.key==='Escape'){ close(); }
+  });
+  modal.addEventListener('click', function(e){ if(e.target.closest('[data-cs-close]')){ close(); return; } if(!e.target.closest('[data-cs-stop]')) close(); });
+  document.addEventListener('keydown', function(e){
+    var mac=navigator.platform.toUpperCase().indexOf('MAC')>=0;
+    if((mac?e.metaKey:e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); toggle(); }
+    else if(e.key==='/'&&document.activeElement===document.body){ e.preventDefault(); open(); }
+  });
+  document.addEventListener('click', function(e){ if(e.target.closest('[data-cs-open]')){ e.preventDefault(); open(); } });
+})();
+</script>
+
+  
+  <script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  function icon(){ if (!btn) return; var d = document.documentElement.classList.contains('dark'); var s = btn.querySelector('span') || btn; s.textContent = d ? '☀' : '☾'; btn.setAttribute('aria-pressed', d ? 'true' : 'false'); btn.setAttribute('aria-label', d ? '切換淺色模式' : '切換深色模式'); }
+  icon();
+  if (btn) btn.addEventListener('click', function(){
+    var dark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
+    icon();
+  });
+
+  /* 行動版漢堡選單：開合主選單抽屜 */
+  var nav = document.querySelector('.nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (nav && navToggle) {
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+    navToggle.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  }
+})();
+</script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v18.0&appId=556473851118881"></script>
+
+
+
+
+</body>
+</html>
