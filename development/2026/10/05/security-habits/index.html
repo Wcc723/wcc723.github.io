@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var m=localStorage.getItem('casper-theme')||'light';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
+
+<title>資安習慣養成：日常生活與開發的資安清單 | 卡斯伯 Blog - 前端，沒有極限</title>
+
+<meta name="keywords" content="develop,資安,security" />
+
+
+<meta name="description" content="整理日常生活與開發的資安習慣：Passkey 與密碼管理、辨識釣魚網址、信用卡與個資保護、帳號安全性檢查，以及 API Key 的保管、上線前檢查、定期掃描與外洩後如何止血。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="資安習慣養成：日常生活與開發的資安清單">
+<meta property="og:url" content="https://www.casper.tw/development/2026/10/05/security-habits/">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="整理日常生活與開發的資安習慣：Passkey 與密碼管理、辨識釣魚網址、信用卡與個資保護、帳號安全性檢查，以及 API Key 的保管、上線前檢查、定期掃描與外洩後如何止血。">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://img.casper.tw/posts/2026-10-05-security-habits/og.png">
+<meta property="article:published_time" content="2026-10-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-05T02:22:15.590Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="develop">
+<meta property="article:tag" content="security">
+<meta property="article:tag" content="資安">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img.casper.tw/posts/2026-10-05-security-habits/og.png">
+<meta property="fb:app_id" content="556473851118881">
+
+
+<link rel="canonical" href="https://www.casper.tw/development/2026/10/05/security-habits/" />
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"資安習慣養成：日常生活與開發的資安清單","datePublished":"2026-10-04T16:00:00.000Z","dateModified":"2026-10-05T02:22:15.590Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2026/10/05/security-habits/","image":["https://img.casper.tw/posts/2026-10-05-security-habits/og.png"]}</script>
+
+
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
+<link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=mrahjy61">
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-97433H4032');</script>
+
+
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','152520611964487');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1" /></noscript>
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8296684122088055" crossorigin="anonymous"></script>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  
+  <div class="atmos" aria-hidden="true">
+    <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
+  </div>
+  
+
+  
+<div class="dateline"><div class="in">
+  <span>第 364 篇 · 第 14 卷</span>
+  <span class="c">前端，沒有極限</span>
+  <span>2026 年 10 月 5 日 · 台北</span>
+</div></div>
+
+<header class="topbar"><nav class="nav">
+  <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  <a class="brand" href="/"><span class="mk is-img"><img src="/img/casper-avatar.webp" alt="卡斯伯"></span>卡斯伯 Blog</a>
+  <div class="menu" id="primary-menu">
+    
+    
+      <a href="/">首頁</a>
+    
+      <a href="/tags/css/">CSS</a>
+    
+      <a href="/tags/javascript/">JavaScript</a>
+    
+      <a href="/categories/life/">生活</a>
+    
+      <a href="/archives/">封存</a>
+    
+      <a href="/about/">關於</a>
+    
+  </div>
+  <span class="grow"></span>
+  <button class="search-trig" type="button" data-cs-open aria-label="搜尋">
+    <svg class="s-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+    <span class="s-lbl">搜尋…</span><kbd>⌘K</kbd>
+  </button>
+  <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+  <button class="iconbtn nav-toggle" type="button" id="nav-toggle" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-menu"><span class="nt-ico" aria-hidden="true"></span></button>
+</nav></header>
+
+<div class="wrap"><div class="cmdbar">
+  <span class="q">ls -lt ./posts --since=2013<span class="cursor"></span></span>
+  <span class="status">
+    <span class="rec"></span> REC
+    <span>·</span> node <span class="seal">364</span>
+    <span>·</span> uplink <span class="uplink"><i></i><i></i><i></i><i></i></span>
+  </span>
+</div></div>
+
+
+  <div class="wrap">
+    <div class="layout">
+      <main id="main" tabindex="-1">
+<article class="post">
+  
+  <header class="article-head">
+    <p class="crumb">development</p>
+    <h1>資安習慣養成：日常生活與開發的資安清單</h1>
+    <div class="meta">
+      <span>2026 年 10 月 05 日</span>
+      <span>·</span>
+      <span>16 分鐘閱讀</span>
+      <span>·</span>
+      <span>By Wang Casper</span>
+    </div>
+    <div class="rule-d"></div>
+  </header>
+
+  
+    <figure class="post-cover"><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-cover.webp" alt="" loading="eager"></figure>
+  
+
+  <div class="prose"><p>資安這件事，常常要等到出問題才會被想起來。不過，大多數的帳號被盜、金鑰外洩，其實都可以靠平常的小習慣降低風險。這篇把我自己的資安習慣整理成一份清單，分成「平常生活習慣」與「開發習慣」兩個部分：前者適合每個人，後者則是寫程式、部署服務時要多留意的地方。</p>
+<span id="more"></span>
+<h2 id="一、平常生活習慣"><a href="#一、平常生活習慣" class="headerlink" title="一、平常生活習慣"></a>一、平常生活習慣</h2><h3 id="密碼管理"><a href="#密碼管理" class="headerlink" title="密碼管理"></a>密碼管理</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-01-password.webp" alt="一串掛著指紋鑰匙圈的鑰匙、一支硬體安全金鑰，以及一個帶轉盤的保險箱並排"></p>
+<ol>
+<li><strong>網站支援 Passkey（通行密鑰）時，可以優先使用</strong>：Passkey 使用與網站綁定的加密憑證登入，再透過 Face ID、Touch ID 或裝置 PIN 碼確認是你本人操作，能降低帳密遭釣魚的風險。要注意，生物辨識也可能只是用來解鎖或自動填入密碼，看到 Face ID 並不代表這次登入一定使用了 Passkey。</li>
+<li><strong>每個網站都使用不同、夠長且難以猜測的密碼</strong>：重複使用密碼，或只替換結尾的數字，都可能讓一個網站的外洩波及其他帳號。你不需要自己記住所有密碼，可以讓密碼管理器協助產生與保存，並保護好管理器本身的登入方式。</li>
+<li><strong>能開啟兩階段驗證，就盡可能開啟</strong>：重要帳號優先採用 Passkey、支援防釣魚的安全金鑰，或驗證器 App。只有簡訊選項時，也可以先開啟，但仍要小心驗證碼被騙走。Email 驗證的保護程度取決於登入設計與信箱安全，單純確認 Email 地址也不代表已開啟兩階段驗證。</li>
+<li><strong>不用為了固定週期，無理由地更換密碼</strong>：如果每次只是替換年份或加一個數字，幫助其實有限。NIST 現行指引也不要求無理由定期更換使用者密碼。不過，一旦發現外洩、誤填到釣魚網站，或有可疑登入，就應立即更換，並檢查其他使用相同密碼的帳號。<a target="_blank" rel="noopener" href="https://pages.nist.gov/800-63-4/sp800-63b.html">NIST 指引</a></li>
+<li><strong>先準備好帳號救援方式</strong>：開啟兩階段驗證後，要妥善保存備用碼，確認備援信箱與電話仍能使用。避免把唯一的備用碼放在同一支手機，否則手機遺失時，可能連救援方式都一起失去。</li>
+<li><strong>優先保護主要 Email</strong>：許多服務都能透過 Email 重設密碼，所以主要信箱一旦被盜，影響可能擴大到其他帳號。信箱、密碼管理器與常用的 Google、Apple 帳號，都值得優先完成安全設定。</li>
+</ol>
+<blockquote>
+<p>以我自己來說，只要能開啟生物辨識或者是兩階段驗證的，我一定都會開啟。</p>
+<p>因為單靠一組密碼，還是可能遇到釣魚、重複使用或服務外洩等問題。多加一道保護，可以減少其中一個環節出問題後，整個帳號就被拿走的風險。</p>
+</blockquote>
+<h3 id="電腦、手機、網路等使用安全"><a href="#電腦、手機、網路等使用安全" class="headerlink" title="電腦、手機、網路等使用安全"></a>電腦、手機、網路等使用安全</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-02-device.webp" alt="手機聊天泡泡垂下一支魚鉤，旁邊的放大鏡正在檢查瀏覽器網址列，還有一個更新圖示"></p>
+<ol>
+<li><strong>要學會判斷網域</strong>：不要只看網址裡有沒有品牌名稱。例如 <code>accounts.google.com</code> 與 <code>google.com.login.example</code> 看起來都有 Google，但後者屬於 <code>login.example</code>。不熟悉的登入網址，建議回到官方 App、自己儲存的書籤或已確認的官網操作，避免只靠頁面長相判斷。</li>
+<li><strong>注意 HTTPS，也要確認網站身分</strong>：HTTPS 可以保護傳輸中的資料，但釣魚網站同樣能使用 HTTPS。看到加密標示，仍要確認網域與操作內容；遇到憑證錯誤或瀏覽器安全警告時，不要為了繼續操作而直接略過。</li>
+<li><strong>不要把驗證碼交給別人，也不要批准來路不明的登入要求</strong>：驗證碼只能用在你自己發起、且已確認是官方的操作。有人以客服、退款或協助驗證為由索取時，先停止操作。突然收到登入確認通知，也不要順手按同意。</li>
+<li><strong>作業系統與 App 開啟自動更新</strong>：更新除了新功能，也包含已知漏洞的修補。手機、電腦、瀏覽器與常用 App 都要留意；已停止提供安全更新的裝置或軟體，則要評估更換。</li>
+<li><strong>重要資料不要只存在一個地方</strong>：可以參考 3-2-1 備份原則，保留三份資料，包含原始檔與兩份備份，放在兩種儲存媒介，並至少有一份位於異地。雲端同步可能連誤刪或遭破壞的檔案一起同步，所以還要確認版本還原、離線備份等保護，並實際測試能否還原。</li>
+<li><strong>學會判斷 App 的每一個授權</strong>：先想想它的功能，是否真的需要相機、麥克風、通訊錄、定位或全部照片。能選「使用期間允許」或「只允許部分照片」，就先給需要的範圍。不確定用途時，可以先拒絕，等功能真的需要再開啟。</li>
+<li><strong>舊手機、舊電腦送人或出售前，要依官方流程完整清除</strong>：先確認備份與帳號移轉完成，再處理帳號登出、裝置綁定及清除資料。手動刪掉幾個資料夾通常不足以完成清理；手機中的 SIM 卡、eSIM 與記憶卡也要一併確認。</li>
+<li><strong>App 與瀏覽器擴充功能，要確認來源與權限</strong>：優先從官方來源安裝，少裝用不到的工具。尤其要留意能讀取所有網站、控制電腦或存取檔案的權限，不要因為陌生訊息要求，就安裝遠端控制程式、描述檔或憑證。</li>
+</ol>
+<blockquote>
+<p>這是我最常見到親友之間帳號被盜的狀況。大多數人都是在 LINE 或者是簡訊中，點選了來路不明的網址，而他們通常不太會去辨識這些網址是否安全。</p>
+<p>所以，學會辨識網址、遇到不確定的要求先停下來，可以減少掉進釣魚網站的機會。再搭配帳號驗證與裝置更新，保護會更完整。</p>
+</blockquote>
+<h3 id="日常行為"><a href="#日常行為" class="headerlink" title="日常行為"></a>日常行為</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-03-daily.webp" alt="手機感應付款、收在闔起錢包裡的信用卡，以及螢幕上鎖的筆電"></p>
+<ul>
+<li><strong>避免讓信用卡離開自己的視線</strong>：卡號、有效日期與安全碼外露後，就可能被他人拿去嘗試線上交易，部分交易也不會再要求簡訊驗證。實體刷卡時，盡量自己感應或在現場確認，減少卡片被拍照、抄錄的機會。</li>
+<li><strong>優先使用可信任的行動支付</strong>：例如 Apple Pay 會用裝置帳號號碼與交易安全碼處理付款，減少原始卡號交給商家的機會。LINE Pay 等服務也能減少實體卡片交付，但各家的保護機制不同，仍要確認收款對象與金額，不能保證完全沒有盜刷或詐騙風險。</li>
+<li><strong>開啟信用卡的消費通知</strong>：每次收到通知時，順手確認商家、金額與幣別，小額交易也不要忽略。遇到不認得的消費，就從銀行官方 App 或卡片背面的電話聯絡銀行，必要時先鎖卡。</li>
+<li>習慣性將裝置進行上鎖。不管是電腦或者是手機，只要離開它，就務必上鎖，並且避免被人看到相關的密碼。</li>
+<li><strong>避免在通訊軟體中任意傳送個資與證件</strong>：像是身分證、健保卡、信用卡資料，都可能被轉傳、截圖或留在備份中。真的有提供需求時，先確認收件者與用途，優先使用對方的官方安全管道，只交付必要的資料。</li>
+<li><strong>不要看到連結就直接點</strong>：Email、LINE、簡訊或 QR Code，都可能把你帶到釣魚網站。不確定來源時，直接從官方 App 或已確認的官網查詢。無痕模式主要減少本機留下的瀏覽紀錄，無法讓陌生網站變安全，也無法阻止你把資料交給假網站。</li>
+<li><strong>證件影本可以加上用途浮水印，但仍要限制提供範圍</strong>：例如標示「僅供某單位辦理某事項使用」並附日期，盡量遮住不必要的欄位。浮水印只能增加濫用的難度，仍可能被修圖或移除，所以收件者與傳遞方式一樣重要。</li>
+<li><strong>使用公共 Wi-Fi 時，確認網路與連線狀態</strong>：HTTPS 已能保護許多傳輸內容，使用公共 Wi-Fi 不代表帳密一定會外洩。不過，銀行交易、雲端管理等敏感操作，可以優先使用自己的行動網路；不要忽略憑證警告，也不要安裝陌生登入頁要求的憑證或程式。</li>
+<li><strong>遇到急著要你匯款、交資料或操作帳號的要求，換個管道確認</strong>：就算訊息來自熟人的帳號，也可能是帳號被盜。可以使用原本就知道的電話或當面確認，避免直接相信對方新提供的聯絡方式。</li>
+</ul>
+<blockquote>
+<p>你可能沒有特別想過，信用卡正反面被拍下來，對方就可能取得刷卡需要的資訊。而且部分線上交易不會再要求簡訊驗證，所以卡片本身的保管，還是很重要。</p>
+<p>所以我在出門的過程中，都是不會拿出信用卡的，我一定會使用第三方支付，來減少實體卡片資料外露的機會。</p>
+</blockquote>
+<h3 id="學會安全性檢查"><a href="#學會安全性檢查" class="headerlink" title="學會安全性檢查"></a>學會安全性檢查</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-04-check.webp" alt="打了勾的檢查清單、放大鏡檢視一排裝置，以及帶勾勾的盾牌"></p>
+<ul>
+<li><strong>定期檢查主要帳號的登入裝置與活動</strong>：Google、Apple、微軟、Facebook 等服務，通常都有安全性或登入紀錄頁面。看到不認得的裝置時，先確認是否為自己的舊裝置或不同瀏覽器，再處理可疑登入；顯示的地點可能受網路影響，不適合單靠地點判定是否被盜。</li>
+<li><strong>每月檢查信用卡與銀行交易</strong>：把帳單與實際消費、訂閱紀錄對照，確認沒有不明扣款或已取消卻仍收費的服務。即時通知與每月對帳可以一起做，避免漏掉小額或持續扣款。</li>
+<li><strong>檢查第三方連線與分享權限</strong>：看看哪些 App 還能讀取你的信箱、雲端硬碟或社群資料，也檢查文件是否設定成任何知道連結的人都能開啟。不再使用的連線與分享，就把授權收回。</li>
+<li><strong>先知道帳號被盜時的處理入口</strong>：從可信任的裝置進入官方救援流程，檢查密碼、登入工作階段、備援資料與第三方授權；涉及信用卡時，立即聯絡銀行。修改密碼後，也要確認是否還有其他存取方式沒有被撤銷。</li>
+</ul>
+<blockquote>
+<p>就算我們養成了所有的好習慣，也沒有辦法確保我們的密碼或者是我們的信用卡卡號絕對不會出問題。</p>
+<p>但這個時候你就要了解，如果真的出問題之後，你可以學會怎麼樣進行止血。</p>
+</blockquote>
+<h2 id="二、開發習慣"><a href="#二、開發習慣" class="headerlink" title="二、開發習慣"></a>二、開發習慣</h2><h3 id="一定要使用版本控制"><a href="#一定要使用版本控制" class="headerlink" title="一定要使用版本控制"></a>一定要使用版本控制</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-05-git.webp" alt="由圓點與線條組成的版本分支樹、標示差異的文件，以及上鎖的資料夾"></p>
+<blockquote>
+<p>版本控制可以幫你記錄每次程式修改，讓你在上線前查看差異，出問題時也能追查是哪一次變更造成的。</p>
+<p>不過，Git 會保留歷史，敏感資料一旦提交，就可能留在舊版本裡。所以在開發前，除了導入版本控制，也要先設定哪些檔案不能提交，並養成檢查變更內容的習慣。</p>
+</blockquote>
+<ul>
+<li><strong>提交前，先看一次差異</strong>：不管程式是自己寫的還是 AI 產生的，都要確認沒有把密碼、金鑰、資料庫備份或使用者個資一起提交。</li>
+<li><strong>保護儲存庫本身的權限</strong>：只讓需要的人存取，重要分支加入適合團隊的審查流程。私人儲存庫也可能因帳號、協作者或整合工具出問題而外洩，機密仍要獨立管理。</li>
+</ul>
+<h3 id="學會判讀金鑰是什麼"><a href="#學會判讀金鑰是什麼" class="headerlink" title="學會判讀金鑰是什麼"></a>學會判讀金鑰是什麼</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-06-keys.webp" alt="掛板上掛著幾把帶不同顏色標籤的鑰匙，旁邊一把紅色鑰匙收在保險箱裡"></p>
+<ul>
+<li><strong>先了解金鑰的用途與權限</strong>：部分 API Key 可以讓程式使用付費資源，或代表你的身分存取資料，所以要像保管密碼一樣保管。不同服務也有明確設計給前端使用的公開設定值或 Publishable Key。能不能公開，要以官方文件為準，不能只靠名稱判斷；公開設定值背後的資料存取權限也要另外設定。</li>
+<li><strong>把機密金鑰與原始碼分開管理</strong>：可以透過後端環境變數或平台的 Secrets 功能提供金鑰。若使用 <code>.env</code>，必須主動設定 <code>.gitignore</code> 並確認沒有被追蹤；存成環境變數不會自動獲得保護，也不等於加密。範例檔只放欄位名稱與假值，部署平台的讀取權限也要限制。</li>
+<li><strong>不同專案、不同環境使用不同金鑰</strong>：測試環境與正式環境分開，也避免多個專案共用同一把金鑰。這樣其中一把外洩時，可以縮小影響範圍，也比較容易確認哪些服務需要更新。</li>
+<li><strong>每份金鑰只開啟必要權限</strong>：只需要讀取資料，就不要一起開啟刪除、付款或管理帳號的權限。平台有提供時，也可以限制可存取的資源、來源與有效期限，避免一把金鑰可以操作整個帳號。</li>
+<li><strong>前端的環境變數也可能公開</strong>：例如 Vite 的 <code>VITE_</code> 變數會被打包到前端程式中，使用者可以取得內容。需要保密的金鑰應留在後端或 Serverless Function，不能因為放進 <code>.env</code> 就認為使用者看不到。</li>
+<li><strong>設定用量與費用提醒</strong>：替付費 API 設定合理的配額、告警與可用的停用機制，並確認平台的「預算」究竟只是提醒，還是會真的停止服務，避免以為設了預算就一定不會超支。</li>
+</ul>
+<h3 id="金鑰可能洩漏的方式"><a href="#金鑰可能洩漏的方式" class="headerlink" title="金鑰可能洩漏的方式"></a>金鑰可能洩漏的方式</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-07-leak.webp" alt="一把金色鑰匙從破裂的聊天泡泡飛出，經過終端機視窗，飛向出現裂痕的雲朵"></p>
+<ul>
+<li><strong>儲存庫歷史資訊中包含 API Key</strong>：就算最新版本已經刪掉，Git 歷史、分支、Fork 或他人的複本仍可能保留。只要曾經外洩，就先到平台撤銷或換發金鑰，再處理歷史資料。</li>
+<li><strong>在聊天、文件或工單中傳遞 API Key</strong>：群組成員、分享權限與後續截圖，都可能讓金鑰被更多人看見。團隊協作時，優先使用能限制成員權限的機密管理工具，避免讓金鑰長期留在 LINE、Discord 或文件中。</li>
+<li><strong>透過不受保護的連線傳遞 API Key</strong>：沒有 HTTPS、忽略憑證警告，或把金鑰送到假冒的服務網址，都可能造成外洩。在外處理敏感操作時，可以優先用自己的網路，同時確認服務網址與加密連線。</li>
+<li><strong>在 Terminal Log、錯誤訊息或錄影畫面中列出 API Key</strong>：除錯時印出環境變數、完整請求標頭或設定檔，都可能讓金鑰留下紀錄。記錄時應遮蔽敏感欄位，分享截圖、直播畫面與 Log 前，也要再檢查一次。</li>
+<li><strong>裝置、第三方工具或平台發生問題</strong>：惡意擴充功能、遭入侵的電腦或供應商事件，也可能影響金鑰安全。即使自己沒有公開貼出金鑰，仍要有撤銷、換發與查閱紀錄的能力。</li>
+<li><strong>直接把機密貼進 AI 對話或交給不必要的工具</strong>：請 AI 協助時，先使用假值、遮蔽後的 Log 或最小必要片段。檢查 Agent、MCP 與外掛能讀取哪些檔案及服務，避免為了一次除錯，就開放整個正式環境。</li>
+</ul>
+<h3 id="上線前的基本檢查"><a href="#上線前的基本檢查" class="headerlink" title="上線前的基本檢查"></a>上線前的基本檢查</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-08-launch.webp" alt="發射台上的小火箭、守著伺服器機櫃的盾牌閘門，以及打勾的檢查清單"></p>
+<ul>
+<li><strong>登入與資料權限，要在伺服器端檢查</strong>：把按鈕藏起來、限制前端頁面或設定 CORS，都不能代替存取權限驗證。至少測試未登入者、一般使用者與管理者的差異，確認使用者 A 無法讀取或修改使用者 B 的資料。</li>
+<li><strong>確認資料庫與檔案儲存沒有意外公開</strong>：不要為了讓功能先跑起來，就把規則改成所有人都能讀寫。上線前要檢查資料表、儲存空間、備份檔與管理介面的公開範圍。</li>
+<li><strong>不要直接相信前端傳來的資料</strong>：表單、檔案上傳、商品價格與使用者身分，都要在可信任的後端重新驗證。使用框架提供的安全處理方式，像是參數化查詢、輸出編碼，以及檔案類型與大小限制。</li>
+</ul>
+<h3 id="定期掃描"><a href="#定期掃描" class="headerlink" title="定期掃描"></a>定期掃描</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-09-scan.webp" alt="雷達掃過一疊套件紙箱，旁邊是帶循環箭頭的月曆與放大鏡"></p>
+<ul>
+<li><strong>定期檢查套件漏洞（Dependency Vulnerability）</strong>：透過套件管理工具或平台告警，檢查直接與間接依賴。發現漏洞後，確認是否影響自己的使用方式，安排修補與必要測試，避免只看見告警數字，卻一直沒有處理。</li>
+<li><strong>定期檢查團隊權限</strong>：包含 GitHub、Google Workspace、雲端平台與社群工具。人員離職或合作結束時，要及時移除帳號、組織成員與相關授權，必要時換發曾共用的金鑰，避免只刪掉一個帳號就以為完成。</li>
+<li><strong>定期整理 API Key</strong>：撤銷不再使用的金鑰，記錄仍在使用的用途、負責人與有效期限，避免在盤點文件中保存完整機密值。機器用金鑰可以依風險與平台能力設定到期或自動輪替，和前面提到的使用者密碼管理分開考慮。</li>
+<li><strong>定期盤點網域、DNS、Cloud 與第三方服務</strong>：確認由誰管理、哪些人能修改、續費方式與通知信箱是否有效。不再使用的測試服務、公開分享與 DNS 記錄，也要一起清理，避免留下沒有人維護的入口。</li>
+<li><strong>適當使用 AI 協助檢查，但控制它的權限</strong>：可以先讓 AI 閱讀必要的程式碼與遮蔽後的設定，協助找出可疑寫法。需要執行測試時，優先使用測試環境；刪除資料、修改正式設定或調整權限等動作，要有人確認。AI 沒有發現問題，也不能保證程式完全安全。</li>
+<li><strong>把機密掃描加入提交或部署流程</strong>：在程式推送、合併或上線前檢查是否含有金鑰與密碼，降低靠人工檢查漏掉的機會。掃描工具也有偵測範圍限制，不能取代金鑰權限管理。</li>
+<li><strong>確認監控有人接收，也定期測試備份還原</strong>：登入異常、權限變更與用量暴增，要知道會通知誰。程式碼有 Git 之外，資料庫與使用者上傳檔案也要另外備份，並確認真的能還原。</li>
+</ul>
+<h3 id="發生事故解決方案"><a href="#發生事故解決方案" class="headerlink" title="發生事故解決方案"></a>發生事故解決方案</h3><p><img src="https://img.casper.tw/posts/2026-10-05-security-habits/fig-10-incident.webp" alt="急救箱、斷掉的舊鑰匙與一把新的紅色鑰匙、滅火器，以及攤開的筆記本與筆"></p>
+<blockquote>
+<p>就算再怎麼小心，還是有可能遇到資安問題。所以除了預防，我們也要先知道怎麼止血、確認影響，再把服務安全地恢復。</p>
+<p>說實在，我自己遇過的次數不多，也不敢說以後一定不會再遇到。不過，至少要先了解幾個基本處理方式，遇到 API Key 外洩時，才知道怎麼開始止血。</p>
+</blockquote>
+<ul>
+<li><strong>先止血，讓外洩的憑證失效</strong>：到服務平台撤銷或停用外洩的 API Key、Token 等憑證，必要時暫停受影響的服務。刪掉電腦裡的金鑰文字、移除 <code>.env</code> 或改成私人儲存庫，都不會讓已被取得的金鑰自動失效。</li>
+<li><strong>查閱監測紀錄，確認影響範圍</strong>：檢查可疑時段的登入、API 呼叫、費用、資料異動與權限變更。止血的同時保存必要紀錄，避免急著清空 Log，反而失去追查線索；也要確認對方是否留下新帳號、金鑰或其他存取方式。</li>
+<li><strong>在可信任的環境中換發金鑰，並修補外洩原因</strong>：盤點哪些服務引用了舊金鑰，再逐一更新與重新部署。如果主機或管理帳號也遭入侵，要先隔離、修復或重建，避免新金鑰放回去後再次外洩。</li>
+<li><strong>確認舊金鑰已撤銷，再驗證服務恢復</strong>：先查看平台的撤銷狀態；若還需要測試，使用可信任的本機工具或官方方法，做最小範圍的確認，並避免把機密寫進紀錄。AI 可以協助產生使用佔位值的測試步驟，不需要把完整金鑰貼進對話。</li>
+<li><strong>清理外洩位置，持續追蹤後續活動</strong>：處理程式、文件、Log、歷史版本及分享權限中的殘留資料。涉及 Git 歷史重寫時，要和協作者協調，也要知道無法保證回收所有外部複本。</li>
+<li><strong>留下簡短的事故紀錄與後續改善項目</strong>：記下發現時間、影響資源、已完成的處理與負責人，並視影響範圍聯絡平台客服、團隊或受影響的人。把這次缺少的告警、權限限制或檢查流程補起來。</li>
+</ul>
+</div>
+
+  <div class="post-foot">
+    
+      <div class="tags post-tags"><a href="/tags/develop/">develop</a><a href="/tags/%E8%B3%87%E5%AE%89/">資安</a><a href="/tags/security/">security</a></div>
+    
+    
+<nav class="post-nav">
+  
+    <a class="prev" href="/development/2026/07/16/taiwan-zipcode-side-project/">
+      <span class="lab">← 較舊一篇</span>
+      <span class="ttl">打造「台灣郵遞區號查詢」：一個純靜態 side project 的開發記</span>
+    </a>
+  
+  
+</nav>
+
+
+    
+<section id="comments">
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2026/10/05/security-habits/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+</section>
+
+
+  </div>
+</article>
+</main>
+      <aside class="sidebar">
+
+
+  
+    <div class="widget">
+      <div class="author">
+        <div class="ava is-img"><img src="/img/casper-avatar.webp" alt="Wang Casper"></div>
+        <p class="nm">Wang Casper</p>
+        <p class="en">卡斯伯</p>
+        <p class="bio">前端工程師、教學者。在 Web 上寫筆記，自 2013 年至今，也在六角學院教授前端。</p>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>我的著作</h3></div>
+      <div class="book">
+        <a class="cover" href="https://hex.school/byKCb" target="_blank" rel="noopener">
+          <img src="/img/js-interview-cover.webp" alt="JavaScript 面試力">
+        </a>
+        <div class="info">
+          <span class="t">JavaScript 面試力</span>
+          <span class="d">面試前的最後一哩路，補齊 JS 核心觀念。</span>
+          <a class="buy" href="https://hex.school/byKCb" target="_blank" rel="noopener">前往購買</a>
+        </div>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>社群</h3></div>
+      <div class="social">
+        
+          <a href="https://www.facebook.com/WccCasper" target="_blank" rel="noopener noreferrer">Facebook<span class="r">卡斯伯</span></a>
+        
+          <a href="https://github.com/wcc723" target="_blank" rel="noopener noreferrer">GitHub<span class="r">wcc723</span></a>
+        
+          <a href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA" target="_blank" rel="noopener noreferrer">YouTube<span class="r">六角學院</span></a>
+        
+          <a href="/atom.xml">RSS<span class="r">訂閱</span></a>
+        
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>贊助</h3></div>
+      
+  <div class="ad">廣告版位<br>Google AdSense</div>
+
+
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>標籤</h3></div>
+      <div class="tags"><a class="tag-link" href="/tags/css/" rel="tag">css</a><a class="tag-link" href="/tags/ironman/" rel="tag">ironman</a><a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a><a class="tag-link" href="/tags/js/" rel="tag">js</a><a class="tag-link" href="/tags/sass/" rel="tag">sass</a><a class="tag-link" href="/tags/design/" rel="tag">design</a><a class="tag-link" href="/tags/d3js/" rel="tag">d3js</a><a class="tag-link" href="/tags/gulp/" rel="tag">gulp</a><a class="tag-link" href="/tags/nodejs/" rel="tag">nodejs</a><a class="tag-link" href="/tags/jekyll/" rel="tag">jekyll</a><a class="tag-link" href="/tags/Bootstrap/" rel="tag">Bootstrap</a><a class="tag-link" href="/tags/tools/" rel="tag">tools</a><a class="tag-link" href="/tags/jquery/" rel="tag">jquery</a><a class="tag-link" href="/tags/svg/" rel="tag">svg</a><a class="tag-link" href="/tags/bootstrap/" rel="tag">bootstrap</a><a class="tag-link" href="/tags/oocss/" rel="tag">oocss</a><a class="tag-link" href="/tags/git/" rel="tag">git</a><a class="tag-link" href="/tags/Sass/" rel="tag">Sass</a></div>
+    </div>
+  
+
+
+</aside>
+
+    </div>
+  </div>
+
+  <footer class="site"><div class="wrap">
+  <p class="big">卡斯伯 Blog</p>
+  <p class="sub">前端，沒有極限 · © 2026 Wang Casper · Powered by Hexo</p>
+</div></footer>
+
+  <div class="cs-modal" id="cs-search" role="dialog" aria-modal="true" aria-label="搜尋文章">
+  <div class="cs-box" data-cs-stop>
+    <div class="cs-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="cs-input" type="search" autocomplete="off" placeholder="搜尋文章標題、分類或標籤…" aria-label="搜尋">
+      <kbd>esc</kbd>
+      <button type="button" data-cs-close class="iconbtn" style="width:30px;height:30px;border:0" aria-label="關閉">✕</button>
+    </div>
+    <div class="cs-status" id="cs-status">載入中…</div>
+    <ul class="cs-results" id="cs-results"></ul>
+    <div class="cs-foot">
+      <span>↑↓ 切換 · ↵ 開啟 · esc 關閉</span>
+      <span>共 <span id="cs-total">0</span> 篇</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CONTENT_URL = '/content.json';
+  var modal = document.getElementById('cs-search');
+  var input = document.getElementById('cs-input');
+  var resultsEl = document.getElementById('cs-results');
+  var statusEl = document.getElementById('cs-status');
+  var totalEl = document.getElementById('cs-total');
+  var corpus = null, activeIdx = -1, items = [];
+
+  function esc(s){ return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function hl(text,q){ if(!q) return esc(text); var t=esc(text); try{ var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'); return t.replace(re,'<mark>$1</mark>'); }catch(e){return t;} }
+
+  function open(){ modal.classList.add('open'); document.documentElement.style.overflow='hidden'; setTimeout(function(){input.focus();},30); if(!corpus) load(); }
+  function close(){ modal.classList.remove('open'); document.documentElement.style.overflow=''; input.value=''; render([], ''); }
+  function toggle(){ modal.classList.contains('open') ? close() : open(); }
+
+  function load(){
+    statusEl.textContent='載入中…';
+    fetch(CONTENT_URL).then(function(r){return r.json();}).then(function(data){
+      var posts = data.posts || data || [];
+      corpus = posts.map(function(p){
+        var tags = (p.tags||[]).map(function(t){return t.name||t;}).join(' ');
+        var cats = (p.categories||[]).map(function(c){return c.name||c;}).join(' ');
+        var u = p.permalink || p.path || '';
+        if (u && !/^https?:\/\//.test(u) && u.charAt(0) !== '/') u = '/' + u;
+        return { title:p.title||'（無標題）', url:u, date:p.date||'', cats:cats, hay:((p.title||'')+' '+cats+' '+tags).toLowerCase() };
+      });
+      statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。';
+      totalEl.textContent=corpus.length;
+    }).catch(function(){ statusEl.textContent='無法載入索引，請稍後再試。'; });
+  }
+
+  function search(q){ if(!corpus) return []; var query=q.trim().toLowerCase(); if(!query) return []; var m=[]; for(var i=0;i<corpus.length&&m.length<50;i++){ if(corpus[i].hay.indexOf(query)!==-1) m.push(corpus[i]); } return m; }
+
+  function render(matches,q){
+    items=matches; activeIdx=matches.length?0:-1;
+    if(!q){ resultsEl.innerHTML=''; if(corpus) statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。'; totalEl.textContent=corpus?corpus.length:0; return; }
+    if(!matches.length){ resultsEl.innerHTML=''; statusEl.textContent='找不到「'+q+'」相關文章'; totalEl.textContent=0; return; }
+    statusEl.textContent='「'+q+'」的搜尋結果'; totalEl.textContent=matches.length;
+    var html='';
+    for(var i=0;i<matches.length;i++){ var m=matches[i]; var meta=(m.date?String(m.date).slice(0,10):'')+(m.cats?'　·　'+m.cats:'');
+      html+='<li><a href="'+esc(m.url)+'" data-idx="'+i+'" role="option"><p class="t">'+hl(m.title,q)+'</p>'+(meta?'<p class="m">'+esc(meta)+'</p>':'')+'</a></li>'; }
+    resultsEl.innerHTML=html; mark();
+  }
+  function mark(){ var a=resultsEl.querySelectorAll('a[data-idx]'); for(var i=0;i<a.length;i++){ if(i===activeIdx){ a[i].setAttribute('aria-selected','true'); a[i].scrollIntoView({block:'nearest'}); } else a[i].removeAttribute('aria-selected'); } }
+
+  var timer;
+  input.addEventListener('input', function(){ var q=input.value; clearTimeout(timer); timer=setTimeout(function(){ render(search(q),q.trim()); },80); });
+  input.addEventListener('keydown', function(e){
+    if(e.key==='ArrowDown'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx+1)%items.length; mark(); } }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx-1+items.length)%items.length; mark(); } }
+    else if(e.key==='Enter'){ if(activeIdx>=0&&items[activeIdx]) window.location.href=items[activeIdx].url; }
+    else if(e.key==='Escape'){ close(); }
+  });
+  modal.addEventListener('click', function(e){ if(e.target.closest('[data-cs-close]')){ close(); return; } if(!e.target.closest('[data-cs-stop]')) close(); });
+  document.addEventListener('keydown', function(e){
+    var mac=navigator.platform.toUpperCase().indexOf('MAC')>=0;
+    if((mac?e.metaKey:e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); toggle(); }
+    else if(e.key==='/'&&document.activeElement===document.body){ e.preventDefault(); open(); }
+  });
+  document.addEventListener('click', function(e){ if(e.target.closest('[data-cs-open]')){ e.preventDefault(); open(); } });
+})();
+</script>
+
+  
+  <script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  function icon(){ if (!btn) return; var d = document.documentElement.classList.contains('dark'); var s = btn.querySelector('span') || btn; s.textContent = d ? '☀' : '☾'; btn.setAttribute('aria-pressed', d ? 'true' : 'false'); btn.setAttribute('aria-label', d ? '切換淺色模式' : '切換深色模式'); }
+  icon();
+  if (btn) btn.addEventListener('click', function(){
+    var dark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
+    icon();
+  });
+
+  /* 行動版漢堡選單：開合主選單抽屜 */
+  var nav = document.querySelector('.nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (nav && navToggle) {
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+    navToggle.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  }
+})();
+</script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v18.0&appId=556473851118881"></script>
+
+
+
+
+</body>
+</html>
