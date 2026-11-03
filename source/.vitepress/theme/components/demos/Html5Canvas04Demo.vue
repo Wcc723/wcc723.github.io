@@ -4,6 +4,8 @@
 // Hexo 版沒有載入 jQuery，這裡載入 jQuery 3.7.1。
 // canvas 要讀圖片的像素（getImageData），圖片放在 img.casper.tw，跨網域要用 CORS 載入。
 // 載圖那一行改呼叫 __loadCorsImage（Embed.vue 的 loadCorsImage）：img.casper.tw 還沒開放 CORS 時圖照樣畫得出來，但讀像素的效果要等開放以後才看得到。
+// 呼叫 draw 的那一行包 try/catch：沒開放 CORS 時 canvas 被跨網域的圖污染，getImageData 會丟 SecurityError，
+// 改成只在 console 留一行 warning（跟其他示範的「[demo]」一樣），不留下未捕捉的例外。開放 CORS 後平均色就會出現。
 import { onMounted } from 'vue'
 import { runDemo, loadCorsImage } from './Embed.vue'
 
@@ -32,7 +34,11 @@ $(document).ready(function(){
     img.onload = function(){   
       ctx.canvas.width = img.width;
       ctx.canvas.height = img.height ;
-      draw(this,0,0);
+      try {
+        draw(this,0,0);
+      } catch (e) { // 2026 改：原本直接呼叫 draw(this,0,0);
+        console.warn('[demo]', '讀不到圖片像素（圖片主機沒有開放 CORS），背景不換色', e.message);
+      }
       //draw function
     };
 

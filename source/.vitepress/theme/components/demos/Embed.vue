@@ -8,7 +8,7 @@
 // - JS Bin：一律用 https 載入官方的 embed.js（舊文寫的是 http，在 https 的網站上本來就被瀏覽器擋下）。
 // - GitHub Gist：官方的 .js 用 document.write，頁面載入完才插入的 script 不能用，改放進沙箱 iframe 的 srcdoc 裡執行。
 //
-// 另外匯出 loadLibs、runDemo、sheetFeed、loadCorsImage 給 demos/ 底下各篇的示範元件使用。
+// 另外匯出 loadLibs、runDemo、sheetFeed、loadCorsImage、warnOnce 給 demos/ 底下各篇的示範元件使用。
 
 /** 舊文示範用到的函式庫，固定版本並加上 SRI。d3 的版本照文章 front matter 的 jsvendor。 */
 export const LIBS = {
@@ -46,6 +46,14 @@ export function toHttps(src) {
 }
 
 const pending = new Map()
+const warned = new Set()
+
+/** 同一則訊息在同一頁只印一次：同一頁有好幾個嵌入共用同一支 script 時，它們拿到同一個失敗的 Promise，各自印會洗版 */
+export function warnOnce(tag, message) {
+  if (warned.has(message)) return
+  warned.add(message)
+  console.warn(tag, message)
+}
 
 /** 載入外部 script，同一個網址只載一次，回傳 Promise；只能在瀏覽器端（onMounted 之後）呼叫 */
 export function loadScript(src, { integrity } = {}) {
@@ -100,7 +108,7 @@ export async function runDemo(libs, codes, globals = {}) {
   try {
     await loadLibs(libs)
   } catch (e) {
-    console.warn('[demo]', e.message)
+    warnOnce('[demo]', e.message)
     return
   }
   Object.assign(window, globals)
@@ -189,7 +197,7 @@ onMounted(async () => {
     await loadScript(url)
     if (ready) window.__CPEmbed()
   } catch (e) {
-    console.warn('[embed]', e.message)
+    warnOnce('[embed]', e.message)
   }
 })
 </script>

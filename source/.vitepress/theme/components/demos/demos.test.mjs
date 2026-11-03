@@ -30,6 +30,35 @@ test('主題的 .vue 沒有空的 <template>', () => {
   assert.deepEqual(empty, [])
 })
 
+// 示範元件按需載入：每一頁都會下載主題 chunk，示範元件只有少數文章用到（audit 的 THEME_CHUNK_MAX 也假設它們不在主題 chunk）。
+test('theme/index.ts 用非 eager 的 glob 與 defineAsyncComponent 註冊示範元件', () => {
+  const src = fs.readFileSync(path.join(THEME, 'index.ts'), 'utf8')
+  const globs = [...src.matchAll(/import\.meta\.glob(?:<[^>]*>)?\(\s*(['"])([^'"]+)\1\s*(?:,\s*(\{[^}]*\}))?\s*\)/g)]
+  const demoGlobs = globs.filter((m) => m[2].includes('components/demos/'))
+  assert.equal(demoGlobs.length, 1, 'demos/ 的 glob 應該剛好一個')
+  assert.doesNotMatch(demoGlobs[0][3] ?? '', /eager\s*:\s*true/, 'demos/ 的 glob 不能 eager')
+  assert.match(src, /app\.component\(\s*name\s*,\s*defineAsyncComponent\(/)
+})
+
+test('主題的其他檔案沒有靜態 import demos/（否則那支元件會被打回主題 chunk）', () => {
+  const DEMOS = path.join(THEME, 'components', 'demos')
+  const sources = (dir) =>
+    fs.readdirSync(dir, { withFileTypes: true }).flatMap((e) => {
+      const p = path.join(dir, e.name)
+      if (e.isDirectory()) return e.name === 'demos' || e.name === 'shared' ? [] : sources(p)
+      return /\.(vue|ts|mts|js|mjs)$/.test(e.name) && !e.name.endsWith('.test.mjs') ? [p] : []
+    })
+  const offenders = sources(THEME).filter((f) => {
+    const src = fs.readFileSync(f, 'utf8')
+    return [...src.matchAll(/(?:^|\n)\s*import\s[^'"]*?(['"])([^'"]+)\1/g)].some((m) => {
+      const spec = m[2]
+      return spec.startsWith('.') && path.resolve(path.dirname(f), spec).startsWith(DEMOS + path.sep)
+    })
+  })
+  assert.ok(fs.existsSync(DEMOS))
+  assert.deepEqual(offenders.map((f) => path.relative(THEME, f)), [])
+})
+
 test('rootTemplate 認得空模板', () => {
   assert.equal(rootTemplate('<script setup></script>\n<template></template>\n'), '')
   assert.equal(rootTemplate('<template>\n  <!-- 註解 -->\n</template>\n'), '')
