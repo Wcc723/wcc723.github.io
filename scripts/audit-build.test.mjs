@@ -12,17 +12,46 @@ import { fileURLToPath } from 'node:url'
 import {
   runAudit, formatReport, legacyUrlFix, expectedSitemap, expectedContentEntry, canonicalJson, atomEntries,
   rootHasVpRaw, caseCollisions, callsHexo, loadBaseline, latestBaselineDir, NEW_URLS, FIXED_ANCHORS, TEXT_EXPECTED, TEMPLATE_ALLOW,
-  PROFILE_EXPECTED, PROFILE_LABEL, PROFILE_SEQUENCE_LABEL, THEME_CHUNK_MAX,
+  PROFILE_EXPECTED, PROFILE_LABEL, PROFILE_SEQUENCE_LABEL, THEME_CHUNK_MAX, SIDEBAR_RELATED_MAX, regionsOf, prefetchLinksOf,
 } from './audit-build.mjs'
 import { buildWorld } from './fixtures/world.mjs'
 import { SITE_TITLE_LEGACY } from '../source/.vitepress/theme/shared/shell/site.mjs'
+import { pageTypeOf } from '../source/.vitepress/lib/pagetype.mjs'
+import { SIDEBAR_RELATED_COUNT } from '../source/.vitepress/lib/pagedata.mjs'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const REAL = loadBaseline(path.join(ROOT, 'baseline/hexo-2026-11-03'))
 
-/** 建世界、跑 audit、清掉暫存，回傳報告 */
+/**
+ * 測試世界的文章頁補上側欄（照 theme/components/PostAside.vue 的結構，放在 </article> 之後）：
+ * 本文目錄連到該頁第一個標題 id，相關文章連到世界裡其他文章，站內頁（世界裡沒有 /about/，改連 /contact/）、
+ * 熱門標籤、RSS、站外連結各一個。
+ */
+const SIDEBAR_POSTS = new Map()
+function sidebarHtml(url, html, { related } = {}) {
+  const id = /<h[2-6]\b[^>]*\bid="([^"]+)"/.exec(html)?.[1]
+  const toc = id ? `<div class="post-aside__track"><nav class="post-toc" aria-label="本文目錄"><h2 class="side-block__title">本文目錄</h2><ol><li><a class="post-toc__link" href="#${id}">第一段</a></li></ol></nav></div>` : ''
+  const rel = (related ?? [...SIDEBAR_POSTS.keys()].filter((u) => u !== url)).map((u) => `<li><a class="side-related__link" href="${u}"><span>相關</span></a></li>`).join('')
+  return `<aside class="post-aside post-aside--toc" aria-label="文章側欄" data-v-7a1b2c3d>${toc}<div class="post-aside__more">` +
+    `<section class="side-block side-related"><h2 class="side-block__title">相關文章</h2><ol class="side-related__list">${rel}</ol></section>` +
+    '<section class="side-block side-author"><h2 class="side-block__title">關於作者</h2><img src="/img/casper-avatar.webp" width="64" height="64" alt="" loading="lazy"><a href="/contact/">聯絡卡斯伯 →</a></section>' +
+    '<section class="side-block side-book"><h2 class="side-block__title">我的著作</h2><a class="c3d" href="https://hex.school/byKCb" target="_blank" rel="noopener">JavaScript 面試力</a></section>' +
+    '<section class="side-block side-tags"><h2 class="side-block__title">熱門標籤</h2><a class="chip" href="/tags/vue/">vue</a></section>' +
+    '<section class="side-block side-social"><h2 class="side-block__title">社群</h2><a href="https://github.com/wcc723" target="_blank" rel="noopener">GitHub</a><a href="/atom.xml">RSS</a></section>' +
+    '</div></aside>'
+}
+function withSidebars(dist) {
+  const posts = [...dist.keys()].filter((f) => f.endsWith('index.html') && pageTypeOf(f.replace(/\.html$/, '.md')) === 'post')
+  for (const f of posts) SIDEBAR_POSTS.set('/' + f.slice(0, -'index.html'.length), f)
+  for (const [url, f] of SIDEBAR_POSTS) dist.set(f, dist.get(f).replace('</article>', `</article>${sidebarHtml(url, dist.get(f))}`))
+}
+
+/** 建世界（文章頁先補上側欄）、跑 audit、清掉暫存，回傳報告 */
 async function audit(mutate, extra = {}) {
-  const w = buildWorld(mutate)
+  const w = buildWorld((dist, world) => {
+    withSidebars(dist)
+    if (mutate) mutate(dist, world)
+  })
   try {
     return await runAudit({ ...w.opts, ...extra })
   } finally {
@@ -40,18 +69,20 @@ const edit = (file, fn) => (dist) => dist.set(file, fn(dist.get(file)))
 const POST = 'development/2021/09/11/css-selector/index.html'
 const POST_URL = '/development/2021/09/11/css-selector/'
 
-test('沒改壞的測試世界：17 項檢查全部通過', async () => {
+test('沒改壞的測試世界：18 項檢查全部通過', async () => {
   const r = await audit()
   assert.equal(r.ok, true, formatReport(r))
-  assert.equal(r.checks.length, 17)
-  assert.match(formatReport(r), /結果：全部 17 項通過/)
+  assert.equal(r.checks.length, 18)
+  assert.match(formatReport(r), /結果：全部 18 項通過/)
+  assert.equal(check(r, 'sidebar').stats.withSidebar, 4)
+  assert.equal(check(r, 'sidebar').stats.posts, 4)
   assert.ok(r.expected.some((e) => e.target === '/_headers'))
   assert.ok(r.expected.some((e) => e.target === '/tags/vue/' && /大寫標籤/.test(e.reason)))
 })
 
 test('網址：少了基準頁、多了沒登記的網址、_headers 還在、只差大小寫', async () => {
-  // 少一頁時，那一頁的固定錨點案例也會跟著失敗
-  assertFails(await audit((d) => d.delete(POST)), ['urls', 'anchors'], /基準頁不在 dist：\/development\/2021\/09\/11\/css-selector\/|固定案例/)
+  // 少一頁時，那一頁的固定錨點案例也會跟著失敗，其他文章側欄裡連到它的相關文章也變成死連結
+  assertFails(await audit((d) => d.delete(POST)), ['urls', 'anchors', 'sidebar'], /基準頁不在 dist：\/development\/2021\/09\/11\/css-selector\/|固定案例|側欄連到不存在的網址 \/development\/2021\/09\/11\/css-selector\//)
   assertFails(await audit((d) => d.set('foo/index.html', d.get('privacy/index.html'))), ['urls', 'ads'], /未預期的新網址：\/foo\/|判斷不出頁型/)
   assertFails(await audit((d) => d.set('_headers', '/*\n')), ['urls'], /預期移除的 \/_headers 還在 dist/)
   // macOS 不分大小寫，兩個資料夾寫不出來，只驗判斷邏輯
@@ -100,9 +131,11 @@ test('標題 id：舊 id 不見、固定案例不見；用空 <span id> 保留�
 
 test('本文指紋：少一大段會失敗並指出位置，主題沒有 prose 也會失敗', async () => {
   const cut = await audit(edit(POST, (h) => h.replace(/(<div class="prose"[^>]*><div>)([\s\S]{2000})/, '$1')))
-  assertFails(cut, ['text', 'anchors', 'content'], /相似度|少了|數量/)
+  // 側欄的本文目錄連到被刪掉的那個標題，也一起失敗
+  assertFails(cut, ['text', 'anchors', 'content', 'sidebar'], /相似度|少了|數量|側欄連到不存在的標題/)
   assert.ok(check(cut, 'text').failures.some((f) => /相似度 0\.\d+，第 \d+ 字起/.test(f) || /相似度 低於/.test(f)))
-  assertFails(await audit(edit(POST, (h) => h.replace('class="prose"', 'class="article-body"'))), ['text'], /找不到本文容器/)
+  // 沒有 prose 時本文範圍變成整個 <main>，側欄的圖片與清單也算進去，內容輪廓跟著不同
+  assertFails(await audit(edit(POST, (h) => h.replace('class="prose"', 'class="article-body"'))), ['text', 'content'], /找不到本文容器|數量|清單結構/)
   // 少幾個字仍在 0.98 以上
   const small = await audit(edit(POST, (h) => h.replace(/(<div class="prose"[^>]*><div><p>)(.{5})/, '$1')))
   assert.equal(check(small, 'text').ok, true, check(small, 'text').failures.join('\n'))
@@ -182,6 +215,51 @@ test('版面根元素沒有 vp-raw', async () => {
   assert.equal(rootHasVpRaw('<div id="app"><!--[--><div data-v-1 class="a vp-raw">'), true)
   assert.equal(rootHasVpRaw('<div id="app"><main><div class="vp-raw">'), false)
   assert.equal(rootHasVpRaw('<body><div class="vp-raw">'), false)
+})
+
+test('站點資料的 router.prefetchLinks 不是 false（整頁載入用不到預抓）', async () => {
+  const on = (h) => h.replace('\\"prefetchLinks\\":false', '\\"prefetchLinks\\":true')
+  assertFails(await audit(edit(POST, on)), ['layout'], /css-selector\/ 的站點資料 router\.prefetchLinks 是 true/)
+  const site = (json) => `<script>window.__VP_SITE_DATA__=JSON.parse(${JSON.stringify(JSON.stringify(json))})</script>`
+  assert.equal(prefetchLinksOf(site({ router: { prefetchLinks: false } })), false)
+  assert.equal(prefetchLinksOf(site({ router: { prefetchLinks: true } })), true)
+  assert.equal(prefetchLinksOf(site({ title: 'x' })), null)
+  // 文章內文提到 prefetchLinks 不算
+  assert.equal(prefetchLinksOf('<p>"prefetchLinks":false</p>'), null)
+})
+
+test('文章側欄：少了側欄、放了廣告或「廣告版位」、相關文章連到不存在的頁、超過 5 篇', async () => {
+  const OTHER = '/life/2015/01/08/2014-year-report/'
+  const aside = (h) => regionsOf(h, 'aside', 'post-aside')[0].html
+  assertFails(await audit(edit(POST, (h) => h.replace(aside(h), ''))), ['sidebar'], /css-selector\/ 沒有側欄/)
+  // <ins class="adsbygoogle"> 兩邊都擋（廣告檢查看全頁，側欄檢查看側欄）；不是 ins 的 adsbygoogle 與佔位框只有側欄檢查擋
+  assertFails(await audit(edit(POST, (h) => h.replace('</aside>', '<ins class="adsbygoogle" data-ad-slot="1"></ins></aside>'))), ['sidebar', 'ads'], /adsbygoogle/)
+  assertFails(await audit(edit(POST, (h) => h.replace('</aside>', '<div class="adsbygoogle"></div></aside>'))), ['sidebar'], /側欄有 adsbygoogle/)
+  assertFails(await audit(edit(POST, (h) => h.replace('</aside>', '<section><h2>贊助</h2><div class="ad">廣告版位<br>Google AdSense</div></section></aside>'))), ['sidebar'], /「廣告版位」佔位框/)
+  assertFails(await audit(edit(POST, (h) => h.replace(`href="${OTHER}"`, 'href="/life/2015/01/09/gone/"'))), ['sidebar'], /連到不存在的網址 \/life\/2015\/01\/09\/gone\//)
+  const many = Array.from({ length: SIDEBAR_RELATED_MAX + 1 }, () => `<li><a href="${OTHER}">x</a></li>`).join('')
+  const over = await audit(edit(POST, (h) => h.replace('<ol class="side-related__list">', `<ol class="side-related__list">${many}`)))
+  assertFails(over, ['sidebar'], /相關文章，上限 5/)
+  assert.ok(check(over, 'sidebar').failures.some((f) => /相關文章有重複/.test(f)))
+  assert.equal(SIDEBAR_RELATED_MAX, SIDEBAR_RELATED_COUNT)
+})
+
+test('文章側欄：在本文指紋範圍裡、跟上下篇或接著讀重複、連回本篇、目錄連到不存在的標題、另開分頁沒有 noopener、沒有 aria-label', async () => {
+  const OTHER = '/life/2015/01/08/2014-year-report/'
+  const move = (h) => {
+    const a = regionsOf(h, 'aside', 'post-aside')[0].html
+    return h.replace(a, '').replace('<div class="post-foot"', `${a}<div class="post-foot"`)
+  }
+  const inside = await audit(edit(POST, move))
+  assert.ok(check(inside, 'sidebar').failures.some((f) => /在本文指紋範圍/.test(f)), check(inside, 'sidebar').failures.join('\n'))
+  const nav = `<nav class="post-nav" aria-label="上一篇與下一篇"><a class="c3d post-nav__item" href="${OTHER}">較舊一篇</a></nav>`
+  assertFails(await audit(edit(POST, (h) => h.replace('<div class="fb-comments"', `${nav}<div class="fb-comments"`))), ['sidebar'], /跟上一篇、下一篇或接著讀重複/)
+  const next = `<section class="related" aria-label="接著讀"><h2>接著讀</h2><a class="c3d related__card" href="${OTHER}">x</a></section>`
+  assertFails(await audit(edit(POST, (h) => h.replace('</article>', `</article>${next}`))), ['sidebar'], /跟上一篇、下一篇或接著讀重複/)
+  assertFails(await audit(edit(POST, (h) => h.replace(`href="${OTHER}"`, `href="${POST_URL}"`))), ['sidebar'], /相關文章連回本篇/)
+  assertFails(await audit(edit(POST, (h) => h.replace(/(class="post-toc__link" href=")#[^"]+"/, '$1#no-such-heading"'))), ['sidebar'], /連到不存在的標題 #no-such-heading/)
+  assertFails(await audit(edit(POST, (h) => h.replace('href="https://github.com/wcc723" target="_blank" rel="noopener"', 'href="https://github.com/wcc723" target="_blank"'))), ['sidebar'], /沒有 rel="noopener"/)
+  assertFails(await audit(edit(POST, (h) => h.replace('aria-label="文章側欄"', ''))), ['sidebar'], /沒有 aria-label/)
 })
 
 test('分類：categories/css/ 小寫資料夾、不在白名單的分類', async () => {

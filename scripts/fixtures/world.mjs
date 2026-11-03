@@ -103,8 +103,9 @@ export function builtHtml({ file, title, description, canonical, robots, publish
     robots ? `<meta name="robots" content="${robots}">` : '',
     ...demoCss.map((href) => `<link rel="stylesheet" href="${href}">`),
     jsonLd(type, ldExtra),
-    // VitePress 把 config.head 序列化進每一頁；loader 網址出現在字串裡，但不是 <script src>，不能被算成 loader
-    `<script>window.__VP_SITE_DATA__=JSON.parse("{\\"head\\":[[\\"script\\",{\\"src\\":\\"${ADSENSE_LOADER_SRC}\\"}]]}")</script>`,
+    // VitePress 把 config.head 序列化進每一頁；loader 網址出現在字串裡，但不是 <script src>，不能被算成 loader。
+    // router.prefetchLinks 也在站點資料裡（整頁載入，關掉預抓；layout 檢查會看）
+    `<script>window.__VP_SITE_DATA__=JSON.parse("{\\"head\\":[[\\"script\\",{\\"src\\":\\"${ADSENSE_LOADER_SRC}\\"}]],\\"router\\":{\\"prefetchLinks\\":false}}")</script>`,
   ].filter(Boolean).join('\n')
   return `<!DOCTYPE html>\n<html lang="zh-TW" dir="ltr">\n<head>\n${head}\n</head>\n<body><div id="app"><!--[--><div class="vp-raw" data-v-7a1b2c3d><header class="site-header"><a href="/">卡斯伯 Blog</a><a href="/categories/">文章</a></header><main class="site-main" data-v-7a1b2c3d>${main}</main><footer class="site-footer"><a href="/privacy/">隱私權政策</a></footer></div><!--]--></div></body>\n</html>\n`
 }

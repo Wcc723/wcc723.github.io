@@ -513,6 +513,414 @@
   }
 }
 
+/* ---------- 文章側欄（components/PostAside.vue、PostToc.vue） ----------
+ * 小螢幕（預設）：依 DOM 順序排在文章與「接著讀」下方；目錄不顯示（排在文末用不到）。
+ * 平板寬度各塊排成兩欄（多欄排版，閱讀順序先左欄再右欄，跟 DOM 相同），手機一欄。
+ * 桌機（1120px 以上、支援 subgrid）：兩欄，見下面的 @media。不支援 subgrid 的瀏覽器維持小螢幕的排法。
+ */
+.post-aside {
+  margin-top: 72px;
+}
+
+.post-aside__track {
+  display: none;
+}
+
+.post-aside__more {
+  columns: 2 300px;
+  column-gap: 40px;
+}
+
+.side-block {
+  margin: 0 0 40px;
+  break-inside: avoid;
+}
+
+.side-block__title {
+  margin: 0 0 12px;
+  color: var(--cs-text);
+  font-size: 17px;
+  font-weight: 900;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+.side-block__more {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--cs-size-tap);
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.side-block__more:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* 本文目錄：外框照 v4 設計稿（文章頁的 .toc），目前段落用淺藍底、主色字與左邊的線，不改字重 */
+.post-toc {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 10px 12px;
+  border: var(--cs-size-border) solid var(--cs-line);
+  border-radius: var(--cs-radius-card);
+}
+
+.post-toc__title {
+  padding: 0 12px;
+  margin-bottom: 8px;
+}
+
+.post-toc__list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.post-toc__link {
+  display: flex;
+  align-items: center;
+  min-height: var(--cs-size-tap);
+  padding: 8px 12px;
+  border-radius: var(--cs-radius-sm);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.site a.post-toc__link {
+  color: var(--cs-text);
+}
+
+.post-toc__item--h3 .post-toc__link {
+  padding-left: 26px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.site .post-toc__item--h3 a.post-toc__link {
+  color: var(--cs-text-2);
+}
+
+.site a.post-toc__link:hover {
+  background: var(--cs-section);
+  color: var(--cs-text);
+}
+
+.site a.post-toc__link[aria-current] {
+  background: var(--cs-soft);
+  box-shadow: inset 4px 0 0 var(--cs-primary);
+  color: var(--cs-link);
+}
+
+/* 強制色彩（Windows 高對比）會拿掉底色與 box-shadow、統一字色，目前段落改用系統色的框線標示；
+   取得焦點時讓位給焦點框，兩種框不疊在一起 */
+@media (forced-colors: active) {
+  .site a.post-toc__link[aria-current]:not(:focus-visible) {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+}
+
+/* 相關文章、社群：一行一個連結，上下細線分隔，每行至少 44px 高 */
+.side-related__list,
+.side-social__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--cs-line);
+}
+
+/* 日期在連結外面（錨點文字只有標題），連結的 ::after 蓋住整個 li，整行（含日期）都能點 */
+.side-related__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: var(--cs-size-tap);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cs-line);
+}
+
+.side-related__link {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.6;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.side-related__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.site a.side-related__link {
+  color: var(--cs-text);
+}
+
+.site a.side-related__link:hover {
+  color: var(--cs-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.side-related__date {
+  color: var(--cs-text-2);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.side-social__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: var(--cs-size-tap);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--cs-line);
+  text-decoration: none;
+}
+
+.site a.side-social__link {
+  color: var(--cs-text);
+}
+
+.side-social__name {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.site a.side-social__link:hover .side-social__name {
+  color: var(--cs-link);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.side-social__handle {
+  color: var(--cs-text-2);
+  font-size: 14px;
+}
+
+/* 作者卡：跟首頁的關於條同一組顏色 */
+.side-author__card {
+  padding: 20px 20px 12px;
+  border-radius: var(--cs-radius-card);
+  background: var(--cs-section);
+}
+
+.side-author__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.side-author__avatar {
+  flex: none;
+  width: 64px;
+  height: 64px;
+  border: 3px solid var(--th-surface);
+  border-radius: 50%;
+}
+
+.side-author__name {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.side-author__local {
+  color: var(--cs-text-2);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.side-author__bio {
+  margin: 12px 0 0;
+  color: var(--cs-text-2);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+/* 我的著作：整張 3D 卡是一個連結 */
+.side-book__card {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 16px;
+}
+
+.side-book__cover {
+  flex: none;
+  width: 72px;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 0 var(--th-card-edge);
+}
+
+.side-book__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.side-book__name {
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.45;
+}
+
+.side-book__desc {
+  color: var(--cs-text-2);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.side-book__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: var(--cs-link);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* 熱門標籤：連結膠囊（看起來 36px，::after 撐到 44px），列距 8px，上下兩列的點擊範圍剛好不重疊 */
+.side-tags__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* 篇數不放進連結文字（錨點文字只有標籤名，跟 Hexo 側欄一樣），由 data-count 顯示在名稱後面。
+   a.chip::after 已經拿來撐點擊範圍，這裡用 ::before 加 order 排到名稱後面；
+   替代文字設成空字串，螢幕閱讀器只念標籤名（不支援這個寫法的瀏覽器用上一行，照樣顯示） */
+.side-tags__chip[data-count]::before {
+  content: attr(data-count);
+  content: attr(data-count) / '';
+  order: 1;
+  margin-left: 6px;
+  font-family: var(--th-font-en);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/*
+ * 桌機兩欄：.post-layout 定義 5 列：標題面板、封面、本文、文末（標籤、上下篇、留言）、接著讀。
+ * <article> 與 .post-body 用 subgrid 對齊這幾列，標題面板橫跨兩欄，本文欄 720px，側欄 288px。
+ * 側欄也用 subgrid：目錄在「封面＋本文」兩列裡 sticky，捲到本文結束就停；其餘各塊從「文末」那列開始，
+ * 留言框載入後變高只會往下長，不會推動側欄（不造成版面位移）。沒有目錄時，各塊從封面那列開始。
+ * 最後一列是 1fr：側欄比文章長時，多出來的高度都放在接著讀下面，本文和標籤之間不會被撐開。
+ */
+@media (min-width: 1120px) {
+  @supports (grid-template-rows: subgrid) {
+    .wrap.page-post {
+      max-width: calc(var(--cs-size-article) + 48px + 288px + var(--cs-size-gutter) * 2);
+    }
+
+    .post-layout {
+      display: grid;
+      grid-template-columns: minmax(0, var(--cs-size-article)) 288px;
+      grid-template-rows: auto auto auto auto 1fr;
+      column-gap: 48px;
+    }
+
+    .post-layout > .post {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-row: 1 / 5;
+      grid-template-columns: subgrid;
+      grid-template-rows: subgrid;
+    }
+
+    .page-post .post-hero {
+      grid-column: 1 / -1;
+      grid-row: 1;
+    }
+
+    .page-post .post-cover {
+      grid-column: 1;
+      grid-row: 2;
+      max-width: none;
+      margin: 40px 0 0;
+    }
+
+    /* 欄的最小值要是 0：舊文有很寬的表格、長網址，auto 欄會被撐開，本文就會蓋到側欄底下 */
+    .page-post .post-body {
+      display: grid;
+      grid-column: 1;
+      grid-row: 3 / 5;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: subgrid;
+      max-width: none;
+      margin: 40px 0 0;
+    }
+
+    .page-post .related {
+      grid-column: 1;
+      grid-row: 5;
+      align-self: start;
+    }
+
+    .post-aside {
+      display: grid;
+      grid-column: 2;
+      grid-row: 2 / 6;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: subgrid;
+      margin: 0;
+    }
+
+    .post-aside__track {
+      display: block;
+      grid-row: 1 / 3;
+      padding-top: 40px;
+    }
+
+    /* 不設 overscroll-behavior: contain：Chrome 在滑鼠停在目錄上時整頁就捲不動（目錄沒有超出也一樣）。
+       目錄超出時先捲目錄，捲到底再交給整頁，是一般的行為 */
+    .post-toc {
+      position: sticky;
+      top: 24px;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+    }
+
+    .post-aside__more {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+      grid-row: 1 / -1;
+      align-self: start;
+      padding-top: 40px;
+      columns: auto;
+    }
+
+    .post-aside--toc .post-aside__more {
+      grid-row: 3 / -1;
+    }
+
+    .post-aside__more .side-block {
+      margin: 0;
+    }
+  }
+}
+
 /* ---------- 列表頁 ---------- */
 .list-body {
   margin-top: 8px;

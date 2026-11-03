@@ -15,7 +15,11 @@ import {
   orderedTags,
   pageDataFor,
   pagerFor,
+  popularTags,
   relatedOf,
+  sidebarRelatedOf,
+  SIDEBAR_RELATED_COUNT,
+  SIDEBAR_TAG_COUNT,
   siteIndex,
   tagPagePaths,
   tagPaths,
@@ -186,6 +190,94 @@ test('relatedOf：分類太小時才補上下篇', () => {
   if (!small) return
   const [a, b] = small.posts
   assert.deepEqual(relatedOf(a, index, [b.url]), [{ title: b.title, url: b.url }])
+})
+
+// 側欄相關文章用的迷你索引：只需要 posts（列表順序：日期新到舊，同日依檔名）
+const fakePost = (file, category, tags) => {
+  const date = file.slice(0, 10)
+  return { file, date, category, tags, title: file, url: `/${category}/${date.replaceAll('-', '/')}/${file.slice(11, -3)}/` }
+}
+const FAKE = hexoOrder([
+  fakePost('2020-01-01-me.md', 'css', ['css', 'sass', 'grid']),
+  fakePost('2019-01-01-three.md', 'javascript', ['css', 'sass', 'grid']), // 3 分、不同分類
+  fakePost('2021-01-01-two-same.md', 'css', ['css', 'sass']), // 2 分、同分類
+  fakePost('2022-01-01-two-other.md', 'javascript', ['sass', 'grid']), // 2 分、不同分類，比 two-same 新
+  fakePost('2018-05-05-one-a.md', 'design', ['css']), // 1 分、不同分類
+  fakePost('2018-05-05-one-b.md', 'design', ['grid']), // 1 分、不同分類，同一天，檔名較後
+  fakePost('2023-01-01-zero-same.md', 'css', ['vue']), // 0 分、同分類：可以補位
+  fakePost('2024-01-01-zero-other.md', 'life', ['vue']), // 0 分、不同分類：不算相關
+  fakePost('2017-01-01-one-dup.md', 'css', ['css', 'css']) // 重複的標籤只算一次：1 分、同分類
+])
+const fakeIndex = { posts: FAKE }
+const me = FAKE.find((p) => p.file === '2020-01-01-me.md')
+const files = (list) => list.map((r) => FAKE.find((p) => p.url === r.url).file.slice(11, -3))
+
+test('sidebarRelatedOf：標籤重疊數高的先，同分時同分類的先，再依日期新到舊，同一天依檔名', () => {
+  const all = sidebarRelatedOf(me, fakeIndex)
+  assert.equal(all.length, SIDEBAR_RELATED_COUNT)
+  assert.deepEqual(files(all), ['three', 'two-same', 'two-other', 'one-dup', 'one-a'])
+  assert.deepEqual(Object.keys(all[0]).sort(), ['date', 'title', 'url'])
+  assert.equal(all[0].date, '2019-01-01')
+})
+
+test('sidebarRelatedOf：排除本篇與傳入的網址（上下篇、接著讀），標籤分類都不同的不收，寧可少於 5 篇', () => {
+  const url = (f) => FAKE.find((p) => p.file.includes(f)).url
+  const out = sidebarRelatedOf(me, fakeIndex, [url('three'), url('two-same'), url('one-dup')])
+  assert.deepEqual(files(out), ['two-other', 'one-a', 'one-b', 'zero-same'])
+  assert.ok(!out.some((r) => r.url === me.url))
+  assert.ok(!files(sidebarRelatedOf(me, fakeIndex, FAKE.map((p) => p.url).filter((u) => !u.includes('zero')))).includes('zero-other'))
+  assert.deepEqual(sidebarRelatedOf(fakePost('2020-02-02-alone.md', 'ssl', ['ssl']), fakeIndex), [])
+})
+
+test('sidebarRelatedOf：決定性，文章讀進來的順序不影響結果', () => {
+  const want = sidebarRelatedOf(me, fakeIndex)
+  for (const order of [[...FAKE].reverse(), [...FAKE].sort((a, b) => (a.title < b.title ? 1 : -1))]) {
+    assert.deepEqual(sidebarRelatedOf(me, { posts: order }), want)
+  }
+})
+
+test('文章側欄（真實資料）：相關文章至多 5 篇，不重複本篇、上下篇、接著讀，都是存在的文章；同一頁算兩次結果相同', () => {
+  const counts = new Map()
+  for (const p of index.posts) {
+    const fm = run(p.out)
+    const rel = fm.sidebar.related
+    counts.set(rel.length, (counts.get(rel.length) ?? 0) + 1)
+    assert.ok(rel.length <= SIDEBAR_RELATED_COUNT, p.url)
+    const taken = new Set([fm.url, fm.prev?.url, fm.next?.url, ...fm.related.map((r) => r.url)])
+    for (const r of rel) {
+      const target = index.byUrl.get(r.url)
+      assert.ok(target, `${p.url} 的相關文章 ${r.url} 不存在`)
+      assert.ok(!taken.has(r.url), `${p.url} 的相關文章 ${r.url} 跟本篇、上下篇或接著讀重複`)
+      assert.ok(target.category === p.category || target.tags.some((t) => p.tags.includes(t)), `${p.url} → ${r.url} 標籤和分類都不同`)
+      assert.equal(r.title, target.title)
+      assert.equal(r.date, target.date)
+    }
+    assert.equal(new Set(rel.map((r) => r.url)).size, rel.length, `${p.url} 的相關文章有重複`)
+  }
+  // 364 篇裡絕大多數湊得滿 5 篇；只有標籤和分類都獨一無二的少數幾篇是 0 篇（側欄就不輸出這一塊）
+  assert.ok((counts.get(SIDEBAR_RELATED_COUNT) ?? 0) >= 330, JSON.stringify([...counts]))
+  const page = 'javascript/2019/03/18/JS-THIS/index.md'
+  assert.deepEqual(run(page).sidebar, run(page).sidebar)
+})
+
+test('文章側欄：熱門標籤是文章數前 20 名，網址是合併後的小寫，每頁 frontmatter 只多一點點', () => {
+  const tags = popularTags(index)
+  assert.equal(tags.length, SIDEBAR_TAG_COUNT)
+  assert.deepEqual(Object.keys(tags[0]).sort(), ['count', 'name', 'url'])
+  for (let i = 1; i < tags.length; i++) assert.ok(tags[i - 1].count >= tags[i].count, `${tags[i - 1].name} 應該排在 ${tags[i].name} 前面`)
+  assert.equal(tags[0].count, Math.max(...index.tags.map((t) => t.posts.length)))
+  for (const t of tags) {
+    assert.equal(index.tagBySlug.get(decodeURI(t.url).split('/')[2])?.name, t.name, t.url)
+    assert.ok(!/\/tags\/(Sass|Bootstrap|Vue)\//.test(t.url), `${t.url} 是線上 404 的大寫標籤`)
+  }
+  assert.ok(tags.some((t) => t.url === '/tags/sass/'))
+  const fm = run('development/2020/09/22/js-function/index.md')
+  assert.deepEqual(fm.sidebar.tags, tags)
+  // 相關 5 篇加標籤 20 個，JSON 不到 2.5 KB
+  assert.ok(Buffer.byteLength(JSON.stringify(fm.sidebar)) < 2500, `${Buffer.byteLength(JSON.stringify(fm.sidebar))} bytes`)
+  // 列表、首頁不帶側欄資料
+  assert.equal(run('index.md').sidebar, undefined)
+  assert.equal(run('tags/資安/index.md').sidebar, undefined)
 })
 
 test('關於、法務、404', () => {

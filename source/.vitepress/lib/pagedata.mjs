@@ -1,5 +1,5 @@
 // 負責：routes 模組（P1 workflow）。介面見 ../README.md。
-// transformPageData 的前半段（每一頁的頁型、網址、麵包屑、H1、卡片、上下篇），以及動態路由 paths loader 用的資料。
+// transformPageData 的前半段（每一頁的頁型、網址、麵包屑、H1、卡片、上下篇、文章側欄），以及動態路由 paths loader 用的資料。
 // 只在 Node 端執行（config.mts、paths loader），主題不 import。
 //
 // 順序、分頁、上下篇都照 Hexo（develop 分支的 hexo-generator-index、-category、-tag、-archive 與 casper-2026 主題）：
@@ -25,6 +25,9 @@ import {
 
 export const PER_PAGE = 10
 export const RELATED_COUNT = 3
+// 文章頁側欄：相關文章 5 篇、熱門標籤 20 個（每頁 frontmatter 只多這兩份小清單）
+export const SIDEBAR_RELATED_COUNT = 5
+export const SIDEBAR_TAG_COUNT = 20
 export const ABOUT_NAME = '關於卡斯伯'
 export const NOT_FOUND_HEADING = '這頁找不到'
 
@@ -184,6 +187,33 @@ export function relatedOf(post, index, exclude = []) {
     .map(({ p }) => link(p))
 }
 
+// 側欄的相關文章：跟本篇共有的標籤數就是分數，高分在前；同分時同分類的先，再依日期新到舊，
+// 最後依檔名（同一天的文章），結果跟文章讀進來的順序無關，每次建置都一樣。
+// 只收分數至少 1，或同分類（分數 0）的文章：標籤和分類都不同的文章不算相關，寧可少於 5 篇。
+// exclude 是頁面上已經有的連結（上一篇、下一篇、底部接著讀），不重複出現；本篇自己一律排除。
+export function sidebarRelatedOf(post, index, exclude = []) {
+  const skip = new Set([post.url, ...exclude])
+  const mine = new Set(post.tags)
+  const picked = []
+  for (const p of index.posts) {
+    if (skip.has(p.url)) continue
+    let score = 0
+    for (const t of new Set(p.tags)) if (mine.has(t)) score++
+    const same = p.category === post.category ? 1 : 0
+    if (score === 0 && !same) continue
+    picked.push({ p, score, same })
+  }
+  return picked
+    .sort((a, b) => b.score - a.score || b.same - a.same || (a.p.date === b.p.date ? byFileAsc(a.p, b.p) : a.p.date < b.p.date ? 1 : -1))
+    .slice(0, SIDEBAR_RELATED_COUNT)
+    .map(({ p }) => ({ title: p.title, url: p.url, date: p.date }))
+}
+
+// 側欄的熱門標籤：文章數多的前 20 個（同數依名稱），網址是合併後的小寫寫法（tagUrl），不會連到線上 404 的大寫標籤
+export function popularTags(index) {
+  return index.tags.slice(0, SIDEBAR_TAG_COUNT).map((t) => ({ name: t.name, url: t.url, count: t.posts.length }))
+}
+
 // rewrites 之後的 relativePath → 網址路徑（未編碼）
 export function urlOf(relativePath) {
   const p = relativePath.replace(/\\/g, '/')
@@ -249,6 +279,8 @@ function postData(url, index) {
   const i = index.position.get(url)
   const prev = i > 0 ? link(index.posts[i - 1]) : null
   const next = i < index.posts.length - 1 ? link(index.posts[i + 1]) : null
+  const neighbours = [prev?.url, next?.url].filter(Boolean)
+  const related = relatedOf(p, index, neighbours)
   return {
     heading: p.title,
     breadcrumbs: [HOME, ARTICLES, { name: p.category, url: categoryUrl(p.category) }, { name: p.title }],
@@ -263,7 +295,11 @@ function postData(url, index) {
     },
     prev,
     next,
-    related: relatedOf(p, index, [prev?.url, next?.url].filter(Boolean)),
+    related,
+    sidebar: {
+      related: sidebarRelatedOf(p, index, [...neighbours, ...related.map((r) => r.url)]),
+      tags: popularTags(index)
+    },
     fbHref: toAbsolute(url)
   }
 }

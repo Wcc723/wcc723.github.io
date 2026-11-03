@@ -5,7 +5,7 @@
 // 預設：dist = source/.vitepress/dist，基準 = baseline/ 底下最新的 hexo-*，報告 = source/.vitepress/cache/audit-report.json
 //
 // 拿 VitePress 產物跟 Hexo 基準逐項比：網址、每頁 SEO 欄位、標題 id、本文指紋、列表卡片、feed、sitemap、廣告 loader、
-// vp-raw、分類白名單、模板殘留、主題 chunk。檢查項目來自計畫（workspace docs/architecture/site-architecture-v2.md）
+// vp-raw、文章側欄、分類白名單、模板殘留、主題 chunk。檢查項目來自計畫（workspace docs/architecture/site-architecture-v2.md）
 // P1 的 audit 清單與「遷移：Hexo 到 VitePress」各節的「檢查」。
 //
 // 基準有兩部分：baseline/hexo-*/ 的檔案（pages.json 等），以及基準 commit 裡的原始 HTML（git cat-file 讀，
@@ -21,7 +21,7 @@ import {
   SITE, fileToUrl, urlAliases, decodeEntities, findTags, stripHidden, textOf, headOf, mainOf, articleOf,
   fingerprintText, sha256, extractPage, sitemapLocs, startTags, hasClass, builtArticleOf, hasProse,
   normalizePunct, comparableText, similarity, firstDiff, normalizeHref, postLinks, linkSet, hexoCards,
-  builtCards, idsIn, headingIdsOf, hashLinks, contentProfile, demoCssLinks, jsonLdNodes,
+  builtCards, idsIn, headingIdsOf, hashLinks, contentProfile, demoCssLinks, jsonLdNodes, POST_URL_RE,
 } from './lib/extract-page.mjs'
 import {
   SITE_TITLE_LEGACY, ADS_MODE, ADSENSE_CLIENT, shouldLoadAds, countAdsLoaders,
@@ -42,7 +42,8 @@ export const TEXT_MIN = 0.98
  * 主題 chunk（assets/chunks/theme.*.js）上限：120 KiB，未壓縮。
  * 理由：每一頁都會下載它。自訂主題只有版面、頁首頁尾、麵包屑、⌘K 搜尋、FB 留言、深淺色切換，正常應在數十 KB；
  * 把文章資料打包進來就會明顯超過：364 篇的卡片摘要約 100 KB（每篇約 90 字，UTF-8 約 270 bytes），content.json 本身 145,678 bytes。
- * theme/index.ts 用 eager glob 把 demos/ 的元件全部打進主題 chunk，示範元件變多時先考慮改成非同步載入，不要直接調高上限。
+ * demos/ 的示範元件已改成按需載入（theme/index.ts 的 defineAsyncComponent，每支各自一個 chunk），不算在主題 chunk 裡；
+ * 2026-11-03 整合時主題 chunk 是 41,792 bytes（改之前 91,166）。超過上限時先查是誰被打進主題 chunk，不要直接調高上限。
  */
 export const THEME_CHUNK_MAX = 120 * 1024
 
@@ -183,6 +184,10 @@ export const JSONLD_TYPES = {
   home: [],
   'not-found': [],
 }
+
+/** 文章側欄（theme/components/PostAside.vue）：外框的 class、相關文章上限（lib/pagedata.mjs 的 SIDEBAR_RELATED_COUNT） */
+export const SIDEBAR_CLASS = 'post-aside'
+export const SIDEBAR_RELATED_MAX = 5
 
 // 要比 h1 的基準頁型（首頁與 /page/N/ 的 H1 依計畫改成站名與「最新文章」，不比）
 const H1_TYPES = new Set(['post', 'about', 'category', 'tag', 'archive', 'tags-index'])
@@ -928,15 +933,127 @@ export function checkAds(ctx) {
   return c
 }
 
-/** 版面根元素有 vp-raw（計畫「站內換頁」：整頁載入） */
+/**
+ * 版面根元素有 vp-raw（計畫「站內換頁」：整頁載入）；站點資料的 router.prefetchLinks 是 false。
+ * 整頁載入時下一頁 hydrate 用 .lean.js，VitePress 預設替視窗裡的站內連結預抓的 .md.js 全部用不到（側欄一篇就多 20 多個）。
+ */
 export function checkLayout(ctx) {
-  const c = newCheck('layout', '版面根元素有 vp-raw')
+  const c = newCheck('layout', '版面根元素有 vp-raw，關掉連結預抓')
   let n = 0
+  let prefetchOff = 0
   for (const d of ctx.pages.values()) {
     if (rootHasVpRaw(d.html)) n++
     else fail(c, `${d.url} 的版面根元素沒有 vp-raw`)
+    const prefetch = prefetchLinksOf(d.html)
+    if (prefetch === false) prefetchOff++
+    else if (prefetch === true) fail(c, `${d.url} 的站點資料 router.prefetchLinks 是 true（整頁載入用不到預抓的 .md.js，config.mts 要設 false）`)
   }
-  c.summary = `${n} / ${ctx.pages.size} 頁`
+  if (ctx.pages.size && !prefetchOff) fail(c, '每一頁的站點資料都讀不到 router.prefetchLinks: false（config.mts 要設 router: { prefetchLinks: false }）')
+  c.summary = `vp-raw ${n} / ${ctx.pages.size} 頁，關掉預抓 ${prefetchOff} 頁`
+  return c
+}
+
+/** 頁面內嵌的 VitePress 站點資料（window.__VP_SITE_DATA__=JSON.parse("…")）的 router.prefetchLinks；讀不到是 null */
+export function prefetchLinksOf(html) {
+  const m = /__VP_SITE_DATA__\s*=\s*JSON\.parse\(("(?:[^"\\]|\\.)*")\)/.exec(html)
+  if (!m) return null
+  try {
+    const value = JSON.parse(JSON.parse(m[1]))?.router?.prefetchLinks
+    return typeof value === 'boolean' ? value : null
+  } catch {
+    return null
+  }
+}
+
+/** <main> 裡 class 含 cls 的 <tagName> 元素的 HTML（開始標籤到第一個同名結束標籤；側欄、上下篇、接著讀裡都沒有同名的巢狀元素） */
+export function regionsOf(html, tagName, cls) {
+  const main = mainOf(html)
+  return startTags(main)
+    .filter((t) => t.name === tagName && hasClass(t.attrs, cls))
+    .map((t) => {
+      const close = main.indexOf(`</${tagName}>`, t.end)
+      return { attrs: t.attrs, html: main.slice(t.index, close === -1 ? main.length : close + tagName.length + 3) }
+    })
+}
+
+const safeDecode = (s) => {
+  try { return decodeURIComponent(s) } catch { return s }
+}
+
+/**
+ * 文章側欄（站長 2026-11-03 要求補上；計畫的 SSR、SEO、廣告規則）：
+ * 每篇文章剛好一個 <aside class="post-aside" aria-label>，SSR 就輸出，不在本文指紋範圍（prose 到 post-foot）裡，沒有 h1；
+ * 沒有廣告元素（adsbygoogle、<ins>、Hexo 版的「廣告版位」佔位框）；
+ * 站內連結都指向 dist 裡存在的頁面或檔案，# 連結（本文目錄）都找得到 id，另開分頁的外連有 rel="noopener"；
+ * 相關文章至多 5 篇、都是存在的文章，不連回本篇，也不跟上一篇、下一篇、接著讀重複。
+ */
+export function checkSidebar(ctx) {
+  const c = newCheck('sidebar', '文章側欄（每篇都有、沒有廣告、相關文章連到存在的文章）')
+  const distUrls = new Set(ctx.dist.files.flatMap((f) => [fileToUrl(f), ...urlAliases(f)]))
+  let posts = 0
+  let withSidebar = 0
+  let withToc = 0
+  let relatedLinks = 0
+  const relatedCounts = {}
+  for (const d of ctx.pages.values()) {
+    if (d.type !== 'post') continue
+    posts++
+    const asides = regionsOf(d.html, 'aside', SIDEBAR_CLASS)
+    if (asides.length !== 1) { fail(c, asides.length ? `${d.url} 有 ${asides.length} 個側欄` : `${d.url} 沒有側欄（<aside class="${SIDEBAR_CLASS}">）`); continue }
+    withSidebar++
+    const aside = asides[0]
+    const body = stripHidden(aside.html)
+    if (!(aside.attrs['aria-label'] ?? '').trim()) fail(c, `${d.url} 的側欄沒有 aria-label`)
+    // 找不到 prose 時本文指紋的範圍是整個 <main>，那由「本文文字指紋」報錯，這裡不重複
+    if (hasProse(d.html) && startTags(builtArticleOf(d.html)).some((t) => t.name === 'aside' && hasClass(t.attrs, SIDEBAR_CLASS))) fail(c, `${d.url} 的側欄在本文指紋範圍（prose 到 post-foot）裡`)
+    if (/adsbygoogle/i.test(aside.html)) fail(c, `${d.url} 的側欄有 adsbygoogle（只用 Auto ads，不放手動版位）`)
+    if (findTags(body, 'ins').length) fail(c, `${d.url} 的側欄有 <ins>（不放廣告元素）`)
+    if (/廣告版位/.test(textOf(body))) fail(c, `${d.url} 的側欄有「廣告版位」佔位框（Hexo 版的贊助區不重現）`)
+    if (/<h1\b/i.test(body)) fail(c, `${d.url} 的側欄有 h1（文章的 h1 只有一個）`)
+    if (startTags(body).some((t) => t.name === 'nav' && hasClass(t.attrs, 'post-toc'))) withToc++
+
+    const ids = idsIn(d.html)
+    const taken = new Set([d.url])
+    for (const region of [...regionsOf(d.html, 'nav', 'post-nav'), ...regionsOf(d.html, 'section', 'related')]) {
+      for (const a of findTags(stripHidden(region.html), 'a')) {
+        const u = normalizeHref(a.href)
+        if (u) taken.add(u)
+      }
+    }
+    const related = []
+    for (const a of findTags(body, 'a')) {
+      const href = (a.href ?? '').trim()
+      if (href.startsWith('#')) {
+        const id = href.slice(1)
+        if (!id || !(ids.has(id) || ids.has(safeDecode(id)))) fail(c, `${d.url} 的側欄連到不存在的標題 ${href}`)
+        continue
+      }
+      if (/^https?:\/\//i.test(href) && !href.startsWith(SITE + '/')) {
+        if (!/^https:\/\//i.test(href)) fail(c, `${d.url} 的側欄外連不是 https：${href}`)
+        if ((a.target ?? '') === '_blank' && !(a.rel ?? '').toLowerCase().split(/\s+/).includes('noopener')) fail(c, `${d.url} 的側欄外連另開分頁卻沒有 rel="noopener"：${href}`)
+        continue
+      }
+      const u = normalizeHref(href)
+      if (!u) { fail(c, `${d.url} 的側欄有看不懂的連結：${show(href)}`); continue }
+      if (!distUrls.has(u)) fail(c, `${d.url} 的側欄連到不存在的網址 ${u}`)
+      if (POST_URL_RE.test(u)) related.push(u)
+    }
+    relatedLinks += related.length
+    relatedCounts[related.length] = (relatedCounts[related.length] ?? 0) + 1
+    if (related.length > SIDEBAR_RELATED_MAX) fail(c, `${d.url} 的側欄有 ${related.length} 篇相關文章，上限 ${SIDEBAR_RELATED_MAX}`)
+    if (new Set(related).size !== related.length) fail(c, `${d.url} 的側欄相關文章有重複`)
+    for (const u of related) {
+      const target = ctx.pages.get(u)
+      if (target && target.type !== 'post') fail(c, `${d.url} 的側欄相關文章 ${u} 不是文章頁`)
+      if (u === d.url) fail(c, `${d.url} 的側欄相關文章連回本篇`)
+      else if (taken.has(u)) fail(c, `${d.url} 的側欄相關文章 ${u} 跟上一篇、下一篇或接著讀重複`)
+    }
+  }
+  const published = ctx.posts ? ctx.posts.filter((x) => x.published).length : null
+  if (published !== null && posts !== published) c.notes.push(`dist 有 ${posts} 篇文章頁，文章索引有 ${published} 篇已發布（差異由「網址對等」檢查）`)
+  if (!posts) fail(c, 'dist 裡沒有文章頁')
+  c.stats = { posts, withSidebar, withToc, relatedLinks, relatedCounts }
+  c.summary = `${withSidebar} / ${posts} 篇文章有側欄，${withToc} 篇有本文目錄，相關文章連結 ${relatedLinks} 個`
   return c
 }
 
@@ -1095,7 +1212,7 @@ export function checkJsonLd(ctx) {
 // 執行
 // ============================================================================
 
-export const CHECKS = [checkRepo, checkUrls, checkFrozenFiles, checkPages, checkSiteName, checkNewPages, checkAnchors, checkText, checkContent, checkLists, checkFeeds, checkAds, checkLayout, checkCategories, checkTemplates, checkChunks, checkJsonLd]
+export const CHECKS = [checkRepo, checkUrls, checkFrozenFiles, checkPages, checkSiteName, checkNewPages, checkAnchors, checkText, checkContent, checkLists, checkFeeds, checkAds, checkLayout, checkSidebar, checkCategories, checkTemplates, checkChunks, checkJsonLd]
 
 /**
  * 跑全部檢查，回傳報告物件。opts：
