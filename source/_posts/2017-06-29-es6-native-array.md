@@ -3,6 +3,7 @@ layout: post
 title: JavaScript 陣列處理方法 [filter(), find(), forEach(), map(), every(), some(), reduce()]
 category: javascript
 tagline:
+description: "JavaScript 陣列處理方法教學，深入介紹 filter、find、forEach、map、every、some、reduce 等高階函式的用法與實例，讓資料操作更簡潔高效。"
 tags: [javascript]
 cssdemo:
 jsdemo:

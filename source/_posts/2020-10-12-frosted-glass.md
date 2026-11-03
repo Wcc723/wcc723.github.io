@@ -3,6 +3,7 @@ layout: post
 title: 純 CSS 毛玻璃特效 - backdrop-filter 屬性介紹
 category: development
 tagline:
+description: "純 CSS 製作毛玻璃特效教學，介紹 backdrop-filter 屬性的用法與瀏覽器相容性，只用 CSS 就能做出背景霧化模糊、凸顯上層資訊的視覺效果。"
 tags: [css, scss, bootstrap]
 cssdemo: 
 jsdemo:

@@ -3,6 +3,7 @@ layout: post
 title: 十分鐘上手前端單元測試 - 使用 Jest
 category: development
 tagline:
+description: "十分鐘上手前端單元測試，使用 Jest 測試框架從零開始，介紹安裝設定、撰寫第一個測試、常用 matcher 與測試流程，用自動化測試取代耗時的人工驗證。"
 tags: [test, jest]
 cssdemo:
 jsdemo:

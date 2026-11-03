@@ -3,6 +3,7 @@ layout: post
 title: JS 常見陣列方法 [push(), unshift(), pop(), shift(), splice(), reverse(), concat(), include(), indexOf(), join()]
 category: development
 tagline:
+description: "JavaScript 常見陣列方法整理，示範 push、unshift、pop、shift、splice、reverse、concat、includes、indexOf、join 等操作的用法與差異。"
 tags: [javascript, js]
 cssdemo:
 jsdemo:

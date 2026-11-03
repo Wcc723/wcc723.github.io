@@ -3,6 +3,7 @@ layout: post
 title: 一分鐘切換成中文版 VSCode（完整圖文版）
 category: development
 tagline:
+description: "一分鐘將 VS Code（Visual Studio Code）介面切換成中文的完整圖文教學，安裝官方繁體中文語言套件，並以 Configure Display Language 設定，快速把 VSCode 改為中文顯示。"
 tags: [vscode, develop]
 cssdemo:
 jsdemo:

@@ -3,6 +3,7 @@ layout: post
 title: JavaScript Console 運用技巧 - 8 招讓你除錯更高效
 category: development
 tagline:
+description: "JavaScript console 運用技巧，精選 8 招讓你除錯更高效，除了 console.log 之外還有 console.table、group、time、assert 等實用語法，提升前端除錯效率。"
 tags: [javascript, js]
 cssdemo: 
 jsdemo:

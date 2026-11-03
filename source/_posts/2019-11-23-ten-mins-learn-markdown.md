@@ -3,6 +3,7 @@ layout: post
 title: 十分鐘快速掌握 Markdown
 category: development
 tagline:
+description: "十分鐘快速掌握 Markdown 語法教學，用易讀易寫的純文字標記完成標題、列表、粗體、斜體、連結、程式碼區塊等格式，專注在文件內容本身。"
 tags: [markdown, develop]
 cssdemo:
 jsdemo:

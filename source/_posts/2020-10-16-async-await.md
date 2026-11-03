@@ -3,6 +3,7 @@ layout: post
 title: Async function / Await 深度介紹
 category: development
 tagline:
+description: "JavaScript async function 與 await 深度介紹，說明如何建構在 Promise 之上、把非同步程式碼寫成類似同步的形式，並處理錯誤與多個非同步流程。"
 tags: [js, async, await]
 cssdemo: 
 jsdemo:

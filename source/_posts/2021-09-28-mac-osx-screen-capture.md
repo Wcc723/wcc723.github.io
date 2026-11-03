@@ -3,6 +3,7 @@ layout: post
 title: Mac OSX 截圖全說明（單一視窗、全螢幕、重設截圖路徑、Touch Bar）
 category: development
 tagline:
+description: "Mac OSX 截圖全說明，完整介紹單一視窗、全螢幕、指定區域截圖熱鍵，以及重設截圖儲存路徑、更改檔案格式與 Touch Bar 截圖技巧。"
 tags: [mac, osx]
 cssdemo: 
 jsdemo:

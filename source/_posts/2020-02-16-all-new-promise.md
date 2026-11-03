@@ -3,6 +3,7 @@ layout: post
 title: JavaScript Promise 全介紹
 category: development
 tagline:
+description: "JavaScript Promise 全介紹，從常見問題切入，說明 Promise 如何解決非同步巢狀（callback hell）、then／catch 串接與狀態轉換，並搭配實例帶你完整理解。"
 tags: [javascript, promise, js]
 cssdemo:
 jsdemo:
