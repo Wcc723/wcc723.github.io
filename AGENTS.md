@@ -42,7 +42,6 @@ Node 22 LTS，至少 22.12（package.json 的 engines）。`.nvmrc` 寫 `lts/jod
 | `source/public/` | 原封不動輸出的檔案：CNAME、ads.txt、robots.txt，以及凍結的 search.xml、css/style.css、img/ |
 | `baseline/hexo-2026-11-03/` | Hexo 基準：網址清單與每頁 SEO 欄位，audit 拿它比對 |
 | `scripts/` | audit、遷移、圖片上傳 |
-| `assets/` | Hexo 時代 gulp 的來源檔（demoFile、images、stylesheets，763 檔、約 102 MB），建置不讀、沒有程式引用；去留待站長決定 |
 
 ## 舊網址一字不改
 
