@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){try{var m=localStorage.getItem('casper-theme')||'light';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();</script>
+
+<title>CSS 選取器(基本篇) - CSS Selector | 卡斯伯 Blog - 前端，沒有極限</title>
+
+<meta name="keywords" content="css" />
+
+
+<meta name="description" content="一個開發者對於畫面的掌控度高不高，完全都可以取決於「CSS 選取器」掌握度，無論是基本的 CSS 到 jQuery 甚至是原生的 JavaScript 都是使用 CSS 選取器。另外如果要寫道後端測試、爬蟲，也是持續使用這看似基礎的觀念，本篇將會循序漸進介紹各種選取器，讓大家從基礎開始學習此知識。  元素選取器 類別選取 id 選取 屬性選取  而選取器是選取 HTML 元素的語法，它並不會限制只">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 選取器(基本篇) - CSS Selector">
+<meta property="og:url" content="https://www.casper.tw/development/2021/09/11/css-selector/">
+<meta property="og:site_name" content="卡斯伯 Blog - 前端，沒有極限">
+<meta property="og:description" content="一個開發者對於畫面的掌控度高不高，完全都可以取決於「CSS 選取器」掌握度，無論是基本的 CSS 到 jQuery 甚至是原生的 JavaScript 都是使用 CSS 選取器。另外如果要寫道後端測試、爬蟲，也是持續使用這看似基礎的觀念，本篇將會循序漸進介紹各種選取器，讓大家從基礎開始學習此知識。  元素選取器 類別選取 id 選取 屬性選取  而選取器是選取 HTML 元素的語法，它並不會限制只">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCSS%20selector.jpg?alt=media&token=9345fc59-a36d-460b-a31e-df14caf9ec68">
+<meta property="article:published_time" content="2021-09-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-05-31T07:18:15.537Z">
+<meta property="article:author" content="Wang Casper">
+<meta property="article:tag" content="css">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCSS%20selector.jpg?alt=media&token=9345fc59-a36d-460b-a31e-df14caf9ec68">
+<meta property="fb:app_id" content="556473851118881">
+
+
+<link rel="canonical" href="https://www.casper.tw/development/2021/09/11/css-selector/" />
+
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"CSS 選取器(基本篇) - CSS Selector","datePublished":"2021-09-10T16:00:00.000Z","dateModified":"2026-05-31T07:18:15.537Z","author":{"@type":"Person","name":"Wang Casper"},"publisher":{"@type":"Organization","name":"卡斯伯 Blog - 前端，沒有極限"},"mainEntityOfPage":"https://www.casper.tw/development/2021/09/11/css-selector/","image":["https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCSS%20selector.jpg?alt=media&token=9345fc59-a36d-460b-a31e-df14caf9ec68"]}</script>
+
+
+<link rel="icon" href="https://img.casper.tw/images/blog_logo.svg" />
+<link rel="alternate" href="/atom.xml" title="卡斯伯 Blog - 前端，沒有極限" type="application/atom+xml" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark.min.css">
+<link rel="stylesheet" href="/css/style.css?v=mrahjy61">
+
+
+
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-97433H4032"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-97433H4032');</script>
+
+
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','152520611964487');fbq('track','PageView');</script>
+<noscript><img height="1" width="1" style="display:none" alt="" src="https://www.facebook.com/tr?id=152520611964487&ev=PageView&noscript=1" /></noscript>
+
+
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8296684122088055" crossorigin="anonymous"></script>
+
+<meta name="generator" content="Hexo 8.1.2"></head>
+
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  
+  <div class="atmos" aria-hidden="true">
+    <div class="glow"></div><div class="grid"></div><div class="grain"></div><div class="scan"></div><div class="vig"></div>
+  </div>
+  
+
+  
+<div class="dateline"><div class="in">
+  <span>第 364 篇 · 第 14 卷</span>
+  <span class="c">前端，沒有極限</span>
+  <span>2026 年 10 月 5 日 · 台北</span>
+</div></div>
+
+<header class="topbar"><nav class="nav">
+  <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+  <a class="brand" href="/"><span class="mk is-img"><img src="/img/casper-avatar.webp" alt="卡斯伯"></span>卡斯伯 Blog</a>
+  <div class="menu" id="primary-menu">
+    
+    
+      <a href="/">首頁</a>
+    
+      <a href="/tags/css/">CSS</a>
+    
+      <a href="/tags/javascript/">JavaScript</a>
+    
+      <a href="/categories/life/">生活</a>
+    
+      <a href="/archives/">封存</a>
+    
+      <a href="/about/">關於</a>
+    
+  </div>
+  <span class="grow"></span>
+  <button class="search-trig" type="button" data-cs-open aria-label="搜尋">
+    <svg class="s-ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="20" y1="20" x2="16.5" y2="16.5"/></svg>
+    <span class="s-lbl">搜尋…</span><kbd>⌘K</kbd>
+  </button>
+  <button class="iconbtn" type="button" id="theme-toggle" aria-label="切換深色模式" aria-pressed="false"><span aria-hidden="true">☾</span></button>
+  <button class="iconbtn nav-toggle" type="button" id="nav-toggle" aria-label="開啟選單" aria-expanded="false" aria-controls="primary-menu"><span class="nt-ico" aria-hidden="true"></span></button>
+</nav></header>
+
+<div class="wrap"><div class="cmdbar">
+  <span class="q">ls -lt ./posts --since=2013<span class="cursor"></span></span>
+  <span class="status">
+    <span class="rec"></span> REC
+    <span>·</span> node <span class="seal">364</span>
+    <span>·</span> uplink <span class="uplink"><i></i><i></i><i></i><i></i></span>
+  </span>
+</div></div>
+
+
+  <div class="wrap">
+    <div class="layout">
+      <main id="main" tabindex="-1">
+<article class="post">
+  
+  <header class="article-head">
+    <p class="crumb">development</p>
+    <h1>CSS 選取器(基本篇) - CSS Selector</h1>
+    <div class="meta">
+      <span>2021 年 09 月 11 日</span>
+      <span>·</span>
+      <span>8 分鐘閱讀</span>
+      <span>·</span>
+      <span>By Wang Casper</span>
+    </div>
+    <div class="rule-d"></div>
+  </header>
+
+  
+
+  <div class="prose"><p>一個開發者對於畫面的掌控度高不高，完全都可以取決於「CSS 選取器」掌握度，無論是基本的 CSS 到 jQuery 甚至是原生的 JavaScript 都是使用 CSS 選取器。另外如果要寫道後端測試、爬蟲，也是持續使用這看似基礎的觀念，本篇將會循序漸進介紹各種選取器，讓大家從基礎開始學習此知識。</p>
+<ul>
+<li><a href="#元素選取器">元素選取器</a></li>
+<li><a href="#類別選取">類別選取</a></li>
+<li><a href="#id-選取">id 選取</a></li>
+<li><a href="#屬性選取">屬性選取</a></li>
+</ul>
+<p>而選取器是選取 HTML 元素的語法，它並不會限制只運用在 CSS 上（雖然普遍稱為 CSS Selector）。</p>
+<h2 id="元素選取器"><a href="#元素選取器" class="headerlink" title="元素選取器"></a>元素選取器</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F7118EFAC-F7D3-4595-B5B7-0D7C6A088ADA.png?alt=media&amp;token=c6192f79-9dc6-4a22-94d4-9f324e1919f8" alt=""></p>
+<p>最基本的 HTML 標籤選取，可以直接選取畫面上所有 “同類型的元素”，屬於比較廣泛的選取器。</p>
+<p>以下範例來說就直接選取了 <code>a</code> 標籤，並將它改為了紅色。</p>
+
+<div class="demo demo-1">
+  <a href="https://www.apple.com/" target="_blank">這是 Apple 官網連結</a>
+</div>
+<style>
+.demo-1 a {
+  background-color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot; target=&quot;_blank&quot;&gt;這是 Apple 官網連結&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-tag">a</span> &#123;
+  <span class="hljs-attribute">background-color</span>: red;
+&#125;</code></pre>
+<h3 id="元素選取-實戰說明"><a href="#元素選取-實戰說明" class="headerlink" title="元素選取 - 實戰說明"></a>元素選取 - 實戰說明</h3><p>因為它是屬於廣泛的選取器，雖然可一次選擇非常大量的元素；雖然這是優點但也同時是缺點，大量的選取可能會影響到其它不需要被選取的項目，為了避免影響後續維護或開發，此選取器大多都是利用在：</p>
+<ul>
+<li>開頭的 CSS Reset，範例：<a target="_blank" rel="noopener" href="https://meyerweb.com/eric/tools/css/reset/">https://meyerweb.com/eric/tools/css/reset/</a></li>
+<li>限定範圍的標籤，例如：部落格主要文章中的段落 p 標籤</li>
+</ul>
+<h2 id="類別選取"><a href="#類別選取" class="headerlink" title="類別選取"></a>類別選取</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F3A36399C-C888-4B07-A092-B95A2DBE18F2.png?alt=media&amp;token=70f0c3de-01a7-42a5-a23d-6cd1a1a41b4b" alt=""></p>
+<p>類別選取是樣式套用 “最實用” 的選取器，它具有以下的特性：</p>
+<ul>
+<li>可重複利用（套用在多個標籤上）</li>
+<li>可重複套用（可多個類別套用在同一個標籤上）</li>
+<li>適當的權重</li>
+</ul>
+<p>以下建立了 <code>.a-link</code> 的類別，並套用在 a 標籤上使其背景色調整為黃色。</p>
+
+<div class="demo demo-1">
+  <a href="https://www.apple.com/"
+  class="a-link" target="_blank">這是 Apple 官網連結</a>
+</div>
+<style>
+.demo-1 .a-link {
+  background-color: yellow;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  class=&quot;a-link&quot; target=&quot;_blank&quot;&gt;這是 Apple 官網連結&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-class">.a-link</span> &#123;
+  <span class="hljs-attribute">background-color</span>: yellow;
+&#125;</code></pre>
+<h3 id="類別選取-多個類別重複套用"><a href="#類別選取-多個類別重複套用" class="headerlink" title="類別選取 - 多個類別重複套用"></a>類別選取 - 多個類別重複套用</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEBF18CCF-5032-45C5-84FD-D5FF3794AF77.png?alt=media&amp;token=76354e36-5297-4563-9be8-9de0d47c8819" alt=""></p>
+<p>類別選取兩個特性：</p>
+<ul>
+<li>可重複利用（套用在多個標籤上）</li>
+<li>可重複套用（可多個類別套用在同一個標籤上）</li>
+</ul>
+<p>其中的 <strong>“可重複套用”</strong> 是許多新手會忽略的用法，使用方式就是定義兩個樣式並套用在同一個元素上。</p>
+
+<div class="demo demo-1">
+  <a href="https://www.apple.com/"
+  class="a-link a-link-color" target="_blank">這是 Apple 官網連結</a>
+</div>
+<style>
+.demo-1 .a-link {
+  background-color: yellow;
+}
+.demo-1  .a-link-color {
+  color: black;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  class=&quot;a-link a-link-color&quot; target=&quot;_blank&quot;&gt;這是 Apple 官網連結&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-class">.a-link</span> &#123;
+  <span class="hljs-attribute">background-color</span>: yellow;
+&#125;
+<span class="hljs-selector-class">.a-link-color</span> &#123;
+  <span class="hljs-attribute">color</span>: black;
+&#125;</code></pre>
+<h3 id="類別選取-實戰說明"><a href="#類別選取-實戰說明" class="headerlink" title="類別選取 - 實戰說明"></a>類別選取 - 實戰說明</h3><p>它具有非常多的優勢，讓許多框架、設計模式都是基於 class 為基礎進行設計，例如：</p>
+<ul>
+<li>OOCSS 的設計模式，<a href="/css/2016/12/02/oocss-one/">參考文</a></li>
+<li><a target="_blank" rel="noopener" href="https://bootstrap5.hexschool.com/">Bootstrap 最流行的前端開發工具</a></li>
+<li><a target="_blank" rel="noopener" href="https://tailwindcss.com/">以 Utilities 為單位的 CSS 框架</a></li>
+</ul>
+<p>所以運用上請把握一個原則，這是 CSS 樣式表運用 “最為廣泛的選取器”（沒有之一），如果是作為樣式使用：</p>
+<ul>
+<li>請使用 class 取代 id</li>
+<li>如果可以套用 class 時，請不要直接使用元素或其它選取器</li>
+</ul>
+<h2 id="ID-選取"><a href="#ID-選取" class="headerlink" title="ID 選取"></a>ID 選取</h2><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F5D7ACD60-0847-4D09-9BB3-7BC5A2D6AA88.png?alt=media&amp;token=ae2346b0-c5d1-4818-b956-697eb2dea164" alt=""></p>
+<p>在一個 HTML 頁面中原則上僅會有一個 id，如果出現兩個以上時，部分瀏覽器則會跳出錯誤的提示，建議調整頁面上重複定義 id 的元素。</p>
+<p>Id 選取在應用上特性：</p>
+<ul>
+<li>具有唯一性：畫面上僅會有一個該名稱 id</li>
+<li>較高的樣式權重：如果與 class 的樣式有衝突時，會以 id 為主</li>
+</ul>
+<p>以下範例就選取了 id <code>a-link</code>，要特別注意一個 id 在頁面中原則上只會有一個。</p>
+
+<div class="demo">
+  <a href="https://www.apple.com/"
+  id="a-link" class="b-link" target="_blank">這是 Apple 官網連結</a>
+</div>
+<style>
+#a-link {
+  background-color: pink;
+}
+.b-link {
+  background: blue;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  id=&quot;a-link&quot; class=&quot;b-link&quot; target=&quot;_blank&quot;&gt;這是 Apple 官網連結&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-id">#a-link</span> &#123;
+  <span class="hljs-attribute">background-color</span>: pink;
+&#125;
+<span class="hljs-selector-class">.b-link</span> &#123;
+  <span class="hljs-attribute">background</span>: blue;
+&#125;</code></pre>
+<h3 id="id-選取-實戰說明"><a href="#id-選取-實戰說明" class="headerlink" title="id 選取 - 實戰說明"></a>id 選取 - 實戰說明</h3><p>它具有高權重、不可重複、頁面唯一的特性，讓樣式無法多次的運用，並且可能造成管理上的問題；因此，實戰開發中不會使用 “id 選取器” 作為樣式的選取（注意：千萬不要這麼做）。</p>
+<p>不過這樣的特性卻很適合作為樣式以外的用途，例如：</p>
+<ul>
+<li>input 與 label 標籤的對應</li>
+<li>頁面元素的絕對選取（頁面上只會有一個），在 JS、後端爬蟲、測試中相當好用</li>
+</ul>
+<h2 id="屬性選取"><a href="#屬性選取" class="headerlink" title="屬性選取"></a>屬性選取</h2><p>相對於以上的選取器來說，這是相對少見但也是更為靈活的選取器，無論在樣式或任何情境都相當好用，在受到限制的情境中常常會有意想不到的用途，例如：</p>
+<ul>
+<li>標籤的屬性必須為特定屬性值，如：<code>&lt;input type=&quot;checkbox&quot;&gt;</code></li>
+<li>HTML 的結構已經確立無法改變時，如：已經完成頁面，需要進行爬蟲或測試使用</li>
+</ul>
+<p>屬性選取可運用的組合也相當多樣，基本上只要 HTML 元素中有任何一些不同，都可作為屬性選取器的選取方式。</p>
+<p>以下將一一的介紹屬性選取的各種手法：</p>
+<ul>
+<li>包含特定 “屬性” 的選取</li>
+<li>“屬性及值” 完全符合</li>
+<li>屬性值 “包含特定字串”</li>
+<li>”結尾值“ 包含特定文字</li>
+<li>屬性選取 實戰操作</li>
+</ul>
+<h3 id="包含特定-“屬性”-的選取"><a href="#包含特定-“屬性”-的選取" class="headerlink" title="包含特定 “屬性” 的選取"></a>包含特定 “屬性” 的選取</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F809CDD6D-B836-4C33-B62F-9D094A5E2FC8.png?alt=media&amp;token=b396eea0-c808-4db7-b7bb-68ca83bbfb62" alt=""></p>
+<p>只要元素中包含特定「屬性」皆可選取，以下範例來說其中一個 <code>a</code> 標籤缺少了 href 屬性，因此將不會被套用紅色的樣式，所以此方法也可以過濾出標籤中是否有正確包含特定屬性。</p>
+
+<div class="demo demo-2">
+  <a href="https://www.apple.com/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="https://www.google.com/"
+    target="_blank">Google</a> <br>
+  <a target="_blank">連結缺少 href</a>
+</div>
+<style>
+.demo-2 [href] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;https://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;
+&lt;a target=&quot;_blank&quot;&gt;連結缺少 href&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<h3 id="“屬性及值”-完全符合"><a href="#“屬性及值”-完全符合" class="headerlink" title="“屬性及值” 完全符合"></a>“屬性及值” 完全符合</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F12911289-C59A-413D-A5C7-A9AD8222F617.png?alt=media&amp;token=88127141-9559-4c45-b506-e1e4a9d9fdfb" alt=""></p>
+<p>接下來就是屬性選取慢慢進入進階的流程，當屬性內的值完全符合時，可以選取此元素。</p>
+
+<div class="demo demo-3">
+  <a href="https://www.apple.com/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="https://www.google.com/"
+    target="_blank">Google</a> <br>
+</div>
+<style>
+.demo-3 [href="https://www.apple.com/"] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;https://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href=<span class="hljs-string">&quot;https://www.apple.com/&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<h3 id="屬性值-”包含特定字串“"><a href="#屬性值-”包含特定字串“" class="headerlink" title="屬性值 ”包含特定字串“"></a>屬性值 ”包含特定字串“</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FCD57EDCE-5210-4797-8B5A-A779BE652475.png?alt=media&amp;token=c66fc8be-e9c0-4fd3-b088-7bddcd5a4e8d" alt=""></p>
+<p>”包含特定字串“ 開始的運用變化就越來越多，以此範例就可以判斷標籤內的連結目標為何。</p>
+
+<div class="demo demo-4">
+  <a href="https://www.apple.com/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="https://www.google.com/"
+    target="_blank">Google</a> <br>
+</div>
+<style>
+.demo-4 [href*="google"] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;https://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href*=<span class="hljs-string">&quot;google&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<h3 id="“開頭值”-包含特定文字"><a href="#“開頭值”-包含特定文字" class="headerlink" title="“開頭值” 包含特定文字"></a>“開頭值” 包含特定文字</h3><p>除了判斷部分字詞以外，還可以從前到後、前後至前的選取形式。</p>
+
+<div class="demo demo-5">
+  <a href="https://www.apple.com/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="http://www.google.com/"
+    target="_blank">Google</a> <br>
+</div>
+<style>
+.demo-5 [href^="https"] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;http://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href^=<span class="hljs-string">&quot;https&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F53C089A7-B9F7-4C83-8107-D40AF1E847C8.png?alt=media&amp;token=da563dce-51d4-42f2-9f4f-60504f694c84" alt=""></p>
+<h3 id="”結尾值“-包含特定文字"><a href="#”結尾值“-包含特定文字" class="headerlink" title="”結尾值“ 包含特定文字"></a>”結尾值“ 包含特定文字</h3><p>此範例為結尾值的選取形式，就可以進行從後至前的選取。</p>
+
+<div class="demo demo-6">
+  <a href="https://www.apple.com/tw/"
+  target="_blank">Apple 官網連結</a> <br>
+  <a href="http://www.google.com/"
+    target="_blank">Google</a> <br>
+</div>
+<style>
+.demo-6 [href$="/tw/"] {
+  color: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;a href=&quot;https://www.apple.com/tw/&quot;
+  target=&quot;_blank&quot;&gt;Apple 官網連結&lt;/a&gt;
+&lt;a href=&quot;http://www.google.com/&quot;
+  target=&quot;_blank&quot;&gt;Google&lt;/a&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-attr">[href$=<span class="hljs-string">&quot;/tw/&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">color</span>: red;
+&#125;</code></pre>
+<p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FD49F67AA-F8FE-4699-8D4E-09E1D07EEA79.png?alt=media&amp;token=8b3b9dad-4c75-4285-9523-096519a7b6de" alt=""></p>
+<h3 id="屬性選取-實戰操作"><a href="#屬性選取-實戰操作" class="headerlink" title="屬性選取 實戰操作"></a>屬性選取 實戰操作</h3><p><img src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F8542C4C0-1FA9-498E-B27F-FABD49AEC74B.png?alt=media&amp;token=e7fec286-39d1-4a5c-abe7-2c8912597efc" alt=""></p>
+<p>屬性選取在實戰中應用非常廣，最常見的案例之一就是判斷 input 的 type 類行為和，透過此方式避免選取到錯誤類型的 input（如果把 input 樣式套用在 checkbox 上就會顯得非常不適切）。</p>
+
+<div class="demo demo-7">
+  <input type="checkbox">
+</div>
+<style>
+.demo-7 input[type="checkbox"] {
+  appearance: none;
+  border: 1px solid red;
+  width: 1rem;
+  height: 1rem;
+}
+.demo-7 input[type="checkbox"]:checked {
+  background: red;
+}
+</style>
+
+<pre><code class="hljs plaintext">&lt;input type=&quot;checkbox&quot;&gt;</code></pre>
+<pre><code class="hljs css"><span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;checkbox&quot;</span>]</span> &#123;
+  <span class="hljs-attribute">appearance</span>: none;
+  <span class="hljs-attribute">border</span>: <span class="hljs-number">1px</span> solid red;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">1rem</span>;
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">1rem</span>;
+&#125;
+<span class="hljs-selector-tag">input</span><span class="hljs-selector-attr">[type=<span class="hljs-string">&quot;checkbox&quot;</span>]</span><span class="hljs-selector-pseudo">:checked</span> &#123;
+  <span class="hljs-attribute">background</span>: red;
+&#125;</code></pre>
+<p>除此之外，CSS 的選取方式不限制僅能使用 CSS，因此無論是 jQuery、JavaScript 都可以使用此方式進行選取，以上述範例中的連結選取，都可以改用 JS 來進行處理，在現實的開發中就可以用來：</p>
+<ul>
+<li>當開發受到限制，不可調整 HTML 原始碼時，可使用 JS 置換內容</li>
+<li>Node.js 爬蟲開發</li>
+<li>Chrome 插件（擷取網頁內的資訊）</li>
+</ul>
+<h2 id="CSS-Selector-實戰練習"><a href="#CSS-Selector-實戰練習" class="headerlink" title="CSS Selector 實戰練習"></a>CSS Selector 實戰練習</h2><p>最後，提供一個練習題目讓大家動手試試看，透過下方的 input 輸入選取器語法，試著選擇以下卡片中的特定元素吧！（被選取的元素會以紅色外框呈現）</p>
+<p>挑戰題目：</p>
+<ol>
+<li>選取 https 開頭的 a 標籤</li>
+<li>選取 /tw 結尾的 a 標籤</li>
+<li>選取左邊的圖片</li>
+<li>同時選取 input 及 textarea</li>
+<li>僅選取 checkbox</li>
+<li>選取 textarea 對應的 label</li>
+</ol>
+<p>這些題目，你可以完成幾題呢？</p>
+
+<div class="demo">
+  <div class="mb-3">
+    <label for="selectorPractice">輸入你認為正確的 Selector</label>
+    <input type="input" id="selectorPractice" class="form-control"
+    value=".list-group-item">
+  </div>
+  <pre id="preBlock">
+  </pre>
+  <div id="demo">
+    <div class="card border">
+      <div class="card-img-top overflow-hidden">
+        <div class="row row-cols-2 gx-0">
+          <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8YXBwbGV8ZW58MHx8MHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=60')"></div>
+          <div class="card-bg" style="background-image: url('https://images.unsplash.com/photo-1587883012610-e3df17d41270?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8cGluZWFwcGxlfGVufDB8fDB8fA%3D%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=60')"></div>
+        </div>
+      </div>
+      <div class="list-group list-group-flush">
+        <a target="_blank" rel="noopener" href="http://www.facebook.com/" class="list-group-item list-group-item-action">Facebook</a>
+        <a target="_blank" rel="noopener" href="https://www.google.com/" class="list-group-item list-group-item-action">Google</a>
+        <a target="_blank" rel="noopener" href="https://www.apple.com/tw/" class="list-group-item list-group-item-action">Apple</a>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">Example textarea</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" value="" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            Checkbox
+          </label>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
+          <label class="form-check-label" for="flexCheckChecked">
+            Radio
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+  .outline {
+    outline: solid red 2px;
+  }
+  .card-bg {
+    height: 200px;
+    background-position: center center;
+    background-size: cover;
+  }
+</style>
+<script>
+  const selectorPractice = document.querySelector('#selectorPractice');
+  const preBlock = document.querySelector('#preBlock');
+  let preDom = [];
+  selectorPractice.addEventListener('keyup', selectorFn);
+  function selectorFn() {
+    const value = selectorPractice.value;
+    const selectDom = document.querySelectorAll(`#demo ${value}`);
+    preBlock.textContent = `document.querySelectorAll(${value});`;
+    if (selectDom) {
+      if (preDom) {
+        console.log(preDom);
+        preDom.forEach(element => {
+          element.classList.remove('outline');
+        })
+      }
+      selectDom.forEach(element => {
+        element.classList.add('outline');
+      });
+      preDom = selectDom;
+    }
+  }
+  selectorFn();
+</script>
+
+</div>
+
+  <div class="post-foot">
+    
+      <div class="tags post-tags"><a href="/tags/css/">css</a></div>
+    
+    
+<nav class="post-nav">
+  
+    <a class="prev" href="/development/2021/07/07/vue-summer-camp/">
+      <span class="lab">← 較舊一篇</span>
+      <span class="ttl">Vue 3 新手夏令營</span>
+    </a>
+  
+  
+    <a class="next" href="/development/2021/09/14/js-console/">
+      <span class="lab">較新一篇 →</span>
+      <span class="ttl">JavaScript Console 運用技巧 - 8 招讓你除錯更高效</span>
+    </a>
+  
+</nav>
+
+
+    
+<section id="comments">
+  <div class="fb-comments" data-href="https://www.casper.tw/development/2021/09/11/css-selector/" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
+</section>
+
+
+  </div>
+</article>
+</main>
+      <aside class="sidebar">
+
+
+  
+    <div class="widget">
+      <div class="author">
+        <div class="ava is-img"><img src="/img/casper-avatar.webp" alt="Wang Casper"></div>
+        <p class="nm">Wang Casper</p>
+        <p class="en">卡斯伯</p>
+        <p class="bio">前端工程師、教學者。在 Web 上寫筆記，自 2013 年至今，也在六角學院教授前端。</p>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>我的著作</h3></div>
+      <div class="book">
+        <a class="cover" href="https://hex.school/byKCb" target="_blank" rel="noopener">
+          <img src="/img/js-interview-cover.webp" alt="JavaScript 面試力">
+        </a>
+        <div class="info">
+          <span class="t">JavaScript 面試力</span>
+          <span class="d">面試前的最後一哩路，補齊 JS 核心觀念。</span>
+          <a class="buy" href="https://hex.school/byKCb" target="_blank" rel="noopener">前往購買</a>
+        </div>
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>社群</h3></div>
+      <div class="social">
+        
+          <a href="https://www.facebook.com/WccCasper" target="_blank" rel="noopener noreferrer">Facebook<span class="r">卡斯伯</span></a>
+        
+          <a href="https://github.com/wcc723" target="_blank" rel="noopener noreferrer">GitHub<span class="r">wcc723</span></a>
+        
+          <a href="https://www.youtube.com/channel/UC-b2nGm0xLzic38Byti0VjA" target="_blank" rel="noopener noreferrer">YouTube<span class="r">六角學院</span></a>
+        
+          <a href="/atom.xml">RSS<span class="r">訂閱</span></a>
+        
+      </div>
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>贊助</h3></div>
+      
+  <div class="ad">廣告版位<br>Google AdSense</div>
+
+
+    </div>
+
+  
+
+
+
+  
+    <div class="widget">
+      <div class="wh"><h3>標籤</h3></div>
+      <div class="tags"><a class="tag-link" href="/tags/css/" rel="tag">css</a><a class="tag-link" href="/tags/ironman/" rel="tag">ironman</a><a class="tag-link" href="/tags/javascript/" rel="tag">javascript</a><a class="tag-link" href="/tags/js/" rel="tag">js</a><a class="tag-link" href="/tags/sass/" rel="tag">sass</a><a class="tag-link" href="/tags/design/" rel="tag">design</a><a class="tag-link" href="/tags/d3js/" rel="tag">d3js</a><a class="tag-link" href="/tags/gulp/" rel="tag">gulp</a><a class="tag-link" href="/tags/nodejs/" rel="tag">nodejs</a><a class="tag-link" href="/tags/jekyll/" rel="tag">jekyll</a><a class="tag-link" href="/tags/Bootstrap/" rel="tag">Bootstrap</a><a class="tag-link" href="/tags/tools/" rel="tag">tools</a><a class="tag-link" href="/tags/jquery/" rel="tag">jquery</a><a class="tag-link" href="/tags/svg/" rel="tag">svg</a><a class="tag-link" href="/tags/bootstrap/" rel="tag">bootstrap</a><a class="tag-link" href="/tags/oocss/" rel="tag">oocss</a><a class="tag-link" href="/tags/git/" rel="tag">git</a><a class="tag-link" href="/tags/Sass/" rel="tag">Sass</a></div>
+    </div>
+  
+
+
+</aside>
+
+    </div>
+  </div>
+
+  <footer class="site"><div class="wrap">
+  <p class="big">卡斯伯 Blog</p>
+  <p class="sub">前端，沒有極限 · © 2026 Wang Casper · Powered by Hexo</p>
+</div></footer>
+
+  <div class="cs-modal" id="cs-search" role="dialog" aria-modal="true" aria-label="搜尋文章">
+  <div class="cs-box" data-cs-stop>
+    <div class="cs-top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="cs-input" type="search" autocomplete="off" placeholder="搜尋文章標題、分類或標籤…" aria-label="搜尋">
+      <kbd>esc</kbd>
+      <button type="button" data-cs-close class="iconbtn" style="width:30px;height:30px;border:0" aria-label="關閉">✕</button>
+    </div>
+    <div class="cs-status" id="cs-status">載入中…</div>
+    <ul class="cs-results" id="cs-results"></ul>
+    <div class="cs-foot">
+      <span>↑↓ 切換 · ↵ 開啟 · esc 關閉</span>
+      <span>共 <span id="cs-total">0</span> 篇</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var CONTENT_URL = '/content.json';
+  var modal = document.getElementById('cs-search');
+  var input = document.getElementById('cs-input');
+  var resultsEl = document.getElementById('cs-results');
+  var statusEl = document.getElementById('cs-status');
+  var totalEl = document.getElementById('cs-total');
+  var corpus = null, activeIdx = -1, items = [];
+
+  function esc(s){ return (s||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function hl(text,q){ if(!q) return esc(text); var t=esc(text); try{ var re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig'); return t.replace(re,'<mark>$1</mark>'); }catch(e){return t;} }
+
+  function open(){ modal.classList.add('open'); document.documentElement.style.overflow='hidden'; setTimeout(function(){input.focus();},30); if(!corpus) load(); }
+  function close(){ modal.classList.remove('open'); document.documentElement.style.overflow=''; input.value=''; render([], ''); }
+  function toggle(){ modal.classList.contains('open') ? close() : open(); }
+
+  function load(){
+    statusEl.textContent='載入中…';
+    fetch(CONTENT_URL).then(function(r){return r.json();}).then(function(data){
+      var posts = data.posts || data || [];
+      corpus = posts.map(function(p){
+        var tags = (p.tags||[]).map(function(t){return t.name||t;}).join(' ');
+        var cats = (p.categories||[]).map(function(c){return c.name||c;}).join(' ');
+        var u = p.permalink || p.path || '';
+        if (u && !/^https?:\/\//.test(u) && u.charAt(0) !== '/') u = '/' + u;
+        return { title:p.title||'（無標題）', url:u, date:p.date||'', cats:cats, hay:((p.title||'')+' '+cats+' '+tags).toLowerCase() };
+      });
+      statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。';
+      totalEl.textContent=corpus.length;
+    }).catch(function(){ statusEl.textContent='無法載入索引，請稍後再試。'; });
+  }
+
+  function search(q){ if(!corpus) return []; var query=q.trim().toLowerCase(); if(!query) return []; var m=[]; for(var i=0;i<corpus.length&&m.length<50;i++){ if(corpus[i].hay.indexOf(query)!==-1) m.push(corpus[i]); } return m; }
+
+  function render(matches,q){
+    items=matches; activeIdx=matches.length?0:-1;
+    if(!q){ resultsEl.innerHTML=''; if(corpus) statusEl.textContent='輸入關鍵字開始搜尋。共 '+corpus.length+' 篇文章。'; totalEl.textContent=corpus?corpus.length:0; return; }
+    if(!matches.length){ resultsEl.innerHTML=''; statusEl.textContent='找不到「'+q+'」相關文章'; totalEl.textContent=0; return; }
+    statusEl.textContent='「'+q+'」的搜尋結果'; totalEl.textContent=matches.length;
+    var html='';
+    for(var i=0;i<matches.length;i++){ var m=matches[i]; var meta=(m.date?String(m.date).slice(0,10):'')+(m.cats?'　·　'+m.cats:'');
+      html+='<li><a href="'+esc(m.url)+'" data-idx="'+i+'" role="option"><p class="t">'+hl(m.title,q)+'</p>'+(meta?'<p class="m">'+esc(meta)+'</p>':'')+'</a></li>'; }
+    resultsEl.innerHTML=html; mark();
+  }
+  function mark(){ var a=resultsEl.querySelectorAll('a[data-idx]'); for(var i=0;i<a.length;i++){ if(i===activeIdx){ a[i].setAttribute('aria-selected','true'); a[i].scrollIntoView({block:'nearest'}); } else a[i].removeAttribute('aria-selected'); } }
+
+  var timer;
+  input.addEventListener('input', function(){ var q=input.value; clearTimeout(timer); timer=setTimeout(function(){ render(search(q),q.trim()); },80); });
+  input.addEventListener('keydown', function(e){
+    if(e.key==='ArrowDown'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx+1)%items.length; mark(); } }
+    else if(e.key==='ArrowUp'){ e.preventDefault(); if(items.length){ activeIdx=(activeIdx-1+items.length)%items.length; mark(); } }
+    else if(e.key==='Enter'){ if(activeIdx>=0&&items[activeIdx]) window.location.href=items[activeIdx].url; }
+    else if(e.key==='Escape'){ close(); }
+  });
+  modal.addEventListener('click', function(e){ if(e.target.closest('[data-cs-close]')){ close(); return; } if(!e.target.closest('[data-cs-stop]')) close(); });
+  document.addEventListener('keydown', function(e){
+    var mac=navigator.platform.toUpperCase().indexOf('MAC')>=0;
+    if((mac?e.metaKey:e.ctrlKey)&&e.key.toLowerCase()==='k'){ e.preventDefault(); toggle(); }
+    else if(e.key==='/'&&document.activeElement===document.body){ e.preventDefault(); open(); }
+  });
+  document.addEventListener('click', function(e){ if(e.target.closest('[data-cs-open]')){ e.preventDefault(); open(); } });
+})();
+</script>
+
+  
+  <script>
+(function(){
+  var btn = document.getElementById('theme-toggle');
+  function icon(){ if (!btn) return; var d = document.documentElement.classList.contains('dark'); var s = btn.querySelector('span') || btn; s.textContent = d ? '☀' : '☾'; btn.setAttribute('aria-pressed', d ? 'true' : 'false'); btn.setAttribute('aria-label', d ? '切換淺色模式' : '切換深色模式'); }
+  icon();
+  if (btn) btn.addEventListener('click', function(){
+    var dark = document.documentElement.classList.toggle('dark');
+    try { localStorage.setItem('casper-theme', dark ? 'dark' : 'light'); } catch(e){}
+    icon();
+  });
+
+  /* 行動版漢堡選單：開合主選單抽屜 */
+  var nav = document.querySelector('.nav');
+  var navToggle = document.getElementById('nav-toggle');
+  if (nav && navToggle) {
+    function setOpen(open){
+      nav.classList.toggle('open', open);
+      navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      navToggle.setAttribute('aria-label', open ? '關閉選單' : '開啟選單');
+    }
+    navToggle.addEventListener('click', function(e){ e.stopPropagation(); setOpen(!nav.classList.contains('open')); });
+    document.addEventListener('click', function(e){ if (nav.classList.contains('open') && !nav.contains(e.target)) setOpen(false); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && nav.classList.contains('open')) setOpen(false); });
+  }
+})();
+</script>
+
+
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v18.0&appId=556473851118881"></script>
+
+
+
+
+</body>
+</html>

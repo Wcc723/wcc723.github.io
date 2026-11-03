@@ -1,0 +1,72 @@
+# 部落格的建置與對等檢查（P1）。
+# push main 時：npm ci → npm test → npm run build（postbuild 跑 scripts/audit-build.mjs，沒過就失敗）→ 上傳 Pages artifact。
+#
+# 這一版沒有 deploy job，線上仍是 master 分支的 Hexo 產物。P2 切換時依 workspace 的 docs/runbooks/blog-cutover.md：
+# 站長先把 main 設成預設分支、Pages Source 改成 GitHub Actions、確認 github-pages 環境允許 main，
+# 接著才推送加上 deploy job 的 commit。那個 job 長這樣（needs: build，用 actions/deploy-pages）：
+#
+#   deploy:
+#     needs: build
+#     runs-on: ubuntu-latest
+#     permissions:
+#       pages: write      # 部署到 Pages
+#       id-token: write   # deploy-pages 用 OIDC 驗證
+#     environment:
+#       name: github-pages
+#       url: ${{ steps.deployment.outputs.page_url }}
+#     steps:
+#       - id: deployment
+#         uses: actions/deploy-pages@v4
+#
+# workflow_dispatch 只在 workflow 檔放在預設分支時才能用；P1 的預設分支還是 master，所以只綁 push main。
+name: Build and audit
+
+on:
+  push:
+    branches: [main]
+
+# 最小權限：只需要讀 repo。上傳 artifact 用的是 Actions 自己的 token，不需要額外權限。
+permissions:
+  contents: read
+
+# 同一時間只跑一組。照 GitHub Pages 範本的做法不取消進行中的那一次（P2 加上部署後，部署不能被砍到一半），
+# 排隊中的舊 run 會被新的 push 取代。
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      # audit 要讀基準 commit（Hexo 產物）的原始 HTML 來比本文與卡片；checkout 只抓 main，這裡單獨抓那一個 commit。
+      # commit 由 audit 從 baseline/ 最新的 hexo-* 讀出，不在這裡寫死。
+      - name: 抓基準 commit
+        run: git fetch --no-tags --depth=1 origin "$(node scripts/audit-build.mjs --print-baseline-commit)"
+
+      - run: npm ci
+
+      - run: npm test
+
+      # postbuild 會接著跑 scripts/audit-build.mjs，報告寫在 source/.vitepress/cache/audit-report.json
+      - run: npm run build
+
+      - name: 保留 audit 報告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-report
+          path: source/.vitepress/cache/audit-report.json
+          if-no-files-found: ignore
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: source/.vitepress/dist
