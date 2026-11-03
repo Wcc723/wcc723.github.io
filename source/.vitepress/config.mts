@@ -19,7 +19,14 @@ export default defineConfig({
   appearance: false,
   srcExclude: [...unpublishedFiles(srcDir), 'README.md'],
   rewrites: postRewrites(srcDir),
+  // 不設 true（計畫「SEO」的站內連結）。VitePress 把 http://localhost:<port> 當成站內連結檢查，
+  // 舊文教學裡要讀者打開自己電腦上的網址（rails-go 的 http://localhost:3000/drinks），不是本站網址，只略過這一種。
+  // 之後的工具與 Pages 專案站的樣式由 data/tools.json、Pages repo 清單產生後加在這裡。
+  ignoreDeadLinks: [/^https?:\/\/localhost[:/]/],
   markdown: markdownOptions,
+  // 舊文的原始 HTML 照寫的網址輸出（Hexo 不處理它們）：只有 ./ 開頭的相對網址交給 Vite 打包，
+  // movie.ogg、/xxx/xx（示範用的壞圖）這類網址不轉成 import，否則 build 會因為找不到檔案而失敗。
+  vue: { template: { transformAssetUrls: { includeAbsolute: false } } },
   head: [...siteHead, ...themeHead],
   transformPageData(pageData, ctx) {
     pageDataFor(pageData, ctx, srcDir)
@@ -27,5 +34,6 @@ export default defineConfig({
   },
   transformHtml,
   buildEnd: (siteConfig) => buildFeeds(siteConfig, srcDir),
-  sitemap: { hostname: SITE_URL, transformItems: sitemapTransformItems(srcDir) }
+  // lastmodDateOnly：lastmod 輸出 2026-10-05（跟 Hexo 的 sitemap 同格式），不輸出 2026-10-05T00:00:00.000Z
+  sitemap: { hostname: SITE_URL, lastmodDateOnly: true, transformItems: sitemapTransformItems(srcDir) }
 })

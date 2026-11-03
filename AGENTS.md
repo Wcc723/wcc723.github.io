@@ -30,7 +30,7 @@ npm run migrate        # scripts/migrate-hexo.mjs：Hexo 內文轉換，可重�
 npm run images:upload  # r2-uploads/ 上傳到 R2（img.casper.tw）
 ```
 
-Node 22.12 以上（`.nvmrc`）。
+Node 22 LTS，至少 22.12（package.json 的 engines）。`.nvmrc` 寫 `lts/jod`：`nvm install` 與 CI 的 setup-node 都拿最新的 22.x。
 
 ## 結構
 
@@ -42,12 +42,14 @@ Node 22.12 以上（`.nvmrc`）。
 | `source/public/` | 原封不動輸出的檔案：CNAME、ads.txt、robots.txt，以及凍結的 search.xml、css/style.css、img/ |
 | `baseline/hexo-2026-11-03/` | Hexo 基準：網址清單與每頁 SEO 欄位，audit 拿它比對 |
 | `scripts/` | audit、遷移、圖片上傳 |
+| `assets/` | Hexo 時代 gulp 的來源檔（demoFile、images、stylesheets，763 檔、約 102 MB），建置不讀、沒有程式引用；去留待站長決定 |
 
 ## 舊網址一字不改
 
 - 文章路徑、大小寫、點、尾斜線、canonical、og:url、FB 留言 data-href、標題 id 全部照舊。
 - 日期一律從檔名取，以 Asia/Taipei 為準，不做時區轉換。
-- 分類 `css` 輸出到 `/categories/CSS/`（大寫，全站唯一的例外）。標籤一律小寫，不能有只差大小寫的兩個標籤。
+- 分類 `css` 輸出到 `/categories/CSS/`（大寫，分類裡唯一的例外）。
+- 新標籤一律小寫。既有、只有一種寫法的大寫標籤照舊（`AI`、`Claude Code`、`Cloudflare`，網址是 `/tags/AI/` 這類舊網址），改成小寫會改掉舊網址。不能有只差大小寫的兩個標籤，audit 會擋下。
 - 新增根路徑（新頁、新分類）前，先在 workspace 跑 `node scripts/scan-paths.mjs --path <name>`。
 
 ## 寫文章
