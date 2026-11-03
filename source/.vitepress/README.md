@@ -11,7 +11,8 @@ config.mts
   transformPageData   ← lib/pagedata.mjs  先跑：頁型、網址、麵包屑、卡片、上下篇（寫進 frontmatter）
                       ← lib/seo.mjs       後跑：title、description、canonical、og、JSON-LD、cssdemo（寫進 frontmatter.head）
   transformHtml       ← lib/seo.mjs       依 ADS_MODE 與頁型拿掉 AdSense loader
-  head                ← lib/seo.mjs       全站 head：主題 script、GA4、FB Pixel、AdSense meta 與 loader、atom
+  head                ← lib/seo.mjs       全站 head：GA4、FB Pixel、AdSense meta 與 loader、atom
+                      ← theme/head.mjs    主題的 head：字型、favicon、深淺色防閃 script
   buildEnd            ← lib/feeds.mjs     atom.xml、content.json
   sitemap             ← lib/feeds.mjs     transformItems
 動態路由（paths loader） ← lib/pagedata.mjs 的資料 + lib/cards.mjs 的卡片 HTML
