@@ -25,13 +25,10 @@ published: true
 
 這次活動的簡報是用 Keynote 做的，有些部分是講解上為了呈現動態效果，所以在 slideshare 無法呈現的很完整。
 
-{% raw %}
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/qHPPkRrrnbi27j" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/chihchengwang3/css-1-grid-system" title="CSS 讀書會 - 1 (Grid system)" target="_blank">CSS 讀書會 - 1 (Grid system)</a> </strong> from <strong><a href="//www.slideshare.net/chihchengwang3" target="_blank">Chih-cheng Wang</a></strong> </div>
-{% endraw %}
+<iframe src="https://www.slideshare.net/slideshow/embed_code/key/qHPPkRrrnbi27j" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen loading="lazy"> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/chihchengwang3/css-1-grid-system" title="CSS 讀書會 - 1 (Grid system)" target="_blank">CSS 讀書會 - 1 (Grid system)</a> </strong> from <strong><a href="//www.slideshare.net/chihchengwang3" target="_blank">Chih-cheng Wang</a></strong> </div>
 
 也有準備了 Hackpad 提供共筆，很感謝前端朋友們熱情協助寫共筆文件。
 
-<script src="https://csscollege.hackpad.com/pc9N0EN7IP7.js"></script><noscript><div>View <a href="https://csscollege.hackpad.com/pc9N0EN7IP7">CSS 讀書會 1 (grid system)</a> on Hackpad.</div></noscript>
 
 #### 現場參與照片!?
 

@@ -29,7 +29,7 @@ published: true
 ## VSCode 的好用功能
 
 內建 Terminal
-按下 `Ctrl + \`` 後， VSCode 就會開啟預設的 Terminal 工具，如下圖所示，個人通常是使用 iTerm 在開發，按下之後下方會有 iTerm 分頁直接使用。如果說有需要修改預設字體，可以打開設定檔加入以下：
+按下 `` Ctrl + ` `` 後， VSCode 就會開啟預設的 Terminal 工具，如下圖所示，個人通常是使用 iTerm 在開發，按下之後下方會有 iTerm 分頁直接使用。如果說有需要修改預設字體，可以打開設定檔加入以下：
 
 ```
      "terminal.integrated.fontFamily": "Monaco for Powerline",

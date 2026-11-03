@@ -90,10 +90,8 @@ https://material.io/design/iconography/product-icons.html#design-principles
 
 實際演示的動畫
 
-{% raw %}
 <video aria-describedby="shadows-figure-caption-3" class="video-player__video animatable js-video-player js-video-load anim-appear" loop="" muted="" preload="metadata" controls autoplay tabindex="0">
 <source data-src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1lUqfq3Tt1qRQxZAn9gkROKMysc7G9Mhc%2Fshadowprinciples-list.mp4" src="https://storage.googleapis.com/spec-host-backup/mio-design%2Fassets%2F1lUqfq3Tt1qRQxZAn9gkROKMysc7G9Mhc%2Fshadowprinciples-list.mp4" type="video/mp4"> </video>
-{% endraw %}
 
 下圖兩個物件有著不同陰影，因此會感覺深度不同。
 

@@ -66,10 +66,8 @@ Bootstrap 是相當好的案例可以來說明容器與內容。以下圖來說�
 ## 案例
 上一回我們用結構與樣式分離的概念製作出一組按鈕，接下來在製作另一組模組 `card` ，按鈕模組除了可以獨立使用外，在 Card 內也是可正常運用。
 
-{% raw %}
 <p data-height="300" data-theme-id="0" data-slug-hash="EKwQEJ" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="OOCSS (Demo 1)" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/EKwQEJ/">OOCSS (Demo 1)</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-{% endraw %}
+<Embed src="https://production-assets.codepen.io/assets/embed/ei.js" />
 
 ```css
 /* card */

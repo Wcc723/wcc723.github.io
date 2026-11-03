@@ -67,13 +67,12 @@ function add(a, b) {
 
 
 接下來在函式的前方連續輸入 `/**` 就會直接出現文件的樣板，文件的樣板會自動帶入該函式的參數、回傳欄位，接下來只要專注在文檔撰寫即可。
-{% raw %}
+
 <video width="60%" controls autoplay>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FOct-12-2020%2019-49-57.mp4?alt=media&token=353e4293-2eea-41f7-b6cd-dc55c2460fa3 " type="video/mp4">
   <source src="movie.ogg" type="video/ogg">
 </video>
  
-{% endraw %}
 
 接下來就可在產生的模板中輸入相對應的說明文檔：
 ![](https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FDDF4AFC6-B82F-4A6F-91D1-901339037897.png?alt=media&token=eb09b988-5b5b-4c1f-a729-db5c66356c32)

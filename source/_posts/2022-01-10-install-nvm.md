@@ -87,13 +87,13 @@ export NVM_DIR="$HOME/.nvm"
 
 常見指令：
 - nvm ls-remote：列出目前可用的遠端 Node.js 版本
-- nvm install {{ version }}：安裝特定版本的 Node.js
+- nvm install <span v-pre>{{ version }}</span>：安裝特定版本的 Node.js
 - nvm install --lts：安裝最新的 LTS（長期支援）版本
 - nvm ls：列出本機所安裝的 Node.js 環境
-- nvm use {{ version }}：當前命令列套用特定版本的 Node.js
-- nvm alias default {{ version }}：設定命令列預設開啟的 Node.js 版本
+- nvm use <span v-pre>{{ version }}</span>：當前命令列套用特定版本的 Node.js
+- nvm alias default <span v-pre>{{ version }}</span>：設定命令列預設開啟的 Node.js 版本
 - nvm current：顯示目前使用中的 Node.js 版本
-- nvm uninstall {{ version }}：移除已安裝的特定版本
+- nvm uninstall <span v-pre>{{ version }}</span>：移除已安裝的特定版本
 
 ## 示範
 第一次安裝，如果不清楚選擇哪一個版本，可到 [Node.js 官方網站](https://nodejs.org/en/) 查看，建議挑選標示 LTS（長期支援）的版本，穩定性較適合正式專案。

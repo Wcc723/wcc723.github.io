@@ -25,10 +25,8 @@ published: true
 
 先來看預期的結果，按鈕是類似bootstrap，但是我簡化了很多部分的程式碼(縮短比較好閱讀)，重點是在scss內的`$btn-config`，透過這config可以快速調整按鈕的樣式，如果有增減，也只需要調整config即可。
 
-{% raw %}
 <p data-height="268" data-theme-id="0" data-slug-hash="EaovPd" data-default-tab="result" data-user="Wcc723" class='codepen'>See the Pen <a href='http://codepen.io/Wcc723/pen/EaovPd/'>EaovPd</a> by Wcc723 (<a href='http://codepen.io/Wcc723'>@Wcc723</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
-<script async src="//assets.codepen.io/assets/embed/ei.js"> </script>
-{% endraw %}
+<Embed src="https://assets.codepen.io/assets/embed/ei.js" />
 
 
 ## 開始
@@ -133,7 +131,5 @@ dark:(
 
 再看一次範例。
 
-{% raw %}
 <p data-height="268" data-theme-id="0" data-slug-hash="EaovPd" data-default-tab="result" data-user="Wcc723" class='codepen'>See the Pen <a href='http://codepen.io/Wcc723/pen/EaovPd/'>EaovPd</a> by Wcc723 (<a href='http://codepen.io/Wcc723'>@Wcc723</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
-<script async src="//assets.codepen.io/assets/embed/ei.js"> </script>
-{% endraw %}
+<Embed src="https://assets.codepen.io/assets/embed/ei.js" />

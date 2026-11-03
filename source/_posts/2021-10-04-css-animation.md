@@ -101,47 +101,9 @@ CSS Animation 看起來主角應該是 `animation` 屬性，但實際決定元�
 
 透過以上的程式碼，就可以做出以下的旋轉方塊效果。
 
-{% raw %}
-<style>
-.box {
-  height: 100px;
-  width: 100px;
-  display: inline-block;
-  background-color: orange;
-}
-.rotate {
-  animation-name: rotate-keyframe;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-.move {
-  animation-name: move-object;
-  animation-duration: 1.5s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-}
-@keyframes rotate-keyframe {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes move-object {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(200%);
-  }
-}
-</style>
 <div class="demo">
   <div class="box rotate"></div>
 </div>
-{% endraw %}
 
 ## 認識每一個 animation 屬性
 
@@ -189,11 +151,10 @@ animation-timing-function: steps(5, end); /* 階段性的轉換 */
 animation-timing-function: cubic-bezier(.4,.94,.56,1.59); /* 自訂義貝茲轉換速率 */
 ```
 
-{% raw %}
 <div class="demo my-3">
   <div class="box move" style="animation-timing-function: cubic-bezier(.4,.94,.56,1.59) "></div>
 </div>
-{% endraw %}
+
 > 套用 `cubic-bezier` 甚至可以讓元素會有反彈的感覺
 
 #### animation-direction ⭐⭐
@@ -207,11 +168,10 @@ animation-direction: alternate;          /* 單數次為正向播放，雙數次
 animation-direction: alternate-revers;   /* 與前者相反，雙數次為正向播放，單數次為反向播放 */
 ```
 
-{% raw %}
 <div class="demo my-3">
   <div class="box move" style="animation-direction: alternate"></div>
 </div>
-{% endraw %}
+
 > alternate 簡單來說就是一次正向、一次反向的播放方式
 
 #### animation-play-state ⭐
@@ -246,31 +206,35 @@ animation-delay: 3s;
 
 看完本篇文章，相信對於 CSS Animation 有基本的認識，接下來就直接動手玩玩看，了解 CSS Animation 的魅力吧
 
-{% raw %}
-<script src="https://unpkg.com/vue@next"></script>
-<div id="app">
-  <div class="row row-cols-lg-2 gy-2 gx-3">
-    <div class="col" v-for="(ani, key) in animationStyle" :key="key">
-      <label :for="key">{{ ani.name.replace('animation-', '')}} <small>({{ ani.description }})</small></label>
-      <select class="form-select" :id="key" v-model="selectProperties[ani.name]">
-        <option value="">不設定</option>
-        <option :value="item" v-for="(item) in ani.properties"
-          :key="`${item}property`">
-          {{ item }}
-        </option>
-      </select>
-    </div>
-  </div>
-  <div class="demo my-3">
-    <div class="box"
-      :style="selectProperties"
-    >
-  </div>
-  </div>
+<CssAnimationDemo />
 
-  <p>運作時所套用的 CSS 程式碼</p>
-  <pre class="hljs"><code class="hljs">.animation {
-<template  v-for="(item, key) in selectProperties" :key="key"><div v-if="item">  {{ key }}: {{ item }};</div></template>}
+## 延伸閱讀
+
+如果要在實戰中套用 Animation 的效果，非常推薦直接使用 「[Animate.css](https://animate.style/)」，包含相當多種動態轉場效果，就算是一般的網站宣傳頁面，都可以輕易地將動態套用至元素上喔
+
+延伸資源：
+- Animate.css：https://animate.style/
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+:deep(.box) {
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  background-color: orange;
+}
+:deep(.rotate) {
+  animation-name: rotate-keyframe;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+:deep(.move) {
+  animation-name: move-object;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
 @keyframes rotate-keyframe {
   from {
     transform: rotate(0deg);
@@ -286,110 +250,5 @@ animation-delay: 3s;
   100% {
     transform: translateX(200%);
   }
-}</code></pre>
-</div>
-<script>
-const { reactive, ref } = Vue;
-const app = Vue.createApp({
-  setup() {
-    const animationStyle = reactive({
-      animationName: {
-        name: 'animation-name',
-        description: '*動畫所套用的 keyframe 名稱',
-        properties: [
-          'rotate-keyframe',
-          'move-object',
-        ]
-      },
-      animationDuration: {
-        name: 'animation-duration',
-        description: '*動畫持續時間',
-        properties: [
-          '1s',
-          '3s',
-          '500ms',
-          'alternate-reverse',
-        ]
-      },
-      animationIterationCount: {
-        name: 'animation-iteration-count',
-        description: '*動畫播放次數',
-        properties: [
-          '1',
-          '3',
-          '1.5',
-          'infinite',
-        ]
-      },
-      animationTimingFunction: {
-        name: 'animation-timing-function',
-        description: '動畫轉換時的加速曲線',
-        properties: [
-          'ease',
-          'ease-in',
-          'ease-out',
-          'linear',
-          'steps(5, end)',
-          'cubic-bezier(.4,.94,.56,1.59)'
-        ]
-      },
-      animationDirection: {
-        name: 'animation-direction',
-        description: '動畫向前，或是反轉播放',
-        properties: [
-          'normal',
-          'reverse',
-          'alternate',
-          'alternate-reverse',
-        ]
-      },
-      animationPlayState: {
-        name: 'animation-play-state',
-        description: '動畫播放的狀態',
-        properties: [
-          'running',
-          'paused',
-        ]
-      },
-      animationFillMode: {
-        name: 'animation-fill-mode',
-        description: '定義播放以外的時間的呈現狀態',
-        properties: [
-          'none',
-          'forwards',
-          'backwards',
-          'both',
-        ]
-      },
-      animationDelay: {
-        name: 'animation-delay',
-        description: '第一次播放動畫延遲時間',
-        properties: [
-          '0',
-          '1s',
-          '2s',
-          'initial',
-        ]
-      },
-    });
-    const selectProperties = reactive({
-      'animation-name': 'rotate-keyframe',
-      'animation-duration': '3s',
-      'animation-iteration-count': 'infinite',
-      'animation-timing-function': 'linear',
-    });
-    return {
-      animationStyle,
-      selectProperties
-    }
-  }
-}).mount('#app');
-</script>
-{% endraw %}
-
-## 延伸閱讀
-
-如果要在實戰中套用 Animation 的效果，非常推薦直接使用 「[Animate.css](https://animate.style/)」，包含相當多種動態轉場效果，就算是一般的網站宣傳頁面，都可以輕易地將動態套用至元素上喔
-
-延伸資源：
-- Animate.css：https://animate.style/
+}
+</style>

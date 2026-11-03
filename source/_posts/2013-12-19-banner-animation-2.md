@@ -15,7 +15,7 @@ thumbnail: https://img.casper.tw/images/2013-12-19-banner-01.png
 
 [iframe 連結](http://codepen.io/Wcc723/full/wFrCn)
 
-<iframe src="http://codepen.io/Wcc723/full/wFrCn" frameborder="0" height="320" width="100%"></iframe>
+<iframe src="https://codepen.io/Wcc723/full/wFrCn" frameborder="0" height="320" width="100%" loading="lazy"></iframe>
 
 ## 原理
 這是利用transform配合animation來進行位移。

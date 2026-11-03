@@ -23,7 +23,7 @@ published: true
 如圖所示，我們的 Logo 還希望離上方有些為的距離，依邏輯來說物件離邊緣要有距離，我們就會幫他補上 `margin`，於是乎就會出現如下的問題。
 
 <p data-height="265" data-theme-id="0" data-slug-hash="JKYNOp" data-default-tab="result" data-user="Wcc723" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/JKYNOp/">Collapsing margins (for blog)</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+<Embed src="https://assets.codepen.io/assets/embed/ei.js" />
 
 仔細看看上面所發生的問題，內元素的 margin 沒有起了作用，而是被外層所吸收。
 
@@ -44,6 +44,6 @@ published: true
 所以如果要避開發生這個問題，就是避免存在以上這些問題，比如說不使用塊狀元素、外層加入padding、內層加入 float 等等，以下就列出一些解決方案。
 
 <p data-height="265" data-theme-id="0" data-slug-hash="GqpYde" data-default-tab="result" data-user="Wcc723" data-embed-version="2" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/GqpYde/">Collapsing margins (resolve for blog)</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+<Embed src="https://assets.codepen.io/assets/embed/ei.js" />
 
 這也是我們在與學員之間的問答中常遇到的，這次找個機會寫個文章跟大家分享分享。

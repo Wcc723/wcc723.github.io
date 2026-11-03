@@ -17,38 +17,10 @@ published: true
 
 網頁在套用毛玻璃的特效流程近年有大幅的簡化，過去在線上有介紹過 [純 CSS 的毛玻璃](https://www.youtube.com/watch?v=SmFxwLRSulM)的技法，是透過多層的偽元素搭配 `filter` 的模糊效果完成，開發的程式碼繁雜，運作上也有許多的限制。不過在 2019 推出了新的 CSS 語法，毛玻璃的特效僅需要一個短短屬性就可達成，讓我們一起來看看怎麼做吧。
 
-{% raw %}
-<style>
-.demo {
-  padding: 30px
-}
-.box {
-  height: 400px !important;
-  width: 100% !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, .15);
-}
-.object-cover {
-  object-fit: cover;
-}
-.background-cover {
-  background-position: center center;
-  background-size: cover;
-}
-.object-bottom {
-  object-position: right bottom;
-}
-</style>
-{% endraw %}
 
 這是本文會使用到的圖片，圖片來自於 Unsplash，如果失連歡迎與我聯絡。
 
-{% raw %}
 <img no-lazy src="https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80" alt=""> 
-{% endraw %}
 
 ## 偽元素 + Filter 的做法
 
@@ -84,28 +56,6 @@ published: true
 }
 ```
 
-{% raw %}
-<style>
-.filter.box {
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-}
-.filter.box:after{
-  content: "";
-  background-position: center center;
-  background-size: cover;
-  position: absolute;
-  top: -30px;
-  bottom: -30px;
-  left: -30px;
-  right: -30px;
-  background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80);
-  filter: blur(5px);
-  z-index: -1;
-}
-</style>
-
 實際運作範例：
 
 <div class="demo background-cover" style="background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80)">
@@ -113,7 +63,6 @@ published: true
     毛玻璃特效 by filter
   </div>
 </div>
-{% endraw %}
 
 這個手法兩層的圖片必須完全相同，所以作為背景的區塊無法有任何的其它元素。
 
@@ -129,19 +78,13 @@ published: true
 ```
 
 實際範例，不管背景圖如何，區塊內的 `backdrop-filter` 都能夠將背景加入特效。
-{% raw %}
-<style>
-.backdrop-blur {
-  backdrop-filter: blur(5px);
-}
-</style> 
+
 
 <div class="demo background-cover" style="background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80)">
   <div class="box backdrop-blur">
     毛玻璃特效 by backdrop-filter
   </div>
 </div>
-{% endraw %}
 
 `backdrop-filter` 具有許多特點，除了能夠將圖片加上特效外，更嚴格來說它是將**整個區塊的下層**加上特效，只要在套用的區塊下都能運作。以下範例來說，於底部加上了一段文字，在 `hover` 後的視覺效果也能套用 `backdrop-filter` 的特效（在此使用 `invert`）。
 
@@ -156,23 +99,6 @@ published: true
 }
 ```
 
-{% raw %}
-<style>
-.absolute {
-  position: absolute;
-  color: white;
-  text-align: center;
-  left: 0;
-  right: 0;
-}
-.backdrop-invert {
-  transition: 1s all;
-}
-.backdrop-invert:hover {
-  background-color: rgba(0, 0, 0, .25);
-  backdrop-filter: invert(80%);
-}
-</style> 
 
 <div class="demo background-cover" style="background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80)">
   <div class="absolute">
@@ -182,7 +108,6 @@ published: true
     請用滑鼠 Hover 過此區塊 
   </div>
 </div>
-{% endraw %}
 
 ## 更多 backdrop-filter
 
@@ -201,8 +126,8 @@ published: true
 
 這裡也提供簡單的工具，便於大家瀏覽所有的特效效果。
 
-{% raw %}
-<label for="backdrop-filter">特效選單：</label>
+<label for="backdrop-filter">
+特效選單：</label>
 <select name="" id="backdrop-filter">
   <option value="" disabled selected>-- 請選擇特效 --</option>
   <option value="blur(5px)">模糊 blur</option>
@@ -224,16 +149,65 @@ published: true
     目前套用的效果為：<span id="backdrop-text">無</span>
   </div>
 </div>
-<script>
-const customBackdrop = document.querySelector('#custom-backdrop');
-const backdropSelect = document.querySelector('#backdrop-filter');
-const backdropText = document.querySelector('#backdrop-text')
-let backdrop = '';
-backdropSelect.addEventListener('change', function() {
-  const style = this.value;
-  console.log(style);
-  customBackdrop.style.backdropFilter = style;
-  backdropText.innerText = style;
-});
-</script>
-{% endraw %}
+<FrostedGlassDemo />
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+:deep(.demo) {
+  padding: 30px
+}
+:deep(.box) {
+  height: 400px !important;
+  width: 100% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, .15);
+}
+:deep(.object-cover) {
+  object-fit: cover;
+}
+:deep(.background-cover) {
+  background-position: center center;
+  background-size: cover;
+}
+:deep(.object-bottom) {
+  object-position: right bottom;
+}
+:deep(.filter.box) {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+:deep(.filter.box:after){
+  content: "";
+  background-position: center center;
+  background-size: cover;
+  position: absolute;
+  top: -30px;
+  bottom: -30px;
+  left: -30px;
+  right: -30px;
+  background-image: url(https://images.unsplash.com/photo-1602251627070-6a9bab4e420e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1355&q=80);
+  filter: blur(5px);
+  z-index: -1;
+}
+:deep(.backdrop-blur) {
+  backdrop-filter: blur(5px);
+}
+:deep(.absolute) {
+  position: absolute;
+  color: white;
+  text-align: center;
+  left: 0;
+  right: 0;
+}
+:deep(.backdrop-invert) {
+  transition: 1s all;
+}
+:deep(.backdrop-invert:hover) {
+  background-color: rgba(0, 0, 0, .25);
+  backdrop-filter: invert(80%);
+}
+</style>

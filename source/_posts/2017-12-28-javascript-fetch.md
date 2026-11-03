@@ -121,23 +121,9 @@ fetch(url)
 ```
 > URL 也是新的 API，可以將 blob 物件轉為網址
 
-{% raw %}
-<script>
-// unsplash 上的圖片
-let url = 'https://images.unsplash.com/photo-1513313778780-9ae4807465f0?auto=format&fit=crop&w=634&q=80'
-fetch(url)
-  .then((response) => {
-    return response.blob();
-  })
-  .then((imageBlob) => {
-    let img = document.createElement('IMG')
-    document.querySelector('.newImg').appendChild(img);
-    // 將 blog 物件轉為 url
-    img.src = URL.createObjectURL(imageBlob);
-  })
-</script>
+<JavascriptFetchDemo />
 <div class="newImg"></div>
-{% endraw %}
+
 > 範例圖片，從 Unsplash 上所截取的圖片實體 ~~小明眼中的漂亮阿姨~~
 
 ### POST 方法

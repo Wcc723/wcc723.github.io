@@ -11,11 +11,10 @@ photo: https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/im
 published: true
 ---
 
-{% raw %} 
 <div class="ratio ratio-16x9">
-<iframe width="100%" src="https://www.youtube.com/embed/cUmSAGtP-70" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="100%" src="https://www.youtube.com/embed/cUmSAGtP-70" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
 </div>
-{% endraw %}
+
 這是鐵人賽相關文章，影片會在活動開始後發布
 
 本篇文章會介紹如何「使用 GitHub Action 部署專案至虛擬主機上」，虛擬主機會使用 PM2 來進行管理，整個流程與業界實戰會略有落差，主要是作為 “基礎知識” 理解所使用，實戰中還是多利用 Docker 容器化來進行管理：
@@ -51,8 +50,8 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 > 請注意保護好您的私鑰，不要讓它落入他人手中。
 
 5. 接下來將公鑰加入至 Server 中
-  1. `cat ~/.ssh/id_rsa.pub` 查看公鑰並複製
-  2. 執行指令 `echo 'ssh-rsa AAAA...' >> ~/.ssh/authorized_keys` 其中的 `'ssh-rsa AAAA...'` 替換成剛剛複製的公鑰
+   1. `cat ~/.ssh/id_rsa.pub` 查看公鑰並複製
+   2. 執行指令 `echo 'ssh-rsa AAAA...' >> ~/.ssh/authorized_keys` 其中的 `'ssh-rsa AAAA...'` 替換成剛剛複製的公鑰
 
 6. 設置權限，讓他可以被讀取
     

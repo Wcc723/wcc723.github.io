@@ -15,10 +15,8 @@ Promise 現在已經被大部分瀏覽器所支援 (IE 以外)，在處理非同
 
 <!-- more -->
 
-{% raw %}
 <p data-height="400" data-theme-id="0" data-slug-hash="qrbKNg" data-default-tab="js" data-user="Wcc723" data-embed-version="2" data-pen-title="ES6 Promise" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/qrbKNg/">ES6 Promise</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-{% endraw %}
+<Embed src="https://production-assets.codepen.io/assets/embed/ei.js" />
 
 ```js
 (function() {

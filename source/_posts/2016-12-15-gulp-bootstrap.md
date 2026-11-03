@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 15 - 為什麼 Boostrap
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: 

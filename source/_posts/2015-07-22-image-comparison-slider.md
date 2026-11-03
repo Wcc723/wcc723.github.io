@@ -20,7 +20,6 @@ published: true
 
 Lea Verou 這個範例中並沒有使用到js，並且用少量的css就能達到效果，其中的`resize:`是關鍵的屬性，這可以讓使用者控制範圍大小，這個屬性讓`div`像 `textarea`一樣。
 
-{% raw %}
 <div class="d0722 demo">
 	<div class="image-slider">
 		<div>
@@ -29,7 +28,6 @@ Lea Verou 這個範例中並沒有使用到js，並且用少量的css就能達�
 		<img src="https://img.casper.tw/images/2015-07-22_demoimage02.jpg" alt="">
 	</div>
 </div>
-{% endraw %}
 
 ```html
 <div class="d0722 demo">

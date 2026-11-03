@@ -16,9 +16,8 @@ published: true
 
 另外本文的內容較多，Promise 想看簡易版可參考：[/javascript/2017/12/29/javascript-proimse/](/javascript/2017/12/29/javascript-proimse/)。
 
-{% raw %}
-<iframe width="100%" height="315" src="https://www.youtube.com/embed/7CXnNMVMXeo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-{% endraw%}
+<iframe width="100%" height="315" src="https://www.youtube.com/embed/7CXnNMVMXeo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+
 > 使用 Vuejs 結合 Open Street Map 製作口罩地圖
 
 ## 關於 Promise 常見問題

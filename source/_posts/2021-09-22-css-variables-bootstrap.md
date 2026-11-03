@@ -46,21 +46,9 @@ published: true
 
 接下來看看實際的範例，最外層定義了 `--casper-color` 變數，然後內層的 `.box` 取用其值套用在背景色上。
 
-{% raw %}
-<style>
-:root {
-  --casper-color: #00cc99;
-}
-.box {
-  height: 100px;
-  width: 100px;
-  background-color: var(--casper-color);
-}
-</style>
 <div class="demo">
   <div class="box"></div>
 </div> 
-{% endraw %}
 
 ## 變數的繼承特性
 相對於 JavaScript 來說，CSS 運行時並不會改變其值，而既然它稱為 “變數” 但值不會改變該如何運用呢？
@@ -89,18 +77,11 @@ published: true
 
 運行結果：以下範例只有新增 `.local` 的變數，其餘程式碼與上段一樣，但在此的 `.box` 已被套用成橘色。
 
-{% raw %}
-<style>
-.local {
-  --casper-color: orange;
-}
-</style>
 <div class="demo">
   <div class="local">
     <div class="box"></div>
   </div>
 </div>
-{% endraw %}
 
 繼承規則與 CSS 權重概念一致，基本原則如下：
 - 內層優於外層
@@ -132,7 +113,6 @@ published: true
 
 雖然沒有賦予其它的樣式，但是在內層的 `col-*` 就會繼承新覆蓋的值，透過這樣的方式，僅需要短短 3 行變數調整程式碼，就可以產生出不同間距的格線系統。
 
-{% raw %}
 <div class="demo">
   <div class="row">
     <div class="col-6">
@@ -152,7 +132,6 @@ published: true
     </div>
   </div>
 </div> 
-{% endraw %}
 
 原始碼如下：
 
@@ -182,11 +161,9 @@ published: true
 
 其中的 `ratio-16x9` 就是修改 `--bs-aspect-ratio`，其內層的元素套用此比例完成比例挑整樣式。 
 
-{% raw %} 
 <div class="ratio ratio-16x9">
-  <iframe src="https://www.youtube.com/embed/XAdIuuU_90g?rel=0" title="YouTube video" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/XAdIuuU_90g?rel=0" title="YouTube video" allowfullscreen loading="lazy"></iframe>
 </div>
-{% endraw %}
 
 原始碼如下：
 
@@ -198,11 +175,9 @@ published: true
 
 除此之外，還可以直接使寫入其它變數值於 `style` 內，讓 CSS 的變數可用性大幅上升，以下範例來說就將 `--bs-aspect-ratio` 改為 `100%`，就可以將內嵌的影片比例給改為 1:1。
 
-{% raw %} 
 <div class="ratio" style="--bs-aspect-ratio: 100%;">
-  <iframe src="https://www.youtube.com/embed/XAdIuuU_90g?rel=0" title="YouTube video" allowfullscreen></iframe>
+  <iframe src="https://www.youtube.com/embed/XAdIuuU_90g?rel=0" title="YouTube video" allowfullscreen loading="lazy"></iframe>
 </div>
-{% endraw %}
 
 套用方式，將變數改為 100%。
 ```
@@ -223,3 +198,16 @@ style="--bs-aspect-ratio: 100%;"
 - 外層 .row 的設計
 
 當然，變數實際運用不僅如此，如果是搭配 JavaScript 更能做出許多變化，而除了本篇所介紹的方法外，你還有看過哪些方法呢？
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+/* 原本的 :root { --casper-color: #00cc99; } 會定義在整個網站的根元素，改成 var() 的預設值，結果相同 */
+:deep(.box) {
+  height: 100px;
+  width: 100px;
+  background-color: var(--casper-color, #00cc99);
+}
+:deep(.local) {
+  --casper-color: orange;
+}
+</style>

@@ -11,7 +11,7 @@ published: true
 
 CSS 有很多技巧，都很值得去開發，最近發現了一個很簡單的技術，就是純CSS下拉式選單，這讓我避免使用Jquery去做slider的效果，重點是...超簡單！
 
-<iframe src="http://codepen.io/Wcc723/full/yCpae/" frameborder="0" width="100%" height="300"> </iframe>
+<iframe src="https://codepen.io/Wcc723/full/yCpae/" frameborder="0" width="100%" height="300" loading="lazy"> </iframe>
 
 <!-- more -->
 
@@ -66,7 +66,6 @@ HTML架構如下，而這篇是真的純CSS，所以會插入一個input去做�
 
 ## Demo
 
-{% raw %}
 <div class="demo d0520">
 	<div class="drop-menu">
 	<label for="drop-menu"> 下拉式選單 </label>
@@ -79,6 +78,5 @@ HTML架構如下，而這篇是真的純CSS，所以會插入一個input去做�
 		</ul>
 	</div>
 </div>
-{% endraw %}
 
 很容易吧～

@@ -187,6 +187,6 @@ gulp.task('coffee', function() { //'coffee'是排程名稱，可自定
 
 [http://mopcon.kktix.cc/events/2014-registration](http://mopcon.kktix.cc/events/2014-registration)
 
-<iframe allowfullscreen="" frameborder="0" height="360" src="//www.youtube.com/embed/vNmK-HyGVO4?rel=0" width="100%"></iframe>
+<iframe allowfullscreen="" frameborder="0" height="360" src="https://www.youtube.com/embed/vNmK-HyGVO4?rel=0" width="100%" loading="lazy"></iframe>
 
 官方網站 [http://mopcon.org/2014/](http://mopcon.org/2014/)

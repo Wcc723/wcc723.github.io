@@ -115,7 +115,7 @@ $brand-danger:              #d9534f;
 當會修改顏色以後，可以在看Bootstrap有提供多少的變數供修改。
 
 <div style="overflow-y: auto; height: 450px;">
-<script src="https://gist.github.com/Wcc723/de2942e7341cdf210c6d.js"> </script>
+<Embed src="https://gist.github.com/Wcc723/de2942e7341cdf210c6d.js" height="100%" />
 </div>
 
 *注意：這份是複製檔，並非最新版 Bootstrap的設定檔*

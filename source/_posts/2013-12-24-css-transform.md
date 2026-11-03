@@ -17,16 +17,14 @@ thumbnail: https://img.casper.tw/images/2013-12-23-lol-zig.png
 #### Demo
 滑鼠移過下方的區域時，下方的兩個角色會靠近，另外在滑鼠在角色的圖片上時，角色會從模糊變成清楚。
 
-{% raw %}
 <div class="demo d1223" data-demo="Hover me!">
 	<div class="transform3d">
 		<span class="ez"><img src="https://img.casper.tw/images/2013-12-23-lol-f.png" alt=""></span>
 		<span class="ziggs"><img src="https://img.casper.tw/images/2013-12-23-lol-zig.png" alt=""></span>
 	</div>
 </div>
-{% endraw %}
 
-*圖片來源：英雄聯盟 *
+<em>圖片來源：英雄聯盟 </em>
 
 
 ## 原理
@@ -100,27 +98,23 @@ thumbnail: https://img.casper.tw/images/2013-12-23-lol-zig.png
 
 ## 再一次demo
 
-{% raw %}
 <div class="demo d1223" data-demo="Hover me!">
     <div class="transform3d">
         <span class="ez"><img src="https://img.casper.tw/images/2013-12-23-lol-f.png" alt=""></span>
         <span class="ziggs"><img src="https://img.casper.tw/images/2013-12-23-lol-zig.png" alt=""></span>
     </div>
 </div>
-{% endraw %}
 
 
 ## 增加filter 效果
 這部分在增加一個filter的drop-shadow效果，這樣會更有層次，但是效能會更差一點。而這邊要表現的效果，就是角色後方的陰影，會因為hover而改變位置。因filter效能不好，較好的方式還是在後方增加一層圖片，然後再用transform去改變其位置。
 
-{% raw %}
 <div class="demo d1223" data-demo="Hover me!">
     <div class="transform3d2">
         <span class="ez"><img src="https://img.casper.tw/images/2013-12-23-lol-f.png" alt=""></span>
         <span class="ziggs"><img src="https://img.casper.tw/images/2013-12-23-lol-zig.png" alt=""></span>
     </div>
 </div>
-{% endraw %}
 
     .ez
         +filter(drop-shadow(-5px 0 0 rgba(black ,.5)))

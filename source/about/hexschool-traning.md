@@ -2,6 +2,8 @@
 title: 卡斯伯 前端作品實戰直播班預約
 date: 2022-6-12 15:28:32
 published: true
+# 內容停在 2023 年的舊梯次預約頁，不載入 AdSense（計畫「網站地圖」、docs/architecture/ads.md）
+ads: false
 ---
 ## Vue 3 作品實戰班
 
@@ -22,11 +24,9 @@ published: true
 
 學員作品牆：https://works.hexschool.io/#/?tag=Vue
 
-{% raw %}
 <a class="btn btn-danger btn-lg" href="https://hex.school/fPKVU" target="_blank">
   <i class="bi bi-gem"></i> 課程頁面 <i class="bi bi-gem"></i>
 </a>
-{% endraw %}
 
 完課學員心得
 - [CT](https://vocus.cc/article/622b518bfd897800010ba4d4)：我認為六角提供相當多且豐富的資源，而且「即時問答」、「詳盡解答」相當重要，也給予同學們很友善的問答空間。後來自己發現其實公開問問題根本沒什麼，因為上面問題真的太。多。了。
@@ -39,6 +39,7 @@ published: true
 - [Mizu](https://equatorial-alloy-23b.notion.site/2022-3-7-Vue-b3a24d30bd1b4abc8a76858e88f8cbb0)：卡斯伯老師非常擅長透過繪圖把困難的事情變得簡單，光是從第一堂課的關注點分離就有深刻體會！雖然當時已經對關注點分離有些微了解，但在**看到老師透過繪圖來解說，讓我又更加深印象了**！
 - [Iris Huang](https://medium.com/@iris.huang/vue-%E7%9B%B4%E6%92%AD%E7%8F%AD%E8%AA%B2%E5%BE%8C%E5%BF%83%E5%BE%97-6fc2587ec48c)：卡斯伯老師的加碼課即知識與八卦(?)於一堂課，因為不是正規課，老師也比較多時間回覆問題，這些問題包括但不限於程式雷點及周邊知識、實戰相關小撇步、螢幕推薦(?)等。
 
+<!-- 兩段清單分開（CommonMark 的空行不會結束清單） -->
 
 - [Iven Liu](https://hackmd.io/1w6IAhxNSDWFi2GC58Jgrg?view)：自從出社會之後，就再也沒有人會向學校老師一樣，**不藏私的把自己會的分享給你**，真心的希望你學會、成長。但是在六角我看到了這塊，不論是老師、助教、同學，只要你有問題，每個人都是真心真意的幫助你，真心真意的希望你學會。
 - [TSENG FU CHUN / 豆腐](https://tsengbatty.medium.com/2021-07-09-vue-%E7%9B%B4%E6%92%AD%E7%8F%AD%E5%BF%83%E5%BE%97%E6%96%87-c5232b4dce2e)：介紹 this 的影音課程之後打算回頭再複習，因為老師真的講解的很清楚。

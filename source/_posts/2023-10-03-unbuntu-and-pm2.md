@@ -11,11 +11,10 @@ photo: https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/im
 published: true
 ---
 
-{% raw %} 
 <div class="ratio ratio-16x9">
-<iframe width="100%" src="https://www.youtube.com/embed/e9Y4sWcwsn8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="100%" src="https://www.youtube.com/embed/e9Y4sWcwsn8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
 </div>
-{% endraw %}
+
 這是鐵人賽相關文章，影片會在活動開始後發布
 
 本篇文章會介紹如何「租賃虛擬主機，並且部署 Node.js 服務」，因為會從零開始建置，因此本篇文章會包含以下文章：

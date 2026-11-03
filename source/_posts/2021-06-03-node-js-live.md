@@ -25,7 +25,7 @@ published: true
 
 ## 影片
 
-<iframe width="100%" height="500" src="https://www.youtube.com/embed/RpMVP52YQRQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="100%" height="500" src="https://www.youtube.com/embed/RpMVP52YQRQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
 
 ---
 講者：卡斯伯

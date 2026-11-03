@@ -16,11 +16,9 @@ Webkit 可以利用CSS修改Scoll bar的外觀，有試過其他瀏覽器是不�
 
 來源：[http://cssdeck.com/labs/css3-webkit-vertical-scrollbars](http://cssdeck.com/labs/css3-webkit-vertical-scrollbars)
 
-{% raw %}
 <div class="d0901 demo">
 	<div class="overflow" style="width: 150%"></div>
 </div>
-{% endraw %}
 
 上面這是內建webkit的scroll bar，有些時候因為需要配合版面，這樣式並不合適，而Webkit的瀏覽器可以透過以下CSS來做調整。
 
@@ -44,7 +42,6 @@ Webkit 可以利用CSS修改Scoll bar的外觀，有試過其他瀏覽器是不�
 
 *注意本範例只有Webkit瀏覽器有效，Chrome or Safari*
 
-{% raw %}
 <div class="d0901 demo scrollbar1">
 	<div class="overflow" style="width: 150%">style1</div>
 </div>
@@ -63,6 +60,5 @@ Webkit 可以利用CSS修改Scoll bar的外觀，有試過其他瀏覽器是不�
 <div class="d0901 demo scrollbar6">
 	<div class="overflow" style="width: 150%">style6</div>
 </div>
-{% endraw %}
 
 如果要跨瀏覽器的scrollbar，就建議使用javascript或是jquery了。

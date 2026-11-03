@@ -66,11 +66,11 @@ published: true
 
 字體
 - [系統字體介紹](https://wcc723.github.io/design/2018/10/25/fonts/)
-- [網路字體運用](網路字體運用)
+- [網路字體運用](/design/2018/10/26/web-fonts/)
 - [文字大小、行高與空間上的關係](https://wcc723.github.io/design/2018/10/27/fonts-family/)
 
 圖片
-- [圖片格式的運用](圖片格式的運用)
+- [圖片格式的運用](/design/2018/10/28/image-format/)
 - [圖片壓縮方法](https://wcc723.github.io/design/2018/10/29/image-opti/)
 - [SVG 輸出注意事項](https://wcc723.github.io/design/2018/10/30/image-svg/)
 - [Icon fonts 的常見資源](https://wcc723.github.io/design/2018/10/31/icon-fonts/)

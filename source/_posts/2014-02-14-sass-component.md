@@ -21,7 +21,6 @@ published: true
 
 ## 效果展示
 
-{% raw %}
 <div class="demo d0214">
 	<a href="#" class="btn-default">btn-default</a>
 </div>
@@ -33,7 +32,6 @@ published: true
 	<a href="#" class="demo-btn Warning">demo-btn Warning</a>
 	<a href="#" class="demo-btn Information">demo-btn Information</a>
 </div>
-{% endraw %}
 
 	<a href="#" class="demo-btn">demo-btn</a>
 	<a href="#" class="demo-btn Validation">demo-btn Validation</a>
@@ -87,11 +85,9 @@ published: true
 				background-color: $darkenColor
 
 
-{% raw %}
 <div class="demo d0214">
 	<a href="#" class="btn-default">btn-default</a>
 </div>
-{% endraw %}
 
 到這部分就有一個基本的按鈕樣式。
 
@@ -122,7 +118,6 @@ published: true
 
 	+DemoButtons()
 
-{% raw %}
 <div class="demo d0214">
 	<a href="#" class="demo-btn">demo-btn</a>
 	<a href="#" class="demo-btn Validation">demo-btn Validation</a>
@@ -130,9 +125,8 @@ published: true
 	<a href="#" class="demo-btn Warning">demo-btn Warning</a>
 	<a href="#" class="demo-btn Information">demo-btn Information</a>
 </div>
-{% endraw %}
 
 用這方式就可以完成sass模組，且包含了許多樣式。而這模組的架構，是我目前在測試的，有興趣的可以參考就好，畢竟CSS寫法相當多樣，只有適合沒有完美的寫法，下方另外提供codepen範例。
 
 
-<iframe src="http://codepen.io/Wcc723/full/EfpiA" frameborder="0" width="100%" height="300px"> </iframe>
+<iframe src="https://codepen.io/Wcc723/full/EfpiA" frameborder="0" width="100%" height="300px" loading="lazy"> </iframe>

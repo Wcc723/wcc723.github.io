@@ -64,31 +64,10 @@ MDN 上的介紹：https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefe
 
 請透過切換你的暗色、亮色主題來改變下方的範例（暗色主題為深色背景，亮色則反之）。
 
-{% raw %}
-<style>
-.mode {
-  background-color: #eee;
-  color: #333;
-}
-.text-mode:after {
-  content: "light";
-}
-
-@media (prefers-color-scheme: dark) {
-  .mode {
-    background-color: #333;
-    color: #eee;
-  }
-  .text-mode:after {
-    content: "dark";
-  }
-}
-</style>
 <div class="demo mode">
   <p>本區塊會隨著暗色與亮色主題切換</p>
   <p>您目前的是 <span class="text-mode"></span> 主題</p>
 </div>
-{% endraw %}
 
 
 ## 使用變數快速切換網頁的主題色
@@ -122,37 +101,11 @@ MDN 上的介紹：https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefe
 }
 ```
 
-{% raw %}
-<style>
-.card {
-  --theme-primary: #6222ee;
-  --theme-background: #eee;
-}
-
-.card {
-  margin: 0 auto;
-  padding: 15px;
-  text-align: center;
-  max-width: 320px;
-  border-radius: 3px;
-  border: 1px solid #777;
-  background-color: var(--theme-background);
-  color: var(--theme-primary);
-}
-
-@media (prefers-color-scheme: dark) {
-  .card {
-    --theme-primary: #bb85fc;
-    --theme-background: #111;
-  }
-}
-</style>
 <div class="demo mode">
   <div class="card">
     <p>本卡片會隨著暗色與亮色主題切換</p>
   </div>
 </div>
-{% endraw %}
 
 本文中還有利用到 CSS Variables，有興趣可參閱本篇文「[原生 CSS 變數運用技巧（CSS Variables）](https://w3c.hexschool.com/blog/21985acb)」。
 
@@ -167,3 +120,46 @@ Material Design
 Apple
 - Mac：https://developer.apple.com/design/human-interface-guidelines/macos/visual-design/dark-mode/
 - iOS：https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/dark-mode/
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+:deep(.mode) {
+  background-color: #eee;
+  color: #333;
+}
+:deep(.text-mode:after) {
+  content: "light";
+}
+
+@media (prefers-color-scheme: dark) {
+  :deep(.mode) {
+    background-color: #333;
+    color: #eee;
+  }
+  :deep(.text-mode:after) {
+    content: "dark";
+  }
+}
+:deep(.card) {
+  --theme-primary: #6222ee;
+  --theme-background: #eee;
+}
+
+:deep(.card) {
+  margin: 0 auto;
+  padding: 15px;
+  text-align: center;
+  max-width: 320px;
+  border-radius: 3px;
+  border: 1px solid #777;
+  background-color: var(--theme-background);
+  color: var(--theme-primary);
+}
+
+@media (prefers-color-scheme: dark) {
+  :deep(.card) {
+    --theme-primary: #bb85fc;
+    --theme-background: #111;
+  }
+}
+</style>

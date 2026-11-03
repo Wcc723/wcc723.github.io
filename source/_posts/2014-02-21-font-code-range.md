@@ -28,13 +28,11 @@ Just font中的字型學文章都相當有意思，而有一篇是關於[中英�
 
 `unicode-range`部分效果在Mac OS上測試有問題，不管是Chrome、Safari、Firefox都有點問題...。
 
-{% raw %}
 <div class="demo d0218">
 	<div class="custom-Iam">
 		這一句話只有"我"會被換成黑體
 	</div>
 </div>
-{% endraw %}
 
 ![](https://img.casper.tw/images/2014-02-23_180951.png)
 
@@ -68,25 +66,21 @@ Just font中的字型學文章都相當有意思，而有一篇是關於[中英�
 
 在一般來說，通常換字體沒有針對語系，就像下方這一個範例，我將字體換成了'Mac OS 黑體-繁'、'Windows 微軟正黑體'，但在中英文排版中，用同一種字體不一定合適(請看just font)。
 
-{% raw %}
 <div class="demo d0218">
 	<div class="custom-Heiti">
 		This is 一個中文English交雜的sentence
 	</div>
 </div>
-{% endraw %}
 
 ![](https://img.casper.tw/images/2014-02-23_182250.png)
 
 中文的語系的unicode-range為`U+4E00-9FFF`，英語系為`U+00-024F`，將這個值加入到@font-face內，就能為特定語系換字體。如下範例中文還是'Mac OS 黑體-繁'、'Windows 微軟正黑體'，但英文的部份已經替換成'Helvetica'、'Segoe UI'，範例如下。
 
-{% raw %}
 <div class="demo d0218">
 	<div class="custom-sans-serif">
 		This is 一個中文English交雜的sentence
 	</div>
 </div>
-{% endraw %}
 
 ![](https://img.casper.tw/images/2014-02-23_182302.png)
 
@@ -109,13 +103,11 @@ Just font中的字型學文章都相當有意思，而有一篇是關於[中英�
 
 不只在黑體能夠這樣做，明體當然也可以。
 
-{% raw %}
 <div class="demo d0218">
 	<div class="custom-serif">
 		This is 一個中文English交雜的sentence
 	</div>
 </div>
-{% endraw %}
 
 	@font-face
 		font-family: custom-serif
@@ -134,8 +126,6 @@ Just font中的字型學文章都相當有意思，而有一篇是關於[中英�
 
 在[字符百科](http://unicode-table.com/cn/)中，不僅可以查詢的文字的unicode 編號，其實還可以查到許多符號性的文字，這些文字其實可以直接當作web font使用，還免載入外部的字型檔，就像下方的幾個不同雪花一樣。
 
-{% raw %}
 <div class="demo d0218">
 	❄❅❆
 </div>
-{% endraw %}

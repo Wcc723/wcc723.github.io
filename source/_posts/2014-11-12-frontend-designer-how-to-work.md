@@ -71,7 +71,7 @@ $primary-color-lighten: lighten($primary-color, 10%)
 ```
 
 <p data-height="268" data-theme-id="0" data-slug-hash="zxOgZR" data-default-tab="result" data-user="Wcc723" class='codepen'>See the Pen <a href='http://codepen.io/Wcc723/pen/zxOgZR/'>zxOgZR</a> by Wcc723 (<a href='http://codepen.io/Wcc723'>@Wcc723</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
-<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+<Embed src="https://assets.codepen.io/assets/embed/ei.js" />
 
 這樣可以讓顏色更有系統的管理，不過變數的命名又是另一門學問了，這邊就不再多作闡述。
 

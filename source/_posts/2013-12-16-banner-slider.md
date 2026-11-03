@@ -13,11 +13,9 @@ thumbnail: https://img.casper.tw/images/banner-01.png
 
 ### CSS範例
 
-{% raw %}
-<iframe src="http://cdpn.io/Cgbtn" frameborder="0" height="340" width="100%">
+<iframe src="https://cdpn.io/Cgbtn" frameborder="0" height="340" width="100%" loading="lazy">
 
 </iframe>
-{% endraw %}
 
 
 ### 準備圖片

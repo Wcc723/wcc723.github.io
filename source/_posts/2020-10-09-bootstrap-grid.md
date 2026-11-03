@@ -11,27 +11,7 @@ photo: https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/im
 published: true
 ---
 
-{% raw %}
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-4-grid@3.4.0/css/grid.min.css">
-<style>
-.box {
-  height: 100px;
-  background-color: #69F0AE;
-}
-.form-row>.col, .form-row>[class*=col-] {
-  padding-right: 5px;
-  padding-left: 5px;
-}
-.form-row {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin-right: -5px;
-  margin-left: -5px;
-}
-</style>
-{% endraw %}
 
 Bootstrap 令人稱羨的其中之一就是它的格線系統，不僅易用且符合網頁視覺設計概念。雖說如此，在[官網文件](https://getbootstrap.com/docs/4.5/layout/grid/) 落落長的文件還是令許多開發者不知如何快速上手，本篇介紹幾個核心小撇步，讓開發者僅需要記得一個口訣，就能輕鬆上手 Bootstrap 的格線系統。
 
@@ -53,11 +33,10 @@ Bootstrap 設計上都是遵循 OOCSS 的概念（關於 OOCSS 可[參考](https
 }
 ```
 
-{% raw %}
 <div class="demo">
   <div class="box"></div>
 </div>
-{% endraw %}
+
 > 等等會一直看到這個方塊，此**方塊所代表的就是內容**。
 
 
@@ -91,7 +70,7 @@ Bootstrap 使用 `.row` 作為水平列的定義，它會包覆著不同數量�
 ```
 
 正確的套用情況下，不管有無使用格線，左右邊線的對齊都是一致的。
-{% raw %}
+
 <div class="demo">
   <div class="box">沒有套用任何格線的 .box</div>
   <hr>
@@ -100,7 +79,6 @@ Bootstrap 使用 `.row` 作為水平列的定義，它會包覆著不同數量�
     <div class="col-6"><div class="box">格線內的 .box </div></div>
   </div>
 </div> 
-{% endraw %}
 
 ###### 錯誤範例
 
@@ -112,7 +90,7 @@ Bootstrap 使用 `.row` 作為水平列的定義，它會包覆著不同數量�
 ```
 
 不正確的套用情況下，`.row` 內的元素無法與外部元素左右邊線對齊。
-{% raw %}
+
 <div class="demo">
   <div class="box">沒有套用任何格線的 .box</div>
   <hr>
@@ -120,7 +98,6 @@ Bootstrap 使用 `.row` 作為水平列的定義，它會包覆著不同數量�
     <div class="box" style="width: 100%">其它的元素會超出格線範圍，並且預設必須加入寬度才能顯示</div>
   </div>
 </div> 
-{% endraw %}
 
 #### .col 的外層必定為 .row
 
@@ -136,7 +113,7 @@ Bootstrap 使用 `.row` 作為水平列的定義，它會包覆著不同數量�
 ```
 
 無論多少數量的 `.col-*`，只要外層具有 `.row` 就會正確對齊。
-{% raw %}
+
 <div class="demo">
   <div class="box">沒有套用任何格線的 .box</div>
   <hr>
@@ -144,7 +121,6 @@ Bootstrap 使用 `.row` 作為水平列的定義，它會包覆著不同數量�
     <div class="col-12"><div class="box">格線內的 .box </div></div>
   </div>
 </div> 
-{% endraw %}
 
 ###### 錯誤範例：
 
@@ -155,13 +131,12 @@ Bootstrap 使用 `.row` 作為水平列的定義，它會包覆著不同數量�
 ```
 
 獨立出現的 `.col-*` 無法與其它元素正確對齊，它會加入額外的 `padding`。
-{% raw %}
+
 <div class="demo">
   <div class="box">沒有套用任何格線的 .box</div>
   <hr>
   <div class="col-12"><div class="box">格線內的 .box </div></div>
 </div> 
-{% endraw %}
 
 
 ## 相同口訣、延伸運用
@@ -194,7 +169,6 @@ Bootstrap 4 另外有推出 `.form-row` 的選項（[參考文件](https://getbo
 
 正確的套用下，左右邊線也是可以完全對齊的。
 
-{% raw %}
 <div class="demo">
   <div class="row">
     <div class="col-6"><div class="box"></div></div>
@@ -206,7 +180,6 @@ Bootstrap 4 另外有推出 `.form-row` 的選項（[參考文件](https://getbo
     <div class="col-6"><div class="box"></div></div>
   </div>
 </div>
-{% endraw %}
 
 ##### 巢狀
 
@@ -226,7 +199,6 @@ Bootstrap 4 另外有推出 `.form-row` 的選項（[參考文件](https://getbo
 
 就算使用多層分割，間距、對齊都會是一致的，如果使用另一個類似概念的單層結構也是能夠完全對齊。
 
-{% raw %}
 <div class="demo">
   <div class="row">
     <div class="col-6"><div class="box">使用巢狀</div></div>
@@ -248,7 +220,6 @@ Bootstrap 4 另外有推出 `.form-row` 的選項（[參考文件](https://getbo
     </div>
   </div>
 </div>
-{% endraw %}
 
 ## 最後，請別忘了 container
 
@@ -288,3 +259,23 @@ Bootstrap 4 另外有推出 `.form-row` 的選項（[參考文件](https://getbo
 Bootstrap 格線是很棒的格線工具，無論是在切版或網頁設計得格線教學，我都很推薦使用 Bootstrap 的概念，它是目前可行性優及泛用性廣的格線系統，但也為了達到此概念，其中加入了許多 “HACK” 讓這個格線能夠具有許多特性（如：負值的 margin 是為了多列呈現，在 Bootstrap 2 時的格線就不能換列）。
 
 也因為這些 “HACK” 我們在使用 Bootstrap 格線需要更加小心，如果沒有正確對齊會造成畫面無法對齊，開發者也會花上許多時間為了修正這些沒對齊的項目，並產生許多不必要的樣式。
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+:deep(.box) {
+  height: 100px;
+  background-color: #69F0AE;
+}
+:deep(.form-row>.col), :deep(.form-row>[class*=col-]) {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+:deep(.form-row) {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -5px;
+  margin-left: -5px;
+}
+</style>

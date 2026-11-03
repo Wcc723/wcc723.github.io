@@ -28,16 +28,10 @@ published: true
 
 以下範例來說就直接選取了 `a` 標籤，並將它改為了紅色。
 
-{% raw %}
 <div class="demo demo-1">
   <a href="https://www.apple.com/" target="_blank">這是 Apple 官網連結</a>
 </div>
-<style>
-.demo-1 a {
-  background-color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/" target="_blank">這是 Apple 官網連結</a>
 ```
@@ -64,17 +58,11 @@ a {
 
 以下建立了 `.a-link` 的類別，並套用在 a 標籤上使其背景色調整為黃色。
 
-{% raw %}
 <div class="demo demo-1">
   <a href="https://www.apple.com/"
   class="a-link" target="_blank">這是 Apple 官網連結</a>
 </div>
-<style>
-.demo-1 .a-link {
-  background-color: yellow;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   class="a-link" target="_blank">這是 Apple 官網連結</a>
@@ -95,20 +83,11 @@ a {
 
 其中的 **“可重複套用”** 是許多新手會忽略的用法，使用方式就是定義兩個樣式並套用在同一個元素上。
 
-{% raw %}
 <div class="demo demo-1">
   <a href="https://www.apple.com/"
   class="a-link a-link-color" target="_blank">這是 Apple 官網連結</a>
 </div>
-<style>
-.demo-1 .a-link {
-  background-color: yellow;
-}
-.demo-1  .a-link-color {
-  color: black;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   class="a-link a-link-color" target="_blank">這是 Apple 官網連結</a>
@@ -145,20 +124,11 @@ Id 選取在應用上特性：
 
 以下範例就選取了 id `a-link`，要特別注意一個 id 在頁面中原則上只會有一個。
 
-{% raw %}
 <div class="demo">
   <a href="https://www.apple.com/"
   id="a-link" class="b-link" target="_blank">這是 Apple 官網連結</a>
 </div>
-<style>
-#a-link {
-  background-color: pink;
-}
-.b-link {
-  background: blue;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   id="a-link" class="b-link" target="_blank">這是 Apple 官網連結</a>
@@ -204,7 +174,6 @@ Id 選取在應用上特性：
 
 只要元素中包含特定「屬性」皆可選取，以下範例來說其中一個 `a` 標籤缺少了 href 屬性，因此將不會被套用紅色的樣式，所以此方法也可以過濾出標籤中是否有正確包含特定屬性。
 
-{% raw %}
 <div class="demo demo-2">
   <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a> <br>
@@ -212,12 +181,7 @@ Id 選取在應用上特性：
     target="_blank">Google</a> <br>
   <a target="_blank">連結缺少 href</a>
 </div>
-<style>
-.demo-2 [href] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a>
@@ -237,19 +201,13 @@ Id 選取在應用上特性：
 
 接下來就是屬性選取慢慢進入進階的流程，當屬性內的值完全符合時，可以選取此元素。
 
-{% raw %}
 <div class="demo demo-3">
   <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a> <br>
   <a href="https://www.google.com/"
     target="_blank">Google</a> <br>
 </div>
-<style>
-.demo-3 [href="https://www.apple.com/"] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a>
@@ -268,19 +226,13 @@ Id 選取在應用上特性：
 
 ”包含特定字串“ 開始的運用變化就越來越多，以此範例就可以判斷標籤內的連結目標為何。
 
-{% raw %}
 <div class="demo demo-4">
   <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a> <br>
   <a href="https://www.google.com/"
     target="_blank">Google</a> <br>
 </div>
-<style>
-.demo-4 [href*="google"] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a>
@@ -297,19 +249,13 @@ Id 選取在應用上特性：
 
 除了判斷部分字詞以外，還可以從前到後、前後至前的選取形式。
 
-{% raw %}
 <div class="demo demo-5">
   <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a> <br>
   <a href="http://www.google.com/"
     target="_blank">Google</a> <br>
 </div>
-<style>
-.demo-5 [href^="https"] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a>
@@ -328,19 +274,13 @@ Id 選取在應用上特性：
 
 此範例為結尾值的選取形式，就可以進行從後至前的選取。
 
-{% raw %}
 <div class="demo demo-6">
   <a href="https://www.apple.com/tw/"
   target="_blank">Apple 官網連結</a> <br>
   <a href="http://www.google.com/"
     target="_blank">Google</a> <br>
 </div>
-<style>
-.demo-6 [href$="/tw/"] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/tw/"
   target="_blank">Apple 官網連結</a>
@@ -361,22 +301,10 @@ Id 選取在應用上特性：
 
 屬性選取在實戰中應用非常廣，最常見的案例之一就是判斷 input 的 type 類行為和，透過此方式避免選取到錯誤類型的 input（如果把 input 樣式套用在 checkbox 上就會顯得非常不適切）。
 
-{% raw %}
 <div class="demo demo-7">
   <input type="checkbox">
 </div>
-<style>
-.demo-7 input[type="checkbox"] {
-  appearance: none;
-  border: 1px solid red;
-  width: 1rem;
-  height: 1rem;
-}
-.demo-7 input[type="checkbox"]:checked {
-  background: red;
-}
-</style>
-{% endraw %}
+
 ```
 <input type="checkbox">
 ```
@@ -413,7 +341,6 @@ input[type="checkbox"]:checked {
 
 這些題目，你可以完成幾題呢？
 
-{% raw %}
 <div class="demo">
   <div class="mb-3">
     <label for="selectorPractice">輸入你認為正確的 Selector</label>
@@ -460,38 +387,58 @@ input[type="checkbox"]:checked {
     </div>
   </div>
 </div>
-<style>
-  .outline {
+<CssSelectorDemo />
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+:deep(.demo-1 a) {
+  background-color: red;
+}
+:deep(.demo-1 .a-link) {
+  background-color: yellow;
+}
+:deep(.demo-1 .a-link) {
+  background-color: yellow;
+}
+:deep(.demo-1  .a-link-color) {
+  color: black;
+}
+:deep(#a-link) {
+  background-color: pink;
+}
+:deep(.b-link) {
+  background: blue;
+}
+:deep(.demo-2 [href]) {
+  color: red;
+}
+:deep(.demo-3 [href="https://www.apple.com/"]) {
+  color: red;
+}
+:deep(.demo-4 [href*="google"]) {
+  color: red;
+}
+:deep(.demo-5 [href^="https"]) {
+  color: red;
+}
+:deep(.demo-6 [href$="/tw/"]) {
+  color: red;
+}
+:deep(.demo-7 input[type="checkbox"]) {
+  appearance: none;
+  border: 1px solid red;
+  width: 1rem;
+  height: 1rem;
+}
+:deep(.demo-7 input[type="checkbox"]:checked) {
+  background: red;
+}
+  :deep(.outline) {
     outline: solid red 2px;
   }
-  .card-bg {
+  :deep(.card-bg) {
     height: 200px;
     background-position: center center;
     background-size: cover;
   }
 </style>
-<script>
-  const selectorPractice = document.querySelector('#selectorPractice');
-  const preBlock = document.querySelector('#preBlock');
-  let preDom = [];
-  selectorPractice.addEventListener('keyup', selectorFn);
-  function selectorFn() {
-    const value = selectorPractice.value;
-    const selectDom = document.querySelectorAll(`#demo ${value}`);
-    preBlock.textContent = `document.querySelectorAll(${value});`;
-    if (selectDom) {
-      if (preDom) {
-        console.log(preDom);
-        preDom.forEach(element => {
-          element.classList.remove('outline');
-        })
-      }
-      selectDom.forEach(element => {
-        element.classList.add('outline');
-      });
-      preDom = selectDom;
-    }
-  }
-  selectorFn();
-</script>
-{% endraw %}

@@ -23,11 +23,9 @@ published: true
 
 ## 效果展示
 
-{% raw %}
 <div class="demo">
 	<span class="icon-phone" style="font-size: 3em"></span>
 </div>
-{% endraw %}
 
 	<span class="icon-phone" style="font-size: 3em"></span>
 
@@ -99,11 +97,9 @@ published: true
 
 ### 範例
 
-{% raw %}
 <div class="demo">
 	<span class="icon-feather" style="font-size: 3em"></span>
 </div>
-{% endraw %}
 
 ## ie7
 

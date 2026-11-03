@@ -81,7 +81,7 @@ var nullVariable = null; // 猜猜這個是什麼型別
 
 ### Number
 
-數字型別是一種 [浮點數]([雙精度浮點數 - 維基百科，自由的百科全書](https://zh.wikipedia.org/wiki/%E9%9B%99%E7%B2%BE%E5%BA%A6%E6%B5%AE%E9%BB%9E%E6%95%B8))，這種數值在極大值時會有精準度的問題，範例：
+數字型別是一種 [浮點數](https://zh.wikipedia.org/wiki/%E9%9B%99%E7%B2%BE%E5%BA%A6%E6%B5%AE%E9%BB%9E%E6%95%B8)，這種數值在極大值時會有精準度的問題，範例：
 
 ```
 10000000000000000 - 1;  // 一樣是 10000000000000000

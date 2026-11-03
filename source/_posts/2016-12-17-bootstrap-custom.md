@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 17 - Bootstrap 自定義樣式超簡單
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/17_bootstrap_header.jpg

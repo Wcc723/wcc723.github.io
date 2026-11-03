@@ -21,13 +21,11 @@ Jquery有個很簡單的方式可以做到重複點擊判斷，這邊就不再�
 
 來源：[http://jsfiddle.net/visualidiot/WJEBr/](http://jsfiddle.net/visualidiot/WJEBr/)
 
-{% raw %}
 <div class="d0818 demo">
 	<a href="#" class="d0818click">點我</a>
 	<span class="old"></span>
 	<span class="new"></span>
 </div>
-{% endraw %}
 
 ```javascript
 $('.d0818click').click(function() {

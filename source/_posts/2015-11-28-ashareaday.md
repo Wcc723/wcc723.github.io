@@ -30,6 +30,6 @@ SPA(sigle page application)這種名詞也是現在才知道，當時只是想�
 
 現在，有人詢問我怎麼開始學習前端時，總是會想到這一個站，所以現在轉移到 Github Page 上，如果有人詢問時，可以再繼續分享這樣的過去。
 
-<iframe height="600" width="100%" src="http://wcc723.github.io/ashareaday/"> </iframe>
+<iframe height="600" width="100%" src="https://wcc723.github.io/ashareaday/" loading="lazy"> </iframe>
 
 網站連結：[http://wcc723.github.io/ashareaday/](http://wcc723.github.io/ashareaday/)

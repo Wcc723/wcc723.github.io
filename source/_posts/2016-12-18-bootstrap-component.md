@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 18 - Bootstrap 元件分類概觀 (content, container)
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/18_bootstrap_header.jpg

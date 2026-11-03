@@ -24,14 +24,11 @@ published: true
 
 這次活動的簡報是用 Keynote 做的，有些部分是講解上為了呈現動態效果，所以在 slideshare 無法呈現的很完整。
 
-{% raw %}
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/kOQtobRIzX2xBr" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/chihchengwang3/sass-node-sass" title="建立 Sass 環境，透過 Node sass" target="blank">建立 Sass 環境，透過 Node sass</a> </strong> from <strong><a target="blank" href="//www.slideshare.net/chihchengwang3">Chih-cheng Wang</a></strong> </div>
-{% endraw %}
+<iframe src="https://www.slideshare.net/slideshow/embed_code/key/kOQtobRIzX2xBr" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen loading="lazy"> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/chihchengwang3/sass-node-sass" title="建立 Sass 環境，透過 Node sass" target="blank">建立 Sass 環境，透過 Node sass</a> </strong> from <strong><a target="blank" href="//www.slideshare.net/chihchengwang3">Chih-cheng Wang</a></strong> </div>
 
 
 也有準備了 Hackpad 提供共筆，很感謝前端朋友們熱情協助寫共筆文件。
 
-<script src="https://csscollege.hackpad.com/5k6BVvbKYTf.js"></script><noscript><div>View <a href="https://csscollege.hackpad.com/5k6BVvbKYTf">CSS 讀書會 2 (Sass 編譯環境)</a> on Hackpad.</div></noscript>
 
 ## 其他問題
 

@@ -18,8 +18,6 @@ jQuery和純javascript而言相對容易非常多，而網頁設計師如果需�
 [iframe 連結](http://codepen.io/Wcc723/full/GmucH)
 
 
-{% raw %}
-<iframe src="http://codepen.io/Wcc723/full/GmucH" frameborder="0" height="600" width="100%">
+<iframe src="https://codepen.io/Wcc723/full/GmucH" frameborder="0" height="600" width="100%" loading="lazy">
 
 </iframe>
-{% endraw %}

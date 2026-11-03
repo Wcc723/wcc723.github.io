@@ -76,12 +76,11 @@ Bracket Pair Colorizer 協助大中小括號（`{}`、`[]`、`()`）一一的獨
 
 Prettier 可透過熱鍵的方式，針對整個檔案進行重新排版，讓你不需要自己手動一一對齊，甚至有機會找到你失散已久的結尾喔 :D
 
-{% raw %}
 <video width="100%" controls autoplay loop>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FOct-14-2020%2014-03-44.mp4?alt=media&token=2c43fd30-39d4-4aa1-ae2d-7b99e6264664" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-{% endraw %}
+
 > 不過有時候，你必須把它關掉自己手動對齊（眼神死）
 
 套件網址：https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode
@@ -131,12 +130,10 @@ VSCode 為國際知名大廠微軟大大所開發，因此包含各種語系檔�
 
 如果是在具有後端的環境下，如 PHP、.NET 開發都是包含 Web Server，但有時僅是製作小工具，如果還要開啟後端環境就太麻煩了，`Live Server` 這個套件能夠讓你一鍵秒開 Web Server，不需再花費許多時間在環境上。
 
-{% raw %}
 <video width="100%" controls autoplay loop>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FOct-14-2020%2014-36-18.mp4?alt=media&token=8a61fc4c-8da9-411c-82e5-807e56b04cf9" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-{% endraw %}
 
 > Live Server 開服務像免費一樣，常常會不知道開到第幾 `port` 惹
 套件網址：https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer
@@ -148,12 +145,10 @@ Your browser does not support the video tag.
 
 透過 `dash` 只需要一鍵就能將程式碼中的片段說明文件調出，支援各種網路上可搜尋到的大部分文檔，讓你不需透過瀏覽器就能掌握各式語言，付費版本更是 0 等待。還在花時間查文檔嗎？`dash` 絕對讓你在查詢文件上潮到爆～
 
-{% raw %}
 <video width="100%" controls autoplay loop>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FOct-14-2020%2014-57-37.mp4?alt=media&token=2bbcc6c3-b257-4524-981b-c6b5d8f14908" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-{% endraw %}
 
 > 說實在，都拼不出來了怎麼使用此功能.
 

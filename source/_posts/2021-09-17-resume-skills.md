@@ -164,10 +164,9 @@ published: true
 
 本篇是專注於介紹履歷中的「技能描述」，關於履歷還有哪些內容是有興趣的呢？歡迎在底下留言，以後會找機會一一補充相關內容喔～
 
-{% raw %}
-<style>
-  .article img {
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+  :deep(.article img) {
     border: orange 1px solid;
   }
-</style> 
-{% endraw %}
+</style>

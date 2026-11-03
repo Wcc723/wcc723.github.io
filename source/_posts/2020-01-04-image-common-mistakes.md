@@ -38,13 +38,11 @@ published: true
 
 錯誤範例及解決辦法：
 
-{% raw %}
 <p class="codepen" data-height="300" data-theme-id="default" data-default-tab="html,result" data-user="Wcc723" data-slug-hash="zYxPmXR" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="圖片變形範例">
   <span>See the Pen <a href="https://codepen.io/Wcc723/pen/zYxPmXR">
   圖片變形範例</a> by Wcc723 (<a href="https://codepen.io/Wcc723">@Wcc723</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
-{% endraw %}
 
 範例連結：[https://codepen.io/Wcc723/pen/zYxPmXR](https://codepen.io/Wcc723/pen/zYxPmXR)
 
@@ -59,13 +57,11 @@ published: true
 
 ![](https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202001%2F%E8%B2%BC%E4%B8%8A%E7%9A%84%E5%BD%B1%E5%83%8F_2020_1_4_%E4%B8%8B%E5%8D%882_36.png?alt=media&token=7177b375-5d19-48b4-9856-3da331159295)
 
-{% raw %}
 <p class="codepen" data-height="265" data-theme-id="default" data-default-tab="html,result" data-user="Wcc723" data-slug-hash="NWPwOQr" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="圖片檔案過大">
   <span>See the Pen <a href="https://codepen.io/Wcc723/pen/NWPwOQr">
   圖片檔案過大</a> by Wcc723 (<a href="https://codepen.io/Wcc723">@Wcc723</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
-{% endraw %}
 
 範例連結：[https://codepen.io/Wcc723/pen/NWPwOQr](https://codepen.io/Wcc723/pen/NWPwOQr)
 
@@ -100,13 +96,11 @@ SVG 是屬於 XML 格式的標記語言，原始碼的內容都是在標記所�
 
 SVG 圖片範例
 
-{% raw %}
 <svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g id="svg-outline" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <path d="M49.564,64.336 C45.878,64.336 41.926,62.968 39,60.27 L42.838,55.596 C44.852,57.306 47.474,58.484 49.716,58.484 C52.224,58.484 53.402,57.534 53.402,56.014 C53.402,54.38 51.844,53.848 49.412,52.822 L45.802,51.302 C42.838,50.124 40.064,47.654 40.064,43.55 C40.064,38.8 44.32,35 50.324,35 C53.592,35 57.05,36.254 59.52,38.724 L56.138,42.98 C54.276,41.574 52.528,40.814 50.324,40.814 C48.234,40.814 46.942,41.65 46.942,43.17 C46.942,44.728 48.728,45.336 51.236,46.324 L54.77,47.73 C58.266,49.136 60.356,51.492 60.356,55.482 C60.356,60.194 56.404,64.336 49.564,64.336 Z" id="S" fill="#000000" fill-rule="nonzero"></path>
   </g>
 </svg>
-{% endraw %}
 
 當 SVG 內容插入點陣圖片後，圖片就不是只存在著座標位置，還會將點陣圖片以 base64 的格式插入。記得，這個圖片會造成許多額外的檔案大小，並且無法如同 SVG 一樣自由縮放，如同喪失使用 SVG 的用意。
 
@@ -121,13 +115,11 @@ SVG 圖片範例
 
 SVG 圖片範例，此範例文字在高解析的裝置下會變得模糊。
 
-{% raw %}
 <svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
   <g id="svg-bmp" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
       <image id="Bitmap" x="39" y="35" width="22" height="30" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABYAAAAeCAYAAAAo5+5WAAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAFqADAAQAAAABAAAAHgAAAAAsUXibAAACGklEQVRIDaWVzUtWQRSHX0sjXfiBCJGErowgqFaJK10kbkUoaKFILmon2V/Qulq0yFoErowWhatEDcGFbcOVIm0EP7ACsbJU+np+rw7OnTtz517eA887M2d+58x978ycW1UKWxNTt6AHrkEL1MFn2IQP8A4W4BCipuBH8AP+5WAdzT04A0G7yMwq5EnoapaJU3zK2vBodTegyHiX+E4381yFSfUAK1BvJ+6NJP3L/Bbo734JaL/hvwQJm2AU+sva9Y6EulRqZzwGG6A4LdwPKVvCE0rcmlKfOM7S1Ql6eOJK9rYZ+hL/xt+YlOYbnTqWaTd9dhrnE6j2TebxvUHke2Lj09kehto8yWzNTQYmSVa7g+4pXLaDY/1FBFlJ3TnViiGoiSW+gkDv2k0QG38i5jZUQdCuMqOLEEvmm39FXOYm69y+BB01X4Is3xQxUVOleg55y6dZ0HsDfas14ByFvOVUt7iQaXP6YAHM04Xa5kKZLfEd+n8yFrhuacvdNn4T9dQVWOP39ENPPGBqhfR6lzPwEbogZvsZgq9mTgtMg/0EbxmnPjPHATdoDxy9idUr0he9bKqpZsJt15h7DY/hBcSu/jyasg3y6yarZNx9lPbollWSyI59ZpKadoTOT7BFRfuTxOvDkLJ2POOg3S6SVBXxLkTtPIoHMAu/wLfIIX7V4/vgPfeZNZQgfYUvwDnQNf0OOqOqwXsQtP8amWC6AXj6RwAAAABJRU5ErkJggg=="></image>
   </g>
 </svg>
-{% endraw %}
 
 在 SVG 加入文字內容時，需要確保文字輸出是有被轉外框，如果沒有轉外框程式碼會看似如下簡短，但如果用戶沒有此字體，該文字就無法如預期顯示。
 
@@ -144,7 +136,6 @@ SVG 圖片範例，此範例文字在高解析的裝置下會變得模糊。
 
 SVG 圖片範例，此範例的文字可以圈選，且與上方的字體不一定相同（視系統內是否有該字體）。
 
-{% raw %}
 <svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="svg-font" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-family="NotoSansCJKtc-Black, Noto Sans CJK TC" font-size="38" font-weight="700">
         <text id="S" fill="#000000">
@@ -152,7 +143,6 @@ SVG 圖片範例，此範例的文字可以圈選，且與上方的字體不一�
         </text>
     </g>
 </svg>
-{% endraw %}
 
 SVG 的錯誤與設計師有很大的關係，因此前端開發者在使用 SVG 稿件時也有義務一同檢視該檔案是否正確。而設計師也需要對此更加注意，避免輸出錯誤的圖檔給予開發者使用。
 
@@ -169,14 +159,12 @@ SVG 的錯誤與設計師有很大的關係，因此前端開發者在使用 SVG
 
 在以下的範例中有一個長形的沙發，也由於沙發長度過長，因此在行動版中左右方會有裁切。
 
-{% raw %}
 <p class="codepen" data-height="400" data-theme-id="default" data-default-tab="css,result" data-user="Wcc723" data-slug-hash="mdyqzgZ" style="height: 265px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; border: 2px solid; margin: 1em 0; padding: 1em;" data-pen-title="圖片裁切掉主體">
   <span>See the Pen <a href="https://codepen.io/Wcc723/pen/mdyqzgZ">
   圖片裁切掉主體</a> by Wcc723 (<a href="https://codepen.io/Wcc723">@Wcc723</a>)
   on <a href="https://codepen.io">CodePen</a>.</span>
 </p>
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
-{% endraw %}
+<Embed src="https://static.codepen.io/assets/embed/ei.js" />
 
 因此在選擇圖片時，可以先思考行動版、桌面版所呈現的**比例**，兩者比例中的重疊空間稱為「重疊安全區域」，如果主體可以完整置入此區域內就可以避免被裁切。
 
@@ -189,11 +177,9 @@ SVG 的錯誤與設計師有很大的關係，因此前端開發者在使用 SVG
 新手錯誤率：⭐⭐
 令人感受的粗心度：👎👎👎👎👎
 
-{% raw %}
 <img src="/xxx/xx" alt="這張圖片無法顯示">
-{% endraw %}
 
 如果圖片是屬於裝飾類型，並且由開發者所置入，就必須要多加注意。開發者也通常會反覆檢視自己輸出的頁面是很正常的，因此這類型錯誤通常不會是在開發階段時遺漏，很多是在轉換環境時沒有完整檢查出錯。大多原因在於相對路徑與絕對路徑的掌握度不足。
 
 
-<script async src="https://static.codepen.io/assets/embed/ei.js"></script>
+<Embed src="https://static.codepen.io/assets/embed/ei.js" />

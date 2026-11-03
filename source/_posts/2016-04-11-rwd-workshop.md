@@ -36,7 +36,7 @@ KKtix 報名網址：[http://gonsakon-7655f2.kktix.cc/events/a5791ac5-f60f9c-cc9
 
 ## 活動簡報
 
-<iframe src="//www.slideshare.net/slideshow/embed_code/key/KTlQ2KPytuAdv1" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/chihchengwang3/ss-60067482" title="響應式網頁實作坊" target="blank">響應式網頁實作坊</a> </strong> from <strong><a href="//www.slideshare.net/chihchengwang3" target="blank">Chih-cheng Wang</a></strong> </div>
+<iframe src="https://www.slideshare.net/slideshow/embed_code/key/KTlQ2KPytuAdv1" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen loading="lazy"> </iframe> <div style="margin-bottom:5px"> <strong> <a href="//www.slideshare.net/chihchengwang3/ss-60067482" title="響應式網頁實作坊" target="blank">響應式網頁實作坊</a> </strong> from <strong><a href="//www.slideshare.net/chihchengwang3" target="blank">Chih-cheng Wang</a></strong> </div>
 
 簡報連結：[http://www.slideshare.net/chihchengwang3/ss-60067482](http://www.slideshare.net/chihchengwang3/ss-60067482)
 

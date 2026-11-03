@@ -33,12 +33,10 @@ CSS及HTML已經學了有段時間，但還有許多不清楚的點都會在(偶
 
 簡單來說，uff-8的小圖形也能作為class name。
 
-{% raw %}
 <div class="demo d0524">
 	<div class="anti-☢">核能 ☢ !?</div>
 	<div class="☯-power"> ☯ 神秘力量</div>
 </div>
-{% endraw %}
 
 HTML code
 
@@ -60,11 +58,9 @@ Sass code
 
 利用`inline-block`的特性來做到垂直置中，優點是支援before就可以，缺點是要置中的元素，也必須設定為`inline-block`。
 
-{% raw %}
 <div class="demo d0524 vertical">
 	<div>這段字想要垂直至中</div>
 </div>
-{% endraw %}
 
 Sass code
 

@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 16 - 將 Bootstrap 導入自動化流程
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/16_bootstrap_header.jpg

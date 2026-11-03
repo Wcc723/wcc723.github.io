@@ -85,7 +85,7 @@ Node.js 在開發上總是會使用許多不同的套件，這些套件可以讓
 
 ##### 6. 想蹭免費雲端儲存空間？Firebase Storage 省錢用超爽
 影片連結：https://youtu.be/H4GmskFhSJQ
-補充文件：[連結](http://localhost:4000/development/2023/09/29/fireabase-storage/)
+補充文件：[連結](/development/2023/09/29/fireabase-storage/)
 
 ---
 
@@ -166,10 +166,8 @@ Node.js 在開發上總是會使用許多不同的套件，這些套件可以讓
 - 求職前的履歷健檢
 - 課程期間的無限次發問
 
-{% raw %}
 <a href="https://hex.school/fPKVU" target="_blank">
   <img src="https://img.casper.tw/images/2023/only-vue-banner-w2.jpg" width="60%" style="border: 1px solid gray" alt=""> 
 </a>
-{% endraw %}
 
 2023 額外新增分組專題，詳情可見 [Vue 作品實戰班](https://hex.school/fPKVU) 課程說明頁面。

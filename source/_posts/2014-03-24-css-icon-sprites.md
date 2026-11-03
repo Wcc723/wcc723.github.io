@@ -78,29 +78,23 @@ Hlb的簡報有介紹，本篇也是參考此簡報做的。
 
 #### 一般 Sprites
 
-{% raw %}
 <div class="demo d0311">
-
 	<div class="icons1-mobile">  </div>
 	<div class="icons1-phone"> </div>
 	<div class="icons1-nice"> </div>
 	<div class="icons1-setting"> </div>
 
 </div>
-{% endraw %}
 
 #### Retina Sprites
 
-{% raw %}
 <div class="demo d0311">
-
 	<div class="icons-mobile">  </div>
 	<div class="icons-phone"> </div>
 	<div class="icons-nice"> </div>
 	<div class="icons-setting"> </div>
 
 </div>
-{% endraw %}
 
 ### 比較圖
 

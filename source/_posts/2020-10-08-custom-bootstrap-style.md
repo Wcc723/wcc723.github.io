@@ -96,7 +96,7 @@ npm install bootstrap
 @import "../node_modules/bootstrap/scss/bootstrap"; // Bootstrap 完整原始碼
 ```
 
-這段資源的載入順序是來自於官方文件，文件中是依序載入官方的資源後另外進行客製，本範例則是將**_variables.scss 的變數進行替換**。
+這段資源的載入順序是來自於官方文件，文件中是依序載入官方的資源後另外進行客製，本範例則是將<strong>_variables.scss 的變數進行替換</strong>。
 ![](https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FB75C6DFC-C67C-4672-9335-64DFDBD6AF16.png?alt=media&token=cd43d60a-6a8f-4542-b0e1-7b5b87664fea)
 
 > 相對於逐一客製，直接調整 `_variables.scss` 是更為便捷的

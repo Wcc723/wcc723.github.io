@@ -53,13 +53,11 @@ Compass 功能那麼多，說實在要取代全部還真的不容易，另一方
 
 如果說不使用 Compass， `node-sass` 將是一個不錯的選擇，我也嘗試使用 `node-sass` 編譯與 `ruby-sass` 編譯做比較，是相當有感的...(有些較具規模的compass專案會到達10秒以上的編譯時間)。
 
-{% raw %}
 <video width="986" height="400" controls autoplay>
   <source src="https://img.casper.tw/images/2015/12/node-sass-vs-ruby-sass.webm" type="video/webm">
   <source src="https://img.casper.tw/images/2015/12/node-sass-vs-ruby-sass.m4v" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-{% endraw %}
 
 *影片中同時編譯 Bootstrap sass 版本，左邊是 `node-sass`，右方是 `ruby-sass`，都有包含sourcemaps，由於是同一個資料夾，所以是同時開始編譯。*
 

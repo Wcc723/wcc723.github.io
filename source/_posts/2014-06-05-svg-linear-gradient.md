@@ -46,10 +46,8 @@ SVG漸層，找到的做法是在HTML先定義漸層；而CSS的漸層是直接�
 		<circle  cx="82" cy="82" r="79" style="fill: url(#myGradient)"/>
 	</svg>
 
-{% raw %}
 <div class="demo ">
 	<svg width="164" height="164">
-
 		<defs>
 			<linearGradient id="myGradient"
                     x1="0%" y1="0%"
@@ -60,12 +58,9 @@ SVG漸層，找到的做法是在HTML先定義漸層；而CSS的漸層是直接�
 		      <stop offset="100%" stop-color="#fff" stop-opacity="1"/>
 		    </linearGradient>
 		</defs>
-
 		<circle  cx="82" cy="82" r="79" style="fill: url(#myGradient)"/>
-
 	</svg>
 </div>
-{% endraw %}
 
 #### CSS
 
@@ -91,12 +86,10 @@ html的部份就不需要寫什麼了，就由CSS去定義。
 	</svg>
 
 
-{% raw %}
 <div class="demo d0605">
 	<svg width="164" height="164">
 		<circle class="circle" cx="82" cy="82" r="79" />
 	</svg>
 </div>
-{% endraw %}
 
 最後這也是我在實驗的效果，結合SVG`stroke`的粗細變化，以及`stroke`的漸層。

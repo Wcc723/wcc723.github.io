@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 22 - 實戰心法 - 經常使用，但卻容易被忽視的 CSS
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/22_heart_header.jpg

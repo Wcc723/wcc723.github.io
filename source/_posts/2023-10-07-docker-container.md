@@ -11,11 +11,10 @@ photo: https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/im
 published: true
 ---
 
-{% raw %} 
 <div class="ratio ratio-16x9">
-<iframe width="100%" src="https://www.youtube.com/embed/RsY5cCc9RGM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="100%" src="https://www.youtube.com/embed/RsY5cCc9RGM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
 </div>
-{% endraw %}
+
 這是鐵人賽相關文章，影片會在活動開始後發布
 
 本篇文章會介紹如何「如何在 Ubuntu 環境上加入 Docker 環境，並且部署 Node.js 專案」，建議對於指令操作有基本的經驗，以下是本文包含的流程：

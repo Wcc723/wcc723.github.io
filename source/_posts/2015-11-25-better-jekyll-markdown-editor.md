@@ -47,7 +47,7 @@ Atom 的使用相當直覺，只要直接選擇 `Perferences(cmd + ,)`就可以�
 
 在開始使用前，在介紹一下快捷鍵的設置。在 command(`cmd + shift + p`) 執行 `Markdown Writer: Create Default keymaps`。
 
-![](https://img.casper.tw/images/2015/11/screen_shot 2015-11-25_0.png)
+![](<https://img.casper.tw/images/2015/11/screen_shot 2015-11-25_0.png>)
 
 再把下面的 `code` 找地方貼進去，這樣就可以運行 `Markdown Writer` 所提供的快捷鍵。
 

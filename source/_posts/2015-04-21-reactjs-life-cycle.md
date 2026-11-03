@@ -67,4 +67,4 @@ document.getElementById('app')
 );
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/xaxicigedi/2/embed?html,js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="https://jsbin.com/xaxicigedi/2/embed?html,js,output">JS Bin</a><Embed src="https://static.jsbin.com/js/embed.js" />

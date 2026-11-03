@@ -30,10 +30,9 @@ font-family分為兩個部分，一個是指定字體"family-name"，另一種�
 
 **注意：並非所有瀏覽器及系統的預設泛用字是相同的**
 
-{% raw %}
 <div class="demo d0101">
 	<table style="width: 100%">
-    <tr>
+    <tbody><tr>
       <th>泛用字集</th>
       <th>中文</th>
       <th>English</th>
@@ -63,9 +62,8 @@ font-family分為兩個部分，一個是指定字體"family-name"，另一種�
       <td>貳零壹肆 <br>新年快樂</td>
       <td>2014 Happy New Year.</td>
     </tr>
-  </table>
+  </tbody></table>
 </div>
-{% endraw %}
 
 一般來說定義font-family時，會將泛用字放在最後方，參考如下。
 
@@ -79,10 +77,9 @@ font-family分為兩個部分，一個是指定字體"family-name"，另一種�
 
 但有少部分的字體，設定時需要注意它的英文及中文名稱，個瀏覽器的解讀不同，如IE就能夠接受"Microsoft JhengHei"，而Chrome則不行。
 
-{% raw %}
 <div class="demo d0101">
   <table style="width: 100%">
-    <tr>
+    <tbody><tr>
       <th>字體</th>
       <th>中文</th>
       <th>English</th>
@@ -97,9 +94,8 @@ font-family分為兩個部分，一個是指定字體"family-name"，另一種�
       <td>貳零壹肆 <br>新年快樂</td>
       <td>2014 Happy New Year.</td>
     </tr>
-  </table>
+  </tbody></table>
 </div>
-{% endraw %}
 
 另外在優先順序上，放在前方的字體會先被套用，如果不能才會套用次要的字體，也可以利用這方式來套用不同的字體在中英文上。
 
@@ -107,10 +103,9 @@ font-family分為兩個部分，一個是指定字體"family-name"，另一種�
 
 	font-family: "Segoe UI","微軟正黑體",sans-serif
 
-{% raw %}
 <div class="demo d0101">
   <table style="width: 100%">
-    <tr>
+    <tbody><tr>
       <th>字體</th>
       <th>中文</th>
       <th>English</th>
@@ -120,15 +115,13 @@ font-family分為兩個部分，一個是指定字體"family-name"，另一種�
       <td>貳零壹肆 <br>新年快樂</td>
       <td>2014 Happy New Year.</td>
     </tr>
-
     <tr class="Segoe-UI2">
       <td>"Segoe UI","微軟正黑體"</td>
       <td>貳零壹肆 <br>新年快樂</td>
       <td>2014 Happy New Year.</td>
     </tr>
-  </table>
+  </tbody></table>
 </div>
-{% endraw %}
 
 ****************
 
@@ -141,19 +134,17 @@ font-family在每個網頁的設定都不相同，在Mac OS以及Windows上所�
 
 	font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif
 
-{% raw %}
 <div class="demo d0101">
   <table style="width: 100%">
-    <tr>
+    <tbody><tr>
       <th colspan="2">Apple</th>
     </tr>
     <tr class="Apple">
       <td>貳零壹肆 新年快樂</td>
       <td>2014 Happy New Year.</td>
     </tr>
-  </table>
+  </tbody></table>
 </div>
-{% endraw %}
 
 ### 微軟台灣
 
@@ -161,19 +152,17 @@ font-family在每個網頁的設定都不相同，在Mac OS以及Windows上所�
 
 	font-family: "微軟正黑體", "Microsoft JhengHei", "Segoe UI Semibold", "Segoe UI", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif
 
-{% raw %}
 <div class="demo d0101">
   <table style="width: 100%">
-    <tr>
+    <tbody><tr>
       <th colspan="2">Microsoft</th>
     </tr>
     <tr class="Microsoft">
       <td>貳零壹肆 新年快樂</td>
       <td>2014 Happy New Year.</td>
     </tr>
-  </table>
+  </tbody></table>
 </div>
-{% endraw %}
 
 ### Yahoo (US)
 
@@ -181,19 +170,17 @@ font-family在每個網頁的設定都不相同，在Mac OS以及Windows上所�
 
 	font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif
 
-{% raw %}
 <div class="demo d0101">
   <table style="width: 100%">
-    <tr>
+    <tbody><tr>
       <th colspan="2">Yahoo</th>
     </tr>
     <tr class="Yahoo">
       <td>貳零壹肆 新年快樂</td>
       <td>2014 Happy New Year.</td>
     </tr>
-  </table>
+  </tbody></table>
 </div>
-{% endraw %}
 
 ### Google
 
@@ -203,16 +190,14 @@ google的設定值最泛用....。
 
 	font-family: arial,sans-serif
 
-{% raw %}
 <div class="demo d0101">
   <table style="width: 100%">
-    <tr>
+    <tbody><tr>
       <th colspan="2">Google</th>
     </tr>
     <tr class="Google">
       <td>貳零壹肆 新年快樂</td>
       <td>2014 Happy New Year.</td>
     </tr>
-  </table>
+  </tbody></table>
 </div>
-{% endraw %}

@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 24 - 實戰心法 - 自幹 Grid System
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/24_heart_header.jpg

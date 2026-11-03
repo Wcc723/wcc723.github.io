@@ -86,15 +86,12 @@ Compass sprites有提供許多的設定值，相關的參數如以上網址，�
 	<div class="icons1-nice"> </div>
 	<div class="icons1-setting"> </div>
 
-{% raw %}
 <div class="demo d0311">
-
 	<div class="icons1-mobile">  </div>
 	<div class="icons1-phone"> </div>
 	<div class="icons1-nice"> </div>
 	<div class="icons1-setting"> </div>
 
 </div>
-{% endraw %}
 
 這樣就可以省去一大半用css算sprites位置的時間囉～。

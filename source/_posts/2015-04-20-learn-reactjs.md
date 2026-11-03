@@ -76,7 +76,7 @@ React.render(<TheFirst />, // 輸入剛剛宣告的元件名稱
 );
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/zumovufane/1/embed?html,js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="https://jsbin.com/zumovufane/1/embed?html,js,output">JS Bin</a><Embed src="https://static.jsbin.com/js/embed.js" />
 
 *點擊run with js 預覽*
 
@@ -102,7 +102,7 @@ React.render(<TheFirst />, // 輸入剛剛宣告的元件名稱
 );
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/rilufojegu/1/embed?html,js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="https://jsbin.com/rilufojegu/1/embed?html,js,output">JS Bin</a><Embed src="https://static.jsbin.com/js/embed.js" />
 
 ## 事件控制
 
@@ -133,7 +133,7 @@ React.render(<TheFirst />, // 輸入剛剛宣告的元件名稱
 );
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/letafaqahi/1/embed?html,js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="https://jsbin.com/letafaqahi/1/embed?html,js,output">JS Bin</a><Embed src="https://static.jsbin.com/js/embed.js" />
 
 ## 從父層抓取資料傳回值
 
@@ -150,7 +150,7 @@ React.render(<HelloUser skill="魔貫光殺砲"/>, // 父層屬性
 document.getElementById('app'));
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/rilufojegu/3/embed?html,js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="https://jsbin.com/rilufojegu/3/embed?html,js,output">JS Bin</a><Embed src="https://static.jsbin.com/js/embed.js" />
 
 
 ## 巢狀元件
@@ -198,7 +198,7 @@ React.render(<HelloDragonBall />,
 document.getElementById('app'));
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/rilufojegu/6/embed?html,js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="https://jsbin.com/rilufojegu/6/embed?html,js,output">JS Bin</a><Embed src="https://static.jsbin.com/js/embed.js" />
 
 ## 經典模組，新增清單
 
@@ -282,6 +282,6 @@ React.render(<HelloDragonBall />,
 document.getElementById('app'));
 ```
 
-<a class="jsbin-embed" href="http://jsbin.com/rilufojegu/8/embed?html,js,output">JS Bin</a><script src="http://static.jsbin.com/js/embed.js"></script>
+<a class="jsbin-embed" href="https://jsbin.com/rilufojegu/8/embed?html,js,output">JS Bin</a><Embed src="https://static.jsbin.com/js/embed.js" />
 
 累了，React的tag有沒有什麼工具...，純手打好累。

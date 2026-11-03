@@ -11,11 +11,10 @@ photo: https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/im
 published: true
 ---
 
-{% raw %} 
 <div class="ratio ratio-16x9">
-<iframe width="100%" src="https://www.youtube.com/embed/H4GmskFhSJQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="100%" src="https://www.youtube.com/embed/H4GmskFhSJQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
 </div>
-{% endraw %}
+
 這是鐵人賽相關文章，影片會在活動開始後發布
 
 我很喜歡使用 Firebase Storage，相對於 AWS S3 來說，Firebase Storage 的設定、管理更加容易，而且還有提供每日免費額度，相當適合小型專案使用，而我的 Blog 圖片來說，絕大部分也都是上傳到 Firebase Storage。

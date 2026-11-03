@@ -174,12 +174,10 @@ const puppeteer = require('puppeteer-core');
 在上述的範例中 `href*="https://wcc723.github.io"]` 是選取網址中**包含** `https://wcc723.github.io` 的連結，
 
 
-{% raw %}
 <video width="320" height="240" controls autoplay>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2F202003%2FMar-01-2020%2013-26-52.mp4?alt=media&token=d586a299-a888-4084-932b-cfbf569bfb5a" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-{% endraw %}
 
 > 運行中的畫面
 

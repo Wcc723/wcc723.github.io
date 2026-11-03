@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 30 - CSS 鐵人賽的結束與接下來的研究
 category: css
 tagline:
-tags: [css, Sass ]
+tags: [css, sass ]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/30_ending_header.jpg
@@ -25,9 +25,8 @@ published: true
 - 右側欄分為三列
 - 右上欄有獨立的 scroll
 
-{% raw %}
-<a class="jsbin-embed" href="http://jsbin.com/beniledina/1/embed?output">JS Bin on jsbin.com</a><script src="http://static.jsbin.com/js/embed.min.js?3.40.2"></script>
-{% endraw %}
+<a class="jsbin-embed" href="https://jsbin.com/beniledina/1/embed?output">
+JS Bin on jsbin.com</a><Embed src="https://static.jsbin.com/js/embed.min.js?3.40.2" />
 
 ```css
 body, html {

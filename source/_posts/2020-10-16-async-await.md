@@ -154,7 +154,7 @@ promiseFn(1)
 ![](https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FEAE3E326-8008-421B-BB94-9B36DE206EAF.png?alt=media&token=f449a84c-1919-4de9-86a9-045a768bb48d)
 > 相對來說 Promise 的成功、失敗流程的混合撰寫，容易在維護上難以除錯。
 
-**重要：**當使用 `async/await` 時，因為該片段程式碼已轉為同步的形式，如果遇到錯誤沒有進行例外處理，則會造成後續的程式碼無法繼續運行。
+<strong>重要：</strong>當使用 `async/await` 時，因為該片段程式碼已轉為同步的形式，如果遇到錯誤沒有進行例外處理，則會造成後續的程式碼無法繼續運行。
 
 ```js
 async function getData2() {
@@ -248,11 +248,9 @@ async function seriesFn() {
 seriesFn();
 ```
 
-{% raw %}
 <video width="100%" muted autoplay controls>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FOct-06-2020%2015-11-29.mp4?alt=media&token=b1d6125e-adbc-4f99-9eca-cebdbb30f7bd" type="video/mp4">
 </video>
-{% endraw %}
 
 > 執行順序影片
 
@@ -277,11 +275,10 @@ parallelFn();
 ```
 `map` 會在執行時就取得結果，此時 `data` 內的 promise 是尚未 `resolve` 的狀態，因此需要在後續使用 `for...of` 等待回應的內容。
 
-{% raw %}
 <video width="100%" muted autoplay controls>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FOct-06-2020%2015-48-26.mp4?alt=media&token=792294e5-5f8e-4363-912d-5560964d505e" type="video/mp4">
 </video>
-{% endraw %}
+
 > 時間順序上分別為 500, 3000, 1500, 1000，其中第二個所花的時間較長，因此在第二個執行完成後，剩下以後也會統一列出。
 
 ## async/await 搭配 fetch

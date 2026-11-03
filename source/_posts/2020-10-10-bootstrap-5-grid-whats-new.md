@@ -11,18 +11,7 @@ photo: https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/im
 published: true
 ---
 
-{% raw %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha2/css/bootstrap-grid.min.css">
-<style>
-.box {
-  height: 100px;
-  background-color: #69F0AE;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-</style>
-{% endraw %}
 
 Bootstrap 4 中我經常會建議學員不要自行調整水平間距，因為在不熟悉的情況下這可能會造成許多額外的問題，常見的情況有：
 
@@ -57,11 +46,10 @@ Bootstrap 5 加入新的 Gutters 概念，是使用 `g*-*` 來設定格線的間
 }
 ```
 
-{% raw %}
 <div class="demo">
   <div class="box"></div>
 </div>
-{% endraw %}
+
 > 等等會一直看到這個方塊，此**方塊所代表的就是內容**。
 
 過去，會定義 `.row > .col-*` 的格線結構，Bootstrap 5 中只需要將上述的 `g*-*` 加入到 `.row` 即可，以下範例中就加入了水平(`x`)的間距，分別是 5 以及 1 兩種不同尺寸。
@@ -88,7 +76,6 @@ Bootstrap 5 加入新的 Gutters 概念，是使用 `g*-*` 來設定格線的間
 
 使用 `gx-*` 所加入的間距不會像過去一樣影響格線的運作，並且能夠與不使用格線的物件左右對齊。
 
-{% raw %}
 <div class="demo">
 <div class="box">沒有使用格線的物件</div>
 <hr>
@@ -110,7 +97,6 @@ Bootstrap 5 加入新的 Gutters 概念，是使用 `g*-*` 來設定格線的間
   </div>
 </div>
 </div> 
-{% endraw %}
 
 ### Bootstrap 5 如何實作這個概念？
 
@@ -139,18 +125,6 @@ Bootstrap 5 在此巧妙了使用變數的技巧，透過變數的階層控制�
 
 這種方式內層就不需要一一定義，僅需要調整外層的變數值即可套用至內層，當需要調整的樣式較多時就可使用此技巧。
 
-{% raw %}
-<style>
-.casper {
-  --bg-color: orange;
-}
-.ming {
-  --bg-color: skyblue;
-}
-.custom-box .box {
-  background-color: var(--bg-color);
-}
-</style>
 <div class="demo">
   <div class="box">原始的 .box</div>
   <hr>
@@ -161,7 +135,6 @@ Bootstrap 5 在此巧妙了使用變數的技巧，透過變數的階層控制�
     <div class="box">外層為 .ming 的 box</div>
   </div>
 </div>
-{% endraw %}
 
 ## Gutters 更多的延伸運用
 
@@ -189,7 +162,6 @@ Bootstrap 5 在此巧妙了使用變數的技巧，透過變數的階層控制�
 
 透過此方式就不需要為內層的元素一一加上 `.my-2`（用過 Bootstrap 4 相信都能理解這是一件麻煩的事情）。
 
-{% raw %}
 <div class="demo">
   <div class="row gy-2">
     <div class="col-6">
@@ -206,7 +178,6 @@ Bootstrap 5 在此巧妙了使用變數的技巧，透過變數的階層控制�
     </div>
   </div>
 </div>
-{% endraw %}
 
 或者，可以直接為垂直、水平加入相同的間距。
 
@@ -221,7 +192,6 @@ Bootstrap 5 在此巧妙了使用變數的技巧，透過變數的階層控制�
 
 在過去要達到垂直、水平間距相同是相對麻煩的事情，但現在版本就簡單許多囉。
 
-{% raw %}
 <div class="demo">
   <div class="row g-2">
     <div class="col-6">
@@ -238,7 +208,6 @@ Bootstrap 5 在此巧妙了使用變數的技巧，透過變數的階層控制�
     </div>
   </div> 
 </div>
-{% endraw %}
 
 如果只需要格線但不要間距，就可套用 `g-0` 移除所有的間距。
 
@@ -251,19 +220,12 @@ Bootstrap 5 在此巧妙了使用變數的技巧，透過變數的階層控制�
 
 在此版本也移除了 `no-gutters`，直接使用 `g-0` 這個神奇的 className 進行取代。
 
-{% raw %}
-<style>
-.border .box {
-  border: 1px solid #4bc187;
-}
-</style>
 <div class="demo">
   <div class="row g-0 border">
     <div class="col-sm-6 col-md-8"><div class="box">1</div></div>
     <div class="col-6 col-md-4"><div class="box">2</div></div>
   </div>
 </div>
-{% endraw %}
 
 
 ### 如果想要更多的間距怎麼辦
@@ -283,3 +245,26 @@ $gutters: (
 ```
 
 如果對於客製化 Bootstrap 有興趣，也可以參考[本篇文章](https://wcc723.github.io/development/2020/10/08/custom-bootstrap-style/)。
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+:deep(.box) {
+  height: 100px;
+  background-color: #69F0AE;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+:deep(.casper) {
+  --bg-color: orange;
+}
+:deep(.ming) {
+  --bg-color: skyblue;
+}
+:deep(.custom-box .box) {
+  background-color: var(--bg-color);
+}
+:deep(.border .box) {
+  border: 1px solid #4bc187;
+}
+</style>

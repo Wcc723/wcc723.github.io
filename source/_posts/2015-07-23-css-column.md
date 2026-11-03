@@ -18,7 +18,6 @@ CSS column對於文字排版有很大的幫助，就類似Adobe indesign在文�
 
 可以直接透過以下範例，操作互動來了解CSS column各個屬性的操作結果，試試看以後再來了解各屬性的用途。
 
-{% raw %}
 <div class="d0722 demo">
   <div style="display: flex">
     <div style="flex: 1">
@@ -144,7 +143,6 @@ CSS column對於文字排版有很大的幫助，就類似Adobe indesign在文�
       <p>今天中南部降雨範圍廣，北部及澎湖、金門和馬祖則有局部短暫雨，午後各地有機會出現雷陣雨，且易伴隨瞬間大雨、雷擊、強陣風和溪水暴漲；沿海地區易有9至10級強陣風，西南部及恆春半島沿海易有長浪發生，提醒民眾留意。</p>
     </div>
 </div>
-{% endraw %}
 
 ## 屬性說明
 
@@ -187,51 +185,4 @@ CSS column對於文字排版有很大的幫助，就類似Adobe indesign在文�
 
 指定元素的前後是否強制換欄。*可以放在整個段落的前後*
 
-{% raw %}
-<script>
-$(document).ready(function(){
-  var column = 'column-count';
-  var columnProps = ['column-count',
-                     'column-width',
-                     'column-gap',
-                     'column-rule-width',
-                     'column-rule-style',
-                     'column-rule-color',
-
-                    ];
-  var h3columnProps = 'column-span';
-  var columnBreakInside = 'column-break-inside';
-  var breakColumnProps = [
-                     '',
-                     'column-break-before',
-                     'column-break-after'
-                    ];
-  $.each(columnProps, function(i, prop){
-    console.log($('#'+prop));
-    $('#'+prop).on('change', function(){
-      console.log('a');
-      var val = $(this).val();
-      $('.column-demo').css(prop, val);
-    });
-  });
-  $.each(breakColumnProps, function(i, prop){
-    console.log($('#'+prop));
-    $('#'+prop).on('change', function(){
-      console.log('a');
-      var val = $(this).val();
-      $('.columnBreak').css(prop, val);
-    });
-  });
-  $('#'+columnBreakInside).on('change', function(){
-    console.log('a');
-    var val = $(this).val();
-    $('.column-demo p').css(columnBreakInside, val);
-  });
-  $('#'+h3columnProps).on('change', function(){
-    console.log('a');
-    var val = $(this).val();
-    $('.column-demo h3').css(h3columnProps, val);
-  });
-});
-</script>
-{% endraw %}
+<CssColumnDemo />

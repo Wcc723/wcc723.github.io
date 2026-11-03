@@ -31,13 +31,11 @@ SVG有很多有趣的效果，尤其是stroke，它有許多不同的屬性參�
 		stroke-dasharray: 60;
 	}
 
-{% raw %}
 <div class="demo d0615">
 	<svg height="30" width="100%" >
 		<line x1="0"  y1="20" x2="500"   y2="20"/>
 	</svg>
 </div>
-{% endraw %}
 
 如上顯示，線段被拆成`60px`的`line`在空`60px`的`space`。
 
@@ -56,13 +54,11 @@ SVG有很多有趣的效果，尤其是stroke，它有許多不同的屬性參�
 		stroke-dashoffset: 40;
 	}
 
-{% raw %}
 <div class="demo d0615">
 	<svg height="30" width="100%" >
 		<line class="l2" x1="0"  y1="20" x2="500"   y2="20"/>
 	</svg>
 </div>
-{% endraw %}
 
 如果兩者數值相等，線段的起始點就會呈現空白，這邊先設較小的值(200)。
 
@@ -71,13 +67,11 @@ SVG有很多有趣的效果，尤其是stroke，它有許多不同的屬性參�
 		stroke-dashoffset: 200;
 	}
 
-{% raw %}
 <div class="demo d0615">
 	<svg height="30" width="100%" >
 		<line class="l3" x1="0"  y1="20" x2="500"   y2="20"/>
 	</svg>
 </div>
-{% endraw %}
 
 如果數值相當的大，就能夠將整個線段隱藏。
 
@@ -107,7 +101,6 @@ SVG有很多有趣的效果，尤其是stroke，它有許多不同的屬性參�
 			}
 		}
 
-{% raw %}
 <div class="demo d0615">
 	<svg class="stroke ani" height="400" width="100%" >
 	<g>
@@ -130,7 +123,6 @@ SVG有很多有趣的效果，尤其是stroke，它有許多不同的屬性參�
 	</g>
 	</svg>
 </div>
-{% endraw %}
 
 
 	<svg class="stroke ani" height="400" width="100%" >

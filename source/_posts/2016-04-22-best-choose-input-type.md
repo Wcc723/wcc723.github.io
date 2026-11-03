@@ -25,7 +25,7 @@ published: true
 電話號碼僅是其中一項，電子郵件、密碼、日期、時間都有相對應的類型，在不同格式下所顯示的螢幕小鍵盤都不同，大家不妨透過以下範例試試看在您的手機會提供什麼樣的小鍵盤。
 
 <p data-height="500" data-theme-id="0" data-slug-hash="MyBbex" data-default-tab="html,result" data-user="Wcc723" data-embed-version="2" class="codepen">See the Pen <a href="Input" target="blank" rel="noreferrer">http://codepen.io/Wcc723/pen/MyBbex/">Input (http://codepen.io/Wcc723/pen/MyBbex/) type</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="//assets.codepen.io/assets/embed/ei.js"></script>
+<Embed src="https://assets.codepen.io/assets/embed/ei.js" />
 
 *如果你是在行動版上觀看此原始碼，可以點選 `result` 來顯示範例*
 

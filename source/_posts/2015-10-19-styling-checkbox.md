@@ -85,6 +85,6 @@ CSS的重點一個部分是`checkbox`的選取器，透過 `:checked ~` 來控�
 
 記得點一下看效果唷。
 
-<iframe src="http://wcc723.github.io/WorkShop-gh-pages/stylingCheckbox/" frameborder="0" height="120px" width="100%"> </iframe>
+<iframe src="https://wcc723.github.io/WorkShop-gh-pages/stylingCheckbox/" frameborder="0" height="120px" width="100%" loading="lazy"> </iframe>
 
 [範例網址](http://wcc723.github.io/WorkShop-gh-pages/stylingCheckbox/)

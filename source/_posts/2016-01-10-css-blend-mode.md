@@ -30,7 +30,7 @@ published: true
 
 ## 範例
 
-<iframe src="http://wcc723.github.io/WorkShop-gh-pages/cssBlendMode/" width="100%" height="620" border="0"> </iframe>
+<iframe src="https://wcc723.github.io/WorkShop-gh-pages/cssBlendMode/" width="100%" height="620" border="0" loading="lazy"> </iframe>
 
 範例連結網址：[http://wcc723.github.io/WorkShop-gh-pages/cssBlendMode/](http://wcc723.github.io/WorkShop-gh-pages/cssBlendMode/)
 

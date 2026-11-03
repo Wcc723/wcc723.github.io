@@ -72,12 +72,10 @@ console.table(people);
 
 除此之外，表格上方的標頭還可以點選作為排序使用，如果拿到一個 JSON 想比對其中的值，還要轉貼到 Excel 或是 `sort()` 語法安排，不如直接改用 `table()` 進行比較吧。
 
-{% raw %}
 <video width="100%" controls autoplay loop>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FSep-14-2021%2014-34-38.mp4?alt=media&token=93bc70be-ace0-4e4b-9e47-bb7f44d58845" type="video/mp4">
 Your browser does not support the video tag.
 </video>
-{% endraw %}
 
 ## console.group()：群組化大量的 log 資訊
 
@@ -205,12 +203,10 @@ superMagicLibrary('字串');
 
 此語法亦可在 Console 介面中直接輸入，會直接清除當下的所有資訊內容。
 
-{% raw %}
 <video width="100%" controls autoplay loop>
   <source src="https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FSep-14-2021%2015-19-27.mp4?alt=media&token=596fce33-240c-4064-87ac-0ddcf468c723 " type="video/mp4">
 Your browser does not support the video tag.
 </video>
-{% endraw %}
 
 不過請慎用此方法，如果隨意插入 `console.clear()` 在不同的檔案中，不知情的夥伴一定會在開發中卡很久，可能發生的情境有...：
 - 奇怪，我寫的 Code 怎麼都沒顯示在 Console

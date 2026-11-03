@@ -23,7 +23,7 @@ published: true
 
 這效果我是做在codepen 上，裡面的封面圖片是直接連結台灣博客來書店，所以如果掉圖就是...被下架了。
 
-<iframe src="http://codepen.io/Wcc723/full/DjGBi" frameborder="0" width="100%" height="600px"></iframe>
+<iframe src="https://codepen.io/Wcc723/full/DjGBi" frameborder="0" width="100%" height="600px" loading="lazy"></iframe>
 
 [codepen連結](http://codepen.io/Wcc723/full/DjGBi)
 

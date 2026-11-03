@@ -19,10 +19,8 @@ CSS gird 在最近 Chrome 更新已經慢慢開始支援 (就是還很久才會�
 
 CSS Grid 可以做什麼呢？這邊提供一個簡單範例給大家看看，相同的 Grid System 如果使用 float 需要多很多層，還要注意清除浮動等等。在 CSS grid 的加持下每個 class 都僅需少量的屬性就可做到相同的效果。
 
-{% raw %}
 <p data-height="265" data-theme-id="0" data-slug-hash="gmedKW" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="CSS Grid Layout" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/gmedKW/">CSS Grid Layout</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-{% endraw %}
+<Embed src="https://production-assets.codepen.io/assets/embed/ei.js" />
 
 
 ---

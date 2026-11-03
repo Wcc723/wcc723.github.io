@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 21 - Bootstrap 透過 Sass 新增自定義元件
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/21_bootstrap_header.jpg

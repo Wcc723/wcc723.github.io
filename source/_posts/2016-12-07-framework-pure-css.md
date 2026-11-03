@@ -43,10 +43,9 @@ https://unpkg.com/purecss@0.6.0/build/buttons.css
 這是非壓縮版的原始碼，全部的按鈕行數不到 100 行(不壓縮，且包含註解)，在這些行數下也包含了不同的狀態。
 
 一般載入的狀態：
-{% raw %}
+
 <p data-height="300" data-theme-id="0" data-slug-hash="MbGmdm" data-default-tab="html,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Pure CSS Button" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/MbGmdm/">Pure CSS Button</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-{% endraw %}
+<Embed src="https://production-assets.codepen.io/assets/embed/ei.js" />
 
 範例中，我們在載入 CSS 後，只要參考文件就能夠將樣式呈現出來，所以就以上的兩個按鈕，只要各一行 HTML 就能解決了。
 
@@ -60,10 +59,8 @@ Pure CSS 自訂樣式 - Pure CSS 巧妙地使用 `透明度` 在處理元件的�
 1. 複寫原有的樣式
 2. 設定元件色彩，透過原有的透明度樣式來呈現按鈕狀態
 
-{% raw %}
 <p data-height="300" data-theme-id="0" data-slug-hash="LbmLGM" data-default-tab="html,result" data-user="Wcc723" data-embed-version="2" data-pen-title="Pure CSS Button" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/LbmLGM/">Pure CSS Button</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-{% endraw %}
+<Embed src="https://production-assets.codepen.io/assets/embed/ei.js" />
 
 Pure CSS 修改樣式、新增樣式的範例如上，每個樣式都僅需一個 CSS selector 就能搞定，而且不需要編譯。
 

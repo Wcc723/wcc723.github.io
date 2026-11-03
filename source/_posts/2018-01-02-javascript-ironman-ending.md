@@ -79,7 +79,7 @@ Crodova 與 Electron 類似，但亦有些不同。Electron 是基於 Chromium �
 
 Webduino 是台灣所開發的應用服務，可以使用 Web JavaScript 呼叫雲服務的 API 控制 Arduino，也因為可以使用 Web 技術，無論是什麼框架都沒有限制(jQuery, polymer 都可使用)。先前有參加過他們活動，當第一次透過自己寫的程式碼控制燈泡亮起來是真的非常有成就感。
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/kemcCLAseTg" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/kemcCLAseTg" frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen loading="lazy"></iframe>
 
 > 他們先前釋出的影片，透過 Web 操作氣球，就如同遙控飛機一樣。
 

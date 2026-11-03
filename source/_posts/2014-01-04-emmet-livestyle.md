@@ -10,7 +10,7 @@ thumbnail:
 
 livereload for Windows因為是測試版，經常性的有問題，有時候還會不能使用，這時候可以試試Emmet LiveStyle，他主要會針對CSS的部分直接reload。來看看官方的影片吧。
 
-<iframe src="//www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480" > </iframe>
+<iframe src="https://www.youtube.com/embed/iQLhGbkupS4" frameborder="0" width="100%" height="480" loading="lazy"> </iframe>
 
 <!-- more -->
 

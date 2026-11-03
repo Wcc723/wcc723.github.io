@@ -40,9 +40,9 @@ published: true
 * 設計規範 - 具有邏輯的設計
 * 資源分享
 
-{% raw %}
-<video loop="" controls autoplay muted="" tabindex="0"><source data-src="https://material.io/design/assets/1QJydhs6x1YdaiMy5KgClaESCOMjsJss_/elevation-hero.mp4" src="https://material.io/design/assets/1QJydhs6x1YdaiMy5KgClaESCOMjsJss_/elevation-hero.mp4" type="video/mp4"></video>
-{% endraw %}
+<video loop="" controls autoplay muted="" tabindex="0">
+<source data-src="https://material.io/design/assets/1QJydhs6x1YdaiMy5KgClaESCOMjsJss_/elevation-hero.mp4" src="https://material.io/design/assets/1QJydhs6x1YdaiMy5KgClaESCOMjsJss_/elevation-hero.mp4" type="video/mp4"></video>
+
 > 相關文章中也會帶入許多設計實例、原始碼、各種規範文件的說明。影片來自於 Material Design 官網，[完整說明](https://material.io/design/environment/elevation.html#elevation-in-material-design)
 
 以上主題，你們著重瞭解哪部分呢？歡迎留言讓我知道，我盡可能在一些章節準備更多內容喔。

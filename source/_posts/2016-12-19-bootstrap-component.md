@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 19 - Bootstrap 一次看懂元件的使用組合
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/19_bootstrap_header.jpg

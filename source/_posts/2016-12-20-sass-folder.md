@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 20 - Sass 資料夾結構
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: 

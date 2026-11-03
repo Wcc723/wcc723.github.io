@@ -39,9 +39,8 @@ published: true
 
 而填滿的按鈕，則是按鈕底色充滿色彩，如：黑色、藍色、紅色等等，文字的色彩通常是白色，當然也有可能會出現其他淺色系的文字。
 
-{% raw %}
 <table>
-	<tr>
+	<tbody><tr>
 		<th></th>
 		<th>外框線的按鈕</th>
 		<th>填滿的按鈕</th>
@@ -71,8 +70,7 @@ published: true
 		<td>低</td>
 		<td>高</td>
 	</tr>
-</table>
-{% endraw %}
+</tbody></table>
 
 接下來，在從一些範例來說明以上的內容。
 

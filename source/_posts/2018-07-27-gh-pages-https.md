@@ -38,7 +38,6 @@ Chrome 在 68 版以後會將沒有 https 連線的網站標上不安全的字�
 
 設定完 ip，可以將網頁中的所有資源 (css、js、圖片、外部連結等等) 全部替換成 https，並且重新上傳至 Github Pages 中，至於相關的替換可以參考 Github 的[說明文件](https://help.github.com/articles/securing-your-github-pages-site-with-https/) (如下所示)：
 
-{% raw %}
 <table>
 <thead>
 <tr>
@@ -65,7 +64,6 @@ Chrome 在 68 版以後會將沒有 https 連線的網站標上不安全的字�
 </tr>
 </tbody>
 </table>
-{% endraw %}
 
 接下再到 Github 專案中如下圖的設定頁面。
 

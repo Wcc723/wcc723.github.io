@@ -12,16 +12,11 @@ published: false
 ---
 
 ## 元素選取器
-{% raw %}
+
 <div class="demo">
   <a href="https://www.apple.com/" target="_blank">這是 Apple 官網連結</a>
 </div>
-<style>
-.demo-1 a {
-  background-color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/" target="_blank">這是 Apple 官網連結</a>
 ```
@@ -34,17 +29,11 @@ a {
 ## 類別選取 .class
 
 
-{% raw %}
 <div class="demo">
   <a href="https://www.apple.com/"
   class="a-link" target="_blank">這是 Apple 官網連結</a>
 </div>
-<style>
-.a-link {
-  background-color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   class="a-link" target="_blank">這是 Apple 官網連結</a>
@@ -57,20 +46,11 @@ a {
 
 ## id 選取
 
-{% raw %}
 <div class="demo">
   <a href="https://www.apple.com/"
   id="a-link" class="b-link" target="_blank">這是 Apple 官網連結</a>
 </div>
-<style>
-#a-link {
-  background-color: yellow;
-}
-.b-link {
-  background: blue;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   id="a-link" class="b-link" target="_blank">這是 Apple 官網連結</a>
@@ -88,7 +68,6 @@ a {
 
 ### 包含特定 “屬性” 的選取
 
-{% raw %}
 <div class="demo demo-2">
   <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a> <br>
@@ -96,12 +75,7 @@ a {
     target="_blank">Google 官網連結</a> <br>
   <a target="_blank">連結缺少 href</a>
 </div>
-<style>
-.demo-2 [href] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a>
@@ -117,19 +91,13 @@ a {
 
 ### “屬性及值” 完全符合
 
-{% raw %}
 <div class="demo demo-3">
   <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a> <br>
   <a href="https://www.google.com/"
     target="_blank">Google 官網連結</a> <br>
 </div>
-<style>
-.demo-3 [href="https://www.apple.com/"] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a>
@@ -144,19 +112,13 @@ a {
 
 ### 屬性值 ”包含特定字串“
 
-{% raw %}
 <div class="demo demo-4">
   <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a> <br>
   <a href="https://www.google.com/"
     target="_blank">Google 官網連結</a> <br>
 </div>
-<style>
-.demo-4 [href*="google"] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a>
@@ -171,19 +133,13 @@ a {
 
 ### “開頭值” 包含特定文字
 
-{% raw %}
 <div class="demo demo-5">
   <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a> <br>
   <a href="http://www.google.com/"
     target="_blank">Google 官網連結</a> <br>
 </div>
-<style>
-.demo-5 [href^="https"] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/"
   target="_blank">Apple 官網連結</a>
@@ -198,19 +154,13 @@ a {
 
 ### ”結尾值“ 包含特定文字
 
-{% raw %}
 <div class="demo demo-6">
   <a href="https://www.apple.com/tw/"
   target="_blank">Apple 官網連結</a> <br>
   <a href="http://www.google.com/"
     target="_blank">Google 官網連結</a> <br>
 </div>
-<style>
-.demo-6 [href$="/tw/"] {
-  color: red;
-}
-</style>
-{% endraw %}
+
 ```
 <a href="https://www.apple.com/tw/"
   target="_blank">Apple 官網連結</a>
@@ -225,22 +175,10 @@ a {
 
 ### 屬性選取 實戰操作
 
-{% raw %}
 <div class="demo demo-7">
   <input type="checkbox">
 </div>
-<style>
-.demo-7 input[type="checkbox"] {
-  appearance: none;
-  border: 1px solid red;
-  width: 1rem;
-  height: 1rem;
-}
-.demo-7 input[type="checkbox"]:checked {
-  background: red;
-}
-</style>
-{% endraw %}
+
 ```
 <input type="checkbox">
 ```
@@ -296,3 +234,43 @@ input[type="checkbox"]:checked {
 - 同層 a ~ b
 - 直屬 a > b
 - 後代 a b
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+:deep(.demo-1 a) {
+  background-color: red;
+}
+:deep(.a-link) {
+  background-color: red;
+}
+:deep(#a-link) {
+  background-color: yellow;
+}
+:deep(.b-link) {
+  background: blue;
+}
+:deep(.demo-2 [href]) {
+  color: red;
+}
+:deep(.demo-3 [href="https://www.apple.com/"]) {
+  color: red;
+}
+:deep(.demo-4 [href*="google"]) {
+  color: red;
+}
+:deep(.demo-5 [href^="https"]) {
+  color: red;
+}
+:deep(.demo-6 [href$="/tw/"]) {
+  color: red;
+}
+:deep(.demo-7 input[type="checkbox"]) {
+  appearance: none;
+  border: 1px solid red;
+  width: 1rem;
+  height: 1rem;
+}
+:deep(.demo-7 input[type="checkbox"]:checked) {
+  background: red;
+}
+</style>

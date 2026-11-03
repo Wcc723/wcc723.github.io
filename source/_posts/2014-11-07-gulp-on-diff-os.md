@@ -168,8 +168,8 @@ gulp.task('default', ['coffee','compass','webserver','watch']);
 Gulp 系列文章
 
 - [Gulp 環境安裝
-](/gulp/2014/09/22/gulp-install)
-- [Gulp Task and Gulp Pipe](/gulp/2014/09/24/gulp-task)
-- [Gulp webserver 以及在不同系統上運作 Gulp](/gulp/2014/11/06/gulp-on-diff-os)
+](/gulp/2014/09/22/gulp-install/)
+- [Gulp Task and Gulp Pipe](/gulp/2014/09/24/gulp-task/)
+- [Gulp webserver 以及在不同系統上運作 Gulp](/gulp/2014/11/06/gulp-on-diff-os/)
 - [Gulp RUN ruby-compass
-](/gulp/2014/11/07/gulp-on-diff-os)
+](/gulp/2014/11/07/gulp-on-diff-os/)

@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 23 - 實戰心法 - 常見的垂直置中手法
 category: css
 tagline:
-tags: [css, Bootstrap]
+tags: [css, bootstrap]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/23_heart_header.jpg
@@ -37,29 +37,10 @@ published: true
 }
 ```
 
-{% raw %}
-<style>
-.naruto {
-    background-image: url(https://img.casper.tw/images/narutoR.png?1372854973);
-    background-color: orange;
-    background-repeat: no-repeat;
-    width: 107px;
-    height: 207px;
-    background-size: cover;
-    margin: 0 auto;
-}
-.box-wrap {
-    height: 350px;
-    border: 1px dashed red;
-}
-</style>
-{% endraw %}
 
-{% raw %}
 <div class="demo box-wrap">
 	<div class="naruto"></div>
 </div>
-{% endraw %}
 
 ### display table
 
@@ -69,17 +50,6 @@ published: true
 
 缺點：html 結構較多層、有 table 的特性
 
-{% raw %}
-<style>
-.d0116 .table {
-    display: table;
-    width: 100%;
-}
-.d0116 .table-cell {
-    display: table-cell;
-    vertical-align: middle;
-}
-</style>
 <div class="demo d0116">
 	<div class="table box-wrap">
 		<div class="table-cell">
@@ -87,7 +57,6 @@ published: true
 		</div>
 	</div>
 </div>
-{% endraw %}
 
 ```html
 <style>
@@ -119,21 +88,11 @@ published: true
 
 缺點：並非所有情境都適用
 
-{% raw %}
-<style>
-.vertical-center {
-  position: relative;
-  top: 50%;
-  margin: 0 auto;
-  transform: translateY(-50%);
-}
-</style>
 <div class="demo d0116">
 	<div class="box-wrap">
 		<div class="naruto vertical-center"></div>
 	</div>
 </div>
-{% endraw %}
 
 ```html
 <style>
@@ -159,20 +118,11 @@ Flex 是這幾年我經常使用的語法，這讓 CSS 排版的彈性大幅提�
 
 缺點：建議熟悉flex概念
 
-{% raw %}
-<style>
-.flex-center {
-  display: flex;
-	align-items: center;
-	justify-content: center;
-}
-</style>
 <div class="demo d0116">
 	<div class="box-wrap flex-center">
 		<div class="naruto"></div>
 	</div>
 </div>
-{% endraw %}
 
 ```html
 <style>
@@ -192,3 +142,39 @@ Flex 是這幾年我經常使用的語法，這讓 CSS 排版的彈性大幅提�
 ## 結語
 
 這三種是我在實戰上比較常使用的，其中最常用的是 translate ，因為只需要一個 class 就能套用，相容性略高於 flex，相當簡單易用。
+
+<style scoped>
+/* 本篇示範用的樣式：原本寫在內文的 <style>，合併到這裡並加上 scoped 與 :deep()，只作用在這篇文章 */
+:deep(.naruto) {
+    background-image: url(https://img.casper.tw/images/narutoR.png?1372854973);
+    background-color: orange;
+    background-repeat: no-repeat;
+    width: 107px;
+    height: 207px;
+    background-size: cover;
+    margin: 0 auto;
+}
+:deep(.box-wrap) {
+    height: 350px;
+    border: 1px dashed red;
+}
+:deep(.d0116 .table) {
+    display: table;
+    width: 100%;
+}
+:deep(.d0116 .table-cell) {
+    display: table-cell;
+    vertical-align: middle;
+}
+:deep(.vertical-center) {
+  position: relative;
+  top: 50%;
+  margin: 0 auto;
+  transform: translateY(-50%);
+}
+:deep(.flex-center) {
+  display: flex;
+	align-items: center;
+	justify-content: center;
+}
+</style>

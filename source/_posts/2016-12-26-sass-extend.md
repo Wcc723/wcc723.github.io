@@ -3,7 +3,7 @@ layout: post
 title: 鐵人賽 26 - 實戰心法 - 應避免的 Sass @extend
 category: css
 tagline:
-tags: [css, Sass ]
+tags: [css, sass ]
 cssdemo:
 jsdemo:
 thumbnail: https://img.casper.tw/images/2016_ironman/26_heart_header.jpg
@@ -49,10 +49,8 @@ Sass 的 `@extend` 可以將相同的樣式整理再一起，在其他語言來�
 }
 ```
 
-{% raw %}
 <p data-height="265" data-theme-id="0" data-slug-hash="qqGKYP" data-default-tab="css" data-user="Wcc723" data-embed-version="2" data-pen-title="clearfix sass extend" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/qqGKYP/">clearfix sass extend</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-{% endraw %}
+<Embed src="https://production-assets.codepen.io/assets/embed/ei.js" />
 
 這手法可以有效減少散落在各處的樣式，無論他在第幾行，都會被往前統一整理。
 
@@ -105,10 +103,8 @@ Sass 的 `@extend` 可以將相同的樣式整理再一起，在其他語言來�
 </div>
 ```
 
-{% raw %}
 <p data-height="265" data-theme-id="0" data-slug-hash="JbqZOJ" data-default-tab="css,result" data-user="Wcc723" data-embed-version="2" data-pen-title="應該避開的 @extend" class="codepen">See the Pen <a href="http://codepen.io/Wcc723/pen/JbqZOJ/">應該避開的 @extend</a> by Wcc723 (<a href="http://codepen.io/Wcc723">@Wcc723</a>) on <a href="http://codepen.io">CodePen</a>.</p>
-<script async src="https://production-assets.codepen.io/assets/embed/ei.js"></script>
-{% endraw %}
+<Embed src="https://production-assets.codepen.io/assets/embed/ei.js" />
 
 雖然說，這樣的在寫的時候看似非常簡潔，但其實所產出的 CSS 檔案非常之肥大，所有樣式結構的 Class 會被拉到前面在寫再一起，無形之中會重複大量的 Class name，如以下所產出的 `disabled` 的樣式。
 

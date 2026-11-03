@@ -3,7 +3,7 @@ layout: post
 title: 打造「台灣郵遞區號查詢」：一個純靜態 side project 的開發記
 category: development
 tagline:
-tags: [Vue, Cloudflare, side project]
+tags: [vue, Cloudflare, side project]
 description: 一個 side project 開發記：為了不想在中華郵政官網一層層下拉選單查 3+3 郵遞區號、也不想為了地址英譯輸入驗證碼，我用 Vue 3 + vite-ssg 做了台灣郵遞區號查詢工具，記錄自己寫 DBF parser、build-time 資料切塊與地址 parser 的幾個技術決策。
 cssdemo: 
 jsdemo:
