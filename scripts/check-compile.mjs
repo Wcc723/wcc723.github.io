@@ -48,7 +48,7 @@ export async function checkFiles(files, { markdownOptions } = {}) {
 
 async function loadMarkdownOptions() {
   try {
-    const mod = await import(path.join(srcDir, '.vitepress', 'markdown.mjs'))
+    const mod = await import(path.join(srcDir, '.vitepress', 'lib', 'markdown.mjs'))
     return mod.markdownOptions ?? {}
   } catch {
     return {}
