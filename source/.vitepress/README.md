@@ -23,9 +23,9 @@ config.mts
 
 ## 共用
 
-- `theme/shared/`：從 workspace 的 `shared/tokens/`、`shared/shell/` 複製過來，不手改（`site.mjs` 的 SITE_TITLE_LEGACY、ADS_MODE、shouldLoadAds、stripAdsLoader；`tokens.css` 的 v4 token）。`lib/` 也從這裡 import。
+- `theme/shared/`：從 workspace 的 `shared/tokens/`、`shared/shell/` 複製過來，不手改（`shell/site.mjs` 的 SITE_TITLE_LEGACY、ADS_MODE、shouldLoadAds、stripAdsLoader；`tokens/tokens.css` 的 v4 token）。`lib/` 也從這裡 import。
 - `lib/posts.mjs`：文章索引 `loadPosts(srcDir)`，每篇有 `file`、`src`、`date`、`year`、`month`、`day`、`slug`、`category`、`title`、`description`、`tags`、`updated`、`thumbnail`、`photo`、`cssdemo`、`ads`、`url`、`content`；另有 `categoryDir()`（css → CSS）、`tagSlug()`、`toAbsolute()`、`SITE_URL`。
-- `lib/pagetype.mjs`：`pageTypeOf(relativePath)`，頁型名稱跟 `site.mjs` 的 AD_PAGE_TYPES 一致。
+- `lib/pagetype.mjs`：`pageTypeOf(relativePath)`，頁型名稱跟 `theme/shared/shell/site.mjs` 的 AD_PAGE_TYPES 一致。
 
 ## 頁型
 

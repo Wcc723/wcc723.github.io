@@ -1,7 +1,7 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitepress'
-import { SITE_TITLE_LEGACY, SITE_URL } from './theme/shared/site.mjs'
+import { SITE_TITLE_LEGACY, SITE_URL } from './theme/shared/shell/site.mjs'
 import { postRewrites, unpublishedFiles } from './lib/posts.mjs'
 import { markdownOptions } from './lib/markdown.mjs'
 import { pageDataFor } from './lib/pagedata.mjs'

@@ -1,5 +1,5 @@
 // 由 rewrites 之後的 relativePath（例 javascript/2019/03/18/JS-THIS/index.md）判斷頁型。
-// 頁型名稱跟 theme/shared/site.mjs 的 AD_PAGE_TYPES 一致；不認得的路徑丟錯，新頁型要在這裡登記。
+// 頁型名稱跟 theme/shared/shell/site.mjs 的 AD_PAGE_TYPES 一致；不認得的路徑丟錯，新頁型要在這裡登記。
 const POST_RE = /^[^/]+\/\d{4}\/\d{2}\/\d{2}\/[^/]+\/index\.md$/
 
 export function pageTypeOf(relativePath) {
