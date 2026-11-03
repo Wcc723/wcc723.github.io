@@ -1,0 +1,304 @@
+/*
+ * 全站基礎與共用元件：版面容器、連結、焦點框、3D 按鈕、3D 卡片、膠囊、小幽靈。
+ * 元素選擇器只放在 html、body 和 box-sizing；本文的元素樣式全部在 prose.css，限定在 .prose 底下。
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  background: var(--cs-bg);
+}
+
+/*
+ * 舊文示範有固定寬度的元素（例 css-transform-mistake 的 .box、image-comparison-slider 的 600px 圖），
+ * 窄螢幕上超出版面時裁掉，整頁不會左右拖動；Hexo 版的 body 也是 overflow-x: hidden。
+ * 用 clip 不用 hidden：clip 不建立捲動容器，之後頁首改成 sticky 也不受影響。
+ */
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  margin: 0;
+  background: var(--cs-bg);
+  color: var(--cs-text);
+  font-family: var(--th-font-sans);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.site {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.site-main {
+  flex: 1 0 auto;
+  outline: none;
+}
+
+/* 連結的基本色用 :where 壓低權重，舊文示範自己的樣式可以蓋過 */
+:where(.site) a {
+  color: var(--cs-link);
+}
+
+:where(.site) a:hover {
+  color: var(--cs-link-hover);
+}
+
+.site :focus-visible {
+  outline: var(--cs-size-focus-ring) solid var(--th-focus);
+  outline-offset: var(--cs-size-focus-offset);
+  border-radius: 6px;
+}
+
+.wrap {
+  width: 100%;
+  max-width: calc(var(--cs-size-container) + var(--cs-size-gutter) * 2);
+  margin: 0 auto;
+  padding: 0 var(--cs-size-gutter);
+}
+
+@media (max-width: 640px) {
+  .site {
+    --cs-size-gutter: 16px;
+  }
+}
+
+.en {
+  font-family: var(--th-font-en);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--cs-size-tap);
+  padding: 0 16px;
+  border-radius: var(--cs-radius-button);
+  background: var(--th-btn-face);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site a.skip-link,
+.site a.skip-link:hover {
+  color: var(--th-btn-text);
+}
+
+.skip-link:focus {
+  top: 10px;
+}
+
+/* 3D 按鈕：v4 的 b3d（主要）與 b3d-lite（次要） */
+.b3d,
+.b3d-lite {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--cs-radius-button);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.3;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.08s, box-shadow 0.08s, background-color 0.12s;
+}
+
+.b3d {
+  min-height: var(--cs-size-button);
+  padding: 0 24px;
+  border: none;
+  background: var(--th-btn-face);
+  box-shadow: 0 var(--cs-shadow-depth) 0 var(--th-btn-edge);
+  font-size: 16px;
+  letter-spacing: 0.02em;
+}
+
+.site .b3d,
+.site .b3d:hover {
+  color: var(--th-btn-text);
+}
+
+.b3d:hover {
+  background: var(--th-btn-hover);
+}
+
+.b3d:active {
+  transform: translateY(var(--cs-shadow-depth));
+  box-shadow: 0 0 0 var(--th-btn-edge);
+}
+
+.b3d-lite {
+  min-height: var(--cs-size-button-lite);
+  padding: 0 20px;
+  border: var(--cs-size-border) solid var(--th-lite-edge);
+  background: var(--th-lite-bg);
+  box-shadow: 0 var(--cs-shadow-depth) 0 var(--th-lite-edge);
+  font-size: 15px;
+}
+
+.site .b3d-lite,
+.site .b3d-lite:hover {
+  color: var(--th-lite-text);
+}
+
+.b3d-lite:hover {
+  background: var(--th-lite-hover);
+}
+
+.b3d-lite:active {
+  transform: translateY(var(--cs-shadow-depth));
+  box-shadow: 0 0 0 var(--th-lite-edge);
+}
+
+/* 3D 卡片 */
+.c3d {
+  display: flex;
+  flex-direction: column;
+  background: var(--th-surface);
+  border: var(--cs-size-border) solid var(--th-card-edge);
+  border-radius: var(--cs-radius-card);
+  box-shadow: 0 var(--cs-shadow-depth) 0 var(--th-card-edge);
+  color: var(--cs-text);
+  text-decoration: none;
+  transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
+}
+
+a.c3d:hover,
+.c3d.is-link:hover,
+.c3d.is-link:focus-within {
+  border-color: var(--th-card-edge-hover);
+  box-shadow: 0 var(--cs-shadow-depth) 0 var(--th-card-edge-hover);
+  transform: translateY(var(--cs-shadow-card-lift));
+}
+
+.site a.c3d,
+.site a.c3d:hover {
+  color: var(--cs-text);
+}
+
+/* 膠囊 */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border-radius: var(--cs-radius-pill);
+  background: var(--th-chip-bg);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.4;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.site .chip,
+.site .chip:hover {
+  color: var(--th-chip-text);
+}
+
+/* 連結膠囊：看起來 36px 高，::after 把點擊範圍撐到 44px */
+a.chip {
+  position: relative;
+  min-height: 36px;
+  min-width: var(--cs-size-tap);
+  justify-content: center;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+a.chip::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--cs-size-tap);
+  transform: translateY(-50%);
+}
+
+a.chip:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* 小幽靈：寫死 width、height；深色版加一圈淺色貼紙描邊，維持「只放在淺底上」的規則 */
+.ghost {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  flex: none;
+  user-select: none;
+}
+
+html.dark .ghost {
+  filter: drop-shadow(2px 0 0 var(--th-ghost-outline)) drop-shadow(-2px 0 0 var(--th-ghost-outline))
+    drop-shadow(0 2px 0 var(--th-ghost-outline)) drop-shadow(0 -2px 0 var(--th-ghost-outline));
+}
+
+html.dark .ghost--small {
+  filter: drop-shadow(1px 0 0 var(--th-ghost-outline)) drop-shadow(-1px 0 0 var(--th-ghost-outline))
+    drop-shadow(0 1px 0 var(--th-ghost-outline)) drop-shadow(0 -1px 0 var(--th-ghost-outline));
+}
+
+/* 區塊標題 */
+.section-title {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 640px) {
+  .section-title {
+    font-size: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site *,
+  .site *::before,
+  .site *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .b3d:active,
+  .b3d-lite:active,
+  a.c3d:hover,
+  .c3d.is-link:hover,
+  .c3d.is-link:focus-within {
+    transform: none;
+  }
+}

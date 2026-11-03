@@ -1,0 +1,461 @@
+/*
+ * 本文樣式：只作用在 .prose（文章、關於、法務）和 .index-body（導覽索引）底下。
+ * 元素選擇器一律包在 :where() 裡，權重只有一個元素選擇器那麼高，舊文的 HTML 示範和 cssdemo 的樣式都能蓋過，
+ * 示範不會被主題弄壞。VitePress 產生的結構（程式碼區塊、表格、custom block）才用一般權重。
+ */
+
+.prose,
+.index-body {
+  color: var(--cs-text);
+  font-size: 18px;
+  line-height: 1.9;
+  overflow-wrap: break-word;
+}
+
+@media (max-width: 640px) {
+  .prose,
+  .index-body {
+    font-size: 17px;
+  }
+}
+
+/* ---------- 標題 ---------- */
+:where(.prose, .index-body) :where(h1, h2, h3, h4, h5, h6) {
+  position: relative;
+  margin: 2em 0 0.7em;
+  color: var(--cs-text);
+  line-height: 1.45;
+  letter-spacing: 0.01em;
+  scroll-margin-top: 24px;
+}
+
+:where(.prose, .index-body) h1 {
+  font-size: 30px;
+  font-weight: 900;
+}
+
+:where(.prose, .index-body) h2 {
+  font-size: 26px;
+  font-weight: 900;
+}
+
+:where(.prose, .index-body) h3 {
+  margin-top: 1.6em;
+  font-size: 21px;
+  font-weight: 700;
+}
+
+:where(.prose, .index-body) h4 {
+  margin-top: 1.5em;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+:where(.prose, .index-body) :where(h5, h6) {
+  margin-top: 1.4em;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  :where(.prose, .index-body) h1 {
+    font-size: 26px;
+  }
+
+  :where(.prose, .index-body) h2 {
+    font-size: 23px;
+  }
+
+  :where(.prose, .index-body) h3 {
+    font-size: 20px;
+  }
+}
+
+/* 第一個元素不要上方空白（Content 外面有兩層 div） */
+.prose > div > div > :first-child,
+.index-body > div > div > :first-child {
+  margin-top: 0;
+}
+
+/* 標題錨點：VitePress 的 header-anchor 或 Hexo 的 headerlink，滑過標題才出現 */
+.prose .header-anchor,
+.prose .headerlink,
+.index-body .header-anchor {
+  position: absolute;
+  top: 0;
+  left: -0.9em;
+  width: 0.9em;
+  color: var(--cs-mute);
+  font-weight: 500;
+  text-decoration: none;
+  opacity: 0;
+  user-select: none;
+  transition: opacity 0.15s;
+}
+
+.prose .header-anchor::before,
+.prose .headerlink::before,
+.index-body .header-anchor::before {
+  content: '#';
+}
+
+.prose :is(h1, h2, h3, h4, h5, h6):hover > :is(.header-anchor, .headerlink),
+.prose :is(.header-anchor, .headerlink):focus-visible,
+.index-body :is(h1, h2, h3, h4, h5, h6):hover > .header-anchor {
+  opacity: 1;
+}
+
+/* ---------- 段落與行內 ---------- */
+:where(.prose, .index-body) p {
+  margin: 0 0 1.2em;
+}
+
+:where(.prose, .index-body) a {
+  color: var(--cs-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+:where(.prose, .index-body) a:hover {
+  color: var(--cs-link-hover);
+  text-decoration-thickness: 2px;
+}
+
+:where(.prose) strong,
+:where(.prose) b {
+  font-weight: 700;
+}
+
+:where(.prose) mark {
+  padding: 0 2px;
+  border-radius: 3px;
+  background: var(--th-mark-bg);
+  color: var(--th-mark-text);
+}
+
+:where(.prose) kbd {
+  display: inline-block;
+  padding: 0 6px;
+  border: 1px solid var(--cs-line-2);
+  border-bottom-width: 3px;
+  border-radius: 6px;
+  background: var(--th-surface);
+  font-family: var(--th-font-mono);
+  font-size: 0.82em;
+  line-height: 1.6;
+}
+
+:where(.prose) hr {
+  height: 0;
+  margin: 2.4em 0;
+  border: 0;
+  border-top: var(--cs-size-border) solid var(--cs-line);
+}
+
+/* ---------- 清單 ---------- */
+:where(.prose, .index-body) :where(ul, ol) {
+  margin: 0 0 1.2em;
+  padding-left: 1.5em;
+}
+
+:where(.prose, .index-body) li {
+  margin: 0.35em 0;
+}
+
+:where(.prose, .index-body) li > :where(ul, ol) {
+  margin: 0.35em 0 0;
+}
+
+:where(.prose, .index-body) li > p {
+  margin-bottom: 0.6em;
+}
+
+:where(.prose, .index-body) li::marker {
+  color: var(--cs-text-2);
+}
+
+/* ---------- 引用 ---------- */
+:where(.prose) blockquote {
+  margin: 0 0 1.4em;
+  padding: 14px 22px;
+  border-left: 4px solid var(--th-quote-edge);
+  border-radius: 0 var(--cs-radius-sm) var(--cs-radius-sm) 0;
+  background: var(--cs-soft);
+  color: var(--cs-text);
+}
+
+:where(.prose) blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- 圖片、影片、iframe ---------- */
+:where(.prose) :where(img, video, svg, canvas) {
+  max-width: 100%;
+}
+
+:where(.prose) :where(img, video) {
+  height: auto;
+}
+
+:where(.prose) :where(p, figure) > img,
+:where(.prose) p > a > img {
+  border-radius: var(--cs-radius-sm);
+  vertical-align: middle;
+}
+
+:where(.prose) figure {
+  margin: 0 0 1.4em;
+}
+
+:where(.prose) figcaption {
+  margin-top: 8px;
+  color: var(--cs-text-2);
+  font-size: 14px;
+  text-align: center;
+}
+
+:where(.prose) iframe {
+  max-width: 100%;
+  border-radius: var(--cs-radius-sm);
+}
+
+/* YouTube、Vimeo 寫死 16:9，寬度跟著版面縮放；CodePen 這類有指定高度的嵌入只限制寬度 */
+:where(.prose) iframe:is([src*='youtube.com'], [src*='youtube-nocookie.com'], [src*='youtu.be'], [src*='player.vimeo.com']) {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin: 0 0 1.4em;
+  border: 0;
+}
+
+:where(.prose) .demo {
+  margin: 1.5em 0;
+}
+
+/* ---------- 表格（VitePress 會加 tabindex，窄螢幕可以橫向捲動） ---------- */
+:where(.prose) table {
+  display: block;
+  max-width: 100%;
+  margin: 0 0 1.4em;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+:where(.prose) :where(th, td) {
+  padding: 10px 14px;
+  border: 1px solid var(--cs-line-2);
+  text-align: left;
+  vertical-align: top;
+}
+
+:where(.prose) th {
+  background: var(--cs-section);
+  font-weight: 700;
+}
+
+/* ---------- 行內程式碼 ---------- */
+:where(.prose, .index-body) :not(pre) > code {
+  padding: 0.12em 0.42em;
+  border: 1px solid var(--cs-line);
+  border-radius: 6px;
+  background: var(--th-code-inline-bg);
+  color: var(--cs-text);
+  font-family: var(--th-font-mono);
+  font-size: 0.86em;
+  overflow-wrap: anywhere;
+}
+
+:where(.prose) a > code {
+  color: inherit;
+}
+
+/* ---------- 程式碼區塊 ---------- */
+:where(.prose) pre {
+  margin: 0 0 1.4em;
+  padding: 16px 20px;
+  overflow-x: auto;
+  border: var(--cs-size-border) solid var(--th-code-border);
+  border-radius: var(--cs-radius-tile);
+  background: var(--th-code-bg);
+  color: var(--cs-text);
+  font-family: var(--th-font-mono);
+  font-size: 14.5px;
+  line-height: 1.75;
+  tab-size: 2;
+}
+
+:where(.prose) pre code {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.prose div[class*='language-'] {
+  position: relative;
+  margin: 0 0 1.4em;
+  border: var(--cs-size-border) solid var(--th-code-border);
+  border-radius: var(--cs-radius-tile);
+  background: var(--th-code-bg);
+}
+
+.prose div[class*='language-'] pre {
+  margin: 0;
+  padding: 18px 0;
+  overflow-x: auto;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  direction: ltr;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+.prose div[class*='language-'] code {
+  display: block;
+  width: fit-content;
+  min-width: 100%;
+  padding: 0 22px;
+  color: var(--cs-text);
+}
+
+/* Shiki 由 VitePress 在建置時上色，亮暗兩組顏色放在 --shiki-light、--shiki-dark */
+html:not(.dark) .vp-code span {
+  color: var(--shiki-light, inherit);
+}
+
+html.dark .vp-code span {
+  color: var(--shiki-dark, inherit);
+}
+
+/* 預設的 github-light、github-dark 各有一個顏色對比不到 4.5:1，換成同色系較深（較淺）的版本 */
+html:not(.dark) .vp-code span[style*='--shiki-light:#E36209' i] {
+  color: #B35000;
+}
+
+html.dark .vp-code span[style*='--shiki-dark:#6A737D' i] {
+  color: #8B949E;
+}
+
+.prose div[class*='language-'] > span.lang {
+  position: absolute;
+  top: 4px;
+  right: 14px;
+  z-index: 2;
+  color: var(--th-code-lang);
+  font-family: var(--th-font-mono);
+  font-size: 12px;
+  user-select: none;
+  transition: opacity 0.2s;
+}
+
+.prose div[class*='language-'] > button.copy {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+  width: var(--cs-size-tap);
+  height: var(--cs-size-tap);
+  padding: 0;
+  border: var(--cs-size-border) solid var(--cs-line-2);
+  border-radius: var(--cs-radius-sm);
+  background: var(--th-surface);
+  color: var(--cs-text-2);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.prose div[class*='language-'] > button.copy::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='11' height='11' rx='2'/%3E%3Cpath d='M5 15V6a2 2 0 0 1 2-2h9'/%3E%3C/svg%3E") center / 20px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='11' height='11' rx='2'/%3E%3Cpath d='M5 15V6a2 2 0 0 1 2-2h9'/%3E%3C/svg%3E") center / 20px no-repeat;
+}
+
+.prose div[class*='language-'] > button.copy.copied::before {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");
+}
+
+.prose div[class*='language-'] > button.copy.copied::after {
+  content: '已複製';
+  position: absolute;
+  top: 50%;
+  right: calc(100% + 6px);
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: var(--th-btn-face);
+  color: var(--th-btn-text);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  transform: translateY(-50%);
+}
+
+.prose div[class*='language-']:hover > button.copy,
+.prose div[class*='language-'] > button.copy:focus-visible,
+.prose div[class*='language-'] > button.copy.copied {
+  opacity: 1;
+}
+
+.prose div[class*='language-']:hover > button.copy + span.lang,
+.prose div[class*='language-'] > button.copy:focus-visible + span.lang {
+  opacity: 0;
+}
+
+@media (hover: none) {
+  .prose div[class*='language-'] > button.copy {
+    opacity: 1;
+  }
+
+  .prose div[class*='language-'] > span.lang {
+    display: none;
+  }
+}
+
+/* VitePress 的行號、標示行（Markdown 有用到時） */
+.prose .vp-code .highlighted {
+  display: inline-block;
+  width: calc(100% + 44px);
+  margin: 0 -22px;
+  padding: 0 22px;
+  background: var(--cs-soft);
+}
+
+/* ---------- VitePress custom block（::: tip 這類） ---------- */
+.prose .custom-block {
+  margin: 0 0 1.4em;
+  padding: 14px 20px;
+  border-left: 4px solid var(--th-quote-edge);
+  border-radius: 0 var(--cs-radius-sm) var(--cs-radius-sm) 0;
+  background: var(--cs-section);
+}
+
+.prose .custom-block.warning,
+.prose .custom-block.danger {
+  border-left-color: var(--cs-orange-500);
+}
+
+.prose .custom-block-title {
+  margin: 0 0 0.4em;
+  font-weight: 900;
+}
+
+.prose .custom-block > :last-child {
+  margin-bottom: 0;
+}
+
+.prose details > summary {
+  min-height: var(--cs-size-tap);
+  cursor: pointer;
+  font-weight: 700;
+}
