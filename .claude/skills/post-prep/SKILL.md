@@ -22,7 +22,7 @@ description: >-
 ## 1. 上傳圖片
 
 ```bash
-node tools/images-upload.mjs
+node scripts/images-upload.mjs
 ```
 
 - 它會把 `r2-uploads/**` 同步到 R2(object key = 相對於 r2-uploads 的路徑)、把文章裡對應的相對路徑(VS Code 內建貼圖插入的 `../../r2-uploads/…`)改寫成 `https://img.casper.tw/<key>`,成功後刪掉本機暫存。
@@ -49,7 +49,7 @@ no watermark, no border.
 
 接著:
 1. Read 產出的 PNG 確認畫面合理(構圖、無文字、配色對)。
-2. 複製到 `r2-uploads/posts/<X>/cover.png`,再跑一次 `node tools/images-upload.mjs` 上傳。
+2. 複製到 `r2-uploads/posts/<X>/cover.png`,再跑一次 `node scripts/images-upload.mjs` 上傳。
 3. 把 front-matter `thumbnail:` 設成 `https://img.casper.tw/posts/<X>/cover.png`。
 
 ## 3. 檢查並補齊 front-matter
@@ -81,7 +81,7 @@ no watermark, no border.
 
 ## 備註
 
-- 完整圖片工作流見 CLAUDE.md「圖片與 R2」;上傳/遷移工具都在 `tools/`。
+- 圖片工作流見 AGENTS.md「寫文章」;上傳工具在 `scripts/`。
 - R2 公開網域 `img.casper.tw`,object key === URL 路徑(`posts/<X>/<檔名>`)。
 - **別把圖片留在 `source/` 內**(會被 Hexo 複製進 `public/`);圖片一律 `r2-uploads/` → R2。
 - 本 skill 只做「單篇收尾」;不負責 build/deploy(那是 `npm run deploy`)。
