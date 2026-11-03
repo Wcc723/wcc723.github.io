@@ -61,7 +61,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const filters = args.filter((a) => !a.startsWith('--'))
   const dir = path.join(srcDir, '_posts')
   let files = fs.readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => path.join(dir, f))
-  files.push(...['about/index.md', 'about/hexschool-traning.md', 'tags/index.md'].map((f) => path.join(srcDir, f)).filter(fs.existsSync))
+  // 文章以外的固定頁（動態路由的 [xxx]/index.md 內容由 paths loader 產生，build 時才編譯）
+  const pages = ['index.md', 'about/index.md', 'about/hexschool-traning.md', 'categories/index.md', 'tags/index.md', 'archives/index.md', 'privacy/index.md', 'contact/index.md', 'terms/index.md']
+  files.push(...pages.map((f) => path.join(srcDir, f)).filter(fs.existsSync))
   if (filters.length) files = files.filter((f) => filters.some((q) => f.includes(q)))
   const results = await checkFiles(files)
   const bad = results.filter((r) => r.errors.length)
