@@ -514,3 +514,130 @@ export function jsonLdNodes(html) {
   }
   return { nodes, invalid }
 }
+
+// --- 外語首頁、語言選單、工具組（主站首頁規格 J.1） ---------------------------------
+// DOM 照共用頁首頁尾（theme/shared/shell/SiteHeader.vue、SiteFooter.vue、LanguageMenu.vue）與 pages/SiteHomePage.vue。
+
+const VOID_TAGS = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'source', 'track', 'wbr'])
+
+/** 開始標籤 t（startTags 的一筆）的整個元素，同名標籤照巢狀層數配對結束標籤；void 元素只有開始標籤 */
+export function outerHtmlOf(html, t) {
+  if (VOID_TAGS.has(t.name)) return html.slice(t.index, t.end)
+  const re = new RegExp(`<(/?)${t.name}\\b${TAG_BODY}>`, 'gi')
+  re.lastIndex = t.end
+  let depth = 1
+  for (let m = re.exec(html); m; m = re.exec(html)) {
+    if (!m[1]) depth++
+    else if (--depth === 0) return html.slice(t.index, m.index + m[0].length)
+  }
+  return html.slice(t.index)
+}
+
+/** 符合 pred(開始標籤) 的元素：[{ name, attrs, index, outer, inner }]，照出現順序（巢狀的也列） */
+export function elementsWhere(html, pred) {
+  return startTags(html).filter(pred).map((t) => {
+    const outer = outerHtmlOf(html, t)
+    const inner = VOID_TAGS.has(t.name) ? '' : outer.slice(t.end - t.index, Math.max(t.end - t.index, outer.lastIndexOf('</')))
+    return { name: t.name, attrs: t.attrs, index: t.index, outer, inner }
+  })
+}
+
+/** 版面根元素（#app 裡第一個元素）的 class token；找不到是 [] */
+export function rootClassesOf(html) {
+  const m = /<div\b[^>]*\bid=["']app["'][^>]*>/.exec(html)
+  if (!m) return []
+  const rest = html.slice(m.index + m[0].length).replace(/^(?:\s|<!--[\s\S]*?-->)+/, '')
+  const first = startTags(rest)[0]
+  return first && first.index === 0 ? (first.attrs.class ?? '').split(/\s+/).filter(Boolean) : []
+}
+
+/** head 的 <link rel="alternate" hreflang>：[{ hreflang, href }]，照出現順序 */
+export function hreflangLinksOf(html) {
+  return findTags(headOf(html), 'link').filter((l) => relHas(l.rel, 'alternate') && 'hreflang' in l).map((l) => ({ hreflang: l.hreflang, href: l.href ?? '' }))
+}
+
+/** head 的 og:locale 與 og:locale:alternate */
+export function ogLocalesOf(html) {
+  const metas = findTags(headOf(html), 'meta')
+  const of = (key) => metas.filter((m) => (m.property ?? '').toLowerCase() === key).map((m) => m.content ?? '')
+  return { locale: of('og:locale'), alternates: of('og:locale:alternate') }
+}
+
+const SEQUENCE_META_PROPS = /^og:/
+/**
+ * head 裡外語首頁 D.2 列的元素，照出現順序，各寫成「key=值」：title、description、canonical、hreflang、og:*、jsonld（只記 @type）。
+ * twitter:card、fb:app_id、Atom、字型、AdSense meta 這些 siteHead 照留的項目不列
+ */
+export function siteHomeHeadSequence(html) {
+  const head = headOf(html)
+  const out = []
+  for (const m of head.matchAll(new RegExp(`<(title|meta|link|script)\\b(${TAG_BODY})>`, 'gi'))) {
+    const name = m[1].toLowerCase()
+    const a = parseAttrs(m[2])
+    if (name === 'title') {
+      const t = /^([\s\S]*?)<\/title\s*>/i.exec(head.slice(m.index + m[0].length))
+      out.push(`title=${decodeEntities(t?.[1] ?? '').replace(/\s+/g, ' ').trim()}`)
+    } else if (name === 'meta' && (a.name ?? '').toLowerCase() === 'description') out.push(`description=${a.content ?? ''}`)
+    else if (name === 'meta' && (a.name ?? '').toLowerCase() === 'robots') out.push(`robots=${a.content ?? ''}`)
+    else if (name === 'meta' && SEQUENCE_META_PROPS.test(a.property ?? '')) out.push(`${a.property}=${a.content ?? ''}`)
+    else if (name === 'link' && relHas(a.rel, 'canonical')) out.push(`canonical=${a.href ?? ''}`)
+    else if (name === 'link' && relHas(a.rel, 'alternate') && 'hreflang' in a) out.push(`hreflang:${a.hreflang}=${a.href ?? ''}`)
+    else if (name === 'script' && (a.type ?? '').toLowerCase() === 'application/ld+json') {
+      const body = /^([\s\S]*?)<\/script\s*>/i.exec(head.slice(m.index + m[0].length))?.[1] ?? ''
+      let types = 'INVALID_JSON'
+      try { types = [JSON.parse(body)].flat().map((o) => o['@type']).join(',') } catch { /* 留著 INVALID_JSON */ }
+      out.push(`jsonld=${types}`)
+    }
+  }
+  return out
+}
+
+/** 一段 HTML 裡的 <a>：[{ href, hreflang, lang, attrs, inner, text }]；lang 是 <a> 自己的 lang */
+export function anchorsIn(html) {
+  return elementsWhere(html, (t) => t.name === 'a').map((e) => ({ href: e.attrs.href ?? null, hreflang: e.attrs.hreflang ?? null, lang: e.attrs.lang ?? null, attrs: e.attrs, inner: e.inner, text: textOf(e.inner) }))
+}
+
+const squash = (s) => decodeEntities(stripHidden(s).replace(/<[^>]*>/g, '')).replace(/\s+/g, ' ')
+
+/** 工具名那一段：{before}<span lang data-foreign>{label}</span>{after}；沒有 span 時整段是名稱 */
+function splitToolName(html) {
+  const span = startTags(html).find((t) => t.name === 'span')
+  if (!span) return { before: '', label: squash(html).trim(), lang: null, after: '' }
+  const outer = outerHtmlOf(html, span)
+  return {
+    before: squash(html.slice(0, span.index)).trim(),
+    label: squash(outer).trim(),
+    lang: span.attrs.lang || null,
+    after: squash(html.slice(span.index + outer.length)).trim(),
+  }
+}
+
+/**
+ * 工具連結：頁尾工具組的 <a>，或 #tools 的卡片（a.cs-toolcard 裡的 .cs-toolcard__name 與 .cs-toolcard__sum）。
+ * [{ href, hreflang, label, lang, before, after, summary }]，before、after 去掉前後空白
+ */
+export function toolLinksIn(html) {
+  return elementsWhere(html, (t) => t.name === 'a').map((e) => {
+    const name = elementsWhere(e.inner, (t) => hasClass(t.attrs, 'cs-toolcard__name'))[0]
+    const sum = elementsWhere(e.inner, (t) => hasClass(t.attrs, 'cs-toolcard__sum'))[0]
+    return { href: e.attrs.href ?? null, hreflang: e.attrs.hreflang ?? null, ...splitToolName(name ? name.inner : e.inner), summary: sum ? squash(sum.inner).trim() : null }
+  })
+}
+
+/**
+ * 語言選單的項目：頁首 details.cs-lang（data-cs-lang）或頁尾 ul.cs-langlist。
+ * [{ current, href, hreflang, lang, text, note }]；目前語系是 <span aria-current="true">，沒有 href
+ */
+export function languageItemsIn(html) {
+  return elementsWhere(html, (t) => (t.name === 'a' || t.name === 'span') && (hasClass(t.attrs, 'cs-lang__item') || hasClass(t.attrs, 'cs-langlist__item'))).map((e) => {
+    const note = elementsWhere(e.inner, (t) => hasClass(t.attrs, 'cs-lang__note') || hasClass(t.attrs, 'cs-langlist__note'))[0]
+    return {
+      current: e.attrs['aria-current'] === 'true',
+      href: e.name === 'a' ? (e.attrs.href ?? null) : null,
+      hreflang: e.attrs.hreflang ?? null,
+      lang: e.attrs.lang ?? null,
+      text: textOf(note ? e.inner.replace(note.outer, '') : e.inner),
+      note: note ? textOf(note.inner) : null,
+    }
+  })
+}

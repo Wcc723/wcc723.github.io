@@ -441,3 +441,52 @@ test('只差大小寫的標籤讓建置失敗（CI 規則），兩種寫法對�
     fs.rmSync(tmp, { recursive: true, force: true })
   }
 })
+
+// ---------------------------------------------------------------------------
+// 外語首頁與 fm.site（主站首頁規格 G.4）
+// ---------------------------------------------------------------------------
+
+const homePage = (code, preview = false) => ({ code, url: `https://www.casper.tw/${code}/`, preview })
+const LIVE_PLAN = { stage: 'live', published: ['en'], pages: [homePage('en')], problems: [], warnings: [] }
+const PREVIEW_PLAN = { stage: 'preview', published: [], pages: ['en', 'ja', 'ko', 'de'].map((c) => homePage(c, true)), problems: [], warnings: [] }
+const runWith = (relativePath, opts, frontmatter = {}) => pageDataFor({ relativePath, frontmatter: { ...frontmatter } }, {}, srcDir, opts).frontmatter
+
+test('外語首頁：寫 fm.site、fm.title、fm.description，titleTemplate 是 false', () => {
+  const fm = runWith('en/index.md', { plan: LIVE_PLAN })
+  assert.equal(fm.pageType, 'site-home')
+  assert.equal(fm.url, '/en/')
+  assert.equal(fm.titleTemplate, false)
+  assert.equal(fm.site.kind, 'site-home')
+  assert.equal(fm.site.locale, 'en')
+  assert.equal(fm.site.canonical, 'https://www.casper.tw/en/')
+  assert.equal(fm.description, fm.site.home.meta.description)
+  assert.ok(fm.title.endsWith(fm.site.home.meta.tagline))
+  assert.equal(fm.site.preview, null)
+  assert.equal(fm.breadcrumbs, undefined)
+  assert.throws(() => runWith('ja/index.md', { plan: LIVE_PLAN }), /site-home ja 不在這次建置的 plan\.pages/)
+})
+
+test('preview 的外語首頁：fm.site.home 有 H1 與 hero.lead，fm.site.preview 有提示', () => {
+  const fm = runWith('ko/index.md', { plan: PREVIEW_PLAN })
+  assert.equal(typeof fm.site.home.h1.text, 'string')
+  assert.ok(fm.site.home.h1.text.length > 0)
+  assert.ok(fm.site.home.hero.lead.length > 0)
+  assert.ok(fm.site.preview.notice.length > 0)
+  assert.deepEqual(fm.site.siteHomes, [])
+})
+
+test('fm.site：shell 是 legacy 時其他頁不寫（P1 產物不變），shared 時每頁都寫，404 也有', () => {
+  const legacy = { shell: 'legacy', home: { locales: [], roadmap: [], sourceLocale: 'en' } }
+  const shared = { ...legacy, shell: 'shared' }
+  assert.equal(runWith('about/index.md', { plan: LIVE_PLAN, config: legacy }, { title: '關於卡斯伯' }).site, undefined)
+  assert.equal(runWith('404.md', { plan: LIVE_PLAN, config: legacy }).site, undefined)
+  const about = runWith('about/index.md', { plan: LIVE_PLAN, config: shared }, { title: '關於卡斯伯' })
+  assert.equal(about.site.section, 'about')
+  assert.equal(about.site.canonical, 'https://www.casper.tw/about/')
+  assert.deepEqual(about.site.siteHomes, ['en'])
+  const nf = runWith('404.md', { plan: LIVE_PLAN, config: shared })
+  assert.equal(nf.site.kind, 'page')
+  assert.equal(nf.site.canonical, '')
+  assert.deepEqual(nf.site.languages, [])
+  assert.deepEqual(nf.site.notFoundIntl.map((r) => r.code), ['en'])
+})

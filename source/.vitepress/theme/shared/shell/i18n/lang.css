@@ -1,0 +1,137 @@
+/* 由 shared/shell/i18n/build.mjs 依 locales.mjs 的 LOCALES、SCRIPTS 產生，不要手改；改登錄表後重跑 node shared/shell/i18n/build.mjs */
+/* 全部放在 @layer cs.base：工具的 main.css 先宣告 @layer cs.base, cs.components, cs.utilities;，元件樣式一定蓋得過語系預設 */
+/* --cs-font-* 屬於 shared/tokens，--cs-lang-* 屬於這個檔；:lang() 一律包在 :is() 裡（Chrome 不支援 :lang(a, b) 的列表寫法） */
+@layer cs.base {
+  /* 組合變數寫在 :where(:root, [lang])：每個帶 lang 的元素都用自己的 --cs-lang-cjk 重算，巢狀的 <span lang="ja"> 才會換字型 */
+  :where(:root, [lang]) {
+    --cs-lang-accent: 'Nunito', var(--cs-lang-cjk);
+    --cs-lang-code: var(--cs-font-code), var(--cs-lang-cjk), monospace;
+  }
+  /* Latn（en、de、es）：只作用在根元素，中文頁裡的 <span lang="en"> 不會中途換成 Nunito */
+  :where(html[lang]):is(:lang(en), :lang(de), :lang(es)) {
+    --cs-lang-font: var(--cs-font-latn);
+    --cs-lang-cjk: sans-serif;
+    --cs-lang-lh-body: 1.6;
+    --cs-lang-lh-prose: 1.65;
+    --cs-lang-lh-heading: 1.2;
+    --cs-lang-tracking-heading: -0.01em;
+    --cs-lang-text-min: 13px;
+  }
+  /* Hant（zh-tw） */
+  :where([lang]):is(:lang(zh-Hant), :lang(zh-TW), :lang(zh-HK), :lang(zh-MO)) {
+    --cs-lang-cjk: var(--cs-font-hant);
+    --cs-lang-font: var(--cs-font-hant);
+    font-family: var(--cs-lang-font);
+    --cs-lang-lh-body: 1.7;
+    --cs-lang-lh-prose: 1.9;
+    --cs-lang-lh-heading: 1.35;
+    --cs-lang-tracking-heading: 0.01em;
+    --cs-lang-text-min: 12px;
+    text-autospace: normal;
+    font-synthesis-style: none;
+  }
+  /* Hans（zh-cn） */
+  :where([lang]):is(:lang(zh-Hans), :lang(zh-CN), :lang(zh-SG), :lang(zh-MY)) {
+    --cs-lang-cjk: var(--cs-font-hans);
+    --cs-lang-font: var(--cs-font-hans);
+    font-family: var(--cs-lang-font);
+    --cs-lang-lh-body: 1.7;
+    --cs-lang-lh-prose: 1.9;
+    --cs-lang-lh-heading: 1.35;
+    --cs-lang-tracking-heading: 0.01em;
+    --cs-lang-text-min: 12px;
+    text-autospace: normal;
+    font-synthesis-style: none;
+  }
+  /* Jpan（ja） */
+  :where([lang]):is(:lang(ja)) {
+    --cs-lang-cjk: var(--cs-font-jpan);
+    --cs-lang-font: var(--cs-font-jpan);
+    font-family: var(--cs-lang-font);
+    --cs-lang-lh-body: 1.7;
+    --cs-lang-lh-prose: 1.9;
+    --cs-lang-lh-heading: 1.35;
+    --cs-lang-tracking-heading: 0;
+    --cs-lang-text-min: 12px;
+    line-break: strict;
+    text-autospace: normal;
+    font-synthesis-style: none;
+  }
+  /* Kore（ko） */
+  :where([lang]):is(:lang(ko)) {
+    --cs-lang-cjk: var(--cs-font-kore);
+    --cs-lang-font: var(--cs-font-kore);
+    font-family: var(--cs-lang-font);
+    --cs-lang-lh-body: 1.7;
+    --cs-lang-lh-prose: 1.7;
+    --cs-lang-lh-heading: 1.35;
+    --cs-lang-tracking-heading: 0;
+    --cs-lang-text-min: 12px;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    font-synthesis-style: none;
+  }
+  /* 引號：每個語系自己的 quotes */
+  :where([lang]):is(:lang(en)) {
+    quotes: '\201C' '\201D' '\2018' '\2019';
+  }
+  :where([lang]):is(:lang(zh-Hant), :lang(zh-TW), :lang(zh-HK), :lang(zh-MO)) {
+    quotes: '\300C' '\300D' '\300E' '\300F';
+  }
+  :where([lang]):is(:lang(zh-Hans), :lang(zh-CN), :lang(zh-SG), :lang(zh-MY)) {
+    quotes: '\201C' '\201D' '\2018' '\2019';
+  }
+  :where([lang]):is(:lang(ja)) {
+    quotes: '\300C' '\300D' '\300E' '\300F';
+  }
+  :where([lang]):is(:lang(ko)) {
+    quotes: '\201C' '\201D' '\2018' '\2019';
+  }
+  :where([lang]):is(:lang(de)) {
+    quotes: '\201E' '\201C' '\201A' '\2018';
+  }
+  :where([lang]):is(:lang(es)) {
+    quotes: '\00AB' '\00BB' '\201C' '\201D';
+  }
+  /* 版面基礎：字型、行高、標題字重各語一律 700（900 在 ja、ko 會變得太粗，PingFang 又停在 Semibold） */
+  body {
+    font-family: var(--cs-lang-font);
+    line-height: var(--cs-lang-lh-body);
+  }
+  h1, h2, h3 {
+    line-height: var(--cs-lang-lh-heading);
+    letter-spacing: var(--cs-lang-tracking-heading, 0);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  p, li, dd {
+    text-wrap: pretty;
+  }
+  code, kbd, samp, pre {
+    font-family: var(--cs-lang-code);
+  }
+  /* Kore：段落不用 pretty（引號與助詞之間會被選成斷點） */
+  :where(p, li, dd):is(:lang(ko)) {
+    text-wrap: wrap;
+  }
+  /* Jpan：標題與短的 UI 字串依詞組換行 */
+  :where(h1, h2, h3, dt, th, label, button, summary, figcaption, .b3d, .b3d-lite, .chip, .cs-phrase):is(:lang(ja)) {
+    word-break: auto-phrase;
+  }
+  /* 斷字：長字多的語系開 hyphens:auto；按鈕、導覽、表單不斷字 */
+  :where(h1, h2, h3, p, li, dd, td, .cs-hyphenate):is(:lang(de), :lang(es)) {
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphenate-limit-chars: 10 4 4;
+  }
+  :where(button, nav, label, input, summary, .b3d, .b3d-lite, .chip) {
+    hyphens: manual;
+  }
+  /* CJK 不用斜體：em、i、cite、dfn 改正體，em 改粗體 */
+  :where(em, i, cite, dfn):is(:lang(zh-Hant), :lang(zh-TW), :lang(zh-HK), :lang(zh-MO), :lang(zh-Hans), :lang(zh-CN), :lang(zh-SG), :lang(zh-MY), :lang(ja), :lang(ko)) {
+    font-style: normal;
+  }
+  :where(em):is(:lang(zh-Hant), :lang(zh-TW), :lang(zh-HK), :lang(zh-MO), :lang(zh-Hans), :lang(zh-CN), :lang(zh-SG), :lang(zh-MY), :lang(ja), :lang(ko)) {
+    font-weight: 700;
+  }
+}

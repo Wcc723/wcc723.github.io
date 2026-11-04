@@ -13,6 +13,7 @@ import path from 'node:path'
 import matter from 'gray-matter'
 import { SITE_URL, tagSlug, toAbsolute } from './posts.mjs'
 import { SITE_TITLE_LEGACY } from '../theme/shared/shell/site.mjs'
+import { LOCALES } from '../theme/shared/shell/i18n/locales.mjs'
 import { siteIndex, orderedTags } from './pagedata.mjs'
 import { cardExcerpt, categoryUrl, escapeHtml, frozenFor, markdownText, tagUrl } from './cards.mjs'
 
@@ -134,6 +135,9 @@ const dateOnly = (v) => {
 
 // VitePress 的 item.url 是相對路徑（例 development/2022/01/10/install-nvm/，首頁是空字串），
 // 由 sitemap 套件用 new URL(url, hostname) 補成完整網址並 percent-encode，結果跟 toAbsolute() 相同。
+// 外語首頁 /<code>/（主站首頁規格 D.8）：首頁沒有可信的更新日，不輸出 lastmod
+const SITE_HOME_URL_RE = new RegExp(`^/(${LOCALES.map((l) => l.code).filter((c) => c !== 'zh-tw').join('|')})/$`)
+
 export function sitemapTransformItems(srcDir) {
   return (items) => {
     const index = siteIndex(srcDir)
@@ -145,8 +149,9 @@ export function sitemapTransformItems(srcDir) {
       const fm = file ? frontmatterOf(file) : null
       if (isNoindex(fm)) continue
       const post = index.byUrl.get(url)
-      const lastmod = post ? modified(post) : dateOnly(fm?.updated)
-      const { lastmod: _drop, ...rest } = item
+      const lastmod = SITE_HOME_URL_RE.test(url) ? null : post ? modified(post) : dateOnly(fm?.updated)
+      // links：VitePress 設了 locales 就替每筆加 xhtml:link；hreflang 只放 HTML head 一種方法（D.8），一律拿掉
+      const { lastmod: _drop, links: _links, ...rest } = item
       out.push(lastmod ? { ...rest, lastmod } : rest)
     }
     // 順序：首頁、文章（新到舊）、其他頁依網址排序

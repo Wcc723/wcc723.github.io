@@ -9,7 +9,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
 import { createTitle, mergeHead, escapeHtml as vpEscape } from 'vitepress/dist/client/shared.js'
-import { SITE_TITLE_LEGACY, ADSENSE_CLIENT, countAdsLoaders } from '../theme/shared/shell/site.mjs'
+import { SITE_TITLE_LEGACY, ADSENSE_CLIENT, countAdsLoaders, shouldLoadAds } from '../theme/shared/shell/site.mjs'
 import { categoryDir, tagSlug } from './posts.mjs'
 import { NOT_FOUND_DESCRIPTION, NOT_FOUND_TITLE } from '../theme/head.mjs'
 import {
@@ -647,4 +647,92 @@ test('siteHead：GA4 與 FB Pixel 只在 www.casper.tw 執行；沒有 highlight
     assert.equal(appended.length, expected, host)
     if (expected) assert.deepEqual(fakeWindow.dataLayer.map((a) => [...a][0]), ['js', 'config'])
   }
+})
+
+// ---------------------------------------------------------------------------
+// 外語首頁 /<code>/（主站首頁規格 D.2 到 D.5、D.9）：pagedata 寫 fm.site，seoPageData 組 head，transformHtml 換 GA4
+// ---------------------------------------------------------------------------
+
+const homePage = (code) => ({ code, url: `https://www.casper.tw/${code}/`, preview: false })
+const HOME_PLAN = { stage: 'live', published: ['en', 'ja'], pages: [homePage('en'), homePage('ja')], problems: [], warnings: [] }
+
+/** 外語首頁或 / 走一遍 pagedata、seo、renderPage */
+async function renderSiteHome(relativePath, plan = HOME_PLAN) {
+  const { pageDataFor } = await import('./pagedata.mjs')
+  const pageData = makePageData({ relativePath, frontmatter: {} })
+  pageDataFor(pageData, ctx, srcDir, { plan })
+  seoPageData(pageData, ctx, { plan })
+  return { pageData, html: renderPage(pageData, relativePath) }
+}
+
+test('外語首頁的 head：順序照 D.2，hreflang 照 LOCALES 排序、zh 接在 zh-Hant 後面、x-default 在最後，og:site_name 與 og:locale 不重複', async () => {
+  const { siteHomeHeadSequence } = await import('../../../scripts/lib/extract-page.mjs')
+  const { pageData, html } = await renderSiteHome('en/index.md')
+  const fm = pageData.frontmatter
+  assert.equal(pageData.titleTemplate, false)
+  assert.equal(pageData.title, fm.title)
+  assert.equal(fm.ads, shouldLoadAds({ type: 'site-home' }))
+  const x = extract(html)
+  assert.deepEqual(x.dupes, [])
+  assert.equal(x.title, fm.title)
+  assert.equal(x.description, fm.site.home.meta.description)
+  assert.equal(x.canonical, 'https://www.casper.tw/en/')
+  assert.equal(x.ogTitle, fm.site.home.meta.tagline)
+  assert.equal(x.ogType, 'website')
+  assert.equal(x.robots, null)
+  const kinds = siteHomeHeadSequence(html).map((s) => s.replace(/=.*$/, ''))
+  assert.deepEqual(kinds.filter((k) => !['og:locale:alternate'].includes(k)), [
+    'title', 'description', 'canonical', 'hreflang:en', 'hreflang:zh-Hant', 'hreflang:zh', 'hreflang:ja', 'hreflang:x-default',
+    'og:type', 'og:url', 'og:title', 'og:description', 'og:site_name', 'og:locale',
+    'og:image', 'og:image:width', 'og:image:height', 'og:image:alt', 'jsonld',
+  ])
+  assert.equal(kinds.filter((k) => k === 'og:locale:alternate').length, 2)
+})
+
+test('外語首頁的 JSON-LD：WebPage 一筆，inLanguage 是頁面語言，isPartOf 指 / 的 WebSite', async () => {
+  const { html } = await renderSiteHome('ja/index.md')
+  const x = extract(html)
+  assert.deepEqual(x.jsonLdTypes, ['WebPage'])
+  const [page] = x.jsonLd[0]
+  assert.equal(page['@id'], 'https://www.casper.tw/ja/#webpage')
+  assert.equal(page.inLanguage, 'ja')
+  assert.deepEqual(page.isPartOf, { '@id': 'https://www.casper.tw/#website' })
+  assert.deepEqual(page.author, { '@id': PERSON_ID })
+})
+
+test('外語首頁的 transformHtml：拿掉 FB Pixel、article:author、舊 GA4，loader 照 shouldLoadAds，插入帶 page_locale 的 GA4', async () => {
+  const { pageData, html } = await renderSiteHome('en/index.md')
+  assert.ok(!html.includes('fbevents.js'))
+  assert.ok(!html.includes('article:author'))
+  assert.ok(!html.includes("content_group:'blog'"))
+  // site-home 跟繁中首頁一樣是 standardOnly（站長 2026-11-04，0008 更正第 9 點）
+  assert.equal(pageData.frontmatter.ads, shouldLoadAds({ type: 'site-home' }))
+  assert.equal(countAdsLoaders(html), shouldLoadAds({ type: 'site-home' }) ? 1 : 0)
+  assert.ok(html.includes(`name="google-adsense-account" content="${ADSENSE_CLIENT}"`))
+  const configs = [...html.matchAll(/gtag\('config', "G-97433H4032", (\{[^)]*\})\)/g)].map((m) => JSON.parse(m[1]))
+  assert.deepEqual(configs, [{ content_group: 'site-home', page_locale: 'en' }])
+  assert.ok(html.indexOf("gtag('consent', 'default'") < html.indexOf("gtag('config'"))
+})
+
+test('preview 的外語首頁：最前面多 robots noindex, nofollow；hreflang 跟著 plan.pages', async () => {
+  const plan = { stage: 'preview', published: [], pages: [{ ...homePage('en'), preview: true }, { ...homePage('ko'), preview: true }], problems: [], warnings: [] }
+  const { html } = await renderSiteHome('ko/index.md', plan)
+  const x = extract(html)
+  assert.equal(x.robots, 'noindex, nofollow')
+  assert.deepEqual([...html.matchAll(/hreflang="([^"]+)"/g)].map((m) => m[1]).filter((v, i, a) => a.indexOf(v) === i), ['en', 'zh-Hant', 'zh', 'ko', 'x-default'])
+})
+
+test('繁中首頁 /：有外語首頁時才加叢集的 hreflang 與 og:locale:alternate，其他繁中頁一律不加', async () => {
+  const { html } = await renderSiteHome('index.md')
+  assert.deepEqual([...html.matchAll(/<link rel="alternate" hreflang="([^"]+)"/g)].map((m) => m[1]), ['en', 'zh-Hant', 'zh', 'ja', 'x-default'])
+  assert.equal([...html.matchAll(/og:locale:alternate/g)].length, 2)
+  const p1 = await renderSiteHome('index.md', { stage: 'live', published: [], pages: [], problems: [], warnings: [] })
+  assert.ok(!p1.html.includes('hreflang='))
+  assert.ok(!p1.html.includes('og:locale:alternate'))
+  const about = await renderSiteHome('about/index.md')
+  assert.ok(!about.html.includes('hreflang='))
+})
+
+test('site-home 沒有 fm.site 時 seoPageData 丟錯', () => {
+  assert.throws(() => seoPageData(makePageData({ relativePath: 'en/index.md', frontmatter: {} }), ctx), /是 site-home，要先由 lib\/pagedata\.mjs 寫 fm\.site/)
 })

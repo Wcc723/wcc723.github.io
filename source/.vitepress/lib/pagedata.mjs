@@ -11,6 +11,10 @@
 import { loadPosts, categoryDir, tagSlug, toAbsolute } from './posts.mjs'
 import { pageTypeOf } from './pagetype.mjs'
 import { SITE_NAME } from '../theme/shared/shell/site.mjs'
+import { LOCALES } from '../theme/shared/shell/i18n/locales.mjs'
+import siteConfig from '../site.config.mjs'
+import { buildSiteHomePlan, siteHomeTitle } from './site-home.mjs'
+import { siteFrontmatter } from './site-shell.mjs'
 import {
   cardFor,
   categoryUrl,
@@ -304,8 +308,14 @@ function postData(url, index) {
   }
 }
 
+// 沒有傳 plan 時用的外語首頁計畫（測試與單獨呼叫用）；config.mts 一律傳它自己算的那一份
+let defaultPlan = null
+const planOf = (plan) => plan ?? (defaultPlan ??= buildSiteHomePlan())
+
 // 每一頁都會跑（config.mts 的 transformPageData，seo 之前）。結果寫進 pageData.frontmatter，欄位見 README。
-export function pageDataFor(pageData, ctx, srcDir) {
+// opts：plan 是 lib/site-home.mjs 的 buildSiteHomePlan()，config 是 site.config.mjs（測試可以換）。
+// fm.site（主站首頁規格 G.4）：外語首頁一律寫；其他頁只在 shell 是 'shared' 時寫（S 版起），P1、P2 的產物因此不變
+export function pageDataFor(pageData, ctx, srcDir, { plan, config = siteConfig } = {}) {
   const fm = (pageData.frontmatter ??= {})
   const type = pageTypeOf(pageData.relativePath)
   const url = urlOf(pageData.relativePath)
@@ -378,10 +388,20 @@ export function pageDataFor(pageData, ctx, srcDir) {
     case 'not-found':
       data = { heading: NOT_FOUND_HEADING }
       break
+    case 'site-home': {
+      // 外語首頁 /<code>/（主站首頁規格 B.6）：文案、連結都在 fm.site.home，title 由 lib/seo.mjs 交給 VitePress
+      const code = url.slice(1, -1)
+      const site = siteFrontmatter({ pageType: type, canonical: toAbsolute(url), locale: code, plan: planOf(plan) })
+      data = { title: siteHomeTitle(code, site.home), titleTemplate: false, description: site.home.meta.description, site }
+      break
+    }
     default:
       throw new Error(`pagedata：沒有處理頁型 ${type}`)
   }
   Object.assign(fm, data)
+  if (type !== 'site-home' && config.shell === 'shared') {
+    fm.site = siteFrontmatter({ pageType: type, canonical: type === 'not-found' ? '' : toAbsolute(url), plan: planOf(plan) })
+  }
   return pageData
 }
 
@@ -398,6 +418,18 @@ export function blogIndexPaths(srcDir) {
     out.push({ params: { page: String(n) }, content: renderCards(pageSlice(posts, n).map(cardFor)) })
   }
   return out
+}
+
+// VitePress 的語系判斷沒有錨定開頭（/tags/es/ 會被當成西文頁，主站首頁規格 B.3），分類目錄名、標籤 slug 不分大小寫等於語系代碼就丟錯
+const LOCALE_CODES = new Set(LOCALES.map((l) => l.code.toLowerCase()))
+
+export function assertNoLocaleSegments(groups, key) {
+  const what = key === 'cat' ? '分類目錄' : '標籤'
+  for (const g of groups) {
+    const seg = String(g[key === 'cat' ? 'dir' : 'slug'])
+    if (LOCALE_CODES.has(seg.toLowerCase())) throw new Error(`${what}「${g.name}」的路徑段 ${seg} 跟語系代碼相同，VitePress 會把它當成外語頁`)
+  }
+  return groups
 }
 
 function groupFirstPages(groups, key) {
@@ -418,11 +450,11 @@ function groupLaterPages(groups, key) {
 }
 
 // /categories/<dir>/ 與 /categories/<dir>/page/N/（css 的 dir 是 CSS）
-export const categoryPaths = (srcDir) => groupFirstPages(siteIndex(srcDir).categories, 'cat')
+export const categoryPaths = (srcDir) => groupFirstPages(assertNoLocaleSegments(siteIndex(srcDir).categories, 'cat'), 'cat')
 export const categoryPagePaths = (srcDir) => groupLaterPages(siteIndex(srcDir).categories, 'cat')
 
 // /tags/<slug>/ 與 /tags/<slug>/page/N/
-export const tagPaths = (srcDir) => groupFirstPages(siteIndex(srcDir).tags, 'tag')
+export const tagPaths = (srcDir) => groupFirstPages(assertNoLocaleSegments(siteIndex(srcDir).tags, 'tag'), 'tag')
 export const tagPagePaths = (srcDir) => groupLaterPages(siteIndex(srcDir).tags, 'tag')
 
 // /archives/YYYY/：年份裡依月份分組；/archives/YYYY/MM/：只有清單。都不分頁

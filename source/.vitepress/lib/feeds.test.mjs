@@ -120,3 +120,29 @@ test('buildFeeds：寫進 outDir 的 atom.xml 與 content.json', async () => {
     fs.rmSync(outDir, { recursive: true, force: true })
   }
 })
+
+test('sitemap：外語首頁沒有 lastmod，VitePress 加的 xhtml:link（links）一律拿掉，/404 不列（主站首頁規格 D.8）', () => {
+  const links = [{ lang: 'en', url: 'en/' }, { lang: 'ja', url: 'ja/' }]
+  const items = sitemapTransformItems(srcDir)([
+    { url: '', links },
+    { url: 'en/', lastmod: '2026-11-04', links },
+    { url: 'ja/', lastmod: '2026-11-04', links },
+    { url: 'development/2022/01/10/install-nvm/', links },
+    { url: '404', links },
+    { url: '404.html' },
+  ])
+  assert.deepEqual(items.map((it) => it.url), ['', 'development/2022/01/10/install-nvm/', 'en/', 'ja/'])
+  for (const it of items) assert.ok(!('links' in it), it.url)
+  assert.deepEqual(items.filter((it) => /^(en|ja)\/$/.test(it.url)), [{ url: 'en/' }, { url: 'ja/' }])
+  assert.equal(items[1].lastmod, '2026-07-09')
+})
+
+test('atom.xml 與 content.json 只有文章，不收外語首頁', () => {
+  const atom = atomXml(srcDir)
+  const content = JSON.stringify(contentJson(srcDir))
+  for (const code of ['en', 'zh-cn', 'ja', 'ko', 'de', 'es']) {
+    const u = `${SITE_URL}/${code}/`
+    assert.ok(!atom.includes(`"${u}"`) && !atom.includes(`>${u}<`), code)
+    assert.ok(!content.includes(`"${u}"`) && !content.includes(`"/${code}/"`), code)
+  }
+})

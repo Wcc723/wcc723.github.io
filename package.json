@@ -8,9 +8,16 @@
   },
   "scripts": {
     "dev": "vitepress dev source",
+    "prebuild": "npm run i18n:check",
     "build": "vitepress build source",
     "postbuild": "node scripts/audit-build.mjs",
     "preview": "vitepress preview source",
+    "build:preview": "CS_STAGE=preview vitepress build source",
+    "preview:intl": "CS_STAGE=preview vitepress preview source",
+    "i18n:check": "node scripts/i18n.mjs check",
+    "i18n:stamp": "node scripts/i18n.mjs stamp",
+    "i18n:report": "node scripts/i18n.mjs report",
+    "site:card": "node scripts/site-card.mjs",
     "migrate": "node scripts/migrate-hexo.mjs",
     "test": "node --test \"scripts/**/*.test.mjs\" \"source/.vitepress/**/*.test.mjs\"",
     "images:upload": "node scripts/images-upload.mjs"

@@ -7,10 +7,25 @@
 // 同時把 SITE_NAME_EN 設成 "Casper's Sidekick"（站長 2026-11-03 選定，見 docs/decisions/0005-site-name.md）。
 // 改名只動這兩個常數和它們出現的位置（首頁 title、og:site_name、WebSite JSON-LD、字標、頁尾署名），網址不動。
 export const SITE_NAME = '卡斯伯 Blog'
+// 型別明寫成 string：寫成字面值 '' 的話，TypeScript 會把型別收窄成 ''，P3 改值那一版的 vue-tsc 就會在比較式報錯
+/** @type {string} */
 export const SITE_NAME_EN = '' // 空字串代表不顯示英文站名；P3 改成 "Casper's Sidekick"
 export const SITE_TITLE_LEGACY = '卡斯伯 Blog - 前端，沒有極限'
 export const SITE_CODE_NAME = 'caspers-sidekick' // 需要英文代號的地方（帳號名、識別字）用這個
 export const SITE_URL = 'https://www.casper.tw'
+
+// 作者名。外殼字串的 {author} 依語系登錄表的 brand 代入（shared/shell/i18n/）：brand 'zh' 用中文，其他用英文。
+// 署名列、頁尾、JSON-LD Person 一律讀這兩個常數，任何字串都不寫死人名。
+export const AUTHOR_NAME = '卡斯伯'
+export const AUTHOR_NAME_EN = 'Casper'
+
+// 分頁圖示（SEO 掃描第 5 條）：整個 www 只能有一個，部落格、外語首頁 /<code>/ 與每支工具共用這一組常數，
+// 外語首頁在搜尋結果裡顯示的也是它。Google 的網站圖示要正方形（1:1）、至少 48x48：
+// https://developers.google.com/search/docs/appearance/favicon-in-search
+// 正方形站徽還沒做（主站首頁規格 M.3：I1 之前做好），先沿用部落格現在的橫式字標，FAVICON_IS_SQUARE 為 false 時工具的 audit 每次都提醒。
+// 換檔是獨立的一版：用新的物件鍵上傳到 img.casper.tw（不覆蓋舊檔），只改這兩行，再跑 node scripts/shell-sync.mjs --write。
+export const FAVICON_URL = 'https://img.casper.tw/images/blog_logo.svg'
+export const FAVICON_IS_SQUARE = false
 
 // AdSense 發布商 ID，跟口袋工具共用同一個帳戶（線上 /ads.txt 與每頁的 loader 都公開這個值）。
 export const ADSENSE_CLIENT = 'ca-pub-8296684122088055'
@@ -25,8 +40,12 @@ export const ADS_MODE = 'standard'
 // 頁型對廣告 loader 的規則。never 的頁兩種模式都不載入，但仍保留 google-adsense-account meta。
 export const AD_PAGE_TYPES = {
   always: ['post', 'about', 'tool'],
-  standardOnly: ['home', 'blog-index', 'taxonomy-list'], // 首頁、/page/N/、分類與標籤列表（每頁 10 段摘要）
-  never: ['not-found', 'tool-not-found', 'nav-index', 'legal'], // 404、工具 404、/categories/ /tags/ /archives/、/privacy/ /contact/ /terms/
+  // 首頁、/page/N/、分類與標籤列表（每頁 10 段摘要）、部落格的外語首頁 /<code>/
+  // site-home：站長 2026-11-04 決定跟繁中首頁 home 一樣載入（docs/decisions/0008-multilingual-tool-template.md 更正第 9 點，推翻主站首頁規格 D.7 原本的 never）。
+  // 外語首頁大多是工具卡片與文章入口，收到「有價值的廣告空間」這類政策通知時，退路是把 site-home 移回 never，或整站改 ADS_MODE = 'allowlist'（docs/architecture/ads.md）。
+  standardOnly: ['home', 'blog-index', 'taxonomy-list', 'site-home'],
+  // 404、工具 404、/categories/ /tags/ /archives/、/privacy/ /contact/ /terms/
+  never: ['not-found', 'tool-not-found', 'nav-index', 'legal'],
 }
 
 /**

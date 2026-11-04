@@ -28,6 +28,12 @@ npm run preview        # 預覽 build 結果
 npm test               # 腳本與設定的單元測試
 npm run migrate        # scripts/migrate-hexo.mjs：Hexo 內文轉換，可重跑，也可只跑指定檔案
 npm run images:upload  # r2-uploads/ 上傳到 R2（img.casper.tw）
+npm run build:preview  # 外語首頁草稿：CS_STAGE=preview，寫到 source/.vitepress/preview-dist/，不跑 audit
+npm run preview:intl   # 本機開 preview-dist（VitePress 預設 http://localhost:4173），網址加 /en/ 這類
+npm run i18n:check     # 外語首頁文案的 G1 與各語系狀態（prebuild 也跑）
+npm run i18n:report    # 每個語系、每個 key 的審稿狀態
+npm run i18n:stamp     # 蓋章；rebase 用 node scripts/i18n.mjs rebase
+npm run site:card      # 重新產生 site-card.json
 ```
 
 Node 22 LTS，至少 22.12（package.json 的 engines）。`.nvmrc` 寫 `lts/jod`：`nvm install` 與 CI 的 setup-node 都拿最新的 22.x。
@@ -39,9 +45,14 @@ Node 22 LTS，至少 22.12（package.json 的 engines）。`.nvmrc` 寫 `lts/jod
 | `source/` | VitePress 的 srcDir |
 | `source/_posts/` | 文章，檔名 `YYYY-MM-DD-<slug>.md`；網址由 rewrites 算出 `/<category>/<YYYY>/<MM>/<DD>/<slug>/` |
 | `source/.vitepress/` | config、主題、建置用的程式 |
+| `source/.vitepress/site.config.mjs` | 站台設定：外殼模式 `shell` 與外語首頁 `home`（見下面「外語首頁」） |
+| `source/.vitepress/i18n/` | 外語首頁的文案 `home/<code>.json` 與 `glossary.json` |
+| `source/[locale]/` | 外語首頁的動態路由，paths 回 `plan.pages`，P1 是空的 |
+| `source/.vitepress/theme/shared/` | workspace `shared/` 的副本（含 `data/tools.json`、`data/categories.json`），由 workspace 的 `scripts/shell-sync.mjs --write` 寫入，不手改（`.sync.json` 記雜湊） |
+| `site-card.json` | 對 workspace 的契約：`shell` 與已上線的外語首頁，`npm run site:card` 產生，不手改 |
 | `source/public/` | 原封不動輸出的檔案：CNAME、ads.txt、robots.txt，以及凍結的 search.xml、css/style.css、img/ |
 | `baseline/hexo-2026-11-03/` | Hexo 基準：網址清單與每頁 SEO 欄位，audit 拿它比對 |
-| `scripts/` | audit、遷移、圖片上傳 |
+| `scripts/` | audit、遷移、圖片上傳；`i18n.mjs`（外語首頁文案）、`site-card.mjs`、`dist-diff.mjs`（比對兩份 dist） |
 
 ## 舊網址一字不改
 
@@ -50,6 +61,23 @@ Node 22 LTS，至少 22.12（package.json 的 engines）。`.nvmrc` 寫 `lts/jod
 - 分類 `css` 輸出到 `/categories/CSS/`（大寫，分類裡唯一的例外）。
 - 新標籤一律小寫。既有、只有一種寫法的大寫標籤照舊（`AI`、`Claude Code`、`Cloudflare`，網址是 `/tags/AI/` 這類舊網址），改成小寫會改掉舊網址。不能有只差大小寫的兩個標籤，audit 會擋下。
 - 新增根路徑（新頁、新分類）前，先在 workspace 跑 `node scripts/scan-paths.mjs --path <name>`。
+
+## 外語首頁（P1 做好、全部關著）
+
+主站首頁有外語版 `/<code>/`，文章與其他頁只有繁中（workspace 的決策 `0009`，規格 `docs/research/2026-11-04-site-home-i18n/spec.md`）。開一個語系照 workspace 的 `docs/runbooks/open-a-site-locale.md`，一版只開一個。
+
+- `site.config.mjs` 是唯一的開關：
+  - `shell`：`'legacy'` 是這個 repo 自己的頁首頁尾（P1、P2）；`'shared'` 是 `theme/shared/shell` 的共用元件（S 版起），要先有 zh-tw 外殼字串的章。
+  - `home.locales`：正式開放的語系，P1 是空陣列。列進來就要過全部開放關卡（G1 到 G9，`lib/site-home.mjs`），否則建置失敗；上線後不能拿掉。
+  - `home.roadmap`：要準備的語系（en、ja、ko、de、zh-cn、es），只在 `npm run build:preview` 產生。`home.reviewers`：審稿人 id 與是否母語。`home.waivers`：事實性文字過期時的暫時豁免，只在站長當次指示時加。
+- 頁型 `site-home`：`[locale]/index.md` 經 `pagetype.mjs` 判成 site-home，`pagedata.mjs` 寫 `fm.site`，版面是 `theme/pages/SiteHomePage.vue`（不寫 `<style>`，樣式在 `theme/styles/site-home.css`，選擇器限定在 `.cs-shome`、`.cs-toolcard`、`.cs-preview` 或外語根元素）。元件只顯示，文字與連結都在 `lib/site-home.mjs` 算好。
+- `__CS_SITE_HOME__`：`config.mts` 依 plan 用 Vite `define` 設定。沒有外語首頁要產生時是 false，`Layout.vue` 不登記 `SiteHomePage`，P1 的 dist 因此不變。VitePress 的全站 CSS 只有一支，非同步 chunk 的樣式也會併進去，所以不要在別處 import `SiteHomePage.vue` 或 `site-home.css`。
+- 文案：`i18n/home/<code>.json`，正本是 `en.json`，格式與逐 key 審稿跟工具範本相同（`theme/shared/shell/i18n/messages.mjs`）。佔位符只有 `{site}`、`{author}`；文案不寫對全部工具成立的保證，glossary 擋。**agent 不自己蓋章**，只在審稿人當次明確指示時代跑 `npm run i18n:stamp -- --locale <code> --by <審稿人 id>`。
+- preview：`npm run build:preview` 寫到 `source/.vitepress/preview-dist/`（`.gitignore` 擋掉），每頁 noindex、根元素多 `cs-preview`、頂端有提示條，關卡沒過只印警告；CI 或 `GITHUB_ACTIONS` 是 true 時直接失敗。`dist/` 永遠只有正式產物，audit 看到 preview 的痕跡就失敗。
+- `site-card.json`：`shell` 等於 `site.config.mjs`，`siteHomes` 等於 plan 的 `published`；`npm test` 與 audit 驗它沒過期。workspace 的 `scripts/site-data.mjs` 讀部署分支上的這份。
+- 部落格自己的頁一律用 plan 的 `published` 當已上線的外語首頁，不讀 `theme/shared/data/tools.json` 的 `siteHomes`（那份會落後一版，只給工具用）。
+- 語系代碼（en、ja、ko、de、es、zh-cn、zh-tw）不能當分類、標籤或文章 slug 的路徑段：VitePress 判斷語系時沒有錨定開頭，`posts.mjs`、`pagedata.mjs` 與 audit 遇到就失敗。
+- 改 `theme/` 或 `lib/` 之後，用 `node scripts/dist-diff.mjs <改之前的 dist> source/.vitepress/dist` 確認 P1 產物沒變。
 
 ## 寫文章
 

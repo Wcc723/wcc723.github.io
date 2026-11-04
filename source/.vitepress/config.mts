@@ -7,12 +7,27 @@ import { markdownOptions } from './lib/markdown.mjs'
 import { pageDataFor } from './lib/pagedata.mjs'
 import { siteHead, seoPageData, transformHtml } from './lib/seo.mjs'
 import { buildFeeds, sitemapTransformItems } from './lib/feeds.mjs'
+import { buildSiteHomePlan, vitepressLocales } from './lib/site-home.mjs'
 import { themeHead } from './theme/head.mjs'
 
 // 介面與分工見同資料夾的 README.md。這個檔只負責接線。
 const srcDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 
+// 外語首頁（主站首頁規格 C、D.1）：site.config.mjs 的 home.locales 與 CS_STAGE 決定這次要產生哪些頁。
+// live 時列進 home.locales 卻沒過關卡就建置失敗，不會默默少一頁（上線後不下架）
+const homePlan = buildSiteHomePlan()
+if (homePlan.problems.length) throw new Error(`外語首頁沒過關卡：\n${homePlan.problems.join('\n')}`)
+for (const w of homePlan.warnings) console.warn(`[site-home] ${w}`)
+const hasSiteHome = homePlan.pages.length > 0
+
 export default defineConfig({
+  // 有外語首頁才設 locales 與 define；P1、P2 兩個都不設成 true，產物跟改之前相同（K.4 第 2 步的 dist-diff 驗）。
+  // vite.define 兩種情況都要給：沒有定義時 Layout.vue 的 __CS_SITE_HOME__ 在 SSR 會丟 ReferenceError
+  ...(hasSiteHome
+    ? { locales: vitepressLocales(homePlan), vite: { define: { __CS_SITE_HOME__: 'true' } } }
+    : { vite: { define: { __CS_SITE_HOME__: 'false' } } }),
+  // preview 不寫 dist/（C.3）：outDir 相對於 source/，vitepress preview 讀同一份設定，所以 preview:intl 也帶 CS_STAGE=preview
+  ...(homePlan.stage === 'preview' ? { outDir: '.vitepress/preview-dist' } : {}),
   lang: 'zh-TW',
   title: SITE_TITLE_LEGACY,
   cleanUrls: true,
@@ -33,8 +48,8 @@ export default defineConfig({
   vue: { template: { transformAssetUrls: { includeAbsolute: false } } },
   head: [...siteHead, ...themeHead],
   transformPageData(pageData, ctx) {
-    pageDataFor(pageData, ctx, srcDir)
-    seoPageData(pageData, ctx)
+    pageDataFor(pageData, ctx, srcDir, { plan: homePlan })
+    seoPageData(pageData, ctx, { plan: homePlan })
   },
   transformHtml,
   buildEnd: (siteConfig) => buildFeeds(siteConfig, srcDir),

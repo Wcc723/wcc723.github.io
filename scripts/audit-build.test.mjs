@@ -2,6 +2,7 @@
 // 現在還沒有可用的 VitePress dist，所以用 fixtures/world.mjs 的測試世界：真實的 Hexo 頁產生迷你基準，
 // 再模擬新版產物。沒改壞的世界要全部通過；每個測試改壞一個地方，確認對應的檢查會失敗、訊息講得出原因。
 // 另外對真實的基準（baseline/hexo-2026-11-03/）驗白名單與預期集合的數字。
+// 外語首頁與工具清單（checkLocales、checkTools，主站首頁規格 J.1）另有三份世界：S 之後、I1 之後、多語（en、ja、de）。
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { spawnSync } from 'node:child_process'
@@ -13,9 +14,11 @@ import {
   runAudit, formatReport, legacyUrlFix, expectedSitemap, expectedContentEntry, canonicalJson, atomEntries,
   rootHasVpRaw, caseCollisions, callsHexo, loadBaseline, latestBaselineDir, NEW_URLS, FIXED_ANCHORS, TEXT_EXPECTED, TEMPLATE_ALLOW,
   PROFILE_EXPECTED, PROFILE_LABEL, PROFILE_SEQUENCE_LABEL, THEME_CHUNK_MAX, SIDEBAR_RELATED_MAX, regionsOf, prefetchLinksOf,
+  CHECKS, CATEGORIES_FILE, siteHomeUrlRule, gaConfigsOf, unpublishedCopyProbes, mainTextWithoutForeign, expectedSiteHomeHead,
 } from './audit-build.mjs'
-import { buildWorld } from './fixtures/world.mjs'
-import { SITE_TITLE_LEGACY } from '../source/.vitepress/theme/shared/shell/site.mjs'
+import { buildWorld, HOME_WEBSITE_LD, I1_INDEX, I1_PLAN, P1_PLAN } from './fixtures/world.mjs'
+import { readHomeMessages } from '../source/.vitepress/lib/site-home.mjs'
+import { SITE_TITLE_LEGACY, shouldLoadAds, countAdsLoaders } from '../source/.vitepress/theme/shared/shell/site.mjs'
 import { pageTypeOf } from '../source/.vitepress/lib/pagetype.mjs'
 import { SIDEBAR_RELATED_COUNT } from '../source/.vitepress/lib/pagedata.mjs'
 
@@ -46,12 +49,12 @@ function withSidebars(dist) {
   for (const [url, f] of SIDEBAR_POSTS) dist.set(f, dist.get(f).replace('</article>', `</article>${sidebarHtml(url, dist.get(f))}`))
 }
 
-/** 建世界（文章頁先補上側欄）、跑 audit、清掉暫存，回傳報告 */
-async function audit(mutate, extra = {}) {
+/** 建世界（文章頁先補上側欄）、跑 audit、清掉暫存，回傳報告；stage 見 fixtures/world.mjs 的 STAGES */
+async function audit(mutate, extra = {}, stage = 'p1') {
   const w = buildWorld((dist, world) => {
     withSidebars(dist)
     if (mutate) mutate(dist, world)
-  })
+  }, { stage })
   try {
     return await runAudit({ ...w.opts, ...extra })
   } finally {
@@ -69,11 +72,12 @@ const edit = (file, fn) => (dist) => dist.set(file, fn(dist.get(file)))
 const POST = 'development/2021/09/11/css-selector/index.html'
 const POST_URL = '/development/2021/09/11/css-selector/'
 
-test('沒改壞的測試世界：18 項檢查全部通過', async () => {
+test('沒改壞的測試世界：20 項檢查全部通過', async () => {
   const r = await audit()
   assert.equal(r.ok, true, formatReport(r))
-  assert.equal(r.checks.length, 18)
-  assert.match(formatReport(r), /結果：全部 18 項通過/)
+  assert.equal(r.checks.length, 20)
+  assert.equal(CHECKS.length, 20)
+  assert.match(formatReport(r), /結果：全部 20 項通過/)
   assert.equal(check(r, 'sidebar').stats.withSidebar, 4)
   assert.equal(check(r, 'sidebar').stats.posts, 4)
   assert.ok(r.expected.some((e) => e.target === '/_headers'))
@@ -211,7 +215,7 @@ test('廣告：不該載入的頁有 loader、loader 兩次、少了 meta、ins.
 })
 
 test('版面根元素沒有 vp-raw', async () => {
-  assertFails(await audit(edit(POST, (h) => h.replace('<div class="vp-raw"', '<div class="layout"'))), ['layout'], /沒有 vp-raw/)
+  assertFails(await audit(edit(POST, (h) => h.replace('<div class="vp-raw ', '<div class="layout '))), ['layout'], /沒有 vp-raw/)
   assert.equal(rootHasVpRaw('<div id="app"><!--[--><div data-v-1 class="a vp-raw">'), true)
   assert.equal(rootHasVpRaw('<div id="app"><main><div class="vp-raw">'), false)
   assert.equal(rootHasVpRaw('<body><div class="vp-raw">'), false)
@@ -382,8 +386,14 @@ test('白名單：每條都有理由，指到的網址在基準裡；NEW_URLS �
   assert.equal(THEME_CHUNK_MAX, 122880)
 })
 
-test('scripts/data/categories.json 跟 workspace 的 config/reserved-paths.json 一致', { skip: !fs.existsSync(path.resolve(ROOT, '../../config/reserved-paths.json')) && '找不到 workspace' }, () => {
-  const mine = JSON.parse(fs.readFileSync(path.join(ROOT, 'scripts/data/categories.json'), 'utf8'))
+test('分類白名單只有一份：theme/shared/data/categories.json，舊的 scripts/data/categories.json 已刪', () => {
+  assert.equal(CATEGORIES_FILE, 'source/.vitepress/theme/shared/data/categories.json')
+  assert.equal(fs.existsSync(path.join(ROOT, 'scripts/data/categories.json')), false)
+  assert.equal(JSON.parse(fs.readFileSync(path.join(ROOT, CATEGORIES_FILE), 'utf8')).categories.length, 27)
+})
+
+test('theme/shared/data/categories.json 跟 workspace 的 config/reserved-paths.json 一致', { skip: !fs.existsSync(path.resolve(ROOT, '../../config/reserved-paths.json')) && '找不到 workspace' }, () => {
+  const mine = JSON.parse(fs.readFileSync(path.join(ROOT, CATEGORIES_FILE), 'utf8'))
   const src = JSON.parse(fs.readFileSync(path.resolve(ROOT, '../../config/reserved-paths.json'), 'utf8'))
   assert.deepEqual(mine.categories, src.categories)
   assert.equal(mine.categories.length, 27)
@@ -414,4 +424,236 @@ test('CLI：--print-baseline-commit 印出基準 commit；--dist 指到測試世
   const bad = spawnSync(process.execPath, [script, '--nope'], { encoding: 'utf8' })
   assert.equal(bad.status, 1)
   assert.match(bad.stderr, /不認得的參數/)
+})
+
+// ============================================================================
+// 外語首頁與全站工具清單（主站首頁規格 J.1）
+// ============================================================================
+
+const EN = 'en/index.html'
+const HOME = 'index.html'
+const at = (stage) => (mutate, extra = {}) => audit(mutate, extra, stage)
+const p1 = at('p1')
+const s = at('s')
+const i1 = at('i1')
+const multi = at('multi')
+
+test('S 之後、I1 之後、多語三份世界：20 項全部通過', async () => {
+  for (const [stage, run] of [['s', s], ['i1', i1], ['multi', multi]]) {
+    const r = await run()
+    assert.equal(r.ok, true, `${stage}\n${formatReport(r)}`)
+    assert.equal(r.checks.length, 20)
+  }
+  const r = await i1()
+  assert.deepEqual(check(r, 'locales').stats.published, ['en'])
+  assert.equal(check(r, 'locales').stats.homes, 1)
+  assert.ok(check(r, 'tools').stats.compared > 10)
+  assert.ok(r.expected.some((e) => /外語首頁/.test(e.reason)))
+})
+
+test('checkLocales 的摘要用量到的數字，不從 plan 推：P1 是全部 zh-TW、0 頁 hreflang；改壞時摘要跟著變', async () => {
+  const ok = check(await p1(), 'locales')
+  assert.equal(ok.stats.zh, ok.stats.pages)
+  assert.equal(ok.stats.hreflang, 0)
+  assert.equal(ok.stats.menu, 0)
+  assert.match(ok.summary, new RegExp(`沒有外語首頁（home\\.locales 是空的），shell legacy；量到 ${ok.stats.pages} 頁裡 ${ok.stats.pages} 頁是 zh-TW、0 頁有 hreflang、0 頁有語言選單`))
+  const bad = check(await p1(edit(POST, (h) => h.replace('</head>', '<link rel="alternate" hreflang="en" href="https://www.casper.tw/en/">\n</head>'))), 'locales')
+  assert.equal(bad.stats.hreflang, 1)
+  assert.match(bad.summary, /、1 頁有 hreflang、/)
+  const multiLocales = check(await i1(), 'locales')
+  assert.equal(multiLocales.stats.zh, multiLocales.stats.pages - 1)
+  assert.match(multiLocales.summary, /^外語首頁 \/en\/，shell shared；量到/)
+})
+
+test('checkUrls：外語首頁只在 plan.published 時放行', () => {
+  assert.equal(siteHomeUrlRule([]).test('/en/'), false)
+  assert.equal(siteHomeUrlRule(['en']).test('/en/'), true)
+  assert.equal(siteHomeUrlRule(['en']).test('/ja/'), false)
+  assert.equal(siteHomeUrlRule(['en']).test('/en/index.html'), false)
+  assert.equal(NEW_URLS.some((r) => r.test('/en/')), false)
+})
+
+test('L1：外語首頁的 <html lang> 是 htmlLang(code)，其他是 zh-TW', async () => {
+  assertFails(await i1(edit(EN, (h) => h.replace('<html lang="en"', '<html lang="zh-TW"'))), ['locales'], /L1：\/en\/ 的 <html lang> 是 「zh-TW」，要是 en/)
+  assertFails(await i1(edit(POST, (h) => h.replace('<html lang="zh-TW"', '<html lang="en"'))), ['locales', 'pages'], /L1：.*css-selector.*要是 zh-TW|lang：預期/)
+})
+
+test('L2：外語首頁底下不放子頁，沒上線的語系不能有資料夾', async () => {
+  assertFails(await i1((d) => d.set('en/notes.txt', 'x')), ['locales', 'urls'], /這份規格範圍內外語首頁底下不放子頁，要加子頁另開規格|未預期的新網址/)
+  assertFails(await i1((d) => d.delete(EN)), ['locales'], /L2：dist 沒有 en\/|L3：dist 沒有 \/en\//)
+  assertFails(await p1((d) => d.set('zh-tw/robots.txt', 'x')), ['locales', 'urls'], /\/zh-tw\/ 不產生|未預期的新網址/)
+})
+
+test('L3：外語首頁的 head 值與順序、DOM 契約', async () => {
+  assertFails(await i1(edit(EN, (h) => h.replace(/property="og:title" content="[^"]*"/, 'property="og:title" content="Tools"'))), ['locales'], /L3：\/en\/ 的 head 跟 D\.2 的值與順序不同/)
+  // canonical 搬到 og:url 後面：值都對，順序不對
+  assertFails(await i1(edit(EN, (h) => {
+    const canonical = /<link rel="canonical"[^>]*>\n?/.exec(h)[0]
+    return h.replace(canonical, '').replace(/(<meta property="og:url"[^>]*>)/, `$1\n${canonical}`)
+  })), ['locales'], /第 3 項預期 「canonical=https:\/\/www\.casper\.tw\/en\/」/)
+  assertFails(await i1(edit(EN, (h) => h.replace('class="b3d" href="https://www.casper.tw/en/#tools"', 'class="b3d" href="#tools"'))), ['locales'], /首屏按鈕要連 https:\/\/www\.casper\.tw\/en\/#tools/)
+  assertFails(await i1(edit(EN, (h) => h.replace('<section class="cs-shome__articles"', '<section class="cs-shome__posts"'))), ['locales'], /\.cs-shome 的區塊是/)
+  assertFails(await i1(edit(EN, (h) => h.replace(/(<a href="https:\/\/www\.casper\.tw\/about\/") hreflang="zh-Hant"/, '$1'))), ['locales'], /要是絕對網址並加 hreflang="zh-Hant"/)
+  // ja 頁的站名是英文，要包 <span lang="en" data-foreign>
+  assertFails(await multi(edit('ja/index.html', (h) => h.replace(/<h1 id="cs-shome-h1"><span lang="en" data-foreign>([^<]*)<\/span><\/h1>/, '<h1 id="cs-shome-h1">$1</h1>'))), ['locales'], /要包 <span lang="en" data-foreign>/)
+})
+
+test('L4、L5：hreflang 叢集與 og:locale:alternate', async () => {
+  assertFails(await i1(edit(HOME, (h) => h.replace(/<link rel="alternate" hreflang="zh"[^>]*>\n?/, ''))), ['locales'], /L4：\/ 的 hreflang 跟首頁叢集不同：少了 zh=https:\/\/www\.casper\.tw\/|hreflang="zh" 指 \//)
+  assertFails(await i1(edit(EN, (h) => h.replace('hreflang="x-default" href="https://www.casper.tw/en/"', 'hreflang="x-default" href="https://www.casper.tw/"'))), ['locales'], /x-default 要是 https:\/\/www\.casper\.tw\/en\/|L3/)
+  assertFails(await i1(edit(POST, (h) => h.replace('</head>', '<link rel="alternate" hreflang="en" href="https://www.casper.tw/en/">\n</head>'))), ['locales'], /不在首頁叢集，不能有 link\[hreflang\]/)
+  assertFails(await p1(edit(HOME, (h) => h.replace('</head>', '<link rel="alternate" hreflang="en" href="https://www.casper.tw/en/">\n</head>'))), ['locales'], /L4：\/ 的 hreflang 跟首頁叢集不同：多了 en=/)
+  assertFails(await i1(edit(HOME, (h) => h.replace(/<meta property="og:locale:alternate"[^>]*>\n?/, ''))), ['locales'], /L5：\/ 的 og:locale:alternate 跟叢集裡的其他語系不同/)
+})
+
+test('L6：sitemap 有外語首頁，沒有 xhtml:link', async () => {
+  assertFails(await i1(edit('sitemap.xml', (x) => x.replace('<url><loc>https://www.casper.tw/en/</loc></url>', ''))), ['locales', 'feeds'], /L6：sitemap 少了外語首頁|sitemap 少了 https:\/\/www\.casper\.tw\/en\//)
+  assertFails(await i1(edit('sitemap.xml', (x) => x.replace('<url><loc>https://www.casper.tw/en/</loc></url>', '<url><loc>https://www.casper.tw/en/</loc><xhtml:link rel="alternate" hreflang="en" href="https://www.casper.tw/en/"/></url>'))), ['locales'], /不放 xhtml:link/)
+})
+
+test('L7：dist 沒有 preview 的痕跡，外語首頁沒有 robots meta', async () => {
+  assertFails(await i1(edit(EN, (h) => h.replace('page-type-site-home"', 'page-type-site-home cs-preview"'))), ['locales'], /L7：\/en\/ 有 preview 的 class/)
+  assertFails(await i1(edit(EN, (h) => h.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex, nofollow">'))), ['locales'], /L7：\/en\/ 有 robots meta/)
+})
+
+test('L8：S 起 404 不 hydrate；I1 起 404 有多語提示', async () => {
+  assertFails(await s(edit('404.html', (h) => h.replace('</head>', '<script type="module" src="/assets/app.Bc12xY.js"></script>\n</head>'))), ['locales'], /404 有 <script type="module">/)
+  assertFails(await s(edit('404.html', (h) => h.replace('</head>', '<link rel="modulepreload" href="/assets/chunks/theme.Dx9.js">\n</head>'))), ['locales'], /modulepreload/)
+  assertFails(await s(edit('404.html', (h) => h.replace('<h1>這頁找不到</h1>', '<h1>這頁找不到</h1><button type="button">搜尋文章</button>'))), ['locales'], /404 的 <main> 裡有 <button>/)
+  // P1 的 404 會 hydrate（還是 VitePress 內建的 404），不驗
+  assert.equal((await p1(edit('404.html', (h) => h.replace('</head>', '<script type="module" src="/assets/app.Bc12xY.js"></script>\n</head>')))).ok, true)
+  assertFails(await i1(edit('404.html', (h) => h.replace(/<ul class="cs-404__intl">[\s\S]*?<\/ul>/, ''))), ['locales'], /L8：404 的多語提示要剛好列出 en/)
+  assertFails(await i1(edit('404.html', (h) => h.replace('<li lang="en">', '<li>'))), ['locales'], /多語提示要剛好列出 en，實際 （沒有 lang）/)
+})
+
+test('L9：繁中頁的語言選單是繁中加 plan.published，每個連結有 hreflang 與 lang', async () => {
+  assertFails(await i1(edit(POST, (h) => h.replace(/<details class="cs-lang"[\s\S]*?<\/details>/, ''))), ['locales'], /L9：.*沒有語言選單/)
+  assertFails(await i1(edit(POST, (h) => h.replace(/(<details class="cs-lang"[\s\S]*?)<span class="cs-lang__note"> \(home page\)<\/span>/, '$1'))), ['locales'], /L9：.*跟 languageTargets\(\) 不同/)
+  assertFails(await i1(edit(POST, (h) => h.replace(/(<details class="cs-lang"[\s\S]*?) hreflang="en"/, '$1'))), ['locales'], /要有 hreflang 與 lang|跟 languageTargets/)
+  assertFails(await i1(edit('404.html', (h) => h.replace('<div class="cs-hdr__tools">', '<div class="cs-hdr__tools"><details class="cs-lang"><ul></ul></details>'))), ['locales'], /404 用多語提示/)
+})
+
+test('L10：site-card.json 等於 { shell, siteHomes: plan.published }；tools.json 的 siteHomes 是子集', async () => {
+  assertFails(await i1((d, w) => w.rootFiles.set('site-card.json', JSON.stringify({ schema: 1, shell: 'shared', siteHomes: [] }))), ['locales'], /L10：site-card\.json 的 siteHomes/)
+  assertFails(await p1((d, w) => w.rootFiles.set('site-card.json', JSON.stringify({ schema: 1, shell: 'shared', siteHomes: [] }))), ['locales'], /L10：site-card\.json 的 shell/)
+  assertFails(await p1((d, w) => w.rootFiles.delete('site-card.json')), ['locales'], /沒有 site-card\.json/)
+  assertFails(await i1(null, { toolsIndex: { ...I1_INDEX, siteHomes: ['en', 'ja'] } }), ['locales'], /tools\.json 的 siteHomes 有 ja/)
+  // tools.json 落後一版（還沒有 en）是正常的
+  assert.equal((await i1(null, { toolsIndex: { ...I1_INDEX, siteHomes: [] } })).ok, true)
+})
+
+test('L11：外語首頁的 AdSense loader 照 shouldLoadAds；沒有 FB Pixel、article:author；GA4 是 site-home 加 page_locale', async () => {
+  const loader = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8296684122088055" crossorigin="anonymous"></script>'
+  // site-home 跟繁中首頁一樣是 standardOnly（站長 2026-11-04，0008 更正第 9 點）：standard 要有一個 loader，allowlist 要沒有
+  assert.equal(shouldLoadAds({ type: 'site-home' }, 'standard'), true)
+  assert.equal(shouldLoadAds({ type: 'site-home' }, 'allowlist'), false)
+  let enHtml = ''
+  assert.equal((await i1((d) => { enHtml = d.get(EN) })).ok, true)
+  assert.equal(countAdsLoaders(enHtml), 1, 'I1 世界的 /en/ 有一個 loader')
+  assertFails(await i1(edit(EN, (h) => h.replace(loader, ''))), ['locales', 'ads'], /L11：\/en\/ 要載一次 AdSense loader（ADS_MODE standard），找到 0 個|（site-home）應該載入 loader/)
+  assertFails(await i1(edit(EN, (h) => h.replace('</head>', `${loader}\n</head>`))), ['locales', 'ads'], /L11：\/en\/ 要載一次 AdSense loader（ADS_MODE standard），找到 2 個|loader 出現 2 次/)
+  const allow = await i1(null, { adsMode: 'allowlist' })
+  assert.ok(check(allow, 'locales').failures.some((f) => /L11：\/en\/ 不該載 AdSense loader（ADS_MODE allowlist）/.test(f)), check(allow, 'locales').failures.join('\n'))
+  assert.ok(check(allow, 'ads').failures.some((f) => /\/en\/（site-home）不該載入 loader/.test(f)), check(allow, 'ads').failures.join('\n'))
+  assert.equal((await i1(edit(EN, (h) => h.replace(loader, '')), { adsMode: 'allowlist' }).then((r) => check(r, 'locales').failures.filter((f) => /L11/.test(f)))).length, 0, 'allowlist 時沒有 loader 的 /en/ 過 L11')
+  assertFails(await i1(edit(EN, (h) => h.replace('</head>', "<script>!function(){var s=document.createElement('script');s.src='https://connect.facebook.net/en_US/fbevents.js'}()</script>\n</head>"))), ['locales'], /有 FB Pixel/)
+  assertFails(await i1(edit(EN, (h) => h.replace('</head>', '<meta property="article:author" content="Wang Casper">\n</head>'))), ['locales'], /有 article:author/)
+  assertFails(await i1(edit(EN, (h) => h.replace('"page_locale":"en"', '"page_locale":"zh-tw"'))), ['locales'], /GA4 要是 content_group 'site-home'、page_locale 'en'/)
+  assertFails(await i1(edit(POST, (h) => h.replace('</head>', `<script>gtag('config', "G-97433H4032", {"content_group":"blog","page_locale":"zh-tw"})</script>\n</head>`))), ['locales'], /是繁中頁，GA4 不帶 page_locale/)
+  // 舊的 GA4 片段是 JS 物件字面值
+  assert.deepEqual(gaConfigsOf("w.gtag('config','G-97433H4032',{content_group:'blog'})"), [{ content_group: 'blog' }])
+})
+
+test('L12：外語首頁 <main> 的書寫系統，其他語言的片段要有 lang 與 data-foreign', async () => {
+  assertFails(await i1(edit(EN, (h) => h.replace('<section id="about"', '<p>卡斯伯的前端筆記</p><section id="about"'))), ['locales'], /L12：\/en\/ .*no-cjk/)
+  assertFails(await i1(edit(EN, (h) => h.replace('<section id="about"', '<p><span lang="ja">テスト</span></p><section id="about"'))), ['locales'], /<span lang="ja"> 跟頁面語言不同，要加 data-foreign/)
+  // 包了 lang 與 data-foreign 的外語片段不算進本頁語言
+  assert.equal((await i1(edit(EN, (h) => h.replace('<section id="about"', '<p><span lang="zh-Hant" data-foreign>卡斯伯</span></p><section id="about"')))).ok, true)
+  assert.equal(mainTextWithoutForeign('<main><p>A <span data-foreign>中文</span> <code>x</code> b</p></main>'), 'A b')
+})
+
+test('L13：外語首頁頁尾的法務連結（隱私權、ja 的外部送信、de 的 Impressum 豁免）', async () => {
+  assertFails(await i1(edit(EN, (h) => h.replace(/<li><a href="https:\/\/www\.casper\.tw\/site-policies\/privacy\/"[^>]*>[^<]*<\/a><\/li>/, ''))), ['locales'], /L13：\/en\/ 的頁尾沒有連到 https:\/\/www\.casper\.tw\/site-policies\/privacy\/ 的隱私權連結/)
+  assertFails(await i1(edit(EN, (h) => h.replace('hreflang="en">Privacy policy', 'hreflang="zh-Hant">Privacy policy'))), ['locales'], /隱私權連結 hreflang 是 「zh-Hant」，要是 en/)
+  assertFails(await i1(edit(EN, (h) => h.replace('hreflang="en">Privacy policy</a>', 'hreflang="en">Privacy policy (in Traditional Chinese)</a>'))), ['locales'], /連結字不該有繁中標示/)
+  assertFails(await multi(edit('ja/index.html', (h) => h.replace(/<li><a href="https:\/\/www\.casper\.tw\/site-policies\/ja\/privacy\/#external"[^>]*>[^<]*<\/a><\/li>/, ''))), ['locales'], /L13：\/ja\/ 的頁尾沒有 externalTransmission 連結/)
+  assertFails(await multi(edit('de/index.html', (h) => h.replace('</ul><p class="cs-ftr__copy">', '<li><a href="https://www.casper.tw/site-policies/de/impressum/" hreflang="de">Impressum</a></li></ul><p class="cs-ftr__copy">'))), ['locales'], /L13：\/de\/ 的 impressum 是站長豁免（LEGAL_DECISIONS），頁尾不該有這個連結/)
+})
+
+test('T1：首頁與外語首頁的 #tools、每頁頁尾的工具組等於 siteToolLinks()', async () => {
+  assertFails(await i1(edit(POST, (h) => h.replace('>抽獎大師</a></li></ul></nav>', '>抽獎</a></li></ul></nav>'))), ['tools'], /T1：.*css-selector.* 的頁尾工具組 跟 siteToolLinks/)
+  assertFails(await i1(edit(EN, (h) => h.replace(/<span class="cs-toolcard__sum">[^<]*<\/span>/, ''))), ['tools'], /T1：\/en\/ 的 #tools 跟 siteToolLinks\(index, \{ locale: 'en' \}\) 不同/)
+  assertFails(await i1(edit(HOME, (h) => h.replace(/<section id="tools"[\s\S]*?<\/section>/, ''))), ['tools'], /T1：\/ 的 #tools/)
+  assertFails(await p1(edit(POST, (h) => h.replace('</footer>', '<nav class="cs-ftr__group cs-ftr__group--tools"><a href="https://www.casper.tw/lucky-draw/">抽獎大師</a></nav></footer>'))), ['tools'], /頁尾有工具組，但 tools\.json 沒有工具/)
+  // multi：de 沒有 lucky-draw 的德文版，卡片退到 en，名稱包 lang="en" 並接 inEnglish 標示
+  assertFails(await multi(edit('de/index.html', (h) => h.replace(/<span class="cs-toolcard__name">([^<]*)<span lang="en" data-foreign>/, '<span class="cs-toolcard__name">$1<span>'))), ['tools'], /T1：\/de\/ 的 #tools/)
+})
+
+test('T2：工具連結是 https://www.casper.tw/<slug>/ 開頭、帶尾斜線', async () => {
+  const bad = { ...I1_INDEX, tools: [{ ...I1_INDEX.tools[0], locales: { ...I1_INDEX.tools[0].locales, en: { ...I1_INDEX.tools[0].locales.en, url: 'https://www.casper.tw/lucky-draw/en' } } }] }
+  assertFails(await i1(null, { toolsIndex: bad }), ['tools'], /T2：tools\.json 的 lucky-draw（en）網址/)
+  assertFails(await i1(edit(EN, (h) => h.replaceAll('href="https://www.casper.tw/lucky-draw/en/"', 'href="https://lucky.example.com/en/"'))), ['tools'], /T2：\/en\/ 的工具連結 「https:\/\/lucky\.example\.com\/en\/」/)
+})
+
+test('T3：頁首、頁尾、#tools、外語首頁沒有 pocketool.app 的連結（文章內文不查）', async () => {
+  assertFails(await i1(edit(POST, (h) => h.replace('</footer>', '<a href="https://pocketool.app/lucky/">口袋工具</a></footer>'))), ['tools'], /T3：.*pocketool\.app/)
+  assertFails(await i1(edit(EN, (h) => h.replace('<section id="about"', '<p><a href="https://www.pocketool.app/">x</a></p><section id="about"'))), ['tools'], /T3：\/en\/ 有連到口袋工具的連結/)
+  assert.equal((await i1(edit(POST, (h) => h.replace('</article>', '<p><a href="https://pocketool.app/">內文提到口袋工具</a></p></article>')))).ok, true)
+})
+
+test('T4：頁首「工具」連結存在若且唯若 tools.json 有工具', async () => {
+  assertFails(await i1(edit(POST, (h) => h.replace('<a href="https://www.casper.tw/#tools">工具</a>', ''))), ['tools'], /T4：.*頁首沒有「工具」連結/)
+  assertFails(await p1(edit(POST, (h) => h.replace('<a href="/categories/">文章</a></header>', '<a href="/#tools">工具</a><a href="/categories/">文章</a></header>'))), ['tools'], /T4：.*頁首有「工具」連結，但 tools\.json 沒有工具/)
+})
+
+test('checkFeeds：I1 的 sitemap 有 /en/ 才對；P1 多了 /en/ 就失敗；外語首頁沒有 lastmod，不進 atom 與 content.json', async () => {
+  assert.equal(check(await i1(), 'feeds').ok, true)
+  assertFails(await p1(edit('sitemap.xml', (x) => x.replace('</urlset>', '<url><loc>https://www.casper.tw/en/</loc></url>\n</urlset>'))), ['feeds'], /sitemap 多了 https:\/\/www\.casper\.tw\/en\//)
+  assertFails(await i1(edit('sitemap.xml', (x) => x.replace('<url><loc>https://www.casper.tw/en/</loc></url>', '<url><loc>https://www.casper.tw/en/</loc><lastmod>2026-11-04</lastmod></url>'))), ['feeds'], /外語首頁 https:\/\/www\.casper\.tw\/en\/ 不該有 lastmod/)
+  assertFails(await i1(edit('atom.xml', (x) => x.replace('</feed>', '<entry><id>https://www.casper.tw/en/</id></entry></feed>'))), ['feeds'], /atom\.xml 有外語首頁|atom\.xml 有/)
+  assertFails(await i1(edit('content.json', (x) => JSON.stringify([...JSON.parse(x), { title: 'en', path: 'en/', categories: [], tags: [] }]))), ['feeds'], /content\.json 有外語首頁|content\.json 有/)
+  const s2 = expectedSitemap(REAL.sitemap, { siteHomes: ['en', 'ja'] })
+  assert.equal(s2.size, 471)
+  assert.ok(s2.has('https://www.casper.tw/en/') && s2.has('https://www.casper.tw/ja/'))
+})
+
+test('checkSiteName、checkJsonLd、checkAds、checkLayout、checkCategories、checkChunks 的外語首頁規則', async () => {
+  assertFails(await i1(edit(EN, (h) => h.replace(/og:site_name" content="[^"]*"/, 'og:site_name" content="卡斯伯 Blog - 前端，沒有極限"'))), ['site-name', 'locales'], /og:site_name：預期 「casper\.tw」（siteName\('en'\)）|L3/)
+  assertFails(await i1(edit(EN, (h) => h.replace('"inLanguage":"en"', '"inLanguage":"zh-TW"'))), ['jsonld'], /WebPage inLanguage：預期 「en」/)
+  assertFails(await i1(edit(EN, (h) => h.replace('"isPartOf":{"@id":"https://www.casper.tw/#website"}', '"isPartOf":{"@id":"https://www.casper.tw/"}'))), ['jsonld'], /WebPage isPartOf/)
+  // 有外語首頁時 / 一定要有 isPartOf 指的 WebSite（P3 只改站名、沒加 WebSite 時擋下 I1）
+  const noSite = (h) => h.replace(/<script type="application\/ld\+json">\{"@context":"https:\/\/schema\.org","@type":"WebSite"[^<]*<\/script>\n?/, '')
+  assert.notEqual(noSite(HOME_WEBSITE_LD + '\n'), HOME_WEBSITE_LD + '\n', 'noSite 要能拿掉 fixture 的 WebSite')
+  assertFails(await i1(edit(HOME, noSite)), ['jsonld'], /\/（home）沒有 @id 是 https:\/\/www\.casper\.tw\/#website 的 WebSite：外語首頁 \/en\/ 的 WebPage isPartOf 指向它/)
+  assertFails(await i1(edit(HOME, (h) => h.replace('"@id":"https://www.casper.tw/#website"', '"@id":"https://www.casper.tw/#site"'))), ['jsonld'], /沒有 @id 是 https:\/\/www\.casper\.tw\/#website 的 WebSite/)
+  assertFails(await i1(edit(EN, (h) => h.replace('page-type-site-home"', 'page-type-legal"'))), ['layout', 'locales'], /要有 page-type-site-home|L3/)
+  assertFails(await i1(edit(POST, (h) => h.replace('</footer>', '</footer><main></main>'))), ['layout'], /有 2 個 <main>，要剛好一個/)
+  assertFails(await s(edit(POST, (h) => h.replace('<header class="cs-hdr">', '<header class="site-header">'))), ['layout'], /沒有共用頁首/)
+  // 分類與標籤的路徑段不能是語系代碼
+  assertFails(await p1((d) => d.set('tags/ja/index.html', d.get('tags/vue/index.html'))), ['categories', 'urls'], /tags\/ja\/ 的路徑段是語系代碼|未預期/)
+  const r = await p1(null, { posts: (await import('./fixtures/world.mjs')).buildWorld().opts.posts.map((x, i) => (i ? x : { ...x, tags: [...x.tags, 'DE'] })) })
+  assert.ok(check(r, 'categories').failures.some((f) => /分類或標籤「DE」是語系代碼/.test(f)), formatReport(r))
+  // 沒上線語系的文案與 preview 提示字不能進 client chunk
+  const ja = readHomeMessages('ja')
+  assertFails(await i1(edit('assets/chunks/theme.Dx9.js', (x) => `${x}export const t=${JSON.stringify(ja.hero.lead)};\n`)), ['chunks'], /沒上線的 ja 文案（hero\.lead）/)
+  assertFails(await i1(edit('assets/app.Bc12xY.js', (x) => `${x}const n="Preview: not reviewed";\n`)), ['chunks'], /preview 的提示字/)
+  assertFails(await p1(edit('assets/app.Bc12xY.js', (x) => `${x}const n=${JSON.stringify(readHomeMessages('en').menu.homeOnly)};\n`)), ['chunks'], /沒上線的 en 文案（menu\.homeOnly）/)
+  // 已上線語系的文案不算外洩
+  assert.equal((await i1(edit('assets/app.Bc12xY.js', (x) => `${x}const n=${JSON.stringify(readHomeMessages('en').menu.homeOnly)};\n`))).ok, true)
+  const probes = unpublishedCopyProbes({ plan: I1_PLAN, readHome: readHomeMessages })
+  assert.ok(!probes.some((p) => /沒上線的 en/.test(p.label)))
+  assert.ok(probes.some((p) => p.text === readHomeMessages('ko').menu.homeOnly))
+  assert.ok(unpublishedCopyProbes({ plan: P1_PLAN, readHome: readHomeMessages }).some((p) => /沒上線的 en/.test(p.label)))
+})
+
+test('expectedSiteHomeHead：D.2 的順序，x-default 在 hreflang 最後，og:image 四條在 JSON-LD 前', () => {
+  const seq = expectedSiteHomeHead('en', { plan: I1_PLAN, readHome: readHomeMessages })
+  assert.match(seq[0], /^title=/)
+  assert.match(seq[1], /^description=/)
+  assert.equal(seq[2], 'canonical=https://www.casper.tw/en/')
+  const hl = seq.filter((x) => x.startsWith('hreflang:'))
+  assert.equal(hl.at(-1), 'hreflang:x-default=https://www.casper.tw/en/')
+  assert.ok(hl.includes('hreflang:zh=https://www.casper.tw/'))
+  assert.equal(seq.at(-1), 'jsonld=WebPage')
+  assert.deepEqual(seq.filter((x) => x.startsWith('og:locale')), ['og:locale=en_US', 'og:locale:alternate=zh_TW'])
 })

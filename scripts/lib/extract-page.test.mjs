@@ -244,3 +244,51 @@ test('demoCssLinks 與 jsonLdNodes', () => {
   assert.deepEqual(nodes.map((n) => n['@type']), ['BlogPosting', ['WebPage', 'X']])
   assert.equal(invalid, 1)
 })
+
+// ---------------------------------------------------------------------------
+// 外語首頁、語言選單、工具組（主站首頁規格 J.1）
+// ---------------------------------------------------------------------------
+
+test('outerHtmlOf 與 elementsWhere：同名標籤照巢狀配對，void 元素只有開始標籤', () => {
+  const html = '<div class="a"><div class="b"><img src="x"></div><p>t</p></div><div class="c"></div>'
+  const els = port.elementsWhere(html, (t) => t.name === 'div')
+  assert.deepEqual(els.map((e) => e.attrs.class), ['a', 'b', 'c'])
+  assert.equal(els[0].outer, '<div class="a"><div class="b"><img src="x"></div><p>t</p></div>')
+  assert.equal(els[0].inner, '<div class="b"><img src="x"></div><p>t</p>')
+  const img = port.elementsWhere(html, (t) => t.name === 'img')[0]
+  assert.deepEqual([img.outer, img.inner], ['<img src="x">', ''])
+})
+
+test('rootClassesOf、hreflangLinksOf、ogLocalesOf、siteHomeHeadSequence', () => {
+  const html = '<html><head><title>A &amp; B</title><meta name="description" content="d"><meta name="twitter:card" content="summary">' +
+    '<link rel="canonical" href="https://www.casper.tw/en/"><link rel="alternate" hreflang="en" href="https://www.casper.tw/en/">' +
+    '<link rel="alternate" hreflang="x-default" href="https://www.casper.tw/en/"><link rel="alternate" href="/atom.xml" type="application/atom+xml">' +
+    '<meta property="og:locale" content="en_US"><meta property="og:locale:alternate" content="zh_TW">' +
+    '<script type="application/ld+json">[{"@type":"WebPage"}]</script></head>' +
+    '<body><div id="app"> <!-- x --><div class="vp-raw site page-type-site-home"></div></div></body></html>'
+  assert.deepEqual(port.rootClassesOf(html), ['vp-raw', 'site', 'page-type-site-home'])
+  assert.deepEqual(port.rootClassesOf('<div id="app"></div>'), [])
+  assert.deepEqual(port.hreflangLinksOf(html), [{ hreflang: 'en', href: 'https://www.casper.tw/en/' }, { hreflang: 'x-default', href: 'https://www.casper.tw/en/' }])
+  assert.deepEqual(port.ogLocalesOf(html), { locale: ['en_US'], alternates: ['zh_TW'] })
+  assert.deepEqual(port.siteHomeHeadSequence(html), [
+    'title=A & B', 'description=d', 'canonical=https://www.casper.tw/en/', 'hreflang:en=https://www.casper.tw/en/',
+    'hreflang:x-default=https://www.casper.tw/en/', 'og:locale=en_US', 'og:locale:alternate=zh_TW', 'jsonld=WebPage',
+  ])
+})
+
+test('toolLinksIn：頁尾的工具連結與 #tools 的卡片，名稱拆成 before、label（lang）、after', () => {
+  const footer = '<a href="https://www.casper.tw/lucky-draw/" hreflang="zh-Hant">抽獎大師 <span lang="en" data-foreign="">Lucky Draw</span>（中文）</a>'
+  assert.deepEqual(port.toolLinksIn(footer), [{ href: 'https://www.casper.tw/lucky-draw/', hreflang: 'zh-Hant', before: '抽獎大師', label: 'Lucky Draw', lang: 'en', after: '（中文）', summary: null }])
+  const card = '<a class="cs-toolcard" href="https://www.casper.tw/lucky-draw/en/"><img alt=""><span class="cs-toolcard__name">Lucky Draw</span><span class="cs-toolcard__sum">Draw &amp; spin</span></a>'
+  assert.deepEqual(port.toolLinksIn(card), [{ href: 'https://www.casper.tw/lucky-draw/en/', hreflang: null, before: '', label: 'Lucky Draw', lang: null, after: '', summary: 'Draw & spin' }])
+})
+
+test('languageItemsIn：目前語系是 span，沒有 href；附註另外拆出', () => {
+  const menu = '<details class="cs-lang"><summary>Language</summary><ul>' +
+    '<li><span class="cs-lang__item cs-lang__item--current" aria-current="true" lang="en">English</span></li>' +
+    '<li><a class="cs-lang__item" href="https://www.casper.tw/" hreflang="zh-Hant" lang="zh-Hant-TW">繁體中文<span class="cs-lang__note">（首頁）</span></a></li></ul></details>'
+  assert.deepEqual(port.languageItemsIn(menu), [
+    { current: true, href: null, hreflang: null, lang: 'en', text: 'English', note: null },
+    { current: false, href: 'https://www.casper.tw/', hreflang: 'zh-Hant', lang: 'zh-Hant-TW', text: '繁體中文', note: '（首頁）' },
+  ])
+})

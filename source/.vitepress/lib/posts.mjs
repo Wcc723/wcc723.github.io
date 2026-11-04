@@ -3,6 +3,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import matter from 'gray-matter'
+import { LOCALES } from '../theme/shared/shell/i18n/locales.mjs'
 
 export const SITE_URL = 'https://www.casper.tw'
 export const POSTS_DIR = '_posts'
@@ -94,9 +95,20 @@ export function unpublishedFiles(srcDir) {
     .map((p) => p.src)
 }
 
+// VitePress 的語系判斷沒有錨定開頭（/tags/es/ 會被當成西文頁，主站首頁規格 B.3）：
+// 文章網址的 category 或 slug 段不分大小寫等於任何語系代碼，就丟錯
+const LOCALE_CODES = new Set(LOCALES.map((l) => l.code.toLowerCase()))
+
+export function assertNoLocaleSegment(p) {
+  for (const seg of [p.category, p.slug]) {
+    if (LOCALE_CODES.has(String(seg).toLowerCase())) throw new Error(`文章 ${p.file} 的 ${seg} 跟語系代碼相同，VitePress 會把它當成外語頁`)
+  }
+  return p
+}
+
 // VitePress rewrites：_posts/<檔名>.md → <category>/<YYYY>/<MM>/<DD>/<slug>/index.md
 export function postRewrites(srcDir) {
   const map = {}
-  for (const p of loadPosts(srcDir)) map[p.src] = p.out
+  for (const p of loadPosts(srcDir)) map[assertNoLocaleSegment(p).src] = p.out
   return map
 }

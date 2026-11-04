@@ -17,6 +17,10 @@ import { SITE_TITLE_LEGACY, adsenseHead, shouldLoadAds, stripAdsLoader } from '.
 import { SITE_URL, toAbsolute } from './posts.mjs'
 import { pageTypeOf } from './pagetype.mjs'
 import { NOT_FOUND_DESCRIPTION, NOT_FOUND_TITLE } from '../theme/head.mjs'
+import { getLocale } from '../theme/shared/shell/i18n/locales.mjs'
+import { siteHomeAlternates, siteHomeUrl } from '../theme/shared/shell/i18n/urls.mjs'
+import { hreflangHead, ogLocaleHead, siteName } from '../theme/shared/shell/i18n/seo.mjs'
+import { ga4HeadHtml } from '../theme/shared/shell/analytics.mjs'
 import LEGACY from './legacy-descriptions.json' with { type: 'json' }
 
 // ---------------------------------------------------------------------------
@@ -33,6 +37,13 @@ export const ARTICLE_AUTHOR = 'Wang Casper'
 /** 首頁與 /page/N/ 的 description：Hexo 的 config.description 是空的，主題改用 theme.tagline */
 export const HOME_DESCRIPTION = '前端，沒有極限'
 export const DEMO_CSS_BASE = 'https://img.casper.tw/demoFile/css/'
+
+/** 外語首頁的分享圖：跟範本同一張（主站首頁規格 D.2）；換 1200 × 630 分享圖是範本已列的待辦 */
+export const SITE_HOME_OG_IMAGE = { url: 'https://img.casper.tw/brand/ghost/s-hero.webp', width: 960, height: 894 }
+/** P3 在 / 加的 WebSite 的 @id；外語首頁的 WebPage 用 isPartOf 指它（D.4） */
+export const WEBSITE_ID = `${SITE_URL}/#website`
+/** 沒有傳 plan 時：沒有任何外語首頁（P1、P2 的狀態） */
+export const EMPTY_HOME_PLAN = Object.freeze({ stage: 'live', published: [], pages: [], problems: [], warnings: [] })
 
 /** 全站唯一的作者與出品者（計畫「SEO」的結構化資料）。P3 改成 ProfilePage 時也指向這個 @id */
 export const PERSON_ID = `${SITE_URL}/about/#person`
@@ -333,12 +344,32 @@ export function breadcrumbList(crumbs, canonical) {
 }
 
 /**
+ * / 的 JSON-LD（P2 是空的，P3 加 WebSite）。外語首頁的關卡 G6 用它確認 WebPage 的 isPartOf 指得到（主站首頁規格 D.4）
+ */
+export const homeJsonLd = () => jsonLdFor({ type: 'home', url: '/', fm: {}, canonical: `${SITE_URL}/`, displayTitle: SITE_TITLE_LEGACY, description: HOME_DESCRIPTION })
+
+/**
  * 一頁的 JSON-LD 物件陣列，放在同一個 <script> 的頂層陣列裡（同一份資料，author 的 @id 指得到 Person）。
  * 文章：BlogPosting ＋ BreadcrumbList ＋ Person；列表、分類、標籤、索引頁：CollectionPage ＋ BreadcrumbList；
  * about 與法務頁：WebPage ＋ BreadcrumbList；首頁這一版不加，404 不輸出。全站不做 FAQPage。
  */
 export function jsonLdFor({ type, fm, canonical, displayTitle, description, ogImage, date, updated }) {
   if (type === 'home' || type === 'not-found') return []
+  if (type === 'site-home') {
+    // 外語首頁：WebPage 一筆，isPartOf 指 / 的 WebSite（P3 加），作者與出品者指 Person（D.4）
+    return [{
+      '@context': CONTEXT,
+      '@type': 'WebPage',
+      '@id': `${canonical}#webpage`,
+      url: canonical,
+      name: displayTitle,
+      description,
+      inLanguage: getLocale(fm.site.locale).htmlLang,
+      isPartOf: { '@id': WEBSITE_ID },
+      author: { '@id': PERSON_ID },
+      publisher: { '@id': PERSON_ID },
+    }]
+  }
   const crumbs = breadcrumbList(fm.breadcrumbs, canonical)
   if (type === 'post') {
     const article = {
@@ -402,6 +433,67 @@ export function pageHead(seo) {
 }
 
 // ---------------------------------------------------------------------------
+// 外語首頁與首頁叢集（主站首頁規格 D.2、D.9）
+// ---------------------------------------------------------------------------
+
+/** 這次建置的首頁叢集：plan.pages 的語系（live 時等於 plan.published；preview 時照 pages，C.3） */
+const clusterOf = (plan) => (plan?.pages ?? []).map((p) => p.code)
+
+/**
+ * 首頁叢集的 hreflang 與 og:locale。codes 是叢集裡的外語首頁；沒有 en 時（只會發生在 preview）不輸出 hreflang：
+ * x-default 一定是 /en/（siteHomeAlternates 會丟錯）
+ */
+export function clusterHead(code, codes) {
+  const list = (codes ?? []).filter((c) => c !== 'zh-tw')
+  const alternates = list.includes('en') ? siteHomeAlternates(list) : []
+  return {
+    hreflang: hreflangHead(alternates, siteHomeUrl('en')),
+    ogLocale: ogLocaleHead(code, list.length ? ['zh-tw', ...list] : []),
+  }
+}
+
+/**
+ * 外語首頁的 frontmatter.head，順序照 D.2：canonical、hreflang（x-default 在最後）、og:type、og:url、og:title、og:description、
+ * og:site_name、og:locale 與 alternate、og:image 四條、JSON-LD。title 與 description 由 VitePress 輸出；GA4 由 transformHtml 接在最後。
+ * preview 頁最前面多一條 robots noindex, nofollow（C.3）
+ */
+export function siteHomeHead({ code, canonical, title, home, codes, preview = false }) {
+  const head = []
+  const meta = (key, name, content) => head.push(['meta', { [key]: name, content }])
+  if (preview) meta('name', 'robots', 'noindex, nofollow')
+  const { hreflang, ogLocale } = clusterHead(code, codes)
+  head.push(['link', { rel: 'canonical', href: canonical }])
+  head.push(...hreflang)
+  meta('property', 'og:type', 'website')
+  meta('property', 'og:url', canonical)
+  meta('property', 'og:title', home.meta.tagline)
+  meta('property', 'og:description', home.meta.description)
+  meta('property', 'og:site_name', siteName(code))
+  head.push(...ogLocale)
+  meta('property', 'og:image', SITE_HOME_OG_IMAGE.url)
+  meta('property', 'og:image:width', String(SITE_HOME_OG_IMAGE.width))
+  meta('property', 'og:image:height', String(SITE_HOME_OG_IMAGE.height))
+  meta('property', 'og:image:alt', home.meta.ogImageAlt)
+  const jsonLd = jsonLdFor({ type: 'site-home', fm: { site: { locale: code } }, canonical, displayTitle: title, description: home.meta.description })
+  head.push(['script', { type: 'application/ld+json' }, jsonLdString(jsonLd)])
+  return head
+}
+
+// <script> 不帶屬性、內容含 needle 的整段（siteHead 的 GA4、FB Pixel 經過 VitePress 的 esbuild 壓縮，不能比對原字串）
+const stripInlineScript = (html, needle) => html.replace(/<script>([\s\S]*?)<\/script>\s*/g, (m, body) => (body.includes(needle) ? '' : m))
+
+/**
+ * 外語首頁的 HTML（D.2、D.5）：拿掉 siteHead 的 article:author、FB Pixel 與部落格舊的 GA4 片段（siteHead 的項目沒辦法用 frontmatter 刪），
+ * 在 </head> 前插入 ga4HeadHtml({ contentGroup: 'site-home', pageLocale: code })
+ */
+export function siteHomeHtml(html, code) {
+  let out = html.replace(/<meta property="article:author"[^>]*>\s*/g, '')
+  out = stripInlineScript(out, 'fbevents.js')
+  out = stripInlineScript(out, 'googletagmanager.com/gtag/js')
+  return out.replace('</head>', () => `${ga4HeadHtml({ contentGroup: 'site-home', pageLocale: code })}\n</head>`)
+}
+
+// ---------------------------------------------------------------------------
 // VitePress hooks
 // ---------------------------------------------------------------------------
 
@@ -410,10 +502,21 @@ export function pageHead(seo) {
  * title 交給 VitePress：config 的 title 是 SITE_TITLE_LEGACY，預設的 titleTemplate 補上「 | 站名」；
  * 首頁與 /page/N/ 只有站名，用 titleTemplate: false。
  */
-export function seoPageData(pageData, ctx = {}) {
+export function seoPageData(pageData, ctx = {}, { plan = EMPTY_HOME_PLAN } = {}) {
   const fm = (pageData.frontmatter ??= {})
   const type = fm.pageType ?? pageTypeOf(pageData.relativePath)
   const url = fm.url ?? urlFromRelativePath(pageData.relativePath)
+  if (type === 'site-home') {
+    // 外語首頁：title、description、文案都由 lib/pagedata.mjs 寫在 frontmatter（fm.title、fm.description、fm.site）
+    const site = fm.site
+    if (!site?.home) throw new Error(`seo：${url} 是 site-home，要先由 lib/pagedata.mjs 寫 fm.site`)
+    pageData.title = fm.title
+    pageData.titleTemplate = false
+    pageData.description = fm.description
+    fm.head = [...asArray(fm.head), ...siteHomeHead({ code: site.locale, canonical: site.canonical, title: fm.title, home: site.home, codes: clusterOf(plan), preview: !!site.preview })]
+    fm.ads = shouldLoadAds({ type, adsFalse: fm.ads === false })
+    return null
+  }
   const content = type === 'post' || type === 'about' ? readContent(ctx.siteConfig?.srcDir, pageData.filePath) : ''
   const seo = pageSeo({ type, url, fm, inferredTitle: pageData.title, content })
 
@@ -425,6 +528,11 @@ export function seoPageData(pageData, ctx = {}) {
   }
   pageData.description = seo.description
   fm.head = [...asArray(fm.head), ...pageHead(seo)]
+  // 繁中首頁 /：有外語首頁時加首頁叢集的 hreflang 與 og:locale:alternate（D.9）。其他繁中頁一律不加
+  if (type === 'home' && clusterOf(plan).length) {
+    const { hreflang, ogLocale } = clusterHead('zh-tw', clusterOf(plan))
+    fm.head.push(...hreflang, ...ogLocale)
+  }
   fm.ads = shouldLoadAds({ type, adsFalse: fm.ads === false })
   return seo
 }
@@ -469,5 +577,6 @@ export function transformHtml(code, id, ctx = {}) {
 
   const type = fm.pageType ?? pageTypeOf(pageData.relativePath ?? ctx.page)
   if (!shouldLoadAds({ type, adsFalse: fm.ads === false })) html = stripAdsLoader(html)
+  if (type === 'site-home') html = siteHomeHtml(html, fm.site.locale)
   return html
 }
