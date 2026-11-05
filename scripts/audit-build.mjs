@@ -22,16 +22,18 @@ import {
   fingerprintText, sha256, extractPage, sitemapLocs, startTags, hasClass, builtArticleOf, hasProse,
   normalizePunct, comparableText, similarity, firstDiff, normalizeHref, postLinks, linkSet, hexoCards,
   builtCards, idsIn, headingIdsOf, hashLinks, contentProfile, demoCssLinks, jsonLdNodes, POST_URL_RE,
-  elementsWhere, rootClassesOf, hreflangLinksOf, ogLocalesOf, siteHomeHeadSequence, anchorsIn, toolLinksIn, languageItemsIn,
+  elementsWhere, rootClassesOf, hreflangLinksOf, ogLocalesOf, siteHomeHeadSequence, anchorsIn, toolLinksIn, toolCardsIn, languageItemsIn,
+  toolFeatureBlocksIn, toolCardElementsIn, blockAround, TAG_BODY,
 } from './lib/extract-page.mjs'
 import {
   SITE_TITLE_LEGACY, ADS_MODE, ADSENSE_CLIENT, shouldLoadAds, countAdsLoaders,
 } from '../source/.vitepress/theme/shared/shell/site.mjs'
 import { pageTypeOf } from '../source/.vitepress/lib/pagetype.mjs'
 import { NOT_FOUND_TITLE, NOT_FOUND_DESCRIPTION } from '../source/.vitepress/theme/head.mjs'
+import { toolCardArt, toolFeatureArt } from '../source/.vitepress/theme/ghost.mjs'
 import siteConfig from '../source/.vitepress/site.config.mjs'
 import {
-  PREVIEW_NOTICE, PREVIEW_TOOLS_NOTE, SITE_HOME_CODES, SITE_INDEX, buildSiteHomePlan, formatHomeCopy, languageTargets, readHomeMessages, siteHomeTitle,
+  SITE_HOME_CODES, SITE_INDEX, buildSiteHomePlan, formatHomeCopy, languageTargets, readHomeMessages, siteHomeTitle,
 } from '../source/.vitepress/lib/site-home.mjs'
 import { SITE_HOME_OG_IMAGE, WEBSITE_ID } from '../source/.vitepress/lib/seo.mjs'
 import { LOCALES, getLocale, sortLocaleCodes } from '../source/.vitepress/theme/shared/shell/i18n/locales.mjs'
@@ -1210,7 +1212,7 @@ export function checkChunks(ctx) {
     const hits = probes.filter((p) => p.forms.some((x) => js.includes(x)))
     if (hits.length) fail(c, `${f} 裡有 ${hits.length} 段文章資料，例如 ${hits[0].url} 的「${hits[0].text}」`)
   }
-  // 沒上線的語系文案與 preview 提示字不能出現在任何 client chunk（含各頁的 .md.js，主站首頁規格 J.1、C.3）
+  // 沒上線的語系文案不能出現在任何 client chunk（含各頁的 .md.js，主站首頁規格 J.1）
   const localeProbes = unpublishedCopyProbes(ctx)
   let scanned = 0
   for (const f of ctx.dist.files.filter((x) => /^assets\/.*\.js$/.test(x))) {
@@ -1219,7 +1221,7 @@ export function checkChunks(ctx) {
     for (const p of localeProbes) if (p.forms.some((x) => js.includes(x))) fail(c, `${f} 裡有${p.label}「${p.text}」`)
   }
   c.stats = { sizes, probes: probes.length, localeProbes: localeProbes.length, scannedJs: scanned }
-  c.summary = [...themes.map((f) => `${f} ${sizes[f].bytes} bytes（gzip ${sizes[f].gzip}）`), `比對 ${probes.length} 段文章文字`, `${localeProbes.length} 段未上線語系文案與 preview 提示字（${scanned} 支 JS）`].join('；')
+  c.summary = [...themes.map((f) => `${f} ${sizes[f].bytes} bytes（gzip ${sizes[f].gzip}）`), `比對 ${probes.length} 段文章文字`, `${localeProbes.length} 段未上線語系文案（${scanned} 支 JS）`].join('；')
   return c
 }
 
@@ -1239,7 +1241,7 @@ const longestLiteral = (s) => String(s).split(PROBE_BREAK_RE).map((x) => x.trim(
 export const LOCALE_PROBE_MIN = 8
 
 /**
- * 沒上線的語系（SITE_HOME_CODES 不在 plan.published、而且有文案檔）的文案片段，加上 preview 的提示字。
+ * 沒上線的語系（SITE_HOME_CODES 不在 plan.published、而且有文案檔）的文案片段。preview 的頁面上沒有提示字（站長 2026-11-05 拿掉），不用找。
  * [{ label, text, forms }]
  */
 export function unpublishedCopyProbes({ plan, readHome }) {
@@ -1261,7 +1263,6 @@ export function unpublishedCopyProbes({ plan, readHome }) {
       if (key === 'menu.homeOnly' || [...t].length >= LOCALE_PROBE_MIN) add(`沒上線的 ${code} 文案（${key}）`, t)
     }
   }
-  for (const s of [PREVIEW_NOTICE, PREVIEW_TOOLS_NOTE]) for (const part of s.split(' / ')) add(' preview 的提示字', longestLiteral(part))
   return out
 }
 
@@ -1464,6 +1465,23 @@ function expectedLanguageItems(targets, current) {
   }))
 }
 
+// preview 的站內連結腳本（source/.vitepress/lib/preview-links.mjs 的 previewLinkScript，只有 build:preview 放進 head）。
+// VitePress 用 esbuild 壓縮 head 的 inline script（renderHead 的 transformWithEsbuild minify）：變數名稱會換掉，
+// 一般註解（包括 /*cs-preview-links*/ 這種記號）會被拿掉，只有 /*! … */ 會留下，所以不能比原字串，也不能只靠註解記號。
+// 認兩種：<script> 的屬性或內容有 PREVIEW_LINKS_TOKEN（/*! cs-preview-links */、data-cs-preview-links 這類），
+// 或內容同時有這段腳本壓縮後也不會變的片段（全域物件的屬性名稱、選擇器字串、站台網址）。只看 <script> 元素，文章的程式碼區塊不算。
+export const PREVIEW_LINKS_TOKEN = 'cs-preview-links'
+const PREVIEW_LINKS_CODE = ['location.origin', 'location.hostname', 'stopImmediatePropagation', 'a[href]', `${SITE}/`]
+/** 頁面裡的 preview 站內連結腳本：[{ attrs, body }]，沒有是 [] */
+export function previewLinkScriptsIn(html) {
+  const out = []
+  for (const m of html.matchAll(new RegExp(`<script\\b(${TAG_BODY})>([\\s\\S]*?)<\\/script\\s*>`, 'gi'))) {
+    const [, attrs, body] = m
+    if (attrs.includes(PREVIEW_LINKS_TOKEN) || body.includes(PREVIEW_LINKS_TOKEN) || PREVIEW_LINKS_CODE.every((x) => body.includes(x))) out.push({ attrs, body })
+  }
+  return out
+}
+
 /** 外語首頁與語系（主站首頁規格 J.1 的 L1 到 L13） */
 export function checkLocales(ctx) {
   const c = newCheck('locales', '外語首頁與語系（L1 到 L13）')
@@ -1536,11 +1554,11 @@ export function checkLocales(ctx) {
     for (const u of [`${SITE}/zh-tw/`, `${SITE}/404`, `${SITE}/404.html`]) if (locs.has(u)) fail(c, `L6：sitemap 不該有 ${u}`)
   } else fail(c, 'L6：dist 沒有 sitemap.xml')
 
-  // L7：沒有 preview 的痕跡；外語首頁沒有 robots meta
+  // L7：沒有 preview 的痕跡（根元素的 cs-preview、head 的站內連結腳本）；外語首頁沒有 robots meta
   for (const d of ctx.pages.values()) {
     const preview = startTags(d.html).find((t) => (t.attrs.class ?? '').split(/\s+/).some((x) => x.startsWith('cs-preview')))
     if (preview) fail(c, `L7：${d.url} 有 preview 的 class（${preview.attrs.class}）：preview 產物不能進 dist`)
-    if (PREVIEW_NOTICE.split(' / ').some((x) => d.html.includes(x))) fail(c, `L7：${d.url} 有 preview 的提示字`)
+    if (previewLinkScriptsIn(d.html).length) fail(c, `L7：${d.url} 有 preview 的站內連結腳本（lib/preview-links.mjs 的 previewLinkScript）：只有 build:preview 會放，preview 產物不能進 dist`)
   }
   for (const h of homes) if (h.d && h.d.f.robots !== null) fail(c, `L7：${h.url} 有 robots meta ${show(h.d.f.robots)}，外語首頁要被收錄`)
 
@@ -1684,8 +1702,76 @@ export function gaConfigsOf(html) {
   })
 }
 
-/** 工具連結比對用的形狀（頁尾不帶說明） */
-const toolShape = (l, { summary }) => ({ href: l.href, hreflang: l.hreflang, label: l.label, lang: l.lang ?? null, before: (l.before ?? '').trim(), after: (l.after ?? '').trim(), ...(summary ? { summary: l.summary ?? null } : {}) })
+// 工具連結比對用的形狀。頁尾工具組（cards: false）只比連結與名稱，沒有說明與圖。
+// #tools（cards: true）只數 a.cs-toolcard（toolCardsIn），另外比說明、圖與介紹區塊（E.1）：
+//   - 一般卡片：圖是 toolCardArt() 給的工具站徽或小幽靈（F.2），feature 是 null；
+//   - 外語首頁（features: true）裡 link.feature 不是 null 的工具是介紹區塊，排在卡片前面：圖是 toolFeatureArt()，
+//     另外比介紹、重點、按鈕（連結同卡片）、主圖尺寸與小裝飾圖；
+//   - 繁中首頁 / 的 HomeTools.vue 只有卡片（features: false），feature 一律預期 null。
+// 文字欄位（名稱、標示、說明、介紹、重點、按鈕字）兩邊都用 normText：實際值是顯示文字（extract-page 的 squash，
+// 空白含 U+3000、NBSP 都壓成一格再去頭尾），預期值是 tools.json 的原字串，Vue 照原樣輸出，所以預期值也要同樣正規化才比得起來。
+// 說明是空字串時 Vue 的 v-if 不輸出那個 span，預期是 null。
+const normText = (s) => String(s ?? '').replace(/\s+/g, ' ').trim()
+const imageShape = ({ src, width, height }) => ({ src, width, height })
+const toolNameShape = (l) => ({ href: l.href, hreflang: l.hreflang, label: normText(l.label), lang: l.lang ?? null, before: normText(l.before), after: normText(l.after) })
+const summaryShape = (s) => (s ? normText(s) : null)
+/** siteToolLinks() 的一筆 → 預期的形狀 */
+function expectedToolShape(l, { cards, features = false }) {
+  if (!cards) return toolNameShape(l)
+  const f = features ? l.feature : null
+  return {
+    ...toolNameShape(l),
+    summary: summaryShape(l.summary),
+    img: (f ? toolFeatureArt(l) : toolCardArt(l)).src,
+    feature: f ? {
+      intro: normText(f.intro),
+      highlights: f.highlights.map(normText),
+      cta: { href: l.href, hreflang: l.hreflang, text: normText(f.cta) },
+      art: imageShape(toolFeatureArt(l)),
+      deco: f.images.slice(1).map(imageShape),
+    } : null,
+  }
+}
+/** toolLinksIn() 或 toolCardsIn() 的一筆 → 實際的形狀 */
+const actualToolShape = (l, { cards }) => (cards ? { ...toolNameShape(l), summary: l.summary == null ? null : normText(l.summary), img: l.img, feature: l.feature ?? null } : toolNameShape(l))
+
+const TOOL_FEATURE_PARTS = ['cs-toolfeature__cta', 'cs-toolfeature__intro', 'cs-toolfeature__points', 'cs-toolfeature__strip']
+/**
+ * #tools 的結構（主站首頁規格 E.1）。T1 的比對只看 a.cs-toolcard，這裡擋卡片以外多出來的東西：
+ * - 每個 <a> 是 a.cs-toolcard，或 a.cs-toolfeature__cta 而且最近的介紹區塊裡剛好一張 a.cs-toolcard；
+ * - 繁中首頁 /（features: false）：class 有 cs-toolfeature 開頭 token 的元素一個都不能有（HomeTools.vue 只輸出卡片）；
+ * - 外語首頁（features: true）：每個介紹區塊是 div，剛好一張 a.cs-toolcard、一個 __cta、一個 __intro、一個 __points，
+ *   __strip 最多一個；介紹區塊的數量等於在介紹區塊裡的卡片數（沒包卡片的區塊、巢狀的區塊都會讓兩個數字不同）。
+ * 回傳問題的說明（不含「T1：網址」前綴），沒有問題是 []
+ */
+export function toolsRegionProblems(html, { features }) {
+  const out = []
+  const blocks = toolFeatureBlocksIn(html)
+  const cardCount = (h) => toolCardElementsIn(h).length
+  if (!features) {
+    const stray = startTags(html).filter((t) => (t.attrs.class ?? '').split(/\s+/).some((x) => x.startsWith('cs-toolfeature')))
+    if (stray.length) out.push(`有介紹區塊的元素 ${stray.slice(0, 3).map((t) => `<${t.name} class="${t.attrs.class}">`).join('、')}${stray.length > 3 ? ` 等 ${stray.length} 個` : ''}：/ 一律只有卡片，介紹區塊只在外語首頁`)
+  } else {
+    blocks.forEach((b, i) => {
+      const n = Object.fromEntries(TOOL_FEATURE_PARTS.map((cls) => [cls, elementsWhere(b.inner, (t) => hasClass(t.attrs, cls)).length]))
+      const cards = cardCount(b.inner)
+      const where = `第 ${i + 1} 個介紹區塊`
+      if (b.name !== 'div') out.push(`${where}是 <${b.name}>，要是 div.cs-toolfeature`)
+      if (cards !== 1 || n['cs-toolfeature__cta'] !== 1 || n['cs-toolfeature__intro'] !== 1 || n['cs-toolfeature__points'] !== 1 || n['cs-toolfeature__strip'] > 1) {
+        out.push(`${where}要剛好 1 張 a.cs-toolcard、1 個 __cta、1 個 __intro、1 個 __points，__strip 最多 1 個：實際卡片 ${cards}、__cta ${n['cs-toolfeature__cta']}、__intro ${n['cs-toolfeature__intro']}、__points ${n['cs-toolfeature__points']}、__strip ${n['cs-toolfeature__strip']}`)
+      }
+    })
+    const inBlocks = toolCardElementsIn(html).filter((e) => blockAround(blocks, e)).length
+    if (blocks.length !== inBlocks) out.push(`有 ${blocks.length} 個介紹區塊，在介紹區塊裡的卡片是 ${inBlocks} 張：每個介紹區塊要剛好包一張 a.cs-toolcard`)
+  }
+  for (const a of elementsWhere(html, (t) => t.name === 'a')) {
+    if (hasClass(a.attrs, 'cs-toolcard')) continue
+    const block = hasClass(a.attrs, 'cs-toolfeature__cta') ? blockAround(blocks, a) : null
+    if (block && cardCount(block.inner) === 1) continue
+    out.push(`多了連結 ${show(a.attrs.href)}（${textOf(a.inner) || '沒有文字'}）：#tools 裡只能有 a.cs-toolcard，以及介紹區塊（剛好包一張卡）裡的按鈕 a.cs-toolfeature__cta`)
+  }
+  return out
+}
 
 /** 全站工具清單（主站首頁規格 J.1 的 T1 到 T4） */
 export function checkTools(ctx) {
@@ -1702,25 +1788,36 @@ export function checkTools(ctx) {
     if (!expected.has(code)) expected.set(code, linksOf(code))
     return expected.get(code)
   }
-  const compare = (where, region, code, summary) => {
-    const exp = want(code).map((l) => toolShape(l, { summary }))
-    const got = region ? toolLinksIn(region.inner).map((l) => toolShape(l, { summary })) : []
+  // cards：#tools（toolCardsIn，只數 a.cs-toolcard）或頁尾工具組（toolLinksIn，每個 <a>）；features：外語首頁的介紹區塊排在卡片前面
+  const compare = (where, region, code, { cards, features = false }) => {
+    const links = want(code)
+    const ordered = features ? [...links.filter((l) => l.feature), ...links.filter((l) => !l.feature)] : links
+    const exp = ordered.map((l) => expectedToolShape(l, { cards, features }))
+    const got = region ? (cards ? toolCardsIn(region.inner) : toolLinksIn(region.inner)).map((l) => actualToolShape(l, { cards })) : []
     compared++
     if (!sameList(got, exp)) fail(c, `T1：${where} 跟 siteToolLinks(index, { locale: '${code}' }) 不同：預期 ${JSON.stringify(exp)}，實際 ${JSON.stringify(got)}`)
-    return got
   }
   for (const d of ctx.pages.values()) {
     const code = d.type === 'site-home' ? homeCodeOf(d.url) : 'zh-tw'
+    // T2 要驗的連結：#tools 裡每個 <a>（含介紹區塊的按鈕）與頁尾工具組的每個 <a>
     const regions = []
     // T1：首頁與外語首頁的 #tools；每頁頁尾的工具組
     if (d.url === '/' || d.type === 'site-home') {
       const tools = toolsRegionOf(d.html)
       if (d.url === '/' && !hasTools && tools) fail(c, 'T1：tools.json 沒有工具，/ 不該有 #tools（整區不輸出）')
-      if (d.type === 'site-home' || hasTools) regions.push(...compare(`${d.url} 的 #tools`, tools, code, true))
+      if (d.type === 'site-home' || hasTools) {
+        compare(`${d.url} 的 #tools`, tools, code, { cards: true, features: d.type === 'site-home' })
+        // 卡片以外：多的連結、第二個按鈕、沒包卡片的介紹區塊、/ 的介紹區塊（E.1）
+        if (tools) for (const p of toolsRegionProblems(tools.inner, { features: d.type === 'site-home' })) fail(c, `T1：${d.url} 的 #tools ${p}`)
+        if (tools) regions.push(...anchorsIn(tools.inner))
+      }
     }
     const footerTools = footerToolsOf(d.html)
     if (!hasTools && footerTools) fail(c, `T1：${d.url} 的頁尾有工具組，但 tools.json 沒有工具（清單空的時候整組不輸出）`)
-    if (hasTools || footerTools) regions.push(...compare(`${d.url} 的頁尾工具組`, footerTools, code, false))
+    if (hasTools || footerTools) {
+      compare(`${d.url} 的頁尾工具組`, footerTools, code, { cards: false })
+      if (footerTools) regions.push(...anchorsIn(footerTools.inner))
+    }
     // T2：工具連結全是 https://www.casper.tw/<slug>/ 開頭、帶尾斜線
     for (const l of regions) {
       const m = /^https:\/\/www\.casper\.tw\/([a-z0-9]+(?:-[a-z0-9]+)*)\//.exec(l.href ?? '')

@@ -29,7 +29,7 @@ npm test               # 腳本與設定的單元測試
 npm run migrate        # scripts/migrate-hexo.mjs：Hexo 內文轉換，可重跑，也可只跑指定檔案
 npm run images:upload  # r2-uploads/ 上傳到 R2（img.casper.tw）
 npm run build:preview  # 外語首頁草稿：CS_STAGE=preview，寫到 source/.vitepress/preview-dist/，不跑 audit
-npm run preview:intl   # 本機開 preview-dist（VitePress 預設 http://localhost:4173），網址加 /en/ 這類
+npm run preview:intl   # 本機開 preview-dist（VitePress 預設 http://localhost:4173），網址加 /en/ 這類；重跑 build:preview 之後要重開它，它只在啟動時讀檔案清單，新的資產檔會回 404，頁面被換成「這頁找不到」
 npm run i18n:check     # 外語首頁文案的 G1 與各語系狀態（prebuild 也跑）
 npm run i18n:report    # 每個語系、每個 key 的審稿狀態
 npm run i18n:stamp     # 蓋章；rebase 用 node scripts/i18n.mjs rebase
@@ -70,10 +70,11 @@ Node 22 LTS，至少 22.12（package.json 的 engines）。`.nvmrc` 寫 `lts/jod
   - `shell`：`'legacy'` 是這個 repo 自己的頁首頁尾（P1、P2）；`'shared'` 是 `theme/shared/shell` 的共用元件（S 版起），要先有 zh-tw 外殼字串的章。
   - `home.locales`：正式開放的語系，P1 是空陣列。列進來就要過全部開放關卡（G1 到 G9，`lib/site-home.mjs`），否則建置失敗；上線後不能拿掉。
   - `home.roadmap`：要準備的語系（en、ja、ko、de、zh-cn、es），只在 `npm run build:preview` 產生。`home.reviewers`：審稿人 id 與是否母語。`home.waivers`：事實性文字過期時的暫時豁免，只在站長當次指示時加。
-- 頁型 `site-home`：`[locale]/index.md` 經 `pagetype.mjs` 判成 site-home，`pagedata.mjs` 寫 `fm.site`，版面是 `theme/pages/SiteHomePage.vue`（不寫 `<style>`，樣式在 `theme/styles/site-home.css`，選擇器限定在 `.cs-shome`、`.cs-toolcard`、`.cs-preview` 或外語根元素）。元件只顯示，文字與連結都在 `lib/site-home.mjs` 算好。
+- 頁型 `site-home`：`[locale]/index.md` 經 `pagetype.mjs` 判成 site-home，`pagedata.mjs` 寫 `fm.site`，版面是 `theme/pages/SiteHomePage.vue`（不寫 `<style>`，樣式在 `theme/styles/site-home.css`，選擇器限定在 `.cs-shome` 或外語根元素；工具卡 `.cs-toolcard*` 只放 `theme/styles/toolcards.css`，`/` 的工具清單 `HomeTools.vue` 也用它）。元件只顯示，文字與連結都在 `lib/site-home.mjs` 算好。外語首頁的工具有 `feature`（tools.json 的 intro、highlights、cta、images）時畫成介紹區塊 `.cs-toolfeature`，`/` 一律只畫卡片。
+- `__CS_SHARED_SHELL__`：`lib/site-home.mjs` 的 `effectiveShell()` 決定，preview 一律是共用頁首頁尾（含語系選單），正式建置照 `site.config.mjs` 的 `shell`。是 false 時 `Layout.vue` 只畫舊頁首頁尾，P1 產物不變。
 - `__CS_SITE_HOME__`：`config.mts` 依 plan 用 Vite `define` 設定。沒有外語首頁要產生時是 false，`Layout.vue` 不登記 `SiteHomePage`，P1 的 dist 因此不變。VitePress 的全站 CSS 只有一支，非同步 chunk 的樣式也會併進去，所以不要在別處 import `SiteHomePage.vue` 或 `site-home.css`。
 - 文案：`i18n/home/<code>.json`，正本是 `en.json`，格式與逐 key 審稿跟工具範本相同（`theme/shared/shell/i18n/messages.mjs`）。佔位符只有 `{site}`、`{author}`；文案不寫對全部工具成立的保證，glossary 擋。**agent 不自己蓋章**，只在審稿人當次明確指示時代跑 `npm run i18n:stamp -- --locale <code> --by <審稿人 id>`。
-- preview：`npm run build:preview` 寫到 `source/.vitepress/preview-dist/`（`.gitignore` 擋掉），每頁 noindex、根元素多 `cs-preview`、頂端有提示條，關卡沒過只印警告；CI 或 `GITHUB_ACTIONS` 是 true 時直接失敗。`dist/` 永遠只有正式產物，audit 看到 preview 的痕跡就失敗。
+- preview：`npm run build:preview` 寫到 `source/.vitepress/preview-dist/`（`.gitignore` 擋掉），外語首頁 noindex、根元素多 `cs-preview`；每一頁都用共用頁首頁尾，head 多一段本機預覽用的連結腳本（`lib/preview-links.mjs`，站內連結留在 localhost，工具網址除外）；2026-11-05 起沒有頂端提示條。關卡沒過只印警告；CI 或 `GITHUB_ACTIONS` 是 true 時直接失敗。`dist/` 永遠只有正式產物：outDir 與 head 腳本都只跟著 `plan.stage === 'preview'`，audit L7 另外擋 `cs-preview`、外語首頁的 robots meta 與那段腳本。
 - `site-card.json`：`shell` 等於 `site.config.mjs`，`siteHomes` 等於 plan 的 `published`；`npm test` 與 audit 驗它沒過期。workspace 的 `scripts/site-data.mjs` 讀部署分支上的這份。
 - 部落格自己的頁一律用 plan 的 `published` 當已上線的外語首頁，不讀 `theme/shared/data/tools.json` 的 `siteHomes`（那份會落後一版，只給工具用）。
 - 語系代碼（en、ja、ko、de、es、zh-cn、zh-tw）不能當分類、標籤或文章 slug 的路徑段：VitePress 判斷語系時沒有錨定開頭，`posts.mjs`、`pagedata.mjs` 與 audit 遇到就失敗。

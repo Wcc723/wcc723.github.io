@@ -1,8 +1,12 @@
 <script setup lang="ts">
 // 深淺色切換：在 <html> 加或拿掉 .dark，寫進 localStorage 的 casper-theme（跟 Hexo 版同一個 key）。
 // 兩個圖示都輸出，由 CSS 依 html.dark 決定顯示哪一個；aria-pressed 掛載後才讀實際狀態。
+// label、title 預設是繁中（legacy 頁首不傳）；共用頁首的 actions 插槽傳外殼字串 theme.toggle（主站首頁規格 E.2、G.5），
+// 外語頁沒有「切換深淺色」的字，title 跟 label 相同
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { THEME_STORAGE_KEY } from '../head.mjs'
+
+withDefaults(defineProps<{ label?: string; title?: string }>(), { label: '深色模式', title: '切換深淺色' })
 
 const dark = ref(false)
 
@@ -37,8 +41,8 @@ onBeforeUnmount(() => window.removeEventListener('storage', onStorage))
   <button
     type="button"
     class="icon-btn theme-toggle"
-    aria-label="深色模式"
-    title="切換深淺色"
+    :aria-label="label"
+    :title="title"
     :aria-pressed="dark ? 'true' : 'false'"
     @click="toggle"
   >

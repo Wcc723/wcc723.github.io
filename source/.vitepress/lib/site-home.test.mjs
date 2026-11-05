@@ -8,6 +8,7 @@ import {
   SITE_HOME_CODES,
   buildSiteHomePlan,
   clusterCodes,
+  effectiveShell,
   formatHomeCopy,
   homeFileProblems,
   homeGateProblems,
@@ -204,7 +205,7 @@ test('G1 到 G9：各一個不過的案例', () => {
   assert.ok(plan.problems.some((m) => /^site-home en：G6/.test(m)))
 })
 
-test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只記警告；legacy 時多一條警告', () => {
+test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只記警告', () => {
   const plan = buildSiteHomePlan({ config: siteConfig, env: { CS_STAGE: 'preview' }, today: AT })
   assert.equal(plan.stage, 'preview')
   assert.deepEqual(plan.published, [])
@@ -212,10 +213,25 @@ test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只�
   assert.deepEqual(plan.problems, [])
   assert.ok(plan.warnings.some((m) => /site-home zh-cn：沒有 i18n\/home\/zh-cn\.json，preview 不產生這頁/.test(m)))
   assert.ok(plan.warnings.some((m) => /^preview：site-home en：G2/.test(m)))
-  assert.ok(plan.warnings.some((m) => /shell 是 'legacy'/.test(m)))
+  // preview 一律用共用頁首頁尾（effectiveShell），shell 是 legacy 不再另外警告
+  assert.ok(!plan.warnings.some((m) => /shell 是 'legacy'/.test(m)))
   // live 的 P1：沒有頁、沒有問題
   const live = buildSiteHomePlan({ config: siteConfig, env: {}, today: AT })
   assert.deepEqual([live.published, live.pages, live.problems], [[], [], []])
+})
+
+test('effectiveShell：preview 一律 shared，其他照 site.config.mjs 的 shell', () => {
+  const legacy = { ...siteConfig, shell: 'legacy' }
+  const shared = { ...siteConfig, shell: 'shared' }
+  assert.equal(effectiveShell({ stage: 'preview' }, legacy), 'shared')
+  assert.equal(effectiveShell({ stage: 'preview' }, shared), 'shared')
+  assert.equal(effectiveShell({ stage: 'live' }, legacy), 'legacy')
+  assert.equal(effectiveShell({ stage: 'live' }, shared), 'shared')
+  assert.equal(effectiveShell(null, legacy), 'legacy')
+  // 預設讀 site.config.mjs（P1、P2 是 legacy）
+  assert.equal(effectiveShell({ stage: 'live' }), siteConfig.shell)
+  const preview = buildSiteHomePlan({ config: siteConfig, env: { CS_STAGE: 'preview' }, today: AT })
+  assert.equal(effectiveShell(preview), 'shared')
 })
 
 test('vitepressLocales：root 是 zh-TW，其他只給 label 與 lang', () => {

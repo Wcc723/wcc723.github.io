@@ -1,10 +1,10 @@
 // lib/site-shell.mjs 的測試（主站首頁規格 G.4）：fm.site 的欄位、siteHomes 等於 plan.published、
-// sectionOf 跟 legacy 頁首（theme/utils/nav.mjs）那份結果相同、外語首頁的 H1 與連結、404 的多語提示、preview 的提示
+// sectionOf 跟 legacy 頁首（theme/utils/nav.mjs）那份結果相同、外語首頁的 H1 與連結、404 的多語提示、preview 的旗標與叢集
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { notFoundIntl, previewData, sectionOf, siteFrontmatter, siteHomeView } from './site-shell.mjs'
+import { notFoundIntl, sectionOf, siteFrontmatter, siteHomeView } from './site-shell.mjs'
 import { sectionOf as legacySectionOf } from '../theme/utils/nav.mjs'
-import { PREVIEW_NOTICE, PREVIEW_TOOLS_NOTE, buildSiteHomePlan } from './site-home.mjs'
+import { buildSiteHomePlan } from './site-home.mjs'
 import { AD_PAGE_TYPES } from '../theme/shared/shell/site.mjs'
 import { ts } from '../theme/shared/shell/i18n/shell-strings.mjs'
 import { siteName } from '../theme/shared/shell/i18n/seo.mjs'
@@ -45,7 +45,7 @@ test('siteFrontmatter：繁中文章頁的欄位，siteHomes 是 plan.published'
   assert.deepEqual(fm.languages.map((l) => [l.code, l.href, l.exact]), [['zh-tw', canonical, true], ['en', 'https://www.casper.tw/en/', false]])
   assert.deepEqual(fm.tools.map((t) => t.href), ['https://www.casper.tw/lucky-draw/'])
   assert.equal(fm.home, null)
-  assert.equal(fm.preview, null)
+  assert.equal(fm.preview, false)
   assert.deepEqual(fm.notFoundIntl, [])
   assert.equal(typeof fm.shell, 'object')
   assert.throws(() => siteFrontmatter({ pageType: 'post' }), /要傳 plan/)
@@ -65,7 +65,7 @@ test('siteFrontmatter：外語首頁有 home，不在 plan.pages 的語系丟錯
   assert.equal(fm.kind, 'site-home')
   assert.equal(fm.locale, 'en')
   assert.equal(fm.section, '')
-  assert.equal(fm.preview, null)
+  assert.equal(fm.preview, false)
   assert.deepEqual(fm.languages.map((l) => l.code), ['zh-tw', 'en'])
   assert.deepEqual(fm.tools.map((t) => [t.href, t.exact]), [['https://www.casper.tw/lucky-draw/en/', true]])
   assert.equal(fm.home.hero.toolsHref, 'https://www.casper.tw/en/#tools')
@@ -87,11 +87,21 @@ test('siteHomeView：H1 是站名，語言不同時帶 lang；連到繁中頁的
   assert.throws(() => siteHomeView('en', { readHome: () => null }), /site-home en：沒有/)
 })
 
-test('previewData：這個語系沒有工具時多一條 toolsNote；preview 計畫的頁都有 preview 欄', () => {
-  assert.deepEqual(previewData('ja', EMPTY), { notice: PREVIEW_NOTICE, toolsNote: PREVIEW_TOOLS_NOTE })
-  assert.deepEqual(previewData('en', INDEX), { notice: PREVIEW_NOTICE, toolsNote: null })
+test('preview：外語首頁的 preview 是 true、沒有提示字；siteHomes 與語言選單都是這次的叢集', () => {
   const fm = siteFrontmatter({ pageType: 'site-home', canonical: 'https://www.casper.tw/ko/', locale: 'ko', plan: PREVIEW, index: EMPTY })
-  assert.deepEqual(fm.preview, { notice: PREVIEW_NOTICE, toolsNote: PREVIEW_TOOLS_NOTE })
-  assert.deepEqual(fm.siteHomes, [])
+  assert.equal(fm.preview, true)
+  assert.ok(!JSON.stringify(fm).includes('Preview: not reviewed'))
+  // preview 的叢集當成已上線：外語頁尾的首頁、關於連到 /<code>/（footerModel 看 siteHomes）
+  assert.deepEqual(PREVIEW.published, [])
+  assert.deepEqual(fm.siteHomes, ['en', 'ja', 'ko', 'de'])
   assert.deepEqual(fm.languages.map((l) => [l.code, l.preview ?? false]), [['zh-tw', false], ['en', true], ['ja', true], ['ko', true], ['de', true]])
+  // 繁中頁：選單有 / 自己加每個 preview 的外語首頁，preview 欄是 false
+  const post = siteFrontmatter({ pageType: 'post', canonical: 'https://www.casper.tw/css/2013/09/29/css-target/', plan: PREVIEW, index: EMPTY })
+  assert.equal(post.preview, false)
+  assert.deepEqual(post.languages.map((l) => [l.code, l.exact]), [['zh-tw', true], ['en', false], ['ja', false], ['ko', false], ['de', false]])
+  const home = siteFrontmatter({ pageType: 'home', canonical: 'https://www.casper.tw/', plan: PREVIEW, index: EMPTY })
+  assert.deepEqual(home.languages.map((l) => [l.code, l.href, l.exact]), [
+    ['zh-tw', 'https://www.casper.tw/', true],
+    ...['en', 'ja', 'ko', 'de'].map((c) => [c, `https://www.casper.tw/${c}/`, true]),
+  ])
 })

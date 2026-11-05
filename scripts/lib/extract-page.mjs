@@ -614,13 +614,73 @@ function splitToolName(html) {
 
 /**
  * 工具連結：頁尾工具組的 <a>，或 #tools 的卡片（a.cs-toolcard 裡的 .cs-toolcard__name 與 .cs-toolcard__sum）。
- * [{ href, hreflang, label, lang, before, after, summary }]，before、after 去掉前後空白
+ * [{ href, hreflang, label, lang, before, after, summary, img }]，before、after 去掉前後空白；img 是連結裡第一張 <img> 的 src（沒有是 null）
  */
 export function toolLinksIn(html) {
-  return elementsWhere(html, (t) => t.name === 'a').map((e) => {
-    const name = elementsWhere(e.inner, (t) => hasClass(t.attrs, 'cs-toolcard__name'))[0]
-    const sum = elementsWhere(e.inner, (t) => hasClass(t.attrs, 'cs-toolcard__sum'))[0]
-    return { href: e.attrs.href ?? null, hreflang: e.attrs.hreflang ?? null, ...splitToolName(name ? name.inner : e.inner), summary: sum ? squash(sum.inner).trim() : null }
+  return elementsWhere(html, (t) => t.name === 'a').map(toolLinkOf)
+}
+
+/** 一個 <a> 元素（elementsWhere 的一筆）的工具連結形狀，toolLinksIn 與 toolCardsIn 共用 */
+function toolLinkOf(e) {
+  const name = elementsWhere(e.inner, (t) => hasClass(t.attrs, 'cs-toolcard__name'))[0]
+  const sum = elementsWhere(e.inner, (t) => hasClass(t.attrs, 'cs-toolcard__sum'))[0]
+  const img = elementsWhere(e.inner, (t) => t.name === 'img')[0]
+  return { href: e.attrs.href ?? null, hreflang: e.attrs.hreflang ?? null, ...splitToolName(name ? name.inner : e.inner), summary: sum ? squash(sum.inner).trim() : null, img: img ? (img.attrs.src ?? null) : null }
+}
+
+/** <img> 的 { src, width, height }；width、height 轉成數字，沒寫或不是數字時是 null */
+const imageOf = (e) => {
+  const num = (v) => (/^\d+$/.test(v ?? '') ? Number(v) : null)
+  return { src: e.attrs.src ?? null, width: num(e.attrs.width), height: num(e.attrs.height) }
+}
+const firstWithClass = (html, cls, pred = () => true) => elementsWhere(html, (t) => hasClass(t.attrs, cls) && pred(t))[0] ?? null
+
+/**
+ * 介紹區塊 div.cs-toolfeature 的內容（主站首頁規格 E.1）：
+ * { intro, highlights, cta: { href, hreflang, text }, art: { src, width, height }, deco: [{ src, width, height }] }。
+ * intro 是 .cs-toolfeature__intro 的文字，highlights 是 .cs-toolfeature__points 每個 <li> 的文字，cta 是 a.cs-toolfeature__cta，
+ * art 是區塊裡 a.cs-toolcard 的第一張圖，deco 是 .cs-toolfeature__strip 裡的圖；找不到的欄位是 null 或空陣列
+ */
+export function toolFeatureOf(block) {
+  const html = block.inner
+  const intro = firstWithClass(html, 'cs-toolfeature__intro')
+  const points = firstWithClass(html, 'cs-toolfeature__points')
+  const cta = firstWithClass(html, 'cs-toolfeature__cta', (t) => t.name === 'a')
+  const card = firstWithClass(html, 'cs-toolcard', (t) => t.name === 'a')
+  const art = card ? elementsWhere(card.inner, (t) => t.name === 'img')[0] : null
+  const strip = firstWithClass(html, 'cs-toolfeature__strip')
+  return {
+    intro: intro ? squash(intro.inner).trim() : null,
+    highlights: points ? elementsWhere(points.inner, (t) => t.name === 'li').map((li) => squash(li.inner).trim()) : [],
+    cta: cta ? { href: cta.attrs.href ?? null, hreflang: cta.attrs.hreflang ?? null, text: squash(cta.inner).trim() } : null,
+    art: art ? imageOf(art) : null,
+    deco: strip ? elementsWhere(strip.inner, (t) => t.name === 'img').map(imageOf) : [],
+  }
+}
+
+/** 介紹區塊：class 有 cs-toolfeature 這個 token 的元素（elementsWhere 的形狀），照出現順序（巢狀的也列） */
+export const toolFeatureBlocksIn = (html) => elementsWhere(html, (t) => hasClass(t.attrs, 'cs-toolfeature'))
+
+/** a.cs-toolcard 元素（elementsWhere 的形狀），照出現順序 */
+export const toolCardElementsIn = (html) => elementsWhere(html, (t) => t.name === 'a' && hasClass(t.attrs, 'cs-toolcard'))
+
+/** blocks（同一段 HTML 的 elementsWhere 結果）裡包住元素 e 的最內層一個，也就是最近的祖先；沒有是 null */
+export function blockAround(blocks, e) {
+  let near = null
+  for (const b of blocks) if (e.index > b.index && e.index < b.index + b.outer.length && (!near || b.index > near.index)) near = b
+  return near
+}
+
+/**
+ * #tools 裡的工具卡：只數 a.cs-toolcard（介紹區塊的按鈕 a.cs-toolfeature__cta 是第二個連到同一頁的連結，不算一張卡）。
+ * 每筆是 toolLinksIn 的形狀加 feature：卡片在 div.cs-toolfeature 裡時是最近那個區塊的 toolFeatureOf()，否則是 null。照出現順序。
+ * 卡片以外多出來的連結、沒包卡片的介紹區塊這裡看不到，由 audit 的 toolsRegionProblems 另外檢查
+ */
+export function toolCardsIn(html) {
+  const blocks = toolFeatureBlocksIn(html)
+  return toolCardElementsIn(html).map((e) => {
+    const block = blockAround(blocks, e)
+    return { ...toolLinkOf(e), feature: block ? toolFeatureOf(block) : null }
   })
 }
 

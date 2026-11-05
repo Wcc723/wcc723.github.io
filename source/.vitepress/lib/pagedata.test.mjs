@@ -461,18 +461,34 @@ test('外語首頁：寫 fm.site、fm.title、fm.description，titleTemplate 是
   assert.equal(fm.site.canonical, 'https://www.casper.tw/en/')
   assert.equal(fm.description, fm.site.home.meta.description)
   assert.ok(fm.title.endsWith(fm.site.home.meta.tagline))
-  assert.equal(fm.site.preview, null)
+  assert.equal(fm.site.preview, false)
   assert.equal(fm.breadcrumbs, undefined)
   assert.throws(() => runWith('ja/index.md', { plan: LIVE_PLAN }), /site-home ja 不在這次建置的 plan\.pages/)
 })
 
-test('preview 的外語首頁：fm.site.home 有 H1 與 hero.lead，fm.site.preview 有提示', () => {
+test('preview 的外語首頁：fm.site.home 有 H1 與 hero.lead，fm.site.preview 是 true，siteHomes 是叢集', () => {
   const fm = runWith('ko/index.md', { plan: PREVIEW_PLAN })
   assert.equal(typeof fm.site.home.h1.text, 'string')
   assert.ok(fm.site.home.h1.text.length > 0)
   assert.ok(fm.site.home.hero.lead.length > 0)
-  assert.ok(fm.site.preview.notice.length > 0)
-  assert.deepEqual(fm.site.siteHomes, [])
+  assert.equal(fm.site.preview, true)
+  assert.deepEqual(fm.site.siteHomes, ['en', 'ja', 'ko', 'de'])
+})
+
+test('preview：shell 是 legacy 也每頁都寫 fm.site（effectiveShell），首頁的語言選單列出每個 preview 的外語首頁', () => {
+  const legacy = { shell: 'legacy', home: { locales: [], roadmap: [], sourceLocale: 'en' } }
+  const home = runWith('index.md', { plan: PREVIEW_PLAN, config: legacy })
+  assert.equal(home.site.locale, 'zh-tw')
+  assert.equal(home.site.kind, 'page')
+  assert.equal(home.site.preview, false)
+  assert.deepEqual(home.site.languages.map((l) => l.code), ['zh-tw', 'en', 'ja', 'ko', 'de'])
+  assert.ok(home.site.languages.every((l) => l.exact))
+  const post = runWith('about/index.md', { plan: PREVIEW_PLAN, config: legacy }, { title: '關於卡斯伯' })
+  assert.equal(post.site.section, 'about')
+  assert.equal(post.site.shell.skipToContent, '跳到主要內容')
+  assert.deepEqual(post.site.languages.map((l) => [l.code, l.exact]), [['zh-tw', true], ['en', false], ['ja', false], ['ko', false], ['de', false]])
+  // live 的 legacy 照舊不寫（P1 產物不變）
+  assert.equal(runWith('index.md', { plan: LIVE_PLAN, config: legacy }).site, undefined)
 })
 
 test('fm.site：shell 是 legacy 時其他頁不寫（P1 產物不變），shared 時每頁都寫，404 也有', () => {

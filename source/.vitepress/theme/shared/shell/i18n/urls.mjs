@@ -132,7 +132,8 @@ export function pickTarget(page, available, { xDefault = 'en', root = null } = {
 }
 
 /**
- * 某語系的頁要連的全站首頁。siteHomes 是已上線的外語首頁：部落格傳 plan.published，工具傳 tools.json 的 siteHomes。
+ * 某語系的頁要連的全站首頁。siteHomes 是已上線的外語首頁：部落格傳 clusterCodes(plan)（live 建置等於 plan.published，
+ * preview 建置是 plan.pages），工具傳 tools.json 的 siteHomes。
  * available = ['zh-tw', ...siteHomes]，root 是 zh-tw、x-default 是 en。回 { href, target, exact }
  */
 export function siteHomeLink(code, siteHomes = []) {

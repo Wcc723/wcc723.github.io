@@ -1,7 +1,11 @@
 /*
  * 外語首頁 /<code>/ 的版面與外語字型（主站首頁規格 E.7）。只由 pages/SiteHomePage.vue import，跟著 __CS_SITE_HOME__ 進出建置。
  * VitePress 的 CSS 全站只有一份（cssCodeSplit: false），I1 起這些規則會出現在每一頁的 CSS 裡，所以：
- *   - 選擇器一律以 .cs-shome、.cs-toolcard、.cs-preview 開頭，或用 :root:not(:is(:lang(zh-TW), :lang(zh-Hant))) 限定在外語根元素；
+ *   - 選擇器一律以 .cs-shome 開頭，或用 :root:not(:is(:lang(zh-TW), :lang(zh-Hant))) 限定在外語根元素；
+ *   - 工具卡（.cs-toolcards、.cs-toolcard*）在 toolcards.css，繁中首頁的工具區也用；
+ *   - 介紹區塊（.cs-toolfeature*，只有外語首頁有）在這裡，選擇器一樣以 .cs-shome 開頭，不寫 .cs-toolcard（toolcards.test.mjs 驗），
+ *     要改卡片裡的名稱、說明就用元件另外加的 .cs-toolfeature__name、.cs-toolfeature__sum；
+ *   - preview 只在根元素加 cs-preview（C.3），頁面上沒有提示條，這裡沒有它的規則；
  *   - 字型另取字族名 Nunito Intl，繁中頁用 --th-font-en 的地方不受影響。
  * 規則由 site-home.test.mjs 檢查。顏色：卡片底 --cs-bg、名稱 --cs-text、說明 --cs-text-2；--cs-section 底上不用 --cs-mute（G.7）。
  */
@@ -131,84 +135,177 @@
   font-weight: 700;
 }
 
-.cs-toolcards {
+/*
+ * 工具介紹區塊（E.1）：一張大卡，左邊是工具的主連結 a.cs-toolcard（主圖、名稱、說明），右邊是介紹、重點、按鈕與一排小裝飾圖。
+ * 外框跟工具卡同一套（--cs-bg 底、--cs-line 邊、3D 陰影）；裡面的 a.cs-toolcard 拿掉自己的框，只當左欄。
+ * 文字只用 --cs-text、--cs-text-2（--cs-bg 與 --cs-soft 上都過 4.5:1，contrast.test.mjs）；勾勾用 chip 的兩色，亮暗模式都有定義。
+ */
+.cs-shome .cs-toolfeature {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 40px;
+  margin-top: 24px;
+  padding: 28px 36px 28px 28px;
+  border: var(--cs-size-border) solid var(--cs-line);
+  border-radius: var(--cs-radius-panel);
+  background: var(--cs-bg);
+  box-shadow: 0 var(--cs-shadow-depth) 0 var(--cs-line);
+}
+
+.cs-shome .cs-toolfeature__card {
+  height: auto;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--cs-radius-card);
+  background: transparent;
+  box-shadow: none;
+}
+
+/* 插圖放在淺藍的台子上：透明圖的淺色細節（例如鼓棒）在純白底上太淡。底色放在外層，.ghost 的深色描邊才不會描到方框 */
+.cs-shome .cs-toolfeature__stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: var(--cs-radius-card);
+  background: var(--cs-soft);
+}
+
+.cs-shome .cs-toolfeature__art {
+  width: 100%;
+  height: auto;
+  align-self: center;
+}
+
+/* 沒有 images 時退回 340 見方的站徽或小幽靈，不放大到整欄寬 */
+.cs-shome .cs-toolfeature__art--card {
+  width: 200px;
+}
+
+.cs-shome .cs-toolfeature__name {
+  margin-top: 6px;
+  font-family: var(--th-font-en);
+  font-size: 26px;
+  line-height: 1.25;
+}
+
+.cs-shome .cs-toolfeature__card:hover .cs-toolfeature__name {
+  color: var(--cs-link);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.cs-shome .cs-toolfeature__sum {
+  font-size: 16px;
+}
+
+.cs-shome .cs-toolfeature__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.cs-shome .cs-toolfeature__intro {
+  margin: 0;
+  color: var(--cs-text);
+  font-size: 17px;
+  line-height: 1.7;
+}
+
+.cs-shome .cs-toolfeature__points {
+  display: grid;
+  gap: 10px;
   margin: 20px 0 0;
   padding: 0;
   list-style: none;
 }
 
-/* 整張卡是一個連結，高度至少 --cs-size-tap（44px），超過 WCAG 2.5.8 的 24 × 24 px */
-.cs-toolcard {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  min-height: var(--cs-size-tap);
-  height: 100%;
-  padding: 14px 14px 20px;
-  border: var(--cs-size-border) solid var(--cs-line);
-  border-radius: var(--cs-radius-card);
-  background: var(--cs-bg);
-  box-shadow: 0 var(--cs-shadow-depth) 0 var(--cs-line);
-  color: var(--cs-text);
-  text-decoration: none;
-}
-
-.cs-toolcard:hover {
-  border-color: var(--cs-blue-200);
-}
-
-.cs-toolcard img {
-  width: 116px;
-  height: auto;
-  align-self: center;
-}
-
-.cs-toolcard__name {
-  font-size: 18px;
-  font-weight: 900;
-  color: var(--cs-text);
-}
-
-.cs-toolcard__sum {
-  font-size: 14px;
-  color: var(--cs-text-2);
-}
-
-/* preview 建置才有（C.3）：頁首上方一條固定的提示 */
-.cs-preview {
-  padding-top: 40px;
-}
-
-.cs-preview__bar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  z-index: 100;
+.cs-shome .cs-toolfeature__points li {
+  position: relative;
   margin: 0;
-  padding: 8px 16px;
-  border-bottom: var(--cs-size-border) solid var(--cs-line);
-  background: var(--cs-soft);
+  padding-left: 34px;
   color: var(--cs-text);
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
+  line-height: 24px;
+}
+
+/* 勾勾：圓底加一個轉 45 度的 L 形邊框，不用圖示字型或圖檔 */
+.cs-shome .cs-toolfeature__points li::before {
+  content: '';
+  position: absolute;
+  top: 1px;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: var(--cs-radius-pill);
+  background: var(--th-chip-bg);
+}
+
+.cs-shome .cs-toolfeature__points li::after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 8px;
+  width: 6px;
+  height: 11px;
+  border: solid var(--th-chip-text);
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+/* 按鈕字最多 40 字，手機上要能換行，不撐破版面 */
+.cs-shome .cs-toolfeature__cta {
+  margin-top: 28px;
+  white-space: normal;
   text-align: center;
 }
 
-.cs-preview__note {
-  margin: 16px 0 0;
-  padding: 12px 16px;
-  border: var(--cs-size-border) dashed var(--cs-line-2);
-  border-radius: var(--cs-radius-card);
-  background: var(--cs-soft);
-  color: var(--cs-text);
-  font-size: 14px;
+.cs-shome .cs-toolfeature__strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 28px;
 }
 
+.cs-shome .cs-toolfeature__strip img {
+  width: 76px;
+  height: auto;
+}
+
+.cs-shome .cs-toolfeature__strip img:nth-child(odd) {
+  transform: rotate(-6deg);
+}
+
+.cs-shome .cs-toolfeature__strip img:nth-child(even) {
+  transform: rotate(5deg);
+}
+
+/* 兩支以上的工具有介紹區塊時，區塊之間多留一點距離 */
+.cs-shome .cs-toolfeature + .cs-toolfeature {
+  margin-top: 32px;
+}
+
+/* 768px 以下：圖在上、文字在下 */
 @media (max-width: 768px) {
+  .cs-shome .cs-toolfeature {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px 20px 24px;
+  }
+
+  .cs-shome .cs-toolfeature__name {
+    font-size: 22px;
+  }
+
+  .cs-shome .cs-toolfeature__strip img {
+    width: 64px;
+  }
+
   .cs-shome__hero {
     grid-template-columns: 1fr;
     grid-template-areas:

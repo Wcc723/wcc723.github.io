@@ -1,7 +1,11 @@
 <script setup lang="ts">
 // 首頁：Hero（H1 是站名）、工具區 #tools（0 支時整區不輸出）、最新 10 篇（frontmatter.cards）、分頁、關於條。
 // 文章資料只在這一頁的 frontmatter，主題不 import 任何文章索引。
-import { computed } from 'vue'
+// 工具區有兩份，同一時間最多一份有東西：
+//   - legacy（文章上面）：theme/tools.mjs 的 TOOLS，P1、P2 是 0 支，K.3 跟 legacy 頁首頁尾一起刪
+//   - 共用外殼（S 版起與 preview）：fm.site.tools（tools.json），在文章與分頁下面、關於條上面（站長 2026-11-05「可以先放在文章下方」）。
+//     HomeTools 只在 __CS_SHARED_SHELL__ 為 true 時載入；模板用 v-if / v-else 跟關於條二選一，沒有工具時只輸出關於條，P1 的 HTML 不變
+import { computed, defineAsyncComponent } from 'vue'
 import { useData } from 'vitepress'
 import { SITE_NAME } from '../shared/shell/site.mjs'
 import { liveTools } from '../tools.mjs'
@@ -9,13 +13,18 @@ import { useSearch } from '../composables/search'
 import GhostImg from '../components/GhostImg.vue'
 import PostCard from '../components/PostCard.vue'
 import Pager from '../components/Pager.vue'
+import AboutStrip from '../components/AboutStrip.vue'
+
+const HomeTools = __CS_SHARED_SHELL__ ? defineAsyncComponent(() => import('../components/HomeTools.vue')) : null
 
 const { frontmatter } = useData()
 const { openSearch } = useSearch()
 const tools = liveTools()
+const siteTools = computed<any[]>(() => (__CS_SHARED_SHELL__ && frontmatter.value.site?.tools) || [])
+const hasTools = computed(() => tools.length > 0 || siteTools.value.length > 0)
 const cards = computed(() => frontmatter.value.cards ?? [])
 const heading = computed(() => frontmatter.value.heading || SITE_NAME)
-const lead = tools.length ? '卡斯伯的前端筆記和免費線上小工具' : '卡斯伯的前端筆記'
+const lead = computed(() => (hasTools.value ? '卡斯伯的前端筆記和免費線上小工具' : '卡斯伯的前端筆記'))
 </script>
 
 <template>
@@ -68,14 +77,10 @@ const lead = tools.length ? '卡斯伯的前端筆記和免費線上小工具' :
       <Pager :pager="frontmatter.pager" />
     </section>
 
-    <section class="about-strip" aria-label="關於卡斯伯">
-      <img class="about-strip__avatar" src="/img/casper-avatar.webp" alt="卡斯伯的大頭照" width="72" height="72" loading="lazy" decoding="async" />
-      <div class="about-strip__text">
-        <p class="about-strip__title">嗨，我是卡斯伯</p>
-        <p class="about-strip__desc">六角學院共同創辦人，著有《JavaScript 面試力》。這裡放我寫的前端筆記{{ tools.length ? '和自己會用的小工具' : '' }}。</p>
-      </div>
-      <a class="b3d-lite" href="/about/">關於我</a>
-      <GhostImg class="about-strip__ghost" name="wave" :width="104" />
-    </section>
+    <template v-if="siteTools.length">
+      <component :is="HomeTools" :tools="siteTools" />
+      <AboutStrip :with-tools="true" />
+    </template>
+    <AboutStrip v-else :with-tools="hasTools" />
   </div>
 </template>

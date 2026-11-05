@@ -15,9 +15,12 @@ import {
   rootHasVpRaw, caseCollisions, callsHexo, loadBaseline, latestBaselineDir, NEW_URLS, FIXED_ANCHORS, TEXT_EXPECTED, TEMPLATE_ALLOW,
   PROFILE_EXPECTED, PROFILE_LABEL, PROFILE_SEQUENCE_LABEL, THEME_CHUNK_MAX, SIDEBAR_RELATED_MAX, regionsOf, prefetchLinksOf,
   CHECKS, CATEGORIES_FILE, siteHomeUrlRule, gaConfigsOf, unpublishedCopyProbes, mainTextWithoutForeign, expectedSiteHomeHead,
+  toolsRegionProblems, previewLinkScriptsIn, PREVIEW_LINKS_TOKEN,
 } from './audit-build.mjs'
-import { buildWorld, HOME_WEBSITE_LD, I1_INDEX, I1_PLAN, P1_PLAN } from './fixtures/world.mjs'
+import { buildWorld, HOME_WEBSITE_LD, I1_INDEX, I1_PLAN, P1_PLAN, FEATURE_INDEX } from './fixtures/world.mjs'
+import { toolCardsIn } from './lib/extract-page.mjs'
 import { readHomeMessages } from '../source/.vitepress/lib/site-home.mjs'
+import { previewLinkScript } from '../source/.vitepress/lib/preview-links.mjs'
 import { SITE_TITLE_LEGACY, shouldLoadAds, countAdsLoaders } from '../source/.vitepress/theme/shared/shell/site.mjs'
 import { pageTypeOf } from '../source/.vitepress/lib/pagetype.mjs'
 import { SIDEBAR_RELATED_COUNT } from '../source/.vitepress/lib/pagedata.mjs'
@@ -49,12 +52,12 @@ function withSidebars(dist) {
   for (const [url, f] of SIDEBAR_POSTS) dist.set(f, dist.get(f).replace('</article>', `</article>${sidebarHtml(url, dist.get(f))}`))
 }
 
-/** 建世界（文章頁先補上側欄）、跑 audit、清掉暫存，回傳報告；stage 見 fixtures/world.mjs 的 STAGES */
-async function audit(mutate, extra = {}, stage = 'p1') {
+/** 建世界（文章頁先補上側欄）、跑 audit、清掉暫存，回傳報告；stage 見 fixtures/world.mjs 的 STAGES，worldOpts 是 buildWorld 的其他選項（toolsIndex） */
+async function audit(mutate, extra = {}, stage = 'p1', worldOpts = {}) {
   const w = buildWorld((dist, world) => {
     withSidebars(dist)
     if (mutate) mutate(dist, world)
-  }, { stage })
+  }, { stage, ...worldOpts })
   try {
     return await runAudit({ ...w.opts, ...extra })
   } finally {
@@ -437,9 +440,12 @@ const p1 = at('p1')
 const s = at('s')
 const i1 = at('i1')
 const multi = at('multi')
+const feature = at('feature')
+/** feature 世界，但 tools.json 換成 toolsIndex（產物照它產生，資料與 HTML 一致） */
+const featureWith = (toolsIndex, mutate = null) => audit(mutate, {}, 'feature', { toolsIndex })
 
-test('S 之後、I1 之後、多語三份世界：20 項全部通過', async () => {
-  for (const [stage, run] of [['s', s], ['i1', i1], ['multi', multi]]) {
+test('S 之後、I1 之後、多語、介紹區塊四份世界：20 項全部通過', async () => {
+  for (const [stage, run] of [['s', s], ['i1', i1], ['multi', multi], ['feature', feature]]) {
     const r = await run()
     assert.equal(r.ok, true, `${stage}\n${formatReport(r)}`)
     assert.equal(r.checks.length, 20)
@@ -516,6 +522,43 @@ test('L7：dist 沒有 preview 的痕跡，外語首頁沒有 robots meta', asyn
   assertFails(await i1(edit(EN, (h) => h.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex, nofollow">'))), ['locales'], /L7：\/en\/ 有 robots meta/)
 })
 
+// 2026-11-05 build:preview 的 head 裡真的長這樣（VitePress 用 esbuild 壓縮過，變數名稱換掉、註解拿掉）
+const MINIFIED_PREVIEW_LINKS = '(()=>{const n="https://www.casper.tw/";location.hostname!=="www.casper.tw"&&document.addEventListener("click",t=>{if(t.defaultPrevented||t.button!==0||t.metaKey||t.ctrlKey||t.shiftKey||t.altKey)return;const e=t.target instanceof Element&&t.target.closest("a[href]");if(!e||e.target==="_blank")return;const r=e.getAttribute("href");!r||!r.startsWith(n)||(t.preventDefault(),t.stopImmediatePropagation(),location.href=location.origin+r.slice(n.length-1))},!0)})();'
+/** previewLinkScript() 經過 VitePress 同一個壓縮（renderHead 的 transformWithEsbuild minify）；vite 載不到時回 null */
+async function minifiedPreviewLinks() {
+  try {
+    const { transformWithEsbuild } = await import('vite')
+    return (await transformWithEsbuild(previewLinkScript(undefined, ['sound-effects']), 'inline-script.js', { minify: true })).code.trim()
+  } catch {
+    return null
+  }
+}
+
+test('previewLinkScriptsIn：認得原字串、VitePress 壓縮過的寫法與記號；其他 head 腳本與程式碼區塊不算', async () => {
+  const fresh = await minifiedPreviewLinks()
+  // 拿掉 /*! … */ 記號的版本也要認得：記號只是輔助，靠的是壓縮後不會變的片段
+  const bare = fresh?.replace(/\/\*![\s\S]*?\*\//g, '')
+  if (fresh) assert.ok(fresh.includes(PREVIEW_LINKS_TOKEN), `VitePress 壓縮後記號要留著：${fresh.slice(0, 60)}`)
+  for (const js of [previewLinkScript(), previewLinkScript(undefined, ['sound-effects']), MINIFIED_PREVIEW_LINKS, fresh, bare].filter(Boolean)) {
+    assert.equal(previewLinkScriptsIn(`<head><meta charset="utf-8">\n<script>${js}</script>\n</head>`).length, 1, js)
+  }
+  assert.equal(previewLinkScriptsIn(`<script data-${PREVIEW_LINKS_TOKEN}>x()</script>`).length, 1)
+  assert.equal(previewLinkScriptsIn(`<script>/*! ${PREVIEW_LINKS_TOKEN} */(()=>{})()</script>`).length, 1)
+  // 正式產物的 head 腳本（GA4 只在 www 上載入、主題切換）不算
+  assert.deepEqual(previewLinkScriptsIn('<script>(function(){if(location.hostname==="www.casper.tw"){var t=document.createElement("script");t.src="https://www.googletagmanager.com/gtag/js"}})();</script><script>(function(){try{var t=localStorage.getItem("casper-theme")}catch{}})();</script>'), [])
+  // 文章裡的程式碼區塊照字面寫出同一段也不算（不在 <script> 裡）
+  assert.deepEqual(previewLinkScriptsIn(`<pre><code>${MINIFIED_PREVIEW_LINKS.replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')}</code></pre>`), [])
+  // 只有一部分片段的腳本不算
+  assert.deepEqual(previewLinkScriptsIn('<script>location.href=location.origin+p.slice(1)</script>'), [])
+})
+
+test('L7：preview 的站內連結腳本（lib/preview-links.mjs）不能進 dist，P1 與外語首頁都驗', async () => {
+  const js = (await minifiedPreviewLinks()) ?? MINIFIED_PREVIEW_LINKS
+  assertFails(await p1(edit(POST, (h) => h.replace('</head>', `<script>${js}</script>\n</head>`))), ['locales'], /L7：\/development\/2021\/09\/11\/css-selector\/ 有 preview 的站內連結腳本/)
+  assertFails(await p1(edit('404.html', (h) => h.replace('</head>', `<script>${MINIFIED_PREVIEW_LINKS}</script>\n</head>`))), ['locales'], /L7：\/404\.html 有 preview 的站內連結腳本/)
+  assertFails(await i1(edit(EN, (h) => h.replace('</head>', `<script>${js}</script>\n</head>`))), ['locales'], /L7：\/en\/ 有 preview 的站內連結腳本/)
+})
+
 test('L8：S 起 404 不 hydrate；I1 起 404 有多語提示', async () => {
   assertFails(await s(edit('404.html', (h) => h.replace('</head>', '<script type="module" src="/assets/app.Bc12xY.js"></script>\n</head>'))), ['locales'], /404 有 <script type="module">/)
   assertFails(await s(edit('404.html', (h) => h.replace('</head>', '<link rel="modulepreload" href="/assets/chunks/theme.Dx9.js">\n</head>'))), ['locales'], /modulepreload/)
@@ -585,8 +628,124 @@ test('T1：首頁與外語首頁的 #tools、每頁頁尾的工具組等於 site
   assertFails(await i1(edit(EN, (h) => h.replace(/<span class="cs-toolcard__sum">[^<]*<\/span>/, ''))), ['tools'], /T1：\/en\/ 的 #tools 跟 siteToolLinks\(index, \{ locale: 'en' \}\) 不同/)
   assertFails(await i1(edit(HOME, (h) => h.replace(/<section id="tools"[\s\S]*?<\/section>/, ''))), ['tools'], /T1：\/ 的 #tools/)
   assertFails(await p1(edit(POST, (h) => h.replace('</footer>', '<nav class="cs-ftr__group cs-ftr__group--tools"><a href="https://www.casper.tw/lucky-draw/">抽獎大師</a></nav></footer>'))), ['tools'], /頁尾有工具組，但 tools\.json 沒有工具/)
+  // 工具卡的圖：toolCardArt() 給的小幽靈或工具自己的站徽（F.2）
+  assertFails(await i1(edit(EN, (h) => h.replace('brand/ghost/s-spot3.webp', 'brand/ghost/s-spot1.webp'))), ['tools'], /T1：\/en\/ 的 #tools .*s-spot1\.webp/)
+  const mark = 'https://www.casper.tw/lucky-draw/brand/card-340.webp'
+  const own = { ...I1_INDEX, tools: [{ ...I1_INDEX.tools[0], ghost: undefined, mark }] }
+  assertFails(await i1(null, { toolsIndex: own }), ['tools'], new RegExp(`T1：/en/ 的 #tools .*${mark.replaceAll('.', '\\.')}`))
   // multi：de 沒有 lucky-draw 的德文版，卡片退到 en，名稱包 lang="en" 並接 inEnglish 標示
   assertFails(await multi(edit('de/index.html', (h) => h.replace(/<span class="cs-toolcard__name">([^<]*)<span lang="en" data-foreign>/, '<span class="cs-toolcard__name">$1<span>'))), ['tools'], /T1：\/de\/ 的 #tools/)
+})
+
+test('T1：外語首頁的介紹區塊排在卡片前面，比介紹、重點、按鈕、主圖與小裝飾圖', async () => {
+  // 世界本身：/en/ 是 sound-effects、unit-converter 兩個介紹區塊，再來 lucky-draw 一張卡；/ 只有卡片
+  let en = ''
+  let home = ''
+  assert.equal((await feature((d) => { en = d.get(EN); home = d.get(HOME) })).ok, true)
+  assert.deepEqual(toolCardsIn(en).map((l) => [l.href, l.feature ? 'feature' : 'card']), [
+    ['https://www.casper.tw/sound-effects/', 'feature'], ['https://www.casper.tw/unit-converter/en/', 'feature'], ['https://www.casper.tw/lucky-draw/en/', 'card'],
+  ])
+  assert.ok(toolCardsIn(home).every((l) => l.feature === null) && toolCardsIn(home).length === 3)
+  const T1 = /T1：\/en\/ 的 #tools 跟 siteToolLinks\(index, \{ locale: 'en' \}\) 不同/
+  // 介紹、重點、按鈕字
+  assertFails(await feature(edit(EN, (h) => h.replace('Thousands of short sound effects', 'Hundreds of short sound effects'))), ['tools'], T1)
+  assertFails(await feature(edit(EN, (h) => h.replace('<li>Free to use, no sign-up</li>', ''))), ['tools'], T1)
+  assertFails(await feature(edit(EN, (h) => h.replace('>Browse sound effects</a>', '>Browse</a>'))), ['tools'], T1)
+  // 按鈕連到別支工具：T1（按鈕的連結要同卡片）；連到站外：T1 加 T2
+  assertFails(await feature(edit(EN, (h) => h.replace('class="b3d cs-toolfeature__cta" href="https://www.casper.tw/sound-effects/"', 'class="b3d cs-toolfeature__cta" href="https://www.casper.tw/lucky-draw/en/"'))), ['tools'], T1)
+  assertFails(await feature(edit(EN, (h) => h.replace('class="b3d cs-toolfeature__cta" href="https://www.casper.tw/sound-effects/"', 'class="b3d cs-toolfeature__cta" href="https://example.com/sfx"'))), ['tools'], /T2：\/en\/ 的工具連結 「https:\/\/example\.com\/sfx」/)
+  // 主圖是 images[0]，不是站徽；尺寸照資料
+  assertFails(await feature(edit(EN, (h) => h.replace('src="https://img.casper.tw/sound-effects/sfx-feature-a.webp"', 'src="https://www.casper.tw/sound-effects/brand/card-340.webp"'))), ['tools'], /T1：\/en\/ 的 #tools .*card-340\.webp/)
+  assertFails(await feature(edit(EN, (h) => h.replace('sfx-feature-a.webp" alt="" width="960" height="600"', 'sfx-feature-a.webp" alt="" width="960" height="720"'))), ['tools'], T1)
+  // 沒有圖的工具，主圖退回小幽靈（toolCardArt）
+  assertFails(await feature(edit(EN, (h) => h.replace('brand/ghost/s-spot1.webp', 'brand/ghost/s-spot2.webp'))), ['tools'], T1)
+  // 小裝飾圖：少一張、換順序都不行
+  assertFails(await feature(edit(EN, (h) => h.replace(/<img class="ghost ghost--small" src="https:\/\/img\.casper\.tw\/sound-effects\/sfx-cat-ambience\.webp"[^>]*>/, ''))), ['tools'], T1)
+  // 有介紹的工具輸出成一般卡片、或沒介紹的工具包進介紹區塊：都不對
+  assertFails(await feature(edit(EN, (h) => h.replace('<div class="cs-toolfeature"><a class="cs-toolcard cs-toolfeature__card" href="https://www.casper.tw/sound-effects/"', '<div class="cs-toolbox"><a class="cs-toolcard cs-toolfeature__card" href="https://www.casper.tw/sound-effects/"'))), ['tools'], T1)
+  assertFails(await feature(edit(EN, (h) => h.replace(/<ul class="cs-toolcards"><li>(<a class="cs-toolcard"[\s\S]*?<\/a>)<\/li><\/ul>/, '<div class="cs-toolfeature">$1<p class="cs-toolfeature__intro">x</p></div>'))), ['tools'], T1)
+  // 介紹區塊排在卡片後面：順序不對
+  assertFails(await feature(edit(EN, (h) => {
+    const cards = /<ul class="cs-toolcards">[\s\S]*?<\/ul>/.exec(h)[0]
+    return h.replace(cards, '').replace('<div class="cs-toolfeature">', `${cards}<div class="cs-toolfeature">`)
+  })), ['tools'], T1)
+  // 繁中首頁 / 不輸出介紹區塊（HomeTools.vue 只有卡片）
+  assertFails(await feature(edit(HOME, (h) => h.replace(/(<section id="tools"[^>]*>[\s\S]*?)(<ul class="cs-toolcards">[\s\S]*?<\/ul>)/, '$1<div class="cs-toolfeature">$2</div>'))), ['tools'], /T1：\/ 的 #tools/)
+})
+
+test('T1：#tools 卡片以外多出來的東西（/ 的介紹區塊、沒包卡片的介紹區塊、第二個按鈕、多的工具連結）', async () => {
+  // 沒包卡片的介紹區塊：只有說明、重點與按鈕（卡片照舊在清單裡，toolCardsIn 看不到它）
+  const looseBlock = (href, hreflang, text) => `<div class="cs-toolfeature"><div class="cs-toolfeature__body"><p class="cs-toolfeature__intro">${text}</p><ul class="cs-toolfeature__points"><li>${text}</li></ul><a class="b3d cs-toolfeature__cta" href="${href}" hreflang="${hreflang}">${text}</a></div></div>`
+  const zhBlock = looseBlock('https://www.casper.tw/sound-effects/zh-tw/', 'zh-Hant', '看看所有音效')
+  // / 的卡片清單後面、前面多一個介紹區塊
+  assertFails(await feature(edit(HOME, (h) => h.replace(/(<section id="tools"[\s\S]*?<\/ul>)/, `$1${zhBlock}`))), ['tools'], /T1：\/ 的 #tools 有介紹區塊的元素 <div class="cs-toolfeature">/)
+  assertFails(await feature(edit(HOME, (h) => h.replace(/(<section id="tools"[\s\S]*?)(<ul class="cs-toolcards">)/, `$1${zhBlock}$2`))), ['tools'], /T1：\/ 的 #tools 有介紹區塊的元素 <div class="cs-toolfeature">/)
+  // / 的卡片裡多一個 cs-toolfeature 開頭的 class（介紹區塊的名稱樣式）也不行
+  assertFails(await feature(edit(HOME, (h) => h.replace('<span class="cs-toolcard__name">', '<span class="cs-toolcard__name cs-toolfeature__name">'))), ['tools'], /T1：\/ 的 #tools 有介紹區塊的元素 <span class="cs-toolcard__name cs-toolfeature__name">/)
+  // / 的 #tools 多一個不是卡片的工具連結
+  assertFails(await feature(edit(HOME, (h) => h.replace(/(<section id="tools"[\s\S]*?<\/ul>)/, '$1<p><a href="https://www.casper.tw/lucky-draw/" hreflang="zh-Hant">全部工具</a></p>'))), ['tools'], /T1：\/ 的 #tools 多了連結 「https:\/\/www\.casper\.tw\/lucky-draw\/」（全部工具）/)
+  // /en/ 多一個沒包卡片的介紹區塊（區塊數跟介紹卡片數不同，按鈕也成了多的連結）
+  const enLoose = await feature(edit(EN, (h) => h.replace('<ul class="cs-toolcards">', `${looseBlock('https://www.casper.tw/sound-effects/', 'en', 'More sounds')}<ul class="cs-toolcards">`)))
+  assertFails(enLoose, ['tools'], /T1：\/en\/ 的 #tools 有 3 個介紹區塊，在介紹區塊裡的卡片是 2 張/)
+  assert.ok(check(enLoose, 'tools').failures.some((f) => /T1：\/en\/ 的 #tools 第 3 個介紹區塊要剛好 1 張 a\.cs-toolcard.*實際卡片 0/.test(f)))
+  assert.ok(check(enLoose, 'tools').failures.some((f) => /T1：\/en\/ 的 #tools 多了連結 「https:\/\/www\.casper\.tw\/sound-effects\/」（More sounds）/.test(f)))
+  // /en/ 的介紹區塊多第二個按鈕，連到別的語系（T1 的比對只看第一個按鈕，T2 只看網址形狀）
+  assertFails(await feature(edit(EN, (h) => h.replace('>Browse sound effects</a>', '>Browse sound effects</a><a class="b3d cs-toolfeature__cta" href="https://www.casper.tw/sound-effects/ja/" hreflang="ja">Japanese</a>'))), ['tools'], /T1：\/en\/ 的 #tools 第 1 個介紹區塊要剛好 1 張 a\.cs-toolcard、1 個 __cta、1 個 __intro、1 個 __points，__strip 最多 1 個：實際卡片 1、__cta 2、__intro 1、__points 1、__strip 1/)
+  // 第二段介紹、第二個重點清單、第二條小裝飾圖
+  assertFails(await feature(edit(EN, (h) => h.replace('<ul class="cs-toolfeature__points">', '<p class="cs-toolfeature__intro">Again</p><ul class="cs-toolfeature__points">'))), ['tools'], /第 1 個介紹區塊要剛好.*__intro 2/)
+  assertFails(await feature(edit(EN, (h) => h.replace('<a class="b3d cs-toolfeature__cta"', '<ul class="cs-toolfeature__points"><li>More</li></ul><a class="b3d cs-toolfeature__cta"'))), ['tools'], /第 1 個介紹區塊要剛好.*__points 2/)
+  assertFails(await feature(edit(EN, (h) => h.replace('<div class="cs-toolfeature__strip">', '<div class="cs-toolfeature__strip"></div><div class="cs-toolfeature__strip">'))), ['tools'], /第 1 個介紹區塊要剛好.*__strip 2/)
+  // /en/ #tools 開頭的說明裡多一個工具連結（連到繁中版）
+  assertFails(await feature(edit(EN, (h) => h.replace(/(<section id="tools"[^>]*><h2[^>]*>[^<]*<\/h2><p>)/, '$1<a href="https://www.casper.tw/sound-effects/zh-tw/" hreflang="zh-Hant">Sound effects in Chinese</a> '))), ['tools'], /T1：\/en\/ 的 #tools 多了連結 「https:\/\/www\.casper\.tw\/sound-effects\/zh-tw\/」（Sound effects in Chinese）/)
+})
+
+test('toolsRegionProblems：每個 <a> 是卡片或包一張卡的區塊裡的按鈕；區塊要是 div、各部分的數量；/ 不能有 cs-toolfeature', () => {
+  const card = (href) => `<a class="cs-toolcard" href="${href}"><span class="cs-toolcard__name"><span>X</span></span></a>`
+  const body = (href, extra = '') => `<div class="cs-toolfeature__body"><p class="cs-toolfeature__intro">i</p><ul class="cs-toolfeature__points"><li>p</li></ul><a class="b3d cs-toolfeature__cta" href="${href}">go</a>${extra}</div>`
+  const ok = `<h2>Tools</h2><p>lead</p><div class="cs-toolfeature">${card('/a/')}${body('/a/', '<div class="cs-toolfeature__strip"></div>')}</div><ul class="cs-toolcards"><li>${card('/b/')}</li></ul>`
+  assert.deepEqual(toolsRegionProblems(ok, { features: true }), [])
+  assert.deepEqual(toolsRegionProblems(`<ul class="cs-toolcards"><li>${card('/a/')}</li></ul>`, { features: false }), [])
+  // / 不能有介紹區塊，即使結構完整
+  assert.match(toolsRegionProblems(ok, { features: false })[0], /有介紹區塊的元素 <div class="cs-toolfeature">、<div class="cs-toolfeature__body">、<p class="cs-toolfeature__intro"> 等 6 個/)
+  // 區塊是 section：要是 div
+  const section = `<section class="cs-toolfeature">${card('/a/')}${body('/a/')}</section>`
+  assert.deepEqual(toolsRegionProblems(section, { features: true }), ['第 1 個介紹區塊是 <section>，要是 div.cs-toolfeature'])
+  // 一個區塊包兩張卡：卡片數不對，按鈕也不算在「剛好一張卡」的區塊裡
+  const two = toolsRegionProblems(`<div class="cs-toolfeature">${card('/a/')}${card('/b/')}${body('/a/')}</div>`, { features: true })
+  assert.ok(two.some((p) => /實際卡片 2/.test(p)) && two.some((p) => /有 1 個介紹區塊，在介紹區塊裡的卡片是 2 張/.test(p)) && two.some((p) => /多了連結 「\/a\/」（go）/.test(p)), two.join('\n'))
+  // 巢狀的區塊：外層與內層都包到同一張卡，區塊數多一個
+  const nested = toolsRegionProblems(`<div class="cs-toolfeature"><div class="cs-toolfeature">${card('/a/')}${body('/a/')}</div></div>`, { features: true })
+  assert.ok(nested.some((p) => /有 2 個介紹區塊，在介紹區塊裡的卡片是 1 張/.test(p)), nested.join('\n'))
+  // 區塊外的按鈕、沒有 href 的連結都是多的
+  assert.deepEqual(toolsRegionProblems(`${card('/a/')}<a class="b3d cs-toolfeature__cta" href="/a/">go</a>`, { features: true }), ['多了連結 「/a/」（go）：#tools 裡只能有 a.cs-toolcard，以及介紹區塊（剛好包一張卡）裡的按鈕 a.cs-toolfeature__cta'])
+  assert.match(toolsRegionProblems(`${card('/a/')}<a class="more"><img src="/x.webp"></a>`, { features: false })[0], /多了連結 （無）（沒有文字）/)
+})
+
+test('T1：名稱與說明的空白（U+3000、連續空白、NBSP、頭尾空白）兩邊一樣正規化，資料與 HTML 一致就通過', async () => {
+  const [lucky, sfx, conv] = FEATURE_INDEX.tools
+  const index = {
+    ...FEATURE_INDEX,
+    tools: [
+      {
+        ...lucky,
+        locales: {
+          'zh-tw': { ...lucky.locales['zh-tw'], name: '抽獎  大師', summary: '抽獎　轉盤　分組' },
+          en: { ...lucky.locales.en, name: ' Lucky  Draw ', summary: 'Draw names,  spin a wheel and split teams ' },
+        },
+      },
+      { ...sfx, locales: { ...sfx.locales, en: { ...sfx.locales.en, summary: 'Free  sound effects', intro: 'Thousands of  short sounds.', highlights: ['Play　first', ' Free '], cta: 'Browse  sounds' } } },
+      conv,
+    ],
+  }
+  const r = await featureWith(index)
+  assert.equal(r.ok, true, formatReport(r))
+  // 產物裡真的是原字串（Vue 照原樣輸出），不是測試世界先壓過空白
+  let html = ''
+  await featureWith(index, (d) => { html = d.get(HOME) })
+  assert.ok(html.includes('抽獎　轉盤　分組') && html.includes('抽獎  大師'))
+  // 空白以外的字不同還是失敗
+  assertFails(await featureWith(index, edit(EN, (h) => h.replace('Free  sound effects', 'Free sound effect'))), ['tools'], /T1：\/en\/ 的 #tools 跟 siteToolLinks/)
+  assertFails(await featureWith(index, edit(HOME, (h) => h.replace('抽獎　轉盤　分組', '抽獎　轉盤'))), ['tools'], /T1：\/ 的 #tools 跟 siteToolLinks/)
 })
 
 test('T2：工具連結是 https://www.casper.tw/<slug>/ 開頭、帶尾斜線', async () => {
@@ -633,10 +792,9 @@ test('checkSiteName、checkJsonLd、checkAds、checkLayout、checkCategories、c
   assertFails(await p1((d) => d.set('tags/ja/index.html', d.get('tags/vue/index.html'))), ['categories', 'urls'], /tags\/ja\/ 的路徑段是語系代碼|未預期/)
   const r = await p1(null, { posts: (await import('./fixtures/world.mjs')).buildWorld().opts.posts.map((x, i) => (i ? x : { ...x, tags: [...x.tags, 'DE'] })) })
   assert.ok(check(r, 'categories').failures.some((f) => /分類或標籤「DE」是語系代碼/.test(f)), formatReport(r))
-  // 沒上線語系的文案與 preview 提示字不能進 client chunk
+  // 沒上線語系的文案不能進 client chunk
   const ja = readHomeMessages('ja')
   assertFails(await i1(edit('assets/chunks/theme.Dx9.js', (x) => `${x}export const t=${JSON.stringify(ja.hero.lead)};\n`)), ['chunks'], /沒上線的 ja 文案（hero\.lead）/)
-  assertFails(await i1(edit('assets/app.Bc12xY.js', (x) => `${x}const n="Preview: not reviewed";\n`)), ['chunks'], /preview 的提示字/)
   assertFails(await p1(edit('assets/app.Bc12xY.js', (x) => `${x}const n=${JSON.stringify(readHomeMessages('en').menu.homeOnly)};\n`)), ['chunks'], /沒上線的 en 文案（menu\.homeOnly）/)
   // 已上線語系的文案不算外洩
   assert.equal((await i1(edit('assets/app.Bc12xY.js', (x) => `${x}const n=${JSON.stringify(readHomeMessages('en').menu.homeOnly)};\n`))).ok, true)

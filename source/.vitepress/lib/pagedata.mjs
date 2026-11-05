@@ -13,7 +13,7 @@ import { pageTypeOf } from './pagetype.mjs'
 import { SITE_NAME } from '../theme/shared/shell/site.mjs'
 import { LOCALES } from '../theme/shared/shell/i18n/locales.mjs'
 import siteConfig from '../site.config.mjs'
-import { buildSiteHomePlan, siteHomeTitle } from './site-home.mjs'
+import { buildSiteHomePlan, effectiveShell, siteHomeTitle } from './site-home.mjs'
 import { siteFrontmatter } from './site-shell.mjs'
 import {
   cardFor,
@@ -314,7 +314,8 @@ const planOf = (plan) => plan ?? (defaultPlan ??= buildSiteHomePlan())
 
 // 每一頁都會跑（config.mts 的 transformPageData，seo 之前）。結果寫進 pageData.frontmatter，欄位見 README。
 // opts：plan 是 lib/site-home.mjs 的 buildSiteHomePlan()，config 是 site.config.mjs（測試可以換）。
-// fm.site（主站首頁規格 G.4）：外語首頁一律寫；其他頁只在 shell 是 'shared' 時寫（S 版起），P1、P2 的產物因此不變
+// fm.site（主站首頁規格 G.4）：外語首頁一律寫；其他頁只在實際用共用頁首頁尾時寫（effectiveShell：S 版起，或 preview 建置），
+// P1、P2 的正式產物因此不變
 export function pageDataFor(pageData, ctx, srcDir, { plan, config = siteConfig } = {}) {
   const fm = (pageData.frontmatter ??= {})
   const type = pageTypeOf(pageData.relativePath)
@@ -399,7 +400,7 @@ export function pageDataFor(pageData, ctx, srcDir, { plan, config = siteConfig }
       throw new Error(`pagedata：沒有處理頁型 ${type}`)
   }
   Object.assign(fm, data)
-  if (type !== 'site-home' && config.shell === 'shared') {
+  if (type !== 'site-home' && effectiveShell(planOf(plan), config) === 'shared') {
     fm.site = siteFrontmatter({ pageType: type, canonical: type === 'not-found' ? '' : toAbsolute(url), plan: planOf(plan) })
   }
   return pageData

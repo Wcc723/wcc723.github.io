@@ -3,7 +3,7 @@ import { useData } from 'vitepress'
 import { formatShell } from '../shared/shell/i18n/shell-strings.mjs'
 
 // fm.site（lib/site-shell.mjs 的 siteFrontmatter() 寫的，主站首頁規格 G.4）：共用頁首頁尾與外語首頁要的資料。
-// 外語首頁一律有；其他頁只在 site.config.mjs 的 shell 是 'shared' 時有（S 版起）。
+// 外語首頁一律有；其他頁只在用共用頁首頁尾時有（lib/site-home.mjs 的 effectiveShell()：S 版起，或 preview 建置）。
 // 字串只有當頁語系的那一份（fm.site.shell），text() 用 formatShell 代入佔位符；缺 key 直接丟錯，不讓 {x} 或空字串漏到頁面上。
 // 不 import lib/：資料都在 Node 端算好放在 frontmatter。
 
@@ -20,7 +20,8 @@ export interface SiteData {
   section: string
   canonical: string
   home: any | null
-  preview: { notice: string } | null
+  /** preview 建置的外語首頁是 true（根元素加 cs-preview、head 加 noindex），頁面上不放提示 */
+  preview: boolean
   notFoundIntl: any[]
 }
 
@@ -45,7 +46,7 @@ export function useSite(): ComputedRef<SiteData | null> {
       section: s.section ?? '',
       canonical: s.canonical ?? '',
       home: s.home ?? null,
-      preview: s.preview ?? null,
+      preview: s.preview === true,
       notFoundIntl: s.notFoundIntl ?? []
     }
   })

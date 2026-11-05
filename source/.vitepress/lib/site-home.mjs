@@ -47,10 +47,6 @@ export const SITE_HOME_CODES = LOCALES.map((l) => l.code).filter((c) => c !== 'z
 export const HOME_PLACEHOLDERS = ['author', 'site']
 /** scope 'title' 的禁語只查這個 key（title 的後半段） */
 export const HOME_TITLE_KEYS = ['meta.tagline']
-/** preview 頁頂端的提示字（C.3）：只放在 preview 建置的 frontmatter，元件裡沒有這段字 */
-export const PREVIEW_NOTICE = 'Preview: not reviewed / 預覽：尚未審稿'
-/** preview 頁工具區的提示：這個語系還沒有任何工具（G8 沒過） */
-export const PREVIEW_TOOLS_NOTE = 'Preview: G8 not met, no tool has this language yet / 預覽：G8 沒過，還沒有任何工具有這個語系'
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/
 const readJsonIfExists = (file) => (fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : null)
@@ -375,7 +371,6 @@ export function buildSiteHomePlan({
       pages.push({ code, url: siteHomeUrl(code), preview: !published.includes(code) })
       for (const m of homeGateProblems(code, ctx)) warnings.push(`preview：${m}`)
     }
-    if (config.shell === 'legacy') warnings.push("shell 是 'legacy'：preview 的外語首頁用部落格舊的頁首頁尾，語言選單與外語頁尾要等 S 版（C.3）")
   }
   const seo = siteHomeSeoProblems({ pages }, read, { siteNameEn })
   if (stage === 'live') problems.push(...seo.errors)
@@ -386,6 +381,15 @@ export function buildSiteHomePlan({
 
 /** 這次建置的首頁叢集（hreflang、語言選單、og:locale:alternate 用）：plan.pages 的語系。live 時等於 published（C.3） */
 export const clusterCodes = (plan) => (plan?.pages ?? []).map((p) => p.code)
+
+/**
+ * 這次建置實際用的頁首頁尾（C.3、G.5）：preview 一律 'shared'，其他照 site.config.mjs 的 shell。
+ * 外語首頁只能配共用頁首頁尾上線（siteConfigProblems 擋），語言選單也只做在共用頁首上，所以 preview 要看的就是 S 版之後的樣子。
+ * 用到的地方都呼叫這一支：lib/pagedata.mjs 決定每頁寫不寫 fm.site，config.mts 決定 __CS_SHARED_SHELL__
+ */
+export function effectiveShell(plan, config = siteConfig) {
+  return plan?.stage === 'preview' ? 'shared' : config.shell
+}
 
 // ── VitePress 與語言選單 ───────────────────────────────────────────────────
 

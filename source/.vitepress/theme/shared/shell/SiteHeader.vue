@@ -159,7 +159,12 @@ onBeforeUnmount(() => {
   .cs-hdr__name { font-size: 19px; line-height: 24px; font-weight: 800; letter-spacing: .01em; white-space: nowrap; }
   .cs-hdr__en { display: none; font-family: var(--cs-lang-accent); font-size: 14px; line-height: 20px; font-weight: 800; color: var(--cs-text-2); white-space: nowrap; }
 
-  .cs-hdr__nav { display: none; gap: 4px; min-inline-size: 0; overflow-x: auto; scrollbar-width: none; }
+  /* 導覽是捲動容器（overflow-x: auto 連帶 overflow-y 也是 auto），框外的焦點框會被裁掉：
+     四周留焦點框的寬度加間距當 padding，再用一樣大的負 margin 抵掉，版面位置與大小不變 */
+  .cs-hdr__nav {
+    display: none; gap: 4px; min-inline-size: 0; overflow-x: auto; scrollbar-width: none;
+    padding: calc(var(--cs-size-focus-ring) + var(--cs-size-focus-offset)); margin: calc(-1 * (var(--cs-size-focus-ring) + var(--cs-size-focus-offset)));
+  }
   .cs-hdr__nav::-webkit-scrollbar { display: none; }
   .cs-hdr__nav a, .cs-menu__panel a {
     display: inline-flex; align-items: center; min-block-size: var(--cs-size-tap); padding-inline: 12px; border-radius: var(--cs-radius-input);

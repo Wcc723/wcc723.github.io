@@ -41,7 +41,7 @@ const props = withDefaults(defineProps<{
   kind?: 'page' | 'site-home'
   /** 工具組：tools.mjs 的 siteToolLinks() 結果；空陣列時整組不輸出 */
   siteTools?: SiteToolLink[]
-  /** 已上線的外語全站首頁：部落格傳 plan.published，工具傳 tools.json 的 siteHomes */
+  /** 已上線的外語全站首頁：部落格傳 clusterCodes(plan)（live 建置等於 plan.published，preview 建置是 plan.pages），工具傳 tools.json 的 siteHomes */
   siteHomes?: string[]
   /** 這一頁的網址（完整網址），外語頁的全站與法務連結相同時標 aria-current="page" */
   currentUrl?: string

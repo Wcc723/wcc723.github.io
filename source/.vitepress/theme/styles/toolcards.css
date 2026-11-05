@@ -1,0 +1,52 @@
+/*
+ * 工具卡（主站首頁規格 E.1、F.6）：外語首頁 SiteHomePage.vue 與繁中首頁 components/HomeTools.vue 共用的 ul.cs-toolcards。
+ * 只由這兩支元件 import：SiteHomePage 跟著 __CS_SITE_HOME__、HomeTools 跟著 __CS_SHARED_SHELL__ 進出建置，P1、P2 的正式 CSS 沒有這支。
+ * VitePress 的 CSS 全站一份，選擇器一律以 .cs-toolcard 開頭（toolcards.test.mjs 驗）。
+ * 顏色：卡片底 --cs-bg、名稱 --cs-text、說明 --cs-text-2（G.7）。
+ */
+
+.cs-toolcards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 20px;
+  margin: 20px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 整張卡是一個連結，高度至少 --cs-size-tap（44px），超過 WCAG 2.5.8 的 24 × 24 px */
+.cs-toolcard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: var(--cs-size-tap);
+  height: 100%;
+  padding: 14px 14px 20px;
+  border: var(--cs-size-border) solid var(--cs-line);
+  border-radius: var(--cs-radius-card);
+  background: var(--cs-bg);
+  box-shadow: 0 var(--cs-shadow-depth) 0 var(--cs-line);
+  color: var(--cs-text);
+  text-decoration: none;
+}
+
+.cs-toolcard:hover {
+  border-color: var(--cs-blue-200);
+}
+
+.cs-toolcard img {
+  width: 116px;
+  height: auto;
+  align-self: center;
+}
+
+.cs-toolcard__name {
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--cs-text);
+}
+
+.cs-toolcard__sum {
+  font-size: 14px;
+  color: var(--cs-text-2);
+}

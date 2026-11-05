@@ -3,8 +3,9 @@
 // 2. 模擬 VitePress 產物：同樣的 SEO 欄位與本文，換成新主題的外框（vp-raw、prose、post-foot、post-card、
 //    程式碼區塊的複製鈕與語言標籤、標題錨點的零寬字元、直引號），加上新頁、404、assets。
 // 這份 dist 應該通過全部檢查；各測試再用 mutate 改壞一個地方，確認對應的檢查會失敗。
-// 另有兩份世界（主站首頁規格 J.1）：stage 's'（S 之後：共用頁首頁尾、404 不 hydrate）與 stage 'i1'
-// （I1 之後：/en/、/ 的 hreflang、語言選單、一支有英文版的工具、404 的多語提示）。頁首頁尾照共用元件的 DOM 手寫，
+// 另有幾份世界（主站首頁規格 J.1）：stage 's'（S 之後：共用頁首頁尾、404 不 hydrate）、stage 'i1'
+// （I1 之後：/en/、/ 的 hreflang、語言選單、一支有英文版的工具、404 的多語提示）、stage 'multi'（en、ja、de）
+// 與 stage 'feature'（I1 加兩支有介紹區塊的工具，E.1）。頁首頁尾照共用元件的 DOM 手寫，
 // 外語首頁的 head 用 lib/seo.mjs 的 siteHomeHead()、文案用 lib/site-shell.mjs 的 siteHomeView()，跟建置同一份資料。
 import fs from 'node:fs'
 import os from 'node:os'
@@ -16,6 +17,7 @@ import {
 import { SITE_TITLE_LEGACY, ADSENSE_CLIENT, ADSENSE_LOADER_SRC, shouldLoadAds } from '../../source/.vitepress/theme/shared/shell/site.mjs'
 import { pageTypeOf } from '../../source/.vitepress/lib/pagetype.mjs'
 import { NOT_FOUND_TITLE, NOT_FOUND_DESCRIPTION } from '../../source/.vitepress/theme/head.mjs'
+import { toolCardArt, toolFeatureArt } from '../../source/.vitepress/theme/ghost.mjs'
 import { expectedSitemap, expectedContentEntry, NEW_PAGES, CATEGORIES_FILE } from '../audit-build.mjs'
 import { siteHomeTitle, languageTargets, formatHomeCopy, readHomeMessages } from '../../source/.vitepress/lib/site-home.mjs'
 import { siteHomeView, notFoundIntl, textFor } from '../../source/.vitepress/lib/site-shell.mjs'
@@ -167,7 +169,25 @@ export function footerToolsHtml(links, code) {
 /** 首頁與外語首頁的工具卡（SiteHomePage.vue 的 ul.cs-toolcards） */
 export function toolCardsHtml(links) {
   if (!links.length) return ''
-  return `<ul class="cs-toolcards">${links.map((l) => `<li><a class="cs-toolcard" href="${l.href}" hreflang="${l.hreflang}"><img class="ghost" src="https://img.casper.tw/brand/ghost/s-${l.ghost || 'spot2'}.webp" alt="" width="340" height="340" loading="lazy"><span class="cs-toolcard__name">${toolName(l)}</span>${l.summary ? `<span class="cs-toolcard__sum">${esc(l.summary)}</span>` : ''}</a></li>`).join('')}</ul>`
+  return `<ul class="cs-toolcards">${links.map((l) => `<li><a class="cs-toolcard" href="${l.href}" hreflang="${l.hreflang}"><img class="ghost" src="${toolCardArt(l).src}" alt="" width="340" height="340" loading="lazy"><span class="cs-toolcard__name">${toolName(l)}</span>${l.summary ? `<span class="cs-toolcard__sum">${esc(l.summary)}</span>` : ''}</a></li>`).join('')}</ul>`
+}
+
+/** 外語首頁的介紹區塊（SiteHomePage.vue 的 div.cs-toolfeature，E.1）：a.cs-toolcard（主圖、名稱、說明）、介紹、重點、按鈕、小裝飾圖 */
+export function toolFeatureHtml(l) {
+  const f = l.feature
+  const art = toolFeatureArt(l)
+  const img = (x, cls) => `<img class="${cls}" src="${x.src}" alt="" width="${x.width}" height="${x.height}" loading="lazy" decoding="async">`
+  const deco = f.images.slice(1)
+  return `<div class="cs-toolfeature"><a class="cs-toolcard cs-toolfeature__card" href="${l.href}" hreflang="${l.hreflang}"><span class="cs-toolfeature__stage">${img(art, f.images.length ? 'ghost cs-toolfeature__art' : 'ghost cs-toolfeature__art cs-toolfeature__art--card')}</span>` +
+    `<span class="cs-toolcard__name cs-toolfeature__name">${toolName(l)}</span>${l.summary ? `<span class="cs-toolcard__sum cs-toolfeature__sum">${esc(l.summary)}</span>` : ''}</a>` +
+    `<div class="cs-toolfeature__body"><p class="cs-toolfeature__intro">${esc(f.intro)}</p><ul class="cs-toolfeature__points">${f.highlights.map((h) => `<li>${esc(h)}</li>`).join('')}</ul>` +
+    `<a class="b3d cs-toolfeature__cta" href="${l.href}" hreflang="${l.hreflang}">${esc(f.cta)}</a>` +
+    `${deco.length ? `<div class="cs-toolfeature__strip">${deco.map((x) => img(x, 'ghost ghost--small')).join('')}</div>` : ''}</div></div>`
+}
+
+/** 外語首頁 #tools 裡的工具：有 feature 的先輸出介紹區塊，其他照舊是卡片（SiteHomePage.vue 的順序） */
+export function siteHomeToolsHtml(links) {
+  return links.filter((l) => l.feature).map(toolFeatureHtml).join('') + toolCardsHtml(links.filter((l) => !l.feature))
 }
 
 /**
@@ -241,7 +261,7 @@ export function siteHomeBuiltHtml(code, { plan, index, chrome, readHome = readHo
   const h1 = view.h1.lang ? `<span lang="${view.h1.lang}" data-foreign>${esc(view.h1.text)}</span>` : esc(view.h1.text)
   const main = '<div class="cs-shome">' +
     `<section class="cs-shome__hero" aria-labelledby="cs-shome-h1"><img class="ghost" src="https://img.casper.tw/brand/ghost/s-hero.webp" width="960" height="894" alt="" decoding="async" fetchpriority="high"><h1 id="cs-shome-h1">${h1}</h1><p class="cs-lead">${esc(view.hero.lead)}</p><a class="b3d" href="${view.hero.toolsHref}">${esc(view.hero.toolsButton)}</a></section>` +
-    `<section id="tools" class="cs-shome__tools" aria-labelledby="cs-shome-tools"><h2 id="cs-shome-tools">${esc(view.tools.h2)}</h2><p>${esc(view.tools.lead)}</p>${toolCardsHtml(tools)}</section>` +
+    `<section id="tools" class="cs-shome__tools" aria-labelledby="cs-shome-tools"><h2 id="cs-shome-tools">${esc(view.tools.h2)}</h2><p>${esc(view.tools.lead)}</p>${siteHomeToolsHtml(tools)}</section>` +
     `<section class="cs-shome__articles" aria-labelledby="cs-shome-articles"><h2 id="cs-shome-articles">${esc(view.articles.h2)}</h2><p>${esc(view.articles.body)}</p><p class="cs-shome__links">${link(view.links.latest)}${link(view.links.categories)}</p></section>` +
     `<section id="about" class="cs-shome__about" aria-labelledby="cs-shome-about"><h2 id="cs-shome-about">${esc(view.about.title)}</h2><p>${esc(view.about.body)}</p>${link(view.links.about)}</section>` +
     '</div>'
@@ -270,6 +290,51 @@ export const MULTI_INDEX = Object.freeze({
   ...I1_INDEX,
   tools: [{ ...I1_INDEX.tools[0], locales: { ...I1_INDEX.tools[0].locales, ja: { url: 'https://www.casper.tw/lucky-draw/ja/', name: 'ラッキードロー', summary: '抽選、ルーレット、チーム分け' } } }],
 })
+// 介紹區塊的世界（I1 加兩支工具，E.1）：tools.json 的順序是 lucky-draw（en 沒有介紹，卡片）、sound-effects（en 有介紹與四張圖）、
+// unit-converter（en 有介紹、沒有圖，主圖退回小幽靈）。/en/ 的 #tools 是 sound-effects、unit-converter 兩個介紹區塊，再來 lucky-draw 一張卡；
+// 繁中首頁 / 只有卡片（sound-effects 的 zh-tw 也寫了介紹，HomeTools.vue 不輸出）
+export const FEATURE_INDEX = Object.freeze({
+  ...I1_INDEX,
+  tools: [
+    I1_INDEX.tools[0],
+    {
+      slug: 'sound-effects', rootLocale: 'en', xDefaultLocale: 'en', mark: 'https://www.casper.tw/sound-effects/brand/card-340.webp',
+      images: [
+        { src: 'https://img.casper.tw/sound-effects/sfx-feature-a.webp', width: 960, height: 600 },
+        { src: 'https://img.casper.tw/sound-effects/sfx-cat-impacts.webp', width: 240, height: 240 },
+        { src: 'https://img.casper.tw/sound-effects/sfx-cat-reactions.webp', width: 240, height: 240 },
+        { src: 'https://img.casper.tw/sound-effects/sfx-cat-ambience.webp', width: 240, height: 240 },
+      ],
+      keywords: ['音效'],
+      locales: {
+        en: {
+          url: 'https://www.casper.tw/sound-effects/', name: 'Sound Effects', summary: 'Free sound effects to play and download',
+          intro: 'Thousands of short sound effects you can play right in the browser & download for videos, games and slides.',
+          highlights: ['Play every sound before you download', 'Sorted into categories like animals, alerts and games', 'Free to use, no sign-up'],
+          cta: 'Browse sound effects',
+        },
+        'zh-tw': {
+          url: 'https://www.casper.tw/sound-effects/zh-tw/', name: '音效庫', summary: '免費音效，線上試聽與下載',
+          intro: '上千個短音效，在瀏覽器裡直接試聽，下載後可以用在影片、遊戲與簡報。',
+          highlights: ['每個音效都能先試聽', '依動物、提示音、遊戲等分類'],
+          cta: '看看所有音效',
+        },
+      },
+    },
+    {
+      slug: 'unit-converter', rootLocale: 'zh-tw', xDefaultLocale: 'en', ghost: 'spot1', keywords: ['單位換算'],
+      locales: {
+        'zh-tw': { url: 'https://www.casper.tw/unit-converter/', name: '單位換算', summary: '長度、重量、溫度換算' },
+        en: {
+          url: 'https://www.casper.tw/unit-converter/en/', name: 'Unit Converter', summary: 'Length, weight and temperature',
+          intro: 'Convert between metric and imperial units as you type.',
+          highlights: ['Length, weight and temperature', 'Works offline'],
+          cta: 'Open the converter',
+        },
+      },
+    },
+  ],
+})
 export const MULTI_LEGAL = Object.freeze({
   pages: {
     ...LEGAL_PAGES,
@@ -283,6 +348,7 @@ export const STAGES = {
   s: { plan: P1_PLAN, shell: 'shared', toolsIndex: { ...EMPTY_INDEX, blogShell: 'shared' }, legal: { pages: LEGAL_PAGES, decisions: LEGAL_DECISIONS } },
   i1: { plan: I1_PLAN, shell: 'shared', toolsIndex: I1_INDEX, legal: I1_LEGAL },
   multi: { plan: MULTI_PLAN, shell: 'shared', toolsIndex: MULTI_INDEX, legal: MULTI_LEGAL },
+  feature: { plan: I1_PLAN, shell: 'shared', toolsIndex: FEATURE_INDEX, legal: I1_LEGAL },
 }
 
 const cardHtml = (c) => `<article class="post-card"><a class="post-card__cover" href="${c.url}" tabindex="-1"><img src="https://img.casper.tw/x.png" alt=""></a><h2 class="post-card__title"><a href="${c.url}">標題</a></h2><p class="post-card__meta"><time>2023</time></p><p class="post-card__excerpt">${esc(c.excerpt)}</p></article>`
@@ -290,11 +356,12 @@ const cardHtml = (c) => `<article class="post-card"><a class="post-card__cover" 
 /**
  * 建一個臨時的 repo 根目錄：baseline/hexo-fixture/、dist/、package.json。
  * mutate(dist, world) 可以在寫檔前改 dist（Map：相對路徑 → 字串）或 world.rootFiles。
+ * toolsIndex：換掉這個階段的 tools.json，產物與 opts.toolsIndex 都照它（資料與 HTML 一致的變體，例如說明裡有全形空白）。
  * 回傳 { root, opts }，opts 直接交給 runAudit。
  */
-export function buildWorld(mutate, { stage = 'p1' } = {}) {
-  const cfg = STAGES[stage]
-  if (!cfg) throw new Error(`不認得的世界：${stage}（${Object.keys(STAGES).join('、')}）`)
+export function buildWorld(mutate, { stage = 'p1', toolsIndex } = {}) {
+  if (!STAGES[stage]) throw new Error(`不認得的世界：${stage}（${Object.keys(STAGES).join('、')}）`)
+  const cfg = toolsIndex ? { ...STAGES[stage], toolsIndex } : STAGES[stage]
   const chrome = stage === 'p1' ? LEGACY_CHROME : sharedChrome({ plan: cfg.plan, index: cfg.toolsIndex, legal: cfg.legal })
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'audit-world-'))
   const files = hexoFiles()
@@ -349,11 +416,11 @@ export function buildWorld(mutate, { stage = 'p1' } = {}) {
     } else {
       const h1 = p.type === 'home' ? '卡斯伯 Blog' : p.type === 'home-page' ? '最新文章：第 2 頁' : lower(p.h1[0])
       main = listMain(h1, hexoCards(hexo))
-      // 首頁：有工具時多 #tools（P3 起）；有外語首頁時 head 多叢集的 hreflang 與 og:locale:alternate（I1 起，D.9），
+      // 首頁：有工具時多 #tools（P3 起，照 HomeTools.vue：標題加卡片，沒有介紹區塊）；有外語首頁時 head 多叢集的 hreflang 與 og:locale:alternate（I1 起，D.9），
       // 以及外語首頁 isPartOf 指的 WebSite JSON-LD（P3 在 / 加，I1 在 P3 之後，D.4）
       if (p.type === 'home') {
         const tools = siteToolLinks(cfg.toolsIndex, { locale: 'zh-tw', text: textFor('zh-tw') })
-        if (tools.length) main += `<section id="tools" class="home-section" aria-label="工具">${toolCardsHtml(tools)}</section>`
+        if (tools.length) main += `<section id="tools" class="home-section" aria-label="工具"><div class="section-head"><h2 class="section-title">工具</h2></div>${toolCardsHtml(tools)}</section>`
         const codes = cfg.plan.pages.map((x) => x.code)
         if (codes.length) {
           const { hreflang, ogLocale } = clusterHead('zh-tw', codes)

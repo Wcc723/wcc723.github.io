@@ -278,9 +278,61 @@ test('rootClassesOf、hreflangLinksOf、ogLocalesOf、siteHomeHeadSequence', () 
 
 test('toolLinksIn：頁尾的工具連結與 #tools 的卡片，名稱拆成 before、label（lang）、after', () => {
   const footer = '<a href="https://www.casper.tw/lucky-draw/" hreflang="zh-Hant">抽獎大師 <span lang="en" data-foreign="">Lucky Draw</span>（中文）</a>'
-  assert.deepEqual(port.toolLinksIn(footer), [{ href: 'https://www.casper.tw/lucky-draw/', hreflang: 'zh-Hant', before: '抽獎大師', label: 'Lucky Draw', lang: 'en', after: '（中文）', summary: null }])
-  const card = '<a class="cs-toolcard" href="https://www.casper.tw/lucky-draw/en/"><img alt=""><span class="cs-toolcard__name">Lucky Draw</span><span class="cs-toolcard__sum">Draw &amp; spin</span></a>'
-  assert.deepEqual(port.toolLinksIn(card), [{ href: 'https://www.casper.tw/lucky-draw/en/', hreflang: null, before: '', label: 'Lucky Draw', lang: null, after: '', summary: 'Draw & spin' }])
+  assert.deepEqual(port.toolLinksIn(footer), [{ href: 'https://www.casper.tw/lucky-draw/', hreflang: 'zh-Hant', before: '抽獎大師', label: 'Lucky Draw', lang: 'en', after: '（中文）', summary: null, img: null }])
+  const card = '<a class="cs-toolcard" href="https://www.casper.tw/lucky-draw/en/"><img alt="" src="https://img.casper.tw/brand/ghost/s-spot3.webp"><span class="cs-toolcard__name">Lucky Draw</span><span class="cs-toolcard__sum">Draw &amp; spin</span></a>'
+  assert.deepEqual(port.toolLinksIn(card), [{ href: 'https://www.casper.tw/lucky-draw/en/', hreflang: null, before: '', label: 'Lucky Draw', lang: null, after: '', summary: 'Draw & spin', img: 'https://img.casper.tw/brand/ghost/s-spot3.webp' }])
+})
+
+test('toolCardsIn：只數 a.cs-toolcard，介紹區塊裡的卡片另外帶 feature（介紹、重點、按鈕、主圖、小裝飾圖）', () => {
+  const html = '<h2>Tools</h2><p>lead</p>' +
+    '<div class="cs-toolfeature"><a class="cs-toolcard cs-toolfeature__card" href="https://www.casper.tw/sound-effects/" hreflang="en">' +
+    '<span class="cs-toolfeature__stage"><img class="ghost cs-toolfeature__art" src="https://img.casper.tw/sound-effects/sfx-feature-a.webp" alt="" width="960" height="600"></span>' +
+    '<span class="cs-toolcard__name cs-toolfeature__name"><span>Sound Effects</span></span><span class="cs-toolcard__sum">Free sounds</span></a>' +
+    '<div class="cs-toolfeature__body"><p class="cs-toolfeature__intro">Play  &amp;\n download.</p><ul class="cs-toolfeature__points"><li>One</li><li> Two </li></ul>' +
+    '<a class="b3d cs-toolfeature__cta" href="https://www.casper.tw/sound-effects/" hreflang="en">Browse</a>' +
+    '<div class="cs-toolfeature__strip"><img class="ghost ghost--small" src="https://img.casper.tw/sound-effects/sfx-cat-impacts.webp" alt="" width="240" height="240"></div></div></div>' +
+    '<ul class="cs-toolcards"><li><a class="cs-toolcard" href="https://www.casper.tw/lucky-draw/en/" hreflang="en"><img class="ghost" src="https://img.casper.tw/brand/ghost/s-spot3.webp" alt="" width="340" height="340"><span class="cs-toolcard__name"><span>Lucky Draw</span></span></a></li></ul>'
+  const got = port.toolCardsIn(html)
+  assert.equal(got.length, 2, '按鈕不算一張卡')
+  assert.deepEqual(got[0], {
+    href: 'https://www.casper.tw/sound-effects/', hreflang: 'en', before: '', label: 'Sound Effects', lang: null, after: '', summary: 'Free sounds',
+    img: 'https://img.casper.tw/sound-effects/sfx-feature-a.webp',
+    feature: {
+      intro: 'Play & download.',
+      highlights: ['One', 'Two'],
+      cta: { href: 'https://www.casper.tw/sound-effects/', hreflang: 'en', text: 'Browse' },
+      art: { src: 'https://img.casper.tw/sound-effects/sfx-feature-a.webp', width: 960, height: 600 },
+      deco: [{ src: 'https://img.casper.tw/sound-effects/sfx-cat-impacts.webp', width: 240, height: 240 }],
+    },
+  })
+  assert.equal(got[1].label, 'Lucky Draw')
+  assert.equal(got[1].feature, null)
+  // toolLinksIn 照舊列每個 <a>（頁尾工具組用），按鈕也在
+  assert.equal(port.toolLinksIn(html).length, 3)
+  // 缺欄位時是 null 或空陣列，比對時一定不等於預期
+  assert.deepEqual(port.toolCardsIn('<div class="cs-toolfeature"><a class="cs-toolcard" href="/x/"><img src="/a.webp" width="auto"></a></div>')[0].feature, {
+    intro: null, highlights: [], cta: null, art: { src: '/a.webp', width: null, height: null }, deco: [],
+  })
+})
+
+test('toolFeatureBlocksIn、toolCardElementsIn、blockAround：巢狀的介紹區塊取最近的一個；toolCardsIn 用最近的區塊', () => {
+  const html = '<div class="cs-toolfeature" id="outer"><p class="cs-toolfeature__intro">外層</p><div class="cs-toolfeature" id="inner"><a class="cs-toolcard" href="/a/">A</a><p class="cs-toolfeature__intro">內層</p></div>' +
+    '<a class="cs-toolcard" href="/b/">B</a></div>' +
+    '<a class="cs-toolcard" href="/c/">C</a><a class="b3d" href="/d/">D</a><span class="cs-toolcard">不是連結</span>'
+  const blocks = port.toolFeatureBlocksIn(html)
+  assert.deepEqual(blocks.map((b) => b.attrs.id), ['outer', 'inner'])
+  const cards = port.toolCardElementsIn(html)
+  assert.deepEqual(cards.map((c) => c.attrs.href), ['/a/', '/b/', '/c/'], '只算 <a class="cs-toolcard">')
+  assert.deepEqual(cards.map((c) => port.blockAround(blocks, c)?.attrs.id ?? null), ['inner', 'outer', null])
+  // 區塊本身不算在自己裡面
+  assert.equal(port.blockAround(blocks, blocks[0]), null)
+  assert.equal(port.blockAround(blocks, blocks[1]).attrs.id, 'outer')
+  assert.deepEqual(port.toolCardsIn(html).map((c) => c.feature?.intro ?? null), ['內層', '外層', null])
+})
+
+test('toolLinksIn、toolCardsIn：名稱與說明的空白（U+3000、NBSP、連續空白、換行）壓成一格並去頭尾', () => {
+  const card = '<a class="cs-toolcard" href="/x/"><span class="cs-toolcard__name"> 音效<span lang="en" data-foreign="">Sound&nbsp; Effects</span>　（英文） </span><span class="cs-toolcard__sum">免費　音效\n  試聽 </span></a>'
+  assert.deepEqual(port.toolCardsIn(card).map(({ before, label, after, summary }) => ({ before, label, after, summary })), [{ before: '音效', label: 'Sound Effects', after: '（英文）', summary: '免費 音效 試聽' }])
 })
 
 test('languageItemsIn：目前語系是 span，沒有 href；附註另外拆出', () => {
