@@ -16,7 +16,7 @@ published: true
 
 還有「中文地址英譯」。填國外表單或訂單常常需要英文地址，官網有這個功能，但要先輸入一組圖形驗證碼才給你查一次。查兩個地址就要認兩次驗證碼。
 
-這些資料都是公開的，查一次卻要這麼多步驟。所以我利用零碎時間做了一個 [台灣郵遞區號查詢](https://zipcode.pocketool.app/)。你輸入完整地址，它直接把結果給你，沒有下拉選單，也沒有驗證碼。這篇記錄一下這個 side project 的動機、做了哪些東西，還有幾個技術決策。
+這些資料都是公開的，查一次卻要這麼多步驟。所以我利用零碎時間做了一個 [台灣郵遞區號查詢](https://www.pocketool.app/tools/zipcode)。你輸入完整地址，它直接把結果給你，沒有下拉選單，也沒有驗證碼。這篇記錄一下這個 side project 的動機、做了哪些東西，還有幾個技術決策。
 
 <!-- more -->
 
@@ -28,7 +28,7 @@ published: true
 
 ![台灣郵遞區號查詢：輸入完整地址，直接顯示 5 碼與 3+3 碼，並標出命中的門牌範圍](https://img.casper.tw/posts/2026-07-16-taiwan-zipcode-side-project/home-query.png)
 
-**[地址中翻英](https://zipcode.pocketool.app/address-to-english/)**：輸入中文地址，轉成中華郵政官方寫法的英文地址：
+**[地址中翻英](https://www.pocketool.app/zipcode/address-to-english/)**：輸入中文地址，轉成中華郵政官方寫法的英文地址：
 
 ```
 3F., No. 122, Sec. 1, Chongqing S. Rd., Zhongzheng Dist., Taipei City 100005, Taiwan (R.O.C.)
@@ -115,4 +115,4 @@ published: true
 
 這個 side project 的起點很單純，就是我自己覺得查郵遞區號很煩，做出來之後自己天天在用。回頭看，幾個技術決策都圍繞同一個想法：把麻煩留在 build 階段，把乾淨的結果留給使用者。用官方資料、自己解 DBF、build 階段切塊並守住體積、把台灣地址的各種狀況塞進 parser，這些工都是為了讓最後那個輸入框可以貼上、得到答案、複製。
 
-如果你也常查郵遞區號或填英文地址，可以試試 [台灣郵遞區號查詢](https://zipcode.pocketool.app/) 和 [地址中翻英](https://zipcode.pocketool.app/address-to-english/)。這個工具也收在我的小工具站 [pocketool](https://pocketool.app/tools/zipcode) 裡。
+如果你也常查郵遞區號或填英文地址，可以試試 [台灣郵遞區號查詢](https://www.pocketool.app/tools/zipcode) 和 [地址中翻英](https://www.pocketool.app/zipcode/address-to-english/)。這個工具也收在我的小工具站 [pocketool](https://www.pocketool.app/tools/zipcode) 裡。
