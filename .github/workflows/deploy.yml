@@ -1,25 +1,10 @@
-# 部落格的建置與對等檢查（P1）。
-# push main 時：npm ci → npm test → npm run build（postbuild 跑 scripts/audit-build.mjs，沒過就失敗）→ 上傳 Pages artifact。
+# 部落格的建置、對等檢查與部署（P2 起）。
+# push main 時：npm ci → npm test → npm run build（postbuild 跑 scripts/audit-build.mjs，沒過就失敗）→ 上傳 Pages artifact
+# → deploy job 用 actions/deploy-pages 部署到 www.casper.tw。build 沒過就不會部署，線上維持上一版。
 #
-# 這一版沒有 deploy job，線上仍是 master 分支的 Hexo 產物。P2 切換時依 workspace 的 docs/runbooks/blog-cutover.md：
-# 站長先把 main 設成預設分支、Pages Source 改成 GitHub Actions、確認 github-pages 環境允許 main，
-# 接著才推送加上 deploy job 的 commit。那個 job 長這樣（needs: build，用 actions/deploy-pages）：
-#
-#   deploy:
-#     needs: build
-#     runs-on: ubuntu-latest
-#     permissions:
-#       pages: write      # 部署到 Pages
-#       id-token: write   # deploy-pages 用 OIDC 驗證
-#     environment:
-#       name: github-pages
-#       url: ${{ steps.deployment.outputs.page_url }}
-#     steps:
-#       - id: deployment
-#         uses: actions/deploy-pages@v4
-#
-# workflow_dispatch 只在 workflow 檔放在預設分支時才能用；P1 的預設分支還是 master，所以只綁 push main。
-name: Build and audit
+# 前提（workspace 的 docs/runbooks/blog-cutover.md 第 3、4 步，站長在 GitHub 後台做）：main 是預設分支、
+# Pages Source 是 GitHub Actions、github-pages 環境允許 main。回退：Pages Source 切回從 master 分支部署。
+name: Build, audit and deploy
 
 on:
   push:
@@ -70,3 +55,17 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: source/.vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      pages: write      # 部署到 Pages
+      id-token: write   # deploy-pages 用 OIDC 驗證
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
