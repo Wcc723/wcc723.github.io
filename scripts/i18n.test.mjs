@@ -36,7 +36,9 @@ test('check：真的文案檔過 G1，exit 0；每個 roadmap 語系一行摘要
   assert.match(out, /G1 通過/)
   for (const c of siteConfig.home.roadmap) assert.match(out, new RegExp(`^  ${c}：`, 'm'))
   assert.match(out, /  es：沒有文案檔/)
-  assert.match(out, /  en：unreviewed（\d+ 個 key 未審），未開放/)
+  // en 2026-11-05 站長審過（casper），ja 還沒
+  assert.match(out, /  en：ok，未開放/)
+  assert.match(out, /  ja：unreviewed（\d+ 個 key 未審），未開放/)
   const { errors, rows } = checkHome()
   assert.deepEqual(errors, [])
   assert.deepEqual(rows.map((r) => r.code), ['en', 'zh-cn', 'ja', 'ko', 'de', 'es'])
@@ -102,7 +104,7 @@ test('report：列是 key、欄是語系，最後列出沒有文案檔的語系'
   const lines = text.split('\n')
   assert.match(lines[0], /正本 en；已開放：沒有/)
   assert.match(lines[1], /^key\s+en\s+ja\s+ko\s+de$/)
-  assert.match(text, /^hero\.lead\s+unreviewed\s+unreviewed\s+unreviewed\s+unreviewed$/m)
+  assert.match(text, /^hero\.lead\s+ok\s+unreviewed\s+unreviewed\s+unreviewed$/m)
   assert.equal(lines.at(-1), '沒有文案檔：zh-cn、es')
 })
 

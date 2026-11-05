@@ -212,7 +212,10 @@ test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只�
   assert.deepEqual(plan.pages.map((p) => [p.code, p.preview]), [['en', true], ['ja', true], ['ko', true], ['de', true]])
   assert.deepEqual(plan.problems, [])
   assert.ok(plan.warnings.some((m) => /site-home zh-cn：沒有 i18n\/home\/zh-cn\.json，preview 不產生這頁/.test(m)))
-  assert.ok(plan.warnings.some((m) => /^preview：site-home en：G2/.test(m)))
+  // en 的文案與外殼字串 2026-11-05 審過，只剩 G2、G3 以外的關卡；ja 還沒審
+  assert.ok(!plan.warnings.some((m) => /^preview：site-home en：G[23]/.test(m)))
+  assert.ok(plan.warnings.some((m) => /^preview：site-home ja：G2/.test(m)))
+  assert.ok(plan.warnings.some((m) => /^preview：site-home en：G5/.test(m)))
   // preview 一律用共用頁首頁尾（effectiveShell），shell 是 legacy 不再另外警告
   assert.ok(!plan.warnings.some((m) => /shell 是 'legacy'/.test(m)))
   // live 的 P1：沒有頁、沒有問題
