@@ -988,6 +988,12 @@ export function checkLayout(ctx) {
   let n = 0
   let prefetchOff = 0
   const shared = ctx.shell === 'shared'
+  // metaChunk: true 時站點資料不內嵌，在 head 引用的 assets/chunks/metadata.<hash>.js 裡；每支只讀一次
+  const assets = new Map()
+  const readAsset = (rel) => {
+    if (!assets.has(rel)) assets.set(rel, ctx.dist.files.includes(rel) ? fs.readFileSync(path.join(ctx.dist.dir, rel), 'utf8') : null)
+    return assets.get(rel)
+  }
   for (const d of ctx.pages.values()) {
     if (rootHasVpRaw(d.html)) n++
     else fail(c, `${d.url} 的版面根元素沒有 vp-raw`)
@@ -1003,7 +1009,10 @@ export function checkLayout(ctx) {
       if (!tags.some((t) => t.name === 'header' && hasClass(t.attrs, 'cs-hdr'))) fail(c, `${d.url} 沒有共用頁首 <header class="cs-hdr">（shell 是 shared）`)
       if (!tags.some((t) => t.name === 'footer' && hasClass(t.attrs, 'cs-ftr'))) fail(c, `${d.url} 沒有共用頁尾 <footer class="cs-ftr">（shell 是 shared）`)
     }
-    const prefetch = prefetchLinksOf(d.html)
+    const chunk = metaChunkOf(d.html)
+    const siteData = chunk ? readAsset(chunk) : d.html
+    if (chunk && siteData == null) fail(c, `${d.url} 的 head 引用 /${chunk}，dist 裡沒有這支（metaChunk 的站點資料，少了它頁面不會 hydrate）`)
+    const prefetch = prefetchLinksOf(siteData ?? '')
     if (prefetch === false) prefetchOff++
     else if (prefetch === true) fail(c, `${d.url} 的站點資料 router.prefetchLinks 是 true（整頁載入用不到預抓的 .md.js，config.mts 要設 false）`)
   }
@@ -1012,7 +1021,15 @@ export function checkLayout(ctx) {
   return c
 }
 
-/** 頁面內嵌的 VitePress 站點資料（window.__VP_SITE_DATA__=JSON.parse("…")）的 router.prefetchLinks；讀不到是 null */
+/**
+ * config.mts 設 metaChunk: true 時，head 引用的站點資料 chunk（assets/chunks/metadata.<hash>.js，不含開頭斜線）。
+ * 內容跟內嵌時一樣是 window.__VP_HASH_MAP__、window.__VP_SITE_DATA__ 兩段；站點資料內嵌在頁面裡時是 null。
+ */
+export function metaChunkOf(html) {
+  return /<script type="module" src="\/(assets\/chunks\/metadata\.[\w-]+\.js)"><\/script>/.exec(headOf(html))?.[1] ?? null
+}
+
+/** VitePress 站點資料（window.__VP_SITE_DATA__=JSON.parse("…")，內嵌在頁面或在 metaChunk 裡）的 router.prefetchLinks；讀不到是 null */
 export function prefetchLinksOf(html) {
   const m = /__VP_SITE_DATA__\s*=\s*JSON\.parse\(("(?:[^"\\]|\\.)*")\)/.exec(html)
   if (!m) return null

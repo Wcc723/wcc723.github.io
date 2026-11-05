@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url'
 import {
   runAudit, formatReport, legacyUrlFix, expectedSitemap, expectedContentEntry, canonicalJson, atomEntries,
   rootHasVpRaw, caseCollisions, callsHexo, loadBaseline, latestBaselineDir, NEW_URLS, FIXED_ANCHORS, TEXT_EXPECTED, TEMPLATE_ALLOW,
-  PROFILE_EXPECTED, PROFILE_LABEL, PROFILE_SEQUENCE_LABEL, THEME_CHUNK_MAX, SIDEBAR_RELATED_MAX, regionsOf, prefetchLinksOf,
+  PROFILE_EXPECTED, PROFILE_LABEL, PROFILE_SEQUENCE_LABEL, THEME_CHUNK_MAX, SIDEBAR_RELATED_MAX, regionsOf, prefetchLinksOf, metaChunkOf,
   CHECKS, CATEGORIES_FILE, siteHomeUrlRule, gaConfigsOf, unpublishedCopyProbes, mainTextWithoutForeign, expectedSiteHomeHead,
   toolsRegionProblems, previewLinkScriptsIn, PREVIEW_LINKS_TOKEN,
 } from './audit-build.mjs'
@@ -233,6 +233,34 @@ test('站點資料的 router.prefetchLinks 不是 false（整頁載入用不到�
   assert.equal(prefetchLinksOf(site({ title: 'x' })), null)
   // 文章內文提到 prefetchLinks 不算
   assert.equal(prefetchLinksOf('<p>"prefetchLinks":false</p>'), null)
+})
+
+/** 照 config.mts 的 metaChunk: true：每頁內嵌的站點資料搬進 assets/chunks/metadata.<hash>.js，head 改引用它 */
+const META_CHUNK = 'assets/chunks/metadata.abcd1234.js'
+function toMetaChunk(dist, { chunk = (js) => js, keepFile = true } = {}) {
+  let content = null
+  for (const [f, html] of dist) {
+    if (!f.endsWith('.html')) continue
+    const m = /<script>(window\.__VP_SITE_DATA__=[\s\S]*?)<\/script>/.exec(html)
+    if (!m) continue
+    content = m[1]
+    dist.set(f, html.replace(m[0], `<script type="module" src="/${META_CHUNK}"></script>`))
+  }
+  assert.ok(content, '測試世界的頁面要有內嵌的站點資料')
+  if (keepFile) dist.set(META_CHUNK, chunk(content))
+}
+
+test('metaChunk: true：站點資料在 head 引用的 metadata chunk 裡，照樣檢查 router.prefetchLinks', async () => {
+  const r = await audit((dist) => toMetaChunk(dist))
+  assert.equal(r.ok, true, formatReport(r))
+  assert.match(check(r, 'layout').summary, /關掉預抓 [1-9]\d* 頁/)
+  const on = (js) => js.replace('\\"prefetchLinks\\":false', '\\"prefetchLinks\\":true')
+  assertFails(await audit((dist) => toMetaChunk(dist, { chunk: on })), ['layout'], /的站點資料 router\.prefetchLinks 是 true/)
+  assertFails(await audit((dist) => toMetaChunk(dist, { keepFile: false })), ['layout'], /引用 \/assets\/chunks\/metadata\.abcd1234\.js，dist 裡沒有這支/)
+  assert.equal(metaChunkOf(`<head><script type="module" src="/${META_CHUNK}"></script></head><body></body>`), META_CHUNK)
+  // 只認 head 裡的；內嵌的頁面是 null
+  assert.equal(metaChunkOf(`<head></head><body><script type="module" src="/${META_CHUNK}"></script></body>`), null)
+  assert.equal(metaChunkOf('<head><script>window.__VP_SITE_DATA__=JSON.parse("{}")</script></head>'), null)
 })
 
 test('文章側欄：少了側欄、放了廣告或「廣告版位」、相關文章連到不存在的頁、超過 5 篇', async () => {

@@ -48,6 +48,9 @@ export default defineConfig({
   // VitePress 預設會替視窗裡每個站內連結預抓目標頁的 .md.js（SPA 換頁才用得到），這裡全部白抓，關掉。
   // 不影響 SSR 輸出與 SEO；audit 的 layout 檢查會擋下重新打開。
   router: { prefetchLinks: false },
+  // 每頁內嵌的 __VP_HASH_MAP__ 與 site data（約 34 KB，壓縮後約 9 KB）抽成 assets/chunks/metadata.<hash>.js：
+  // 整頁載入時每換一頁都要重抓內嵌那段，抽出來之後瀏覽器可以快取。只動 head 的一支 module script，不影響 SSR 內文與 SEO。
+  metaChunk: true,
   // 不設 true（計畫「SEO」的站內連結）。VitePress 把 http://localhost:<port> 當成站內連結檢查，
   // 舊文教學裡要讀者打開自己電腦上的網址（rails-go 的 http://localhost:3000/drinks），不是本站網址，只略過這一種。
   // 之後的工具與 Pages 專案站的樣式由 data/tools.json、Pages repo 清單產生後加在這裡。
