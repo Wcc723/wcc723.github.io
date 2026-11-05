@@ -32,12 +32,17 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      # audit 要讀基準 commit（Hexo 產物）的原始 HTML 來比本文與卡片；checkout 只抓 main，這裡單獨抓那一個 commit。
-      # commit 由 audit 從 baseline/ 最新的 hexo-* 讀出，不在這裡寫死。
-      - name: 抓基準 commit
-        run: git fetch --no-tags --depth=1 origin "$(node scripts/audit-build.mjs --print-baseline-commit)"
-
       - run: npm ci
+
+      # audit 要讀基準 commit（Hexo 產物）的原始 HTML 來比本文與卡片；checkout 只抓 main，這裡單獨抓那一個 commit。
+      # commit 由 audit 從 baseline/ 最新的 hexo-* 讀出，不在這裡寫死。要在 npm ci 之後跑（audit 會 import 套件）。
+      # 先存進變數：腳本失敗時這一步直接失敗。寫在 fetch 的參數裡時失敗會變成空字串，
+      # git fetch 改抓預設分支、步驟照樣成功（2026-11-05 預設分支改成 main 後就這樣讀不到基準）。
+      - name: 抓基準 commit
+        run: |
+          commit="$(node scripts/audit-build.mjs --print-baseline-commit)"
+          [[ "$commit" =~ ^[0-9a-f]{40}$ ]] || { echo "基準 commit 不對：'$commit'"; exit 1; }
+          git fetch --no-tags --depth=1 origin "$commit"
 
       - run: npm test
 
