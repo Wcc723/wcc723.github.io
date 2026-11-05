@@ -1,7 +1,7 @@
 ---
 title: 隱私權政策
 description: www.casper.tw 的隱私權政策：說明 Google 廣告與流量統計、Facebook 留言和像素會收集哪些資料，以及停用個人化廣告的方法。
-updated: 2026-11-03
+updated: 2026-11-05
 ---
 
 這頁說明你瀏覽 [www.casper.tw](/)（以下稱「本站」）時，有哪些資料會被收集、由誰收集、拿來做什麼，以及你可以怎麼關掉。本站由我（卡斯伯）個人經營，內容是前端技術文章，之後也會放一些免費的線上小工具。
@@ -47,13 +47,6 @@ updated: 2026-11-03
 
 - 本站的檔案放在 GitHub Pages。GitHub 會為了安全目的記錄造訪者的 IP 位址，不論你有沒有登入 GitHub。詳細內容請看 [GitHub 一般隱私聲明](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)。
 - 本站的連線經過 Cloudflare，用來加速、快取與阻擋惡意流量。Cloudflare 會處理 IP 位址、瀏覽器資訊這類連線資料；偵測到可疑流量時，可能設定安全用途的 Cookie（例如 `__cf_bm`、`cf_clearance`），這些 Cookie 不是用來追蹤你在不同網站之間的瀏覽。詳細內容請看 [Cloudflare 隱私權政策](https://www.cloudflare.com/privacypolicy/)。
-
-## 瀏覽器裡的儲存（localStorage）
-
-本站會用瀏覽器的 localStorage 記住一些設定。這些資料只存在你的裝置上，不會隨著網頁請求傳給我或任何第三方，清除瀏覽器的網站資料就會刪掉。
-
-- `casper-theme`：記住你選的深色或淺色模式，值只有 `light` 或 `dark`。
-- 之後上線的工具（第一支是抽獎大師）會把你輸入的名單和設定存在瀏覽器裡，下次打開可以接著用。這些資料只在你的瀏覽器裡處理，不會上傳。
 
 ## 文章裡嵌入的外部內容
 

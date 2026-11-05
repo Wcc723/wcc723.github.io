@@ -1,15 +1,16 @@
 ---
 title: 聯絡與問題回報
-description: 想聯絡卡斯伯，或發現文章錯誤、網站或工具的問題，可以透過 Facebook 粉絲專頁或 GitHub 找我；這頁說明各管道適合的用途，以及回報時要附上的資訊。
-updated: 2026-11-03
+description: 想聯絡卡斯伯，或發現文章錯誤、網站或工具的問題，可以寄信、透過 Facebook 粉絲專頁或 GitHub 找我；這頁說明各管道適合的用途，以及回報時要附上的資訊。
+updated: 2026-11-05
 ---
 
-本站（[www.casper.tw](/)）的文章、工具和維護都是我（卡斯伯）一個人在做。想聯絡我，或發現文章、網站或工具有問題，可以透過下面兩個公開管道。
+本站（[www.casper.tw](/)）的文章、工具和維護都是我（卡斯伯）一個人在做。想聯絡我，或發現文章、網站或工具有問題，可以透過下面三個管道。
 
 ## 聯絡管道
 
 - **Facebook 粉絲專頁**：[facebook.com/WccCasper](https://www.facebook.com/WccCasper)。一般問題、文章或工具的問題回報、合作邀約，都可以在粉絲專頁傳訊息給我。
 - **GitHub**：[github.com/wcc723](https://github.com/wcc723)。我的程式碼和開源專案都放在這裡，跟某個專案有關的問題，可以到該專案的 repo 提出 issue。
+- **Email**：[contact@casper.tw](mailto:contact@casper.tw)。不方便用 Facebook 的話，一般問題、問題回報、合作邀約都可以寄信給我。
 
 我不會主動私訊向你索取密碼、付款資料或驗證碼，看到冒用我名義的訊息，請直接忽略。
 
