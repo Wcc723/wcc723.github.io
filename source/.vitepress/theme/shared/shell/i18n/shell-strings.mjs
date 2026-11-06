@@ -16,6 +16,7 @@ export const SHELL_SOURCE = 'zh-tw'
 //   'all'：每個語系；'blog'：BLOG_LOCALES；'non-blog'：BLOG_LOCALES 以外；
 //   { legal: '<flag>' }：登錄表 legal 有這個旗標的語系；
 //   { except: ['<code>', …] }：除了列出的語系都給（例如 inEnglish 不給 en）；
+//   { nativeReviewer: '<值>' }：登錄表 nativeReviewer 是這個值的語系（例如 footer.translated 只給 'ai-cross'）；
 //   'draft'：只有正本有字、元件還不能用的 key（ts() 遇到會丟錯），要先寫好字、還不想上線時用。
 // 新 key 直接用正式的 audience（主站首頁規格 I.3）：已上線的語系（每支已上線工具的每個語系、已上線的全站首頁語系、
 // 部落格用共用外殼之後的 zh-tw）都要審過，由 workspace 的不變量測試（scripts/site-invariants.mjs）擋，不等七語都審過。
@@ -51,6 +52,7 @@ export const SHELL_KEYS = {
   'footer.thirdParty': { legal: 'externalTransmission' },
   'footer.languages': 'all',
   'footer.copyright': 'all',
+  'footer.translated': { nativeReviewer: 'ai-cross' }, // 決策 0010：AI 交叉審的語系，頁尾說明本頁譯自繁中版、以繁中版為準
   'footer.tools': 'all', // 頁尾工具組的標題；外語首頁頁首唯一的導覽
   // 部落格與繁中頁的完整頁尾（連結結構在 ../nav.mjs 的 FOOTER_BLOG_GROUPS），字跟 P2 的部落格頁尾相同
   'footer.tagline': 'blog',
@@ -112,6 +114,7 @@ export const SHELL_STRINGS = {
     'footer.thirdParty': '外部傳送說明',
     'footer.languages': '語言',
     'footer.copyright': '© {author}',
+    'footer.translated': '這頁是翻譯版本，內容有出入時以繁體中文版為準。',
     'footer.tools': '工具',
     'footer.tagline': '{author}的前端筆記，從 2013 年寫到現在。',
     'footer.signature': '© {author}，{site}',
@@ -221,6 +224,7 @@ export const SHELL_STRINGS = {
     'footer.thirdParty': '外部送信について',
     'footer.languages': '言語',
     'footer.copyright': '© {author}',
+    'footer.translated': 'このページは翻訳版です。内容に違いがある場合は、繁体字中国語版が優先されます。',
     'footer.tools': 'ツール',
     inChinese: '{label}（繁体字中国語）',
     inEnglish: '{label}（英語）',
@@ -251,6 +255,7 @@ export const SHELL_STRINGS = {
     'footer.terms': '이용약관',
     'footer.languages': '언어',
     'footer.copyright': '© {author}',
+    'footer.translated': '이 페이지는 번역본이에요. 내용이 다를 때는 번체 중국어판이 우선해요.',
     'footer.tools': '도구',
     inChinese: '{label} (번체 중국어)',
     inEnglish: '{label} (영어)',
@@ -282,6 +287,7 @@ export const SHELL_STRINGS = {
     'footer.legalNotice': 'Impressum',
     'footer.languages': 'Sprachen',
     'footer.copyright': '© {author}',
+    'footer.translated': 'Diese Seite ist eine Übersetzung. Bei Abweichungen gilt die Fassung auf traditionellem Chinesisch.',
     'footer.tools': 'Tools',
     inChinese: '{label} (auf traditionellem Chinesisch)',
     inEnglish: '{label} (auf Englisch)',
@@ -312,6 +318,7 @@ export const SHELL_STRINGS = {
     'footer.terms': 'Términos de uso',
     'footer.languages': 'Idiomas',
     'footer.copyright': '© {author}',
+    'footer.translated': 'Esta página es una traducción. Si hay diferencias, prevalece la versión en chino tradicional.',
     'footer.tools': 'Herramientas',
     inChinese: '{label} (en chino tradicional)',
     inEnglish: '{label} (en inglés)',
@@ -329,6 +336,7 @@ export function audienceIncludes(audience, code) {
   if (audience === 'non-blog') return !BLOG_LOCALES.includes(code)
   if (audience === 'draft') return false
   if (audience && typeof audience === 'object' && typeof audience.legal === 'string') return audience.legal in l.legal
+  if (audience && typeof audience === 'object' && typeof audience.nativeReviewer === 'string') return l.nativeReviewer === audience.nativeReviewer
   if (audience && typeof audience === 'object' && Array.isArray(audience.except)) {
     audience.except.forEach(getLocale)
     return !audience.except.includes(code)

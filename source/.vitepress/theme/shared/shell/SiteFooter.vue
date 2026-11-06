@@ -96,6 +96,7 @@ const bottomLinks = computed(() => [...model.value.site, ...model.value.legal])
         <ul v-if="bottomLinks.length" class="cs-ftr__links">
           <li v-for="item in bottomLinks" :key="item.key"><a :href="item.href" :hreflang="item.hreflang" :aria-current="item.current ? 'page' : undefined">{{ item.label }}</a></li>
         </ul>
+        <p v-if="model.translated" class="cs-ftr__copy cs-ftr__translated">{{ model.translated }}</p>
         <p v-if="model.signature" class="cs-ftr__copy">{{ model.signature.before }}<a :href="model.signature.href">{{ model.signature.site }}</a>{{ model.signature.after }}</p>
         <p v-else-if="model.copyright" class="cs-ftr__copy">{{ model.copyright }}</p>
       </div>

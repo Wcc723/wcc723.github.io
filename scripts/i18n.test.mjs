@@ -35,14 +35,14 @@ test('check：真的文案檔過 G1，exit 0；每個 roadmap 語系一行摘要
   assert.equal(code, 0, out)
   assert.match(out, /G1 通過/)
   for (const c of siteConfig.home.roadmap) assert.match(out, new RegExp(`^  ${c}：`, 'm'))
-  assert.match(out, /  es：沒有文案檔/)
-  // en 2026-11-05 站長審過（casper），ja 還沒
-  assert.match(out, /  en：ok，未開放/)
-  assert.match(out, /  ja：unreviewed（\d+ 個 key 未審），未開放/)
+  assert.match(out, /  zh-cn：沒有文案檔/)
+  // en 2026-11-05 站長審過（casper）；ja、ko、de、es 照 0010 由站長看回譯後蓋章，審完前是 unreviewed
+  assert.match(out, /  en：ok，/)
+  for (const c of ['ja', 'ko', 'de', 'es']) assert.match(out, new RegExp(`  ${c}：(ok|unreviewed（\\d+ 個 key 未審）)，`))
   const { errors, rows } = checkHome()
   assert.deepEqual(errors, [])
   assert.deepEqual(rows.map((r) => r.code), ['en', 'zh-cn', 'ja', 'ko', 'de', 'es'])
-  assert.deepEqual([...readHomeDir().files.keys()], ['en', 'ja', 'ko', 'de'])
+  assert.deepEqual([...readHomeDir().files.keys()], ['en', 'ja', 'ko', 'de', 'es'])
 })
 
 test('check：G1 的錯誤（多一個 key、檔名不對、缺正本、不在 roadmap）exit 1', () => withCopy(async (dir) => {
@@ -70,7 +70,9 @@ test('stamp：寫進 $meta.review，提醒蓋章的意義；不在 home.reviewer
   assert.ok(Object.keys(en.$meta.review).length > 5)
   assert.ok(Object.values(en.$meta.review).every((rec) => rec.by === 'casper' && rec.at === AT))
   await run(['stamp', '--locale', 'ja', '--by', 'yuki', '--keys', 'hero.lead,tools.h2', '--at', AT], { dir, config })
-  assert.deepEqual(Object.keys(readJson(dir, 'ja').$meta.review).sort(), ['hero.lead', 'tools.h2'])
+  // ja 已由 casper 整份蓋過（0010，2026-11-06）：只看 yuki 這次蓋的兩個 key
+  const jaReview = readJson(dir, 'ja').$meta.review
+  assert.deepEqual(Object.keys(jaReview).filter((k) => jaReview[k].by === 'yuki').sort(), ['hero.lead', 'tools.h2'])
   await assert.rejects(run(['stamp', '--locale', 'ja', '--by', 'someone', '--at', AT], { dir, config }))
   assert.match(summaryLine(checkHome({ config, dir }).rows.find((x) => x.code === 'en')), /en：ok，未開放/)
 }))
@@ -102,10 +104,10 @@ test('rebase：正本改了字但意思不變，已審的譯文跟著換基準�
 test('report：列是 key、欄是語系，最後列出沒有文案檔的語系', () => {
   const text = formatReport()
   const lines = text.split('\n')
-  assert.match(lines[0], /正本 en；已開放：沒有/)
-  assert.match(lines[1], /^key\s+en\s+ja\s+ko\s+de$/)
-  assert.match(text, /^hero\.lead\s+ok\s+unreviewed\s+unreviewed\s+unreviewed$/m)
-  assert.equal(lines.at(-1), '沒有文案檔：zh-cn、es')
+  assert.match(lines[0], /正本 en；已開放：/)
+  assert.match(lines[1], /^key\s+en\s+ja\s+ko\s+de\s+es$/)
+  assert.match(text, /^hero\.lead\s+ok(\s+(ok|unreviewed)){4}$/m)
+  assert.equal(lines.at(-1), '沒有文案檔：zh-cn')
 })
 
 test('parseArgs', () => {

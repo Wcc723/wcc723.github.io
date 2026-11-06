@@ -40,8 +40,8 @@ updated: 2026-11-06
 ## Facebook（Meta 像素與留言外掛）
 
 - **Meta 像素（Facebook Pixel）**：每一頁都會載入。它會把你瀏覽的頁面網址、瀏覽器資訊和 IP 位址傳給 Meta；如果你同時登入 Facebook，Meta 可能把這些紀錄跟你的帳號連結，用在 Facebook 與 Instagram 上的廣告成效衡量與廣告投放。我用它了解從 Facebook 來的讀者，以及在 Facebook 推廣文章的成效。
-- **Facebook 留言外掛**：文章頁和關於頁底下的留言框由 Facebook 提供。頁面載入時，你的瀏覽器會連到 Facebook 的伺服器，Facebook 可能因此收到你的 IP 位址與瀏覽器資訊，如果你已登入，也會知道你看了哪一頁。你留下的留言會用你的 Facebook 帳號公開顯示，由 Facebook 保存，要修改或刪除，請直接在留言框或 Facebook 上操作。
-- 想調整 Meta 用來投放廣告的資料，可以到 Facebook 的帳號管理中心調整「廣告偏好設定」，或管理「你在 Meta 技術以外的動態」，中斷這類瀏覽紀錄跟你帳號的連結。詳細內容請看 [Meta 隱私政策](https://www.facebook.com/privacy/policy/)。
+- **Facebook 留言外掛**：文章頁和關於頁底下的留言框由 Facebook 提供。頁面載入時，你的瀏覽器會連到 Facebook 的伺服器，Facebook 可能因此收到你的 IP 位址與瀏覽器資訊，如果你已登入，也會知道你看了哪一頁。你留下的留言會用你的 Facebook 帳號公開顯示，由 Facebook 保存，要修改或刪除，請直接在留言框或 Facebook 上操作。從歐洲經濟區、英國、瑞士造訪時，留言框要按「顯示 Facebook 留言」才會載入。
+- 想調整 Meta 用來投放廣告的資料，可以到 Facebook 的帳號管理中心調整「廣告偏好設定」，包括其他商家分享給 Meta 的動態要不要用在廣告上。詳細內容請看 [Meta 隱私政策](https://www.facebook.com/privacy/policy/)。
 
 ## 網站主機與連線（GitHub Pages、Cloudflare）
 

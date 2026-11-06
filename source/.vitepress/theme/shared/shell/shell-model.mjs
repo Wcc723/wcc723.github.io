@@ -118,10 +118,11 @@ const link = (key, href, label, extra = {}) => ({
  *   current：工具組照 siteTools 的 current；外語頁的 site、legal 網址等於 currentUrl 時 true；繁中頁四組不標（跟部落格現在相同）
  *   tagline、signature：只有 BLOG_LOCALES；signature 的 site 是 SITE_NAME，href 是繁中關於頁
  *   copyright：BLOG_LOCALES 以外
+ *   translated：登錄表 nativeReviewer 是 'ai-cross' 的語系（決策 0010 的頁尾揭露），其他語系 null
  * @param {{ locale: string, text: TextFn, kind?: string, currentUrl?: string, siteTools?: import('./tools.mjs').SiteToolLink[],
  *           siteHomes?: string[], toolName?: string, toolNav?: ToolNavLink[] }} p
  * @returns {{ groups: FooterGroup[], site: FooterLink[], legal: FooterLink[], tagline: string | null,
- *             signature: FooterSignature | null, copyright: string | null }}
+ *             signature: FooterSignature | null, copyright: string | null, translated: string | null }}
  */
 export function footerModel({ locale, text, kind = 'page', currentUrl = '', siteTools = [], siteHomes = [], toolName = '', toolNav = [] }) {
   checkKind(locale, kind)
@@ -163,6 +164,7 @@ export function footerModel({ locale, text, kind = 'page', currentUrl = '', site
       tagline: text('footer.tagline'),
       signature: { before: parts[0], site: SITE_NAME, href: legalLink('about', BLOG_LOCALES[0]).href, after: parts[1] },
       copyright: null,
+      translated: null,
     }
   }
 
@@ -190,5 +192,6 @@ export function footerModel({ locale, text, kind = 'page', currentUrl = '', site
   })
   const flags = getLocale(locale).legal
   const legal = FOOTER_LEGAL_NAV.flatMap((n) => (n.flag && !(n.flag in flags) ? [] : toLegal(n.key, n.legal)))
-  return { groups, site, legal, tagline: null, signature: null, copyright: text('footer.copyright') }
+  const translated = getLocale(locale).nativeReviewer === 'ai-cross' ? text('footer.translated') : null
+  return { groups, site, legal, tagline: null, signature: null, copyright: text('footer.copyright'), translated }
 }

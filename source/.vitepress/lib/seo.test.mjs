@@ -847,3 +847,13 @@ test('FB Pixel：讀 /cdn-cgi/trace 的國家，歐洲經濟區、英國、瑞�
   const local = await run('localhost', 'loc=TW\n')
   assert.deepEqual([local.inserted, local.calls], [[], []], '非正式主機名連 trace 都不讀')
 })
+
+test('privacy-regions：traceCountry 讀 loc=，XX 與讀不到都回 null；EEA_REGIONS 含 DE、GB、CH 與歐盟海外領土，不含 TW', async () => {
+  const { EEA_REGIONS, traceCountry } = await import('../theme/privacy-regions.mjs')
+  assert.equal(traceCountry('fl=1\nloc=TW\ntls=TLSv1.3'), 'TW')
+  assert.equal(traceCountry('loc=XX'), null)
+  assert.equal(traceCountry(''), null)
+  assert.equal(traceCountry(undefined), null)
+  for (const c of ['DE', 'ES', 'GB', 'CH', 'RE', 'AX']) assert.ok(EEA_REGIONS.includes(c), c)
+  assert.ok(!EEA_REGIONS.includes('TW'))
+})

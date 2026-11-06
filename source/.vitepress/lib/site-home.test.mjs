@@ -146,12 +146,12 @@ test('resolveHomeStage：沒設是 live，只接受 preview，CI 上不准 previ
 
 test('附錄 A 的四個草稿檔過 G1（key、佔位符、lint、書寫系統、$meta 格式）', () => {
   const en = readHomeMessages('en')
-  for (const code of ['en', 'ja', 'ko', 'de']) {
+  for (const code of ['en', 'ja', 'ko', 'de', 'es']) {
     const file = readHomeMessages(code)
     assert.ok(file, code)
     assert.deepEqual(homeFileProblems({ file, source: en, code, sourceLocale: 'en', glossary }), [], code)
   }
-  assert.equal(readHomeMessages('es'), null)
+  assert.equal(readHomeMessages('zh-cn'), null)
 })
 
 test('全部關卡都過的 live 計畫：en、ja、de 上線', () => {
@@ -171,8 +171,10 @@ test('G1 到 G9：各一個不過的案例', () => {
   assert.ok(gates(homeGateProblems('ja', gateCtx({ readHome: (c) => (c === 'ja' ? extra : FILES[c]) }))).includes('G1'))
   const ph = { ...EN, hero: { ...EN.hero, lead: 'Tools by {name}.' } }
   assert.ok(homeGateProblems('en', gateCtx({ readHome: (c) => (c === 'en' ? ph : FILES[c]) })).some((m) => /G1 .*不支援的佔位符 \{name\}/.test(m)))
-  // G2：沒蓋章
-  assert.deepEqual(gates(homeGateProblems('de', gateCtx({ readHome: (c) => (c === 'de' ? readHomeMessages('de') : FILES[c]) }))), ['G2'])
+  // G2：沒蓋章（真實的 de 檔 2026-11-06 已蓋章，這裡拿掉章再驗）
+  const deRaw = readHomeMessages('de')
+  const deUnstamped = { ...deRaw, $meta: { ...deRaw.$meta, review: {} } }
+  assert.deepEqual(gates(homeGateProblems('de', gateCtx({ readHome: (c) => (c === 'de' ? deUnstamped : FILES[c]) }))), ['G2'])
   // G3：外殼字串沒審
   assert.deepEqual(gates(homeGateProblems('ja', gateCtx({ shellReview: shellReviewFor(['zh-tw', 'en']) }))), ['G3'])
   // G4：審稿人的 native 照登錄表 nativeReviewer
@@ -217,12 +219,11 @@ test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只�
   const plan = buildSiteHomePlan({ config: siteConfig, env: { CS_STAGE: 'preview' }, today: AT })
   assert.equal(plan.stage, 'preview')
   assert.deepEqual(plan.published, [])
-  assert.deepEqual(plan.pages.map((p) => [p.code, p.preview]), [['en', true], ['ja', true], ['ko', true], ['de', true]])
+  assert.deepEqual(plan.pages.map((p) => [p.code, p.preview]), [['en', true], ['ja', true], ['ko', true], ['de', true], ['es', true]])
   assert.deepEqual(plan.problems, [])
   assert.ok(plan.warnings.some((m) => /site-home zh-cn：沒有 i18n\/home\/zh-cn\.json，preview 不產生這頁/.test(m)))
-  // en 的文案與外殼字串 2026-11-05 審過，只剩 G2、G3 以外的關卡；ja 還沒審
-  assert.ok(!plan.warnings.some((m) => /^preview：site-home en：G[23]/.test(m)))
-  assert.ok(plan.warnings.some((m) => /^preview：site-home ja：G2/.test(m)))
+  // en 的文案與外殼字串 2026-11-05 審過；ja、ko、de、es 2026-11-06 照 0010 蓋章：都沒有 G2、G3
+  for (const code of ['en', 'ja', 'ko', 'de', 'es']) assert.ok(!plan.warnings.some((m) => new RegExp(`^preview：site-home ${code}：G[23]`).test(m)), code)
   // 2026-11-06 起 en 有隱私權頁（site-policies），G5 不再警告；ja 還缺
   assert.ok(!plan.warnings.some((m) => /^preview：site-home en：G5/.test(m)))
   assert.ok(plan.warnings.some((m) => /^preview：site-home ja：G5/.test(m)))

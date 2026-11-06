@@ -20,7 +20,8 @@ import { NOT_FOUND_DESCRIPTION, NOT_FOUND_TITLE } from '../theme/head.mjs'
 import { getLocale } from '../theme/shared/shell/i18n/locales.mjs'
 import { siteHomeAlternates, siteHomeUrl } from '../theme/shared/shell/i18n/urls.mjs'
 import { hreflangHead, ogLocaleHead, siteName } from '../theme/shared/shell/i18n/seo.mjs'
-import { CONSENT_REGIONS, ga4HeadHtml } from '../theme/shared/shell/analytics.mjs'
+import { ga4HeadHtml } from '../theme/shared/shell/analytics.mjs'
+import { EEA_REGIONS } from '../theme/privacy-regions.mjs'
 import LEGACY from './legacy-descriptions.json' with { type: 'json' }
 
 // ---------------------------------------------------------------------------
@@ -72,7 +73,7 @@ const GA4_SNIPPET =
 // 跟 GA4 consent 用的 CONSENT_REGIONS 加上歐盟的海外領土比對；讀不到國家（請求失敗、被擋、loc=XX 未知、T1 Tor）就不載。
 // 不用時區判斷：Atlantic/Canary、Atlantic/Madeira 這些歐盟時區不在 Europe/ 底下，VPN 也會判錯。
 // 英文隱私權說明（site-policies）寫的是「歐洲訪客完全不載」，改這段要一起看那份。
-export const PIXEL_BLOCKED_REGIONS = [...CONSENT_REGIONS, 'AX', 'GF', 'GP', 'MQ', 'RE', 'YT', 'MF']
+export const PIXEL_BLOCKED_REGIONS = EEA_REGIONS
 const FB_PIXEL_SNIPPET =
   `(function(){if(location.hostname!=='${PRODUCTION_HOST}')return;` +
   `var R=${JSON.stringify(PIXEL_BLOCKED_REGIONS)};` +

@@ -83,7 +83,7 @@ test('siteHomeView：H1 是站名，語言不同時帶 lang；連到繁中頁的
   }
   assert.equal(ja.links.latest.href, 'https://www.casper.tw/')
   assert.equal(ja.links.categories.href, 'https://www.casper.tw/categories/')
-  assert.throws(() => siteHomeView('es'), /沒有 i18n\/home\/es\.json/)
+  assert.throws(() => siteHomeView('zh-cn'), /沒有 i18n\/home\/zh-cn\.json/)
   assert.throws(() => siteHomeView('en', { readHome: () => null }), /site-home en：沒有/)
 })
 
@@ -93,15 +93,15 @@ test('preview：外語首頁的 preview 是 true、沒有提示字；siteHomes �
   assert.ok(!JSON.stringify(fm).includes('Preview: not reviewed'))
   // preview 的叢集當成已上線：外語頁尾的首頁、關於連到 /<code>/（footerModel 看 siteHomes）
   assert.deepEqual(PREVIEW.published, [])
-  assert.deepEqual(fm.siteHomes, ['en', 'ja', 'ko', 'de'])
-  assert.deepEqual(fm.languages.map((l) => [l.code, l.preview ?? false]), [['zh-tw', false], ['en', true], ['ja', true], ['ko', true], ['de', true]])
+  assert.deepEqual(fm.siteHomes, ['en', 'ja', 'ko', 'de', 'es'])
+  assert.deepEqual(fm.languages.map((l) => [l.code, l.preview ?? false]), [['zh-tw', false], ['en', true], ['ja', true], ['ko', true], ['de', true], ['es', true]])
   // 繁中頁：選單有 / 自己加每個 preview 的外語首頁，preview 欄是 false
   const post = siteFrontmatter({ pageType: 'post', canonical: 'https://www.casper.tw/css/2013/09/29/css-target/', plan: PREVIEW, index: EMPTY })
   assert.equal(post.preview, false)
-  assert.deepEqual(post.languages.map((l) => [l.code, l.exact]), [['zh-tw', true], ['en', false], ['ja', false], ['ko', false], ['de', false]])
+  assert.deepEqual(post.languages.map((l) => [l.code, l.exact]), [['zh-tw', true], ['en', false], ['ja', false], ['ko', false], ['de', false], ['es', false]])
   const home = siteFrontmatter({ pageType: 'home', canonical: 'https://www.casper.tw/', plan: PREVIEW, index: EMPTY })
   assert.deepEqual(home.languages.map((l) => [l.code, l.href, l.exact]), [
     ['zh-tw', 'https://www.casper.tw/', true],
-    ...['en', 'ja', 'ko', 'de'].map((c) => [c, `https://www.casper.tw/${c}/`, true]),
+    ...['en', 'ja', 'ko', 'de', 'es'].map((c) => [c, `https://www.casper.tw/${c}/`, true]),
   ])
 })

@@ -3,7 +3,10 @@
 // SDK 才是 client 端的部分：留言框接近畫面時才載入，設定照 Hexo 版
 // themes/casper-2026/layout/comment/facebook.ejs 與 common/scripts.ejs（zh_TW、v18.0、同一個 appId）。
 // data-href 用 frontmatter.fbHref 逐字，大小寫和尾斜線照舊，舊留言才看得到。
+// 歐洲經濟區、英國、瑞士與讀不到國家的訪客：SDK 不自動載入，按「顯示 Facebook 留言」才載（同意後才連到 Facebook，
+// 2026-11-06 外語隱私權頁的 GDPR 段落需要；國家判斷跟 Meta 像素共用 privacy-regions.mjs）。SSR 的輸出不變。
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { EEA_REGIONS, traceCountry } from '../privacy-regions.mjs'
 
 defineProps<{ href: string }>()
 
@@ -11,6 +14,7 @@ const SDK_ID = 'facebook-jssdk'
 const SDK_SRC = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v18.0&appId=556473851118881'
 
 const root = ref<HTMLElement | null>(null)
+const ask = ref(false)
 let observer: IntersectionObserver | null = null
 
 function loadSdk() {
@@ -31,7 +35,26 @@ function loadSdk() {
   document.body.appendChild(s)
 }
 
-onMounted(() => {
+function showComments() {
+  ask.value = false
+  loadSdk()
+}
+
+async function country(): Promise<string | null> {
+  try {
+    const r = await fetch('/cdn-cgi/trace', { cache: 'no-store', credentials: 'omit' })
+    return r.ok ? traceCountry(await r.text()) : null
+  } catch {
+    return null
+  }
+}
+
+onMounted(async () => {
+  const c = await country()
+  if (!c || EEA_REGIONS.includes(c)) {
+    ask.value = true
+    return
+  }
   if (!root.value || !('IntersectionObserver' in window)) return loadSdk()
   observer = new IntersectionObserver((entries) => {
     if (entries.some((e) => e.isIntersecting)) loadSdk()
@@ -46,7 +69,11 @@ onBeforeUnmount(() => observer?.disconnect())
   <section id="comments" ref="root" class="comments">
     <h2 class="section-title comments__title">留言</h2>
     <div id="fb-root"></div>
-    <div class="comments__frame">
+    <div v-if="ask" class="comments__consent">
+      <p>留言框由 Facebook 提供，按下按鈕才會載入。載入後，Facebook 會收到你的 IP 位址與瀏覽器資訊。</p>
+      <button type="button" class="b3d-lite" @click="showComments">顯示 Facebook 留言</button>
+    </div>
+    <div v-show="!ask" class="comments__frame">
       <div class="fb-comments" :data-href="href" data-width="100%" data-numposts="5" data-order-by="reverse_time"></div>
     </div>
   </section>
