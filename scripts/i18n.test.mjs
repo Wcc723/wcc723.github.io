@@ -74,7 +74,7 @@ test('stamp：寫進 $meta.review，提醒蓋章的意義；不在 home.reviewer
   const jaReview = readJson(dir, 'ja').$meta.review
   assert.deepEqual(Object.keys(jaReview).filter((k) => jaReview[k].by === 'yuki').sort(), ['hero.lead', 'tools.h2'])
   await assert.rejects(run(['stamp', '--locale', 'ja', '--by', 'someone', '--at', AT], { dir, config }))
-  assert.match(summaryLine(checkHome({ config, dir }).rows.find((x) => x.code === 'en')), /en：ok，未開放/)
+  assert.match(summaryLine(checkHome({ config, dir }).rows.find((x) => x.code === 'en')), new RegExp(`en：ok，${config.home.locales.includes('en') ? '已開放' : '未開放'}`))
 }))
 
 test('rebase：正本改了字但意思不變，已審的譯文跟著換基準，記在 $meta.rebases', () => withCopy(async (dir) => {

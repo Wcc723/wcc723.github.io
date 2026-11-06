@@ -93,11 +93,14 @@ const gateCtx = (over = {}) => {
   const i = liveInput(over)
   return { config: i.config, readHome: i.readHome, shellReview: i.shellReview, legal: i.legal, siteNameEn: i.siteNameEn, index: i.index, today: i.today, glossary: i.glossary, rootJsonLd: i.rootJsonLd }
 }
+// 已上線的外語首頁：一版加一個，跟 site.config.mjs 的 home.locales 一起改（en 2026-11-06）
+const OPENED = ['en']
+
 const gates = (list) => [...new Set(list.map((m) => /：(G\d)/.exec(m)?.[1]).filter(Boolean))].sort()
 
-test('site.config.mjs：S 版起 shell 是 shared、外語首頁還沒開，validateSiteConfig 通過', () => {
+test('site.config.mjs：S 版起 shell 是 shared、外語首頁照 OPENED，validateSiteConfig 通過', () => {
   assert.equal(siteConfig.shell, 'shared')
-  assert.deepEqual(siteConfig.home.locales, [])
+  assert.deepEqual(siteConfig.home.locales, OPENED)
   assert.equal(siteConfig.home.sourceLocale, 'en')
   assert.deepEqual(siteConfig.home.roadmap, ['en', 'ja', 'ko', 'de', 'zh-cn', 'es'])
   assert.equal(validateSiteConfig(), siteConfig)
@@ -218,8 +221,8 @@ test('G1 到 G9：各一個不過的案例', () => {
 test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只記警告', () => {
   const plan = buildSiteHomePlan({ config: siteConfig, env: { CS_STAGE: 'preview' }, today: AT })
   assert.equal(plan.stage, 'preview')
-  assert.deepEqual(plan.published, [])
-  assert.deepEqual(plan.pages.map((p) => [p.code, p.preview]), [['en', true], ['ja', true], ['ko', true], ['de', true], ['es', true]])
+  assert.deepEqual(plan.published, OPENED)
+  assert.deepEqual(plan.pages.map((p) => [p.code, p.preview]), ['en', 'ja', 'ko', 'de', 'es'].map((c) => [c, !OPENED.includes(c)]))
   assert.deepEqual(plan.problems, [])
   assert.ok(plan.warnings.some((m) => /site-home zh-cn：沒有 i18n\/home\/zh-cn\.json，preview 不產生這頁/.test(m)))
   // en 的文案與外殼字串 2026-11-05 審過；ja、ko、de、es 2026-11-06 照 0010 蓋章：都沒有 G2、G3
@@ -229,9 +232,9 @@ test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只�
   assert.ok(plan.warnings.some((m) => /^preview：site-home ja：G5/.test(m)))
   // preview 一律用共用頁首頁尾（effectiveShell），shell 是 legacy 不再另外警告
   assert.ok(!plan.warnings.some((m) => /shell 是 'legacy'/.test(m)))
-  // live 的 P1：沒有頁、沒有問題
+  // live：只有 OPENED 的頁、沒有問題
   const live = buildSiteHomePlan({ config: siteConfig, env: {}, today: AT })
-  assert.deepEqual([live.published, live.pages, live.problems], [[], [], []])
+  assert.deepEqual([live.published, live.pages.map((p) => p.code), live.problems], [OPENED, OPENED, []])
 })
 
 test('effectiveShell：preview 一律 shared，其他照 site.config.mjs 的 shell', () => {

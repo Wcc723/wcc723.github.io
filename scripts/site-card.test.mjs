@@ -26,10 +26,10 @@ const run = (argv, opts) => {
   return { code, out: logs.join('\n') }
 }
 
-test('提交的 site-card.json 跟 site.config.mjs 與 live 計畫一致（S：shared、沒有外語首頁）', () => {
+test('提交的 site-card.json 跟 site.config.mjs 與 live 計畫一致（S：shared、siteHomes 照 home.locales）', () => {
   const card = JSON.parse(fs.readFileSync(CARD_FILE, 'utf8'))
   assert.deepEqual(card, siteCard({ config: siteConfig, plan: buildSiteHomePlan({ config: siteConfig, env: {} }) }))
-  assert.deepEqual(card, { $comment: CARD_COMMENT, schema: 1, shell: 'shared', siteHomes: [] })
+  assert.deepEqual(card, { $comment: CARD_COMMENT, schema: 1, shell: 'shared', siteHomes: siteConfig.home.locales })
   assert.equal(run(['--check']).code, 0)
 })
 
