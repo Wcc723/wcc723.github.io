@@ -353,7 +353,7 @@ export const STAGES = {
   feature: { plan: I1_PLAN, shell: 'shared', toolsIndex: FEATURE_INDEX, legal: I1_LEGAL },
 }
 
-const cardHtml = (c) => `<article class="post-card"><a class="post-card__cover" href="${c.url}" tabindex="-1"><img src="https://img.casper.tw/x.png" alt=""></a><h2 class="post-card__title"><a href="${c.url}">標題</a></h2><p class="post-card__meta"><time>2023</time></p><p class="post-card__excerpt">${esc(c.excerpt)}</p></article>`
+export const cardHtml = (c) => `<article class="post-card"><a class="post-card__cover" href="${c.url}" tabindex="-1"><img src="https://img.casper.tw/x.png" alt=""></a><h2 class="post-card__title"><a href="${c.url}">標題</a></h2><p class="post-card__meta"><time>2023</time></p><p class="post-card__excerpt">${esc(c.excerpt)}</p></article>`
 
 /**
  * 建一個臨時的 repo 根目錄：baseline/hexo-fixture/、dist/、package.json。
@@ -490,4 +490,4 @@ export function buildWorld(mutate, { stage = 'p1', toolsIndex } = {}) {
   }
 }
 
-export { NEW_PAGES, mainOf }
+export { NEW_PAGES, mainOf, POSTS as WORLD_POSTS }

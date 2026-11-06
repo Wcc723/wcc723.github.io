@@ -15,10 +15,10 @@ import {
   rootHasVpRaw, caseCollisions, callsHexo, loadBaseline, latestBaselineDir, NEW_URLS, FIXED_ANCHORS, TEXT_EXPECTED, TEMPLATE_ALLOW,
   PROFILE_EXPECTED, PROFILE_LABEL, PROFILE_SEQUENCE_LABEL, THEME_CHUNK_MAX, SIDEBAR_RELATED_MAX, regionsOf, prefetchLinksOf, metaChunkOf,
   CHECKS, CATEGORIES_FILE, siteHomeUrlRule, gaConfigsOf, unpublishedCopyProbes, mainTextWithoutForeign, expectedSiteHomeHead,
-  toolsRegionProblems, previewLinkScriptsIn, PREVIEW_LINKS_TOKEN, ROBOTS_P3_LINE,
+  toolsRegionProblems, previewLinkScriptsIn, PREVIEW_LINKS_TOKEN, ROBOTS_P3_LINE, expectedAtom, listFamilyOf,
 } from './audit-build.mjs'
-import { buildWorld, HOME_WEBSITE_LD, I1_INDEX, I1_PLAN, P1_PLAN, FEATURE_INDEX } from './fixtures/world.mjs'
-import { toolCardsIn } from './lib/extract-page.mjs'
+import { buildWorld, builtHtml, cardHtml, HOME_WEBSITE_LD, I1_INDEX, I1_PLAN, P1_PLAN, FEATURE_INDEX, WORLD_POSTS } from './fixtures/world.mjs'
+import { toolCardsIn, builtCards } from './lib/extract-page.mjs'
 import { readHomeMessages } from '../source/.vitepress/lib/site-home.mjs'
 import { previewLinkScript } from '../source/.vitepress/lib/preview-links.mjs'
 import { SITE_NAME, SITE_NAME_EN, SITE_NAME_LEGACY, SITE_TITLE_LEGACY, shouldLoadAds, countAdsLoaders } from '../source/.vitepress/theme/shared/shell/site.mjs'
@@ -207,6 +207,155 @@ test('feed：atom 的 published、content.json 的一筆、sitemap 少一個、l
   assertFails(await audit(edit('sitemap.xml', (x) => x.replace('<lastmod>2026-07-09</lastmod>', '<lastmod>2022-01-10</lastmod>'))), ['feeds'], /lastmod：預期 2026-07-09/)
   assertFails(await audit(edit('sitemap.xml', (x) => x.replace('<lastmod>2026-07-09</lastmod>', '<lastmod>2026-07-09T00:00:00.000Z</lastmod>'))), ['feeds'], /lastmod 應該只有日期/)
   assertFails(await audit(edit('atom.xml', (x) => x.replace('</feed>', '<entry><id>https://www.casper.tw/development/2020/01/01/draft/</id></entry></feed>'))), ['feeds'], /未發布的文章出現在 atom.xml|atom.xml 有/)
+})
+
+// --- 基準之後的新文章（站長 2026-11-06：舊頁照樣跟基準比，新文章放行） ---
+// 測試世界加一篇 2026-11-05 的新文章：文章頁、首頁往後擠出 /page/3/、新的分類頁與標籤頁（測試世界的基準沒有它們）、
+// 三個封存頁、atom 插在最前面（最舊的一筆擠出去）、content.json 與 sitemap 各多一筆
+const NEW_POST = {
+  file: '2026-11-05-new-post.md', url: '/development/2026/11/05/new-post/', category: 'development', tags: ['newtag'],
+  title: '新文章的標題', description: '新文章自己寫的說明。', date: '2026-11-05', updated: null, published: true, ads: true, cssdemo: [],
+}
+const NEW_POST_FILE = 'development/2026/11/05/new-post/index.html'
+const NEW_POST_PUBLISHED = '2026-11-04T16:00:00.000Z'
+const withNewPostOpts = { posts: [...WORLD_POSTS, NEW_POST] }
+const listHtml = (h, cards) => h.replace(/<div class="post-list">[\s\S]*?<\/div><nav/, `<div class="post-list">${cards.map(cardHtml).join('')}</div><nav`)
+function addNewPost(d, { position = 'first' } = {}) {
+  const u = NEW_POST.url
+  const main = `<nav class="breadcrumbs"><a href="/">首頁</a></nav><article class="post"><header><h1>${NEW_POST.title}</h1></header>` +
+    `<div class="prose" data-v-7a1b2c3d><div><h2 id="第一段">第一段</h2><p>內文。</p></div></div><div class="post-foot" data-v-7a1b2c3d><div class="fb-comments" data-href="https://www.casper.tw${u}" data-width="100%"></div></div></article>`
+  const mod = `${NEW_POST.date}T00:00:00+08:00`
+  const html = builtHtml({
+    file: NEW_POST_FILE, title: `${NEW_POST.title} | ${SITE_TITLE_LEGACY}`, description: NEW_POST.description, canonical: `https://www.casper.tw${u}`,
+    published: NEW_POST_PUBLISHED, modified: mod, ldExtra: { datePublished: mod, dateModified: mod }, tags: NEW_POST.tags, main,
+  })
+  d.set(NEW_POST_FILE, html.replace('</article>', `</article>${sidebarHtml(u, html, { related: [POST_URL] })}`))
+  // 首頁家族：新文章排第一張，其他往後擠一張，多出 /page/3/
+  const card = { url: u, excerpt: NEW_POST.description }
+  const home = builtCards(d.get('index.html'))
+  const p2 = builtCards(d.get('page/2/index.html'))
+  const all = position === 'first' ? [card, ...home, ...p2] : [...home, ...p2, card]
+  d.set('index.html', listHtml(d.get('index.html'), all.slice(0, 10)))
+  d.set('page/2/index.html', listHtml(d.get('page/2/index.html'), all.slice(10, 20)))
+  d.set('page/3/index.html', listHtml(d.get('page/2/index.html').replaceAll('/page/2/', '/page/3/').replaceAll('第 2 頁', '第 3 頁'), all.slice(20)))
+  // 新的列表頁與封存頁（測試世界的基準沒有）
+  const taxonomy = (file, h1) => builtHtml({ file, title: `${h1} | ${SITE_TITLE_LEGACY}`, description: `${h1}的文章`, canonical: `https://www.casper.tw/${file.replace(/index\.html$/, '')}`, main: `<h1>${h1}</h1><div class="post-list">${cardHtml(card)}</div><nav class="pager"></nav>` })
+  d.set('categories/development/index.html', taxonomy('categories/development/index.html', 'development'))
+  d.set('tags/newtag/index.html', taxonomy('tags/newtag/index.html', 'newtag'))
+  for (const a of ['archives/', 'archives/2026/', 'archives/2026/11/']) {
+    d.set(`${a}index.html`, builtHtml({ file: `${a}index.html`, title: `封存 | ${SITE_TITLE_LEGACY}`, description: '封存', canonical: `https://www.casper.tw/${a}`, main: `<h1>封存</h1><a class="archive-row" href="${u}">文章</a>` }))
+  }
+  // feeds
+  const entries = [...d.get('atom.xml').matchAll(/  <entry>[\s\S]*?<\/entry>\n/g)].map((m) => m[0])
+  const entry = `  <entry>\n    <id>https://www.casper.tw${u}</id>\n    <link href="https://www.casper.tw${u}"/>\n    <published>${NEW_POST_PUBLISHED}</published>\n  </entry>\n`
+  d.set('atom.xml', d.get('atom.xml').replace(entries.join(''), [entry, ...entries.slice(0, -1)].join('')))
+  d.set('content.json', JSON.stringify([...JSON.parse(d.get('content.json')), {
+    title: NEW_POST.title, date: NEW_POST_PUBLISHED, path: u.slice(1),
+    categories: [{ name: 'development', slug: 'development', permalink: 'https://www.casper.tw/categories/development/' }],
+    tags: [{ name: 'newtag', slug: 'newtag', permalink: 'https://www.casper.tw/tags/newtag/' }],
+  }]))
+  d.set('sitemap.xml', d.get('sitemap.xml').replace('</urlset>', [`<url><loc>https://www.casper.tw${u}</loc><lastmod>2026-11-05</lastmod></url>`, '<url><loc>https://www.casper.tw/categories/development/</loc></url>', '<url><loc>https://www.casper.tw/tags/newtag/</loc></url>', '</urlset>'].join('\n')))
+}
+
+test('新文章：文章頁、首頁擠出第 3 頁、新分類與標籤頁、封存、atom、content.json、sitemap 都對時 20 項全部通過', async () => {
+  const r = await audit((d) => addNewPost(d), withNewPostOpts)
+  assert.equal(r.ok, true, formatReport(r))
+  assert.match(check(r, 'new-pages').summary, /基準之後的新文章 1 篇/)
+  assert.ok(r.expected.some((e) => e.check === 'urls' && /基準之後的新文章 1 篇/.test(e.reason)))
+  assert.ok(r.expected.some((e) => e.check === 'lists' && e.target === '/' && /整組比/.test(e.reason)))
+  assert.ok(r.expected.some((e) => e.check === 'feeds' && e.target === 'atom.xml'))
+  // 沒有新文章時不會出現新文章的預期差異（行為跟改之前一樣）
+  assert.ok(!(await audit()).expected.some((e) => /新文章/.test(e.reason)))
+})
+
+// 首頁家族的卡片重新分頁：sizes 是每頁張數，多的頁用 /page/2/ 當版型，少的頁刪掉
+function resplitHome(d, sizes) {
+  const files = ['index.html', 'page/2/index.html', 'page/3/index.html']
+  const all = files.filter((f) => d.has(f)).flatMap((f) => builtCards(d.get(f)))
+  const tpl = d.get('page/2/index.html')
+  let at = 0
+  sizes.forEach((k, i) => {
+    const f = i === 0 ? 'index.html' : `page/${i + 1}/index.html`
+    d.set(f, listHtml(d.get(f) ?? tpl.replaceAll('/page/2/', `/page/${i + 1}/`).replaceAll('第 2 頁', `第 ${i + 1} 頁`), all.slice(at, at + k)))
+    at += k
+  })
+  for (let n = sizes.length + 1; n <= 3; n++) d.delete(`page/${n}/index.html`)
+}
+
+test('新文章：舊文章的順序亂了、新文章排錯位置或漏掉、少了最後一頁的舊文章，照樣擋下', async () => {
+  const swapOld = (h) => {
+    const cards = [...h.matchAll(/<article class="post-card">[\s\S]*?<\/article>/g)].map((m) => m[0])
+    return h.replace(cards[1], '\u0000').replace(cards[2], cards[1]).replace('\u0000', cards[2])
+  }
+  assertFails(await audit((d) => { addNewPost(d); d.set('index.html', swapOld(d.get('index.html'))) }, withNewPostOpts), ['lists'], /^\/ 舊文章的卡片順序不同：第 1 篇/)
+  assertFails(await audit((d) => addNewPost(d, { position: 'last' }), withNewPostOpts), ['lists'], /\/ 的新文章 \/development\/2026\/11\/05\/new-post\/ 排在比它舊的 .* 後面/)
+  assertFails(await audit((d) => { addNewPost(d); d.set('categories/development/index.html', listHtml(d.get('categories/development/index.html'), [])) }, withNewPostOpts), ['lists'], /\/categories\/development\/ 的新文章 .* 出現 0 次，應該 1 次/)
+  assertFails(await audit((d) => { addNewPost(d); d.delete('page/3/index.html') }, withNewPostOpts), ['lists'], /^\/ 舊文章的卡片順序不同：第 20 篇/)
+  assertFails(await audit((d) => { addNewPost(d); d.set('archives/2026/11/index.html', d.get('archives/2026/11/index.html').replace('</h1>', `</h1><a class="archive-row" href="${POST_URL}">文章</a>`)) }, withNewPostOpts), ['lists'], /\/archives\/2026\/11\/ 舊文章的封存的文章連結不同/)
+})
+
+test('新文章：有新文章的列表家族，分頁數、每頁張數、分頁連續與頁碼寫法照樣擋下', async () => {
+  assert.equal((await audit((d) => { addNewPost(d); resplitHome(d, [10, 10, 1]) }, withNewPostOpts)).ok, true)
+  assertFails(await audit((d) => { addNewPost(d); resplitHome(d, [10, 11]) }, withNewPostOpts), ['lists'], /^\/ 有 2 頁，21 張卡片應該是 3 頁/)
+  assertFails(await audit((d) => { addNewPost(d); resplitHome(d, [9, 10, 2]) }, withNewPostOpts), ['lists'], /^\/ 有 9 張卡，不是最後一頁應該是 10 張/)
+  assertFails(await audit((d) => { addNewPost(d); d.set('page/5/index.html', d.get('page/3/index.html').replaceAll('/page/3/', '/page/5/')) }, withNewPostOpts), ['lists'], /^\/ 的分頁不連續：沒有 \/page\/4\/，卻有 \/page\/5\//)
+  // 頁碼寫法跟建置不同的分頁（0、1、前導 0）不算新文章帶來的網址
+  for (const n of ['0', '1', '02']) {
+    assertFails(await audit((d) => { addNewPost(d); d.set(`page/${n}/index.html`, d.get('page/2/index.html').replaceAll('/page/2/', `/page/${n}/`)) }, withNewPostOpts), ['urls'], new RegExp(`未預期的新網址：/page/${n}/`))
+  }
+})
+
+test('新文章：文章頁自己的 SEO 欄位、atom 與 content.json 漏掉、多了沒關係的網址，照樣擋下', async () => {
+  const onPost = (fn) => (d) => { addNewPost(d); d.set(NEW_POST_FILE, fn(d.get(NEW_POST_FILE))) }
+  const U = 'https://www.casper.tw/development/2026/11/05/new-post/'
+  assertFails(await audit(onPost((h) => h.replace(`<link rel="canonical" href="${U}">`, `<link rel="canonical" href="${U}x/">`)), withNewPostOpts), ['new-pages', 'feeds'], /new-post\/ canonical：預期|sitemap 的 .*new-post\/ 跟該頁 canonical/)
+  assertFails(await audit(onPost((h) => h.replace(`<meta property="og:url" content="${U}">`, `<meta property="og:url" content="${U.replace('https', 'http')}">`)), withNewPostOpts), ['new-pages'], /new-post\/ og:url：預期/)
+  assertFails(await audit(onPost((h) => h.replace(/<title>[^<]*<\/title>/, '<title>新文章的標題</title>')), withNewPostOpts), ['new-pages'], /new-post\/ title：預期 「新文章的標題 \| /)
+  assertFails(await audit(onPost((h) => h.replace('<h1>新文章的標題</h1>', '<h1>別的標題</h1>')), withNewPostOpts), ['new-pages'], /new-post\/ h1：預期 「新文章的標題」，實際 「別的標題」/)
+  assertFails(await audit(onPost((h) => h.replace(`content="${NEW_POST_PUBLISHED}"`, 'content="2026-11-05T00:00:00.000Z"')), withNewPostOpts), ['new-pages'], /new-post\/ article:published_time：預期/)
+  assertFails(await audit(onPost((h) => h.replace(/<meta name="description" content="[^"]*">/, '<meta name="description" content="別的說明">')), withNewPostOpts), ['new-pages'], /new-post\/ description：預期 「新文章自己寫的說明。」/)
+  assertFails(await audit(onPost((h) => h.replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">')), withNewPostOpts), ['new-pages'], /new-post\/ 不該 noindex/)
+  assertFails(await audit(onPost((h) => h.replace(/data-href="[^"]*"/, 'data-href="https://www.casper.tw/development/2026/11/05/new-post"')), withNewPostOpts), ['new-pages'], /FB 留言 data-href：預期/)
+  assertFails(await audit((d) => addNewPost(d), { posts: [...WORLD_POSTS, { ...NEW_POST, description: '' }] }), ['new-pages'], /front matter 沒有 description/)
+  const atomBefore = (d) => { const a = d.get('atom.xml'); addNewPost(d); d.set('atom.xml', a) }
+  assertFails(await audit(atomBefore, withNewPostOpts), ['feeds'], /atom.xml 第 1 筆 <id>：預期 「https:\/\/www\.casper\.tw\/development\/2026\/11\/05\/new-post\/」/)
+  assertFails(await audit((d) => { addNewPost(d); d.set('content.json', JSON.stringify(JSON.parse(d.get('content.json')).slice(0, -1))) }, withNewPostOpts), ['feeds'], /content.json 少了新文章/)
+  assertFails(await audit((d) => { addNewPost(d); d.set('tags/other/index.html', d.get('tags/newtag/index.html').replaceAll('/tags/newtag/', '/tags/other/')) }, withNewPostOpts), ['urls'], /未預期的新網址：\/tags\/other\//)
+  // content.json 的標籤順序由建置決定（全站第一次出現的順序），跟 front matter 不同沒關係；少了標籤照樣擋下
+  const TWO_TAGS = { ...NEW_POST, tags: ['zeta', 'newtag'] }
+  const withZeta = (names) => (d) => {
+    addNewPost(d)
+    d.set('tags/zeta/index.html', d.get('tags/newtag/index.html').replaceAll('newtag', 'zeta'))
+    d.set('sitemap.xml', d.get('sitemap.xml').replace('</urlset>', '<url><loc>https://www.casper.tw/tags/zeta/</loc></url>\n</urlset>'))
+    const list = JSON.parse(d.get('content.json'))
+    list.at(-1).tags = names.map((name) => ({ name, slug: name, permalink: `https://www.casper.tw/tags/${name}/` }))
+    d.set('content.json', JSON.stringify(list))
+  }
+  const r2 = await audit(withZeta(['newtag', 'zeta']), { posts: [...WORLD_POSTS, TWO_TAGS] })
+  assert.equal(r2.ok, true, formatReport(r2))
+  assertFails(await audit(withZeta(['newtag']), { posts: [...WORLD_POSTS, TWO_TAGS] }), ['feeds'], /content.json 的新文章 .* 標籤：預期 「newtag、zeta」，實際 「newtag」/)
+  // 沒登記成新文章（文章索引裡沒有）時，跟以前一樣是未預期的新網址
+  assertFails(await audit((d) => addNewPost(d)), ['urls', 'lists', 'feeds'], /未預期的新網址：\/development\/2026\/11\/05\/new-post\/|卡片順序不同|atom.xml|content.json|sitemap/)
+})
+
+test('expectedAtom：新文章照時間插進去，筆數維持基準；沒有新文章就是基準', () => {
+  const base = [1, 2, 3].map((n) => ({ id: `https://www.casper.tw/a/202${n}/`, link: `https://www.casper.tw/a/202${n}/`, published: `202${4 - n}-01-01T00:00:00.000Z` }))
+  assert.deepEqual(expectedAtom(base, []), base)
+  const fresh = [{ url: '/new/', published: '2025-01-01T00:00:00.000Z' }, { url: '/mid/', published: '2022-06-01T00:00:00.000Z' }]
+  assert.deepEqual(expectedAtom(base, fresh).map((e) => e.id), ['https://www.casper.tw/new/', base[0].id, 'https://www.casper.tw/mid/'])
+  // 同一天的兩篇新文章照 Hexo 的順序：檔名升冪（文章索引是檔名降冪，這裡要反過來）
+  const sameDay = [
+    { url: '/bbb/', post: { file: '2025-01-01-bbb.md' }, published: '2025-01-01T00:00:00.000Z' },
+    { url: '/aaa/', post: { file: '2025-01-01-aaa.md' }, published: '2025-01-01T00:00:00.000Z' },
+  ]
+  assert.deepEqual(expectedAtom(base, sameDay).map((e) => e.id), ['https://www.casper.tw/aaa/', 'https://www.casper.tw/bbb/', base[0].id])
+})
+
+test('listFamilyOf：分頁網址對到家族第 1 頁', () => {
+  assert.deepEqual(listFamilyOf('/'), ['/', 1])
+  assert.deepEqual(listFamilyOf('/page/3/'), ['/', 3])
+  assert.deepEqual(listFamilyOf('/categories/development/page/7/'), ['/categories/development/', 7])
+  assert.deepEqual(listFamilyOf('/tags/Claude%20Code/'), ['/tags/Claude%20Code/', 1])
 })
 
 test('廣告：不該載入的頁有 loader、loader 兩次、少了 meta、ins.adsbygoogle、ADS_MODE allowlist', async () => {

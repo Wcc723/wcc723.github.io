@@ -29,6 +29,7 @@ import {
   SITE_NAME, SITE_NAME_EN, SITE_NAME_LEGACY, SITE_TITLE_LEGACY, ADS_MODE, ADSENSE_CLIENT, shouldLoadAds, countAdsLoaders,
 } from '../source/.vitepress/theme/shared/shell/site.mjs'
 import { pageTypeOf } from '../source/.vitepress/lib/pagetype.mjs'
+import { tagSlug } from '../source/.vitepress/lib/posts.mjs'
 import { NOT_FOUND_TITLE, NOT_FOUND_DESCRIPTION } from '../source/.vitepress/theme/head.mjs'
 import { toolCardArt, toolFeatureArt } from '../source/.vitepress/theme/ghost.mjs'
 import siteConfig from '../source/.vitepress/site.config.mjs'
@@ -98,6 +99,50 @@ export const NEW_URLS = [
 export function siteHomeUrlRule(published = []) {
   const urls = new Set(published.map((c) => `/${c}/`))
   return { test: (u) => urls.has(u), reason: '外語首頁 /<code>/：site.config.mjs 的 home.locales（主站首頁規格 B.1）' }
+}
+
+/** 列表每頁的卡片數（Hexo 的 per_page，VitePress 版照舊） */
+export const LIST_PAGE_SIZE = 10
+
+/**
+ * 基準之後的新文章（站長 2026-11-06：舊頁照樣跟基準逐頁比，新文章放行）：已發布、網址不在基準的文章。
+ * 基準是 2026-11-03 的 Hexo 站，有新文章時首頁、分類、標籤、封存的卡片會往後擠，atom、content.json、sitemap 會多出來；
+ * checkUrls、checkLists、checkFeeds 用這份把「新文章造成的差異」跟「舊頁壞掉」分開，checkNewPages 另驗新文章頁本身。
+ * 每筆：post（文章索引）、url（encodeURI）、lists（會出現的列表家族第 1 頁：首頁、分類、每個標籤）、archives（封存頁）、published（atom 的時間）
+ */
+export function newPostsOf(ctx) {
+  if (ctx.newPosts) return ctx.newPosts
+  const base = new Set(ctx.baseline.pages.filter((p) => p.type === 'post').map((p) => p.url))
+  ctx.newPosts = (ctx.posts ?? []).filter((x) => x.published && !base.has(encodeURI(x.url))).map((x) => {
+    const [y, m] = x.date.split('-')
+    return {
+      post: x,
+      url: encodeURI(x.url),
+      lists: [...new Set(['/', encodeURI(`/categories/${categoryDirOf(x.category)}/`), ...x.tags.map((t) => encodeURI(`/tags/${tagSlug(MERGED_TAGS[t] ?? t)}/`))])],
+      archives: ['/archives/', `/archives/${y}/`, `/archives/${y}/${m}/`],
+      published: new Date(`${x.date}T00:00:00+08:00`).toISOString(),
+    }
+  })
+  return ctx.newPosts
+}
+
+/** 列表網址 → [家族第 1 頁的網址, 頁碼]：/page/3/ → ['/', 3]，/tags/css/page/2/ → ['/tags/css/', 2]，/tags/css/ → ['/tags/css/', 1] */
+export function listFamilyOf(url) {
+  const m = /^(.*\/)page\/(\d+)\/$/.exec(url)
+  return m ? [m[1], Number(m[2])] : [url, 1]
+}
+
+/** 分頁網址的頁碼寫法跟建置一樣：2 以上、沒有前導 0（/page/0/、/page/1/、/page/02/ 都不算分頁） */
+export const LIST_PAGE_RE = /\/page\/([2-9]|[1-9]\d+)\/$/
+
+/** 新文章帶來的網址：文章頁、新標籤與新封存頁、有新文章的列表家族多出來的分頁（分頁數由 checkLists 驗） */
+export function newPostUrlRule(fresh) {
+  const urls = new Set(fresh.flatMap((x) => [x.url, ...x.lists, ...x.archives]))
+  const families = new Set(fresh.flatMap((x) => x.lists))
+  return {
+    test: (u) => urls.has(u) || (LIST_PAGE_RE.test(u) && families.has(listFamilyOf(u)[0])),
+    reason: `基準之後的新文章 ${fresh.length} 篇（${fresh.map((x) => x.url).join('、')}）：文章頁、新標籤與封存頁、列表往後擠多出來的分頁（站長 2026-11-06）`,
+  }
 }
 
 /** 預期從 dist 消失的基準網址 */
@@ -412,6 +457,8 @@ export function checkUrls(ctx) {
   const added = [...distUrls].filter((u) => !base.has(u)).sort()
   const byRule = new Map()
   const rules = [siteHomeUrlRule(ctx.plan.published), ...NEW_URLS]
+  const fresh = newPostsOf(ctx)
+  if (fresh.length) rules.push(newPostUrlRule(fresh))
   for (const u of added) {
     const rule = rules.find((r) => r.test(u))
     if (!rule) fail(c, `未預期的新網址：${u}`)
@@ -616,7 +663,26 @@ export function checkNewPages(ctx) {
     if (nf.f.title !== NOT_FOUND_TITLE) fail(c, `/404.html title：預期 ${show(NOT_FOUND_TITLE)}，實際 ${show(nf.f.title)}`)
     if (nf.f.description !== NOT_FOUND_DESCRIPTION) fail(c, `/404.html description：預期 ${show(NOT_FOUND_DESCRIPTION)}，實際 ${show(nf.f.description)}`)
   }
-  c.summary = `${NEW_PAGES.length} 個新頁、404`
+  // 基準之後的新文章：沒有基準可比，驗它自己的 SEO 欄位（舊文章的同一組欄位在 checkPages 跟基準比）
+  const fresh = newPostsOf(ctx)
+  for (const x of fresh) {
+    const u = x.url
+    const d = ctx.pages.get(u)
+    if (!d) { fail(c, `新文章不在 dist：${u}`); continue }
+    const want = SITE + u
+    const title = `${x.post.title} | ${SITE_TITLE_LEGACY}`
+    if (d.f.canonical !== want) fail(c, `${u} canonical：預期 ${show(want)}，實際 ${show(d.f.canonical)}`)
+    if (d.f.ogUrl !== want) fail(c, `${u} og:url：預期 ${show(want)}，實際 ${show(d.f.ogUrl)}`)
+    if (d.f.fbCommentsHref !== want) fail(c, `${u} FB 留言 data-href：預期 ${show(want)}，實際 ${show(d.f.fbCommentsHref)}`)
+    if (d.f.title !== title) fail(c, `${u} title：預期 ${show(title)}，實際 ${show(d.f.title)}`)
+    if (!x.post.description) fail(c, `${u} front matter 沒有 description（新文章一律自己寫）`)
+    else if (d.f.description !== x.post.description) fail(c, `${u} description：預期 ${show(x.post.description)}（front matter），實際 ${show(d.f.description)}`)
+    if (JSON.stringify(d.f.h1) !== JSON.stringify([x.post.title])) fail(c, `${u} h1：預期 ${show(x.post.title)}，實際 ${show(d.f.h1.join(' / '))}`)
+    if (instant(d.f.publishedTime) !== instant(x.published)) fail(c, `${u} article:published_time：預期 ${show(x.published)}（檔名的日期，台北時間 00:00），實際 ${show(d.f.publishedTime)}`)
+    if (d.f.lang !== 'zh-TW') fail(c, `${u} lang：預期 「zh-TW」，實際 ${show(d.f.lang)}`)
+    if (/noindex/i.test(d.f.robots ?? '')) fail(c, `${u} 不該 noindex：${d.f.robots}`)
+  }
+  c.summary = `${NEW_PAGES.length} 個新頁、404${fresh.length ? `、基準之後的新文章 ${fresh.length} 篇` : ''}`
   return c
 }
 
@@ -770,6 +836,9 @@ export function checkLists(ctx) {
   }
   let pages = 0
   let cards = 0
+  // 有新文章的列表家族（首頁、分類、標籤）不逐頁比，整組比（checkListFamily）：卡片往後擠，每一頁都會跟基準不同
+  const fresh = newPostsOf(ctx)
+  const touched = new Set(fresh.flatMap((x) => x.lists).filter((u) => !MERGED_TAG_PAGE_RE.test(u)))
   for (const p of ctx.baseline.pages) {
     const d = ctx.pages.get(p.url)
     const baseHtml = ctx.baseHtml(p)
@@ -777,6 +846,7 @@ export function checkLists(ctx) {
     if (LIST_TYPES.has(p.type)) {
       pages++
       if (MERGED_TAG_PAGE_RE.test(p.url)) continue // 合併標籤另外比
+      if (touched.has(listFamilyOf(p.url)[0])) continue
       const before = hexoCards(baseHtml).map((x) => x.url)
       const now = builtCards(d.html).map((x) => x.url)
       if (!now.length) { fail(c, `${p.url} 找不到卡片（class 含 post-card 的元素）`); continue }
@@ -788,16 +858,32 @@ export function checkLists(ctx) {
       pages++
       const before = postLinks(baseHtml)
       const now = postLinks(d.html)
-      if (JSON.stringify(before) !== JSON.stringify(now)) fail(c, `${p.url} 封存的文章連結不同：基準 ${before.length} 篇，新版 ${now.length} 篇`)
+      const mine = fresh.filter((x) => x.archives.includes(p.url))
+      if (mine.length) {
+        compareWithNewPosts(c, p.url, before, now, fresh, mine, '封存的文章連結')
+        ctx.expect('lists', p.url, `新文章 ${mine.length} 篇照日期插進封存，扣掉新文章後跟基準相同`)
+      } else if (JSON.stringify(before) !== JSON.stringify(now)) fail(c, `${p.url} 封存的文章連結不同：基準 ${before.length} 篇，新版 ${now.length} 篇`)
     } else if (p.type === 'tags-index') {
       pages++
       const pattern = /^\/tags\/[^/]+\/$/
       const want = new Set([...linkSet(baseHtml, pattern)].map(legacyUrlFix))
+      for (const x of fresh) for (const u of x.lists) if (u.startsWith('/tags/')) want.add(u)
       const now = linkSet(d.html, pattern)
       for (const u of want) if (!now.has(u)) fail(c, `/tags/ 少了 ${u}`)
       for (const u of now) if (!want.has(u)) fail(c, `/tags/ 多了 ${u}`)
       ctx.expect('lists', '/tags/', 'Sass、Bootstrap、Vue 併入小寫，標籤雲少了 3 個大寫的連結')
     }
+  }
+  for (const fam of touched) {
+    pages += checkListFamily(ctx, c, fam, fresh)
+  }
+  // 基準沒有的封存頁（新文章所在的年、月）：只能有屬於它的新文章
+  for (const u of new Set(fresh.flatMap((x) => x.archives))) {
+    if (ctx.baseline.byUrl.has(u)) continue
+    const d = ctx.pages.get(u)
+    if (!d) { fail(c, `新文章的封存頁不在 dist：${u}`); continue }
+    pages++
+    compareWithNewPosts(c, u, [], postLinks(d.html), fresh, fresh.filter((x) => x.archives.includes(u)), '封存的文章連結')
   }
   // 每張卡的摘要跟基準同一篇的卡片摘要相同（計畫「文章卡片」：首頁和列表頁的卡片摘要跟基準相同）
   const badExcerpt = new Set()
@@ -835,10 +921,75 @@ export function checkLists(ctx) {
 
 const categoryDirOf = (name) => (name === 'css' ? 'CSS' : name)
 
+/**
+ * 一串文章連結（列表家族的卡片接起來、或一個封存頁）跟基準比，容許新文章插進來：
+ * 扣掉全部新文章之後要跟基準逐篇相同；屬於這裡的新文章（mine）剛好出現一次，其他新文章不能出現；
+ * 新文章照日期排在對的位置（前一篇不比它舊、後一篇不比它新）。
+ */
+export function compareWithNewPosts(c, where, before, now, fresh, mine, label) {
+  const freshUrls = new Set(fresh.map((x) => x.url))
+  const old = now.filter((u) => !freshUrls.has(u))
+  if (JSON.stringify(old) !== JSON.stringify(before)) {
+    let i = before.findIndex((u, j) => u !== old[j])
+    if (i === -1) i = before.length
+    fail(c, `${where} 舊文章的${label}不同：第 ${i + 1} 篇，基準 ${before[i] ?? '（無）'}，新版 ${old[i] ?? '（無）'}（基準 ${before.length} 篇，新版扣掉新文章 ${old.length} 篇）`)
+  }
+  for (const x of fresh) {
+    const n = now.filter((u) => u === x.url).length
+    const want = mine.includes(x) ? 1 : 0
+    if (n !== want) fail(c, `${where} 的新文章 ${x.url} 出現 ${n} 次，應該 ${want} 次`)
+  }
+  now.forEach((u, i) => {
+    if (!freshUrls.has(u)) return
+    const date = dateOfPostUrl(u)
+    if (i > 0 && dateOfPostUrl(now[i - 1]) < date) fail(c, `${where} 的新文章 ${u} 排在比它舊的 ${now[i - 1]} 後面（要由新到舊）`)
+    if (i < now.length - 1 && dateOfPostUrl(now[i + 1]) > date) fail(c, `${where} 的新文章 ${u} 排在比它新的 ${now[i + 1]} 前面（要由新到舊）`)
+  })
+}
+
+/**
+ * 有新文章的列表家族（fam 是第 1 頁的網址）：全部分頁的卡片接起來跟基準比（compareWithNewPosts），
+ * 分頁要連續、除了最後一頁每頁 LIST_PAGE_SIZE 張、頁數剛好是卡片數除以每頁張數。回傳 dist 裡這個家族的頁數。
+ */
+function checkListFamily(ctx, c, fam, fresh) {
+  const pageUrl = (n) => (n === 1 ? fam : `${fam}page/${n}/`)
+  const before = []
+  for (let n = 1; ctx.baseline.byUrl.has(pageUrl(n)); n++) {
+    const html = ctx.baseHtml(ctx.baseline.byUrl.get(pageUrl(n)))
+    if (html === null) { fail(c, `${pageUrl(n)} 讀不到基準 HTML，列表沒比`); return 0 }
+    before.push(...hexoCards(html).map((x) => x.url))
+  }
+  const now = []
+  const sizes = []
+  for (let n = 1; ctx.pages.has(pageUrl(n)); n++) {
+    const cards = builtCards(ctx.pages.get(pageUrl(n)).html).map((x) => x.url)
+    if (!cards.length) fail(c, `${pageUrl(n)} 找不到卡片（class 含 post-card 的元素）`)
+    sizes.push(cards.length)
+    now.push(...cards)
+  }
+  if (!sizes.length) { fail(c, `新文章的列表 ${fam} 不在 dist`); return 0 }
+  const mine = fresh.filter((x) => x.lists.includes(fam))
+  compareWithNewPosts(c, fam, before, now, fresh, mine, '卡片順序')
+  const total = Math.ceil(now.length / LIST_PAGE_SIZE)
+  if (sizes.length !== total) fail(c, `${fam} 有 ${sizes.length} 頁，${now.length} 張卡片應該是 ${total} 頁（每頁 ${LIST_PAGE_SIZE} 張）`)
+  sizes.forEach((k, i) => {
+    if (i < sizes.length - 1 && k !== LIST_PAGE_SIZE) fail(c, `${pageUrl(i + 1)} 有 ${k} 張卡，不是最後一頁應該是 ${LIST_PAGE_SIZE} 張`)
+  })
+  for (const u of ctx.pages.keys()) {
+    const [f, n] = listFamilyOf(u)
+    if (f === fam && n > sizes.length) fail(c, `${fam} 的分頁不連續：沒有 ${pageUrl(sizes.length + 1)}，卻有 ${u}`)
+  }
+  ctx.expect('lists', fam, `新文章 ${mine.length} 篇讓卡片往後擠，整組比：扣掉新文章後舊文章的順序跟基準相同，每頁 ${LIST_PAGE_SIZE} 張`)
+  return sizes.length
+}
+
 /** 合併的小寫標籤：篇數、分頁數、每頁 10 篇、日期由新到舊（計畫「只差大小寫的標籤」） */
 function checkMergedTags(ctx, c) {
   for (const tag of Object.values(MERGED_TAGS)) {
-    const want = ctx.baseline.content.filter((post) => post.tags.some((t) => t.name.toLowerCase() === tag)).map((post) => encodeURI('/' + post.path))
+    const want = [
+      ...ctx.baseline.content.filter((post) => post.tags.some((t) => t.name.toLowerCase() === tag)).map((post) => encodeURI('/' + post.path)),
+      ...newPostsOf(ctx).filter((x) => x.lists.includes(`/tags/${tag}/`)).map((x) => x.url),
+    ]
     const total = Math.ceil(want.length / 10)
     const seq = []
     for (let n = 1; n <= total; n++) {
@@ -867,16 +1018,19 @@ export function checkFeeds(ctx) {
   const c = newCheck('feeds', 'atom.xml、content.json、sitemap.xml')
   const homeLocs = ctx.plan.published.map((x) => siteHomeUrl(x))
   const readDist = (f) => (ctx.dist.files.includes(f) ? fs.readFileSync(path.join(ctx.dist.dir, f), 'utf8') : null)
-  // atom：20 筆的 id、link、published 逐字相同
+  const fresh = newPostsOf(ctx)
+  // atom：20 筆的 id、link、published 逐字相同；有新文章時，新文章照時間插進基準的 20 筆，取前 20 筆
   const atom = readDist('atom.xml')
   if (!atom) fail(c, 'dist 沒有 atom.xml')
   else {
-    const before = atomEntries(ctx.baseline.atom)
+    const base = atomEntries(ctx.baseline.atom)
+    const before = expectedAtom(base, fresh)
     const now = atomEntries(atom)
     if (now.length !== before.length) fail(c, `atom.xml 有 ${now.length} 筆，基準 ${before.length} 筆`)
     before.forEach((e, i) => {
       for (const k of ['id', 'link', 'published']) if (now[i]?.[k] !== e[k]) fail(c, `atom.xml 第 ${i + 1} 筆 <${k}>：預期 ${show(e[k])}，實際 ${show(now[i]?.[k])}`)
     })
+    if (fresh.length) ctx.expect('feeds', 'atom.xml', `新文章 ${fresh.length} 篇照時間插進基準的 ${base.length} 筆，最舊的往下擠出去`)
     for (const u of homeLocs) if (atom.includes(`>${u}<`) || atom.includes(`"${u}"`)) fail(c, `atom.xml 有外語首頁 ${u}（只放中文文章，主站首頁規格 D.8）`)
   }
   // content.json：364 筆，欄位與內容跟基準相同（分類與合併標籤的網址照新寫法）
@@ -888,13 +1042,26 @@ export function checkFeeds(ctx) {
   }
   if (content) {
     const list = Array.isArray(content) ? content : []
-    if (list.length !== ctx.baseline.content.length) fail(c, `content.json 有 ${list.length} 筆，基準 ${ctx.baseline.content.length} 筆`)
+    const wantCount = ctx.baseline.content.length + fresh.length
+    if (list.length !== wantCount) fail(c, `content.json 有 ${list.length} 筆，應該 ${wantCount} 筆（基準 ${ctx.baseline.content.length} 筆${fresh.length ? `，加新文章 ${fresh.length} 篇` : ''}）`)
     const byPath = new Map(list.map((x) => [x.path, x]))
     for (const post of ctx.baseline.content) {
       const got = byPath.get(post.path)
       if (!got) { fail(c, `content.json 少了 ${post.path}`); continue }
       const want = expectedContentEntry(post)
       if (canonicalJson(got) !== canonicalJson(want)) fail(c, `content.json 的 ${post.path} 跟基準不同：預期 ${canonicalJson(want).slice(0, 160)}，實際 ${canonicalJson(got).slice(0, 160)}`)
+    }
+    // 新文章：沒有基準，驗標題、日期、分類與標籤名稱跟 front matter 一致
+    for (const x of fresh) {
+      const got = list.find((e) => encodeURI('/' + e.path) === x.url || '/' + e.path === x.post.url)
+      if (!got) { fail(c, `content.json 少了新文章 ${x.url}`); continue }
+      // 標籤的順序由建置決定（pagedata 的 orderedTags 照全站第一次出現的順序排），新文章沒有基準順序可比，只比集合
+      const tags = (got.tags ?? []).map((t) => t.name).sort()
+      const wantTags = [...new Set(x.post.tags.map((t) => MERGED_TAGS[t] ?? t))].sort()
+      if (got.title !== x.post.title) fail(c, `content.json 的新文章 ${x.url} title：預期 ${show(x.post.title)}，實際 ${show(got.title)}`)
+      if (instant(got.date) !== instant(x.published)) fail(c, `content.json 的新文章 ${x.url} date：預期 ${show(x.published)}，實際 ${show(got.date)}`)
+      if ((got.categories ?? []).map((t) => t.name).join() !== x.post.category) fail(c, `content.json 的新文章 ${x.url} 分類：預期 ${show(x.post.category)}，實際 ${show((got.categories ?? []).map((t) => t.name).join('、'))}`)
+      if (JSON.stringify(tags) !== JSON.stringify(wantTags)) fail(c, `content.json 的新文章 ${x.url} 標籤：預期 ${show(wantTags.join('、'))}，實際 ${show(tags.join('、'))}`)
     }
     for (const u of homeLocs) if (contentRaw.includes(`"${u}"`) || list.some((x) => `${SITE}/${x.path}` === u)) fail(c, `content.json 有外語首頁 ${u}（⌘K 只搜中文文章與工具，主站首頁規格 D.8）`)
     ctx.expect('feeds', 'content.json', '分類 css 的 permalink 改成 /categories/CSS/，Sass、Bootstrap、Vue 改成小寫（基準 README「對等基準」）')
@@ -904,6 +1071,12 @@ export function checkFeeds(ctx) {
   if (!sitemap) fail(c, 'dist 沒有 sitemap.xml')
   else {
     const want = expectedSitemap(ctx.baseline.sitemap, { siteHomes: ctx.plan.published })
+    // 新文章：文章頁，加上它帶來、基準沒有的列表第 1 頁（新標籤）；分頁與封存頁本來就不進 sitemap
+    for (const x of fresh) {
+      want.add(SITE + x.url)
+      for (const u of x.lists) if (!ctx.baseline.byUrl.has(u)) want.add(SITE + u)
+    }
+    if (fresh.length) ctx.expect('feeds', 'sitemap.xml 的新文章', `加上新文章 ${fresh.length} 篇與它們帶來的新標籤頁`)
     const items = sitemapItems(sitemap)
     const now = new Set(items.map((x) => x.loc))
     for (const u of want) if (!now.has(u)) fail(c, `sitemap 少了 ${u}`)
@@ -955,6 +1128,22 @@ export function atomEntries(xml) {
     link: decodeEntities(/<link\b[^>]*\bhref="([^"]*)"/.exec(m[1])?.[1] ?? ''),
     published: /<published>([\s\S]*?)<\/published>/.exec(m[1])?.[1]?.trim() ?? '',
   }))
+}
+
+/**
+ * 新版 atom 應有的條目：基準的條目照原順序，新文章依 published 插在第一筆不比它新的舊條目前面，筆數維持基準的筆數。
+ * 同一天的新文章照 Hexo 的順序（pagedata 的 hexoOrder）：檔名升冪。沒有新文章時就是基準本身。
+ */
+export function expectedAtom(base, fresh) {
+  const out = [...base]
+  const file = (x) => x.post?.file ?? x.url
+  const order = (a, b) => instant(b.published) - instant(a.published) || (file(a) < file(b) ? -1 : file(a) > file(b) ? 1 : 0)
+  for (const x of [...fresh].sort(order)) {
+    const e = { id: SITE + x.url, link: SITE + x.url, published: x.published }
+    const i = out.findIndex((y) => instant(y.published) <= instant(e.published) && !fresh.some((f) => SITE + f.url === y.id))
+    out.splice(i === -1 ? out.length : i, 0, e)
+  }
+  return out.slice(0, base.length)
 }
 
 export function sitemapItems(xml) {

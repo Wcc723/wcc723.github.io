@@ -85,6 +85,8 @@ Node 22 LTS，至少 22.12（package.json 的 engines）。`.nvmrc` 寫 `lts/jod
 - front matter：`title`、`category`、`tags`、`description`；`published: false` 不輸出。
 - `updated`：只有實質改寫內容時才加或改。補 description、改圖片路徑、改格式都不算。修改日期（JSON-LD、`article:modified_time`、sitemap lastmod）都用它，沒有就用發布日。
 - 圖片放 R2：貼到 `r2-uploads/posts/<檔名>/`，`npm run images:upload` 上傳，內文寫 `https://img.casper.tw/posts/...`。
+- 發新文章不用改 audit（站長 2026-11-06）：Hexo 基準沒有的已發布文章，audit 自動當成新文章（`newPostsOf`）。舊頁照樣跟基準逐頁比；新文章只驗自己的 canonical、og:url、FB data-href、title、description、h1、發布時間。首頁、分類、標籤、封存的卡片扣掉新文章後，要跟基準的順序相同。atom、content.json、sitemap 照時間把新文章插進去。
+- 對照基準的單元測試（`source/.vitepress/lib/*.test.mjs`）讀 `test-fixture.mjs` 的 `SOURCE_DIR`，它是不含新文章的基準視圖。新文章的日期一定要晚於基準日（2026-11-03），否則 `posts.test.mjs` 會失敗：不在基準裡又比基準早，代表舊文章的網址被改了。
 
 ## 提交
 

@@ -1,13 +1,44 @@
-// 測試用（pagedata、cards、feeds 的 *.test.mjs）：repo 路徑、基準檔，以及讀 Hexo 最後一版產物（origin/master）的工具。
-// 測試一律讀真正的 source/（遷移完成後的 364 篇），不另外模擬：只差大小寫的標籤這類問題要讓測試失敗。
+// 測試用（pagedata、cards、feeds、posts 的 *.test.mjs）：repo 路徑、基準檔，以及讀 Hexo 最後一版產物（origin/master）的工具。
+// 測試讀真正的 source/（遷移完成後的 364 篇），不另外模擬：只差大小寫的標籤這類問題要讓測試失敗。
+// 基準之後的新文章（Hexo 基準沒有的已發布文章）不在這些對照測試裡：SOURCE_DIR 是 source/ 的「基準視圖」，
+// 舊文章與其他檔案照舊連到真正的檔案，只少了新文章；新文章由建置後的 audit 驗（scripts/audit-build.mjs 的 newPostsOf，站長 2026-11-06）。
+// posts.test.mjs 另驗被排除的每一篇都是基準日之後的新文章，舊文章不會被誤排除。
 import fs from 'node:fs'
+import os from 'node:os'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
+import { loadPosts, POSTS_DIR } from './posts.mjs'
 
 export const REPO_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../..')
-export const SOURCE_DIR = path.join(REPO_DIR, 'source')
+export const REAL_SOURCE_DIR = path.join(REPO_DIR, 'source')
 export const BASELINE_DIR = path.join(REPO_DIR, 'baseline/hexo-2026-11-03')
+/** 基準的日期（資料夾名稱）：比這天晚的文章才可能是新文章 */
+export const BASELINE_DATE = /hexo-(\d{4}-\d{2}-\d{2})$/.exec(BASELINE_DIR)[1]
+
+/** 已發布、網址不在基準 content.json 的文章（基準之後的新文章），回傳文章索引的項目 */
+export function postsAfterBaseline(srcDir = REAL_SOURCE_DIR) {
+  const base = new Set(JSON.parse(fs.readFileSync(path.join(BASELINE_DIR, 'content.json'), 'utf8')).map((x) => encodeURI('/' + x.path)))
+  return loadPosts(srcDir, { includeUnpublished: true }).filter((p) => p.published && !base.has(encodeURI(p.url)))
+}
+
+/** source/ 的基準視圖：暫存資料夾，每一項都是連回 source/ 的符號連結，_posts 只連基準有的文章（含未發布的草稿） */
+function baselineView() {
+  const skip = new Set(postsAfterBaseline().map((p) => p.file))
+  if (!skip.size) return REAL_SOURCE_DIR
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'blog-source-baseline-'))
+  for (const name of fs.readdirSync(REAL_SOURCE_DIR)) {
+    if (name !== POSTS_DIR) fs.symlinkSync(path.join(REAL_SOURCE_DIR, name), path.join(dir, name))
+  }
+  fs.mkdirSync(path.join(dir, POSTS_DIR))
+  for (const name of fs.readdirSync(path.join(REAL_SOURCE_DIR, POSTS_DIR))) {
+    if (!skip.has(name)) fs.symlinkSync(path.join(REAL_SOURCE_DIR, POSTS_DIR, name), path.join(dir, POSTS_DIR, name))
+  }
+  process.on('exit', () => fs.rmSync(dir, { recursive: true, force: true }))
+  return dir
+}
+
+export const SOURCE_DIR = baselineView()
 
 export const HEXO_REF = 'origin/master'
 
