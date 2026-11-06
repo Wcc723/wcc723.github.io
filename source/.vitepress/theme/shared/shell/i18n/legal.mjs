@@ -18,6 +18,7 @@ export const LEGAL_PAGES = {
     ja: 'https://www.casper.tw/site-policies/ja/privacy/',
     ko: 'https://www.casper.tw/site-policies/ko/privacy/',
     de: 'https://www.casper.tw/site-policies/de/privacy/',
+    es: 'https://www.casper.tw/site-policies/es/privacy/',
   },
   terms: { 'zh-tw': 'https://www.casper.tw/terms/' },
   contact: { 'zh-tw': 'https://www.casper.tw/contact/' },

@@ -13,7 +13,7 @@ export default {
     roadmap: ['en', 'ja', 'ko', 'de', 'zh-cn', 'es'],
     // 正式開放的語系。一次加一個，加的那一版就是那個語系的上線版（GSC 記註記）。
     // 列進來的語系一定要通過 C.2 的全部關卡，否則建置失敗；上線後不能拿掉（B.1）
-    locales: ['en', 'ja', 'ko', 'de'],
+    locales: ['en', 'ja', 'ko', 'de', 'es'],
     // 外語首頁文案檔（i18n/home/<code>.json）的審稿人 id（不寫真名，0008 M.1 第 8 題）。
     // native 決定 nativeReviewer: 'required' 的語系能不能蓋章；同一個 id 在 shared/shell/i18n/reviewers.json 也有時，native 要相同（I.4）
     // ja、ko、de、es 照 0010（AI 交叉審＋站長看回譯）由站長蓋章，native: false
