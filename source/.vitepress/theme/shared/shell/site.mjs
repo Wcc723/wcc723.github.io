@@ -24,10 +24,11 @@ export const AUTHOR_NAME_EN = 'Casper'
 // 分頁圖示（SEO 掃描第 5 條）：整個 www 只能有一個，部落格、外語首頁 /<code>/ 與每支工具共用這一組常數，
 // 外語首頁在搜尋結果裡顯示的也是它。Google 的網站圖示要正方形（1:1）、至少 48x48：
 // https://developers.google.com/search/docs/appearance/favicon-in-search
-// 正方形站徽還沒做（主站首頁規格 M.3：I1 之前做好），先沿用部落格現在的橫式字標，FAVICON_IS_SQUARE 為 false 時工具的 audit 每次都提醒。
+// 2026-11-06 起是小幽靈頭像（shared/brand/ghost 的 s-logo，轉成 144 × 144 PNG，另有 48 × 48 的 ghost-48.png 備用），主站首頁規格 M.3 的 I1 前置。
+// 之前是部落格的橫式字標 https://img.casper.tw/images/blog_logo.svg（檔案留著）。
 // 換檔是獨立的一版：用新的物件鍵上傳到 img.casper.tw（不覆蓋舊檔），只改這兩行，再跑 node scripts/shell-sync.mjs --write。
-export const FAVICON_URL = 'https://img.casper.tw/images/blog_logo.svg'
-export const FAVICON_IS_SQUARE = false
+export const FAVICON_URL = 'https://img.casper.tw/brand/favicon/ghost-144.png'
+export const FAVICON_IS_SQUARE = true
 
 // AdSense 發布商 ID，跟口袋工具共用同一個帳戶（線上 /ads.txt 與每頁的 loader 都公開這個值）。
 export const ADSENSE_CLIENT = 'ca-pub-8296684122088055'

@@ -173,7 +173,11 @@ export function footerModel({ locale, text, kind = 'page', currentUrl = '', site
   }
   const toLegal = (key, kindName) => {
     const l = legalLink(kindName, locale)
-    return l ? [toLocale(key, l.href, l.exact ? locale : BLOG_LOCALES[0], l.exact)] : []
+    if (!l) return []
+    const out = toLocale(key, l.href, l.exact ? locale : BLOG_LOCALES[0], l.exact)
+    // 同語言的法務頁在別的 repo（site-policies）：外語頁的連結也帶目的地的 hreflang（部落格 audit 的 L13）
+    if (l.exact && !BLOG_LOCALES.includes(locale)) out.hreflang = l.hreflang
+    return [out]
   }
   const site = FOOTER_SITE_NAV.other.flatMap((n) => {
     if (n.siteHome) {

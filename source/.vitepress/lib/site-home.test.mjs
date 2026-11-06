@@ -175,9 +175,13 @@ test('G1 到 G9：各一個不過的案例', () => {
   assert.deepEqual(gates(homeGateProblems('de', gateCtx({ readHome: (c) => (c === 'de' ? readHomeMessages('de') : FILES[c]) }))), ['G2'])
   // G3：外殼字串沒審
   assert.deepEqual(gates(homeGateProblems('ja', gateCtx({ shellReview: shellReviewFor(['zh-tw', 'en']) }))), ['G3'])
-  // G4：ja 要母語審稿人；蓋章的人在設定裡是 native: false
+  // G4：審稿人的 native 照登錄表 nativeReviewer
   const cfg = config({ shell: 'shared', home: { locales: ['en', 'ja'], reviewers: { ...REVIEWERS, ja: [{ id: 'yuki', native: false }] } } })
-  assert.ok(homeGateProblems('ja', gateCtx({ config: cfg })).some((m) => /G4 .*ja 要母語審稿人，yuki 是 native: false/.test(m)))
+  // 0010（2026-11-06）起 ja 是 ai-cross：native: false 的章也過 G4；要母語審稿人的只剩 zh-cn
+  assert.ok(!homeGateProblems('ja', gateCtx({ config: cfg })).some((m) => /G4/.test(m)))
+  const cfgCn = config({ shell: 'shared', home: { locales: ['en', 'zh-cn'], reviewers: { ...REVIEWERS, 'zh-cn': [{ id: 'yuki', native: false }] } } })
+  const readCn = (c) => (c === 'zh-cn' ? FILES.ja : FILES[c])
+  assert.ok(homeGateProblems('zh-cn', gateCtx({ config: cfgCn, readHome: readCn })).some((m) => /G4 .*zh-cn 要母語審稿人，yuki 是 native: false/.test(m)))
   // G5：沒有同語言的隱私權頁；ja 的外部送信沒有網址也沒有豁免
   const noEnPrivacy = { ...LEGAL_PAGES, privacy: { 'zh-tw': LEGAL_PAGES.privacy['zh-tw'] } }
   assert.deepEqual(gates(homeGateProblems('en', gateCtx({ legal: { pages: noEnPrivacy, decisions: LEGAL_DECISIONS } }))), ['G5'])

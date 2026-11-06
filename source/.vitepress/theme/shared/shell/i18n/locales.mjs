@@ -21,7 +21,9 @@
 //   quotes          CSS quotes（外層開、外層關、內層開、內層關），也拿來檢查訊息檔的引號
 //   hyphenate       是否開 hyphens:auto
 //   adsense         這個語言在 AdSense 支援清單上；false 的語系每頁都不載 loader
-//   nativeReviewer  'required'：審稿人一定要是母語者；'optional'：站長可以審
+//   nativeReviewer  'required'：審稿人一定要是母語者；'optional'：站長可以審；
+//                   'ai-cross'（0010）：沒有母語審稿人，AI 翻譯、另一個模型交叉審，站長看過中文回譯後蓋章（native: false 可以蓋）。
+//                   'ai-cross' 的章不算母語審過：署名列不顯示 byline.reviewed
 //   legal           法務旗標：'required'、'disclose' 要有網址或站長豁免；'confirm' 要有站長的確認紀錄（legal.mjs）
 
 // 陣列順序就是 hreflang、語言選單、og:locale:alternate 的順序；新語系加在最後
@@ -45,23 +47,23 @@ export const LOCALES = [
     script: 'Jpan', fontToken: '--cs-font-jpan', cssLang: ['ja'], brand: 'en', titleSeparator: '｜',
     titleBudget: { unit: 'width', max: 60 }, descBudget: { unit: 'chars', min: 80, max: 110 },
     dateStyle: 'medium', quotes: ['「', '」', '『', '』'], hyphenate: false, adsense: true,
-    nativeReviewer: 'required', legal: { privacy: 'required', externalTransmission: 'disclose' } },
+    nativeReviewer: 'ai-cross', legal: { privacy: 'required', externalTransmission: 'disclose' } },
   { code: 'ko', htmlLang: 'ko', hreflang: 'ko', ogLocale: 'ko_KR', intl: 'ko-KR', autonym: '한국어', dir: 'ltr',
     script: 'Kore', fontToken: '--cs-font-kore', cssLang: ['ko'], brand: 'en', titleSeparator: ' | ',
     titleBudget: { unit: 'width', max: 60 }, descBudget: { unit: 'chars', min: 80, max: 110 }, // ko 的預算是推論，比照中日
     dateStyle: 'medium', quotes: ['“', '”', '‘', '’'], hyphenate: false, adsense: true,
-    nativeReviewer: 'required', legal: { privacy: 'required', pipa: 'confirm' } },
+    nativeReviewer: 'ai-cross', legal: { privacy: 'required', pipa: 'confirm' } },
   { code: 'de', htmlLang: 'de', hreflang: 'de', ogLocale: 'de_DE', intl: 'de-DE', autonym: 'Deutsch', dir: 'ltr',
     script: 'Latn', fontToken: '--cs-font-latn', cssLang: ['de'], brand: 'en', titleSeparator: ' | ',
     titleBudget: { unit: 'chars', max: 60 }, descBudget: { unit: 'chars', min: 120, max: 160 },
     dateStyle: 'medium', quotes: ['„', '“', '‚', '‘'], hyphenate: true, adsense: true,
-    nativeReviewer: 'required', legal: { privacy: 'required', impressum: 'required' } },
+    nativeReviewer: 'ai-cross', legal: { privacy: 'required', impressum: 'required' } },
   // es：intl 'es-ES' 代表數字與日期照西班牙的格式；文案用中性西文。要依拉美地區格式化的工具在自己的設定覆寫，不改這裡
   { code: 'es', htmlLang: 'es', hreflang: 'es', ogLocale: 'es_ES', intl: 'es-ES', autonym: 'Español', dir: 'ltr',
     script: 'Latn', fontToken: '--cs-font-latn', cssLang: ['es'], brand: 'en', titleSeparator: ' | ',
     titleBudget: { unit: 'chars', max: 60 }, descBudget: { unit: 'chars', min: 120, max: 160 },
     dateStyle: 'medium', quotes: ['«', '»', '“', '”'], hyphenate: true, adsense: true,
-    nativeReviewer: 'required', legal: { privacy: 'required' } },
+    nativeReviewer: 'ai-cross', legal: { privacy: 'required' } },
 ]
 export const LOCALE = Object.fromEntries(LOCALES.map((l) => [l.code, l]))
 

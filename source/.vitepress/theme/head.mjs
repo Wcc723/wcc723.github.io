@@ -3,7 +3,7 @@
 //
 // 字型：中文用讀者電腦上的字（Noto Sans TC、蘋方、微軟正黑體），Nunito 和 JetBrains Mono 的拉丁子集自架在
 // theme/fonts/，由主題 CSS 的 @font-face 載入（font-display: swap），所以這裡沒有任何外部字型 CSS。
-import { SITE_TITLE_LEGACY } from './shared/shell/site.mjs'
+import { FAVICON_URL, SITE_TITLE_LEGACY } from './shared/shell/site.mjs'
 
 // 404 頁：VitePress 內建的 notFoundPageData 是 title「404」、description「Not Found」，換成頁面上的中文。
 // lib/seo.mjs 的 transformHtml 改 404.html 的 SSR 輸出；瀏覽器端 VitePress 會再用內建值改一次 head，
@@ -21,8 +21,8 @@ export const THEME_STORAGE_KEY = 'casper-theme'
 export const THEME_SCRIPT =
   "(function(){try{var m=localStorage.getItem('casper-theme')||'light';if(m==='dark')document.documentElement.classList.add('dark');}catch(e){}})();"
 
-// favicon 沿用 Hexo 版的站徽；小幽靈的 16px 簡化版還沒做（shared/brand/ghost/README.md）
-export const FAVICON = 'https://img.casper.tw/images/blog_logo.svg'
+// favicon 跟工具共用 workspace shared/shell/site.mjs 的 FAVICON_URL（整個 www 只能有一個）；2026-11-06 起是小幽靈頭像
+export const FAVICON = FAVICON_URL
 
 export const themeHead = [
   ['script', {}, THEME_SCRIPT],

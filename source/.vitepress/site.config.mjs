@@ -16,8 +16,13 @@ export default {
     locales: [],
     // 外語首頁文案檔（i18n/home/<code>.json）的審稿人 id（不寫真名，0008 M.1 第 8 題）。
     // native 決定 nativeReviewer: 'required' 的語系能不能蓋章；同一個 id 在 shared/shell/i18n/reviewers.json 也有時，native 要相同（I.4）
+    // ja、ko、de、es 照 0010（AI 交叉審＋站長看回譯）由站長蓋章，native: false
     reviewers: {
       en: [{ id: 'casper', native: false }],
+      ja: [{ id: 'casper', native: false }],
+      ko: [{ id: 'casper', native: false }],
+      de: [{ id: 'casper', native: false }],
+      es: [{ id: 'casper', native: false }],
     },
     // 選填：事實性文字（en 的 $meta.factualKeys）在某語系過期時的暫時豁免（G9），格式照範本的 i18nWaivers：
     // [{ page: 'home', locale: 'ja', keys: ['about.body'], until: 'YYYY-MM-DD' }]，until 最多是今天加 30 天。
