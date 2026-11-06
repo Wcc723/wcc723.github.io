@@ -9,7 +9,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import matter from 'gray-matter'
 import { createTitle, mergeHead, escapeHtml as vpEscape } from 'vitepress/dist/client/shared.js'
-import { SITE_TITLE_LEGACY, ADSENSE_CLIENT, countAdsLoaders, shouldLoadAds } from '../theme/shared/shell/site.mjs'
+import { SITE_NAME, SITE_NAME_EN, SITE_NAME_LEGACY, SITE_TITLE_LEGACY, ADSENSE_CLIENT, countAdsLoaders, shouldLoadAds } from '../theme/shared/shell/site.mjs'
 import { categoryDir, tagSlug } from './posts.mjs'
 import { NOT_FOUND_DESCRIPTION, NOT_FOUND_TITLE } from '../theme/head.mjs'
 import {
@@ -28,7 +28,10 @@ import {
   dateOnly,
   jsonLdString,
   PERSON_ID,
+  WEBSITE_ID,
   HOME_DESCRIPTION,
+  HOME_TITLE,
+  jsonLdFor,
 } from './seo.mjs'
 
 const here = path.dirname(fileURLToPath(import.meta.url))
@@ -262,6 +265,9 @@ function expectedReason(field, r) {
   const { b, got, pageData } = r
   const ours = got[field]
   const base = b[field]
+  // P3 改名（決策 0005）：首頁 title 與 og:title 換成 HOME_TITLE，全站 og:site_name 換成新站名；其他頁的 title 尾巴照舊
+  if ((field === 'title' || field === 'ogTitle') && b.url === '/' && base === SITE_TITLE_LEGACY && ours === HOME_TITLE) return 'P3 首頁 title 改名'
+  if (field === 'ogSiteName' && base === SITE_TITLE_LEGACY && ours === SITE_NAME) return 'P3 og:site_name 改名'
   if ((field === 'canonical' || field === 'ogUrl') && b.url.startsWith('/categories/CSS/') && ours === base.replace('/categories/css/', '/categories/CSS/')) {
     return '/categories/CSS/ 改大寫（站長 2026-11-03）'
   }
@@ -311,10 +317,12 @@ test('基準 657 頁：title、description、canonical、og、published／modifi
   assert.deepEqual(unexpected.slice(0, 20), [], `非預期差異 ${unexpected.length} 筆`)
 })
 
-test('364 篇文章：title、description、canonical、og:url、og:title、og:site_name、og:type、og:image、published_time 跟基準逐字相同', (t) => {
+test('364 篇文章：title、description、canonical、og:url、og:title、og:type、og:image、published_time 跟基準逐字相同，og:site_name 是新站名', (t) => {
   const postResults = results.filter((r) => r.b.type === 'post')
   assert.equal(postResults.length, 364)
-  const fields = ['title', 'description', 'canonical', 'ogUrl', 'ogTitle', 'ogSiteName', 'ogType', 'ogImage', 'ogDescription', 'publishedTime']
+  // title 尾巴照舊是 SITE_TITLE_LEGACY（P3 不改文章 title，計畫第 682 行）；og:site_name 是 P3 的新站名
+  for (const r of postResults) assert.equal(r.got.ogSiteName, SITE_NAME, r.b.url)
+  const fields = ['title', 'description', 'canonical', 'ogUrl', 'ogTitle', 'ogType', 'ogImage', 'ogDescription', 'publishedTime']
   for (const f of fields) {
     const same = postResults.filter((r) => r.got[f] === r.b[f]).length
     t.diagnostic(`文章 ${f}: ${same}/364`)
@@ -324,10 +332,10 @@ test('364 篇文章：title、description、canonical、og:url、og:title、og:s
   t.diagnostic(`文章 modifiedTime 與基準相同 ${modSame}/364（基準多半是作者電腦的檔案時間；只有 install-nvm 有 updated）`)
 })
 
-test('每頁沒有重複的 head 欄位，og:site_name 全站都是舊站名，每頁都有 google-adsense-account', () => {
+test('每頁沒有重複的 head 欄位，og:site_name 全站都是新站名（P3），每頁都有 google-adsense-account', () => {
   for (const r of results) {
     assert.deepEqual(r.got.dupes, [], r.b.url)
-    assert.equal(r.got.ogSiteName, SITE, r.b.url)
+    assert.equal(r.got.ogSiteName, SITE_NAME, r.b.url)
     assert.equal(r.got.adsMeta, ADSENSE_CLIENT, r.b.url)
   }
 })
@@ -356,9 +364,11 @@ test('canonical 與 og:url：hexschool-traning 不帶副檔名、/categories/CSS
   assert.equal(r('/sass/2014/05/02/sass-3.3/').canonical, 'https://www.casper.tw/sass/2014/05/02/sass-3.3/')
 })
 
-test('title 公式：首頁與 /page/N/ 只有站名；分類、標籤、封存逐字照基準', () => {
+test('title 公式：首頁是 HOME_TITLE（P3），/page/N/ 只有舊站名；分類、標籤、封存逐字照基準', () => {
   const r = (url) => results.find((x) => x.b.url === url)
-  assert.equal(r('/').got.title, SITE)
+  assert.equal(HOME_TITLE, '卡斯伯工具｜卡斯伯的前端筆記與線上小工具')
+  assert.equal(r('/').got.title, HOME_TITLE)
+  assert.equal(r('/').got.ogTitle, HOME_TITLE)
   assert.equal(r('/').pageData.titleTemplate, false)
   assert.equal(r('/page/2/').got.title, SITE)
   assert.equal(r('/categories/CSS/').got.title, `分類：css | ${SITE}`)
@@ -385,7 +395,7 @@ test('description：列表公式、首頁 tagline、/tags/ 沒有 description（
   for (const x of results) assert.notEqual(x.got.description, 'A VitePress site', x.b.url)
 })
 
-test('JSON-LD：文章 BlogPosting＋BreadcrumbList＋Person，列表 CollectionPage，about WebPage，首頁沒有', () => {
+test('JSON-LD：文章 BlogPosting＋BreadcrumbList＋Person，列表 CollectionPage，/about/ ProfilePage，hexschool-traning WebPage，首頁 WebSite＋Person', () => {
   const byType = {}
   for (const r of results) {
     const key = `${r.b.type}: ${r.got.jsonLdTypes.join(' | ') || '（無）'}`
@@ -393,14 +403,29 @@ test('JSON-LD：文章 BlogPosting＋BreadcrumbList＋Person，列表 Collection
   }
   assert.deepEqual(byType, {
     'post: BlogPosting,BreadcrumbList,Person': 364,
-    'home: （無）': 1,
+    'home: WebSite,Person': 1,
     'home-page: CollectionPage,BreadcrumbList': 36,
     'category: CollectionPage,BreadcrumbList': 53,
     'tag: CollectionPage,BreadcrumbList': 119,
     'archive: CollectionPage,BreadcrumbList': 81,
     'tags-index: CollectionPage,BreadcrumbList': 1,
-    'about: WebPage,BreadcrumbList': 2,
+    'about: ProfilePage,BreadcrumbList,Person': 1,
+    'about: WebPage,BreadcrumbList': 1,
   })
+  // 首頁（P3，決策 0005）：WebSite 的 name 是新站名，alternateName 依序英文站名、舊站名、網域，publisher 指 Person
+  const [site, homePerson] = results.find((r) => r.b.url === '/').got.jsonLd[0]
+  assert.deepEqual(site, {
+    '@context': 'https://schema.org', '@type': 'WebSite', '@id': WEBSITE_ID, url: 'https://www.casper.tw/',
+    name: SITE_NAME, alternateName: [SITE_NAME_EN, SITE_NAME_LEGACY, 'casper.tw'], description: HOME_DESCRIPTION, inLanguage: 'zh-TW', publisher: { '@id': PERSON_ID },
+  })
+  assert.equal(homePerson['@id'], PERSON_ID)
+  // /about/ 是 ProfilePage，mainEntity 指 Person；hexschool-traning 照舊 WebPage
+  const [profile, , aboutPerson] = results.find((r) => r.b.url === '/about/').got.jsonLd[0]
+  assert.equal(profile['@type'], 'ProfilePage')
+  assert.deepEqual(profile.mainEntity, { '@id': PERSON_ID })
+  assert.equal(aboutPerson['@id'], PERSON_ID)
+  assert.equal(results.find((r) => r.b.url === '/about/hexschool-traning.html').got.jsonLd[0][0]['@type'], 'WebPage')
+  assert.deepEqual(jsonLdFor({ type: 'not-found', fm: {}, canonical: null }), [])
   const post = results.find((r) => r.b.url === '/development/2022/01/10/install-nvm/').got.jsonLd[0]
   const [article, crumbs, person] = post
   assert.equal(article.headline, 'nvm 安裝教學：Windows／Mac 設定 Node.js 版本管理與常用指令')
@@ -410,7 +435,7 @@ test('JSON-LD：文章 BlogPosting＋BreadcrumbList＋Person，列表 Collection
   assert.deepEqual(article.author, { '@id': PERSON_ID })
   assert.deepEqual(article.publisher, { '@id': PERSON_ID })
   assert.deepEqual(article.image, ['https://firebasestorage.googleapis.com/v0/b/casper-de5d5.appspot.com/o/images%2Fblog%2FNVM.jpg?alt=media&token=a38ca452-71d3-4c5c-bcbd-6dc77e9d50e8'])
-  assert.deepEqual(person, { '@context': 'https://schema.org', '@type': 'Person', '@id': 'https://www.casper.tw/about/#person', name: '卡斯伯', url: 'https://www.casper.tw/about/' })
+  assert.deepEqual(person, { '@context': 'https://schema.org', '@type': 'Person', '@id': 'https://www.casper.tw/about/#person', name: '卡斯伯', url: 'https://www.casper.tw/about/', sameAs: ['https://www.facebook.com/WccCasper', 'https://github.com/wcc723'] })
   assert.deepEqual(crumbs.itemListElement.map((i) => [i.position, i.name, i.item]), [
     [1, '首頁', 'https://www.casper.tw/'],
     [2, '文章', 'https://www.casper.tw/categories/'],

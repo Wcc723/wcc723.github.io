@@ -13,7 +13,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import matter from 'gray-matter'
-import { SITE_TITLE_LEGACY, adsenseHead, shouldLoadAds, stripAdsLoader } from '../theme/shared/shell/site.mjs'
+import { SITE_NAME, SITE_NAME_EN, SITE_NAME_LEGACY, SITE_TITLE_LEGACY, adsenseHead, shouldLoadAds, stripAdsLoader } from '../theme/shared/shell/site.mjs'
 import { SITE_URL, toAbsolute } from './posts.mjs'
 import { pageTypeOf } from './pagetype.mjs'
 import { NOT_FOUND_DESCRIPTION, NOT_FOUND_TITLE } from '../theme/head.mjs'
@@ -36,6 +36,8 @@ export const OG_LOCALE = 'zh_TW'
 export const ARTICLE_AUTHOR = 'Wang Casper'
 /** 首頁與 /page/N/ 的 description：Hexo 的 config.description 是空的，主題改用 theme.tagline */
 export const HOME_DESCRIPTION = '前端，沒有極限'
+/** 首頁 / 的 title 與 og:title（P3 改名，docs/decisions/0005-site-name.md）。/page/N/ 與其他頁的 title 尾巴照舊是 SITE_TITLE_LEGACY */
+export const HOME_TITLE = `${SITE_NAME}｜卡斯伯的前端筆記與線上小工具`
 export const DEMO_CSS_BASE = 'https://img.casper.tw/demoFile/css/'
 
 /** 外語首頁的分享圖：跟範本同一張（主站首頁規格 D.2）；換 1200 × 630 分享圖是範本已列的待辦 */
@@ -47,7 +49,8 @@ export const EMPTY_HOME_PLAN = Object.freeze({ stage: 'live', published: [], pag
 
 /** 全站唯一的作者與出品者（計畫「SEO」的結構化資料）。P3 改成 ProfilePage 時也指向這個 @id */
 export const PERSON_ID = `${SITE_URL}/about/#person`
-export const PERSON = { '@type': 'Person', '@id': PERSON_ID, name: '卡斯伯', url: `${SITE_URL}/about/` }
+// sameAs：頁尾「卡斯伯的其他地方」的 Facebook 與 GitHub（shared/shell/nav.mjs，P3 加，計畫「首頁」的結構化資料）
+export const PERSON = { '@type': 'Person', '@id': PERSON_ID, name: '卡斯伯', url: `${SITE_URL}/about/`, sameAs: ['https://www.facebook.com/WccCasper', 'https://github.com/wcc723'] }
 
 // ---------------------------------------------------------------------------
 // 全站 head（config.mts 的 head）
@@ -87,7 +90,8 @@ export const GA4_SHARED_SNIPPET = ga4HeadHtml({ contentGroup: 'blog' }).replace(
 export function siteHeadFor(shell) {
   if (shell !== 'shared' && shell !== 'legacy') throw new Error(`siteHeadFor：shell 要是 'shared' 或 'legacy'，收到 ${shell}`)
   return [
-    ['meta', { property: 'og:site_name', content: SITE_TITLE_LEGACY }],
+    // P3 起全站 og:site_name 是新站名；外語首頁由 siteHomeHtml 換成 siteName(code)
+    ['meta', { property: 'og:site_name', content: SITE_NAME }],
     ['meta', { property: 'og:locale', content: OG_LOCALE }],
     ['meta', { property: 'article:author', content: ARTICLE_AUTHOR }],
     ['meta', { name: 'twitter:card', content: 'summary' }],
@@ -254,7 +258,8 @@ export function pageSeo({ type, url, fm = {}, inferredTitle = '', content = '' }
     displayTitle = String(fm.title || inferredTitle || fm.heading || '')
     ownTitle = Boolean(displayTitle)
   }
-  const title = displayTitle ? `${displayTitle} | ${SITE_TITLE_LEGACY}` : SITE_TITLE_LEGACY
+  // 首頁 / 的 title 是 HOME_TITLE（P3）；其他沒有頁名的頁（/page/N/）照舊是 SITE_TITLE_LEGACY，有頁名的接舊的尾巴
+  const title = type === 'home' ? HOME_TITLE : displayTitle ? `${displayTitle} | ${SITE_TITLE_LEGACY}` : SITE_TITLE_LEGACY
 
   // description 與 og:description
   const fmDescription = fm.description ? String(fm.description) : ''
@@ -314,7 +319,7 @@ export function pageSeo({ type, url, fm = {}, inferredTitle = '', content = '' }
     description,
     canonical,
     ogType: type === 'post' ? 'article' : 'website',
-    ogTitle: ownTitle ? displayTitle : SITE_TITLE_LEGACY,
+    ogTitle: ownTitle ? displayTitle : type === 'home' ? HOME_TITLE : SITE_TITLE_LEGACY,
     ogUrl: canonical,
     ogDescription,
     ogImage,
@@ -360,15 +365,31 @@ export function breadcrumbList(crumbs, canonical) {
 /**
  * / 的 JSON-LD（P2 是空的，P3 加 WebSite）。外語首頁的關卡 G6 用它確認 WebPage 的 isPartOf 指得到（主站首頁規格 D.4）
  */
-export const homeJsonLd = () => jsonLdFor({ type: 'home', url: '/', fm: {}, canonical: `${SITE_URL}/`, displayTitle: SITE_TITLE_LEGACY, description: HOME_DESCRIPTION })
+export const homeJsonLd = () => jsonLdFor({ type: 'home', url: '/', fm: {}, canonical: `${SITE_URL}/`, displayTitle: HOME_TITLE, description: HOME_DESCRIPTION })
 
 /**
  * 一頁的 JSON-LD 物件陣列，放在同一個 <script> 的頂層陣列裡（同一份資料，author 的 @id 指得到 Person）。
  * 文章：BlogPosting ＋ BreadcrumbList ＋ Person；列表、分類、標籤、索引頁：CollectionPage ＋ BreadcrumbList；
- * about 與法務頁：WebPage ＋ BreadcrumbList；首頁這一版不加，404 不輸出。全站不做 FAQPage。
+ * about 與法務頁：WebPage ＋ BreadcrumbList；/about/ 是 ProfilePage ＋ BreadcrumbList ＋ Person（P3）；
+ * 首頁：WebSite ＋ Person（P3）；404 不輸出。全站不做 FAQPage。
  */
 export function jsonLdFor({ type, fm, canonical, displayTitle, description, ogImage, date, updated }) {
-  if (type === 'home' || type === 'not-found') return []
+  if (type === 'not-found') return []
+  if (type === 'home') {
+    // P3（計畫「首頁」的結構化資料、docs/decisions/0005-site-name.md）：name 是新站名，alternateName 依序是英文站名、舊站名、網域；
+    // publisher 指向卡斯伯本人。外語首頁的 WebPage 用 isPartOf 指向這個 @id（主站首頁規格 D.4，G6）
+    return [{
+      '@context': CONTEXT,
+      '@type': 'WebSite',
+      '@id': WEBSITE_ID,
+      url: `${SITE_URL}/`,
+      name: SITE_NAME,
+      alternateName: [SITE_NAME_EN, SITE_NAME_LEGACY, 'casper.tw'],
+      ...(description ? { description } : {}),
+      inLanguage: 'zh-TW',
+      publisher: { '@id': PERSON_ID },
+    }, { '@context': CONTEXT, ...PERSON }]
+  }
   if (type === 'site-home') {
     // 外語首頁：WebPage 一筆，isPartOf 指 / 的 WebSite（P3 加），作者與出品者指 Person（D.4）
     return [{
@@ -399,7 +420,9 @@ export function jsonLdFor({ type, fm, canonical, displayTitle, description, ogIm
     }
     return [article, crumbs, { '@context': CONTEXT, ...PERSON }].filter(Boolean)
   }
-  const pageType = type === 'about' || type === 'legal' ? 'WebPage' : 'CollectionPage'
+  // /about/ 是全站的署名頁（P3）：ProfilePage，mainEntity 是 Person；hexschool-traning 照舊 WebPage
+  const profile = type === 'about' && canonical === `${SITE_URL}/about/`
+  const pageType = profile ? 'ProfilePage' : type === 'about' || type === 'legal' ? 'WebPage' : 'CollectionPage'
   const lastCrumb = Array.isArray(fm.breadcrumbs) && fm.breadcrumbs.length ? fm.breadcrumbs.at(-1).name : ''
   const page = {
     '@context': CONTEXT,
@@ -410,8 +433,9 @@ export function jsonLdFor({ type, fm, canonical, displayTitle, description, ogIm
     ...(description ? { description } : {}),
     inLanguage: 'zh-TW',
     ...(crumbs ? { breadcrumb: { '@id': crumbs['@id'] } } : {}),
+    ...(profile ? { mainEntity: { '@id': PERSON_ID } } : {}),
   }
-  return [page, crumbs].filter(Boolean)
+  return [page, crumbs, profile ? { '@context': CONTEXT, ...PERSON } : null].filter(Boolean)
 }
 
 // ---------------------------------------------------------------------------
@@ -546,7 +570,8 @@ export function seoPageData(pageData, ctx = {}, { plan = EMPTY_HOME_PLAN } = {})
   if (seo.pageTitle) {
     pageData.title = seo.pageTitle
   } else {
-    pageData.title = SITE_TITLE_LEGACY
+    // 首頁是 HOME_TITLE（P3），/page/N/ 照舊 SITE_TITLE_LEGACY
+    pageData.title = seo.title
     pageData.titleTemplate = false
   }
   pageData.description = seo.description

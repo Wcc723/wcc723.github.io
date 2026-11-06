@@ -14,14 +14,14 @@ import { fileURLToPath } from 'node:url'
 import {
   SITE, fileToUrl, urlAliases, pageType, extractPage, articleOf, hexoCards, postLinks, mainOf, demoCssLinks,
 } from '../lib/extract-page.mjs'
-import { SITE_TITLE_LEGACY, ADSENSE_CLIENT, ADSENSE_LOADER_SRC, shouldLoadAds } from '../../source/.vitepress/theme/shared/shell/site.mjs'
+import { SITE_NAME, SITE_NAME_EN, SITE_NAME_LEGACY, ADSENSE_CLIENT, ADSENSE_LOADER_SRC, shouldLoadAds } from '../../source/.vitepress/theme/shared/shell/site.mjs'
 import { pageTypeOf } from '../../source/.vitepress/lib/pagetype.mjs'
 import { NOT_FOUND_TITLE, NOT_FOUND_DESCRIPTION } from '../../source/.vitepress/theme/head.mjs'
 import { toolCardArt, toolFeatureArt } from '../../source/.vitepress/theme/ghost.mjs'
-import { expectedSitemap, expectedContentEntry, NEW_PAGES, CATEGORIES_FILE } from '../audit-build.mjs'
+import { expectedSitemap, expectedContentEntry, NEW_PAGES, CATEGORIES_FILE, ROBOTS_P3_LINE } from '../audit-build.mjs'
 import { siteHomeTitle, languageTargets, formatHomeCopy, readHomeMessages } from '../../source/.vitepress/lib/site-home.mjs'
 import { siteHomeView, notFoundIntl, textFor } from '../../source/.vitepress/lib/site-shell.mjs'
-import { WEBSITE_ID, clusterHead, siteHomeHead } from '../../source/.vitepress/lib/seo.mjs'
+import { HOME_DESCRIPTION, HOME_TITLE, PERSON_ID, WEBSITE_ID, clusterHead, siteHomeHead } from '../../source/.vitepress/lib/seo.mjs'
 import { getLocale } from '../../source/.vitepress/theme/shared/shell/i18n/locales.mjs'
 import { LEGAL_DECISIONS, LEGAL_PAGES } from '../../source/.vitepress/theme/shared/shell/i18n/legal.mjs'
 import { siteHomeUrl } from '../../source/.vitepress/theme/shared/shell/i18n/urls.mjs'
@@ -98,8 +98,10 @@ function jsonLd(type, extra = {}) {
   return `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': nodes })}</script>`
 }
 
-/** P3 在 / 加的 WebSite（I1、multi 世界的首頁用；name 照 M.1 第 1 題的建議） */
-export const HOME_WEBSITE_LD = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', '@id': WEBSITE_ID, url: `${SITE}/`, name: '卡斯伯工具' })}</script>`
+/** P3 在 / 加的 WebSite（決策 0005：name 新站名，alternateName 英文站名、舊站名、網域，publisher 指 Person；外語首頁的 isPartOf 指它） */
+export const HOME_WEBSITE_LD = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', '@id': WEBSITE_ID, url: `${SITE}/`, name: SITE_NAME, alternateName: [SITE_NAME_EN, SITE_NAME_LEGACY, 'casper.tw'], description: HOME_DESCRIPTION, inLanguage: 'zh-TW', publisher: { '@id': PERSON_ID } })}</script>`
+/** P3 在 / 與 /about/ 的 Person */
+export const PERSON_LD = `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'Person', '@id': PERSON_ID, name: '卡斯伯', url: `${SITE}/about/`, sameAs: ['https://www.facebook.com/WccCasper', 'https://github.com/wcc723'] })}</script>`
 
 /** 一頁 VitePress 風格的 HTML */
 export function builtHtml({ file, title, description, canonical, robots, published, modified, ldExtra, main, adsFalse = false, demoCss = [], tags = [], chrome = LEGACY_CHROME, headTail = '' }) {
@@ -116,7 +118,7 @@ export function builtHtml({ file, title, description, canonical, robots, publish
     loader ? `<script async src="${ADSENSE_LOADER_SRC}" crossorigin="anonymous"></script>` : '',
     canonical ? `<link rel="canonical" href="${esc(canonical)}">` : '',
     canonical ? `<meta property="og:url" content="${esc(canonical)}">` : '',
-    `<meta property="og:site_name" content="${SITE_TITLE_LEGACY}">`,
+    `<meta property="og:site_name" content="${esc(SITE_NAME)}">`,
     published ? `<meta property="article:published_time" content="${published}">` : '',
     modified ? `<meta property="article:modified_time" content="${modified}">` : '',
     robots ? `<meta name="robots" content="${robots}">` : '',
@@ -137,10 +139,10 @@ function pageShell({ lang, head, rootClass, header, main, footer }) {
   return `<!DOCTYPE html>\n<html lang="${lang}" dir="ltr">\n<head>\n${head}\n</head>\n<body><div id="app"><!--[--><div class="${rootClass}" data-v-7a1b2c3d><a class="skip-link" href="#main">跳到主要內容</a>${header}<main id="main" class="site-main" tabindex="-1" data-v-7a1b2c3d>${main}</main>${footer}</div><!--]--></div></body>\n</html>\n`
 }
 
-/** P1、P2 的部落格頁首頁尾（theme/components/SiteHeader.vue、SiteFooter.vue 的簡化版） */
+/** P1、P2 的部落格頁首頁尾（theme/components/SiteHeader.vue、SiteFooter.vue 的簡化版；站名照 site.mjs，P3 起是新站名） */
 export const LEGACY_CHROME = {
-  header: () => '<header class="site-header"><a href="/">卡斯伯 Blog</a><a href="/categories/">文章</a></header>',
-  footer: () => '<footer class="site-footer"><a href="/privacy/">隱私權政策</a></footer>',
+  header: () => `<header class="site-header"><a href="/"><span class="brand__name">${esc(SITE_NAME)}</span><span class="brand__en en">${esc(SITE_NAME_EN)}</span></a><a href="/categories/">文章</a></header>`,
+  footer: () => `<footer class="site-footer"><a href="/privacy/">隱私權政策</a><p class="site-footer__copy">© 卡斯伯，<a href="/about/">${esc(SITE_NAME)}</a></p></footer>`,
 }
 
 // --- S、I1 的共用頁首頁尾（theme/shared/shell/SiteHeader.vue、SiteFooter.vue、LanguageMenu.vue 的 DOM） ---------
@@ -207,7 +209,7 @@ function sharedChrome({ plan, index, legal }) {
     }
     const menu = type === 'not-found' ? '' : languageMenuHtml(languageTargets({ pageType: type, canonical: urlOf(file), plan }), 'zh-tw')
     const tools = index.tools.length ? `<a href="${SITE}/#tools">工具</a>` : ''
-    return `<header class="cs-hdr"><div class="cs-hdr__in"><a class="cs-hdr__brand" href="${SITE}/"><img class="cs-hdr__logo" src="https://img.casper.tw/brand/ghost/s-logo.webp" width="36" height="36" alt="" decoding="async"><span class="cs-hdr__name">卡斯伯 Blog</span></a><nav class="cs-hdr__nav" aria-label="主選單">${tools}<a href="${SITE}/categories/">文章</a><a href="${SITE}/about/">關於</a></nav><div class="cs-hdr__tools">${menu}</div></div></header>`
+    return `<header class="cs-hdr"><div class="cs-hdr__in"><a class="cs-hdr__brand" href="${SITE}/"><img class="cs-hdr__logo" src="https://img.casper.tw/brand/ghost/s-logo.webp" width="36" height="36" alt="" decoding="async"><span class="cs-hdr__name">${esc(SITE_NAME)}</span><span class="cs-hdr__en" lang="en" data-foreign>${esc(SITE_NAME_EN)}</span></a><nav class="cs-hdr__nav" aria-label="主選單">${tools}<a href="${SITE}/categories/">文章</a><a href="${SITE}/about/">關於</a></nav><div class="cs-hdr__tools">${menu}</div></div></header>`
   }
   const footer = (file) => {
     const type = pageTypeOf(file.replace(/\.html$/, '.md'))
@@ -217,7 +219,7 @@ function sharedChrome({ plan, index, legal }) {
     const langs = type === 'not-found' ? [] : languageTargets({ pageType: type, canonical: type === 'site-home' ? siteHomeUrl(code) : urlOf(file), plan })
     const langRow = langs.length > 1 ? `<nav class="cs-ftr__group cs-ftr__langs" aria-labelledby="cs-ftr-lang"><p id="cs-ftr-lang" class="cs-ftr__h">${esc(t('footer.languages'))}</p>${languageMenuHtml(langs, code, 'list')}</nav>` : ''
     if (type !== 'site-home') {
-      return `<footer class="cs-ftr"><div class="cs-ftr__in"><div class="cs-ftr__top"><div class="cs-ftr__groups">${tools}<nav class="cs-ftr__group cs-ftr__group--posts" aria-label="文章"><h2 class="cs-ftr__h">文章</h2><ul class="cs-ftr__links"><li><a href="${SITE}/">最新文章</a></li><li><a href="${SITE}/privacy/">隱私權政策</a></li></ul></nav></div></div>${langRow}<div class="cs-ftr__bottom"><p class="cs-ftr__copy">© 卡斯伯，<a href="${SITE}/about/">卡斯伯 Blog</a></p></div></div></footer>`
+      return `<footer class="cs-ftr"><div class="cs-ftr__in"><div class="cs-ftr__top"><div class="cs-ftr__groups">${tools}<nav class="cs-ftr__group cs-ftr__group--posts" aria-label="文章"><h2 class="cs-ftr__h">文章</h2><ul class="cs-ftr__links"><li><a href="${SITE}/">最新文章</a></li><li><a href="${SITE}/privacy/">隱私權政策</a></li></ul></nav></div></div>${langRow}<div class="cs-ftr__bottom"><p class="cs-ftr__copy">© 卡斯伯，<a href="${SITE}/about/">${esc(SITE_NAME)}</a></p></div></div></footer>`
     }
     const privacy = legal.pages.privacy[code]
     // 登錄表有旗標、而且有網址的法務頁（nav.mjs 的 FOOTER_LEGAL_NAV）：de 的 Impressum 是站長豁免，沒有網址就不放
@@ -414,18 +416,20 @@ export function buildWorld(mutate, { stage = 'p1', toolsIndex } = {}) {
     } else if (p.type === 'archive') {
       main = `<h1>${esc(p.h1[0])}</h1>${postLinks(hexo).map((u) => `<a class="archive-row" href="${u}">文章</a>`).join('')}`
     } else {
-      const h1 = p.type === 'home' ? '卡斯伯 Blog' : p.type === 'home-page' ? '最新文章：第 2 頁' : lower(p.h1[0])
+      const h1 = p.type === 'home' ? SITE_NAME : p.type === 'home-page' ? '最新文章：第 2 頁' : lower(p.h1[0])
       main = listMain(h1, hexoCards(hexo))
       // 首頁：有工具時多 #tools（P3 起，照 HomeTools.vue：標題加卡片，沒有介紹區塊）；有外語首頁時 head 多叢集的 hreflang 與 og:locale:alternate（I1 起，D.9），
       // 以及外語首頁 isPartOf 指的 WebSite JSON-LD（P3 在 / 加，I1 在 P3 之後，D.4）
       if (p.type === 'home') {
+        // P3：title 與 og:title 是 HOME_TITLE，JSON-LD 是 WebSite ＋ Person（lib/seo.mjs）
+        common.title = HOME_TITLE
+        common.headTail = `<meta property="og:title" content="${esc(HOME_TITLE)}">\n${HOME_WEBSITE_LD}\n${PERSON_LD}`
         const tools = siteToolLinks(cfg.toolsIndex, { locale: 'zh-tw', text: textFor('zh-tw') })
         if (tools.length) main += `<section id="tools" class="home-section" aria-label="工具"><div class="section-head"><h2 class="section-title">工具</h2></div>${toolCardsHtml(tools)}</section>`
         const codes = cfg.plan.pages.map((x) => x.code)
         if (codes.length) {
           const { hreflang, ogLocale } = clusterHead('zh-tw', codes)
-          common.headTail = headTags([...hreflang, ...ogLocale.filter(([, a]) => a.property === 'og:locale:alternate')])
-          if (cfg.plan.published.length) common.headTail += `\n${HOME_WEBSITE_LD}`
+          common.headTail += `\n${headTags([...hreflang, ...ogLocale.filter(([, a]) => a.property === 'og:locale:alternate')])}`
         }
       }
     }
@@ -442,6 +446,10 @@ export function buildWorld(mutate, { stage = 'p1', toolsIndex } = {}) {
   dist.set('404.html', builtHtml({ file: '404.html', title: NOT_FOUND_TITLE, description: NOT_FOUND_DESCRIPTION, robots: 'noindex', main: `<h1>這頁找不到</h1>${intlHtml}`, chrome }))
   for (const code of cfg.plan.published) dist.set(`${code}/index.html`, siteHomeBuiltHtml(code, { plan: cfg.plan, index: cfg.toolsIndex, chrome }))
   for (const [f, v] of Object.entries(FROZEN)) dist.set(f, v)
+  // P3：robots.txt 是基準最後多一行 Sitemap；/sitemap-index.xml 列部落格與每支工具的 sitemap
+  dist.set('robots.txt', FROZEN['robots.txt'] + ROBOTS_P3_LINE)
+  dist.set('sitemap-index.xml', ['<?xml version="1.0" encoding="UTF-8"?>', '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...[`${SITE}/sitemap.xml`, ...cfg.toolsIndex.tools.map((t) => `${SITE}/${t.slug}/sitemap.xml`)].map((u) => `  <sitemap><loc>${u}</loc></sitemap>`), '</sitemapindex>', ''].join('\n'))
   dist.set('atom.xml', baseFiles['atom.xml'])
   dist.set('content.json', JSON.stringify(content.map(expectedContentEntry)))
   const lastmod = new Map(posts.map((p) => [SITE + p.url, p.updated ?? p.date]))

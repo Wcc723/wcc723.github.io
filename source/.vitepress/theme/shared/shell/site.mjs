@@ -2,14 +2,16 @@
 // 由 scripts/shell-sync.mjs 複製進各專案：GitHub Actions 和 Workers Builds 只 clone 子專案，建置時讀不到這裡。
 // 只用標準 JavaScript，不 import 任何套件，Node 腳本、Vite、VitePress config 都能直接 import。
 
-// 站名。P2 切換那一版維持「卡斯伯 Blog」，首頁 title 和全站 og:site_name 也逐字照舊（SITE_TITLE_LEGACY）。
-// P3 跟第一支工具 /lucky-draw/ 同一版改成 SITE_NAME = '卡斯伯工具'，
-// 同時把 SITE_NAME_EN 設成 "Casper's Sidekick"（站長 2026-11-03 選定，見 docs/decisions/0005-site-name.md）。
-// 改名只動這兩個常數和它們出現的位置（首頁 title、og:site_name、WebSite JSON-LD、字標、頁尾署名），網址不動。
-export const SITE_NAME = '卡斯伯 Blog'
-// 型別明寫成 string：寫成字面值 '' 的話，TypeScript 會把型別收窄成 ''，P3 改值那一版的 vue-tsc 就會在比較式報錯
+// 站名。P2 維持「卡斯伯 Blog」；P3（2026-11-06，站長核可，見 docs/decisions/0005-site-name.md）改成卡斯伯工具，
+// 英文站名 Casper's Sidekick（站長 2026-11-03 選定）。改名只動這兩個常數和它們出現的位置
+// （首頁 title、og:site_name、WebSite JSON-LD、字標、頁尾署名），網址不動。
+// SITE_TITLE_LEGACY 照留：文章與列表頁 title 的尾巴、atom.xml 的標題、WebSite 的 alternateName 還用它（改名穩定 4 週後另案評估）。
+export const SITE_NAME = '卡斯伯工具'
+// 型別明寫成 string：寫成字面值的話，TypeScript 會把型別收窄，比較式會被判成永遠成立或永遠不成立
 /** @type {string} */
-export const SITE_NAME_EN = '' // 空字串代表不顯示英文站名；P3 改成 "Casper's Sidekick"
+export const SITE_NAME_EN = "Casper's Sidekick"
+/** P3 之前的站名，WebSite 的 alternateName 列它（品牌查詢還在用舊名） */
+export const SITE_NAME_LEGACY = '卡斯伯 Blog'
 export const SITE_TITLE_LEGACY = '卡斯伯 Blog - 前端，沒有極限'
 export const SITE_CODE_NAME = 'caspers-sidekick' // 需要英文代號的地方（帳號名、識別字）用這個
 export const SITE_URL = 'https://www.casper.tw'

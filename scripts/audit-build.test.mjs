@@ -15,13 +15,13 @@ import {
   rootHasVpRaw, caseCollisions, callsHexo, loadBaseline, latestBaselineDir, NEW_URLS, FIXED_ANCHORS, TEXT_EXPECTED, TEMPLATE_ALLOW,
   PROFILE_EXPECTED, PROFILE_LABEL, PROFILE_SEQUENCE_LABEL, THEME_CHUNK_MAX, SIDEBAR_RELATED_MAX, regionsOf, prefetchLinksOf, metaChunkOf,
   CHECKS, CATEGORIES_FILE, siteHomeUrlRule, gaConfigsOf, unpublishedCopyProbes, mainTextWithoutForeign, expectedSiteHomeHead,
-  toolsRegionProblems, previewLinkScriptsIn, PREVIEW_LINKS_TOKEN,
+  toolsRegionProblems, previewLinkScriptsIn, PREVIEW_LINKS_TOKEN, ROBOTS_P3_LINE,
 } from './audit-build.mjs'
 import { buildWorld, HOME_WEBSITE_LD, I1_INDEX, I1_PLAN, P1_PLAN, FEATURE_INDEX } from './fixtures/world.mjs'
 import { toolCardsIn } from './lib/extract-page.mjs'
 import { readHomeMessages } from '../source/.vitepress/lib/site-home.mjs'
 import { previewLinkScript } from '../source/.vitepress/lib/preview-links.mjs'
-import { SITE_TITLE_LEGACY, shouldLoadAds, countAdsLoaders } from '../source/.vitepress/theme/shared/shell/site.mjs'
+import { SITE_NAME, SITE_NAME_EN, SITE_NAME_LEGACY, SITE_TITLE_LEGACY, shouldLoadAds, countAdsLoaders } from '../source/.vitepress/theme/shared/shell/site.mjs'
 import { pageTypeOf } from '../source/.vitepress/lib/pagetype.mjs'
 import { SIDEBAR_RELATED_COUNT } from '../source/.vitepress/lib/pagedata.mjs'
 
@@ -111,9 +111,17 @@ test('合併標籤的第 1 頁：還用大寫的 canonical 會失敗', async () 
   assertFails(await audit(edit('tags/vue/index.html', (h) => h.replaceAll('/tags/vue/', '/tags/Vue/'))), ['pages', 'feeds'], /canonical/)
 })
 
-test('站名：og:site_name 改掉、首頁 title 改掉', async () => {
-  assertFails(await audit(edit(POST, (h) => h.replace(/og:site_name" content="[^"]*"/, 'og:site_name" content="卡斯伯工具"'))), ['site-name'], /og:site_name：預期/)
+test('站名（P3）：og:site_name 還是舊的、首頁 title 與 og:title 不對、頁首頁尾的站名', async () => {
+  assertFails(await audit(edit(POST, (h) => h.replace(/og:site_name" content="[^"]*"/, `og:site_name" content="${SITE_TITLE_LEGACY}"`))), ['site-name'], /og:site_name：預期 「卡斯伯工具」/)
   assertFails(await audit(edit('index.html', (h) => h.replace(/<title>[^<]*<\/title>/, '<title>卡斯伯工具</title>'))), ['site-name', 'pages'], /title：預期/)
+  assertFails(await audit(edit('index.html', (h) => h.replace(/<title>[^<]*<\/title>/, `<title>${SITE_TITLE_LEGACY}</title>`))), ['site-name', 'pages'], /title：預期 「卡斯伯工具｜卡斯伯的前端筆記與線上小工具」/)
+  assertFails(await audit(edit('index.html', (h) => h.replace(/og:title" content="[^"]*"/, `og:title" content="${SITE_TITLE_LEGACY}"`))), ['site-name'], /首頁 og:title：預期/)
+  // 頁首頁尾：legacy 外殼（p1 世界）與共用外殼（s 世界）都看
+  assertFails(await audit(edit(POST, (h) => h.replace(`<span class="brand__en en">${SITE_NAME_EN}</span>`, ''))), ['site-name'], /頁首沒有英文站名「Casper's Sidekick」/)
+  assertFails(await audit(edit(POST, (h) => h.replace(`<span class="cs-hdr__name">${SITE_NAME}</span>`, `<span class="cs-hdr__name">${SITE_NAME_LEGACY}</span>`)), {}, 's'), ['site-name'], /頁首沒有「卡斯伯工具」、頁首頁尾還有舊站名「卡斯伯 Blog」/)
+  assertFails(await audit(edit('404.html', (h) => h.replace(`>${SITE_NAME}</a></p>`, `>${SITE_NAME_LEGACY}</a></p>`)), {}, 's'), ['site-name'], /\/404\.html 頁尾沒有「卡斯伯工具」/)
+  // 本文裡的 <header>、<footer>（文章 demo）不會被當成頁首頁尾
+  assert.equal((await audit(edit(POST, (h) => h.replace('</article>', '<footer>示範的頁尾</footer></article>')), {}, 's')).checks.find((c) => c.id === 'site-name').ok, true)
 })
 
 test('新頁與 404：canonical 不對、404 沒有 noindex', async () => {
@@ -333,8 +341,16 @@ test('callsHexo：只認 hexo 這個指令，不認檔名', () => {
   for (const s of ['node scripts/migrate-hexo.mjs', 'vitepress build source', 'node hexo-baseline.mjs', 'echo hexo-2026-11-03']) assert.equal(callsHexo(s), false, s)
 })
 
-test('凍結檔：ads.txt 被改、少了舊主題的 css', async () => {
+test('凍結檔：ads.txt 被改、少了舊主題的 css；robots.txt 只能是基準加 P3 那一行 Sitemap', async () => {
   assertFails(await audit((d) => d.set('ads.txt', 'google.com, pub-0, DIRECT\n')), ['frozen-files'], /ads.txt 跟基準不同/)
+  // P3 前的 robots.txt（沒有 sitemap-index 那一行）、多了別的行、順序反過來都擋
+  assertFails(await audit((d) => d.set('robots.txt', 'User-agent: *\nAllow: /\n')), ['frozen-files'], /robots\.txt 跟基準（加上計畫內的改動）不同/)
+  assertFails(await audit((d) => d.set('robots.txt', d.get('robots.txt') + 'Disallow: /tools/\n')), ['frozen-files'], /robots\.txt 跟基準（加上計畫內的改動）不同/)
+  assertFails(await audit((d) => d.set('robots.txt', ROBOTS_P3_LINE + 'User-agent: *\nAllow: /\n')), ['frozen-files'], /robots\.txt/)
+  // sitemap-index.xml：沒有、少了工具（i1 世界有 lucky-draw）、順序不對
+  assertFails(await audit((d) => d.delete('sitemap-index.xml')), ['feeds'], /dist 沒有 sitemap-index\.xml/)
+  assertFails(await audit(edit('sitemap-index.xml', (x) => x.replace(/\s*<sitemap><loc>https:\/\/www\.casper\.tw\/lucky-draw\/sitemap\.xml<\/loc><\/sitemap>/, '')), {}, 'i1'), ['feeds'], /sitemap-index\.xml 要依序列 https:\/\/www\.casper\.tw\/sitemap\.xml、https:\/\/www\.casper\.tw\/lucky-draw\/sitemap\.xml/)
+  assertFails(await audit(edit('sitemap-index.xml', (x) => x.replace('http://www.sitemaps.org/schemas/sitemap/0.9', 'http://www.google.com/schemas/sitemap/0.84'))), ['feeds'], /命名空間不對/)
   assertFails(await audit((d) => d.delete('css/style.css')), ['frozen-files', 'urls'], /dist 沒有 css\/style.css|基準網址不在 dist：\/css\/style.css/)
 })
 
@@ -342,7 +358,13 @@ test('JSON-LD：解析失敗、文章少了 BlogPosting、datePublished 不對�
   assertFails(await audit(edit(POST, (h) => h.replace('</head>', '<script type="application/ld+json">{oops</script>\n</head>'))), ['jsonld'], /解析失敗/)
   assertFails(await audit(edit(POST, (h) => h.replace('"@type":"BlogPosting"', '"@type":"Article"'))), ['jsonld'], /少了 JSON-LD BlogPosting/)
   assertFails(await audit(edit(POST, (h) => h.replace('"datePublished":"2021-09-11T00:00:00+08:00"', '"datePublished":"2021-09-11"'))), ['jsonld'], /datePublished/)
-  assertFails(await audit(edit('index.html', (h) => h.replace('</head>', '<script type="application/ld+json">{"@type":"WebSite"}</script>\n</head>'))), ['jsonld'], /P2 不輸出 JSON-LD/)
+  // 404 不輸出 JSON-LD；首頁（P3）是 WebSite ＋ Person，WebSite 的欄位照決策 0005
+  assertFails(await audit(edit('404.html', (h) => h.replace('</head>', '<script type="application/ld+json">{"@type":"WebSite"}</script>\n</head>'))), ['jsonld'], /\/404\.html（not-found）不輸出 JSON-LD，卻有 WebSite/)
+  assertFails(await audit(edit('index.html', (h) => h.replace(/<script type="application\/ld\+json">\{"@context":"https:\/\/schema\.org","@type":"Person"[^<]*<\/script>\n?/, ''))), ['jsonld'], /\/（home）少了 JSON-LD Person/)
+  assertFails(await audit(edit('index.html', (h) => h.replace(`"name":"${SITE_NAME}","alternateName"`, `"name":"${SITE_NAME_LEGACY}","alternateName"`))), ['jsonld'], /WebSite 的 name：預期 "卡斯伯工具"/)
+  assertFails(await audit(edit('index.html', (h) => h.replace(`"alternateName":["${SITE_NAME_EN}",`, '"alternateName":['))), ['jsonld'], /WebSite 的 alternateName/)
+  assertFails(await audit(edit('index.html', (h) => h.replace(',"publisher":{"@id":"https://www.casper.tw/about/#person"}', ''))), ['jsonld'], /WebSite 的 publisher/)
+  assertFails(await audit(edit('index.html', (h) => h.replace('"@type":"Person","@id":"https://www.casper.tw/about/#person"', '"@type":"Person","@id":"https://www.casper.tw/#person"'))), ['jsonld'], /Person 的 @id/)
 })
 
 test('讀不到基準 HTML（沒 fetch 基準 commit）時，用到它的檢查失敗並說明怎麼補', async () => {
@@ -412,8 +434,8 @@ test('白名單：每條都有理由，指到的網址在基準裡；NEW_URLS �
   }
   for (const e of PROFILE_EXPECTED) assert.ok(e.field in PROFILE_LABEL || e.field in PROFILE_SEQUENCE_LABEL, `${e.url} 的 field「${e.field}」不是內容輪廓的欄位`)
   const allowed = (u) => NEW_URLS.some((r) => r.test(u))
-  for (const u of ['/categories/', '/privacy/', '/contact/', '/terms/', '/404.html', '/404', '/tags/sass/page/8/', '/tags/bootstrap/page/2/', '/assets/app.x.js', '/hashmap.json', '/vp-icons.css']) assert.ok(allowed(u), u)
-  for (const u of ['/tags/css/page/99/', '/foo/', '/categories/css/', '/tags/Sass/', '/_headers', '/sitemap-index.xml', '/.nojekyll']) assert.ok(!allowed(u), u)
+  for (const u of ['/categories/', '/privacy/', '/contact/', '/terms/', '/404.html', '/404', '/tags/sass/page/8/', '/tags/bootstrap/page/2/', '/assets/app.x.js', '/hashmap.json', '/vp-icons.css', '/sitemap-index.xml']) assert.ok(allowed(u), u)
+  for (const u of ['/tags/css/page/99/', '/foo/', '/categories/css/', '/tags/Sass/', '/_headers', '/sitemap_index.xml', '/sitemap-index.xml/', '/.nojekyll']) assert.ok(!allowed(u), u)
   assert.equal(THEME_CHUNK_MAX, 122880)
 })
 
@@ -805,7 +827,7 @@ test('checkFeeds：I1 的 sitemap 有 /en/ 才對；P1 多了 /en/ 就失敗；�
 })
 
 test('checkSiteName、checkJsonLd、checkAds、checkLayout、checkCategories、checkChunks 的外語首頁規則', async () => {
-  assertFails(await i1(edit(EN, (h) => h.replace(/og:site_name" content="[^"]*"/, 'og:site_name" content="卡斯伯 Blog - 前端，沒有極限"'))), ['site-name', 'locales'], /og:site_name：預期 「casper\.tw」（siteName\('en'\)）|L3/)
+  assertFails(await i1(edit(EN, (h) => h.replace(/og:site_name" content="[^"]*"/, 'og:site_name" content="卡斯伯 Blog - 前端，沒有極限"'))), ['site-name', 'locales'], /og:site_name：預期 「Casper's Sidekick」（siteName\('en'\)）|L3/)
   assertFails(await i1(edit(EN, (h) => h.replace('"inLanguage":"en"', '"inLanguage":"zh-TW"'))), ['jsonld'], /WebPage inLanguage：預期 「en」/)
   assertFails(await i1(edit(EN, (h) => h.replace('"isPartOf":{"@id":"https://www.casper.tw/#website"}', '"isPartOf":{"@id":"https://www.casper.tw/"}'))), ['jsonld'], /WebPage isPartOf/)
   // 有外語首頁時 / 一定要有 isPartOf 指的 WebSite（P3 只改站名、沒加 WebSite 時擋下 I1）

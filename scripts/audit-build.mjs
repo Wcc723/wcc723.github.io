@@ -26,7 +26,7 @@ import {
   toolFeatureBlocksIn, toolCardElementsIn, blockAround, TAG_BODY,
 } from './lib/extract-page.mjs'
 import {
-  SITE_TITLE_LEGACY, ADS_MODE, ADSENSE_CLIENT, shouldLoadAds, countAdsLoaders,
+  SITE_NAME, SITE_NAME_EN, SITE_NAME_LEGACY, SITE_TITLE_LEGACY, ADS_MODE, ADSENSE_CLIENT, shouldLoadAds, countAdsLoaders,
 } from '../source/.vitepress/theme/shared/shell/site.mjs'
 import { pageTypeOf } from '../source/.vitepress/lib/pagetype.mjs'
 import { NOT_FOUND_TITLE, NOT_FOUND_DESCRIPTION } from '../source/.vitepress/theme/head.mjs'
@@ -35,7 +35,7 @@ import siteConfig from '../source/.vitepress/site.config.mjs'
 import {
   SITE_HOME_CODES, SITE_INDEX, buildSiteHomePlan, formatHomeCopy, languageTargets, readHomeMessages, siteHomeTitle,
 } from '../source/.vitepress/lib/site-home.mjs'
-import { SITE_HOME_OG_IMAGE, WEBSITE_ID } from '../source/.vitepress/lib/seo.mjs'
+import { HOME_TITLE, PERSON_ID, SITE_HOME_OG_IMAGE, WEBSITE_ID } from '../source/.vitepress/lib/seo.mjs'
 import { LOCALES, getLocale, sortLocaleCodes } from '../source/.vitepress/theme/shared/shell/i18n/locales.mjs'
 import { ZH_CATCHALL, siteHomeAlternates, siteHomeUrl } from '../source/.vitepress/theme/shared/shell/i18n/urls.mjs'
 import { siteName } from '../source/.vitepress/theme/shared/shell/i18n/seo.mjs'
@@ -91,6 +91,7 @@ export const NEW_URLS = [
   { test: (u) => /^\/tags\/(sass|bootstrap|vue)\/page\/\d+\/$/.test(u), reason: 'Sass、Bootstrap、Vue 併入小寫後篇數變多，多出來的分頁' },
   { test: (u) => u.startsWith('/assets/'), reason: 'VitePress 的雜湊資產（JS、CSS、字型）' },
   { test: (u) => u === '/hashmap.json' || u === '/vp-icons.css', reason: 'VitePress 產物，名稱已列進 config/reserved-paths.json' },
+  { test: (u) => u === '/sitemap-index.xml', reason: 'P3 的 sitemap 索引：部落格的 sitemap 加上各工具的 /<slug>/sitemap.xml，robots.txt 指向它（計畫網站地圖）' },
 ]
 
 /** 外語首頁的網址規則：plan.published 的每個 /<code>/（主站首頁規格 J.1 的 checkUrls）；P1 是空陣列，什麼都不放行 */
@@ -112,6 +113,12 @@ export const PRIVACY_REQUIRED_HOSTS = ['adssettings.google.com', 'www.aboutads.i
 
 /** 基準 commit 裡、要逐位元比對的 public/ 檔（基準資料夾有副本的直接比副本，其餘比 git blob） */
 export const FROZEN_FILES = ['ads.txt', 'robots.txt', 'CNAME', 'search.xml', 'css/style.css', 'img/casper-avatar.webp', 'img/js-interview-cover.webp']
+/** /about/ 的 JSON-LD（P3）：ProfilePage（mainEntity 指 Person）＋ BreadcrumbList ＋ Person */
+export const ABOUT_PROFILE_TYPES = ['ProfilePage', 'BreadcrumbList', 'Person']
+/** robots.txt 在 P3 唯一的改動：基準最後多一行 Sitemap 指向 /sitemap-index.xml（計畫網站地圖的 /robots.txt 一列） */
+export const ROBOTS_P3_LINE = 'Sitemap: https://www.casper.tw/sitemap-index.xml\n'
+/** 凍結檔裡計畫內的改動：基準內容 → 預期內容 */
+export const FROZEN_EDITS = { 'robots.txt': (buf) => Buffer.concat([buf, Buffer.from(ROBOTS_P3_LINE)]) }
 
 /**
  * 本文相似度低於 TEXT_MIN、但人工確認過的頁：{ url, min, reason }。min 是這一頁仍要達到的下限，避免整頁壞掉也被放過。
@@ -197,9 +204,10 @@ export const FIXED_ANCHORS = [
 ].map(([u, id]) => [encodeURI(u), id])
 
 /**
- * 頁型 → 一定要有的 JSON-LD @type（計畫「SEO」的結構化資料）；home 與 not-found 在 P2 不輸出 JSON-LD。
- * home 在有外語首頁時（plan.published 不是空的）另外一定要有 @id 為 WEBSITE_ID 的 WebSite（checkJsonLd）；P3 把 home 改成 ['WebSite']。
- * 法務頁計畫只寫 WebPage，所以只要求 WebPage；about（含 hexschool-traning）計畫寫 WebPage ＋ BreadcrumbList。
+ * 頁型 → 一定要有的 JSON-LD @type（計畫「SEO」的結構化資料）；not-found 不輸出 JSON-LD。
+ * home：P3 起 WebSite（@id WEBSITE_ID）＋ Person（checkJsonLd 另驗 name、alternateName、publisher）。
+ * 法務頁計畫只寫 WebPage，所以只要求 WebPage；about（hexschool-traning）計畫寫 WebPage ＋ BreadcrumbList；
+ * /about/ 是 P3 的署名頁，換成 ABOUT_PROFILE_TYPES。
  */
 export const JSONLD_TYPES = {
   post: ['BlogPosting', 'BreadcrumbList'],
@@ -208,7 +216,7 @@ export const JSONLD_TYPES = {
   'nav-index': ['CollectionPage', 'BreadcrumbList'],
   about: ['WebPage', 'BreadcrumbList'],
   legal: ['WebPage'],
-  home: [],
+  home: ['WebSite', 'Person'],
   'not-found': [],
   // 外語首頁（主站首頁規格 D.4）：WebPage，另驗 inLanguage 與 isPartOf
   'site-home': ['WebPage'],
@@ -438,8 +446,13 @@ export function checkFrozenFiles(ctx) {
     const expected = ctx.baseline.file(f) ?? (ctx.git.ok ? ctx.git.get(f) : null)
     if (!expected) { fail(c, `沒有 ${f} 的基準可比：${ctx.git.error ?? '基準 commit 裡沒有這個檔'}`); continue }
     const actual = fs.readFileSync(distFile)
-    if (sha256(actual) !== sha256(expected)) fail(c, `${f} 跟基準不同（sha256 ${sha256(actual).slice(0, 12)}，基準 ${sha256(expected).slice(0, 12)}）`)
-    else same++
+    const edit = FROZEN_EDITS[f]
+    const want = edit ? edit(Buffer.from(expected)) : expected
+    if (sha256(actual) !== sha256(want)) fail(c, `${f} 跟基準${edit ? '（加上計畫內的改動）' : ''}不同（sha256 ${sha256(actual).slice(0, 12)}，預期 ${sha256(want).slice(0, 12)}）`)
+    else {
+      same++
+      if (edit) ctx.expect('frozen-files', f, `基準最後多一行 ${ROBOTS_P3_LINE.trim()}（P3，計畫網站地圖的 /robots.txt 一列）`)
+    }
   }
   c.summary = `${same} / ${FROZEN_FILES.length} 個相同`
   return c
@@ -470,6 +483,11 @@ export function checkPages(ctx) {
       for (const k of ['title', 'description']) exp[k] = exp[k]?.replaceAll(upper, merged[1]) ?? exp[k]
       exp.h1 = p.h1.map((h) => h.replaceAll(upper, merged[1]))
       ctx.expect('pages', p.url, `基準第 1 頁其實是大寫標籤「${upper}」的內容，合併後 title、description、h1 都用小寫（基準 README「對等基準」）`)
+    }
+    if (p.url === '/') {
+      // P3 改名：首頁 title 從舊站名換成 HOME_TITLE（docs/decisions/0005-site-name.md），其他欄位照基準
+      exp.title = HOME_TITLE
+      ctx.expect('pages', p.url, `首頁 title 改成「${HOME_TITLE}」（P3 改名，決策 0005）`)
     }
     for (const k of ['title', 'canonical', 'ogUrl', 'fbCommentsHref', 'lang']) {
       if (d.f[k] !== exp[k]) fail(c, `${p.url} ${k}：預期 ${show(exp[k])}，實際 ${show(d.f[k])}`)
@@ -518,12 +536,37 @@ function checkPostTags(ctx, c, p, d) {
   return true
 }
 
-/** 站名：首頁 title 與全站 og:site_name 仍是舊站名（P2 不改站名，計畫「站名與首頁 title」） */
+/**
+ * 站名（P3 改名，計畫「站名與首頁 title」、決策 0005）：首頁 title 是 HOME_TITLE，全站 og:site_name 是 SITE_NAME，
+ * 字標與頁尾署名是 SITE_NAME；舊站名只留在文章與列表頁 title 的尾巴（SITE_TITLE_LEGACY）與 WebSite 的 alternateName
+ */
 export function checkSiteName(ctx) {
-  const c = newCheck('site-name', '首頁 title 與全站 og:site_name')
+  const c = newCheck('site-name', '首頁 title、全站 og:site_name、字標與頁尾署名是新站名')
   const home = ctx.pages.get('/')
   if (!home) fail(c, 'dist 沒有首頁')
-  else if (home.f.title !== SITE_TITLE_LEGACY) fail(c, `首頁 title：預期 ${show(SITE_TITLE_LEGACY)}，實際 ${show(home.f.title)}`)
+  else {
+    if (home.f.title !== HOME_TITLE) fail(c, `首頁 title：預期 ${show(HOME_TITLE)}，實際 ${show(home.f.title)}`)
+    const ogTitle = metaValues(home.html, 'property', 'og:title')
+    if (ogTitle.length !== 1 || ogTitle[0] !== HOME_TITLE) fail(c, `首頁 og:title：預期 ${show(HOME_TITLE)}，實際 ${show(ogTitle.join(' / '))}`)
+  }
+  // 繁中頁的頁首與頁尾（共用與 legacy 外殼都適用）：頁首有 SITE_NAME 與英文小字 SITE_NAME_EN，頁尾有 SITE_NAME（署名），兩處都不再有舊站名。
+  // 頁首是第一個 <header>（文章的 <header> 在 main 裡，排在後面），頁尾是最後一個 <footer>（文章 demo 也有 <footer>，siteFooterOf）
+  let marks = 0
+  for (const d of ctx.pages.values()) {
+    if (d.type === 'site-home') continue
+    const header = elementsWhere(d.html, (t) => t.name === 'header')[0]
+    const footer = siteFooterOf(d.html)
+    if (!header || !footer) { fail(c, `${d.url} 找不到頁首或頁尾`); continue }
+    const h = textOf(header.inner)
+    const f = textOf(footer.inner)
+    const bad = []
+    if (!h.includes(SITE_NAME)) bad.push(`頁首沒有「${SITE_NAME}」`)
+    if (SITE_NAME_EN && !h.includes(SITE_NAME_EN)) bad.push(`頁首沒有英文站名「${SITE_NAME_EN}」`)
+    if (!f.includes(SITE_NAME)) bad.push(`頁尾沒有「${SITE_NAME}」`)
+    if (h.includes(SITE_NAME_LEGACY) || f.includes(SITE_NAME_LEGACY)) bad.push(`頁首頁尾還有舊站名「${SITE_NAME_LEGACY}」`)
+    if (bad.length) fail(c, `${d.url} ${bad.join('、')}`)
+    else marks++
+  }
   let n = 0
   let homes = 0
   for (const d of ctx.pages.values()) {
@@ -535,11 +578,11 @@ export function checkSiteName(ctx) {
       else homes++
       continue
     }
-    if (d.f.ogSiteName === SITE_TITLE_LEGACY) { n++; continue }
+    if (d.f.ogSiteName === SITE_NAME) { n++; continue }
     if (d.type === 'not-found' && d.f.ogSiteName === null) continue
-    fail(c, `${d.url} og:site_name：預期 ${show(SITE_TITLE_LEGACY)}，實際 ${show(d.f.ogSiteName)}`)
+    fail(c, `${d.url} og:site_name：預期 ${show(SITE_NAME)}，實際 ${show(d.f.ogSiteName)}`)
   }
-  c.summary = `${n} 頁的 og:site_name 是「${SITE_TITLE_LEGACY}」${homes ? `，${homes} 個外語首頁是 siteName(code)` : ''}`
+  c.summary = `首頁 title「${HOME_TITLE}」；${n} 頁的 og:site_name 是「${SITE_NAME}」${homes ? `，${homes} 個外語首頁是 siteName(code)` : ''}；${marks} 頁的字標與頁尾署名是新站名`
   return c
 }
 
@@ -882,6 +925,15 @@ export function checkFeeds(ctx) {
     }
     if (!ctx.posts) c.notes.push('讀不到文章索引，sitemap 的 lastmod 沒比')
     ctx.expect('feeds', 'sitemap.xml', '拿掉 3 個線上 404 的大寫標籤、/categories/css/ 換成 /categories/CSS/、加上 /categories/ 與 3 個法務頁（計畫「/sitemap.xml」）')
+  }
+  // /sitemap-index.xml（P3）：部落格的 sitemap 加上 tools.json 每支工具的 /<slug>/sitemap.xml；robots.txt 指向它（凍結檔那一項驗）
+  const index = readDist('sitemap-index.xml')
+  if (!index) fail(c, 'dist 沒有 sitemap-index.xml（P3，計畫網站地圖）')
+  else {
+    const want = [`${SITE}/sitemap.xml`, ...(ctx.toolsIndex?.tools ?? []).map((t) => `${SITE}/${t.slug}/sitemap.xml`)]
+    const locs = [...index.matchAll(/<sitemap>\s*<loc>([^<]+)<\/loc>\s*<\/sitemap>/g)].map((m) => m[1])
+    if (!index.startsWith('<?xml version="1.0" encoding="UTF-8"?>') || !index.includes('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">') || !index.trimEnd().endsWith('</sitemapindex>')) fail(c, 'sitemap-index.xml 的 XML 宣告或 sitemapindex 命名空間不對')
+    if (JSON.stringify(locs) !== JSON.stringify(want)) fail(c, `sitemap-index.xml 要依序列 ${want.join('、')}，實際 ${locs.join('、') || '（沒有）'}`)
   }
   if (ctx.plan.published.length) ctx.expect('feeds', 'sitemap.xml 的外語首頁', `sitemap 加上 ${ctx.plan.published.map((x) => `/${x}/`).join('、')}（主站首頁規格 D.8）`)
   // published: false 的文章：dist、atom、content.json 都沒有（計畫「published: false」）
@@ -1317,13 +1369,27 @@ export function checkJsonLd(ctx) {
     // 有外語首頁時，/ 一定要有外語首頁 WebPage 的 isPartOf 指的 WebSite（D.4；P3 在 / 加，I1 在 P3 之後）。
     // 只比 isPartOf 的字串擋不住「P3 只改站名、沒加 WebSite」，所以這裡驗 / 真的有這個節點
     const homeNeedsSite = d.type === 'home' && published.length > 0
-    const want = d.type ? (homeNeedsSite ? [...new Set([...JSONLD_TYPES.home, 'WebSite'])] : JSONLD_TYPES[d.type]) : null
+    const want = d.url === '/about/' ? ABOUT_PROFILE_TYPES : d.type ? (homeNeedsSite ? [...new Set([...JSONLD_TYPES.home, 'WebSite'])] : JSONLD_TYPES[d.type]) : null
+    // P3：/ 的 WebSite 照決策 0005（name 新站名，alternateName 依序英文站名、舊站名、網域，publisher 指 Person）；/about/ 的 ProfilePage 指 Person
+    if (d.type === 'home') {
+      const site = nodes.find((x) => [x['@type']].flat().includes('WebSite'))
+      if (site) {
+        const wantSite = { '@id': WEBSITE_ID, name: SITE_NAME, alternateName: [SITE_NAME_EN, SITE_NAME_LEGACY, 'casper.tw'], publisher: { '@id': PERSON_ID } }
+        for (const [k, v] of Object.entries(wantSite)) if (JSON.stringify(site[k]) !== JSON.stringify(v)) fail(c, `${d.url} WebSite 的 ${k}：預期 ${JSON.stringify(v)}，實際 ${JSON.stringify(site[k])}`)
+      }
+      const person = nodes.find((x) => [x['@type']].flat().includes('Person'))
+      if (person && person['@id'] !== PERSON_ID) fail(c, `${d.url} Person 的 @id：預期 ${PERSON_ID}，實際 ${show(person['@id'])}`)
+    }
+    if (d.url === '/about/') {
+      const profile = nodes.find((x) => [x['@type']].flat().includes('ProfilePage'))
+      if (profile && profile.mainEntity?.['@id'] !== PERSON_ID) fail(c, `/about/ ProfilePage 的 mainEntity 要指 ${PERSON_ID}，實際 ${JSON.stringify(profile.mainEntity)}`)
+    }
     if (homeNeedsSite && !nodes.some((x) => [x['@type']].flat().includes('WebSite') && x['@id'] === WEBSITE_ID)) {
       fail(c, `${d.url}（home）沒有 @id 是 ${WEBSITE_ID} 的 WebSite：外語首頁 ${published.map((x) => `/${x}/`).join('、')} 的 WebPage isPartOf 指向它（主站首頁規格 D.4，P3 在 / 加）`)
     }
     if (want) {
       for (const t of want) if (!types.has(t) && !(homeNeedsSite && t === 'WebSite')) fail(c, `${d.url}（${d.type}）少了 JSON-LD ${t}`)
-      if (!want.length && types.size) fail(c, `${d.url}（${d.type}）在 P2 不輸出 JSON-LD，卻有 ${[...types].join('、')}`)
+      if (!want.length && types.size) fail(c, `${d.url}（${d.type}）不輸出 JSON-LD，卻有 ${[...types].join('、')}`)
     }
     if (d.type === 'site-home') {
       const code = d.url.slice(1, -1)

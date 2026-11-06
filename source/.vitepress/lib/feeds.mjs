@@ -15,6 +15,7 @@ import { SITE_URL, tagSlug, toAbsolute } from './posts.mjs'
 import { SITE_TITLE_LEGACY } from '../theme/shared/shell/site.mjs'
 import { LOCALES } from '../theme/shared/shell/i18n/locales.mjs'
 import { siteIndex, orderedTags } from './pagedata.mjs'
+import { SITE_INDEX } from './site-home.mjs'
 import { cardExcerpt, categoryUrl, escapeHtml, frozenFor, markdownText, tagUrl } from './cards.mjs'
 
 export const FEED_LIMIT = 20
@@ -86,10 +87,31 @@ export function contentJson(srcDir) {
 }
 
 // config.mts 的 buildEnd：寫進 dist/
+/**
+ * /sitemap-index.xml（P3，計畫網站地圖、docs/runbooks/add-a-tool.md 第 7 步）：部落格的 /sitemap.xml，加上 tools.json 每支工具的
+ * /<slug>/sitemap.xml（每支工具都輸出自己的 sitemap，add-a-tool.md）。robots.txt 多一行 Sitemap 指向這裡，GSC 只要提交一次。
+ * 工具清單是 0 支時照樣輸出（只有部落格那一份）。
+ */
+export function sitemapIndexXml(index = SITE_INDEX) {
+  const tools = Array.isArray(index?.tools) ? index.tools : []
+  const urls = [`${SITE_URL}/sitemap.xml`, ...tools.map((t) => {
+    if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(t?.slug ?? '')) throw new Error(`sitemap-index：tools.json 的 slug 不對：${JSON.stringify(t?.slug)}`)
+    return `${SITE_URL}/${t.slug}/sitemap.xml`
+  })]
+  return [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ...urls.map((u) => `  <sitemap><loc>${escapeHtml(u)}</loc></sitemap>`),
+    '</sitemapindex>',
+    '',
+  ].join('\n')
+}
+
 export async function buildFeeds(siteConfig, srcDir) {
   const outDir = siteConfig.outDir
   fs.writeFileSync(path.join(outDir, 'atom.xml'), atomXml(srcDir))
   fs.writeFileSync(path.join(outDir, 'content.json'), contentJson(srcDir))
+  fs.writeFileSync(path.join(outDir, 'sitemap-index.xml'), sitemapIndexXml())
 }
 
 // ---------------------------------------------------------------------------

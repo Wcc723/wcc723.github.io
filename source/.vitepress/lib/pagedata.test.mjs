@@ -101,7 +101,7 @@ test('首頁：最新 10 張卡、分頁 37 頁、H1 是站名，沒有麵包屑
   assert.equal(fm.cards[0].url, index.posts[0].url)
   assert.equal(fm.pager.total, 37)
   assert.equal(fm.pager.nextUrl, '/page/2/')
-  assert.equal(fm.heading, '卡斯伯 Blog')
+  assert.equal(fm.heading, '卡斯伯工具') // P3 起 H1 是新站名（SITE_NAME）
   assert.equal(fm.breadcrumbs, undefined)
 })
 

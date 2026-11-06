@@ -184,10 +184,11 @@ test('G1 到 G9：各一個不過的案例', () => {
   assert.deepEqual(gates(homeGateProblems('ja', gateCtx({ legal: noExt }))), ['G5'])
   // de 的 Impressum 是站長豁免：G5 過
   assert.ok(!homeGateProblems('de', gateCtx()).some((m) => /G5/.test(m)))
-  // G6：SITE_NAME_EN 還是空字串；/ 還沒有 WebSite（P1、P2 的 homeJsonLd() 是空的）、或 @id 不對
+  // G6：SITE_NAME_EN 還是空字串；/ 沒有 WebSite（P2 以前 homeJsonLd() 是空的）、或 @id 不對。P3 起 homeJsonLd() 有 WebSite，G6 過
   assert.deepEqual(gates(homeGateProblems('ja', gateCtx({ siteNameEn: '' }))), ['G6'])
-  assert.deepEqual(homeJsonLd(), [])
-  assert.ok(homeGateProblems('ja', gateCtx({ rootJsonLd: homeJsonLd() })).some((m) => /G6 \/ 的 JSON-LD 沒有 @id 是 https:\/\/www\.casper\.tw\/#website 的 WebSite/.test(m)))
+  assert.ok(homeJsonLd().some((x) => x['@type'] === 'WebSite' && x['@id'] === WEBSITE_ID))
+  assert.ok(!homeGateProblems('ja', gateCtx({ rootJsonLd: homeJsonLd() })).some((m) => /G6/.test(m)))
+  assert.ok(homeGateProblems('ja', gateCtx({ rootJsonLd: [] })).some((m) => /G6 \/ 的 JSON-LD 沒有 @id 是 https:\/\/www\.casper\.tw\/#website 的 WebSite/.test(m)))
   assert.deepEqual(gates(homeGateProblems('ja', gateCtx({ rootJsonLd: [{ ...ROOT_LD[0], '@id': 'https://www.casper.tw/#site' }] }))), ['G6'])
   // G7：en 還沒上線
   const noEn = config({ shell: 'shared', home: { locales: ['ja'], reviewers: REVIEWERS } })

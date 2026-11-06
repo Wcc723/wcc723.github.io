@@ -3,7 +3,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
-import { atomXml, buildFeeds, contentJson, isNoindex, sitemapTransformItems, taipeiIso } from './feeds.mjs'
+import { atomXml, buildFeeds, contentJson, isNoindex, sitemapIndexXml, sitemapTransformItems, taipeiIso } from './feeds.mjs'
 import { listUrls, siteIndex } from './pagedata.mjs'
 import { SITE_URL } from './posts.mjs'
 import { SOURCE_DIR, readBaseline } from './test-fixture.mjs'
@@ -145,4 +145,20 @@ test('atom.xml 與 content.json 只有文章，不收外語首頁', () => {
     assert.ok(!atom.includes(`"${u}"`) && !atom.includes(`>${u}<`), code)
     assert.ok(!content.includes(`"${u}"`) && !content.includes(`"/${code}/"`), code)
   }
+})
+
+test('sitemapIndexXml（P3）：部落格的 /sitemap.xml 在第一個，接著 tools.json 每支工具的 /<slug>/sitemap.xml；0 支時只有部落格；slug 不對就丟錯', () => {
+  const xml = sitemapIndexXml({ tools: [{ slug: 'sound-effects' }, { slug: 'lucky-draw' }] })
+  assert.equal(xml, [
+    '<?xml version="1.0" encoding="UTF-8"?>',
+    '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    '  <sitemap><loc>https://www.casper.tw/sitemap.xml</loc></sitemap>',
+    '  <sitemap><loc>https://www.casper.tw/sound-effects/sitemap.xml</loc></sitemap>',
+    '  <sitemap><loc>https://www.casper.tw/lucky-draw/sitemap.xml</loc></sitemap>',
+    '</sitemapindex>',
+    '',
+  ].join('\n'))
+  assert.equal([...sitemapIndexXml({ tools: [] }).matchAll(/<loc>/g)].length, 1)
+  assert.equal([...sitemapIndexXml({}).matchAll(/<loc>/g)].length, 1)
+  assert.throws(() => sitemapIndexXml({ tools: [{ slug: '../x' }] }), /slug 不對/)
 })
