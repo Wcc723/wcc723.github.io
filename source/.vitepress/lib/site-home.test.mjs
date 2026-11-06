@@ -93,8 +93,8 @@ const gateCtx = (over = {}) => {
   const i = liveInput(over)
   return { config: i.config, readHome: i.readHome, shellReview: i.shellReview, legal: i.legal, siteNameEn: i.siteNameEn, index: i.index, today: i.today, glossary: i.glossary, rootJsonLd: i.rootJsonLd }
 }
-// 已上線的外語首頁：一版加一個，跟 site.config.mjs 的 home.locales 一起改（en、ja、ko 2026-11-06）
-const OPENED = ['en', 'ja', 'ko']
+// 已上線的外語首頁：一版加一個，跟 site.config.mjs 的 home.locales 一起改（en、ja、ko、de 2026-11-06）
+const OPENED = ['en', 'ja', 'ko', 'de']
 
 const gates = (list) => [...new Set(list.map((m) => /：(G\d)/.exec(m)?.[1]).filter(Boolean))].sort()
 
