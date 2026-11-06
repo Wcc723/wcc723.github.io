@@ -11,7 +11,8 @@ import { LOCALE, getLocale } from './locales.mjs'
 
 // kind → { 語系代碼: 網址 }。網址一律 https 完整網址、帶尾斜線（片段 # 除外）
 export const LEGAL_PAGES = {
-  privacy: { 'zh-tw': 'https://www.casper.tw/privacy/' }, // 其他語系等外語法務頁做好、審過後再加
+  // en：site-policies（2026-11-06 起回 200、<html lang="en">，site-check 確認過）。其他語系等外語法務頁做好、審過後再加
+  privacy: { 'zh-tw': 'https://www.casper.tw/privacy/', en: 'https://www.casper.tw/site-policies/privacy/' },
   terms: { 'zh-tw': 'https://www.casper.tw/terms/' },
   contact: { 'zh-tw': 'https://www.casper.tw/contact/' },
   about: { 'zh-tw': 'https://www.casper.tw/about/' },

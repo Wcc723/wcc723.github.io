@@ -179,7 +179,10 @@ test('G1 到 G9：各一個不過的案例', () => {
   const cfg = config({ shell: 'shared', home: { locales: ['en', 'ja'], reviewers: { ...REVIEWERS, ja: [{ id: 'yuki', native: false }] } } })
   assert.ok(homeGateProblems('ja', gateCtx({ config: cfg })).some((m) => /G4 .*ja 要母語審稿人，yuki 是 native: false/.test(m)))
   // G5：沒有同語言的隱私權頁；ja 的外部送信沒有網址也沒有豁免
-  assert.deepEqual(gates(homeGateProblems('en', gateCtx({ legal: { pages: LEGAL_PAGES, decisions: LEGAL_DECISIONS } }))), ['G5'])
+  const noEnPrivacy = { ...LEGAL_PAGES, privacy: { 'zh-tw': LEGAL_PAGES.privacy['zh-tw'] } }
+  assert.deepEqual(gates(homeGateProblems('en', gateCtx({ legal: { pages: noEnPrivacy, decisions: LEGAL_DECISIONS } }))), ['G5'])
+  // 2026-11-06 起 en 有 site-policies 的隱私權頁：真實的 LEGAL_PAGES 讓 en 的 G5 過
+  assert.ok(!homeGateProblems('en', gateCtx({ legal: { pages: LEGAL_PAGES, decisions: LEGAL_DECISIONS } })).some((m) => /G5/.test(m)))
   const noExt = { pages: { ...LEGAL.pages, externalTransmission: {} }, decisions: LEGAL_DECISIONS }
   assert.deepEqual(gates(homeGateProblems('ja', gateCtx({ legal: noExt }))), ['G5'])
   // de 的 Impressum 是站長豁免：G5 過
@@ -216,7 +219,9 @@ test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只�
   // en 的文案與外殼字串 2026-11-05 審過，只剩 G2、G3 以外的關卡；ja 還沒審
   assert.ok(!plan.warnings.some((m) => /^preview：site-home en：G[23]/.test(m)))
   assert.ok(plan.warnings.some((m) => /^preview：site-home ja：G2/.test(m)))
-  assert.ok(plan.warnings.some((m) => /^preview：site-home en：G5/.test(m)))
+  // 2026-11-06 起 en 有隱私權頁（site-policies），G5 不再警告；ja 還缺
+  assert.ok(!plan.warnings.some((m) => /^preview：site-home en：G5/.test(m)))
+  assert.ok(plan.warnings.some((m) => /^preview：site-home ja：G5/.test(m)))
   // preview 一律用共用頁首頁尾（effectiveShell），shell 是 legacy 不再另外警告
   assert.ok(!plan.warnings.some((m) => /shell 是 'legacy'/.test(m)))
   // live 的 P1：沒有頁、沒有問題
