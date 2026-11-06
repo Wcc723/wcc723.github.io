@@ -16,6 +16,7 @@ export const LEGAL_PAGES = {
     'zh-tw': 'https://www.casper.tw/privacy/',
     en: 'https://www.casper.tw/site-policies/privacy/',
     ja: 'https://www.casper.tw/site-policies/ja/privacy/',
+    ko: 'https://www.casper.tw/site-policies/ko/privacy/',
   },
   terms: { 'zh-tw': 'https://www.casper.tw/terms/' },
   contact: { 'zh-tw': 'https://www.casper.tw/contact/' },
@@ -32,6 +33,11 @@ export const LEGAL_DECISIONS = [
   // 德文仍要有同語言的隱私權說明（privacy 旗標照舊）。之後要專門拓展德國市場（德文關鍵字廣告、德國專屬頁面）前，先請熟悉德國網路法的律師確認，再改這一筆。
   { locale: 'de', flag: 'impressum', decision: 'waived', decidedBy: 'casper', decidedAt: '2026-11-04',
     note: '只提供德文翻譯，不專門經營德國市場；專門拓展德國市場前先請律師確認 DDG 第 5 條義務' },
+  // 站長 2026-11-06：看過韓文隱私權處理方針（照 PIPA 第 28 條之 8、第 30 條的項目寫，含境外移轉與聯絡信保存期限）的中文回譯，
+  // 回「OK，全部照建議」。照 0010 是 AI 交叉審，不是律師確認；境外移轉的法律依據條文、處理委託沒寫，列在審稿包的剩餘風險，
+  // 人工審稿預算的第一順位仍是韓文隱私權（0010）
+  { locale: 'ko', flag: 'pipa', decision: 'confirmed', decidedBy: 'casper', decidedAt: '2026-11-06',
+    note: '0010 的 AI 交叉審加站長看回譯；不是律師確認，要買人工審稿時韓文隱私權排第一' },
 ]
 
 export const LEGAL_LEVELS = ['required', 'disclose', 'confirm']
