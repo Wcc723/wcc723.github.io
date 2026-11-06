@@ -1,22 +1,12 @@
 /*
  * 共用頁首頁尾在部落格裡的補充規則（主站首頁規格 E.7、G.5）。只由 components/SharedHeader.vue、SharedFooter.vue import，
  * 跟著 __CS_SHARED_SHELL__ 進出建置（preview 建置與 S 版起），P1、P2 的正式 CSS 沒有這支。
- * 下面三組規則都不分層，都只作用在 .cs-hdr、.cs-ftr 裡面；toolcards.test.mjs 驗。
+ * 下面兩組規則都不分層，都只作用在 .cs-hdr、.cs-ftr 裡面；toolcards.test.mjs 驗。
+ * 原本的第 1 組（連結色 revert-layer）S 版刪掉：base.css 已經包進 @layer cs.base，共用元件的連結色不會再被蓋掉。
  */
 
 /*
- * 1. 連結色（S 版刪）：共用元件的樣式在 @layer cs.components；部落格的 base.css 還沒包進 @layer cs.base（S 版才包，E.7），
- * 未分層的 :where(.site) a 與 :where(.site) a:hover 永遠蓋過圖層裡的規則，頁首的字標、導覽、語言選單與頁尾連結會全部變成連結藍。
- * 這裡讓兩區裡連結的 color 退回圖層裡的值（revert-layer），選擇器比 :where(.site) a 多一個 class，所以會贏。
- * S 版把 base.css 包進 cs.base 之後刪掉這一條。
- */
-:where(.site) :is(.cs-hdr, .cs-ftr) a,
-:where(.site) :is(.cs-hdr, .cs-ftr) a:hover {
-  color: revert-layer;
-}
-
-/*
- * 2. 窄的平板寬度收起 ⌘K 的字（S 版後照留）：768px 起導覽攤開，繁中頁的 actions 插槽有 ⌘K（layout.css 的 .search-btn 在 760px 以上
+ * 1. 窄的平板寬度收起 ⌘K 的字（S 版後照留）：768px 起導覽攤開，繁中頁的 actions 插槽有 ⌘K（layout.css 的 .search-btn 在 760px 以上
  * 至少 200px 寬）、深淺色鈕，再加上語言選單，「工具、文章、關於」放不下，關於會被導覽的捲動框藏起來，選單鈕這時又是收起來的。
  * 768px 到 900px 讓 ⌘K 跟 760px 以下一樣只剩放大鏡（aria-label 照舊），選擇器比 layout.css 的 .search-btn 多一個 class，所以會贏。
  */
@@ -35,7 +25,7 @@
 }
 
 /*
- * 3. 深色版的站徽描邊（S 版後照留）：小幽靈只放在淺底上，深色版靠一圈淺色貼紙描邊維持這條規則。
+ * 2. 深色版的站徽描邊（S 版後照留）：小幽靈只放在淺底上，深色版靠一圈淺色貼紙描邊維持這條規則。
  * 舊頁首頁尾的站徽是 GhostImg small（.ghost--small，base.css）；共用元件的 .cs-hdr__logo、.cs-ftr__logo 沒有那個 class，
  * 這裡給一樣的 1px 描邊，值跟 base.css 的 html.dark .ghost--small 相同（toolcards.test.mjs 驗）。
  */

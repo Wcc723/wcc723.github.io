@@ -5,7 +5,7 @@ import { SITE_TITLE_LEGACY, SITE_URL } from './theme/shared/shell/site.mjs'
 import { postRewrites, unpublishedFiles } from './lib/posts.mjs'
 import { markdownOptions } from './lib/markdown.mjs'
 import { pageDataFor } from './lib/pagedata.mjs'
-import { siteHead, seoPageData, transformHtml } from './lib/seo.mjs'
+import { siteHeadFor, seoPageData, transformHtml } from './lib/seo.mjs'
 import { buildFeeds, sitemapTransformItems } from './lib/feeds.mjs'
 import { buildSiteHomePlan, effectiveShell, vitepressLocales } from './lib/site-home.mjs'
 import { themeHead } from './theme/head.mjs'
@@ -60,7 +60,7 @@ export default defineConfig({
   // movie.ogg、/xxx/xx（示範用的壞圖）這類網址不轉成 import，否則 build 會因為找不到檔案而失敗。
   vue: { template: { transformAssetUrls: { includeAbsolute: false } } },
   // preview 才多一段：本機預覽點 https://www.casper.tw/ 的站內連結留在 localhost，tools.json 裡工具的網址除外（lib/preview-links.mjs）
-  head: [...siteHead, ...themeHead, ...previewHead(homePlan)],
+  head: [...siteHeadFor(sharedShell ? 'shared' : 'legacy'), ...themeHead, ...previewHead(homePlan)],
   transformPageData(pageData, ctx) {
     pageDataFor(pageData, ctx, srcDir, { plan: homePlan })
     seoPageData(pageData, ctx, { plan: homePlan })

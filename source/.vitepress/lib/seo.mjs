@@ -73,21 +73,35 @@ const FB_PIXEL_SNIPPET =
   `fbq('init','${FB_PIXEL_ID}');fbq('track','PageView')})()`
 
 /**
+ * S 版起的 GA4（主站首頁規格 D.5、G.5 第 2 點）：shared/shell/analytics.mjs 的 ga4HeadHtml()，
+ * EEA、英國、瑞士 consent default denied，繁中頁 content_group 是 blog、不帶 page_locale。
+ * VitePress 的 head 項目自己包 <script>，這裡只取裡面那段。
+ */
+export const GA4_SHARED_SNIPPET = ga4HeadHtml({ contentGroup: 'blog' }).replace(/^<script>\n/, '').replace(/\n<\/script>$/, '')
+
+/**
  * 每一頁都一樣的 head。VitePress 把它放在各頁 frontmatter.head 前面（mergeHead）。
  * 字型、favicon、深淺色 script 在 theme/head.mjs；highlight.js 的 CSS 不再載入（Shiki 在建置時上色）。
+ * shell 是 lib/site-home.mjs 的 effectiveShell()：'shared'（S 版起，或 preview）用 consent 版的 GA4，'legacy' 用 P2 的片段。
  */
-export const siteHead = [
-  ['meta', { property: 'og:site_name', content: SITE_TITLE_LEGACY }],
-  ['meta', { property: 'og:locale', content: OG_LOCALE }],
-  ['meta', { property: 'article:author', content: ARTICLE_AUTHOR }],
-  ['meta', { name: 'twitter:card', content: 'summary' }],
-  ['meta', { property: 'fb:app_id', content: FB_APP_ID }],
-  ['link', { rel: 'alternate', href: '/atom.xml', title: SITE_TITLE_LEGACY, type: 'application/atom+xml' }],
-  ['script', {}, GA4_SNIPPET],
-  ['script', {}, FB_PIXEL_SNIPPET],
-  // google-adsense-account meta 與靜態 loader；不該載入的頁由 transformHtml 拿掉 loader，meta 一律保留
-  ...adsenseHead(),
-]
+export function siteHeadFor(shell) {
+  if (shell !== 'shared' && shell !== 'legacy') throw new Error(`siteHeadFor：shell 要是 'shared' 或 'legacy'，收到 ${shell}`)
+  return [
+    ['meta', { property: 'og:site_name', content: SITE_TITLE_LEGACY }],
+    ['meta', { property: 'og:locale', content: OG_LOCALE }],
+    ['meta', { property: 'article:author', content: ARTICLE_AUTHOR }],
+    ['meta', { name: 'twitter:card', content: 'summary' }],
+    ['meta', { property: 'fb:app_id', content: FB_APP_ID }],
+    ['link', { rel: 'alternate', href: '/atom.xml', title: SITE_TITLE_LEGACY, type: 'application/atom+xml' }],
+    ['script', {}, shell === 'shared' ? GA4_SHARED_SNIPPET : GA4_SNIPPET],
+    ['script', {}, FB_PIXEL_SNIPPET],
+    // google-adsense-account meta 與靜態 loader；不該載入的頁由 transformHtml 拿掉 loader，meta 一律保留
+    ...adsenseHead(),
+  ]
+}
+
+/** P2 的 head（legacy）；測試與 S 之前的比對用 */
+export const siteHead = siteHeadFor('legacy')
 
 // ---------------------------------------------------------------------------
 // 小工具
@@ -517,6 +531,15 @@ export function seoPageData(pageData, ctx = {}, { plan = EMPTY_HOME_PLAN } = {})
     fm.ads = shouldLoadAds({ type, adsFalse: fm.ads === false })
     return null
   }
+  if (type === 'not-found') {
+    // S 版起有 source/404.md，404 也會經過這裡（主站首頁規格 E.5）：只寫 title、description，不加任何 fm.head，
+    // 404.html 的 <head> 跟 P2 相同（transformHtml 的 404 分支另外補 noindex、拿掉 loader）
+    pageData.title = NOT_FOUND_TITLE
+    pageData.titleTemplate = false
+    pageData.description = NOT_FOUND_DESCRIPTION
+    fm.ads = false
+    return null
+  }
   const content = type === 'post' || type === 'about' ? readContent(ctx.siteConfig?.srcDir, pageData.filePath) : ''
   const seo = pageSeo({ type, url, fm, inferredTitle: pageData.title, content })
 
@@ -548,6 +571,13 @@ export function seoPageData(pageData, ctx = {}, { plan = EMPTY_HOME_PLAN } = {})
  *    「這頁找不到」和回首頁的連結，版面根元素的 vp-raw 也在（計畫：每一頁都要過 SSR 檢查）。
  *    瀏覽器端照樣用 createSSRApp 掛載，內容相同就直接 hydrate。
  */
+/** 拿掉 <script type="module" …></script> 與 <link rel="modulepreload" …>（404 不 hydrate，E.5） */
+export function stripHydration(html) {
+  return html
+    .replace(/<script\b[^>]*\btype="module"[^>]*>[\s\S]*?<\/script>\s*/g, '')
+    .replace(/<link\b[^>]*\brel="modulepreload"[^>]*>\s*/g, '')
+}
+
 export function transformHtml(code, id, ctx = {}) {
   let html = code
   const pageData = ctx.pageData ?? {}
@@ -572,6 +602,9 @@ export function transformHtml(code, id, ctx = {}) {
     else html = html.replace('</head>', () => `${description}\n</head>`)
     html = stripAdsLoader(html)
     if (!/<meta\s+name="robots"/i.test(html)) html = html.replace('</head>', () => '<meta name="robots" content="noindex">\n</head>')
+    // S 版起（source/404.md 寫了 fm.site）404 不 hydrate（主站首頁規格 E.5）：瀏覽器端遇到不存在的網址一律用 VitePress 內建的
+    // notFoundPageData，沒有 fm.site，hydrate 會把 SSR 的共用頁首頁尾換成空的。拿掉 module script 與 modulepreload，頁面停在 SSR 的 HTML
+    if (fm.site) html = stripHydration(html)
     return html
   }
 

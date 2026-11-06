@@ -3,6 +3,12 @@
  * 元素選擇器只放在 html、body 和 box-sizing；本文的元素樣式全部在 prose.css，限定在 .prose 底下。
  */
 
+/*
+ * S 版起整份在 @layer cs.base（主站首頁規格 E.7）：圖層順序在 layers.css（theme/index.ts 第一個 import）。
+ * 不包的話，這裡未分層的 :where(.site) a 會蓋掉共用頁首頁尾在 @layer cs.components 的連結色。
+ * layout.css、pages.css、prose.css 不分層，照舊排在這份後面、優先於這份。
+ */
+@layer cs.base {
 *,
 *::before,
 *::after {
@@ -301,4 +307,5 @@ html.dark .ghost--small {
   .c3d.is-link:focus-within {
     transform: none;
   }
+}
 }

@@ -74,23 +74,26 @@ test('site-home.css：preview 的提示條與工具區提示的樣式已拿掉�
 
 const norm = (v) => v.split(/\s+/).join(' ').trim()
 
-test('shared-shell.css：只有三組規則（四條），每個選擇器都限定在 .cs-hdr 或 .cs-ftr 裡面', () => {
+test('shared-shell.css：只有兩組規則（三條），每個選擇器都限定在 .cs-hdr 或 .cs-ftr 裡面', () => {
   const all = rules(read('shared-shell.css'))
-  assert.equal(all.length, 4)
+  assert.equal(all.length, 3)
   for (const r of all) for (const s of splitSelectors(r.selector)) assert.match(s, /\.cs-(?:hdr|ftr)(?:__[a-z-]+)?(?![\w-])/, `選擇器 ${s} 沒有限定在共用頁首頁尾`)
-  assert.deepEqual([...new Set(all.map((r) => r.at))], ['', '@media (min-width: 768px) and (max-width: 900px)'])
+  assert.deepEqual([...new Set(all.map((r) => r.at))], ['@media (min-width: 768px) and (max-width: 900px)', ''])
 })
 
-test('shared-shell.css：連結只把 color 退回圖層', () => {
-  const all = rules(read('shared-shell.css')).filter((r) => r.at === '' && r.selector.includes(' a'))
-  assert.equal(all.length, 1)
-  const sels = splitSelectors(all[0].selector)
-  assert.deepEqual(sels, [':where(.site) :is(.cs-hdr, .cs-ftr) a', ':where(.site) :is(.cs-hdr, .cs-ftr) a:hover'])
-  assert.deepEqual(declarations(all[0].body), [['color', 'revert-layer']])
-  // 要比 base.css 的 :where(.site) a、:where(.site) a:hover 具體：多一個 :is(.cs-hdr, .cs-ftr)（一個 class 的權重）
-  const base = read('base.css')
+test('S 版：base.css 整份包進 @layer cs.base，shared-shell.css 不再有連結色的 revert-layer', () => {
+  // 共用頁首頁尾的連結色在 @layer cs.components；base.css 的 :where(.site) a 進了 cs.base，就不會再蓋掉它（主站首頁規格 E.7、G.5 第 1 點）
+  assert.ok(!rules(read('shared-shell.css')).some((r) => r.selector.includes(' a')))
+  assert.ok(!/revert-layer/.test(read('shared-shell.css').replace(/\/\*[\s\S]*?\*\//g, '')))
+  const base = read('base.css').replace(/\/\*[\s\S]*?\*\//g, '').trim()
+  assert.ok(base.startsWith('@layer cs.base {'), 'base.css 的第一條規則要是 @layer cs.base {')
+  assert.ok(base.endsWith('}'))
   assert.match(base, /:where\(\.site\) a \{/)
-  assert.match(base, /:where\(\.site\) a:hover \{/)
+  // 圖層順序：layers.css 是 theme/index.ts 的第一個 import
+  const index = fs.readFileSync(new URL('../index.ts', import.meta.url), 'utf8')
+  const firstImport = /^import '([^']+)'/m.exec(index.replace(/\/\/.*$/gm, ''))
+  assert.equal(firstImport?.[1], './styles/layers.css')
+  assert.match(read('layers.css'), /@layer cs\.base, cs\.components, cs\.utilities;/)
 })
 
 test('shared-shell.css：768px 到 900px 頁首的 ⌘K 只剩放大鏡，跟 layout.css 760px 以下的樣子相同', () => {

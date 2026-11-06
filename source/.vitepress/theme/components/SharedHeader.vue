@@ -7,6 +7,7 @@
 //   - actions 插槽：繁中頁放 ⌘K（SearchButton，沒有工具時字是 search.openPosts，有工具後是 search.open）與深淺色鈕；
 //     外語頁不放 ⌘K（索引只有中文文章，search.* 的 audience 是 blog），只放深淺色鈕，title 跟 aria-label 一樣用 theme.toggle
 //   - 元件內建的 search、themeToggle 不用：那兩顆是給工具的，字與快捷鍵提示跟部落格現在的不同
+//   - compact（404，主站首頁規格 E.5）：導覽收進 <details> 選單，沒有 JS 也能開關；404 不 hydrate，actions 插槽不放 ⌘K 與深淺色鈕
 import { computed } from 'vue'
 import SiteHeader from '../shared/shell/SiteHeader.vue'
 import { BLOG_LOCALES } from '../shared/shell/i18n/locales.mjs'
@@ -15,6 +16,7 @@ import SearchButton from './SearchButton.vue'
 import ThemeToggle from './ThemeToggle.vue'
 import '../styles/shared-shell.css'
 
+const props = withDefaults(defineProps<{ compact?: boolean }>(), { compact: false })
 const site = useSite()
 const blog = computed(() => !!site.value && BLOG_LOCALES.includes(site.value.locale))
 const searchLabel = computed(() => (blog.value ? site.value!.text(site.value!.tools.length ? 'search.open' : 'search.openPosts') : ''))
@@ -32,8 +34,9 @@ const themeLabel = computed(() => site.value?.text('theme.toggle') ?? '')
     :current-url="site.canonical"
     :section="site.section || null"
     :site-homes="site.siteHomes"
+    :compact="props.compact"
   >
-    <template #actions>
+    <template v-if="!props.compact" #actions>
       <SearchButton v-if="blog" :label="searchLabel" />
       <ThemeToggle :label="themeLabel" :title="blog ? undefined : themeLabel" />
     </template>

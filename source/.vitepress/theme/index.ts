@@ -1,7 +1,9 @@
 import { defineAsyncComponent, type App, type Component } from 'vue'
 import Layout from './Layout.vue'
 
-// v4 外觀：token 正本（shared/，不手改）→ 主題變數與深色版 → 字型 → 基礎與共用元件 → 頁首頁尾 → 頁型 → 本文
+// v4 外觀：圖層順序 → token 正本（shared/，不手改）→ 主題變數與深色版 → 字型 → 基礎與共用元件 → 頁首頁尾 → 頁型 → 本文
+// layers.css 一定第一個（S 版起，主站首頁規格 E.7）：@layer 的順序由第一次出現決定，base.css 在 cs.base，共用頁首頁尾在 cs.components
+import './styles/layers.css'
 import './shared/tokens/tokens.css'
 import './styles/vars.css'
 import './styles/fonts.css'

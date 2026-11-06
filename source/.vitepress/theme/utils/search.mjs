@@ -41,6 +41,20 @@ export function buildToolIndex(tools) {
   }))
 }
 
+/**
+ * S 版起的工具：fm.site.tools（shared/shell/tools.mjs 的 siteToolLinks()，主站首頁規格 F.7）。
+ * 名稱是頁面語系的 label，連結用 href（完整網址，不經 withBase），keywords 照 tool-card 的。
+ */
+export function buildSiteToolIndex(links) {
+  return (Array.isArray(links) ? links : []).map((t) => ({
+    kind: 'tool',
+    title: t.label,
+    url: t.href,
+    description: t.summary ?? '',
+    hay: [t.label, t.summary ?? '', ...(t.keywords ?? [])].join(' ').toLowerCase()
+  }))
+}
+
 /** 空白分開的每個詞都要出現；工具排在文章前面，其餘照原本順序（文章是新到舊） */
 export function searchIndex(entries, query, limit = 50) {
   const terms = String(query ?? '').toLowerCase().split(/\s+/).filter(Boolean)

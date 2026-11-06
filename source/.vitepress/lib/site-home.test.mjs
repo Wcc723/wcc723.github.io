@@ -95,8 +95,8 @@ const gateCtx = (over = {}) => {
 }
 const gates = (list) => [...new Set(list.map((m) => /：(G\d)/.exec(m)?.[1]).filter(Boolean))].sort()
 
-test('site.config.mjs：P1 全部關著，validateSiteConfig 通過', () => {
-  assert.equal(siteConfig.shell, 'legacy')
+test('site.config.mjs：S 版起 shell 是 shared、外語首頁還沒開，validateSiteConfig 通過', () => {
+  assert.equal(siteConfig.shell, 'shared')
   assert.deepEqual(siteConfig.home.locales, [])
   assert.equal(siteConfig.home.sourceLocale, 'en')
   assert.deepEqual(siteConfig.home.roadmap, ['en', 'ja', 'ko', 'de', 'zh-cn', 'es'])
@@ -119,7 +119,7 @@ test('validateSiteConfig：每條規則', () => {
   bad(config({ home: { roadmap: ['en', 'zh-tw'] } }), /不能有 zh-tw/)
   bad(config({ home: { roadmap: ['en', 'en'] } }), /重複列了 en/)
   bad(config({ home: { locales: ['ja'] } }), /一定要有 en/)
-  bad(config({ home: { locales: ['en'] } }), /shell 一定是 'shared'/)
+  bad(config({ shell: 'legacy', home: { locales: ['en'] } }), /shell 一定是 'shared'/)
   bad(config({ home: { locales: ['fr'] } }), /登錄表以外的語系/)
   bad(config({ home: { roadmap: ['en'], locales: ['en', 'ja'] } }), /ja 不在 home\.roadmap/)
   bad(config({ shell: 'shared' }), /外殼字串 zh-tw 是 unreviewed/)

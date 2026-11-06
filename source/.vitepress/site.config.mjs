@@ -4,7 +4,7 @@
 export default {
   // 'legacy'：部落格自己的頁首頁尾（P1、P2）；'shared'：shared/shell 的共用元件（S 版起）。
   // S 穩定後刪掉 legacy 元件與這個欄位（K.3）
-  shell: 'legacy',
+  shell: 'shared',
   home: {
     // 外語首頁文案的正本語系（I.1）
     sourceLocale: 'en',

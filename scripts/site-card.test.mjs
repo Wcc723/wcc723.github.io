@@ -26,10 +26,10 @@ const run = (argv, opts) => {
   return { code, out: logs.join('\n') }
 }
 
-test('提交的 site-card.json 跟 site.config.mjs 與 live 計畫一致（P1：legacy、沒有外語首頁）', () => {
+test('提交的 site-card.json 跟 site.config.mjs 與 live 計畫一致（S：shared、沒有外語首頁）', () => {
   const card = JSON.parse(fs.readFileSync(CARD_FILE, 'utf8'))
   assert.deepEqual(card, siteCard({ config: siteConfig, plan: buildSiteHomePlan({ config: siteConfig, env: {} }) }))
-  assert.deepEqual(card, { $comment: CARD_COMMENT, schema: 1, shell: 'legacy', siteHomes: [] })
+  assert.deepEqual(card, { $comment: CARD_COMMENT, schema: 1, shell: 'shared', siteHomes: [] })
   assert.equal(run(['--check']).code, 0)
 })
 
@@ -38,7 +38,7 @@ test('產生：shell 照設定，siteHomes 照 plan.published；--check 比對�
   assert.equal(run([], { file, config: shared, plan: plan(['en', 'ja']) }).code, 0)
   assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { $comment: CARD_COMMENT, schema: 1, shell: 'shared', siteHomes: ['en', 'ja'] })
   assert.equal(run(['--check'], { file, config: shared, plan: plan(['en', 'ja']) }).code, 0)
-  const stale = run(['--check'], { file, config: siteConfig, plan: plan(['en', 'ja']) })
+  const stale = run(['--check'], { file, config: { ...siteConfig, shell: 'legacy' }, plan: plan(['en', 'ja']) })
   assert.equal(stale.code, 1)
   assert.match(stale.out, /site-card\.json 過期/)
 }))

@@ -14,6 +14,9 @@ import { categoryDir, tagSlug } from './posts.mjs'
 import { NOT_FOUND_DESCRIPTION, NOT_FOUND_TITLE } from '../theme/head.mjs'
 import {
   siteHead,
+  siteHeadFor,
+  stripHydration,
+  GA4_SHARED_SNIPPET,
   seoPageData,
   transformHtml,
   pageSeo,
@@ -735,4 +738,54 @@ test('繁中首頁 /：有外語首頁時才加叢集的 hreflang 與 og:locale:
 
 test('site-home 沒有 fm.site 時 seoPageData 丟錯', () => {
   assert.throws(() => seoPageData(makePageData({ relativePath: 'en/index.md', frontmatter: {} }), ctx), /是 site-home，要先由 lib\/pagedata\.mjs 寫 fm\.site/)
+})
+
+test('siteHeadFor：S 版（shared）的 GA4 是 ga4HeadHtml() 的 consent 版，content_group blog、不帶 page_locale；其他項目跟 legacy 相同', () => {
+  const shared = siteHeadFor('shared')
+  const legacy = siteHeadFor('legacy')
+  assert.deepEqual(legacy, siteHead)
+  assert.equal(shared.length, legacy.length)
+  const ga = shared.filter(([t]) => t === 'script').map(([, , inner]) => inner).find((s) => s.includes('G-97433H4032'))
+  assert.equal(ga, GA4_SHARED_SNIPPET)
+  assert.ok(!ga.includes('<script>') && !ga.includes('</script>'))
+  assert.match(ga, /^if \(location\.hostname === "www\.casper\.tw"\) \{/)
+  // consent default 在 config 之前
+  assert.ok(ga.indexOf("gtag('consent', 'default'") < ga.indexOf("gtag('config'"))
+  assert.match(ga, /gtag\('config', "G-97433H4032", \{"content_group":"blog"\}\)/)
+  assert.ok(!ga.includes('page_locale'))
+  // GA4 以外逐項相同
+  const strip = (head) => head.filter(([t, , inner]) => !(t === 'script' && String(inner).includes('G-97433H4032')))
+  assert.deepEqual(strip(shared), strip(legacy))
+  assert.throws(() => siteHeadFor('new'), /shell 要是/)
+})
+
+test('seoPageData：S 版的 404（source/404.md）只寫 title、description，不加 head、不載廣告', () => {
+  const pageData = { relativePath: '404.md', title: '', frontmatter: { pageType: 'not-found' } }
+  assert.equal(seoPageData(pageData, {}), null)
+  assert.equal(pageData.title, NOT_FOUND_TITLE)
+  assert.equal(pageData.titleTemplate, false)
+  assert.equal(pageData.description, NOT_FOUND_DESCRIPTION)
+  assert.equal(pageData.frontmatter.head, undefined)
+  assert.equal(pageData.frontmatter.ads, false)
+})
+
+test('transformHtml：S 版的 404（有 fm.site）拿掉 module script 與 modulepreload；沒有 fm.site 時照舊', () => {
+  const html = [
+    '<html><head><title>404</title>',
+    '<link rel="modulepreload" href="/assets/chunks/framework.abc12345.js">',
+    '<link rel="stylesheet" href="/assets/style.abc12345.css">',
+    '</head><body><div id="app"><main>x</main></div>',
+    '<script type="module" src="/assets/app.abc12345.js"></script>',
+    '<script>window.x=1</script>',
+    '</body></html>'
+  ].join('\n')
+  const s = transformHtml(html, '404.html', { page: '404.md', pageData: { frontmatter: { pageType: 'not-found', site: { locale: 'zh-tw' } } } })
+  assert.ok(!s.includes('modulepreload'))
+  assert.ok(!s.includes('type="module"'))
+  assert.ok(s.includes('rel="stylesheet"'))
+  assert.ok(s.includes('<script>window.x=1</script>'))
+  assert.ok(s.includes('<meta name="robots" content="noindex">'))
+  const legacy = transformHtml(html, '404.html', { page: '404.md', pageData: { frontmatter: { pageType: 'not-found' } } })
+  assert.ok(legacy.includes('modulepreload') && legacy.includes('type="module"'))
+  assert.equal(stripHydration('<script type="module">import "x"</script><p>a</p>'), '<p>a</p>')
 })

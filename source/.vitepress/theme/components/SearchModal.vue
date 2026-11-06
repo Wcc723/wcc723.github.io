@@ -1,18 +1,21 @@
 <script setup lang="ts">
-// ⌘K 搜尋：打開時才 fetch /content.json（只比對標題、分類、標籤），再併入已上線的工具（theme/tools.mjs）。
+// ⌘K 搜尋：打開時才 fetch /content.json（只比對標題、分類、標籤），再併入已上線的工具。
+// 工具：S 版起讀 fm.site.tools（siteToolLinks() 的結果，主站首頁規格 F.7）；沒有 fm.site 的頁（S 之前）照舊讀 theme/tools.mjs。
 // 快捷鍵：⌘K 或 Ctrl K 開關，/ 打開，Esc 關閉；↑↓ 切換結果，Enter 開啟（整頁載入）。
 // v-if 控制，SSR 不輸出這個視窗；它放在版面根元素 .vp-raw 裡面，結果連結不會被 VitePress 的路由攔下。
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { withBase } from 'vitepress'
 import { useSearch } from '../composables/search'
-import { buildPostIndex, buildToolIndex, searchIndex, highlightParts } from '../utils/search.mjs'
+import { buildPostIndex, buildSiteToolIndex, buildToolIndex, searchIndex, highlightParts } from '../utils/search.mjs'
 import { liveTools } from '../tools.mjs'
+import { useSite } from '../composables/site'
 
 type Entry = { kind: 'post' | 'tool'; title: string; url: string; date?: string; category?: string; description?: string; hay: string }
 
 const LIMIT = 50
 const { open, openSearch, closeSearch } = useSearch()
-const tools: Entry[] = buildToolIndex(liveTools())
+const site = useSite()
+const tools = computed<Entry[]>(() => (site.value ? buildSiteToolIndex(site.value.tools) : buildToolIndex(liveTools())))
 
 const query = ref('')
 const index = ref<Entry[] | null>(null)
@@ -25,13 +28,13 @@ let loading = false
 
 const postCount = computed(() => (index.value ? index.value.filter((e) => e.kind === 'post').length : 0))
 const results = computed<Entry[]>(() => (index.value ? searchIndex(index.value, query.value, LIMIT) : []))
-const placeholder = tools.length ? '搜尋文章或工具' : '搜尋文章標題、分類或標籤'
+const placeholder = computed(() => (tools.value.length ? '搜尋文章或工具' : '搜尋文章標題、分類或標籤'))
 const status = computed(() => {
   if (failed.value) return '無法載入搜尋索引，請稍後再試。'
   if (!index.value) return '載入中…'
   const q = query.value.trim()
   if (!q) return `輸入關鍵字開始搜尋，比對標題、分類和標籤，共 ${postCount.value} 篇文章。`
-  if (!results.value.length) return `找不到「${q}」相關的文章${tools.length ? '或工具' : ''}。`
+  if (!results.value.length) return `找不到「${q}」相關的文章${tools.value.length ? '或工具' : ''}。`
   return `「${q}」找到 ${results.value.length} 筆${results.value.length >= LIMIT ? `，只列出前 ${LIMIT} 筆` : ''}。`
 })
 
@@ -42,7 +45,7 @@ async function load() {
   try {
     const res = await fetch(withBase('/content.json'))
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    index.value = [...tools, ...buildPostIndex(await res.json())]
+    index.value = [...tools.value, ...buildPostIndex(await res.json())]
   } catch {
     failed.value = true
   } finally {

@@ -1376,9 +1376,17 @@ const homeCodeOf = (url) => SITE_HOME_CODES.find((c) => url === `/${c}/`) ?? nul
 const firstElement = (html, name, pred = () => true) => elementsWhere(html, (t) => t.name === name && pred(t))[0] ?? null
 /** id 是 tools 的元素（首頁與外語首頁的工具區） */
 const toolsRegionOf = (html) => elementsWhere(mainOf(html), (t) => t.attrs.id === 'tools')[0] ?? null
+/**
+ * 站的頁尾：最後一個 <footer>（版面根元素裡排在 <main> 後面）。文章內文的示範 HTML 也可能有 <footer>
+ * （例：/css/2013/10/25/css-flex-2/），取第一個會抓到內文那個（dist-diff 的 chromeOf 同規則）
+ */
+const siteFooterOf = (html) => {
+  const all = elementsWhere(html, (t) => t.name === 'footer')
+  return all[all.length - 1] ?? null
+}
 /** 頁尾的工具組（共用頁尾 nav.cs-ftr__group--tools） */
 const footerToolsOf = (html) => {
-  const footer = firstElement(html, 'footer')
+  const footer = siteFooterOf(html)
   return footer ? elementsWhere(footer.outer, (t) => t.name === 'nav' && hasClass(t.attrs, 'cs-ftr__group--tools'))[0] ?? null : null
 }
 
@@ -1657,7 +1665,7 @@ export function checkLocales(ctx) {
   // L13：外語首頁頁尾的法務連結
   for (const h of homes) {
     if (!h.d) continue
-    const footer = firstElement(h.d.html, 'footer')
+    const footer = siteFooterOf(h.d.html)
     const links = anchorsIn(footer?.outer ?? '')
     const l = getLocale(h.code)
     const privacy = ctx.legal.pages.privacy?.[h.code]
@@ -1841,7 +1849,7 @@ export function checkTools(ctx) {
       if (!m || !slugs.has(m[1]) || !l.href.endsWith('/')) fail(c, `T2：${d.url} 的工具連結 ${show(l.href)} 要是 https://www.casper.tw/<slug>/ 開頭、帶尾斜線`)
     }
     // T3：頁首、頁尾、#tools、外語首頁沒有 pocketool.app
-    const scopes = d.type === 'site-home' ? [d.html.slice(headOf(d.html).length)] : [firstElement(d.html, 'header')?.outer, firstElement(d.html, 'footer')?.outer, toolsRegionOf(d.html)?.outer]
+    const scopes = d.type === 'site-home' ? [d.html.slice(headOf(d.html).length)] : [firstElement(d.html, 'header')?.outer, siteFooterOf(d.html)?.outer, toolsRegionOf(d.html)?.outer]
     for (const html of scopes.filter(Boolean)) for (const a of anchorsIn(html)) if (/pocketool\.app/i.test(a.href ?? '')) fail(c, `T3：${d.url} 有連到口袋工具的連結 ${a.href}（口袋工具的工具不搬、不雙掛）`)
     // T4：繁中頁頁首的「工具」連結存在若且唯若 tools.json 有工具
     if (d.type !== 'site-home') {

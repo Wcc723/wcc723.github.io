@@ -52,7 +52,7 @@ const skipText = computed<string>(() => (__CS_SHARED_SHELL__ && frontmatter.valu
 <template>
   <div class="vp-raw site" :class="rootClass">
     <a class="skip-link" href="#main">{{ skipText }}</a>
-    <component :is="SharedHeader" v-if="sharedShell" />
+    <component :is="SharedHeader" v-if="sharedShell" :compact="pageType === 'not-found'" />
     <SiteHeader v-else :page-type="pageType" />
     <main id="main" class="site-main" tabindex="-1">
       <component :is="view" />

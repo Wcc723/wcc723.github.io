@@ -72,7 +72,8 @@ test('Layout.vue：共用頁首頁尾包在 __CS_SHARED_SHELL__ 裡，用動態 
   const template = src.slice(src.indexOf('<template>'))
   assert.ok(!template.includes('__CS_SHARED_SHELL__'))
   // false 時只輸出舊的頁首頁尾：v-if 的下一個元素就是 v-else，不多一個註解節點
-  assert.match(template, /<component :is="SharedHeader" v-if="sharedShell" \/>\s*<SiteHeader v-else /)
+  // 404 用 compact 頁首（主站首頁規格 E.5）
+  assert.match(template, /<component :is="SharedHeader" v-if="sharedShell" :compact="pageType === 'not-found'" \/>\s*<SiteHeader v-else /)
   assert.match(template, /<component :is="SharedFooter" v-if="sharedShell" \/>\s*<SiteFooter v-else \/>/)
   // 跳到主內容：共用外殼時用外殼字串，否則是原本的字
   assert.match(src, /'跳到主要內容'/)

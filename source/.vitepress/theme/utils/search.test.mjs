@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import fs from 'node:fs'
 import { fileURLToPath } from 'node:url'
-import { buildPostIndex, buildToolIndex, searchIndex, highlightParts } from './search.mjs'
+import { buildPostIndex, buildSiteToolIndex, buildToolIndex, searchIndex, highlightParts } from './search.mjs'
 
 const baselineJson = fileURLToPath(new URL('../../../../baseline/hexo-2026-11-03/content.json', import.meta.url))
 
@@ -72,4 +72,13 @@ test('highlightParts：切出命中的片段，不分大小寫', () => {
     { text: 'X', hit: false },
     { text: 'a', hit: true }
   ])
+})
+
+test('buildSiteToolIndex：fm.site.tools（siteToolLinks()）轉成搜尋項目，連結是完整網址，比對名稱、說明與 keywords', () => {
+  const tools = buildSiteToolIndex([
+    { slug: 'sound-effects', href: 'https://www.casper.tw/sound-effects/zh-tw/', label: '音效庫', summary: '免費音效', keywords: ['MP3 音效'] }
+  ])
+  assert.deepEqual(tools, [{ kind: 'tool', title: '音效庫', url: 'https://www.casper.tw/sound-effects/zh-tw/', description: '免費音效', hay: '音效庫 免費音效 mp3 音效' }])
+  assert.equal(searchIndex(tools, 'mp3').length, 1)
+  assert.deepEqual(buildSiteToolIndex(null), [])
 })
