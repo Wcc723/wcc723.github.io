@@ -26,7 +26,7 @@ import { WEBSITE_ID, homeJsonLd } from './seo.mjs'
 import { stampFile } from '../theme/shared/shell/i18n/messages.mjs'
 import { shellRecord } from '../theme/shared/shell/i18n/review.mjs'
 import { shellKeysFor } from '../theme/shared/shell/i18n/shell-strings.mjs'
-import { LEGAL_DECISIONS, LEGAL_PAGES } from '../theme/shared/shell/i18n/legal.mjs'
+import { LEGAL_DECISIONS, LEGAL_PAGES, legalGaps } from '../theme/shared/shell/i18n/legal.mjs'
 
 const AT = '2026-11-04'
 const NAME_EN = "Casper's Sidekick"
@@ -93,8 +93,8 @@ const gateCtx = (over = {}) => {
   const i = liveInput(over)
   return { config: i.config, readHome: i.readHome, shellReview: i.shellReview, legal: i.legal, siteNameEn: i.siteNameEn, index: i.index, today: i.today, glossary: i.glossary, rootJsonLd: i.rootJsonLd }
 }
-// 已上線的外語首頁：一版加一個，跟 site.config.mjs 的 home.locales 一起改（en 2026-11-06）
-const OPENED = ['en']
+// 已上線的外語首頁：一版加一個，跟 site.config.mjs 的 home.locales 一起改（en、ja 2026-11-06）
+const OPENED = ['en', 'ja']
 
 const gates = (list) => [...new Set(list.map((m) => /：(G\d)/.exec(m)?.[1]).filter(Boolean))].sort()
 
@@ -227,9 +227,10 @@ test('preview：roadmap 裡有文案檔的每個語系都產生頁，關卡只�
   assert.ok(plan.warnings.some((m) => /site-home zh-cn：沒有 i18n\/home\/zh-cn\.json，preview 不產生這頁/.test(m)))
   // en 的文案與外殼字串 2026-11-05 審過；ja、ko、de、es 2026-11-06 照 0010 蓋章：都沒有 G2、G3
   for (const code of ['en', 'ja', 'ko', 'de', 'es']) assert.ok(!plan.warnings.some((m) => new RegExp(`^preview：site-home ${code}：G[23]`).test(m)), code)
-  // 2026-11-06 起 en 有隱私權頁（site-policies），G5 不再警告；ja 還缺
-  assert.ok(!plan.warnings.some((m) => /^preview：site-home en：G5/.test(m)))
-  assert.ok(plan.warnings.some((m) => /^preview：site-home ja：G5/.test(m)))
+  // G5 照 legal.mjs：有同語言隱私權頁（site-policies，一語一版加）的語系不警告，還沒有的才警告
+  for (const code of ['en', 'ja', 'ko', 'de', 'es']) {
+    assert.equal(plan.warnings.some((m) => new RegExp(`^preview：site-home ${code}：G5`).test(m)), legalGaps(code).length > 0, code)
+  }
   // preview 一律用共用頁首頁尾（effectiveShell），shell 是 legacy 不再另外警告
   assert.ok(!plan.warnings.some((m) => /shell 是 'legacy'/.test(m)))
   // live：只有 OPENED 的頁、沒有問題

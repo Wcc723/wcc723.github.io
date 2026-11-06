@@ -11,13 +11,17 @@ import { LOCALE, getLocale } from './locales.mjs'
 
 // kind → { 語系代碼: 網址 }。網址一律 https 完整網址、帶尾斜線（片段 # 除外）
 export const LEGAL_PAGES = {
-  // en：site-policies（2026-11-06 起回 200、<html lang="en">，site-check 確認過）。其他語系等外語法務頁做好、審過後再加
-  privacy: { 'zh-tw': 'https://www.casper.tw/privacy/', en: 'https://www.casper.tw/site-policies/privacy/' },
+  // site-policies：en 2026-11-06 起回 200；ja、ko、de、es 照 0010 審過（站長 2026-11-06 看回譯後蓋章），一語一版跟著 site-policies 的 locales 加
+  privacy: {
+    'zh-tw': 'https://www.casper.tw/privacy/',
+    en: 'https://www.casper.tw/site-policies/privacy/',
+    ja: 'https://www.casper.tw/site-policies/ja/privacy/',
+  },
   terms: { 'zh-tw': 'https://www.casper.tw/terms/' },
   contact: { 'zh-tw': 'https://www.casper.tw/contact/' },
   about: { 'zh-tw': 'https://www.casper.tw/about/' },
   impressum: {}, // de 用
-  externalTransmission: {}, // ja 用，指向日文隱私權說明的外部送信一節
+  externalTransmission: { ja: 'https://www.casper.tw/site-policies/ja/privacy/#sec-externalTransmission' }, // 日文隱私權說明的外部送信一節
 }
 
 // 站長的決定：{ locale, flag, decision: 'waived' | 'confirmed', decidedBy: 'casper', decidedAt: 'YYYY-MM-DD', note }
