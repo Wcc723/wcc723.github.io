@@ -20,7 +20,7 @@ import { NOT_FOUND_DESCRIPTION, NOT_FOUND_TITLE } from '../theme/head.mjs'
 import { getLocale } from '../theme/shared/shell/i18n/locales.mjs'
 import { siteHomeAlternates, siteHomeUrl } from '../theme/shared/shell/i18n/urls.mjs'
 import { hreflangHead, ogLocaleHead, siteName } from '../theme/shared/shell/i18n/seo.mjs'
-import { ga4HeadHtml } from '../theme/shared/shell/analytics.mjs'
+import { CONSENT_REGIONS, ga4HeadHtml } from '../theme/shared/shell/analytics.mjs'
 import LEGACY from './legacy-descriptions.json' with { type: 'json' }
 
 // ---------------------------------------------------------------------------
@@ -68,12 +68,20 @@ const GA4_SNIPPET =
 // FB Pixel：Hexo 主題的原始碼，外面同樣包一層正式主機名判斷。
 // Hexo 版另有 <noscript><img></noscript>，這裡不放：head 裡的 img 會讓不執行 script 的剖析器提早結束 head，
 // 排在後面的 canonical、og、JSON-LD 會被當成 body 的內容。
+// 站長 2026-11-06 選 A：歐洲經濟區、英國、瑞士的訪客不載。國家讀同源的 /cdn-cgi/trace（Cloudflare 的 loc=），
+// 跟 GA4 consent 用的 CONSENT_REGIONS 加上歐盟的海外領土比對；讀不到國家（請求失敗、被擋、loc=XX 未知、T1 Tor）就不載。
+// 不用時區判斷：Atlantic/Canary、Atlantic/Madeira 這些歐盟時區不在 Europe/ 底下，VPN 也會判錯。
+// 英文隱私權說明（site-policies）寫的是「歐洲訪客完全不載」，改這段要一起看那份。
+export const PIXEL_BLOCKED_REGIONS = [...CONSENT_REGIONS, 'AX', 'GF', 'GP', 'MQ', 'RE', 'YT', 'MF']
 const FB_PIXEL_SNIPPET =
   `(function(){if(location.hostname!=='${PRODUCTION_HOST}')return;` +
+  `var R=${JSON.stringify(PIXEL_BLOCKED_REGIONS)};` +
+  `fetch('/cdn-cgi/trace',{cache:'no-store',credentials:'omit'}).then(function(r){return r.ok?r.text():''}).then(function(x){` +
+  `var m=/^loc=([A-Z]{2})$/m.exec(x);if(!m||m[1]==='XX'||R.indexOf(m[1])>=0)return;` +
   `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};` +
   `if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;` +
   `s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');` +
-  `fbq('init','${FB_PIXEL_ID}');fbq('track','PageView')})()`
+  `fbq('init','${FB_PIXEL_ID}');fbq('track','PageView')}).catch(function(){})})()`
 
 /**
  * S 版起的 GA4（主站首頁規格 D.5、G.5 第 2 點）：shared/shell/analytics.mjs 的 ga4HeadHtml()，

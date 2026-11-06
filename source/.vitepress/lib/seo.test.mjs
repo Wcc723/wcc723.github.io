@@ -814,3 +814,36 @@ test('transformHtml：S 版的 404（有 fm.site）拿掉 module script 與 modu
   assert.ok(legacy.includes('modulepreload') && legacy.includes('type="module"'))
   assert.equal(stripHydration('<script type="module">import "x"</script><p>a</p>'), '<p>a</p>')
 })
+
+test('FB Pixel：讀 /cdn-cgi/trace 的國家，歐洲經濟區、英國、瑞士與讀不到國家都不載', async () => {
+  const px = siteHeadFor('shared').filter(([t]) => t === 'script').map(([, , inner]) => inner).find((s) => s.includes('152520611964487'))
+  const run = async (host, trace) => {
+    const inserted = []
+    const calls = []
+    const fakeDocument = {
+      createElement: () => ({}),
+      getElementsByTagName: () => [{ parentNode: { insertBefore: (el) => inserted.push(el.src) } }],
+    }
+    const fakeWindow = {}
+    const fetch = (url, opts) => {
+      calls.push([url, opts?.credentials])
+      return trace instanceof Error ? Promise.reject(trace) : Promise.resolve({ ok: true, text: () => Promise.resolve(trace) })
+    }
+    const fbq = (...a) => fakeWindow.fbq(...a)
+    new Function('location', 'window', 'document', 'fetch', 'fbq', px)({ hostname: host }, fakeWindow, fakeDocument, fetch, fbq)
+    await new Promise((r) => setTimeout(r, 0))
+    return { inserted, calls, queued: fakeWindow.fbq?.queue?.map((a) => [...a][0]) ?? [] }
+  }
+  const tw = await run('www.casper.tw', 'fl=1\nh=www.casper.tw\nloc=TW\ntls=TLSv1.3\n')
+  assert.deepEqual(tw.inserted, ['https://connect.facebook.net/en_US/fbevents.js'])
+  assert.deepEqual(tw.queued, ['init', 'track'])
+  assert.deepEqual(tw.calls, [['/cdn-cgi/trace', 'omit']])
+  for (const loc of ['DE', 'GB', 'CH', 'NO', 'RE', 'XX']) {
+    assert.deepEqual((await run('www.casper.tw', `h=www.casper.tw\nloc=${loc}\n`)).inserted, [], loc)
+  }
+  assert.deepEqual((await run('www.casper.tw', 'h=www.casper.tw\nloc=T1\n')).inserted, [], 'Tor')
+  assert.deepEqual((await run('www.casper.tw', '')).inserted, [], '沒有 loc')
+  assert.deepEqual((await run('www.casper.tw', new Error('blocked'))).inserted, [], '請求失敗')
+  const local = await run('localhost', 'loc=TW\n')
+  assert.deepEqual([local.inserted, local.calls], [[], []], '非正式主機名連 trace 都不讀')
+})
