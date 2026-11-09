@@ -12,6 +12,8 @@
  * 399px 以下字標 17px；359px 以下字標文字改成只給螢幕閱讀器。
  * compact（404）：頁首只放語言選單與選單鈕，導覽一律收在選單裡。
  * 插槽 actions：放在內建按鈕後面（部落格放 ⌘K 與深淺色鈕）。內建的 search、themeToggle 留給工具用。
+ * 導覽分組：nav 的一項給 children 時畫成下拉選單（攤開版是 <details>，面板以 .cs-hdr__in 為定位基準，不會被捲動容器裁掉；
+ * 選單裡是一行組名加縮排的子連結）。子連結是目前這頁時，組名標 data-current，不用 aria-current（summary 不是連結）。
  * 深淺色切換鈕預設不出：token 還沒有深色版（站長驗收前不做），出的話用 data-cs-theme-toggle 交給 inline script 處理。
  */
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
@@ -22,12 +24,12 @@ import { headerModel } from './shell-model.mjs'
 import LanguageMenu from './LanguageMenu.vue'
 
 type TextFn = (key: string, params?: Record<string, string | number>) => string
-interface NavLink { label: string; href: string; current?: boolean }
+interface NavLink { label: string; href?: string; current?: boolean; children?: NavLink[] }
 interface Target {
   code: string; href: string; exact: boolean; preview?: boolean
   autonym?: string; htmlLang?: string; hreflang?: string; homeOnly?: string | null
 }
-interface HeaderItem { key: string; label: string; href: string; current: 'page' | 'true' | null }
+interface HeaderItem { key: string; label: string; href: string; current: 'page' | 'true' | null; children?: HeaderItem[] }
 
 const props = withDefaults(defineProps<{
   locale: string
@@ -73,8 +75,15 @@ const showEnName = computed(() => isBlogLocale.value && SITE_NAME_EN.length > 0)
 
 const items = computed<HeaderItem[]>(() => [
   ...model.value.siteNav,
-  ...props.nav.map((n) => ({ key: n.href, label: n.label, href: n.href, current: n.current ? ('page' as const) : null })),
+  ...props.nav.map(toItem),
 ])
+function toItem(n: NavLink): HeaderItem {
+  if (n.children?.length) {
+    const children = n.children.map(toItem)
+    return { key: `group:${n.label}`, label: n.label, href: '', current: children.some((c) => c.current) ? 'true' : null, children }
+  }
+  return { key: n.href ?? n.label, label: n.label, href: n.href ?? '', current: n.current ? 'page' : null }
+}
 
 // Esc、點外面關掉；打開一個就關掉其他的（語言面板與選單會疊在同一個位置）
 const root = ref<HTMLElement | null>(null)
@@ -114,7 +123,18 @@ onBeforeUnmount(() => {
         <span v-if="showEnName" class="cs-hdr__en" lang="en" data-foreign>{{ SITE_NAME_EN }}</span>
       </a>
       <nav v-if="items.length && !compact" class="cs-hdr__nav" :aria-label="text('nav.label')">
-        <a v-for="item in items" :key="item.key" :href="item.href" :aria-current="item.current ?? undefined">{{ item.label }}</a>
+        <template v-for="item in items" :key="item.key">
+          <details v-if="item.children" class="cs-hdr__group">
+            <summary :data-current="item.current ? '' : undefined">
+              {{ item.label }}
+              <svg class="cs-hdr__caret" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+            </summary>
+            <div class="cs-hdr__drop">
+              <a v-for="c in item.children" :key="c.key" :href="c.href" :aria-current="c.current ?? undefined">{{ c.label }}</a>
+            </div>
+          </details>
+          <a v-else :href="item.href" :aria-current="item.current ?? undefined">{{ item.label }}</a>
+        </template>
       </nav>
       <div class="cs-hdr__tools">
         <button v-if="search && isBlogLocale" type="button" class="cs-hbtn" data-cs-search :aria-label="text('search.open')" aria-keyshortcuts="Meta+K Control+K">
@@ -133,7 +153,13 @@ onBeforeUnmount(() => {
             <svg class="cs-menu__icon-close" aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18" /></svg>
           </summary>
           <nav class="cs-menu__panel" :aria-label="text('nav.label')">
-            <a v-for="item in items" :key="item.key" :href="item.href" :aria-current="item.current ?? undefined">{{ item.label }}</a>
+            <template v-for="item in items" :key="item.key">
+              <div v-if="item.children" class="cs-menu__group" role="group" :aria-labelledby="`cs-menu-${item.key}`">
+                <span :id="`cs-menu-${item.key}`" class="cs-menu__group-label">{{ item.label }}</span>
+                <a v-for="c in item.children" :key="c.key" :href="c.href" :aria-current="c.current ?? undefined">{{ c.label }}</a>
+              </div>
+              <a v-else :href="item.href" :aria-current="item.current ?? undefined">{{ item.label }}</a>
+            </template>
           </nav>
         </details>
       </div>
@@ -172,6 +198,29 @@ onBeforeUnmount(() => {
   }
   .cs-hdr__nav a:hover, .cs-menu__panel a:hover { background: var(--cs-section); color: var(--cs-text); }
   .cs-hdr__nav a[aria-current], .cs-menu__panel a[aria-current] { background: var(--cs-soft); color: var(--cs-link); }
+
+  /* 下拉分組：details 不設定位，面板以 .cs-hdr__in 為基準（脫離 .cs-hdr__nav 的捲動容器才不會被裁掉），
+     水平位置用靜態位置（left 不設），剛好在組名下方 */
+  .cs-hdr__group { position: static; flex: none; }
+  .cs-hdr__group > summary {
+    display: inline-flex; align-items: center; gap: 4px; min-block-size: var(--cs-size-tap); padding-inline: 12px; border-radius: var(--cs-radius-input);
+    color: var(--cs-text-2); font-size: 15px; line-height: 20px; font-weight: 700; white-space: nowrap; cursor: pointer; list-style: none;
+  }
+  .cs-hdr__group > summary::-webkit-details-marker { display: none; }
+  .cs-hdr__group > summary:hover { background: var(--cs-section); color: var(--cs-text); }
+  .cs-hdr__group > summary[data-current], .cs-hdr__group[open] > summary { background: var(--cs-soft); color: var(--cs-link); }
+  .cs-hdr__caret { flex: none; transition: transform .15s; }
+  .cs-hdr__group[open] .cs-hdr__caret { transform: rotate(180deg); }
+  .cs-hdr__drop {
+    position: absolute; inset-block-start: calc(100% - 6px); z-index: 30;
+    display: flex; flex-direction: column; min-inline-size: 200px; padding: 6px; box-sizing: border-box;
+    background: var(--cs-bg); border: var(--cs-size-border) solid var(--cs-line); border-radius: var(--cs-radius-button);
+    box-shadow: var(--cs-shadow-card), 0 12px 28px rgba(33, 37, 41, .14);
+  }
+  .cs-hdr__drop a { color: var(--cs-text); }
+  .cs-menu__group { display: flex; flex-direction: column; }
+  .cs-menu__group-label { padding: 10px 12px 2px; color: var(--cs-mute); font-size: 13px; font-weight: 700; }
+  .cs-menu__panel .cs-menu__group a { padding-inline-start: 24px; }
 
   .cs-hdr__tools { display: flex; align-items: center; gap: 4px; margin-inline-start: auto; flex: none; }
   .cs-hbtn {

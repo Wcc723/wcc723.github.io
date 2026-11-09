@@ -3,7 +3,7 @@
 // 只用標準 JavaScript，不 import 任何套件；client 端可以 import formatShell() 來代入佔位符，
 // 字串本身由範本的 virtual:cs-page 依語系提供，不必把七語全部打包。
 //
-// 全部是草稿，要母語審稿（zh-tw 由站長審）。語氣：de 用 du、es 用 tú；ja 用です・ます；
+// 全部是草稿，要母語審稿（zh-tw 由站長審）。語氣：de 用 du、es 用 tú、fr 用 vous；ja 用です・ます；
 // ko 句子用해요체，按鈕與署名列用名詞或動詞語幹。任何字串都不寫死站名或人名，一律用 {site}、{author}。
 // 韓文刻意不讓助詞接在代入值後面（助詞會隨最後一個字有沒有收尾音而變）。
 // 「回到這支工具」要冠詞與格變化（de、es），整句放在工具自己的訊息檔（tool.backHome），不做成外殼字串。
@@ -325,6 +325,37 @@ export const SHELL_STRINGS = {
     'notFound.title': 'Página no encontrada',
     'notFound.body': 'Puede que la dirección tenga un error o que la página se haya movido.',
     'notFound.siteHome': 'Ir a la página de inicio de {site}',
+  },
+  fr: {
+    skipToContent: 'Aller au contenu principal',
+    'nav.label': 'Menu principal',
+    'menu.open': 'Ouvrir le menu',
+    'menu.close': 'Fermer le menu',
+    'theme.toggle': 'Mode sombre',
+    'lang.label': 'Langue',
+    'lang.summary': 'Changer de langue (langue actuelle : {autonym})',
+    'lang.current': 'Langue actuelle',
+    'lang.homeOnly': '(accueil de l’outil)',
+    'breadcrumb.label': 'Fil d’Ariane',
+    'breadcrumb.home': 'Accueil',
+    'byline.made': 'Créé et maintenu par {author}',
+    'byline.updated': 'Dernière mise à jour : {date}',
+    'byline.reviewed': 'Traduction relue par un locuteur natif',
+    'footer.home': 'Accueil de {site}',
+    'footer.blog': 'Blog de {author}',
+    'footer.about': 'À propos de {author}',
+    'footer.contact': 'Contact',
+    'footer.privacy': 'Politique de confidentialité',
+    'footer.terms': 'Conditions d’utilisation',
+    'footer.languages': 'Langues',
+    'footer.copyright': '© {author}',
+    'footer.translated': 'Cette page est une traduction. En cas de différence, la version en chinois traditionnel fait foi.',
+    'footer.tools': 'Outils',
+    inChinese: '{label} (en chinois traditionnel)',
+    inEnglish: '{label} (en anglais)',
+    'notFound.title': 'Page introuvable',
+    'notFound.body': 'L’adresse contient peut-être une erreur, ou la page a été déplacée.',
+    'notFound.siteHome': 'Aller à l’accueil de {site}',
   },
 }
 

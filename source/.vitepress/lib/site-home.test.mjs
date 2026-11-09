@@ -105,7 +105,7 @@ test('site.config.mjs：S 版起 shell 是 shared、外語首頁照 OPENED，val
   assert.deepEqual(siteConfig.home.roadmap, ['en', 'ja', 'ko', 'de', 'zh-cn', 'es'])
   assert.equal(validateSiteConfig(), siteConfig)
   assert.deepEqual(HOME_PLACEHOLDERS, ['author', 'site'])
-  assert.deepEqual(SITE_HOME_CODES, ['en', 'zh-cn', 'ja', 'ko', 'de', 'es'])
+  assert.deepEqual(SITE_HOME_CODES, ['en', 'zh-cn', 'ja', 'ko', 'de', 'es', 'fr'])
 })
 
 test('validateSiteConfig：每條規則', () => {
@@ -123,7 +123,7 @@ test('validateSiteConfig：每條規則', () => {
   bad(config({ home: { roadmap: ['en', 'en'] } }), /重複列了 en/)
   bad(config({ home: { locales: ['ja'] } }), /一定要有 en/)
   bad(config({ shell: 'legacy', home: { locales: ['en'] } }), /shell 一定是 'shared'/)
-  bad(config({ home: { locales: ['fr'] } }), /登錄表以外的語系/)
+  bad(config({ home: { locales: ['it'] } }), /登錄表以外的語系/)
   bad(config({ home: { roadmap: ['en'], locales: ['en', 'ja'] } }), /ja 不在 home\.roadmap/)
   bad(config({ shell: 'shared' }), /外殼字串 zh-tw 是 unreviewed/)
   bad(config({ home: { sourceLocale: 'ja', roadmap: ['en'] } }), /sourceLocale "ja" 不在 home\.roadmap/)

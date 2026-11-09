@@ -23,5 +23,5 @@ test('pageTypeOf：zh-tw/index.md、外語首頁底下的子頁、大小寫不�
   assert.throws(() => pageTypeOf('zh-tw/index.md'), /不認得的頁面路徑 zh-tw\/index\.md/)
   assert.throws(() => pageTypeOf('en/about/index.md'), /不認得的頁面路徑/)
   assert.throws(() => pageTypeOf('EN/index.md'), /不認得的頁面路徑/)
-  assert.throws(() => pageTypeOf('fr/index.md'), /不認得的頁面路徑/)
+  assert.throws(() => pageTypeOf('it/index.md'), /不認得的頁面路徑/)
 })

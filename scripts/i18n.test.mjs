@@ -49,12 +49,12 @@ test('check：G1 的錯誤（多一個 key、檔名不對、缺正本、不在 r
   const ja = readJson(dir, 'ja')
   ja.hero.extra = 'もう一つ'
   writeJson(dir, 'ja', ja)
-  fs.writeFileSync(path.join(dir, 'fr.json'), '{}\n')
+  fs.writeFileSync(path.join(dir, 'it.json'), '{}\n')
   const r = await run(['check'], { dir })
   assert.equal(r.code, 1)
-  assert.match(r.out, /i18n\/home\/fr\.json：檔名不是外語首頁的語系代碼/)
+  assert.match(r.out, /i18n\/home\/it\.json：檔名不是外語首頁的語系代碼/)
   assert.match(r.out, /hero\.extra/)
-  fs.rmSync(path.join(dir, 'fr.json'))
+  fs.rmSync(path.join(dir, 'it.json'))
   fs.rmSync(path.join(dir, 'en.json'))
   assert.match((await run(['check'], { dir })).out, /缺正本 i18n\/home\/en\.json/)
   const noKo = { ...siteConfig, home: { ...siteConfig.home, roadmap: ['en', 'ja', 'de'] } }

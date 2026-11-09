@@ -64,6 +64,13 @@ export const LOCALES = [
     titleBudget: { unit: 'chars', max: 60 }, descBudget: { unit: 'chars', min: 120, max: 160 },
     dateStyle: 'medium', quotes: ['«', '»', '“', '”'], hyphenate: true, adsense: true,
     nativeReviewer: 'ai-cross', legal: { privacy: 'required' } },
+  // fr：站長 2026-11-09 開（/screen/ 第一批語系）。intl 'fr-FR'；文案用法國法文、vous。冒號前用不換行空格 U+00A0，? ! ; 前用窄不換行空格 U+202F。
+  // mentions légales（LCEN 第 6 條）要不要提供由站長決定，還沒決定之前不加 legal 旗標
+  { code: 'fr', htmlLang: 'fr', hreflang: 'fr', ogLocale: 'fr_FR', intl: 'fr-FR', autonym: 'Français', dir: 'ltr',
+    script: 'Latn', fontToken: '--cs-font-latn', cssLang: ['fr'], brand: 'en', titleSeparator: ' | ',
+    titleBudget: { unit: 'chars', max: 60 }, descBudget: { unit: 'chars', min: 120, max: 160 },
+    dateStyle: 'medium', quotes: ['«', '»', '“', '”'], hyphenate: true, adsense: true,
+    nativeReviewer: 'ai-cross', legal: { privacy: 'required' } },
 ]
 export const LOCALE = Object.fromEntries(LOCALES.map((l) => [l.code, l]))
 

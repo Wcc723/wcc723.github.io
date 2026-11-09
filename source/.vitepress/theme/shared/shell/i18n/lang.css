@@ -7,8 +7,8 @@
     --cs-lang-accent: 'Nunito', var(--cs-lang-cjk);
     --cs-lang-code: var(--cs-font-code), var(--cs-lang-cjk), monospace;
   }
-  /* Latn（en、de、es）：只作用在根元素，中文頁裡的 <span lang="en"> 不會中途換成 Nunito */
-  :where(html[lang]):is(:lang(en), :lang(de), :lang(es)) {
+  /* Latn（en、de、es、fr）：只作用在根元素，中文頁裡的 <span lang="en"> 不會中途換成 Nunito */
+  :where(html[lang]):is(:lang(en), :lang(de), :lang(es), :lang(fr)) {
     --cs-lang-font: var(--cs-font-latn);
     --cs-lang-cjk: sans-serif;
     --cs-lang-lh-body: 1.6;
@@ -93,6 +93,9 @@
   :where([lang]):is(:lang(es)) {
     quotes: '\00AB' '\00BB' '\201C' '\201D';
   }
+  :where([lang]):is(:lang(fr)) {
+    quotes: '\00AB' '\00BB' '\201C' '\201D';
+  }
   /* 版面基礎：字型、行高、標題字重各語一律 700（900 在 ja、ko 會變得太粗，PingFang 又停在 Semibold） */
   body {
     font-family: var(--cs-lang-font);
@@ -119,7 +122,7 @@
     word-break: auto-phrase;
   }
   /* 斷字：長字多的語系開 hyphens:auto；按鈕、導覽、表單不斷字 */
-  :where(h1, h2, h3, p, li, dd, td, .cs-hyphenate):is(:lang(de), :lang(es)) {
+  :where(h1, h2, h3, p, li, dd, td, .cs-hyphenate):is(:lang(de), :lang(es), :lang(fr)) {
     hyphens: auto;
     -webkit-hyphens: auto;
     hyphenate-limit-chars: 10 4 4;
