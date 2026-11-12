@@ -27,6 +27,8 @@ export const AUTHOR_NAME_EN = 'Casper'
 // 2026-11-06 起是小幽靈頭像（shared/brand/ghost 的 s-logo，轉成 144 × 144 PNG，另有 48 × 48 的 ghost-48.png 備用），主站首頁規格 M.3 的 I1 前置。
 // 之前是部落格的橫式字標 https://img.casper.tw/images/blog_logo.svg（檔案留著）。
 // 換檔是獨立的一版：用新的物件鍵上傳到 img.casper.tw（不覆蓋舊檔），只改這兩行，再跑 node scripts/shell-sync.mjs --write。
+// 例外只有背景音樂站 /free-music/：站長 2026-11-12 決定它用自己的分頁圖示（決策 0016「自己的站名與 logo」，正本在那個 repo 的
+// src/components/brand.mjs 的 TOOL_BRAND）。這裡照舊是部落格與其他工具的唯一正本，不因為它改。
 export const FAVICON_URL = 'https://img.casper.tw/brand/favicon/ghost-144.png'
 export const FAVICON_IS_SQUARE = true
 

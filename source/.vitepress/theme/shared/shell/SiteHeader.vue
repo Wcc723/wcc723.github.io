@@ -6,6 +6,9 @@
  *   - kind 'site-home'（外語首頁）：字標連 /<code>/ 並標 aria-current="page"；導覽只有一條「工具」連 /<code>/#tools
  *   - 其他語系：字標依 brand 用 siteName()；該語系的全站首頁已上線（siteHomes 有它）時連 /<code>/，沒上線連該語系的工具首頁
  *     （shell-model.mjs 的 FOREIGN_BRAND 與 foreignSiteHome()）；導覽只放這支工具的頁；不放全站搜尋
+ *   - toolBrand（工具自己的品牌，站長 2026-11-12 決定，第一支是背景音樂站）：字標換成工具的 logo 與站名，連工具首頁，在工具首頁時 aria-current="page"；
+ *     導覽不變（繁中頁照舊有工具、文章、關於，回得去卡斯伯工具），頁尾不受影響。英文小字站名 SITE_NAME_EN 不出：它是旁邊 SITE_NAME 的英文名，
+ *     接在工具站名後面會讀成工具的英文名。不給時輸出跟沒有這個 prop 時逐字相同
  *   - 選單與語言面板都是 <details>，沒有 JS 也能用；有 JS 時按 Esc 或點外面會關掉，一次只開一個
  * 導覽輸出兩份：攤開版 .cs-hdr__nav 與 <details> 裡的 .cs-menu__panel；選單關著時 summary 以外不在無障礙樹上，任何時候只有一個導覽地標。
  * 斷點：1024px 以上英文小字站名才出現；768px 以上導覽攤開；640px 以下語言鈕只剩圖示；
@@ -30,6 +33,7 @@ interface Target {
   autonym?: string; htmlLang?: string; hreflang?: string; homeOnly?: string | null
 }
 interface HeaderItem { key: string; label: string; href: string; current: 'page' | 'true' | null; children?: HeaderItem[] }
+interface ToolBrand { label: string; logo: string; href: string; lang?: string | null }
 
 const props = withDefaults(defineProps<{
   locale: string
@@ -54,6 +58,11 @@ const props = withDefaults(defineProps<{
   section?: string | null
   /** 已上線的外語全站首頁：外語工具頁的字標在這裡有頁面語系時連 /<code>/（FOREIGN_BRAND 'site-home'） */
   siteHomes?: string[]
+  /**
+   * 工具自己的品牌：label 是頁面語系的站名，logo 是正方形圖的網址（顯示 36px），href 是這個語系的工具首頁，
+   * lang 是站名的語言跟頁面不同時的語言標籤。不給時字標是全站的 SITE_NAME 加小幽靈（shell-model.mjs 的 headerModel）
+   */
+  toolBrand?: ToolBrand | null
 }>(), {
   nav: () => [], languages: () => [], liveTools: true, search: false, themeToggle: false, compact: false,
   kind: 'page', currentUrl: '', section: null, siteHomes: () => [],
@@ -69,9 +78,11 @@ const model = computed(() => headerModel({
   liveTools: props.liveTools,
   siteHomes: props.siteHomes,
   toolHome: props.toolHome ?? null,
+  toolBrand: props.toolBrand ?? null,
 }))
-// 用 length 判斷，不跟字面值 '' 比：SITE_NAME_EN 在 P3 前後是不同的字面值，比較式會被型別檢查判成永遠成立或永遠不成立
-const showEnName = computed(() => isBlogLocale.value && SITE_NAME_EN.length > 0)
+// 用 length 判斷，不跟字面值 '' 比：SITE_NAME_EN 在 P3 前後是不同的字面值，比較式會被型別檢查判成永遠成立或永遠不成立。
+// 有 toolBrand 時不出：小字是 SITE_NAME 的英文名，接在工具站名後面會被讀成工具的英文名
+const showEnName = computed(() => isBlogLocale.value && SITE_NAME_EN.length > 0 && !props.toolBrand)
 
 const items = computed<HeaderItem[]>(() => [
   ...model.value.siteNav,
@@ -118,7 +129,7 @@ onBeforeUnmount(() => {
   <header ref="root" class="cs-hdr" :class="{ 'cs-hdr--compact': compact }">
     <div class="cs-hdr__in">
       <a class="cs-hdr__brand" :href="model.brand.href" :aria-current="model.brand.current ? 'page' : undefined">
-        <img class="cs-hdr__logo" :src="SHELL_LOGO.src" width="36" height="36" alt="" decoding="async">
+        <img class="cs-hdr__logo" :src="model.brand.logo ?? SHELL_LOGO.src" width="36" height="36" alt="" decoding="async">
         <span class="cs-hdr__name" :lang="model.brand.lang ?? undefined" :data-foreign="model.brand.lang ? '' : undefined">{{ model.brand.label }}</span>
         <span v-if="showEnName" class="cs-hdr__en" lang="en" data-foreign>{{ SITE_NAME_EN }}</span>
       </a>

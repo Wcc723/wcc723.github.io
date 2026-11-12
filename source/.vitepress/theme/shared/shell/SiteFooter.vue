@@ -10,6 +10,8 @@
  *     <a> 加目的地的 hreflang；全站首頁、關於在該語系的首頁上線後改連 /<code>/
  *   - 法務：一律經 legalLink()；Impressum、外部送信要登錄表有旗標、而且有網址才放
  *   - 站外連結只加一個 aria-hidden 的外連圖示，不加 rel、不開新分頁；工具名是外語時包 <span lang data-foreign>
+ *   - 翻譯說明（footerModel 的 translated）：sourceLocale 沒給時照決策 0010（ai-cross 的語系「以繁中版為準」）；
+ *     正本是英文的工具傳 source-locale="en"，en 以外每個語系的頁（繁中頁也算）「以英文版為準」
  * 語言列標題的 id 寫死 cs-ftr-lang：一頁只有一個頁尾。
  */
 import { computed } from 'vue'
@@ -45,6 +47,11 @@ const props = withDefaults(defineProps<{
   siteHomes?: string[]
   /** 這一頁的網址（完整網址），外語頁的全站與法務連結相同時標 aria-current="page" */
   currentUrl?: string
+  /**
+   * 這頁內容的正本語系（工具傳 tool.config 的 sourceLocale）。沒給是 zh-tw（部落格、全站首頁、正本是繁中的工具），頁尾說明跟以前相同；
+   * 'en' 時頁面的外殼字串也要照 { sourceLocale: 'en' } 給（shellStringsFor(code, { sourceLocale: 'en' })），否則 footer.translatedFromEn 會缺字
+   */
+  sourceLocale?: string
 }>(), { toolName: '', toolNav: () => [], languages: () => [], kind: 'page', siteTools: () => [], siteHomes: () => [], currentUrl: '' })
 
 const isBlogLocale = computed(() => BLOG_LOCALES.includes(props.locale))
@@ -59,6 +66,8 @@ const model = computed(() => footerModel({
   siteHomes: props.siteHomes,
   toolName: props.toolName,
   toolNav: props.toolNav,
+  // undefined 時 footerModel 用自己的預設（zh-tw）
+  sourceLocale: props.sourceLocale,
 }))
 const bottomLinks = computed(() => [...model.value.site, ...model.value.legal])
 </script>

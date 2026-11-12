@@ -7,7 +7,7 @@
 //   outdated    c 相符，s 不符：審稿之後原文改了。照舊顯示、只警告
 //   unreviewed  沒有紀錄，或 c 不符（譯文改過但沒重新蓋章）
 import { createHash } from 'node:crypto'
-import { SHELL_KEYS, SHELL_SOURCE, SHELL_STRINGS, shellKeysFor } from './shell-strings.mjs'
+import { SHELL_KEYS, SHELL_SOURCE, SHELL_STRINGS, shellKeysAnySource, shellKeysFor } from './shell-strings.mjs'
 
 export const STATES = ['ok', 'outdated', 'unreviewed']
 
@@ -82,16 +82,22 @@ export function shellRecord(code, key, { by, at }) {
   return { by, at, s: code === SHELL_SOURCE || source === undefined ? null : hashOf(source), c: hashOf(value) }
 }
 
-/** 這個語系每個可用外殼 key 的狀態 { [key]: state }；review 是 shell-review.json 的內容 */
-export function shellKeyStates(code, review) {
+const statesOf = (code, review, keys) => {
   const records = review?.review?.[code] ?? {}
-  return Object.fromEntries(shellKeysFor(code).map((key) => [
+  return Object.fromEntries(keys.map((key) => [
     key, keyState(records[key], SHELL_STRINGS[code]?.[key], code === SHELL_SOURCE ? undefined : SHELL_STRINGS[SHELL_SOURCE][key]),
   ]))
 }
 
-/** 這個語系外殼字串的最差狀態，範本算「頁 × 語系」狀態時用 */
-export const shellState = (code, review) => worstState(Object.values(shellKeyStates(code, review)))
+/**
+ * 這個語系每個可用外殼 key 的狀態 { [key]: state }；review 是 shell-review.json 的內容。
+ * ctx 是 shell-strings.mjs 的 { sourceLocale }：正本是 en 的工具傳 { sourceLocale: 'en' }，才會多算 footer.translatedFromEn 這類 key；
+ * 沒給（部落格、全站首頁、site-invariants、還沒接線的工具）跟以前完全相同
+ */
+export const shellKeyStates = (code, review, ctx = {}) => statesOf(code, review, shellKeysFor(code, ctx))
+
+/** 這個語系外殼字串的最差狀態，範本算「頁 × 語系」狀態時用；ctx 同 shellKeyStates */
+export const shellState = (code, review, ctx = {}) => worstState(Object.values(shellKeyStates(code, review, ctx)))
 
 /**
  * shell-review.json 的問題清單（workspace 的測試與 build.mjs --check 用），回 [{ code, key, problem }]：
@@ -105,7 +111,8 @@ export function shellReviewProblems(review, { locales = Object.keys(SHELL_STRING
   }
   for (const [code, records] of Object.entries(review.review)) {
     if (!locales.includes(code)) { problems.push({ code, key: null, problem: '不認得的語系' }); continue }
-    const states = shellKeyStates(code, review)
+    // 任何一種 sourceLocale 會用到的 key 都查：footer.translatedFromEn 這類只給 en 正本工具的 key，蓋過章之後改了也要擋
+    const states = statesOf(code, review, shellKeysAnySource(code))
     for (const [key, r] of Object.entries(records ?? {})) {
       if (!(key in SHELL_KEYS) || SHELL_STRINGS[code]?.[key] === undefined) { problems.push({ code, key, problem: '紀錄指向不存在的 key' }); continue }
       if (!r || typeof r.by !== 'string' || !/^[a-z0-9][a-z0-9-]*$/.test(r.by)) problems.push({ code, key, problem: 'by 要是審稿人 id（小寫英數與連字號）' })

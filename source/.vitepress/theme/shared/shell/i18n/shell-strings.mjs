@@ -7,7 +7,7 @@
 // ko 句子用해요체，按鈕與署名列用名詞或動詞語幹。任何字串都不寫死站名或人名，一律用 {site}、{author}。
 // 韓文刻意不讓助詞接在代入值後面（助詞會隨最後一個字有沒有收尾音而變）。
 // 「回到這支工具」要冠詞與格變化（de、es），整句放在工具自己的訊息檔（tool.backHome），不做成外殼字串。
-import { BLOG_LOCALES, getLocale } from './locales.mjs'
+import { BLOG_LOCALES, LOCALES, getLocale } from './locales.mjs'
 import { siteName, authorName } from './seo.mjs'
 
 export const SHELL_SOURCE = 'zh-tw'
@@ -17,9 +17,13 @@ export const SHELL_SOURCE = 'zh-tw'
 //   { legal: '<flag>' }：登錄表 legal 有這個旗標的語系；
 //   { except: ['<code>', …] }：除了列出的語系都給（例如 inEnglish 不給 en）；
 //   { nativeReviewer: '<值>' }：登錄表 nativeReviewer 是這個值的語系（例如 footer.translated 只給 'ai-cross'）；
+//   { sourceLocale: '<code>' }：只給正本語系是 <code> 的工具，而且不給 <code> 本身（例如 footer.translatedFromEn）。
+//       要呼叫端在 ctx 給 { sourceLocale }（工具傳 tool.config 的 sourceLocale）才算數；沒給 ctx 的呼叫端
+//       （部落格、全站首頁、還沒接線的工具、site-invariants）當成正本是 SHELL_SOURCE，一律不包含，審稿閘門也不會要求它；
 //   'draft'：只有正本有字、元件還不能用的 key（ts() 遇到會丟錯），要先寫好字、還不想上線時用。
 // 新 key 直接用正式的 audience（主站首頁規格 I.3）：已上線的語系（每支已上線工具的每個語系、已上線的全站首頁語系、
 // 部落格用共用外殼之後的 zh-tw）都要審過，由 workspace 的不變量測試（scripts/site-invariants.mjs）擋，不等七語都審過。
+// { sourceLocale } 的 key 例外：只有給了同一個 ctx 的工具，自己的 live 閘門（範本 plan.mjs 的 reviewGate）會要求審過。
 export const SHELL_KEYS = {
   // 頁首與語言選單
   skipToContent: 'all',
@@ -53,6 +57,9 @@ export const SHELL_KEYS = {
   'footer.languages': 'all',
   'footer.copyright': 'all',
   'footer.translated': { nativeReviewer: 'ai-cross' }, // 決策 0010：AI 交叉審的語系，頁尾說明本頁譯自繁中版、以繁中版為準
+  // 站長 2026-11-10（free-fonts 確認頁 Q9 選 A）：正本是英文的工具，en 以外每個語系的頁（繁中也算）頁尾說明以英文版為準。
+  // en 頁不顯示，所以 en 沒有字；shell-model.mjs 的 TRANSLATED_NOTE_KEYS 對到這個 key
+  'footer.translatedFromEn': { sourceLocale: 'en' },
   'footer.tools': 'all', // 頁尾工具組的標題；外語首頁頁首唯一的導覽
   // 部落格與繁中頁的完整頁尾（連結結構在 ../nav.mjs 的 FOOTER_BLOG_GROUPS），字跟 P2 的部落格頁尾相同
   'footer.tagline': 'blog',
@@ -82,7 +89,8 @@ export const SHELL_KEYS = {
   'notFound.siteHome': 'all',
 }
 
-// 扁平 key。正本 SHELL_SOURCE 有全部 key；其他語系剛好有 audience 包含它、而且不是 draft 的 key
+// 扁平 key。正本 SHELL_SOURCE 有全部 key；其他語系剛好有「任何一種 sourceLocale 下 audience 包含它」、而且不是 draft 的 key
+// （shellKeysAnySource(code)）
 export const SHELL_STRINGS = {
   'zh-tw': {
     skipToContent: '跳到主要內容',
@@ -115,6 +123,7 @@ export const SHELL_STRINGS = {
     'footer.languages': '語言',
     'footer.copyright': '© {author}',
     'footer.translated': '這頁是翻譯版本，內容有出入時以繁體中文版為準。',
+    'footer.translatedFromEn': '這頁是翻譯版本，內容有出入時以英文版為準。',
     'footer.tools': '工具',
     'footer.tagline': '{author}的前端筆記，從 2013 年寫到現在。',
     'footer.signature': '© {author}，{site}',
@@ -164,6 +173,7 @@ export const SHELL_STRINGS = {
     'footer.terms': '使用条款',
     'footer.languages': '语言',
     'footer.copyright': '© {author}',
+    'footer.translatedFromEn': '本页为翻译版本，内容如有出入，以英文版为准。',
     'footer.tools': '工具',
     inChinese: '{label}（繁体中文）',
     inEnglish: '{label}（英文）',
@@ -225,6 +235,7 @@ export const SHELL_STRINGS = {
     'footer.languages': '言語',
     'footer.copyright': '© {author}',
     'footer.translated': 'このページは翻訳版です。内容に違いがある場合は、繁体字中国語版が優先されます。',
+    'footer.translatedFromEn': 'このページは翻訳版です。内容に違いがある場合は、英語版が優先されます。',
     'footer.tools': 'ツール',
     inChinese: '{label}（繁体字中国語）',
     inEnglish: '{label}（英語）',
@@ -256,6 +267,7 @@ export const SHELL_STRINGS = {
     'footer.languages': '언어',
     'footer.copyright': '© {author}',
     'footer.translated': '이 페이지는 번역본이에요. 내용이 다를 때는 번체 중국어판이 우선해요.',
+    'footer.translatedFromEn': '이 페이지는 번역본이에요. 내용이 다를 때는 영문판이 우선해요.',
     'footer.tools': '도구',
     inChinese: '{label} (번체 중국어)',
     inEnglish: '{label} (영어)',
@@ -288,6 +300,7 @@ export const SHELL_STRINGS = {
     'footer.languages': 'Sprachen',
     'footer.copyright': '© {author}',
     'footer.translated': 'Diese Seite ist eine Übersetzung. Bei Abweichungen gilt die Fassung auf traditionellem Chinesisch.',
+    'footer.translatedFromEn': 'Diese Seite ist eine Übersetzung. Bei Abweichungen gilt die englische Fassung.',
     'footer.tools': 'Tools',
     inChinese: '{label} (auf traditionellem Chinesisch)',
     inEnglish: '{label} (auf Englisch)',
@@ -319,6 +332,7 @@ export const SHELL_STRINGS = {
     'footer.languages': 'Idiomas',
     'footer.copyright': '© {author}',
     'footer.translated': 'Esta página es una traducción. Si hay diferencias, prevalece la versión en chino tradicional.',
+    'footer.translatedFromEn': 'Esta página es una traducción. Si hay diferencias, prevalece la versión en inglés.',
     'footer.tools': 'Herramientas',
     inChinese: '{label} (en chino tradicional)',
     inEnglish: '{label} (en inglés)',
@@ -350,6 +364,7 @@ export const SHELL_STRINGS = {
     'footer.languages': 'Langues',
     'footer.copyright': '© {author}',
     'footer.translated': 'Cette page est une traduction. En cas de différence, la version en chinois traditionnel fait foi.',
+    'footer.translatedFromEn': 'Cette page est une traduction. En cas de différence, la version anglaise fait foi.',
     'footer.tools': 'Outils',
     inChinese: '{label} (en chinois traditionnel)',
     inEnglish: '{label} (en anglais)',
@@ -359,9 +374,22 @@ export const SHELL_STRINGS = {
   },
 }
 
-/** 這個 audience 包不包含這個語系；'draft' 一律不包含。{ except } 列的代碼不在登錄表就丟錯 */
-export function audienceIncludes(audience, code) {
+/**
+ * 呼叫端的情境 ctx：{ sourceLocale }，這頁內容的正本語系（工具傳 tool.config 的 sourceLocale）。
+ * 沒給是 SHELL_SOURCE：部落格、全站首頁與正本是繁中的工具都是，跟加上 { sourceLocale } 這種 audience 以前完全相同。
+ * 不認得的語系代碼丟錯
+ * @typedef {{ sourceLocale?: string }} ShellContext
+ */
+const sourceOf = (ctx) => getLocale(ctx?.sourceLocale ?? SHELL_SOURCE).code
+
+/**
+ * 這個 audience 包不包含這個語系；'draft' 一律不包含。{ except } 列的代碼不在登錄表就丟錯。
+ * { sourceLocale } 只在 ctx 的 sourceLocale 相同、而且語系不是它本身時包含
+ * @param {ShellContext} [ctx]
+ */
+export function audienceIncludes(audience, code, ctx = {}) {
   const l = getLocale(code)
+  const source = sourceOf(ctx)
   if (audience === 'all') return true
   if (audience === 'blog') return BLOG_LOCALES.includes(code)
   if (audience === 'non-blog') return !BLOG_LOCALES.includes(code)
@@ -372,17 +400,39 @@ export function audienceIncludes(audience, code) {
     audience.except.forEach(getLocale)
     return !audience.except.includes(code)
   }
+  if (audience && typeof audience === 'object' && typeof audience.sourceLocale === 'string') {
+    const only = getLocale(audience.sourceLocale).code
+    return source === only && code !== only
+  }
   throw new Error(`未知的 audience：${JSON.stringify(audience)}`)
 }
 
-/** 這個語系的元件可以用的外殼 key（audience 包含它、不是 draft），照 SHELL_KEYS 的順序 */
-export const shellKeysFor = (code) => Object.keys(SHELL_KEYS).filter((k) => audienceIncludes(SHELL_KEYS[k], code))
+/**
+ * 這個語系的元件可以用的外殼 key（audience 包含它、不是 draft），照 SHELL_KEYS 的順序。
+ * ctx 沒給時不含 { sourceLocale } 的 key（審稿閘門 shellKeyStates 也照這份）
+ * @param {string} code
+ * @param {ShellContext} [ctx]
+ */
+export const shellKeysFor = (code, ctx = {}) => Object.keys(SHELL_KEYS).filter((k) => audienceIncludes(SHELL_KEYS[k], code, ctx))
 
-/** 這個語系的外殼字串（尚未代入佔位符），只含 shellKeysFor(code)；給範本的 virtual:cs-page 用 */
-export function shellStringsFor(code) {
+/**
+ * 這個語系在任何一種 sourceLocale 下可能用到的 key（照 SHELL_KEYS 的順序）：SHELL_STRINGS[code] 剛好要有這些字，
+ * 審稿紀錄的「改了沒重新蓋章」與 --stamp-shell 省略 --keys 時也看這份
+ */
+export const shellKeysAnySource = (code) => {
+  const sources = [...new Set([SHELL_SOURCE, ...LOCALES.map((l) => l.code)])]
+  return Object.keys(SHELL_KEYS).filter((k) => sources.some((s) => audienceIncludes(SHELL_KEYS[k], code, { sourceLocale: s })))
+}
+
+/**
+ * 這個語系的外殼字串（尚未代入佔位符），只含 shellKeysFor(code, ctx)；給範本的 virtual:cs-page 用
+ * @param {string} code
+ * @param {ShellContext} [ctx]
+ */
+export function shellStringsFor(code, ctx = {}) {
   const table = SHELL_STRINGS[code]
   if (!table) throw new Error(`外殼字串沒有這個語系：${code}`)
-  return Object.fromEntries(shellKeysFor(code).map((k) => [k, table[k]]))
+  return Object.fromEntries(shellKeysFor(code, ctx).map((k) => [k, table[k]]))
 }
 
 const PLACEHOLDER = /\{([a-zA-Z_][\w.]*)\}/g
@@ -402,11 +452,16 @@ export function formatShell(template, code, params = {}) {
   })
 }
 
-/** 取字串並代入 {site}、{author}、{autonym}、{date}、{label}。key 的 audience 不含 code，或是 'draft'，就丟錯 */
-export function ts(code, key, params = {}) {
+/**
+ * 取字串並代入 {site}、{author}、{autonym}、{date}、{label}。key 的 audience 不含 code（照 ctx 算），或是 'draft'，就丟錯
+ * @param {ShellContext} [ctx]
+ */
+export function ts(code, key, params = {}, ctx = {}) {
   if (!(key in SHELL_KEYS)) throw new Error(`未知的外殼 key：${key}`)
   if (SHELL_KEYS[key] === 'draft') throw new Error(`外殼 key ${key} 還是 draft，元件不能使用`)
-  if (!audienceIncludes(SHELL_KEYS[key], code)) throw new Error(`外殼 key ${key} 不給 ${code} 用（audience：${JSON.stringify(SHELL_KEYS[key])}）`)
+  if (!audienceIncludes(SHELL_KEYS[key], code, ctx)) {
+    throw new Error(`外殼 key ${key} 不給 ${code} 用（audience：${JSON.stringify(SHELL_KEYS[key])}，sourceLocale：${sourceOf(ctx)}）`)
+  }
   const str = SHELL_STRINGS[code]?.[key]
   if (typeof str !== 'string' || str === '') throw new Error(`外殼字串缺 ${code}.${key}`)
   return formatShell(str, code, params)
