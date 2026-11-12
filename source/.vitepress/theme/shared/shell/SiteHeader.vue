@@ -128,7 +128,16 @@ onBeforeUnmount(() => {
 <template>
   <header ref="root" class="cs-hdr" :class="{ 'cs-hdr--compact': compact }">
     <div class="cs-hdr__in">
-      <a class="cs-hdr__brand" :href="model.brand.href" :aria-current="model.brand.current ? 'page' : undefined">
+      <div v-if="model.brand.hub" class="cs-hdr__brand cs-hdr__brand--tool">
+        <a class="cs-hdr__mark" :href="model.brand.href" tabindex="-1" aria-hidden="true">
+          <img class="cs-hdr__logo" :src="model.brand.logo" width="36" height="36" alt="" decoding="async">
+        </a>
+        <span class="cs-hdr__words">
+          <a class="cs-hdr__name" :href="model.brand.href" :aria-current="model.brand.current ? 'page' : undefined" :lang="model.brand.lang ?? undefined" :data-foreign="model.brand.lang ? '' : undefined">{{ model.brand.label }}</a>
+          <a class="cs-hdr__hub" :href="model.brand.hub.href">{{ model.brand.hub.label }}</a>
+        </span>
+      </div>
+      <a v-else class="cs-hdr__brand" :href="model.brand.href" :aria-current="model.brand.current ? 'page' : undefined">
         <img class="cs-hdr__logo" :src="model.brand.logo ?? SHELL_LOGO.src" width="36" height="36" alt="" decoding="async">
         <span class="cs-hdr__name" :lang="model.brand.lang ?? undefined" :data-foreign="model.brand.lang ? '' : undefined">{{ model.brand.label }}</span>
         <span v-if="showEnName" class="cs-hdr__en" lang="en" data-foreign>{{ SITE_NAME_EN }}</span>
@@ -195,6 +204,16 @@ onBeforeUnmount(() => {
   .cs-hdr__logo { inline-size: var(--cs-size-logo-header); block-size: var(--cs-size-logo-header); object-fit: contain; flex: none; }
   .cs-hdr__name { font-size: 19px; line-height: 24px; font-weight: 800; letter-spacing: .01em; white-space: nowrap; }
   .cs-hdr__en { display: none; font-family: var(--cs-lang-accent); font-size: 14px; line-height: 20px; font-weight: 800; color: var(--cs-text-2); white-space: nowrap; }
+  /* 工具品牌（toolBrand）：站徽、站名、下面一行 casper.tw 連回全站首頁（比照音效庫）。站徽的連結 aria-hidden、不進 Tab 順序，站名才是那個連結 */
+  .cs-hdr__mark { display: flex; flex: none; }
+  .cs-hdr__words { display: flex; flex-direction: column; align-items: flex-start; min-inline-size: 0; }
+  .cs-hdr__brand--tool .cs-hdr__name { line-height: 20px; color: var(--cs-text); text-decoration: none; }
+  .cs-hdr__brand--tool .cs-hdr__name:hover { color: var(--cs-text); }
+  .cs-hdr__hub {
+    display: inline-flex; align-items: center; min-block-size: 24px; font-size: 13px; line-height: 16px; font-weight: 600;
+    color: var(--cs-text-2); text-decoration: none; white-space: nowrap;
+  }
+  .cs-hdr__hub:hover { color: var(--cs-link); text-decoration: underline; }
 
   /* 導覽是捲動容器（overflow-x: auto 連帶 overflow-y 也是 auto），框外的焦點框會被裁掉：
      四周留焦點框的寬度加間距當 padding，再用一樣大的負 margin 抵掉，版面位置與大小不變 */
@@ -278,7 +297,9 @@ onBeforeUnmount(() => {
   }
   /* 320px 這類窄螢幕：字標文字只給螢幕閱讀器，留站徽 */
   @media (max-width: 359px) {
-    .cs-hdr__name { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .cs-hdr__brand:not(.cs-hdr__brand--tool) .cs-hdr__name { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    /* 工具品牌的站名本身就是連結，藏起來會變成看不見的焦點：改成縮小字級，小字照留 */
+    .cs-hdr__brand--tool .cs-hdr__name { font-size: 15px; }
   }
 }
 </style>

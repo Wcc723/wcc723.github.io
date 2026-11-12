@@ -1,7 +1,7 @@
 // 頁首頁尾的資料模型（主站首頁規格 G.2）：連結、連結字、語言標示、aria-current 都在這裡算好，SiteHeader.vue、SiteFooter.vue 只顯示。
 // 純函式，前後端都能用（不 import node: 模組）：元件在 computed 裡呼叫，Node 端的測試與 audit 也呼叫同一支，連結規則只寫一次。
 // text 是已綁定頁面語系的外殼字串函式 (key, params) => string（ts(locale, …) 或 formatShell 包起來的版本）。
-import { SITE_NAME } from './site.mjs'
+import { SITE_NAME, SITE_URL } from './site.mjs'
 import { BLOG_LOCALES, getLocale } from './i18n/locales.mjs'
 import { siteName } from './i18n/seo.mjs'
 import { legalLink } from './i18n/legal.mjs'
@@ -79,27 +79,44 @@ function checkKind(locale, kind) {
 /**
  * @typedef {(key: string, params?: Record<string, string | number>) => string} TextFn
  * @typedef {{ key: string, href: string, label: string, current: 'page' | 'true' | null }} HeaderNavLink
- * @typedef {{ href: string, label: string, lang: string | null, current: boolean, logo?: string }} HeaderBrand
- *   logo 只在有 toolBrand 時有；沒有時元件用 SHELL_LOGO（全站的小幽靈）
+ * @typedef {{ href: string, label: string, lang: string | null, current: boolean, logo?: string, hub?: { href: string, label: string } }} HeaderBrand
+ *   logo、hub 只在有 toolBrand 時有；沒有 logo 時元件用 SHELL_LOGO（全站的小幽靈）。hub 是站名下面那行連回全站首頁的小字
  * @typedef {{ label: string, logo: string, href: string, lang?: string | null }} ToolBrand
  *   工具自己的品牌：label 是頁面語系的站名，logo 是正方形圖的網址，href 是這個語系的工具首頁（完整網址），
  *   lang 是站名的語言跟頁面不同時的語言標籤（例如外語頁放英文站名時給 'en'）
  */
 
+/** 工具品牌頁首的小字：連回全站首頁，字是網域（比照音效庫的 brand__hub，站長 2026-11-12「logo 應該跟 free-sound 一樣，可以回到主頁」） */
+export const TOOL_BRAND_HUB_LABEL = new URL(SITE_URL).hostname.replace(/^www\./, '')
+
+/**
+ * 工具品牌頁首的小字連到哪個全站首頁：繁中頁是 /；外語頁是該語系已上線的全站首頁 /<code>/，沒有就退 /en/（也沒有就 /）。
+ * 不看 foreignBrand：這行字的用途就是回全站首頁
+ * @param {string} locale
+ * @param {string[] | null | undefined} siteHomes
+ */
+export function toolBrandHub(locale, siteHomes) {
+  if (isBlog(locale)) return SITE_HOME
+  const homes = siteHomes ?? []
+  return foreignSiteHome(locale, homes, 'site-home') ?? (homes.includes('en') ? siteHomeUrl('en') : SITE_HOME)
+}
+
 /**
  * 工具自己的品牌（站長 2026-11-12 決定，第一支是背景音樂站）→ 頁首的 brand。
- * 字標換成工具的 logo 與站名、連 href；在工具首頁（currentUrl 等於 href）時 current。欄位不齊就丟錯，讓建置失敗
+ * 字標換成工具的 logo 與站名、連 href；在工具首頁（currentUrl 等於 href）時 current；hub 是站名下面連回全站首頁的小字。
+ * 欄位不齊就丟錯，讓建置失敗
  * @param {ToolBrand} toolBrand
  * @param {string} currentUrl
+ * @param {string} hubHref
  * @returns {HeaderBrand}
  */
-function toolBrandOf(toolBrand, currentUrl) {
+function toolBrandOf(toolBrand, currentUrl, hubHref) {
   const { label, logo, href, lang = null } = toolBrand
   for (const [k, v] of Object.entries({ label, logo, href })) {
     if (typeof v !== 'string' || !v.trim()) throw new Error(`toolBrand.${k} 要是非空字串`)
   }
   if (lang !== null && (typeof lang !== 'string' || !lang.trim())) throw new Error('toolBrand.lang 要是語言標籤（例如 en）或 null')
-  return { href, label, lang, current: !!currentUrl && currentUrl === href, logo }
+  return { href, label, lang, current: !!currentUrl && currentUrl === href, logo, hub: { href: hubHref, label: TOOL_BRAND_HUB_LABEL } }
 }
 
 /**
@@ -109,7 +126,7 @@ function toolBrandOf(toolBrand, currentUrl) {
  *   current：網址等於 currentUrl 時 'page'，section 相同時 'true'
  *   brand：BLOG_LOCALES 連 SITE_HOME、字是 SITE_NAME、current 一律 false；kind 'site-home' 連 /<code>/、current true；
  *          其他外語頁照 foreignSiteHome()（foreignBrand 預設 FOREIGN_BRAND）：有該語系的全站首頁就連它，沒有就連 toolHome
- *   toolBrand：有給時 brand 換成工具自己的（toolBrandOf：連工具首頁、在工具首頁時 current、多一個 logo），siteNav 不變：
+ *   toolBrand：有給時 brand 換成工具自己的（toolBrandOf：連工具首頁、在工具首頁時 current、多 logo 與 hub），siteNav 不變：
  *          繁中頁照舊有工具、文章、關於，讀者還回得去卡斯伯工具。kind 'site-home' 是全站首頁，不收 toolBrand。
  *          沒給（null、undefined）時回傳值跟沒有這個參數時逐欄相同
  * @param {{ locale: string, text: TextFn, kind?: string, currentUrl?: string, section?: string | null, liveTools?: boolean,
@@ -122,7 +139,7 @@ export function headerModel({ locale, text, kind = 'page', currentUrl = '', sect
   const own = foreignSiteHome(locale, siteHomes, foreignBrand)
   const lang = brandLang(locale)
   const currentOf = (href, sec) => (currentUrl && href === currentUrl ? 'page' : sec && section && sec === section ? 'true' : null)
-  const brandOr = (site) => (toolBrand ? toolBrandOf(toolBrand, currentUrl) : site)
+  const brandOr = (site) => (toolBrand ? toolBrandOf(toolBrand, currentUrl, toolBrandHub(locale, siteHomes)) : site)
 
   if (isBlog(locale)) {
     const siteNav = HEADER_SITE_NAV.filter((n) => liveTools || !n.needsLiveTools).map((n) => {
