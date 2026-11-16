@@ -30,9 +30,14 @@ export function localePath(cfg, code, pagePath = '') {
 /** 完整網址：SITE_URL + localePath(...) */
 export const pageUrl = (cfg, code, pagePath = '') => SITE_URL + localePath(cfg, code, pagePath)
 
-/** x-default 指向的語系代碼：pageLocales 有 cfg.xDefaultLocale 就用它，否則用 cfg.rootLocale */
+/**
+ * x-default 指向的語系代碼：pageLocales 有 cfg.xDefaultLocale 就用它，其次 cfg.rootLocale；兩個都沒有回 null（不輸出 x-default）。
+ * 一般的頁一定有 rootLocale（J31 超集合），只有豁免 J31 的頁（插圖站的意圖套組頁，page.rootOptional）會回 null
+ */
 export function resolveXDefault(cfg, pageLocales) {
-  return [...pageLocales].includes(cfg.xDefaultLocale) ? cfg.xDefaultLocale : cfg.rootLocale
+  const codes = [...pageLocales]
+  if (codes.includes(cfg.xDefaultLocale)) return cfg.xDefaultLocale
+  return codes.includes(cfg.rootLocale) ? cfg.rootLocale : null
 }
 
 // published：這次建置每頁實際發布的語系，{ [page.id]: ['zh-tw', 'en', …] }（陣列或 Set 都可以；Map 也收）

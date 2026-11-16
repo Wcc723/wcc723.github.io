@@ -17,6 +17,8 @@
  * 插槽 actions：放在內建按鈕後面（部落格放 ⌘K 與深淺色鈕）。內建的 search、themeToggle 留給工具用。
  * 導覽分組：nav 的一項給 children 時畫成下拉選單（攤開版是 <details>，面板以 .cs-hdr__in 為定位基準，不會被捲動容器裁掉；
  * 選單裡是一行組名加縮排的子連結）。子連結是目前這頁時，組名標 data-current，不用 aria-current（summary 不是連結）。
+ * 凸顯：nav 的一項給 accent: true 時加 .cs-hdr__accent（橘色底、前面一個圓點），給工具放當季的項目（插圖站的當季套組，站長 2026-11-14）。
+ * 只有外觀，名稱與連結照舊；不給時輸出跟沒有這個欄位時逐字相同。分組（children）不吃 accent。
  * 深淺色切換鈕預設不出：token 還沒有深色版（站長驗收前不做），出的話用 data-cs-theme-toggle 交給 inline script 處理。
  */
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
@@ -27,12 +29,12 @@ import { headerModel } from './shell-model.mjs'
 import LanguageMenu from './LanguageMenu.vue'
 
 type TextFn = (key: string, params?: Record<string, string | number>) => string
-interface NavLink { label: string; href?: string; current?: boolean; children?: NavLink[] }
+interface NavLink { label: string; href?: string; current?: boolean; accent?: boolean; children?: NavLink[] }
 interface Target {
   code: string; href: string; exact: boolean; preview?: boolean
   autonym?: string; htmlLang?: string; hreflang?: string; homeOnly?: string | null
 }
-interface HeaderItem { key: string; label: string; href: string; current: 'page' | 'true' | null; children?: HeaderItem[] }
+interface HeaderItem { key: string; label: string; href: string; current: 'page' | 'true' | null; accent?: boolean; children?: HeaderItem[] }
 interface ToolBrand { label: string; logo: string; href: string; lang?: string | null }
 
 const props = withDefaults(defineProps<{
@@ -88,12 +90,14 @@ const items = computed<HeaderItem[]>(() => [
   ...model.value.siteNav,
   ...props.nav.map(toItem),
 ])
+// accent 的項目才加 class（:class 給 undefined 時 SSR 會輸出 class=""，其他工具的頁首就跟著變了）
+const ACCENT = { class: 'cs-hdr__accent' }
 function toItem(n: NavLink): HeaderItem {
   if (n.children?.length) {
     const children = n.children.map(toItem)
     return { key: `group:${n.label}`, label: n.label, href: '', current: children.some((c) => c.current) ? 'true' : null, children }
   }
-  return { key: n.href ?? n.label, label: n.label, href: n.href ?? '', current: n.current ? 'page' : null }
+  return { key: n.href ?? n.label, label: n.label, href: n.href ?? '', current: n.current ? 'page' : null, ...(n.accent ? { accent: true } : {}) }
 }
 
 // Esc、點外面關掉；打開一個就關掉其他的（語言面板與選單會疊在同一個位置）
@@ -134,7 +138,7 @@ onBeforeUnmount(() => {
         </a>
         <span class="cs-hdr__words">
           <a class="cs-hdr__name" :href="model.brand.href" :aria-current="model.brand.current ? 'page' : undefined" :lang="model.brand.lang ?? undefined" :data-foreign="model.brand.lang ? '' : undefined">{{ model.brand.label }}</a>
-          <a class="cs-hdr__hub" :href="model.brand.hub.href">{{ model.brand.hub.label }}</a>
+          <a class="cs-hdr__hub" :href="model.brand.hub.href" :lang="model.brand.hub.lang ?? undefined" :data-foreign="model.brand.hub.lang ? '' : undefined">{{ model.brand.hub.label }}</a>
         </span>
       </div>
       <a v-else class="cs-hdr__brand" :href="model.brand.href" :aria-current="model.brand.current ? 'page' : undefined">
@@ -153,7 +157,7 @@ onBeforeUnmount(() => {
               <a v-for="c in item.children" :key="c.key" :href="c.href" :aria-current="c.current ?? undefined">{{ c.label }}</a>
             </div>
           </details>
-          <a v-else :href="item.href" :aria-current="item.current ?? undefined">{{ item.label }}</a>
+          <a v-else :href="item.href" :aria-current="item.current ?? undefined" v-bind="item.accent ? ACCENT : {}">{{ item.label }}</a>
         </template>
       </nav>
       <div class="cs-hdr__tools">
@@ -178,7 +182,7 @@ onBeforeUnmount(() => {
                 <span :id="`cs-menu-${item.key}`" class="cs-menu__group-label">{{ item.label }}</span>
                 <a v-for="c in item.children" :key="c.key" :href="c.href" :aria-current="c.current ?? undefined">{{ c.label }}</a>
               </div>
-              <a v-else :href="item.href" :aria-current="item.current ?? undefined">{{ item.label }}</a>
+              <a v-else :href="item.href" :aria-current="item.current ?? undefined" v-bind="item.accent ? ACCENT : {}">{{ item.label }}</a>
             </template>
           </nav>
         </details>
@@ -204,7 +208,7 @@ onBeforeUnmount(() => {
   .cs-hdr__logo { inline-size: var(--cs-size-logo-header); block-size: var(--cs-size-logo-header); object-fit: contain; flex: none; }
   .cs-hdr__name { font-size: 19px; line-height: 24px; font-weight: 800; letter-spacing: .01em; white-space: nowrap; }
   .cs-hdr__en { display: none; font-family: var(--cs-lang-accent); font-size: 14px; line-height: 20px; font-weight: 800; color: var(--cs-text-2); white-space: nowrap; }
-  /* 工具品牌（toolBrand）：站徽、站名、下面一行 casper.tw 連回全站首頁（比照音效庫）。站徽的連結 aria-hidden、不進 Tab 順序，站名才是那個連結 */
+  /* 工具品牌（toolBrand）：站徽、站名、下面一行 Casper's Sidekick 連回全站首頁（比照音效庫）。站徽的連結 aria-hidden、不進 Tab 順序，站名才是那個連結 */
   .cs-hdr__mark { display: flex; flex: none; }
   .cs-hdr__words { display: flex; flex-direction: column; align-items: flex-start; min-inline-size: 0; }
   .cs-hdr__brand--tool .cs-hdr__name { line-height: 20px; color: var(--cs-text); text-decoration: none; }
@@ -228,6 +232,13 @@ onBeforeUnmount(() => {
   }
   .cs-hdr__nav a:hover, .cs-menu__panel a:hover { background: var(--cs-section); color: var(--cs-text); }
   .cs-hdr__nav a[aria-current], .cs-menu__panel a[aria-current] { background: var(--cs-soft); color: var(--cs-link); }
+  /* 凸顯的項目（accent）：橘色底與深橘字（對比 9:1 以上），前面一個圓點；目前這頁時底色加深一階 */
+  .cs-hdr__nav a.cs-hdr__accent, .cs-menu__panel a.cs-hdr__accent { gap: 6px; background: var(--cs-orange-50); color: var(--cs-orange-800); box-shadow: inset 0 0 0 1px var(--cs-orange-200); }
+  .cs-hdr__nav a.cs-hdr__accent::before, .cs-menu__panel a.cs-hdr__accent::before {
+    content: ""; flex: none; inline-size: 8px; block-size: 8px; border-radius: 50%; background: var(--cs-orange-500);
+  }
+  .cs-hdr__nav a.cs-hdr__accent:hover, .cs-menu__panel a.cs-hdr__accent:hover,
+  .cs-hdr__nav a.cs-hdr__accent[aria-current], .cs-menu__panel a.cs-hdr__accent[aria-current] { background: var(--cs-orange-100); color: var(--cs-orange-900); }
 
   /* 下拉分組：details 不設定位，面板以 .cs-hdr__in 為基準（脫離 .cs-hdr__nav 的捲動容器才不會被裁掉），
      水平位置用靜態位置（left 不設），剛好在組名下方 */

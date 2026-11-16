@@ -1,7 +1,7 @@
 // 頁首頁尾的資料模型（主站首頁規格 G.2）：連結、連結字、語言標示、aria-current 都在這裡算好，SiteHeader.vue、SiteFooter.vue 只顯示。
 // 純函式，前後端都能用（不 import node: 模組）：元件在 computed 裡呼叫，Node 端的測試與 audit 也呼叫同一支，連結規則只寫一次。
 // text 是已綁定頁面語系的外殼字串函式 (key, params) => string（ts(locale, …) 或 formatShell 包起來的版本）。
-import { SITE_NAME, SITE_URL } from './site.mjs'
+import { SITE_NAME, SITE_NAME_EN } from './site.mjs'
 import { BLOG_LOCALES, getLocale } from './i18n/locales.mjs'
 import { siteName } from './i18n/seo.mjs'
 import { legalLink } from './i18n/legal.mjs'
@@ -10,9 +10,10 @@ import { FOOTER_BLOG_GROUPS, FOOTER_LEGAL_NAV, FOOTER_SITE_NAV, HEADER_SITE_NAV,
 import { MARK } from './tools.mjs'
 
 /**
- * 外語工具頁的字標與麵包屑第一層要連哪裡（主站首頁規格 M.1 第 3 題，站長 2026-11-04 選 A，所以是 'site-home'）。
- *   'site-home'：該語系的全站首頁已上線時，字標連 /<code>/，麵包屑第一層是 /<code>/（breadcrumb.home）；沒上線時字標連工具首頁、麵包屑從工具名開始
- *   'tool-home'：一律照 0008 M.1 第 9、10 題，字標連該語系的工具首頁、麵包屑從工具名開始（M.1 第 3 題的 B）
+ * 外語工具頁的字標要連哪裡（主站首頁規格 M.1 第 3 題，站長 2026-11-04 選 A，所以是 'site-home'）。
+ *   'site-home'：該語系的全站首頁已上線時，字標連 /<code>/；沒上線時字標連工具首頁
+ *   'tool-home'：一律照 0008 M.1 第 9、10 題，字標連該語系的工具首頁（M.1 第 3 題的 B）
+ * 麵包屑不看這裡：站長 2026-11-15 起子站的麵包屑一律從子站開始、子站首頁沒有麵包屑（決策 0019）
  */
 export const FOREIGN_BRAND = 'site-home'
 export const FOREIGN_BRANDS = ['tool-home', 'site-home']
@@ -28,7 +29,7 @@ export function brandLang(code) {
 
 /**
  * 外語工具頁的全站首頁：foreignBrand 是 'site-home'、頁面不是 BLOG_LOCALES、而且 siteHomes 有這個語系時回 /<code>/，否則 null。
- * 字標（headerModel）與範本的麵包屑第一層、BreadcrumbList（plan.mjs、audit J11）都用這一支，規則只寫一次
+ * 字標（headerModel）用這一支；麵包屑 2026-11-15 起不再用它（決策 0019）
  * @param {string} locale
  * @param {string[] | null | undefined} siteHomes  已上線的外語全站首頁（工具傳 tools.json 的 siteHomes）
  * @param {string} [foreignBrand]
@@ -53,6 +54,7 @@ export const DEFAULT_SOURCE_LOCALE = BLOG_LOCALES[0]
  * 頁尾的翻譯說明，沒有就是 null。規則：
  *   sourceLocale 在 TRANSLATED_NOTE_KEYS（en）：正本以外的每個語系（繁中頁也算）用那個 key，正本語系的頁沒有
  *   sourceLocale 是 DEFAULT_SOURCE_LOCALE（zh-tw）：決策 0010，登錄表 nativeReviewer 是 'ai-cross' 的語系用 footer.translated（以繁中版為準）
+ *   頁的語系就是正本語系（例如各語系各自撰寫、不是翻譯的工具，決策 0020 的 hairstyles-and-outfits 傳自己的語系）：沒有說明
  *   其他正本語系還沒有說明的字：丟錯，不讓「以繁中版為準」出現在不是譯自繁中的頁上
  * @param {string} locale
  * @param {TextFn} text
@@ -62,6 +64,7 @@ export const DEFAULT_SOURCE_LOCALE = BLOG_LOCALES[0]
 export function translatedNote(locale, text, sourceLocale = DEFAULT_SOURCE_LOCALE) {
   getLocale(locale)
   getLocale(sourceLocale)
+  if (locale === sourceLocale && sourceLocale !== DEFAULT_SOURCE_LOCALE) return null
   const key = TRANSLATED_NOTE_KEYS[sourceLocale]
   if (key) return locale === sourceLocale ? null : text(key)
   if (sourceLocale !== DEFAULT_SOURCE_LOCALE) {
@@ -79,15 +82,18 @@ function checkKind(locale, kind) {
 /**
  * @typedef {(key: string, params?: Record<string, string | number>) => string} TextFn
  * @typedef {{ key: string, href: string, label: string, current: 'page' | 'true' | null }} HeaderNavLink
- * @typedef {{ href: string, label: string, lang: string | null, current: boolean, logo?: string, hub?: { href: string, label: string } }} HeaderBrand
- *   logo、hub 只在有 toolBrand 時有；沒有 logo 時元件用 SHELL_LOGO（全站的小幽靈）。hub 是站名下面那行連回全站首頁的小字
+ * @typedef {{ href: string, label: string, lang: string | null, current: boolean, logo?: string, hub?: { href: string, label: string, lang: string | null } }} HeaderBrand
+ *   logo、hub 只在有 toolBrand 時有；沒有 logo 時元件用 SHELL_LOGO（全站的小幽靈）。hub 是站名下面那行連回全站首頁的小字，lang 是 en 以外的頁給 'en'
  * @typedef {{ label: string, logo: string, href: string, lang?: string | null }} ToolBrand
  *   工具自己的品牌：label 是頁面語系的站名，logo 是正方形圖的網址，href 是這個語系的工具首頁（完整網址），
  *   lang 是站名的語言跟頁面不同時的語言標籤（例如外語頁放英文站名時給 'en'）
  */
 
-/** 工具品牌頁首的小字：連回全站首頁，字是網域（比照音效庫的 brand__hub，站長 2026-11-12「logo 應該跟 free-sound 一樣，可以回到主頁」） */
-export const TOOL_BRAND_HUB_LABEL = new URL(SITE_URL).hostname.replace(/^www\./, '')
+/**
+ * 工具品牌頁首的小字：連回全站首頁（站長 2026-11-12「logo 應該跟 free-sound 一樣，可以回到主頁」）。
+ * 字是全站的英文站名，每個語系都一樣、不用網址（站長 2026-11-15，之前是網域 casper.tw）；子站的麵包屑從子站開始，回全站首頁只靠這行
+ */
+export const TOOL_BRAND_HUB_LABEL = SITE_NAME_EN
 
 /**
  * 工具品牌頁首的小字連到哪個全站首頁：繁中頁是 /；外語頁是該語系已上線的全站首頁 /<code>/，沒有就退 /en/（也沒有就 /）。
@@ -103,20 +109,21 @@ export function toolBrandHub(locale, siteHomes) {
 
 /**
  * 工具自己的品牌（站長 2026-11-12 決定，第一支是背景音樂站）→ 頁首的 brand。
- * 字標換成工具的 logo 與站名、連 href；在工具首頁（currentUrl 等於 href）時 current；hub 是站名下面連回全站首頁的小字。
+ * 字標換成工具的 logo 與站名、連 href；在工具首頁（currentUrl 等於 href）時 current；hub 是站名下面連回全站首頁的小字（英文站名，en 以外的頁標 lang="en"）。
  * 欄位不齊就丟錯，讓建置失敗
  * @param {ToolBrand} toolBrand
  * @param {string} currentUrl
  * @param {string} hubHref
+ * @param {string} locale
  * @returns {HeaderBrand}
  */
-function toolBrandOf(toolBrand, currentUrl, hubHref) {
+function toolBrandOf(toolBrand, currentUrl, hubHref, locale) {
   const { label, logo, href, lang = null } = toolBrand
   for (const [k, v] of Object.entries({ label, logo, href })) {
     if (typeof v !== 'string' || !v.trim()) throw new Error(`toolBrand.${k} 要是非空字串`)
   }
   if (lang !== null && (typeof lang !== 'string' || !lang.trim())) throw new Error('toolBrand.lang 要是語言標籤（例如 en）或 null')
-  return { href, label, lang, current: !!currentUrl && currentUrl === href, logo, hub: { href: hubHref, label: TOOL_BRAND_HUB_LABEL } }
+  return { href, label, lang, current: !!currentUrl && currentUrl === href, logo, hub: { href: hubHref, label: TOOL_BRAND_HUB_LABEL, lang: locale === 'en' ? null : 'en' } }
 }
 
 /**
@@ -139,7 +146,7 @@ export function headerModel({ locale, text, kind = 'page', currentUrl = '', sect
   const own = foreignSiteHome(locale, siteHomes, foreignBrand)
   const lang = brandLang(locale)
   const currentOf = (href, sec) => (currentUrl && href === currentUrl ? 'page' : sec && section && sec === section ? 'true' : null)
-  const brandOr = (site) => (toolBrand ? toolBrandOf(toolBrand, currentUrl, toolBrandHub(locale, siteHomes)) : site)
+  const brandOr = (site) => (toolBrand ? toolBrandOf(toolBrand, currentUrl, toolBrandHub(locale, siteHomes), locale) : site)
 
   if (isBlog(locale)) {
     const siteNav = HEADER_SITE_NAV.filter((n) => liveTools || !n.needsLiveTools).map((n) => {
@@ -189,14 +196,16 @@ const link = (key, href, label, extra = {}) => ({
  *   current：工具組照 siteTools 的 current；外語頁的 site、legal 網址等於 currentUrl 時 true；繁中頁四組不標（跟部落格現在相同）
  *   tagline、signature：只有 BLOG_LOCALES；signature 的 site 是 SITE_NAME，href 是繁中關於頁
  *   copyright：BLOG_LOCALES 以外
- *   translated：translatedNote(locale, text, sourceLocale)。sourceLocale 沒給（zh-tw）時照決策 0010：nativeReviewer 'ai-cross' 的語系
- *     「以繁中版為準」，其他 null；正本是 en 的工具傳 'en'：en 以外每個語系（繁中頁也算）「以英文版為準」，en 頁 null
+ *   translated：只有法務頁（legalPage: true）才有，其他頁一律 null（站長 2026-11-17 選 A：工具頁、全站首頁不放翻譯說明，
+ *     只留法務頁，那裡「以原文為準」才有意義）。法務頁照 translatedNote(locale, text, sourceLocale)：sourceLocale 沒給（zh-tw）時
+ *     照決策 0010，nativeReviewer 'ai-cross' 的語系「以繁中版為準」，其他 null；正本是 en 的傳 'en'：en 以外每個語系（繁中頁也算）
+ *     「以英文版為準」，en 頁 null
  * @param {{ locale: string, text: TextFn, kind?: string, currentUrl?: string, siteTools?: import('./tools.mjs').SiteToolLink[],
- *           siteHomes?: string[], toolName?: string, toolNav?: ToolNavLink[], sourceLocale?: string }} p
+ *           siteHomes?: string[], toolName?: string, toolNav?: ToolNavLink[], sourceLocale?: string, legalPage?: boolean }} p
  * @returns {{ groups: FooterGroup[], site: FooterLink[], legal: FooterLink[], tagline: string | null,
  *             signature: FooterSignature | null, copyright: string | null, translated: string | null }}
  */
-export function footerModel({ locale, text, kind = 'page', currentUrl = '', siteTools = [], siteHomes = [], toolName = '', toolNav = [], sourceLocale = DEFAULT_SOURCE_LOCALE }) {
+export function footerModel({ locale, text, kind = 'page', currentUrl = '', siteTools = [], siteHomes = [], toolName = '', toolNav = [], sourceLocale = DEFAULT_SOURCE_LOCALE, legalPage = false }) {
   checkKind(locale, kind)
   getLocale(sourceLocale)
   const blog = isBlog(locale)
@@ -237,8 +246,8 @@ export function footerModel({ locale, text, kind = 'page', currentUrl = '', site
       tagline: text('footer.tagline'),
       signature: { before: parts[0], site: SITE_NAME, href: legalLink('about', BLOG_LOCALES[0]).href, after: parts[1] },
       copyright: null,
-      // 部落格與正本是繁中的工具：null（繁中不是 ai-cross）；正本是 en 的工具的繁中頁：以英文版為準
-      translated: translatedNote(locale, text, sourceLocale),
+      // 只有法務頁：正本是繁中的是 null（繁中不是 ai-cross）；正本是 en 的繁中法務頁：以英文版為準
+      translated: legalPage ? translatedNote(locale, text, sourceLocale) : null,
     }
   }
 
@@ -266,6 +275,6 @@ export function footerModel({ locale, text, kind = 'page', currentUrl = '', site
   })
   const flags = getLocale(locale).legal
   const legal = FOOTER_LEGAL_NAV.flatMap((n) => (n.flag && !(n.flag in flags) ? [] : toLegal(n.key, n.legal)))
-  const translated = translatedNote(locale, text, sourceLocale)
+  const translated = legalPage ? translatedNote(locale, text, sourceLocale) : null
   return { groups, site, legal, tagline: null, signature: null, copyright: text('footer.copyright'), translated }
 }

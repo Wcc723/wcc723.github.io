@@ -41,7 +41,7 @@ export const SHELL_KEYS = {
   'lang.current': 'all',
   'lang.homeOnly': 'all', // 語言選單的退路說明，用目標語系顯示
   'breadcrumb.label': 'all',
-  'breadcrumb.home': 'all', // 麵包屑第一層（全站首頁）。外語頁只在該語系的全站首頁已上線時用（shell-model.mjs 的 foreignSiteHome，M.1 第 3 題）
+  'breadcrumb.home': 'all', // 全站首頁那一層的字：部落格（主站）的麵包屑用；子站 2026-11-15 起麵包屑從子站開始，不再用它（決策 0019）
   // 署名列、頁尾
   'byline.made': 'all',
   'byline.updated': 'all',

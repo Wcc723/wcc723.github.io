@@ -10,8 +10,9 @@
  *     <a> 加目的地的 hreflang；全站首頁、關於在該語系的首頁上線後改連 /<code>/
  *   - 法務：一律經 legalLink()；Impressum、外部送信要登錄表有旗標、而且有網址才放
  *   - 站外連結只加一個 aria-hidden 的外連圖示，不加 rel、不開新分頁；工具名是外語時包 <span lang data-foreign>
- *   - 翻譯說明（footerModel 的 translated）：sourceLocale 沒給時照決策 0010（ai-cross 的語系「以繁中版為準」）；
- *     正本是英文的工具傳 source-locale="en"，en 以外每個語系的頁（繁中頁也算）「以英文版為準」
+ *   - 翻譯說明（footerModel 的 translated）：只有 legal-page 的頁才有（站長 2026-11-17：只留法務頁）。
+ *     sourceLocale 沒給時照決策 0010（ai-cross 的語系「以繁中版為準」）；正本是英文的傳 source-locale="en"，
+ *     en 以外每個語系的頁（繁中頁也算）「以英文版為準」
  * 語言列標題的 id 寫死 cs-ftr-lang：一頁只有一個頁尾。
  */
 import { computed } from 'vue'
@@ -52,7 +53,9 @@ const props = withDefaults(defineProps<{
    * 'en' 時頁面的外殼字串也要照 { sourceLocale: 'en' } 給（shellStringsFor(code, { sourceLocale: 'en' })），否則 footer.translatedFromEn 會缺字
    */
   sourceLocale?: string
-}>(), { toolName: '', toolNav: () => [], languages: () => [], kind: 'page', siteTools: () => [], siteHomes: () => [], currentUrl: '' })
+  /** 法務頁（隱私權、條款、授權這類以原文為準的頁）才給 true，頁尾才有翻譯說明；工具頁、全站首頁不給 */
+  legalPage?: boolean
+}>(), { toolName: '', toolNav: () => [], languages: () => [], kind: 'page', siteTools: () => [], siteHomes: () => [], currentUrl: '', legalPage: false })
 
 const isBlogLocale = computed(() => BLOG_LOCALES.includes(props.locale))
 const brandName = computed(() => (isBlogLocale.value ? SITE_NAME : siteName(props.locale)))
@@ -68,6 +71,7 @@ const model = computed(() => footerModel({
   toolNav: props.toolNav,
   // undefined 時 footerModel 用自己的預設（zh-tw）
   sourceLocale: props.sourceLocale,
+  legalPage: props.legalPage,
 }))
 const bottomLinks = computed(() => [...model.value.site, ...model.value.legal])
 </script>
