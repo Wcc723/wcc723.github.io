@@ -34,8 +34,9 @@ import { NOT_FOUND_TITLE, NOT_FOUND_DESCRIPTION } from '../source/.vitepress/the
 import { toolCardArt, toolFeatureArt } from '../source/.vitepress/theme/ghost.mjs'
 import siteConfig from '../source/.vitepress/site.config.mjs'
 import {
-  SITE_HOME_CODES, SITE_INDEX, buildSiteHomePlan, formatHomeCopy, languageTargets, readHomeMessages, siteHomeTitle,
+  HOLD_ROBOTS, SITE_HOME_CODES, SITE_INDEX, buildSiteHomePlan, formatHomeCopy, homesOutOfSitemap, languageTargets, readHomeMessages, siteHomeTitle,
 } from '../source/.vitepress/lib/site-home.mjs'
+import { UNLISTED_SITEMAPS } from '../source/.vitepress/lib/feeds.mjs'
 import { HOME_TITLE, PERSON_ID, SITE_HOME_OG_IMAGE, WEBSITE_ID } from '../source/.vitepress/lib/seo.mjs'
 import { LOCALES, getLocale, sortLocaleCodes } from '../source/.vitepress/theme/shared/shell/i18n/locales.mjs'
 import { ZH_CATCHALL, siteHomeAlternates, siteHomeUrl } from '../source/.vitepress/theme/shared/shell/i18n/urls.mjs'
@@ -1070,7 +1071,9 @@ export function checkFeeds(ctx) {
   const sitemap = readDist('sitemap.xml')
   if (!sitemap) fail(c, 'dist 沒有 sitemap.xml')
   else {
-    const want = expectedSitemap(ctx.baseline.sitemap, { siteHomes: ctx.plan.published })
+    // 暫停收錄、已過 sitemapUntil 的外語首頁不列（site.config.mjs 的 home.noindexHold）
+    const out = ctx.homesOutOfSitemap ?? homesOutOfSitemap()
+    const want = expectedSitemap(ctx.baseline.sitemap, { siteHomes: ctx.plan.published.filter((x) => !out.has(siteHomeUrl(x))) })
     // 新文章：文章頁，加上它帶來、基準沒有的列表第 1 頁（新標籤）；分頁與封存頁本來就不進 sitemap
     for (const x of fresh) {
       want.add(SITE + x.url)
@@ -1103,7 +1106,7 @@ export function checkFeeds(ctx) {
   const index = readDist('sitemap-index.xml')
   if (!index) fail(c, 'dist 沒有 sitemap-index.xml（P3，計畫網站地圖）')
   else {
-    const want = [`${SITE}/sitemap.xml`, ...(ctx.toolsIndex?.tools ?? []).map((t) => `${SITE}/${t.slug}/sitemap.xml`)]
+    const want = [`${SITE}/sitemap.xml`, ...(ctx.toolsIndex?.tools ?? []).map((t) => `${SITE}/${t.slug}/sitemap.xml`), ...UNLISTED_SITEMAPS.map((slug) => `${SITE}/${slug}/sitemap.xml`)]
     const locs = [...index.matchAll(/<sitemap>\s*<loc>([^<]+)<\/loc>\s*<\/sitemap>/g)].map((m) => m[1])
     if (!index.startsWith('<?xml version="1.0" encoding="UTF-8"?>') || !index.includes('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">') || !index.trimEnd().endsWith('</sitemapindex>')) fail(c, 'sitemap-index.xml 的 XML 宣告或 sitemapindex 命名空間不對')
     if (JSON.stringify(locs) !== JSON.stringify(want)) fail(c, `sitemap-index.xml 要依序列 ${want.join('、')}，實際 ${locs.join('、') || '（沒有）'}`)
@@ -1651,12 +1654,16 @@ export function expectedSiteHomeHead(code, { plan, readHome }) {
   if (!file) throw new Error(`沒有 i18n/home/${code}.json`)
   const copy = formatHomeCopy(file, code)
   const url = siteHomeUrl(code)
-  const published = plan.published
-  const alternates = published.includes('en') ? siteHomeAlternates(published) : []
-  const others = sortLocaleCodes(['zh-tw', ...published]).filter((x) => x !== code)
+  // 暫停收錄的語系（plan.held）：自己 robots noindex, follow、沒有 hreflang 與 og:locale:alternate；其他首頁不列它
+  const held = plan.held ?? []
+  const isHeld = held.includes(code)
+  const indexed = plan.published.filter((x) => !held.includes(x))
+  const alternates = !isHeld && indexed.includes('en') ? siteHomeAlternates(indexed) : []
+  const others = isHeld ? [] : sortLocaleCodes(['zh-tw', ...indexed]).filter((x) => x !== code)
   return [
     `title=${siteHomeTitle(code, copy)}`,
     `description=${copy.meta.description}`,
+    ...(isHeld ? [`robots=${HOLD_ROBOTS}`] : []),
     `canonical=${url}`,
     ...alternates.map((a) => `hreflang:${a.hreflang}=${a.href}`),
     ...(alternates.length ? [`hreflang:x-default=${siteHomeUrl('en')}`] : []),
@@ -1770,7 +1777,12 @@ export function checkLocales(ctx) {
   const shared = ctx.shell === 'shared'
   for (const p of plan.problems ?? []) fail(c, `L0：外語首頁沒過關卡（config.mts 會擋下建置）：${p}`)
   const homes = published.map((code) => ({ code, url: `/${code}/`, d: ctx.pages.get(`/${code}/`) }))
-  const cluster = [{ code: 'zh-tw', url: '/', d: ctx.pages.get('/') }, ...homes]
+  // 暫停收錄的外語首頁（plan.held，site.config.mjs 的 home.noindexHold）：頁照樣有（L1 到 L3、L12、L13 照驗），但不在 hreflang 叢集、
+  // 404 多語提示、其他頁的語言選單裡，robots 是 noindex, follow，其他頁不能有連到它的連結；sitemap 在 sitemapUntil 之前照樣列
+  const held = plan.held ?? []
+  const indexed = published.filter((x) => !held.includes(x))
+  const outOfSitemap = ctx.homesOutOfSitemap ?? homesOutOfSitemap()
+  const cluster = [{ code: 'zh-tw', url: '/', d: ctx.pages.get('/') }, ...homes.filter((h) => !held.includes(h.code))]
   const clusterUrls = new Set(cluster.map((x) => x.url))
 
   // L1：<html lang>
@@ -1806,7 +1818,7 @@ export function checkLocales(ctx) {
   }
 
   // L4：hreflang 叢集；L5：og:locale:alternate
-  const wantHreflang = published.includes('en') ? [...siteHomeAlternates(published).map((a) => `${a.hreflang}=${a.href}`), `x-default=${siteHomeUrl('en')}`] : []
+  const wantHreflang = indexed.includes('en') ? [...siteHomeAlternates(indexed).map((a) => `${a.hreflang}=${a.href}`), `x-default=${siteHomeUrl('en')}`] : []
   for (const x of cluster) {
     if (!x.d) continue
     const links = hreflangLinksOf(x.d.html)
@@ -1815,9 +1827,17 @@ export function checkLocales(ctx) {
     for (const l of links) if (!/^https:\/\//.test(l.href)) fail(c, `L4：${x.url} 的 hreflang="${l.hreflang}" 不是絕對網址：${l.href}`)
     if (wantHreflang.length && !got.includes(`x-default=${siteHomeUrl('en')}`)) fail(c, `L4：${x.url} 的 x-default 要是 ${siteHomeUrl('en')}`)
     if (wantHreflang.length && ZH_CATCHALL && !got.includes(`zh=${siteHomeUrl('zh-tw')}`)) fail(c, `L4：${x.url} 要有 hreflang="zh" 指 /（ZH_CATCHALL）`)
-    const wantOg = published.length ? sortLocaleCodes(['zh-tw', ...published]).filter((k) => k !== x.code).map((k) => getLocale(k).ogLocale) : []
+    const wantOg = indexed.length ? sortLocaleCodes(['zh-tw', ...indexed]).filter((k) => k !== x.code).map((k) => getLocale(k).ogLocale) : []
     const gotOg = ogLocalesOf(x.d.html).alternates
     if (!sameList([...gotOg].sort(), [...wantOg].sort())) fail(c, `L5：${x.url} 的 og:locale:alternate 跟叢集裡的其他語系不同：${listDiff(wantOg, gotOg)}`)
+  }
+  // L4：暫停收錄的外語首頁只有它自己的頁連過去（語言選單、頁尾、404、內文都不連）
+  for (const code of held) {
+    const href = siteHomeUrl(code)
+    for (const d of ctx.pages.values()) {
+      if (d.url === `/${code}/`) continue
+      if (anchorsIn(d.html).some((a) => a.href === href)) fail(c, `L4：${d.url} 連到暫停收錄的外語首頁 ${href}（home.noindexHold）`)
+    }
   }
   for (const d of ctx.pages.values()) {
     if (clusterUrls.has(d.url)) continue
@@ -1829,7 +1849,11 @@ export function checkLocales(ctx) {
   const sitemap = ctx.dist.files.includes('sitemap.xml') ? fs.readFileSync(path.join(ctx.dist.dir, 'sitemap.xml'), 'utf8') : null
   if (sitemap) {
     const locs = new Set(sitemapLocs(sitemap))
-    for (const h of homes) if (!locs.has(siteHomeUrl(h.code))) fail(c, `L6：sitemap 少了外語首頁 ${siteHomeUrl(h.code)}`)
+    for (const h of homes) {
+      const u = siteHomeUrl(h.code)
+      if (outOfSitemap.has(u)) { if (locs.has(u)) fail(c, `L6：sitemap 不該有 ${u}（暫停收錄，已過 sitemapUntil）`) }
+      else if (!locs.has(u)) fail(c, `L6：sitemap 少了外語首頁 ${u}`)
+    }
     if (/<xhtml:link\b/.test(sitemap)) fail(c, 'L6：sitemap 不放 xhtml:link（hreflang 只在 head，主站首頁規格 D.8）')
     for (const u of [`${SITE}/zh-tw/`, `${SITE}/404`, `${SITE}/404.html`]) if (locs.has(u)) fail(c, `L6：sitemap 不該有 ${u}`)
   } else fail(c, 'L6：dist 沒有 sitemap.xml')
@@ -1840,7 +1864,11 @@ export function checkLocales(ctx) {
     if (preview) fail(c, `L7：${d.url} 有 preview 的 class（${preview.attrs.class}）：preview 產物不能進 dist`)
     if (previewLinkScriptsIn(d.html).length) fail(c, `L7：${d.url} 有 preview 的站內連結腳本（lib/preview-links.mjs 的 previewLinkScript）：只有 build:preview 會放，preview 產物不能進 dist`)
   }
-  for (const h of homes) if (h.d && h.d.f.robots !== null) fail(c, `L7：${h.url} 有 robots meta ${show(h.d.f.robots)}，外語首頁要被收錄`)
+  for (const h of homes) {
+    if (!h.d) continue
+    if (held.includes(h.code)) { if (h.d.f.robots !== HOLD_ROBOTS) fail(c, `L7：${h.url} 是暫停收錄的外語首頁，robots 要是 ${HOLD_ROBOTS}，實際 ${show(h.d.f.robots)}`) }
+    else if (h.d.f.robots !== null) fail(c, `L7：${h.url} 有 robots meta ${show(h.d.f.robots)}，外語首頁要被收錄`)
+  }
 
   // L8：404（S 起不 hydrate；I1 起有多語提示）
   const nf = ctx.pages.get('/404.html')
@@ -1853,10 +1881,10 @@ export function checkLocales(ctx) {
     const intl = elementsWhere(mainOf(nf.html), (t) => t.name === 'ul' && hasClass(t.attrs, 'cs-404__intl'))[0]
     const lis = intl ? elementsWhere(intl.inner, (t) => t.name === 'li') : []
     const got = lis.map((li) => li.attrs.lang ?? '（沒有 lang）')
-    const want = sortLocaleCodes(published).map((k) => getLocale(k).htmlLang)
+    const want = sortLocaleCodes(indexed).map((k) => getLocale(k).htmlLang)
     if (!sameList(got, want)) fail(c, `L8：404 的多語提示要剛好列出 ${want.join('、') || '（沒有）'}，實際 ${got.join('、') || '（沒有）'}`)
     for (const [i, li] of lis.entries()) {
-      const code = sortLocaleCodes(published)[i]
+      const code = sortLocaleCodes(indexed)[i]
       const a = anchorsIn(li.inner)[0]
       if (code && (!a || a.href !== siteHomeUrl(code) || a.hreflang !== getLocale(code).hreflang)) fail(c, `L8：404 多語提示的 ${code} 那一行要連 ${siteHomeUrl(code)} 並加 hreflang="${getLocale(code).hreflang}"`)
     }
@@ -1872,7 +1900,7 @@ export function checkLocales(ctx) {
     }
     if (!d.type) continue
     let targets
-    try { targets = languageTargets({ pageType: d.type, canonical: d.f.canonical ?? '', plan, readHome: ctx.readHome }) } catch (e) { fail(c, `L9：${d.url} 算不出語言選單：${e.message}`); continue }
+    try { targets = languageTargets({ pageType: d.type, canonical: d.f.canonical ?? '', plan, readHome: ctx.readHome, locale: code && d.type === 'site-home' ? code : 'zh-tw' }) } catch (e) { fail(c, `L9：${d.url} 算不出語言選單：${e.message}`); continue }
     const want = expectedLanguageItems(targets, code && d.type === 'site-home' ? code : 'zh-tw')
     if (!menu) { fail(c, `L9：${d.url} 沒有語言選單（details.cs-lang）`); continue }
     const got = languageItemsIn(menu.outer)
@@ -1957,7 +1985,7 @@ export function checkLocales(ctx) {
   }
   c.stats = { published, shell: ctx.shell, homes: homes.filter((h) => h.d).length, pages: all.length, ...measured }
   const counts = `量到 ${all.length} 頁裡 ${measured.zh} 頁是 zh-TW、${measured.hreflang} 頁有 hreflang、${measured.menu} 頁有語言選單`
-  c.summary = published.length ? `外語首頁 ${published.map((x) => `/${x}/`).join('、')}，shell ${ctx.shell}；${counts}` : `沒有外語首頁（home.locales 是空的），shell ${ctx.shell}；${counts}`
+  c.summary = published.length ? `外語首頁 ${published.map((x) => `/${x}/`).join('、')}${held.length ? `（暫停收錄 ${held.map((x) => `/${x}/`).join('、')}）` : ''}，shell ${ctx.shell}；${counts}` : `沒有外語首頁（home.locales 是空的），shell ${ctx.shell}；${counts}`
   return c
 }
 

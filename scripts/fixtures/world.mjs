@@ -30,6 +30,7 @@ import { ts } from '../../source/.vitepress/theme/shared/shell/i18n/shell-string
 import { siteToolLinks } from '../../source/.vitepress/theme/shared/shell/tools.mjs'
 import { brandLang } from '../../source/.vitepress/theme/shared/shell/shell-model.mjs'
 import { ga4HeadHtml } from '../../source/.vitepress/theme/shared/shell/analytics.mjs'
+import { UNLISTED_SITEMAPS } from '../../source/.vitepress/lib/feeds.mjs'
 
 const HERE = path.dirname(fileURLToPath(import.meta.url))
 export const HEXO_DIR = path.join(HERE, 'hexo')
@@ -449,7 +450,7 @@ export function buildWorld(mutate, { stage = 'p1', toolsIndex } = {}) {
   // P3：robots.txt 是基準最後多一行 Sitemap；/sitemap-index.xml 列部落格與每支工具的 sitemap
   dist.set('robots.txt', FROZEN['robots.txt'] + ROBOTS_P3_LINE)
   dist.set('sitemap-index.xml', ['<?xml version="1.0" encoding="UTF-8"?>', '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...[`${SITE}/sitemap.xml`, ...cfg.toolsIndex.tools.map((t) => `${SITE}/${t.slug}/sitemap.xml`)].map((u) => `  <sitemap><loc>${u}</loc></sitemap>`), '</sitemapindex>', ''].join('\n'))
+    ...[`${SITE}/sitemap.xml`, ...cfg.toolsIndex.tools.map((t) => `${SITE}/${t.slug}/sitemap.xml`), ...UNLISTED_SITEMAPS.map((slug) => `${SITE}/${slug}/sitemap.xml`)].map((u) => `  <sitemap><loc>${u}</loc></sitemap>`), '</sitemapindex>', ''].join('\n'))
   dist.set('atom.xml', baseFiles['atom.xml'])
   dist.set('content.json', JSON.stringify(content.map(expectedContentEntry)))
   const lastmod = new Map(posts.map((p) => [SITE + p.url, p.updated ?? p.date]))

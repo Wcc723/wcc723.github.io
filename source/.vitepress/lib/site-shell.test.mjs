@@ -23,7 +23,7 @@ const INDEX = {
 // 手寫的計畫：en 上線、ja 是 preview（只用到 pages 與 published）
 const PLAN = { stage: 'live', published: ['en'], pages: [{ code: 'en', url: 'https://www.casper.tw/en/', preview: false }], problems: [], warnings: [] }
 const PREVIEW = buildSiteHomePlan({ config: { shell: 'legacy', home: { locales: [], roadmap: ['en', 'ja', 'ko', 'de', 'zh-cn', 'es'], sourceLocale: 'en', reviewers: {} } }, env: { CS_STAGE: 'preview' } })
-const FIELDS = ['locale', 'kind', 'shell', 'tools', 'siteHomes', 'languages', 'section', 'canonical', 'home', 'preview', 'notFoundIntl']
+const FIELDS = ['locale', 'kind', 'shell', 'tools', 'siteHomes', 'languages', 'section', 'canonical', 'home', 'preview', 'held', 'notFoundIntl']
 
 test('sectionOf：每個頁型都跟 theme/utils/nav.mjs 的結果相同', () => {
   for (const type of Object.values(AD_PAGE_TYPES).flat()) assert.equal(sectionOf(type), legacySectionOf(type), type)

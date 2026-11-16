@@ -123,6 +123,24 @@ export function siteConfigProblems(config, { shellReview = SHELL_REVIEW, registr
     }
     out.push(...reviewerConflicts(reviewers, registry, `${where} 的 home.reviewers`))
   }
+  const holds = home.noindexHold ?? []
+  if (!Array.isArray(holds)) out.push(`${where} 的 home.noindexHold 要是陣列`)
+  else {
+    const seenHold = new Set()
+    for (const [i, h] of holds.entries()) {
+      const at = `${where} 的 home.noindexHold[${i}]`
+      if (!h || typeof h !== 'object') { out.push(`${at} 要是 { locale, since, sitemapUntil, reason }`); continue }
+      if (!locales.includes(h.locale)) out.push(`${at} 的 locale ${JSON.stringify(h.locale)} 要在 home.locales 裡（上線過的外語首頁才有暫停收錄可言）`)
+      else if (h.locale === 'en') out.push(`${at} 不能是 en：x-default 是 /en/`)
+      if (seenHold.has(h.locale)) out.push(`${at} 重複的語系 ${h.locale}`)
+      seenHold.add(h.locale)
+      if (typeof h.since !== 'string' || !DATE_RE.test(h.since)) out.push(`${at} 的 since 要是 YYYY-MM-DD`)
+      if (typeof h.sitemapUntil !== 'string' || !DATE_RE.test(h.sitemapUntil)) out.push(`${at} 的 sitemapUntil 要是 YYYY-MM-DD`)
+      else if (typeof h.since === 'string' && h.sitemapUntil <= h.since) out.push(`${at} 的 sitemapUntil 要晚於 since`)
+      if (typeof h.reason !== 'string' || !h.reason.trim()) out.push(`${at} 要寫 reason（站長哪天、為什麼）`)
+      for (const k of Object.keys(h)) if (!['locale', 'since', 'sitemapUntil', 'reason'].includes(k)) out.push(`${at} 有不認得的欄位 ${k}`)
+    }
+  }
   const waivers = home.waivers ?? []
   if (!Array.isArray(waivers)) out.push(`${where} 的 home.waivers 要是陣列`)
   else {
@@ -133,6 +151,28 @@ export function siteConfigProblems(config, { shellReview = SHELL_REVIEW, registr
     }
   }
   return out
+}
+
+// ── 暫停收錄的外語首頁（home.noindexHold，站長 2026-11-16 ko） ─────────────────
+// 頁照樣產生（B.1：上線後不拿掉），robots 是 HOLD_ROBOTS、沒有 hreflang 與 og:locale:alternate；其他頁的 hreflang、og:locale:alternate、
+// 語言選單、頁尾的外語首頁清單、404 的多語提示都不列它，它自己的語言選單列可收錄的語系加上自己。sitemap 在 sitemapUntil（UTC 建置日）
+// 之前照樣列（讓 Google 重爬看到 noindex），那天起不列。G8（至少一支工具）對它只記警告。preview 不套用。恢復收錄就拿掉那一筆。
+
+/** 暫停收錄頁的 robots */
+export const HOLD_ROBOTS = 'noindex, follow'
+
+/** 某語系的暫停收錄設定；沒有回 null */
+export const homeHoldOf = (config, code) => (config?.home?.noindexHold ?? []).find((h) => h?.locale === code) ?? null
+
+/** sitemap 還要不要列這個暫停的首頁：today（YYYY-MM-DD，UTC）早於 sitemapUntil 才列 */
+export const holdInSitemap = (hold, today) => !!hold && today < hold.sitemapUntil
+
+/**
+ * 這次建置不進 sitemap 的外語首頁網址（暫停收錄、已過 sitemapUntil 的）。lib/feeds.mjs 的 sitemapTransformItems 與 audit 都用它。
+ * preview 不產生 sitemap，不用分 stage
+ */
+export function homesOutOfSitemap(config = siteConfig, today = todayUtc()) {
+  return new Set((config?.home?.noindexHold ?? []).filter((h) => !holdInSitemap(h, today)).map((h) => siteHomeUrl(h.locale)))
 }
 
 /** 設定有錯就丟錯（config 載入時跑，錯了建置就失敗）；沒錯回 config */
@@ -358,9 +398,16 @@ export function buildSiteHomePlan({
   const problems = []
   const warnings = []
   let pages
+  // 暫停收錄的語系（live 才套用）：照常產生，G8 只記警告（工具都暫停了這個語系時，首頁本來就沒有該語系的工具）
+  const held = stage === 'live' ? sortLocaleCodes((config.home.noindexHold ?? []).map((h) => h.locale)) : []
   if (stage === 'live') {
-    pages = published.map((code) => ({ code, url: siteHomeUrl(code), preview: false }))
-    for (const code of published) problems.push(...homeGateProblems(code, ctx))
+    pages = published.map((code) => ({ code, url: siteHomeUrl(code), preview: false, ...(held.includes(code) ? { held: true } : {}) }))
+    for (const code of published) {
+      for (const m of homeGateProblems(code, ctx)) {
+        if (held.includes(code) && m.startsWith(`site-home ${code}：G8 `)) warnings.push(`暫停收錄：${m}`)
+        else problems.push(m)
+      }
+    }
   } else {
     pages = []
     for (const code of sortLocaleCodes(config.home.roadmap)) {
@@ -376,11 +423,14 @@ export function buildSiteHomePlan({
   if (stage === 'live') problems.push(...seo.errors)
   else warnings.push(...seo.errors.map((m) => `preview：${m}`))
   warnings.push(...seo.warnings)
-  return { stage, published, pages, problems, warnings }
+  return { stage, published, held, pages, problems, warnings }
 }
 
-/** 這次建置的首頁叢集（hreflang、語言選單、og:locale:alternate 用）：plan.pages 的語系。live 時等於 published（C.3） */
-export const clusterCodes = (plan) => (plan?.pages ?? []).map((p) => p.code)
+/**
+ * 這次建置的首頁叢集（hreflang、語言選單、og:locale:alternate、頁尾、404 用）：plan.pages 的語系，live 時等於 published（C.3），
+ * 但不含暫停收錄的語系（plan.held）。self 是暫停收錄的那一頁自己時，它出現在自己的清單裡（語言選單標目前語系、頁尾連自己的首頁）
+ */
+export const clusterCodes = (plan, self = null) => (plan?.pages ?? []).map((p) => p.code).filter((c) => c === self || !(plan?.held ?? []).includes(c))
 
 /**
  * 這次建置實際用的頁首頁尾（C.3、G.5）：preview 一律 'shared'，其他照 site.config.mjs 的 shell。
@@ -407,9 +457,10 @@ export function vitepressLocales(plan) {
  *   其他繁中頁：繁中（自己，href 是 canonical）exact；外語首頁不是 exact，homeOnly 用目標語系文案檔的 menu.homeOnly（缺就丟錯）
  *   not-found：[]（404 用多語提示代替語言選單）
  */
-export function languageTargets({ pageType, canonical = '', plan, readHome = readHomeMessages }) {
+export function languageTargets({ pageType, canonical = '', plan, readHome = readHomeMessages, locale = 'zh-tw' }) {
   if (pageType === 'not-found') return []
-  const codes = clusterCodes(plan)
+  // locale：site-home 是那頁的語系（暫停收錄的首頁在自己的選單裡列自己），其他頁是 zh-tw
+  const codes = clusterCodes(plan, pageType === 'site-home' ? locale : null)
   const previewOf = new Map((plan?.pages ?? []).map((p) => [p.code, p.preview]))
   const cluster = pageType === 'home' || pageType === 'site-home'
   const item = (code, href, exact) => {

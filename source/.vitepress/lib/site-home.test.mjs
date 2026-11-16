@@ -11,6 +11,7 @@ import {
   effectiveShell,
   formatHomeCopy,
   homeFileProblems,
+  homesOutOfSitemap,
   homeGateProblems,
   languageTargets,
   readGlossary,
@@ -42,7 +43,8 @@ const SHELL_OK = shellReviewFor(['zh-tw', 'en', 'ja', 'de'])
 /** 照 site.config.mjs 的形狀，覆寫一部分 */
 function config(over = {}) {
   const base = clone(siteConfig)
-  return { ...base, ...over, home: { ...base.home, ...(over.home ?? {}) } }
+  // 測試各自決定開哪些語系；正式設定的 noindexHold（ko）只在 ko 有開時才合法，預設不帶，要測的案例自己給
+  return { ...base, ...over, home: { ...base.home, noindexHold: [], ...(over.home ?? {}) } }
 }
 
 const REVIEWERS = { en: [{ id: 'casper', native: false }], ja: [{ id: 'yuki', native: true }], de: [{ id: 'lena', native: true }] }
@@ -164,6 +166,50 @@ test('全部關卡都過的 live 計畫：en、ja、de 上線', () => {
   assert.deepEqual(plan.published, ['en', 'ja', 'de'])
   assert.deepEqual(plan.pages, ['en', 'ja', 'de'].map((code) => ({ code, url: `https://www.casper.tw/${code}/`, preview: false })))
   assert.deepEqual(clusterCodes(plan), ['en', 'ja', 'de'])
+})
+
+const HOLD_DE = { locale: 'de', since: '2026-11-16', sitemapUntil: '2026-11-30', reason: '測試' }
+const holdConfig = (noindexHold = [HOLD_DE]) => config({ shell: 'shared', home: { locales: ['en', 'ja', 'de'], reviewers: REVIEWERS, noindexHold } })
+/** 工具都不列 de（整個語系暫停收錄的工具卡片不列它）：G8 對 de 不過 */
+const INDEX_NO_DE = { ...INDEX, tools: INDEX.tools.map((t) => ({ ...t, locales: Object.fromEntries(Object.entries(t.locales).filter(([c]) => c !== 'de')) })) }
+
+test('home.noindexHold：設定檢查擋掉沒開的語系、en、日期格式、期限順序、沒寫 reason、重複、不是陣列', () => {
+  const problems = (h) => siteConfigProblems(holdConfig(h), { shellReview: SHELL_OK }).join('\n')
+  assert.equal(problems([HOLD_DE]), '')
+  assert.match(problems([{ ...HOLD_DE, locale: 'ko' }]), /要在 home\.locales 裡/)
+  assert.match(problems([{ ...HOLD_DE, locale: 'en' }]), /不能是 en/)
+  assert.match(problems([{ ...HOLD_DE, since: '11/16' }]), /since 要是 YYYY-MM-DD/)
+  assert.match(problems([{ ...HOLD_DE, sitemapUntil: '2026-11-16' }]), /sitemapUntil 要晚於 since/)
+  assert.match(problems([{ ...HOLD_DE, reason: ' ' }]), /要寫 reason/)
+  assert.match(problems([HOLD_DE, HOLD_DE]), /重複的語系 de/)
+  assert.match(problems([{ ...HOLD_DE, extra: 1 }]), /不認得的欄位 extra/)
+  assert.match(problems('de'), /home\.noindexHold 要是陣列/)
+})
+
+test('home.noindexHold：暫停的首頁照常產生、G8 只記警告；叢集與其他頁的語言選單不列它，它自己的選單列自己；sitemap 到期才拿掉；preview 不套用', () => {
+  const plan = buildSiteHomePlan(liveInput({ config: holdConfig(), index: INDEX_NO_DE }))
+  assert.deepEqual(plan.problems, [])
+  assert.ok(plan.warnings.some((m) => m.startsWith('暫停收錄：site-home de：G8 ')), plan.warnings.join('\n'))
+  assert.deepEqual(plan.held, ['de'])
+  assert.deepEqual(plan.pages.map((p) => p.code), ['en', 'ja', 'de'])
+  assert.equal(plan.pages.find((p) => p.code === 'de').held, true)
+  assert.equal(plan.pages.find((p) => p.code === 'en').held, undefined)
+  assert.deepEqual(clusterCodes(plan), ['en', 'ja'])
+  assert.deepEqual(clusterCodes(plan, 'de'), ['en', 'ja', 'de'])
+  const readHome = (c) => FILES[c] ?? null
+  const menu = (locale, pageType = 'site-home') => languageTargets({ pageType, canonical: `https://www.casper.tw/${locale}/`, plan, readHome, locale }).map((t) => t.code)
+  assert.deepEqual(new Set(menu('de')), new Set(['zh-tw', 'en', 'ja', 'de']))
+  assert.deepEqual(new Set(menu('en')), new Set(['zh-tw', 'en', 'ja']))
+  assert.ok(!languageTargets({ pageType: 'post', canonical: 'https://www.casper.tw/x/', plan, readHome }).some((t) => t.code === 'de'))
+  // 沒有暫停時，同樣的工具清單 G8 擋下 de
+  assert.ok(buildSiteHomePlan(liveInput({ index: INDEX_NO_DE })).problems.some((m) => m.startsWith('site-home de：G8 ')))
+  // sitemap：sitemapUntil 前一天還列，當天起不列
+  assert.deepEqual([...homesOutOfSitemap(holdConfig(), '2026-11-29')], [])
+  assert.deepEqual([...homesOutOfSitemap(holdConfig(), '2026-11-30')], ['https://www.casper.tw/de/'])
+  // preview 不套用
+  const preview = buildSiteHomePlan(liveInput({ config: holdConfig(), index: INDEX_NO_DE, env: { CS_STAGE: 'preview' } }))
+  assert.deepEqual(preview.held, [])
+  assert.ok(clusterCodes(preview).includes('de'))
 })
 
 test('G1 到 G9：各一個不過的案例', () => {

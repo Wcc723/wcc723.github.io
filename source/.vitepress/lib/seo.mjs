@@ -483,8 +483,14 @@ export function pageHead(seo) {
 // 外語首頁與首頁叢集（主站首頁規格 D.2、D.9）
 // ---------------------------------------------------------------------------
 
-/** 這次建置的首頁叢集：plan.pages 的語系（live 時等於 plan.published；preview 時照 pages，C.3） */
-const clusterOf = (plan) => (plan?.pages ?? []).map((p) => p.code)
+/**
+ * 這次建置的首頁叢集：plan.pages 的語系（live 時等於 plan.published；preview 時照 pages，C.3），不含暫停收錄的語系（plan.held）。
+ * 跟 lib/site-home.mjs 的 clusterCodes 同一條規則（這裡不 import site-home.mjs：它 import 這支）
+ */
+const clusterOf = (plan) => (plan?.pages ?? []).map((p) => p.code).filter((c) => !(plan?.held ?? []).includes(c))
+
+/** 暫停收錄頁的 robots（跟 lib/site-home.mjs 的 HOLD_ROBOTS 相同） */
+const HOLD_ROBOTS = 'noindex, follow'
 
 /**
  * 首頁叢集的 hreflang 與 og:locale。codes 是叢集裡的外語首頁；沒有 en 時（只會發生在 preview）不輸出 hreflang：
@@ -504,11 +510,13 @@ export function clusterHead(code, codes) {
  * og:site_name、og:locale 與 alternate、og:image 四條、JSON-LD。title 與 description 由 VitePress 輸出；GA4 由 transformHtml 接在最後。
  * preview 頁最前面多一條 robots noindex, nofollow（C.3）
  */
-export function siteHomeHead({ code, canonical, title, home, codes, preview = false }) {
+export function siteHomeHead({ code, canonical, title, home, codes, preview = false, held = false }) {
   const head = []
   const meta = (key, name, content) => head.push(['meta', { [key]: name, content }])
   if (preview) meta('name', 'robots', 'noindex, nofollow')
-  const { hreflang, ogLocale } = clusterHead(code, codes)
+  // 暫停收錄（home.noindexHold）：noindex, follow，不輸出 hreflang 與 og:locale:alternate，canonical 照舊指自己
+  else if (held) meta('name', 'robots', HOLD_ROBOTS)
+  const { hreflang, ogLocale } = clusterHead(code, held ? [] : codes)
   head.push(['link', { rel: 'canonical', href: canonical }])
   head.push(...hreflang)
   meta('property', 'og:type', 'website')
@@ -560,7 +568,7 @@ export function seoPageData(pageData, ctx = {}, { plan = EMPTY_HOME_PLAN } = {})
     pageData.title = fm.title
     pageData.titleTemplate = false
     pageData.description = fm.description
-    fm.head = [...asArray(fm.head), ...siteHomeHead({ code: site.locale, canonical: site.canonical, title: fm.title, home: site.home, codes: clusterOf(plan), preview: !!site.preview })]
+    fm.head = [...asArray(fm.head), ...siteHomeHead({ code: site.locale, canonical: site.canonical, title: fm.title, home: site.home, codes: clusterOf(plan), preview: !!site.preview, held: !!site.held })]
     fm.ads = shouldLoadAds({ type, adsFalse: fm.ads === false })
     return null
   }

@@ -15,7 +15,7 @@ import { SITE_URL, tagSlug, toAbsolute } from './posts.mjs'
 import { SITE_TITLE_LEGACY } from '../theme/shared/shell/site.mjs'
 import { LOCALES } from '../theme/shared/shell/i18n/locales.mjs'
 import { siteIndex, orderedTags } from './pagedata.mjs'
-import { SITE_INDEX } from './site-home.mjs'
+import { SITE_INDEX, homesOutOfSitemap } from './site-home.mjs'
 import { cardExcerpt, categoryUrl, escapeHtml, frozenFor, markdownText, tagUrl } from './cards.mjs'
 
 export const FEED_LIMIT = 20
@@ -86,6 +86,13 @@ export function contentJson(srcDir) {
   return JSON.stringify(entries)
 }
 
+/**
+ * 不在全站工具清單（tools.json）、但有自己 sitemap 的 Worker：site-policies（外語隱私權說明，card.listed: false）。
+ * 2026-11-16 Carbon 核對時發現 sitemap-index 漏了它（workspace docs/research/2026-11-16-seo-demotion-risk/），站長要補。
+ * 列在 tools.json 之後，audit 照同一份清單驗
+ */
+export const UNLISTED_SITEMAPS = ['site-policies']
+
 // config.mts 的 buildEnd：寫進 dist/
 /**
  * /sitemap-index.xml（P3，計畫網站地圖、docs/runbooks/add-a-tool.md 第 7 步）：部落格的 /sitemap.xml，加上 tools.json 每支工具的
@@ -97,7 +104,7 @@ export function sitemapIndexXml(index = SITE_INDEX) {
   const urls = [`${SITE_URL}/sitemap.xml`, ...tools.map((t) => {
     if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(t?.slug ?? '')) throw new Error(`sitemap-index：tools.json 的 slug 不對：${JSON.stringify(t?.slug)}`)
     return `${SITE_URL}/${t.slug}/sitemap.xml`
-  })]
+  }), ...UNLISTED_SITEMAPS.map((slug) => `${SITE_URL}/${slug}/sitemap.xml`)]
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
     '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
@@ -160,13 +167,15 @@ const dateOnly = (v) => {
 // 外語首頁 /<code>/（主站首頁規格 D.8）：首頁沒有可信的更新日，不輸出 lastmod
 const SITE_HOME_URL_RE = new RegExp(`^/(${LOCALES.map((l) => l.code).filter((c) => c !== 'zh-tw').join('|')})/$`)
 
-export function sitemapTransformItems(srcDir) {
+export function sitemapTransformItems(srcDir, { outOfSitemap = homesOutOfSitemap() } = {}) {
   return (items) => {
     const index = siteIndex(srcDir)
     const out = []
     for (const item of items) {
       const url = '/' + String(item.url).replace(/^\//, '')
       if (EXCLUDE_RE.some((re) => re.test(url))) continue
+      // 暫停收錄、已過 sitemapUntil 的外語首頁（site.config.mjs 的 home.noindexHold）
+      if (outOfSitemap.has(SITE_URL + url)) continue
       const file = sourceFileOf(srcDir, url, index)
       const fm = file ? frontmatterOf(file) : null
       if (isNoindex(fm)) continue

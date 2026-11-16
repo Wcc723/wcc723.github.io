@@ -147,7 +147,7 @@ test('atom.xml 與 content.json 只有文章，不收外語首頁', () => {
   }
 })
 
-test('sitemapIndexXml（P3）：部落格的 /sitemap.xml 在第一個，接著 tools.json 每支工具的 /<slug>/sitemap.xml；0 支時只有部落格；slug 不對就丟錯', () => {
+test('sitemapIndexXml（P3）：部落格的 /sitemap.xml 在第一個，接著 tools.json 每支工具的 /<slug>/sitemap.xml，最後是不在 tools.json 的 site-policies；0 支時是部落格加 site-policies；slug 不對就丟錯', () => {
   const xml = sitemapIndexXml({ tools: [{ slug: 'sound-effects' }, { slug: 'lucky-draw' }] })
   assert.equal(xml, [
     '<?xml version="1.0" encoding="UTF-8"?>',
@@ -155,10 +155,12 @@ test('sitemapIndexXml（P3）：部落格的 /sitemap.xml 在第一個，接著 
     '  <sitemap><loc>https://www.casper.tw/sitemap.xml</loc></sitemap>',
     '  <sitemap><loc>https://www.casper.tw/sound-effects/sitemap.xml</loc></sitemap>',
     '  <sitemap><loc>https://www.casper.tw/lucky-draw/sitemap.xml</loc></sitemap>',
+    // 不在 tools.json、有自己 sitemap 的 Worker（UNLISTED_SITEMAPS，2026-11-16 補）
+    '  <sitemap><loc>https://www.casper.tw/site-policies/sitemap.xml</loc></sitemap>',
     '</sitemapindex>',
     '',
   ].join('\n'))
-  assert.equal([...sitemapIndexXml({ tools: [] }).matchAll(/<loc>/g)].length, 1)
-  assert.equal([...sitemapIndexXml({}).matchAll(/<loc>/g)].length, 1)
+  assert.equal([...sitemapIndexXml({ tools: [] }).matchAll(/<loc>/g)].length, 2)
+  assert.equal([...sitemapIndexXml({}).matchAll(/<loc>/g)].length, 2)
   assert.throws(() => sitemapIndexXml({ tools: [{ slug: '../x' }] }), /slug 不對/)
 })

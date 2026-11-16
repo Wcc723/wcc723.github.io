@@ -75,13 +75,16 @@ export function siteFrontmatter({ pageType, canonical = '', locale = 'zh-tw', pl
     tools: siteToolLinks(index, { locale, text: textFor(locale) }),
     // 部落格自己的外語首頁清單：這次建置的叢集（clusterCodes），不讀 tools.json 的 siteHomes（C.1）。
     // live 時就是 plan.published；preview 時是 plan.pages，跟語言選單同一組，外語頁尾的首頁、關於連結照上線後的樣子連
-    siteHomes: clusterCodes(plan),
-    languages: notFound ? [] : languageTargets({ pageType, canonical, plan, readHome }),
+    // 暫停收錄的外語首頁（plan.held）不列，只有它自己的頁列自己（clusterCodes 的 self）
+    siteHomes: clusterCodes(plan, isHome ? locale : null),
+    languages: notFound ? [] : languageTargets({ pageType, canonical, plan, readHome, locale }),
     section: sectionOf(pageType),
     canonical: notFound ? '' : canonical,
     home: isHome ? siteHomeView(locale, { readHome }) : null,
     // preview 建置的外語首頁是 true：seo 加 noindex、Layout 在根元素加 cs-preview（C.3）。頁面上不再放提示條（站長 2026-11-05）
     preview: isHome && page.preview === true,
+    // 暫停收錄的外語首頁（site.config.mjs 的 home.noindexHold）：seo 加 robots noindex, follow、不輸出 hreflang 與 og:locale:alternate
+    held: isHome && page.held === true,
     notFoundIntl: notFound ? notFoundIntl(plan) : [],
   }
 }

@@ -24,6 +24,12 @@ export default {
       de: [{ id: 'casper', native: false }],
       es: [{ id: 'casper', native: false }],
     },
+    // 暫停收錄的外語首頁（lib/site-home.mjs 的 HOLD_ROBOTS、clusterCodes、homesOutOfSitemap）：頁照樣產生（上線後不拿掉，B.1），
+    // robots 是 noindex, follow、沒有 hreflang；其他頁的 hreflang、og:locale:alternate、語言選單、頁尾、404 多語提示都不列它，也不能有連到它的連結。
+    // sitemap 在 sitemapUntil（UTC 建置日）之前照樣列，那天起的建置不列（要有一次 push 才會重建）。G8 對它只記警告。恢復收錄就拿掉那一筆
+    noindexHold: [
+      { locale: 'ko', since: '2026-11-16', sitemapUntil: '2026-11-30', reason: '站長 2026-11-16「/ko/ 也暫停收錄」：音效庫、全螢幕純色、花體字的 ko 都暫停收錄後，沒有任何工具有 ko 版（G8），/ko/ 只剩英文工具卡（workspace docs/research/2026-11-16-seo-demotion-risk/）' },
+    ],
     // 選填：事實性文字（en 的 $meta.factualKeys）在某語系過期時的暫時豁免（G9），格式照範本的 i18nWaivers：
     // [{ page: 'home', locale: 'ja', keys: ['about.body'], until: 'YYYY-MM-DD' }]，until 最多是今天加 30 天。
     // 只在站長當次明確指示時新增
