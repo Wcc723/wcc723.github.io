@@ -98,12 +98,14 @@ export const UNLISTED_SITEMAPS = ['site-policies']
  * /sitemap-index.xml（P3，計畫網站地圖、docs/runbooks/add-a-tool.md 第 7 步）：部落格的 /sitemap.xml，加上 tools.json 每支工具的
  * /<slug>/sitemap.xml（每支工具都輸出自己的 sitemap，add-a-tool.md）。robots.txt 多一行 Sitemap 指向這裡，GSC 只要提交一次。
  * 工具清單是 0 支時照樣輸出（只有部落格那一份）。
+ * 有 host 的子網域工具（決策 0015，例如 illustrations.casper.tw）不列：它的 sitemap 在自己的主機上，由它自己的 robots.txt 宣告、
+ * GSC 另外提交；sitemap index 只能列同一個主機的 sitemap，照 slug 寫成 www 的 /<slug>/sitemap.xml 會是 404。
  */
 export function sitemapIndexXml(index = SITE_INDEX) {
   const tools = Array.isArray(index?.tools) ? index.tools : []
-  const urls = [`${SITE_URL}/sitemap.xml`, ...tools.map((t) => {
+  const urls = [`${SITE_URL}/sitemap.xml`, ...tools.flatMap((t) => {
     if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(t?.slug ?? '')) throw new Error(`sitemap-index：tools.json 的 slug 不對：${JSON.stringify(t?.slug)}`)
-    return `${SITE_URL}/${t.slug}/sitemap.xml`
+    return t.host ? [] : [`${SITE_URL}/${t.slug}/sitemap.xml`]
   }), ...UNLISTED_SITEMAPS.map((slug) => `${SITE_URL}/${slug}/sitemap.xml`)]
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',

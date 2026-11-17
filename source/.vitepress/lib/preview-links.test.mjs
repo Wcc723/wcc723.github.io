@@ -43,6 +43,17 @@ test('toolSlugs：取 tools.json 每支工具的 slug，格式不對就丟錯', 
   assert.throws(() => previewLinkScript('https://www.casper.tw', ['a/b']), /slug/)
 })
 
+test('toolSlugs：有 host 的子網域工具（決策 0015）不列，www 的工具照 tools.json 的順序；子網域工具的 slug 照樣驗', () => {
+  const index = { tools: [{ slug: 'sound-effects' }, { slug: 'illustrations', host: 'illustrations.casper.tw' }, { slug: 'free-music' }] }
+  assert.deepEqual(toolSlugs(index), ['sound-effects', 'free-music'])
+  assert.deepEqual(toolSlugs({ tools: [{ slug: 'illustrations', host: 'illustrations.casper.tw' }] }), [])
+  assert.throws(() => toolSlugs({ tools: [{ slug: '', host: 'x.casper.tw' }] }), /slug/)
+  // 子網域工具的連結不是 www，本來就不攔；www 的 /illustrations/ 是部落格自己的 404，留在 localhost
+  const slugs = toolSlugs(index)
+  assert.equal(run('localhost', 'http://localhost:4184', 'https://illustrations.casper.tw/ja/', { slugs }).prevented, false)
+  assert.equal(run('localhost', 'http://localhost:4184', 'https://www.casper.tw/illustrations/', { slugs }).href, 'http://localhost:4184/illustrations/')
+})
+
 function run(hostname, origin, href, extra = {}) {
   let listener = null
   const loc = { hostname, origin, href: origin + '/en/' }

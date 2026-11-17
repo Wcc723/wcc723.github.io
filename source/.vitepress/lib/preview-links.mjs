@@ -15,11 +15,14 @@ export const PREVIEW_LINKS_MARKER = '/*!cs-preview-links*/'
 
 const SLUG_RE = /^[a-z0-9][a-z0-9-]*$/
 
-/** tools.json 裡每支工具的 slug；格式不對就丟錯（空字串會讓每條路徑都被當成工具） */
+/**
+ * tools.json 裡住在 www 的工具的 slug；格式不對就丟錯（空字串會讓每條路徑都被當成工具）。
+ * 有 host 的子網域工具（決策 0015）不列：它的連結是 https://<host>/，本來就不會被攔；www 的 /<slug>/ 是部落格自己的 404，留在 localhost
+ */
 export function toolSlugs(index = SITE_INDEX) {
-  return (index?.tools ?? []).map((t) => {
+  return (index?.tools ?? []).flatMap((t) => {
     if (typeof t?.slug !== 'string' || !SLUG_RE.test(t.slug)) throw new Error(`tools.json 的工具 slug 格式不對：${JSON.stringify(t?.slug)}`)
-    return t.slug
+    return t.host ? [] : [t.slug]
   })
 }
 

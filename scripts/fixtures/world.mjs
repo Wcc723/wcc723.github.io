@@ -447,10 +447,10 @@ export function buildWorld(mutate, { stage = 'p1', toolsIndex } = {}) {
   dist.set('404.html', builtHtml({ file: '404.html', title: NOT_FOUND_TITLE, description: NOT_FOUND_DESCRIPTION, robots: 'noindex', main: `<h1>這頁找不到</h1>${intlHtml}`, chrome }))
   for (const code of cfg.plan.published) dist.set(`${code}/index.html`, siteHomeBuiltHtml(code, { plan: cfg.plan, index: cfg.toolsIndex, chrome }))
   for (const [f, v] of Object.entries(FROZEN)) dist.set(f, v)
-  // P3：robots.txt 是基準最後多一行 Sitemap；/sitemap-index.xml 列部落格與每支工具的 sitemap
+  // P3：robots.txt 是基準最後多一行 Sitemap；/sitemap-index.xml 列部落格與每支工具的 sitemap（有 host 的子網域工具不列，決策 0015）
   dist.set('robots.txt', FROZEN['robots.txt'] + ROBOTS_P3_LINE)
   dist.set('sitemap-index.xml', ['<?xml version="1.0" encoding="UTF-8"?>', '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
-    ...[`${SITE}/sitemap.xml`, ...cfg.toolsIndex.tools.map((t) => `${SITE}/${t.slug}/sitemap.xml`), ...UNLISTED_SITEMAPS.map((slug) => `${SITE}/${slug}/sitemap.xml`)].map((u) => `  <sitemap><loc>${u}</loc></sitemap>`), '</sitemapindex>', ''].join('\n'))
+    ...[`${SITE}/sitemap.xml`, ...cfg.toolsIndex.tools.filter((t) => !t.host).map((t) => `${SITE}/${t.slug}/sitemap.xml`), ...UNLISTED_SITEMAPS.map((slug) => `${SITE}/${slug}/sitemap.xml`)].map((u) => `  <sitemap><loc>${u}</loc></sitemap>`), '</sitemapindex>', ''].join('\n'))
   dist.set('atom.xml', baseFiles['atom.xml'])
   dist.set('content.json', JSON.stringify(content.map(expectedContentEntry)))
   const lastmod = new Map(posts.map((p) => [SITE + p.url, p.updated ?? p.date]))

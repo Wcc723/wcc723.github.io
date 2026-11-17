@@ -953,6 +953,54 @@ test('T2：工具連結是 https://www.casper.tw/<slug>/ 開頭、帶尾斜線',
   assertFails(await i1(edit(EN, (h) => h.replaceAll('href="https://www.casper.tw/lucky-draw/en/"', 'href="https://lucky.example.com/en/"'))), ['tools'], /T2：\/en\/ 的工具連結 「https:\/\/lucky\.example\.com\/en\/」/)
 })
 
+// 子網域工具（決策 0015，站長 2026-11-17 選 4B 可以列）：tools.json 那一筆有 host，網址是 https://<host>/ 與 https://<host>/<code>/，
+// 站徽在自己的主機、介紹圖在 img.casper.tw/<slug>/（workspace 的 site-data.mjs 產生的形狀）。排在音效庫後面，跟上線時的順序一樣
+const HOST_TOOL = Object.freeze({
+  slug: 'illustrations', host: 'illustrations.casper.tw', rootLocale: 'en', xDefaultLocale: 'en',
+  mark: 'https://illustrations.casper.tw/brand/card-340.webp',
+  images: [{ src: 'https://img.casper.tw/illustrations/ill-feature-a.webp', width: 960, height: 600 }],
+  keywords: ['插圖', '去背圖'],
+  locales: {
+    en: {
+      url: 'https://illustrations.casper.tw/', name: 'Free Clipart', summary: 'Free clipart and transparent PNG illustrations',
+      intro: 'Cute clipart drawn in matching styles.', highlights: ['Transparent PNG', 'Free for commercial use'], cta: 'Browse free clipart',
+    },
+    'zh-tw': { url: 'https://illustrations.casper.tw/zh-tw/', name: '免費圖案素材', summary: '去背 PNG 的免費可愛圖案' },
+  },
+})
+const withHostTool = (tool = HOST_TOOL) => {
+  const [lucky, sfx, conv] = FEATURE_INDEX.tools
+  return { ...FEATURE_INDEX, tools: [sfx, tool, lucky, conv] }
+}
+
+test('子網域工具：tools.json 有 host 的工具連到 https://<host>/，sitemap-index 不列它，全部通過', async () => {
+  let dist = null
+  const r = await featureWith(withHostTool(), (d) => { dist = new Map(d) })
+  assert.equal(r.ok, true, formatReport(r))
+  // 產物真的連到子網域（/ 是繁中，/en/ 是介紹區塊的卡片與按鈕），sitemap-index 只有 www 的工具
+  assert.ok(dist.get(HOME).includes('href="https://illustrations.casper.tw/zh-tw/"'))
+  assert.ok(dist.get(EN).includes('href="https://illustrations.casper.tw/"'))
+  assert.ok(!dist.get('sitemap-index.xml').includes('illustrations'))
+  // sitemap-index 多列 www 的 /illustrations/sitemap.xml（線上是 404）：feeds 擋
+  assertFails(await featureWith(withHostTool(), edit('sitemap-index.xml', (x) => x.replace('<sitemap><loc>https://www.casper.tw/lucky-draw/sitemap.xml</loc></sitemap>', '<sitemap><loc>https://www.casper.tw/illustrations/sitemap.xml</loc></sitemap>\n  <sitemap><loc>https://www.casper.tw/lucky-draw/sitemap.xml</loc></sitemap>'))), ['feeds'], /sitemap-index\.xml 要依序列 https:\/\/www\.casper\.tw\/sitemap\.xml、https:\/\/www\.casper\.tw\/sound-effects\/sitemap\.xml、https:\/\/www\.casper\.tw\/lucky-draw\/sitemap\.xml/)
+})
+
+test('子網域工具的 T2：網址要在 https://<host>/ 底下、帶尾斜線；www 的 /<slug>/ 不算；host 要是 <名稱>.casper.tw', async () => {
+  // tools.json 把子網域工具寫成 www 的網址（產物照它連到 www 的 404）：tools.json 與頁上的連結都擋
+  const onWww = { ...HOST_TOOL, locales: { en: { ...HOST_TOOL.locales.en, url: 'https://www.casper.tw/illustrations/' }, 'zh-tw': { ...HOST_TOOL.locales['zh-tw'], url: 'https://www.casper.tw/illustrations/zh-tw/' } } }
+  let r = await featureWith(withHostTool(onWww))
+  assertFails(r, ['tools'], /T2：tools\.json 的 illustrations（en）網址 「https:\/\/www\.casper\.tw\/illustrations\/」 要是 https:\/\/illustrations\.casper\.tw\/ 開頭/)
+  assert.ok(check(r, 'tools').failures.some((f) => /T2：\/ 的工具連結 「https:\/\/www\.casper\.tw\/illustrations\/zh-tw\/」/.test(f)), formatReport(r))
+  // 頁上的連結少了尾斜線、換到別的子網域：T2（T1 也跟 tools.json 不同）
+  assertFails(await featureWith(withHostTool(), edit(HOME, (h) => h.replace('href="https://illustrations.casper.tw/zh-tw/"', 'href="https://illustrations.casper.tw/zh-tw"'))), ['tools'], /T2：\/ 的工具連結 「https:\/\/illustrations\.casper\.tw\/zh-tw」/)
+  assertFails(await featureWith(withHostTool(), edit(HOME, (h) => h.replace('href="https://illustrations.casper.tw/zh-tw/"', 'href="https://clipart.casper.tw/zh-tw/"'))), ['tools'], /T2：\/ 的工具連結 「https:\/\/clipart\.casper\.tw\/zh-tw\/」/)
+  // host 不合規則：www 本身、站外網域
+  for (const host of ['www.casper.tw', 'illustrations.example.com']) {
+    const bad = { ...HOST_TOOL, host, locales: { en: { ...HOST_TOOL.locales.en, url: `https://${host}/` }, 'zh-tw': { ...HOST_TOOL.locales['zh-tw'], url: `https://${host}/zh-tw/` } } }
+    assertFails(await featureWith(withHostTool(bad)), ['tools'], new RegExp(`T2：tools\\.json 的 illustrations 的 host 是 「${host.replaceAll('.', '\\.')}」`))
+  }
+})
+
 test('T3：頁首、頁尾、#tools、外語首頁沒有 pocketool.app 的連結（文章內文不查）', async () => {
   assertFails(await i1(edit(POST, (h) => h.replace('</footer>', '<a href="https://pocketool.app/lucky/">口袋工具</a></footer>'))), ['tools'], /T3：.*pocketool\.app/)
   assertFails(await i1(edit(EN, (h) => h.replace('<section id="about"', '<p><a href="https://www.pocketool.app/">x</a></p><section id="about"'))), ['tools'], /T3：\/en\/ 有連到口袋工具的連結/)

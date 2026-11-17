@@ -1102,11 +1102,12 @@ export function checkFeeds(ctx) {
     if (!ctx.posts) c.notes.push('讀不到文章索引，sitemap 的 lastmod 沒比')
     ctx.expect('feeds', 'sitemap.xml', '拿掉 3 個線上 404 的大寫標籤、/categories/css/ 換成 /categories/CSS/、加上 /categories/ 與 3 個法務頁（計畫「/sitemap.xml」）')
   }
-  // /sitemap-index.xml（P3）：部落格的 sitemap 加上 tools.json 每支工具的 /<slug>/sitemap.xml；robots.txt 指向它（凍結檔那一項驗）
+  // /sitemap-index.xml（P3）：部落格的 sitemap 加上 tools.json 每支工具的 /<slug>/sitemap.xml；robots.txt 指向它（凍結檔那一項驗）。
+  // 有 host 的子網域工具（決策 0015）不列：它的 sitemap 在自己的主機上（feeds.mjs 的 sitemapIndexXml）
   const index = readDist('sitemap-index.xml')
   if (!index) fail(c, 'dist 沒有 sitemap-index.xml（P3，計畫網站地圖）')
   else {
-    const want = [`${SITE}/sitemap.xml`, ...(ctx.toolsIndex?.tools ?? []).map((t) => `${SITE}/${t.slug}/sitemap.xml`), ...UNLISTED_SITEMAPS.map((slug) => `${SITE}/${slug}/sitemap.xml`)]
+    const want = [`${SITE}/sitemap.xml`, ...(ctx.toolsIndex?.tools ?? []).filter((t) => !t.host).map((t) => `${SITE}/${t.slug}/sitemap.xml`), ...UNLISTED_SITEMAPS.map((slug) => `${SITE}/${slug}/sitemap.xml`)]
     const locs = [...index.matchAll(/<sitemap>\s*<loc>([^<]+)<\/loc>\s*<\/sitemap>/g)].map((m) => m[1])
     if (!index.startsWith('<?xml version="1.0" encoding="UTF-8"?>') || !index.includes('<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">') || !index.trimEnd().endsWith('</sitemapindex>')) fail(c, 'sitemap-index.xml 的 XML 宣告或 sitemapindex 命名空間不對')
     if (JSON.stringify(locs) !== JSON.stringify(want)) fail(c, `sitemap-index.xml 要依序列 ${want.join('、')}，實際 ${locs.join('、') || '（沒有）'}`)
@@ -2081,11 +2082,29 @@ export function toolsRegionProblems(html, { features }) {
   return out
 }
 
+/**
+ * 子網域工具的 host（決策 0015，tools.json 那一筆的 host）：一段小寫英數字與單一連字號加 .casper.tw，不能是 www.casper.tw
+ * （www 永遠不建 Workers Custom Domain）。跟 shared/shell/site.mjs 的 isSubdomainHost 同一條規則，這裡自己寫一份，
+ * 免得 audit 依賴 shell-sync 的新版
+ */
+export const isToolSubdomainHost = (host) => typeof host === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*\.casper\.tw$/.test(host) && host !== new URL(SITE).host
+
+/** 一支工具網址的前綴：www 的工具是 https://www.casper.tw/<slug>/，子網域工具是 https://<host>/（tools.json 的每個 url 都在它底下） */
+export const toolBaseOf = (t) => (t?.host ? `https://${t.host}/` : `${SITE}/${t?.slug}/`)
+
 /** 全站工具清單（主站首頁規格 J.1 的 T1 到 T4） */
 export function checkTools(ctx) {
   const c = newCheck('tools', '全站工具清單（T1 到 T4）')
   const index = ctx.toolsIndex
-  const slugs = new Set((index?.tools ?? []).map((t) => t.slug))
+  // T2 用：www 的工具收 https://www.casper.tw/<slug>/，子網域工具收 https://<host>/（它在 www 的 /<slug>/ 是部落格的 404）
+  const wwwSlugs = new Set((index?.tools ?? []).filter((t) => !t.host).map((t) => t.slug))
+  const hostBases = (index?.tools ?? []).filter((t) => t.host && isToolSubdomainHost(t.host)).map(toolBaseOf)
+  const toolHrefOk = (href) => {
+    if (typeof href !== 'string' || !href.endsWith('/')) return false
+    const m = /^https:\/\/www\.casper\.tw\/([a-z0-9]+(?:-[a-z0-9]+)*)\//.exec(href)
+    if (m) return wwwSlugs.has(m[1])
+    return hostBases.some((b) => href.startsWith(b))
+  }
   const hasTools = hasSiteTools(index)
   let compared = 0
   const linksOf = (code) => {
@@ -2126,10 +2145,9 @@ export function checkTools(ctx) {
       compare(`${d.url} 的頁尾工具組`, footerTools, code, { cards: false })
       if (footerTools) regions.push(...anchorsIn(footerTools.inner))
     }
-    // T2：工具連結全是 https://www.casper.tw/<slug>/ 開頭、帶尾斜線
+    // T2：工具連結全是 https://www.casper.tw/<slug>/ 開頭（子網域工具是 https://<host>/）、帶尾斜線
     for (const l of regions) {
-      const m = /^https:\/\/www\.casper\.tw\/([a-z0-9]+(?:-[a-z0-9]+)*)\//.exec(l.href ?? '')
-      if (!m || !slugs.has(m[1]) || !l.href.endsWith('/')) fail(c, `T2：${d.url} 的工具連結 ${show(l.href)} 要是 https://www.casper.tw/<slug>/ 開頭、帶尾斜線`)
+      if (!toolHrefOk(l.href)) fail(c, `T2：${d.url} 的工具連結 ${show(l.href)} 要是 https://www.casper.tw/<slug>/ 開頭（子網域工具是 https://<host>/）、帶尾斜線`)
     }
     // T3：頁首、頁尾、#tools、外語首頁沒有 pocketool.app
     const scopes = d.type === 'site-home' ? [d.html.slice(headOf(d.html).length)] : [firstElement(d.html, 'header')?.outer, siteFooterOf(d.html)?.outer, toolsRegionOf(d.html)?.outer]
@@ -2143,7 +2161,9 @@ export function checkTools(ctx) {
     }
   }
   for (const t of index?.tools ?? []) {
-    for (const [code, v] of Object.entries(t.locales ?? {})) if (!(v?.url ?? '').startsWith(`${SITE}/${t.slug}/`) || !v.url.endsWith('/')) fail(c, `T2：tools.json 的 ${t.slug}（${code}）網址 ${show(v?.url)} 要是 ${SITE}/${t.slug}/ 開頭、帶尾斜線`)
+    if ('host' in t && !isToolSubdomainHost(t.host)) { fail(c, `T2：tools.json 的 ${t.slug} 的 host 是 ${show(t.host)}，要是 <名稱>.casper.tw（不能是 www.casper.tw 或 casper.tw 本身）`); continue }
+    const base = toolBaseOf(t)
+    for (const [code, v] of Object.entries(t.locales ?? {})) if (!(v?.url ?? '').startsWith(base) || !v.url.endsWith('/')) fail(c, `T2：tools.json 的 ${t.slug}（${code}）網址 ${show(v?.url)} 要是 ${base} 開頭、帶尾斜線`)
   }
   c.stats = { tools: index?.tools?.length ?? 0, compared }
   c.summary = hasTools ? `tools.json 有 ${index.tools.length} 支工具，比了 ${compared} 個工具區與頁尾工具組` : `tools.json 沒有工具：${ctx.pages.size} 頁都沒有工具區、頁尾工具組與頁首「工具」連結`

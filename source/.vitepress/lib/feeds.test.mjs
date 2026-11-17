@@ -164,3 +164,19 @@ test('sitemapIndexXml（P3）：部落格的 /sitemap.xml 在第一個，接著 
   assert.equal([...sitemapIndexXml({}).matchAll(/<loc>/g)].length, 2)
   assert.throws(() => sitemapIndexXml({ tools: [{ slug: '../x' }] }), /slug 不對/)
 })
+
+test('sitemapIndexXml：有 host 的子網域工具（決策 0015）不列，它的 sitemap 在自己的主機上；其他工具照 tools.json 的順序', () => {
+  const xml = sitemapIndexXml({ tools: [{ slug: 'sound-effects' }, { slug: 'illustrations', host: 'illustrations.casper.tw' }, { slug: 'free-music' }] })
+  const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1])
+  assert.deepEqual(locs, [
+    'https://www.casper.tw/sitemap.xml',
+    'https://www.casper.tw/sound-effects/sitemap.xml',
+    'https://www.casper.tw/free-music/sitemap.xml',
+    'https://www.casper.tw/site-policies/sitemap.xml',
+  ])
+  assert.ok(!xml.includes('illustrations'))
+  // 只有子網域工具時跟 0 支一樣：部落格加 site-policies
+  assert.equal([...sitemapIndexXml({ tools: [{ slug: 'illustrations', host: 'illustrations.casper.tw' }] }).matchAll(/<loc>/g)].length, 2)
+  // slug 照樣驗
+  assert.throws(() => sitemapIndexXml({ tools: [{ slug: '../x', host: 'x.casper.tw' }] }), /slug 不對/)
+})
