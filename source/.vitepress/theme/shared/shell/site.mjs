@@ -16,6 +16,12 @@ export const SITE_TITLE_LEGACY = '卡斯伯 Blog - 前端，沒有極限'
 export const SITE_CODE_NAME = 'caspers-sidekick' // 需要英文代號的地方（帳號名、識別字）用這個
 export const SITE_URL = 'https://www.casper.tw'
 
+// 子網域工具（決策 0015，站長 2026-11-17 選 1A：插圖站放 illustrations.casper.tw）：projects.json 有 host 的工具住在自己的
+// casper.tw 子網域，網址從 https://<host>/ 開始。host 只能是「一段小寫英數字與單一連字號」加 .casper.tw；
+// www.casper.tw 不行（www 永遠不建 Workers Custom Domain，會接走整個主機名），casper.tw 本身也不行（它 301 到 www）。
+// bootstrap、site-data、GA4 片段、網址函式都用這一支判斷
+export const isSubdomainHost = (host) => typeof host === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*\.casper\.tw$/.test(host) && `https://${host}` !== SITE_URL
+
 // 作者名。外殼字串的 {author} 依語系登錄表的 brand 代入（shared/shell/i18n/）：brand 'zh' 用中文，其他用英文。
 // 署名列、頁尾、JSON-LD Person 一律讀這兩個常數，任何字串都不寫死人名。
 export const AUTHOR_NAME = '卡斯伯'

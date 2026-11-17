@@ -1,7 +1,12 @@
-// 多語工具與全站首頁的網址純函式。cfg 是工具的 src/tool.config.mjs（slug、rootLocale、xDefaultLocale、locales、previewLocales、pages）。
-// 網址形狀：/<slug>/（rootLocale）、/<slug>/<code>/、/<slug>/<code>/<page>/；一律小寫、帶尾斜線，
-// 對外（canonical、og:url、hreflang、站內連結）一律寫 SITE_URL 開頭的完整網址。
-import { SITE_URL } from '../site.mjs'
+// 多語工具與全站首頁的網址純函式。cfg 是工具的 src/tool.config.mjs（slug、rootLocale、xDefaultLocale、locales、previewLocales、pages，
+// 子網域工具另有 origin、basePath）。
+// 網址形狀：<base>（rootLocale）、<base><code>/、<base><code>/<page>/；一律小寫、帶尾斜線，
+// 對外（canonical、og:url、hreflang、站內連結）一律寫 <origin> 開頭的完整網址。
+//   www 的工具：origin、basePath 都不寫，origin 是 SITE_URL，base 是 /<slug>/（每支工具到 2026-11-17 都是這種，輸出逐字不變）
+//   子網域工具：origin 'https://<host>'（projects.json 的 host，例如 https://illustrations.casper.tw），basePath '/'
+//     （決策 0015，站長 2026-11-17 選 1A）。slug 照舊是 GA4 content_group、tools.json 的 key、scan-paths 的永久保留字，
+//     也是產物檔名的第一段（見下面「產物檔名」）
+import { SITE_URL, isSubdomainHost } from '../site.mjs'
 import { BLOG_LOCALES, LOCALE, getLocale, sortLocaleCodes as sortCodes } from './locales.mjs'
 
 // 全站首頁 / 的語系：部落格的繁中首頁就是 /，不產生 /zh-tw/（主站首頁規格 B.2）
@@ -20,15 +25,41 @@ const checkPagePath = (pagePath) => {
   }
 }
 
-/** 站內路徑：rootLocale 是 /<slug>/<pagePath>，其他是 /<slug>/<code>/<pagePath>；pagePath 是 '' 或 'about/' */
+/**
+ * 工具的對外 origin：cfg.origin 沒寫是 SITE_URL；子網域工具寫 'https://<host>'（host 要過 isSubdomainHost，不帶路徑與尾斜線）。
+ * 寫錯就丟錯，不默默退回 www
+ */
+export function toolOrigin(cfg) {
+  const o = cfg.origin
+  if (o === undefined || o === null || o === SITE_URL) return SITE_URL
+  const host = typeof o === 'string' && o.startsWith('https://') ? o.slice('https://'.length) : null
+  if (!isSubdomainHost(host)) throw new Error(`origin 要是 ${SITE_URL} 或 https://<名稱>.casper.tw（不帶路徑與尾斜線）：${JSON.stringify(o)}`)
+  return o
+}
+
+/**
+ * 工具網址的前綴：cfg.basePath 沒寫是 '/<slug>/'；子網域工具寫 '/'。一定以 / 開頭與結尾，每段小寫英數字與單一連字號。
+ * origin 是 www（SITE_URL）時只能是 '/<slug>/'：www 上的工具只住在自己的 slug 底下（AGENTS.md 鐵則）
+ */
+export function toolBasePath(cfg) {
+  const own = `/${cfg.slug}/`
+  const b = cfg.basePath
+  if (b === undefined || b === null) return own
+  if (typeof b !== 'string' || !/^\/(?:[a-z0-9]+(?:-[a-z0-9]+)*\/)*$/.test(b)) throw new Error(`basePath 要是 '/' 或 '/<段>/' 這種以 / 開頭與結尾的小寫路徑：${JSON.stringify(b)}`)
+  if (b !== own && toolOrigin(cfg) === SITE_URL) throw new Error(`www 的工具 basePath 只能是 ${own}（要放在根目錄的是子網域工具，另寫 origin）：${JSON.stringify(b)}`)
+  return b
+}
+
+/** 站內路徑：rootLocale 是 <base><pagePath>，其他是 <base><code>/<pagePath>；base 是 toolBasePath(cfg)，pagePath 是 '' 或 'about/' */
 export function localePath(cfg, code, pagePath = '') {
   getLocale(code)
   checkPagePath(pagePath)
-  return code === cfg.rootLocale ? `/${cfg.slug}/${pagePath}` : `/${cfg.slug}/${code}/${pagePath}`
+  const base = toolBasePath(cfg)
+  return code === cfg.rootLocale ? `${base}${pagePath}` : `${base}${code}/${pagePath}`
 }
 
-/** 完整網址：SITE_URL + localePath(...) */
-export const pageUrl = (cfg, code, pagePath = '') => SITE_URL + localePath(cfg, code, pagePath)
+/** 完整網址：toolOrigin(cfg) + localePath(...)；www 的工具就是 SITE_URL + /<slug>/… */
+export const pageUrl = (cfg, code, pagePath = '') => toolOrigin(cfg) + localePath(cfg, code, pagePath)
 
 /**
  * x-default 指向的語系代碼：pageLocales 有 cfg.xDefaultLocale 就用它，其次 cfg.rootLocale；兩個都沒有回 null（不輸出 x-default）。
@@ -174,12 +205,54 @@ export function chineseLink(code, { href, label, exact = false }, inChinese) {
   return localeLink(code, { href, label, target: SITE_ROOT_LOCALE, exact }, (_key, params) => inChinese(params.label))
 }
 
+// ── 產物檔名 ─────────────────────────────────────────────────────────────────
+// 建置、audit、Worker 的資料檔用「產物檔名」認頁：'<slug>/index.html'、'<slug>/<code>/<page>/index.html'，第一段一律是 slug，
+// 跟對外網址的前綴無關。www 的工具，產物檔名就是站內路徑去掉開頭的 / 再接 index.html（dist 的實際檔名）；
+// 子網域工具（basePath '/'）的網址沒有 slug 段，產物檔名照樣以 slug 開頭：插圖站的頁由 Worker 產生（決策 0017），
+// audit、node-host、資料檔都用這個虛擬的形狀，搬到子網域時不必跟著改。
+// 網址與產物檔名之間只用 localeFile、fileOfToolPath、fileOfUrl、toolPathOfFile 換算，不要自己拼字串。
+
+const normRel = (p) => String(p).replace(/\\/g, '/').replace(/^\.?\//, '')
+
+/** 一頁的產物檔名：'sound-effects/ja/about/index.html'；子網域工具一樣以 slug 開頭（'illustrations/ja/index.html'） */
+export function localeFile(cfg, code, pagePath = '') {
+  getLocale(code)
+  checkPagePath(pagePath)
+  return code === cfg.rootLocale ? `${cfg.slug}/${pagePath}index.html` : `${cfg.slug}/${code}/${pagePath}index.html`
+}
+
+/** 站內路徑（localePath 的結果，或請求的 pathname）→ 產物檔名；不在 toolBasePath 底下、或不以 / 結尾回 null */
+export function fileOfToolPath(cfg, path) {
+  const base = toolBasePath(cfg)
+  if (typeof path !== 'string' || !path.startsWith(base) || !path.endsWith('/')) return null
+  return `${cfg.slug}/${path.slice(base.length)}index.html`
+}
+
+/** 完整網址 → 產物檔名：origin 要等於 toolOrigin(cfg)，路徑在 toolBasePath 底下、帶尾斜線（查詢字串與 # 不看）；其他回 null，不丟錯 */
+export function fileOfUrl(cfg, href) {
+  let u
+  try { u = new URL(href) } catch { return null }
+  if (u.origin !== toolOrigin(cfg)) return null
+  return fileOfToolPath(cfg, u.pathname)
+}
+
 /**
- * 從 dist 的相對路徑推出語系：'sound-effects/ja/about/index.html' → 'ja'；
+ * 產物檔名 → 站內路徑（fileOfToolPath 的反向）：'<slug>/ja/about/index.html' → '<base>ja/about/'；
+ * 不是 index.html 的檔（例如 '<slug>/brand/x.webp'）只換前綴。不在 '<slug>/' 底下丟錯
+ */
+export function toolPathOfFile(cfg, distRelPath) {
+  const rel = normRel(distRelPath)
+  if (!rel.startsWith(`${cfg.slug}/`)) throw new Error(`不是這支工具的產物路徑：${distRelPath}`)
+  return toolBasePath(cfg) + rel.slice(cfg.slug.length + 1).replace(/(^|\/)index\.html$/, '$1')
+}
+
+/**
+ * 從產物檔名推出語系：'sound-effects/ja/about/index.html' → 'ja'；
  * 資產根目錄的 '404.html'（接 /<slug>x 的那份）→ rootLocale。不在 <slug>/ 底下的其他檔案丟錯。
+ * 子網域工具也傳以 slug 開頭的產物檔名（localeFile、fileOfUrl 的結果），不是網址路徑
  */
 export function localeOfFile(cfg, distRelPath) {
-  const rel = String(distRelPath).replace(/\\/g, '/').replace(/^\.?\//, '')
+  const rel = normRel(distRelPath)
   if (rel === '404.html') return cfg.rootLocale
   const [first, second, ...rest] = rel.split('/')
   if (first !== cfg.slug || second === undefined) throw new Error(`不是這支工具的產物路徑：${distRelPath}`)

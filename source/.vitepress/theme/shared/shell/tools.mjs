@@ -1,8 +1,10 @@
 // 全站工具清單的連結規則（主站首頁規格 F.6）。index 是 shared/data/tools.json 的內容（scripts/site-data.mjs 產生）。
 // 前後端都能用：只 import i18n/locales.mjs、i18n/urls.mjs，不用 node: 模組。
 // 頁尾工具組（SiteFooter.vue）、外語首頁與部落格首頁的 #tools、部落格 ⌘K 都用這一份，退路與語言標示只寫在這裡。
+// 子網域工具（projects.json 有 host，決策 0015，站長 2026-11-17 選 4B「可以列，因為是要避免 SEO 連坐法」）：tools.json 那一筆多一個 host，
+// 網址是 https://<host>/ 與 https://<host>/<code>/；連結照樣直接用 tools.json 的 url，這裡不另外換算
 import { getLocale } from './i18n/locales.mjs'
-import { LOCALE_MARK_KEYS, pickTarget } from './i18n/urls.mjs'
+import { LOCALE_MARK_KEYS, pageUrl, pickTarget, toolBasePath, toolOrigin } from './i18n/urls.mjs'
 
 // 切語言標示用的哨兵：不會出現在外殼字串裡。text('inChinese', { label: MARK }) 的結果用它切成名稱前後兩段
 export const MARK = '\u0000'
@@ -12,7 +14,8 @@ export const MARK = '\u0000'
 // site-data.mjs 驗網址、site-check.mjs 線上驗尺寸，部落格 ghost.mjs 的 toolCardArt() 照這個尺寸輸出 width、height
 export const TOOL_MARK_SIZE = 340
 // 站徽在工具網址底下的相對路徑：每段小寫英數字開頭，段內可有 . _ -（不能有 .. 段），結尾 .webp，不帶查詢字串。
-// 卡片裡寫完整網址 https://www.casper.tw/<slug>/<路徑>；範本的 card.mark 寫相對於 public/ 的路徑
+// 卡片裡寫完整網址 https://www.casper.tw/<slug>/<路徑>（子網域工具是 https://<host>/<路徑> 或 https://img.casper.tw/<slug>/<路徑>）；
+// 範本的 card.mark 寫相對於 public/ 的路徑
 export const TOOL_MARK_PATH = /^[a-z0-9][a-z0-9_-]*(?:\.[a-z0-9_-]+)*(?:\/[a-z0-9][a-z0-9_-]*(?:\.[a-z0-9_-]+)*)*\.webp$/
 
 // 工具的介紹區塊（主站首頁規格 F.2、F.6，站長 2026-11-05「音效工具也要有完整的介紹」），選填：
@@ -33,8 +36,25 @@ export const TOOL_FEATURE_LIMITS = Object.freeze({
 export const TOOL_FEATURE_LOCALE_KEYS = ['intro', 'highlights', 'cta']
 
 /**
+ * 一支工具的網址設定（urls.mjs 的 cfg 形狀）。tool 是 { slug, host?, rootLocale }（projects.json 或 tools.json 的那一筆加上根語系）：
+ * www 的工具是 { slug, rootLocale }；有 host 的子網域工具多 origin 'https://<host>' 與 basePath '/'，跟工具自己 tool.config.mjs 的寫法相同
+ */
+export const toolUrlConfig = ({ slug, host = null, rootLocale = null }) => (host
+  ? { slug, rootLocale, origin: `https://${host}`, basePath: '/' }
+  : { slug, rootLocale })
+
+/** 工具網址的前綴（站徽、介紹圖可以放在它底下）：www 的工具 https://www.casper.tw/<slug>/，子網域工具 https://<host>/ */
+export function toolBaseUrl(tool) {
+  const c = toolUrlConfig(tool)
+  return toolOrigin(c) + toolBasePath(c)
+}
+
+/** 工具某個語系首頁的網址（tools.json 的 locales[code].url 一定等於它）：根語系沒有語系段。tool 要有 rootLocale */
+export const toolHomeUrl = (tool, code) => pageUrl(toolUrlConfig(tool), code, '')
+
+/**
  * @typedef {object} ToolFeatureImage
- * @property {string} src     絕對網址（https://www.casper.tw/<slug>/ 或 https://img.casper.tw/<slug>/ 底下的 .webp）
+ * @property {string} src     絕對網址（工具網址 toolBaseUrl() 或 https://img.casper.tw/<slug>/ 底下的 .webp）
  * @property {number} width   宣告的寬（像素，site-data.mjs 線上驗過跟檔案相同）
  * @property {number} height  宣告的高
  *
