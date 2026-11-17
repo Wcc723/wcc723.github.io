@@ -1,20 +1,20 @@
 ---
 title: 隱私權政策
 description: www.casper.tw 的隱私權政策：說明 Google 廣告與流量統計、Facebook 留言和像素會收集哪些資料，以及停用個人化廣告的方法。
-updated: 2026-11-06
+updated: 2026-11-17
 ---
 
-這頁說明你瀏覽 [www.casper.tw](/)（以下稱「本站」）時，有哪些資料會被收集、由誰收集、拿來做什麼，以及你可以怎麼關掉。本站由我（卡斯伯）個人經營，內容是前端技術文章，之後也會放一些免費的線上小工具。
+這頁說明你瀏覽 [www.casper.tw](/)，以及 casper.tw 子網域上的工具（以下合稱「本站」）時，有哪些資料會被收集、由誰收集、拿來做什麼，以及你可以怎麼關掉。本站由我（卡斯伯）個人經營，內容是前端技術文章，以及一些免費的線上小工具。
 
 ## 這頁涵蓋的範圍
 
-- 這頁只說明本站，包括文章、列表頁，以及之後放在本站的線上工具。
-- 我經營的其他服務各有自己的隱私權說明，例如 [privacy.casper.tw](https://privacy.casper.tw/) 收錄的是其他軟體服務的政策，跟本站是不同的網站，以各自的說明為準。
+- 這頁只說明本站，包括文章、列表頁，以及放在 www.casper.tw 和 casper.tw 子網域（例如 illustrations.casper.tw）的線上工具。
+- 我經營的其他服務各有自己的隱私權說明，例如 [games.casper.tw](https://games.casper.tw/privacy/) 有自己的隱私權政策，[privacy.casper.tw](https://privacy.casper.tw/) 收錄的是其他軟體服務的政策。它們雖然也在 casper.tw 的子網域上，但跟本站是不同的網站，以各自的說明為準。
 - 本站網址底下另外有一些直接從 GitHub repo 發布的課程範例與專案頁（網址的第一段是 repo 名稱），它們不使用本站的版面，這頁提到的廣告與統計設定不一定適用，以各頁內容為準。
 
 ## 我自己不收集個人資料
 
-本站是靜態網站，沒有會員、登入或表單，我不會要求你提供姓名、電子郵件或電話，也沒有自己的資料庫存放訪客資料。下面列出的資料，都是由本站使用的第三方服務（Google、Meta、GitHub、Cloudflare）依照它們自己的政策收集與處理。我能看到的只有 Google Analytics 這類彙總後的統計報表，看不到可以直接認出你是誰的資料。
+本站沒有會員、登入或表單，我不會要求你提供姓名、電子郵件或電話，也沒有自己的資料庫存放訪客資料。下面列出的資料，都是由本站使用的第三方服務（Google、Meta、GitHub、Cloudflare）依照它們自己的政策收集與處理。我能看到的只有 Google Analytics 這類彙總後的統計報表，看不到可以直接認出你是誰的資料。
 
 ## 廣告與 Cookie（Google AdSense）
 
@@ -39,14 +39,14 @@ updated: 2026-11-06
 
 ## Facebook（Meta 像素與留言外掛）
 
-- **Meta 像素（Facebook Pixel）**：每一頁都會載入。它會把你瀏覽的頁面網址、瀏覽器資訊和 IP 位址傳給 Meta；如果你同時登入 Facebook，Meta 可能把這些紀錄跟你的帳號連結，用在 Facebook 與 Instagram 上的廣告成效衡量與廣告投放。我用它了解從 Facebook 來的讀者，以及在 Facebook 推廣文章的成效。
+- **Meta 像素（Facebook Pixel）**：首頁、文章和列表頁等部落格頁面會載入，工具不載入；從歐洲經濟區、英國、瑞士造訪時完全不載入。它會把你瀏覽的頁面網址、瀏覽器資訊和 IP 位址傳給 Meta；如果你同時登入 Facebook，Meta 可能把這些紀錄跟你的帳號連結，用在 Facebook 與 Instagram 上的廣告成效衡量與廣告投放。我用它了解從 Facebook 來的讀者，以及在 Facebook 推廣文章的成效。
 - **Facebook 留言外掛**：文章頁和關於頁底下的留言框由 Facebook 提供。頁面載入時，你的瀏覽器會連到 Facebook 的伺服器，Facebook 可能因此收到你的 IP 位址與瀏覽器資訊，如果你已登入，也會知道你看了哪一頁。你留下的留言會用你的 Facebook 帳號公開顯示，由 Facebook 保存，要修改或刪除，請直接在留言框或 Facebook 上操作。從歐洲經濟區、英國、瑞士造訪時，留言框要按「顯示 Facebook 留言」才會載入。
 - 想調整 Meta 用來投放廣告的資料，可以到 Facebook 的帳號管理中心調整「廣告偏好設定」，包括其他商家分享給 Meta 的動態要不要用在廣告上。詳細內容請看 [Meta 隱私政策](https://www.facebook.com/privacy/policy/)。
 
 ## 網站主機與連線（GitHub Pages、Cloudflare）
 
-- 本站的檔案放在 GitHub Pages。GitHub 會為了安全目的記錄造訪者的 IP 位址，不論你有沒有登入 GitHub。詳細內容請看 [GitHub 一般隱私聲明](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)。
-- 本站的連線經過 Cloudflare，用來加速、快取與阻擋惡意流量。Cloudflare 會處理 IP 位址、瀏覽器資訊這類連線資料；偵測到可疑流量時，可能設定安全用途的 Cookie（例如 `__cf_bm`、`cf_clearance`），這些 Cookie 不是用來追蹤你在不同網站之間的瀏覽。詳細內容請看 [Cloudflare 隱私權政策](https://www.cloudflare.com/privacypolicy/)。
+- www.casper.tw 上部落格的檔案（首頁、文章、列表頁等）放在 GitHub Pages。GitHub 會為了安全目的記錄造訪者的 IP 位址，不論你有沒有登入 GitHub。詳細內容請看 [GitHub 一般隱私聲明](https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement)。
+- 本站的連線經過 Cloudflare，用來加速、快取與阻擋惡意流量。線上工具（包括 casper.tw 子網域上的工具）也由 Cloudflare 提供。Cloudflare 會處理 IP 位址、瀏覽器資訊這類連線資料；偵測到可疑流量時，可能設定安全用途的 Cookie（例如 `__cf_bm`、`cf_clearance`），這些 Cookie 不是用來追蹤你在不同網站之間的瀏覽。詳細內容請看 [Cloudflare 隱私權政策](https://www.cloudflare.com/privacypolicy/)。
 
 ## 文章裡嵌入的外部內容
 
