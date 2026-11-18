@@ -35,8 +35,12 @@ export const FB_APP_ID = '556473851118881'
 export const OG_LOCALE = 'zh_TW'
 /** Hexo 的 config.author，open_graph 在每一頁輸出 article:author */
 export const ARTICLE_AUTHOR = 'Wang Casper'
-/** 首頁與 /page/N/ 的 description：Hexo 的 config.description 是空的，主題改用 theme.tagline */
-export const HOME_DESCRIPTION = '前端，沒有極限'
+/**
+ * 首頁與 /page/N/ 的 description。Hexo 時代是 theme.tagline「前端，沒有極限」（config.description 是空的）；
+ * 站長 2026-11-17 換成說明全站內容的這句（Argon 起稿第 C 版，「前端工程師」改「開發者」）。
+ * 首頁畫面上的小標與文章 title 尾巴（SITE_TITLE_LEGACY）照舊是「前端，沒有極限」。
+ */
+export const HOME_DESCRIPTION = '提供免費、不用登入的線上小工具與素材：包含可下載音效庫、影片與 Podcast 用的背景音樂、去背 PNG 可愛圖案、全螢幕純色壞點測試與英文花體字。本站同時收錄開發者卡斯伯的 JavaScript 與 CSS 開發筆記。'
 /** 首頁 / 的 title 與 og:title（P3 改名，docs/decisions/0005-site-name.md）。/page/N/ 與其他頁的 title 尾巴照舊是 SITE_TITLE_LEGACY */
 export const HOME_TITLE = `${SITE_NAME}｜卡斯伯的前端筆記與線上小工具`
 export const DEMO_CSS_BASE = 'https://img.casper.tw/demoFile/css/'

@@ -37,7 +37,7 @@ import {
   HOLD_ROBOTS, SITE_HOME_CODES, SITE_INDEX, buildSiteHomePlan, formatHomeCopy, homesOutOfSitemap, languageTargets, readHomeMessages, siteHomeTitle,
 } from '../source/.vitepress/lib/site-home.mjs'
 import { UNLISTED_SITEMAPS } from '../source/.vitepress/lib/feeds.mjs'
-import { HOME_TITLE, PERSON_ID, SITE_HOME_OG_IMAGE, WEBSITE_ID } from '../source/.vitepress/lib/seo.mjs'
+import { HOME_DESCRIPTION, HOME_TITLE, PERSON_ID, SITE_HOME_OG_IMAGE, WEBSITE_ID } from '../source/.vitepress/lib/seo.mjs'
 import { LOCALES, getLocale, sortLocaleCodes } from '../source/.vitepress/theme/shared/shell/i18n/locales.mjs'
 import { ZH_CATCHALL, siteHomeAlternates, siteHomeUrl } from '../source/.vitepress/theme/shared/shell/i18n/urls.mjs'
 import { siteName } from '../source/.vitepress/theme/shared/shell/i18n/seo.mjs'
@@ -536,6 +536,11 @@ export function checkPages(ctx) {
       // P3 改名：首頁 title 從舊站名換成 HOME_TITLE（docs/decisions/0005-site-name.md），其他欄位照基準
       exp.title = HOME_TITLE
       ctx.expect('pages', p.url, `首頁 title 改成「${HOME_TITLE}」（P3 改名，決策 0005）`)
+    }
+    if (p.type === 'home' || p.type === 'home-page') {
+      // 首頁與 /page/N/ 的 description 從 Hexo 的「前端，沒有極限」換成 HOME_DESCRIPTION（站長 2026-11-17），其他欄位照基準
+      exp.description = HOME_DESCRIPTION
+      ctx.expect('pages', p.url, '首頁與 /page/N/ 的 description 換成 HOME_DESCRIPTION（站長 2026-11-17）')
     }
     for (const k of ['title', 'canonical', 'ogUrl', 'fbCommentsHref', 'lang']) {
       if (d.f[k] !== exp[k]) fail(c, `${p.url} ${k}：預期 ${show(exp[k])}，實際 ${show(d.f[k])}`)

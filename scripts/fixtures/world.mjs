@@ -419,6 +419,8 @@ export function buildWorld(mutate, { stage = 'p1', toolsIndex } = {}) {
     } else {
       const h1 = p.type === 'home' ? SITE_NAME : p.type === 'home-page' ? '最新文章：第 2 頁' : lower(p.h1[0])
       main = listMain(h1, hexoCards(hexo))
+      // 首頁與 /page/N/ 的 description 是 HOME_DESCRIPTION（站長 2026-11-17 換掉 Hexo 的「前端，沒有極限」）
+      if (p.type === 'home' || p.type === 'home-page') common.description = HOME_DESCRIPTION
       // 首頁：有工具時多 #tools（P3 起，照 HomeTools.vue：標題加卡片，沒有介紹區塊）；有外語首頁時 head 多叢集的 hreflang 與 og:locale:alternate（I1 起，D.9），
       // 以及外語首頁 isPartOf 指的 WebSite JSON-LD（P3 在 / 加，I1 在 P3 之後，D.4）
       if (p.type === 'home') {

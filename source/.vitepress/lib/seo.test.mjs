@@ -268,6 +268,8 @@ function expectedReason(field, r) {
   // P3 改名（決策 0005）：首頁 title 與 og:title 換成 HOME_TITLE，全站 og:site_name 換成新站名；其他頁的 title 尾巴照舊
   if ((field === 'title' || field === 'ogTitle') && b.url === '/' && base === SITE_TITLE_LEGACY && ours === HOME_TITLE) return 'P3 首頁 title 改名'
   if (field === 'ogSiteName' && base === SITE_TITLE_LEGACY && ours === SITE_NAME) return 'P3 og:site_name 改名'
+  // 首頁與 /page/N/ 的 description 換掉 Hexo 的「前端，沒有極限」（站長 2026-11-17）；og:description 照舊不輸出
+  if (field === 'description' && (b.type === 'home' || b.type === 'home-page') && base === '前端，沒有極限' && ours === HOME_DESCRIPTION) return '首頁 description 改寫（2026-11-17）'
   if ((field === 'canonical' || field === 'ogUrl') && b.url.startsWith('/categories/CSS/') && ours === base.replace('/categories/css/', '/categories/CSS/')) {
     return '/categories/CSS/ 改大寫（站長 2026-11-03）'
   }
